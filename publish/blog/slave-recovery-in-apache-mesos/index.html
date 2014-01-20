@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<!--
+
+		 ______                           __                
+		/\  _  \                         /\ \               
+		\ \ \L\ \  _____      __      ___\ \ \___      __   
+		 \ \  __ \/\ '__`\  /'__`\   /'___\ \  _ `\  /'__`\ 
+		  \ \ \/\ \ \ \L\ \/\ \L\.\_/\ \__/\ \ \ \ \/\  __/ 
+		   \ \_\ \_\ \ ,__/\ \__/.\_\ \____\\ \_\ \_\ \____\
+		    \/_/\/_/\ \ \/  \/__/\/_/\/____/ \/_/\/_/\/____/
+		             \ \_\                                  
+		              \/_/                                  
+                                                    
+		       /'\_/`\                                      
+		      /\      \     __    ____    ___     ____      
+		      \ \ \__\ \  /'__`\ /',__\  / __`\  /',__\     
+		       \ \ \_/\ \/\  __//\__, `\/\ \L\ \/\__, `\    
+		        \ \_\\ \_\ \____\/\____/\ \____/\/\____/    
+		         \/_/ \/_/\/____/\/___/  \/___/  \/___/     
+		
+-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Slave Recovery in Apache Mesos</title>
+		    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		    <meta name="description" content="">
+		    <meta name="author" content="">
+
+		    <!-- Le styles -->
+		    <link href="../../assets/css/bootstrap.css" media="screen" rel="stylesheet" type="text/css" />
+		    <link href="../../assets/css/bootstrap-responsive.min.css" media="screen" rel="stylesheet" type="text/css" />
+		    <link href="../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+		  
+		    <!-- JS -->
+		    <script src="../../assets/js/jquery-1.10.1.min.js" type="text/javascript"></script>
+		    <script src="../../assets/js/bootstrap-dropdown.js" type="text/javascript"></script>
+		
+			<!-- Google Analytics Magic -->
+			<script type="text/javascript">
+			  var _gaq = _gaq || [];
+			  _gaq.push(['_setAccount', 'UA-20226872-1']);
+			  _gaq.push(['_setDomainName', 'apache.org']);
+			  _gaq.push(['_trackPageview']);
+
+			  (function() {
+			    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			  })();
+			</script>
+    </head>
+    <body>			
+			<!-- navbar excitement -->
+	    <div class="navbar navbar-static-top">
+	      <div class="navbar-inner">
+	        <div class="container">
+						<a href="/" class="logo"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo" /></a>
+	          <ul class="nav">
+	            <li><a href="/gettingstarted/">Getting Started</a></li>
+	            <li><a href="/documentation/latest/">Documentation</a></li>
+	            <li><a href="/downloads/">Downloads</a></li>
+	            <li><a href="/community/">Community</a></li>
+	          </ul>
+	        </div>
+	      </div>
+	    </div><!-- /.navbar -->
+
+
+      <div class="container">
+
+			<!-- magical breadcrumbs -->
+			<ul class="breadcrumb">
+			  <li>
+					<div class="dropdown">
+					  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Apache Software Foundation <b class="caret"></b></a>
+					  <ul class="dropdown-menu" role="menu">
+							<li><a href="http://www.apache.org">Apache Homepage</a></li>
+							<li><a href="http://www.apache.org/licenses/">License</a></li>
+					  	<li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>  
+					  	<li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+							<li><a href="http://www.apache.org/security/">Security</a></li>
+					  </ul>
+					</div>
+				</li>
+				<li><span class="divider">></span></li>
+				<li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+				
+			</ul><!-- /breadcrumb -->
+
+			<div class="row-fluid">
+
+<div class="span3">
+	<div class="meta">
+		<span class="author">
+			
+			  <img src="http://www.gravatar.com/avatar/24bc66008e50fb936e696735e99d7815?s=80" class="author_gravatar">
+			
+			<span class="author_contact">
+			  <p><strong>Vinod Kone</strong></p>
+			  <p><a href="http://twitter.com/vinodkone">@vinodkone</a></p>
+			</span>
+		</span>
+		<p><em>Posted October 23, 2013</em></p>
+	</div>
+	
+	<div class="share">
+		<span class="social-share-button"><a href="https://twitter.com/share" class="twitter-share-button" data-via="apachemesos">Tweet</a></span>
+		
+		<span><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></span>
+
+		<span><div class="g-plusone" data-size="medium"></div></span>
+
+		<!-- Place this tag after the last +1 button tag. -->
+		<script type="text/javascript">
+		  (function() {
+		    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+		    po.src = 'https://apis.google.com/js/plusone.js';
+		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+		  })();
+		</script>
+		
+		<script src="//platform.linkedin.com/in.js" type="text/javascript">
+		 lang: en_US
+		</script>
+		<script type="IN/Share" data-counter="right"></script>
+	</div>
+</div>
+
+<div class="post span9">
+	<h1>Slave Recovery in Apache Mesos</h1>
+	
+	<p>High availability is one of the key features of Mesos. For example, a typical Mesos cluster in production involves 3-5 masters with one acting as <em>leader</em> and the rest on standby. When a leading master fails due to a crash or goes offline for an upgrade, a standby master automatically becomes the leader without causing any disruption to running services. Leader election is currently performed by using <a href="http://zookeeper.apache.org/">ZooKeeper</a>.</p>
+
+<p>With the latest Mesos release, <a href="http://mesos.apache.org/downloads/">0.14.1</a>, we are bringing high availability to the slaves by introducing a new feature called <em>Slave Recovery</em>. In a nutshell, slave recovery enables:</p>
+
+<ol>
+<li><p>Executors/tasks to keep running when the slave process is down.</p></li>
+<li><p>A restarted slave process to reconnect with running executors/tasks on the slave.</p></li>
+</ol>
+
+
+<h2>Why it matters</h2>
+
+<p>A recoverable slave is critical for running services in production on Mesos for several reasons:</p>
+
+<ul>
+<li><p><strong>Stateful services</strong></p>
+
+<p>  In a typical production environment there are stateful services (e.g., caches) running in the cluster. It is not uncommon for these services to have a high startup time (e.g., cache warm up time of a few hours). Even in the analytics world, there are cases where a single task is responsible for doing work that takes hours to complete. In such cases a restart of the slave (e.g, crash or upgrade) will have a huge impact on the service. While sharding the service wider mitigates this impact it is not always possible to do so (e.g, legacy services, data locality, application semantics). Such stateful applications would benefit immensely from running under a more resilient slave.</p></li>
+<li><p><strong>Faster cluster upgrades</strong></p>
+
+<p>  It is important for clusters to frequently upgrade their infrastructure to stay up-to-date with the latest features and bug fixes. A typical Mesos slave upgrade involves stopping the slave, upgrading the slave libraries and starting the slave. In production environments there is always tension between upgrading the infrastructure frequently and the need to not impact long running services as much as possible. With respect to Mesos upgrades, if upgrading the slave binary has no impact on the underlying services, then it is a win for both the cluster operators and the service owners.</p></li>
+<li><p><strong>Resilience against slave failures</strong></p>
+
+<p>  While upgrading the slaves is most often the reason for restarting slaves, there might be other causes for a slave to fail. A slave crash could happen due to a bug in the slave code or due to external factors like a bug in the kernel or ZooKeeper client library. Typically such crashes are temporary and a restart of the slave is enough to correct the situation. If such slave restarts do not affect applications running on the slave it is a huge win for the applications.</p></li>
+</ul>
+
+
+<h2>How it works</h2>
+
+<ul>
+<li><p><strong>Checkpointing</strong></p>
+
+<p>  Slave recovery works by having the slave checkpoint enough information (e.g., task information, executor information, status updates) about the running tasks and executors to local disk. Once the slave and the framework(s) enable checkpointing, any subsequent slave restarts would recover the checkpointed information and reconnect with the executors. When a checkpointing slave process goes down, both the leading master and the executors running on the slave host wait for the slave to come back up and reconnect. A nice thing about slave recovery is that frameworks and their executors/tasks are oblivious to a slave restart.</p></li>
+<li><p><strong>Executor Driver Caching</strong></p>
+
+<p>  As part of this feature, the executor driver has also been improved to make it more resilient in the face of a slave failure. As an example, status updates sent by the executor while the slave is down are cached by the driver and sent to the slave when it reconnects with the restarted slave. Since this is all handled by the executor driver, framework/executor writers do not have to worry about it! The executors can keep sending status updates for their tasks while remaining oblivious to the slave being up or down.</p></li>
+<li><p><strong>Reliable status updates</strong></p>
+
+<p>  Another benefit of slave checkpointing the status updates is that now updates are more reliably delivered to frameworks in the face of failures. Before slave recovery if the slave fails at the same time that a master is failing over, no TASK_LOST updates for tasks running on the slave were sent to the framework. This is partly because the Mesos master is stateless. A failed over master reconstructs the cluster state from the information given to it by re-registering slaves and frameworks. With slave recovery, status updates and tasks are no longer lost when slaves fail. Rather, the slave recovers tasks, status updates and reconnects with the running executors. Even if an executor does terminate when the slave is down, a recovered slave knows about it from its checkpointed state and reliably sends TASK_LOST updates to the framework.</p></li>
+</ul>
+
+
+<p>For more information about how to enable slave recovery in your cluster, please refer to the <a href="https://github.com/apache/mesos/blob/master/docs/Slave-Recovery.md">documentation</a>.</p>
+
+<h2>Looking ahead</h2>
+
+<ul>
+<li><p><strong>Easy Executor/Task Upgrades</strong></p>
+
+<p>  In a similar vein to how slave recovery makes upgrading a Mesos cluster easy, we would like to enable frameworks to upgrade their executors/tasks as well. Currently the only way to upgrade an executor/task is to kill the old executor/task and launch the new upgraded executor/task. For the same reasons as we have discussed earlier this is not ideal for stateful services. We are currently investigating  proper primitives to provide to frameworks to do such upgrades, so that not every framework have to (re-)implement that logic.</p></li>
+<li><p><strong>State Reconciliation</strong></p>
+
+<p>  While slave recovery greatly improves the reliability of delivering status updates there are still some rare cases where updates could be lost. For example if a slave crashes when a master is failing over and never comes back then the new leading master doesn&rsquo;t know about the lost slave and executors/tasks running on it. In addition to status updates, any driver methods (e.g., launchTasks, killTask) invoked when the master is failing over are silently dropped. Currently, frameworks are responsible for reconciling their own task state using the <a href="https://github.com/apache/mesos/blob/master/include/mesos/scheduler.hpp#L290">reconciliation API</a>. We are currently investigating ways to provide even better guarantees  around reconciliation.</p></li>
+<li><p><strong>Self Updates of Mesos</strong></p>
+
+<p>  Currently, updating Mesos involves a cluster operator to manually upgrade the master and slave binaries and roll them in a specific manner (e.g., masters before slaves). But what if Mesos can update itself! It is not hard to imagine a future where Mesos masters can orchestrate the upgrade of slaves and maybe also upgrade one another! This would also help making rollbacks easy incase an upgrade doesn’t work because it would be much easier Mesos to check if various components are working as expected.</p></li>
+</ul>
+
+
+<p>So what are you waiting for? Go ahead and give <a href="http://mesos.apache.org">Mesos</a> a whirl and <a href="mailto:user@mesos.apache.org">let us know</a> what you think.</p>
+
+</div>
+</div>
+
+			
+	      <hr>
+
+				<!-- footer -->
+	      <div class="footer">
+	        <p>&copy; 2012-2013 <a href="http://apache.org">The Apache Software Foundation</a>.
+	        Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.<p>
+	      </div><!-- /footer -->
+
+	    </div> <!-- /container -->
+
+    </body>
+</html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<!--
+
+		 ______                           __                
+		/\  _  \                         /\ \               
+		\ \ \L\ \  _____      __      ___\ \ \___      __   
+		 \ \  __ \/\ '__`\  /'__`\   /'___\ \  _ `\  /'__`\ 
+		  \ \ \/\ \ \ \L\ \/\ \L\.\_/\ \__/\ \ \ \ \/\  __/ 
+		   \ \_\ \_\ \ ,__/\ \__/.\_\ \____\\ \_\ \_\ \____\
+		    \/_/\/_/\ \ \/  \/__/\/_/\/____/ \/_/\/_/\/____/
+		             \ \_\                                  
+		              \/_/                                  
+                                                    
+		       /'\_/`\                                      
+		      /\      \     __    ____    ___     ____      
+		      \ \ \__\ \  /'__`\ /',__\  / __`\  /',__\     
+		       \ \ \_/\ \/\  __//\__, `\/\ \L\ \/\__, `\    
+		        \ \_\\ \_\ \____\/\____/\ \____/\/\____/    
+		         \/_/ \/_/\/____/\/___/  \/___/  \/___/     
+		
+-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Mesos 0.15 and Authentication Support</title>
+		    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		    <meta name="description" content="">
+		    <meta name="author" content="">
+
+		    <!-- Le styles -->
+		    <link href="../../assets/css/bootstrap.css" media="screen" rel="stylesheet" type="text/css" />
+		    <link href="../../assets/css/bootstrap-responsive.min.css" media="screen" rel="stylesheet" type="text/css" />
+		    <link href="../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+		  
+		    <!-- JS -->
+		    <script src="../../assets/js/jquery-1.10.1.min.js" type="text/javascript"></script>
+		    <script src="../../assets/js/bootstrap-dropdown.js" type="text/javascript"></script>
+		
+			<!-- Google Analytics Magic -->
+			<script type="text/javascript">
+			  var _gaq = _gaq || [];
+			  _gaq.push(['_setAccount', 'UA-20226872-1']);
+			  _gaq.push(['_setDomainName', 'apache.org']);
+			  _gaq.push(['_trackPageview']);
+
+			  (function() {
+			    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			  })();
+			</script>
+    </head>
+    <body>			
+			<!-- navbar excitement -->
+	    <div class="navbar navbar-static-top">
+	      <div class="navbar-inner">
+	        <div class="container">
+						<a href="/" class="logo"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo" /></a>
+	          <ul class="nav">
+	            <li><a href="/gettingstarted/">Getting Started</a></li>
+	            <li><a href="/documentation/latest/">Documentation</a></li>
+	            <li><a href="/downloads/">Downloads</a></li>
+	            <li><a href="/community/">Community</a></li>
+	          </ul>
+	        </div>
+	      </div>
+	    </div><!-- /.navbar -->
+
+
+      <div class="container">
+
+			<!-- magical breadcrumbs -->
+			<ul class="breadcrumb">
+			  <li>
+					<div class="dropdown">
+					  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Apache Software Foundation <b class="caret"></b></a>
+					  <ul class="dropdown-menu" role="menu">
+							<li><a href="http://www.apache.org">Apache Homepage</a></li>
+							<li><a href="http://www.apache.org/licenses/">License</a></li>
+					  	<li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>  
+					  	<li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+							<li><a href="http://www.apache.org/security/">Security</a></li>
+					  </ul>
+					</div>
+				</li>
+				<li><span class="divider">></span></li>
+				<li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+				
+			</ul><!-- /breadcrumb -->
+
+			<div class="row-fluid">
+
+<div class="span3">
+	<div class="meta">
+		<span class="author">
+			
+			  <img src="http://www.gravatar.com/avatar/24bc66008e50fb936e696735e99d7815?s=80" class="author_gravatar">
+			
+			<span class="author_contact">
+			  <p><strong>Vinod Kone</strong></p>
+			  <p><a href="http://twitter.com/vinodkone">@vinodkone</a></p>
+			</span>
+		</span>
+		<p><em>Posted January  9, 2014</em></p>
+	</div>
+	
+	<div class="share">
+		<span class="social-share-button"><a href="https://twitter.com/share" class="twitter-share-button" data-via="apachemesos">Tweet</a></span>
+		
+		<span><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></span>
+
+		<span><div class="g-plusone" data-size="medium"></div></span>
+
+		<!-- Place this tag after the last +1 button tag. -->
+		<script type="text/javascript">
+		  (function() {
+		    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+		    po.src = 'https://apis.google.com/js/plusone.js';
+		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+		  })();
+		</script>
+		
+		<script src="//platform.linkedin.com/in.js" type="text/javascript">
+		 lang: en_US
+		</script>
+		<script type="IN/Share" data-counter="right"></script>
+	</div>
+</div>
+
+<div class="post span9">
+	<h1>Mesos 0.15 and Authentication Support</h1>
+	
+	<p>With the latest Mesos release, <a href="http://mesos.apache.org/downloads/">0.15.0</a>, we are pleased to report that we’ve added Authentication support for frameworks (see <a href="https://issues.apache.org/jira/browse/MESOS-418">MESOS-418</a>) connecting to Mesos. In a nutshell, this feature allows only authenticated frameworks to register with Mesos and launch tasks. Authentication is important as it prevents rogue frameworks from causing problems that may impact the usage of resources within a Mesos cluster.</p>
+
+<h2>How it works</h2>
+
+<ul>
+<li><p><strong>SASL</strong></p>
+
+<p>  Mesos uses the <a href="http://asg.web.cmu.edu/sasl/">Cyrus SASL library</a> to provide authentication. SASL is a very flexible authentication framework that allows two endpoints to authenticate with each other and also has support for various authentication mechanisms (ANONYMOUS, PLAIN, CRAM-MD5, GSSAPI etc).</p>
+
+<p>  In this release, Mesos uses SASL with the CRAM-MD5 authentication mechanism. The process for enabling authentication begins with the creation of an authentication credential that is unique to the framework. This credential constitutes a <strong>principal</strong> and <strong>secret</strong> pair, where <strong>principal</strong> refers to the identity of the framework. Note that the <strong>principal</strong> is different from the framework <strong>user</strong> (the Unix user which executors run as) or the resource <strong>role</strong> (role that has reserved certain resources on a slave). These credentials should be shipped to the Mesos master machines, as well as given access to the framework, meaning that both the framework and the Mesos masters should be started with these credentials.</p>
+
+<p>  Once authentication is enabled, Mesos masters only allow authenticated frameworks to register. Authentication for frameworks is performed under the hood by the new scheduler driver.</p></li>
+</ul>
+
+
+<p>For specific instructions on how to do this please read the <a href="http://mesos.apache.org/documentation/latest/upgrades/">upgrade</a> instructions.</p>
+
+<h2>Looking ahead</h2>
+
+<ul>
+<li><p><strong>Adding authentication support for slaves</strong></p>
+
+<p>  Similar to adding authentication support to frameworks, it would be great to add authentication support to the slaves. Currently any node in the network can run a Mesos slave process and register with the Mesos master. Requiring slaves to authenticate with the master before registration would prevent rogue slaves from causing problems (e.g., DDoSing the master, getting access to users tasks etc) in the cluster.</p></li>
+<li><p><strong>Integrating with Kerberos</strong></p>
+
+<p> Currently the authentication support via shared secrets between frameworks and masters is basic to benefit usability. To improve upon this basic approach, a more powerful solution would be to integrate with an industry standard authentication service like <a href="http://en.wikipedia.org/wiki/Kerberos_(protocol">Kerberos</a>). A nice thing about SASL and one of the reasons we picked it is because of its support for integration with GSSAPI/Kerberos. We plan to leverage this support to integrate Kerberos with Mesos.</p></li>
+<li><p><strong>Data encryption</strong></p>
+
+<p>  Authentication is only part of the puzzle when it comes to deploying and running applications securely in the cloud. Another crucial component is data encryption. Currently all the messages that flow through the Mesos cluster are un-encrypted making it possible for intruders to intercept and potentially control your task. We plan to add encryption support by adding SSL support to <a href="https://github.com/3rdparty/libprocess">libprocess</a>, the low-level communication library that Mesos uses which is responsible for all network communication between Mesos components.</p></li>
+<li><p><strong>Authorization</strong></p>
+
+<p>  We are also investigating authorizing principals to allow them access to only a specific set of operations like launching tasks or using resources. In fact, you could imagine a world where an authenticated <strong>principal</strong> will be authorized to on behalf of a subset of <strong>user</strong>s and <strong>role</strong>s for launching tasks and accepting resources respectively. This authorization information could be stored in a directory service like LDAP.</p></li>
+</ul>
+
+
+<h3>Thanks</h3>
+
+<p>While a lot of people contributed to this feature, we would like to give special thanks to <a href="https://twitter.com/ilimugur">Ilim Igur</a>, our <a href="http://www.google-melange.com/gsoc/homepage/google/gsoc2013">Google Summer of Code</a>  intern who started this project and contributed to the intial design and implementation.</p>
+
+<p>If you are as excited as us about this feature please go ahead and play with <a href="http://mesos.apache.org">Mesos 0.15.0</a> and let us know what you think. You can get in touch with us via <a href="http://mesos.apache.org/community/">our mailing lists or IRC</a>.</p>
+
+</div>
+</div>
+
+			
+	      <hr>
+
+				<!-- footer -->
+	      <div class="footer">
+	        <p>&copy; 2012-2013 <a href="http://apache.org">The Apache Software Foundation</a>.
+	        Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.<p>
+	      </div><!-- /footer -->
+
+	    </div> <!-- /container -->
+
+    </body>
+</html>

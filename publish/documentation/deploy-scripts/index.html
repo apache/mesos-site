@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<!--
+
+		 ______                           __                
+		/\  _  \                         /\ \               
+		\ \ \L\ \  _____      __      ___\ \ \___      __   
+		 \ \  __ \/\ '__`\  /'__`\   /'___\ \  _ `\  /'__`\ 
+		  \ \ \/\ \ \ \L\ \/\ \L\.\_/\ \__/\ \ \ \ \/\  __/ 
+		   \ \_\ \_\ \ ,__/\ \__/.\_\ \____\\ \_\ \_\ \____\
+		    \/_/\/_/\ \ \/  \/__/\/_/\/____/ \/_/\/_/\/____/
+		             \ \_\                                  
+		              \/_/                                  
+                                                    
+		       /'\_/`\                                      
+		      /\      \     __    ____    ___     ____      
+		      \ \ \__\ \  /'__`\ /',__\  / __`\  /',__\     
+		       \ \ \_/\ \/\  __//\__, `\/\ \L\ \/\__, `\    
+		        \ \_\\ \_\ \____\/\____/\ \____/\/\____/    
+		         \/_/ \/_/\/____/\/___/  \/___/  \/___/     
+		
+-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+		    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		    <meta name="description" content="">
+		    <meta name="author" content="">
+
+		    <!-- Le styles -->
+		    <link href="../../assets/css/bootstrap.css" media="screen" rel="stylesheet" type="text/css" />
+		    <link href="../../assets/css/bootstrap-responsive.min.css" media="screen" rel="stylesheet" type="text/css" />
+		    <link href="../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+		  
+		    <!-- JS -->
+		    <script src="../../assets/js/jquery-1.10.1.min.js" type="text/javascript"></script>
+		    <script src="../../assets/js/bootstrap-dropdown.js" type="text/javascript"></script>
+		
+			<!-- Google Analytics Magic -->
+			<script type="text/javascript">
+			  var _gaq = _gaq || [];
+			  _gaq.push(['_setAccount', 'UA-20226872-1']);
+			  _gaq.push(['_setDomainName', 'apache.org']);
+			  _gaq.push(['_trackPageview']);
+
+			  (function() {
+			    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			  })();
+			</script>
+    </head>
+    <body>			
+			<!-- navbar excitement -->
+	    <div class="navbar navbar-static-top">
+	      <div class="navbar-inner">
+	        <div class="container">
+						<a href="/" class="logo"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo" /></a>
+	          <ul class="nav">
+	            <li><a href="/gettingstarted/">Getting Started</a></li>
+	            <li><a href="/documentation/latest/">Documentation</a></li>
+	            <li><a href="/downloads/">Downloads</a></li>
+	            <li><a href="/community/">Community</a></li>
+	          </ul>
+	        </div>
+	      </div>
+	    </div><!-- /.navbar -->
+
+
+      <div class="container">
+
+			<!-- magical breadcrumbs -->
+			<ul class="breadcrumb">
+			  <li>
+					<div class="dropdown">
+					  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Apache Software Foundation <b class="caret"></b></a>
+					  <ul class="dropdown-menu" role="menu">
+							<li><a href="http://www.apache.org">Apache Homepage</a></li>
+							<li><a href="http://www.apache.org/licenses/">License</a></li>
+					  	<li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>  
+					  	<li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+							<li><a href="http://www.apache.org/security/">Security</a></li>
+					  </ul>
+					</div>
+				</li>
+				<li><span class="divider">></span></li>
+				<li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+				
+			</ul><!-- /breadcrumb -->
+
+			<div class="row-fluid">
+	<div class="span4">
+		<h4>If you're new to Mesos</h4>
+		<p>See the <a href="/gettingstarted/">getting started</a> page for more information about downloading, building, and deploying Mesos.</p>
+		
+		<h4>If you'd like to get involved or you're looking for support</h4>
+		<p>See our <a href="/community/">community</a> page for more details.</p>
+	</div>
+	<div class="span8">
+		<h1>Deploy Scripts</h1>
+
+<p>Mesos includes a set of scripts in <code>MESOS_HOME/deploy</code> that can be used to deploy it on a cluster. To use these scripts, you need to create two configuration files: <code>MESOS_HOME/conf/masters</code>, which should list the hostname(s) of the node(s) you want to be your masters (one per line), and <code>MESOS_HOME/conf/slaves</code>, which should contain a list of hostnames for your slaves. You can then start a cluster with <code>deploy/start-mesos</code> and stop it with <code>deploy/stop-mesos</code>.</p>
+
+<p>It is also possible to set environment variables, ulimits, etc that will affect the master and slave. by editing <code>MESOS_HOME/deploy/mesos-env.sh</code>. One particularly useful setting is <code>LIBPROCESS_IP</code>, which tells the master and slave binaries which IP address to bind to; in some installations, the default interface that the hostname resolves to is not the machine&rsquo;s external IP address, so you can set the right IP through this variable.</p>
+
+<p>Finally, the deploy scripts do not use ZooKeeper by default. If you want to use ZooKeeper (for multiple masters), you can do so by either editing <code>deploy/mesos-env.sh</code> to set <code>MESOS_URL</code> to a <code>zoo://</code> or <code>zoofile://</code> URL, or by editing <code>conf/mesos.conf</code> to set the <code>url</code> configuration parameter. Please see the &ldquo;High Availability&rdquo; documentation for details.</p>
+
+<h2>Notes</h2>
+
+<ul>
+<li>The deploy scripts assume that Mesos is located in the same directory on all nodes.</li>
+<li>If you want to enable multiple Unix users to submit to the same cluster, you need to run the Mesos slaves as root (or possibly set the right attributes on the <code>mesos-slave</code> binary). Otherwise, they will fail to <code>setuid</code>.</li>
+</ul>
+
+
+	</div>
+</div>
+
+			
+	      <hr>
+
+				<!-- footer -->
+	      <div class="footer">
+	        <p>&copy; 2012-2013 <a href="http://apache.org">The Apache Software Foundation</a>.
+	        Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.<p>
+	      </div><!-- /footer -->
+
+	    </div> <!-- /container -->
+
+    </body>
+</html>

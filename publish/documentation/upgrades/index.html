@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<!--
+
+		 ______                           __                
+		/\  _  \                         /\ \               
+		\ \ \L\ \  _____      __      ___\ \ \___      __   
+		 \ \  __ \/\ '__`\  /'__`\   /'___\ \  _ `\  /'__`\ 
+		  \ \ \/\ \ \ \L\ \/\ \L\.\_/\ \__/\ \ \ \ \/\  __/ 
+		   \ \_\ \_\ \ ,__/\ \__/.\_\ \____\\ \_\ \_\ \____\
+		    \/_/\/_/\ \ \/  \/__/\/_/\/____/ \/_/\/_/\/____/
+		             \ \_\                                  
+		              \/_/                                  
+                                                    
+		       /'\_/`\                                      
+		      /\      \     __    ____    ___     ____      
+		      \ \ \__\ \  /'__`\ /',__\  / __`\  /',__\     
+		       \ \ \_/\ \/\  __//\__, `\/\ \L\ \/\__, `\    
+		        \ \_\\ \_\ \____\/\____/\ \____/\/\____/    
+		         \/_/ \/_/\/____/\/___/  \/___/  \/___/     
+		
+-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+		    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		    <meta name="description" content="">
+		    <meta name="author" content="">
+
+		    <!-- Le styles -->
+		    <link href="../../assets/css/bootstrap.css" media="screen" rel="stylesheet" type="text/css" />
+		    <link href="../../assets/css/bootstrap-responsive.min.css" media="screen" rel="stylesheet" type="text/css" />
+		    <link href="../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+		  
+		    <!-- JS -->
+		    <script src="../../assets/js/jquery-1.10.1.min.js" type="text/javascript"></script>
+		    <script src="../../assets/js/bootstrap-dropdown.js" type="text/javascript"></script>
+		
+			<!-- Google Analytics Magic -->
+			<script type="text/javascript">
+			  var _gaq = _gaq || [];
+			  _gaq.push(['_setAccount', 'UA-20226872-1']);
+			  _gaq.push(['_setDomainName', 'apache.org']);
+			  _gaq.push(['_trackPageview']);
+
+			  (function() {
+			    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			  })();
+			</script>
+    </head>
+    <body>			
+			<!-- navbar excitement -->
+	    <div class="navbar navbar-static-top">
+	      <div class="navbar-inner">
+	        <div class="container">
+						<a href="/" class="logo"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo" /></a>
+	          <ul class="nav">
+	            <li><a href="/gettingstarted/">Getting Started</a></li>
+	            <li><a href="/documentation/latest/">Documentation</a></li>
+	            <li><a href="/downloads/">Downloads</a></li>
+	            <li><a href="/community/">Community</a></li>
+	          </ul>
+	        </div>
+	      </div>
+	    </div><!-- /.navbar -->
+
+
+      <div class="container">
+
+			<!-- magical breadcrumbs -->
+			<ul class="breadcrumb">
+			  <li>
+					<div class="dropdown">
+					  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Apache Software Foundation <b class="caret"></b></a>
+					  <ul class="dropdown-menu" role="menu">
+							<li><a href="http://www.apache.org">Apache Homepage</a></li>
+							<li><a href="http://www.apache.org/licenses/">License</a></li>
+					  	<li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>  
+					  	<li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+							<li><a href="http://www.apache.org/security/">Security</a></li>
+					  </ul>
+					</div>
+				</li>
+				<li><span class="divider">></span></li>
+				<li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+				
+			</ul><!-- /breadcrumb -->
+
+			<div class="row-fluid">
+	<div class="span4">
+		<h4>If you're new to Mesos</h4>
+		<p>See the <a href="/gettingstarted/">getting started</a> page for more information about downloading, building, and deploying Mesos.</p>
+		
+		<h4>If you'd like to get involved or you're looking for support</h4>
+		<p>See our <a href="/community/">community</a> page for more details.</p>
+	</div>
+	<div class="span8">
+		<h1>Upgrading Mesos</h1>
+
+<p>This document serves as a guide for users who wish to upgrade an existing mesos cluster. Some versions require particular upgrade techniques when upgrading a running cluster. Some upgrades will have incompatible changes.</p>
+
+<h2>Upgrading from 0.14.0 to 0.15.0.</h2>
+
+<p>In order to upgrade a running cluster:</p>
+
+<ul>
+<li>Install the new master binaries.</li>
+<li>Restart the masters with &ndash;credentials pointing to credentials of the framework(s).</li>
+<li>NOTE: &ndash;authentication=false (default) allows both authenticated and unauthenticated frameworks to register.</li>
+<li>Install the new slave binaries and restart the slaves.</li>
+<li>Upgrade the executors by linking the latest native library and mesos jar (if necessary).</li>
+<li>Upgrade the schedulers by linking the latest native library and mesos jar (if necessary).</li>
+<li>NOTE: Schedulers should implement the new <code>reconcileTasks</code> driver method.</li>
+<li>Schedulers should call the new <code>MesosSchedulerDriver</code> constructor that takes <code>Credential</code> to authenticate.</li>
+<li>Restart the schedulers.</li>
+<li>Restart the masters with &ndash;authentication=true.</li>
+<li>NOTE: After the restart unauthenticated frameworks <em>will not</em> be allowed to register.</li>
+</ul>
+
+
+<h2>Upgrading from 0.13.0 to 0.14.0.</h2>
+
+<p>In order to upgrade a running cluster:</p>
+
+<ul>
+<li>Install the new master binaries and restart the masters.</li>
+<li>NOTE: /vars endpoint has been removed.</li>
+<li>Upgrade the executors by linking the latest native library and mesos jar (if necessary).</li>
+<li>Install the new slave binaries.</li>
+<li>Restart the slaves after adding &ndash;checkpoint flag to enable checkpointing.</li>
+<li>NOTE: /vars endpoint has been removed.</li>
+<li>Upgrade the schedulers by linking the latest native library and mesos jar (if necessary).</li>
+<li>Set FrameworkInfo.checkpoint in the scheduler if checkpointing is desired (recommended).</li>
+<li>Restart the schedulers.</li>
+<li>Restart the masters (to get rid of the cached FrameworkInfo).</li>
+<li>Restart the slaves (to get rid of the cached FrameworkInfo).</li>
+</ul>
+
+
+<h2>Upgrading from 0.12.0 to 0.13.0.</h2>
+
+<p>In order to upgrade a running cluster:</p>
+
+<ul>
+<li>Install the new master binaries and restart the masters.</li>
+<li>Upgrade the schedulers by linking the latest native library and mesos jar (if necessary).</li>
+<li>Restart the schedulers.</li>
+<li>Install the new slave binaries.</li>
+<li>NOTE: cgroups_hierarchy_root slave flag is renamed as cgroups_hierarchy</li>
+<li>Restart the slaves.</li>
+<li>Upgrade the executors by linking the latest native library and mesos jar (if necessary).</li>
+</ul>
+
+
+<h2>Upgrading from 0.11.0 to 0.12.0.</h2>
+
+<p>In order to upgrade a running cluster:</p>
+
+<ul>
+<li>Install the new slave binaries and restart the slaves.</li>
+<li>Install the new master binaries and restart the masters.</li>
+</ul>
+
+
+<p>If you are a framework developer, you will want to examine the new &lsquo;source&rsquo; field in the ExecutorInfo protobuf. This will allow you to take further advantage of the resource monitoring.</p>
+
+	</div>
+</div>
+
+			
+	      <hr>
+
+				<!-- footer -->
+	      <div class="footer">
+	        <p>&copy; 2012-2013 <a href="http://apache.org">The Apache Software Foundation</a>.
+	        Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.<p>
+	      </div><!-- /footer -->
+
+	    </div> <!-- /container -->
+
+    </body>
+</html>

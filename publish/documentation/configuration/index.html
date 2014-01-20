@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<!--
+
+		 ______                           __                
+		/\  _  \                         /\ \               
+		\ \ \L\ \  _____      __      ___\ \ \___      __   
+		 \ \  __ \/\ '__`\  /'__`\   /'___\ \  _ `\  /'__`\ 
+		  \ \ \/\ \ \ \L\ \/\ \L\.\_/\ \__/\ \ \ \ \/\  __/ 
+		   \ \_\ \_\ \ ,__/\ \__/.\_\ \____\\ \_\ \_\ \____\
+		    \/_/\/_/\ \ \/  \/__/\/_/\/____/ \/_/\/_/\/____/
+		             \ \_\                                  
+		              \/_/                                  
+                                                    
+		       /'\_/`\                                      
+		      /\      \     __    ____    ___     ____      
+		      \ \ \__\ \  /'__`\ /',__\  / __`\  /',__\     
+		       \ \ \_/\ \/\  __//\__, `\/\ \L\ \/\__, `\    
+		        \ \_\\ \_\ \____\/\____/\ \____/\/\____/    
+		         \/_/ \/_/\/____/\/___/  \/___/  \/___/     
+		
+-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+		    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		    <meta name="description" content="">
+		    <meta name="author" content="">
+
+		    <!-- Le styles -->
+		    <link href="../../assets/css/bootstrap.css" media="screen" rel="stylesheet" type="text/css" />
+		    <link href="../../assets/css/bootstrap-responsive.min.css" media="screen" rel="stylesheet" type="text/css" />
+		    <link href="../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+		  
+		    <!-- JS -->
+		    <script src="../../assets/js/jquery-1.10.1.min.js" type="text/javascript"></script>
+		    <script src="../../assets/js/bootstrap-dropdown.js" type="text/javascript"></script>
+		
+			<!-- Google Analytics Magic -->
+			<script type="text/javascript">
+			  var _gaq = _gaq || [];
+			  _gaq.push(['_setAccount', 'UA-20226872-1']);
+			  _gaq.push(['_setDomainName', 'apache.org']);
+			  _gaq.push(['_trackPageview']);
+
+			  (function() {
+			    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			  })();
+			</script>
+    </head>
+    <body>			
+			<!-- navbar excitement -->
+	    <div class="navbar navbar-static-top">
+	      <div class="navbar-inner">
+	        <div class="container">
+						<a href="/" class="logo"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo" /></a>
+	          <ul class="nav">
+	            <li><a href="/gettingstarted/">Getting Started</a></li>
+	            <li><a href="/documentation/latest/">Documentation</a></li>
+	            <li><a href="/downloads/">Downloads</a></li>
+	            <li><a href="/community/">Community</a></li>
+	          </ul>
+	        </div>
+	      </div>
+	    </div><!-- /.navbar -->
+
+
+      <div class="container">
+
+			<!-- magical breadcrumbs -->
+			<ul class="breadcrumb">
+			  <li>
+					<div class="dropdown">
+					  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Apache Software Foundation <b class="caret"></b></a>
+					  <ul class="dropdown-menu" role="menu">
+							<li><a href="http://www.apache.org">Apache Homepage</a></li>
+							<li><a href="http://www.apache.org/licenses/">License</a></li>
+					  	<li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>  
+					  	<li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+							<li><a href="http://www.apache.org/security/">Security</a></li>
+					  </ul>
+					</div>
+				</li>
+				<li><span class="divider">></span></li>
+				<li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+				
+			</ul><!-- /breadcrumb -->
+
+			<div class="row-fluid">
+	<div class="span4">
+		<h4>If you're new to Mesos</h4>
+		<p>See the <a href="/gettingstarted/">getting started</a> page for more information about downloading, building, and deploying Mesos.</p>
+		
+		<h4>If you'd like to get involved or you're looking for support</h4>
+		<p>See our <a href="/community/">community</a> page for more details.</p>
+	</div>
+	<div class="span8">
+		<h1>Mesos Configuration</h1>
+
+<p>The Mesos master and slave can take a variety of configuration options through command-line arguments, or environment variables. A list of the available options can be seen by running <code>mesos-master --help</code> or <code>mesos-slave --help</code>. Each option can be set in two ways:</p>
+
+<ul>
+<li>By passing it to the binary using <code>--option_name=value</code>.</li>
+<li>By setting the environment variable <code>MESOS_OPTION_NAME</code> (the option name with a <code>MESOS_</code> prefix added to it).</li>
+</ul>
+
+
+<p>Configuration values are searched for first in the environment, then on the command-line.</p>
+
+<p><strong>Important Options</strong></p>
+
+<p>If you have special compilation requirements, please refer to <code>./configure --help</code> when configuring Mesos. Additionally, the documentation lists only a subset of the options. A definitive source for which flags your version of Mesos supports can be found by running the binary with the flag <code>--help</code>, for example <code>bin/mesos-master --help</code>.</p>
+
+<h2>Master and Slave Options</h2>
+
+<p><em>These options can be supplied to both masters and slaves.</em></p>
+
+<ul>
+<li><p><code>log_dir</code> : Directory for log files. If unspecified, nothing is written to disk.</p></li>
+<li><p><code>quiet</code> : Disable logging to stderr. [Default: false]</p></li>
+<li><p><code>ip</code> : IP address to listen on. [Optional]</p></li>
+<li><p><code>port</code> : Port to listen on. [Default for master: 5050, Default for slave:5051]</p></li>
+</ul>
+
+
+<h2>Master Options</h2>
+
+<ul>
+<li><p><code>zk</code> : ZooKeeper URL (used for leader election amongst multiple masters). May be one of:</p>
+
+<ul>
+<li>zk://host1:port1,host2:port2,&hellip;/path</li>
+<li>zk://username:password@host1:port1,host2:port2,&hellip;/path</li>
+<li>file://path/to/file (where file contains one of the above)</li>
+</ul>
+</li>
+<li><p><code>roles</code> : A comma seperated list of the allocation roles
+          that frameworks in this cluster may belong to.</p></li>
+<li><p><code>weights</code> : A comma seperated list of role/weight pairs
+            of the form &lsquo;role=weight,role=weight&rsquo;. Weights
+            are used to indicate forms of priority.</p></li>
+</ul>
+
+
+<h2>Slave Options</h2>
+
+<ul>
+<li><p><code>resources</code> : Total consumable resources per slave, in
+                the form &lsquo;name(role):value;name(role):value&hellip;&rsquo;.</p>
+
+<ul>
+<li>NOTE: &lsquo;(role)&rsquo; is optional.</li>
+<li>Ex: &ldquo;cpus(role2):2;mem(role2):1024;cpus:1;mem:1024;disk:0&rdquo;</li>
+</ul>
+</li>
+<li><p><code>attributes</code> : Attributes for the machine. [Optional]</p>
+
+<ul>
+<li>These are free-form in the same style as resources, ex: &ldquo;rack:abc;kernel:2.6.44&rdquo;.</li>
+<li>This information is provided to frameworks.</li>
+</ul>
+</li>
+<li><p><code>work_dir</code> : Directory for the executor work directories. [Default: /tmp/mesos]</p>
+
+<ul>
+<li><code>isolation</code> : Isolation mechanism, one of: &ldquo;process&rdquo;, &ldquo;cgroups&rdquo;. [Default: process]</li>
+<li><code>cgroups_enable_cfs</code> : If using cgroups isolation, this enables hard limits on CPU resources.</li>
+</ul>
+</li>
+<li><p><code>master</code> : May be one of:</p>
+
+<ul>
+<li>zk://host1:port1,host2:port2,&hellip;/path</li>
+<li>zk://username:password@host1:port1,host2:port2,&hellip;/path\n</li>
+<li>file://path/to/file (where file contains one of the above)</li>
+</ul>
+</li>
+<li><p><code>default_role</code> : Any resources in the &ndash;resources flag that
+                 omit a role, as well as any resources that
+                 are not present in &ndash;resources but that are
+                 automatically detected, will be assigned to
+                 this role. [Default: *]</p></li>
+<li><p><code>checkpoint</code> :  Whether to checkpoint slave and frameworks information
+                to disk.</p>
+
+<ul>
+<li>This enables a restarted slave to recover status updates and reconnect
+with (&ndash;recover=reconnect) or kill (&ndash;recover=kill) old executors [Default: false]</li>
+</ul>
+</li>
+<li><p><code>strict</code> : Whether to do recovery in strict mode [Default: true].</p>
+
+<ul>
+<li>If strict=true, any and all recovery errors are considered fatal.</li>
+<li>If strict=false, any errors (e.g., corruption in checkpointed data) during recovery are
+ignored and as much state as possible is recovered.</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>Mesos Configuration Options</h2>
+
+<p>The configure script itself accepts the following arguments to enable various options:</p>
+
+<ul>
+<li><code>--with-python-headers=DIR</code>: Find Python header files in <code>DIR</code> (to turn on Python support). Recommended.</li>
+<li><code>--with-webui</code>: Enable the Mesos web UI (which requires Python 2.6). Recommended.</li>
+<li><code>--with-java-home=DIR</code>: Enable Java application/framework support with a given installation of Java. Required for Hadoop and Spark.</li>
+<li><code>--with-java-headers=DIR</code>: Find Java header files (necessary for newer versions of OS X Snow Leopard).</li>
+<li><code>--with-included-zookeeper</code> or <code>--with-zookeeper=DIR</code>: Enable master fault-tolerance using an existing ZooKeeper installation or the version of ZooKeeper bundled with Mesos. For details, see <a href="high-availability">High Availability</a>.</li>
+</ul>
+
+
+	</div>
+</div>
+
+			
+	      <hr>
+
+				<!-- footer -->
+	      <div class="footer">
+	        <p>&copy; 2012-2013 <a href="http://apache.org">The Apache Software Foundation</a>.
+	        Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.<p>
+	      </div><!-- /footer -->
+
+	    </div> <!-- /container -->
+
+    </body>
+</html>

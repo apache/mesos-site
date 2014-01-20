@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<!--
+
+		 ______                           __                
+		/\  _  \                         /\ \               
+		\ \ \L\ \  _____      __      ___\ \ \___      __   
+		 \ \  __ \/\ '__`\  /'__`\   /'___\ \  _ `\  /'__`\ 
+		  \ \ \/\ \ \ \L\ \/\ \L\.\_/\ \__/\ \ \ \ \/\  __/ 
+		   \ \_\ \_\ \ ,__/\ \__/.\_\ \____\\ \_\ \_\ \____\
+		    \/_/\/_/\ \ \/  \/__/\/_/\/____/ \/_/\/_/\/____/
+		             \ \_\                                  
+		              \/_/                                  
+                                                    
+		       /'\_/`\                                      
+		      /\      \     __    ____    ___     ____      
+		      \ \ \__\ \  /'__`\ /',__\  / __`\  /',__\     
+		       \ \ \_/\ \/\  __//\__, `\/\ \L\ \/\__, `\    
+		        \ \_\\ \_\ \____\/\____/\ \____/\/\____/    
+		         \/_/ \/_/\/____/\/___/  \/___/  \/___/     
+		
+-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+		    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		    <meta name="description" content="">
+		    <meta name="author" content="">
+
+		    <!-- Le styles -->
+		    <link href="../../../assets/css/bootstrap.css" media="screen" rel="stylesheet" type="text/css" />
+		    <link href="../../../assets/css/bootstrap-responsive.min.css" media="screen" rel="stylesheet" type="text/css" />
+		    <link href="../../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+		  
+		    <!-- JS -->
+		    <script src="../../../assets/js/jquery-1.10.1.min.js" type="text/javascript"></script>
+		    <script src="../../../assets/js/bootstrap-dropdown.js" type="text/javascript"></script>
+		
+			<!-- Google Analytics Magic -->
+			<script type="text/javascript">
+			  var _gaq = _gaq || [];
+			  _gaq.push(['_setAccount', 'UA-20226872-1']);
+			  _gaq.push(['_setDomainName', 'apache.org']);
+			  _gaq.push(['_trackPageview']);
+
+			  (function() {
+			    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			  })();
+			</script>
+    </head>
+    <body>			
+			<!-- navbar excitement -->
+	    <div class="navbar navbar-static-top">
+	      <div class="navbar-inner">
+	        <div class="container">
+						<a href="/" class="logo"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo" /></a>
+	          <ul class="nav">
+	            <li><a href="/gettingstarted/">Getting Started</a></li>
+	            <li><a href="/documentation/latest/">Documentation</a></li>
+	            <li><a href="/downloads/">Downloads</a></li>
+	            <li><a href="/community/">Community</a></li>
+	          </ul>
+	        </div>
+	      </div>
+	    </div><!-- /.navbar -->
+
+
+      <div class="container">
+
+			<!-- magical breadcrumbs -->
+			<ul class="breadcrumb">
+			  <li>
+					<div class="dropdown">
+					  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Apache Software Foundation <b class="caret"></b></a>
+					  <ul class="dropdown-menu" role="menu">
+							<li><a href="http://www.apache.org">Apache Homepage</a></li>
+							<li><a href="http://www.apache.org/licenses/">License</a></li>
+					  	<li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>  
+					  	<li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+							<li><a href="http://www.apache.org/security/">Security</a></li>
+					  </ul>
+					</div>
+				</li>
+				<li><span class="divider">></span></li>
+				<li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+				
+			</ul><!-- /breadcrumb -->
+
+			<div class="row-fluid">
+	<div class="span4">
+		<h4>If you're new to Mesos</h4>
+		<p>See the <a href="/gettingstarted/">getting started</a> page for more information about downloading, building, and deploying Mesos.</p>
+		
+		<h4>If you'd like to get involved or you're looking for support</h4>
+		<p>See our <a href="/community/">community</a> page for more details.</p>
+	</div>
+	<div class="span8">
+		<h1>Slave Recovery</h1>
+
+<p>Slave recovery is a feature of Mesos that allows:</p>
+
+<ol>
+<li>Executors/tasks to keep running when the slave process is down and</li>
+<li>Allows a restarted slave process to reconnect with running executors/tasks on the slave.</li>
+</ol>
+
+
+<p>Mesos slave could be restarted for an upgrade or due to a crash. This feature is introduced in <strong><em>0.14.0</em></strong> release.</p>
+
+<h2>How does it work?</h2>
+
+<p>Slave recovery works by having the slave checkpoint enough information (e.g., Task Info, Executor Info, Status Updates) about the running tasks and executors to local disk. Once the slave <strong><em>and</em></strong> the framework(s) enable checkpointing, any subsequent slave restarts would recover the checkpointed information and reconnect with the executors. Note that if the host running the slave process is rebooted all the executors/tasks are killed.</p>
+
+<blockquote><p>NOTE: To enable slave recovery both the slave and the framework should explicitly request checkpointing.
+Alternatively, a framework that doesn&rsquo;t want the disk i/o overhead of checkpointing can opt out of checkpointing.</p></blockquote>
+
+<h2>Enabling slave checkpointing</h2>
+
+<p>As part of this feature, 4 new flags were added to the slave.</p>
+
+<ul>
+<li><code>checkpoint</code> :  Whether to checkpoint slave and frameworks information
+                to disk [Default: false].
+
+<ul>
+<li><p>This enables a restarted slave to recover status updates and reconnect
+with (&ndash;recover=reconnect) or kill (&ndash;recover=kill) old executors.</p></li>
+<li><p><code>strict</code> : Whether to do recovery in strict mode [Default: true].</p>
+
+<ul>
+<li>If strict=true, any and all recovery errors are considered fatal.</li>
+<li>If strict=false, any errors (e.g., corruption in checkpointed data) during recovery are
+ignored and as much state as possible is recovered.</li>
+</ul>
+</li>
+<li><p><code>recover</code> : Whether to recover status updates and reconnect with old executors [Default: reconnect].</p>
+
+<ul>
+<li>If recover=reconnect, Reconnect with any old live executors.</li>
+<li>If recover=cleanup, Kill any old live executors and exit.
+Use this option when doing an incompatible slave or executor upgrade!).
+NOTE: If no checkpointing information exists, no recovery is performed
+and the slave registers with the master as a new slave.</li>
+</ul>
+</li>
+<li><p><code>recovery_timeout</code> : Amount of time allotted for the slave to recover [Default: 15 mins].</p>
+
+<ul>
+<li>If the slave takes longer than <code>recovery_timeout</code> to recover, any executors that are waiting to
+reconnect to the slave will self-terminate.
+NOTE: This flag is only applicable when <code>--checkpoint</code> is enabled.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<blockquote><p>NOTE: If checkpointing is enabled on the slave, but none of the frameworks have enabled checkpointing,
+executors/tasks of frameworks die when the slave dies and are not recovered.</p></blockquote>
+
+<p>A restarted slave should re-register with master within a timeout (currently, 75s). If the slave takes longer
+than this timeout to re-register, the master shuts down the slave, which in turn shuts down any live executors/tasks.
+Therefore, it is highly recommended to automate the process of restarting a slave (e.g, using <a href="http://mmonit.com/monit/">monit</a>).</p>
+
+<p><strong>For the complete list of slave options: ./mesos-slave.sh &ndash;help</strong></p>
+
+<h2>Enabling framework checkpointing</h2>
+
+<p>As part of this feature, <code>FrameworkInfo</code> has been updated to include an optional <code>checkpoint</code> field. A framework that would like to opt in to checkpointing should set <code>FrameworkInfo.checkpoint=True</code> before registering with the master.</p>
+
+<blockquote><p>NOTE: Frameworks that have enabled checkpointing will only get offers from checkpointing slaves. So, before setting <code>checkpoint=True</code> on FrameworkInfo, ensure that there are slaves in your cluster that have enabled checkpointing.
+Because, if there are no checkpointing slaves, the framework would not get any offers and hence cannot launch any tasks/executors!</p></blockquote>
+
+<h2>Upgrading to 0.14.0</h2>
+
+<p>If you want to upgrade a running Mesos cluster to 0.14.0 to take advantage of slave recovery please follow the <a href="upgrades">upgrade instructions</a>.</p>
+
+	</div>
+</div>
+
+			
+	      <hr>
+
+				<!-- footer -->
+	      <div class="footer">
+	        <p>&copy; 2012-2013 <a href="http://apache.org">The Apache Software Foundation</a>.
+	        Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.<p>
+	      </div><!-- /footer -->
+
+	    </div> <!-- /container -->
+
+    </body>
+</html>

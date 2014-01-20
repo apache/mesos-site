@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<!--
+
+		 ______                           __                
+		/\  _  \                         /\ \               
+		\ \ \L\ \  _____      __      ___\ \ \___      __   
+		 \ \  __ \/\ '__`\  /'__`\   /'___\ \  _ `\  /'__`\ 
+		  \ \ \/\ \ \ \L\ \/\ \L\.\_/\ \__/\ \ \ \ \/\  __/ 
+		   \ \_\ \_\ \ ,__/\ \__/.\_\ \____\\ \_\ \_\ \____\
+		    \/_/\/_/\ \ \/  \/__/\/_/\/____/ \/_/\/_/\/____/
+		             \ \_\                                  
+		              \/_/                                  
+                                                    
+		       /'\_/`\                                      
+		      /\      \     __    ____    ___     ____      
+		      \ \ \__\ \  /'__`\ /',__\  / __`\  /',__\     
+		       \ \ \_/\ \/\  __//\__, `\/\ \L\ \/\__, `\    
+		        \ \_\\ \_\ \____\/\____/\ \____/\/\____/    
+		         \/_/ \/_/\/____/\/___/  \/___/  \/___/     
+		
+-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+		    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		    <meta name="description" content="">
+		    <meta name="author" content="">
+
+		    <!-- Le styles -->
+		    <link href="../../assets/css/bootstrap.css" media="screen" rel="stylesheet" type="text/css" />
+		    <link href="../../assets/css/bootstrap-responsive.min.css" media="screen" rel="stylesheet" type="text/css" />
+		    <link href="../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+		  
+		    <!-- JS -->
+		    <script src="../../assets/js/jquery-1.10.1.min.js" type="text/javascript"></script>
+		    <script src="../../assets/js/bootstrap-dropdown.js" type="text/javascript"></script>
+		
+			<!-- Google Analytics Magic -->
+			<script type="text/javascript">
+			  var _gaq = _gaq || [];
+			  _gaq.push(['_setAccount', 'UA-20226872-1']);
+			  _gaq.push(['_setDomainName', 'apache.org']);
+			  _gaq.push(['_trackPageview']);
+
+			  (function() {
+			    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			  })();
+			</script>
+    </head>
+    <body>			
+			<!-- navbar excitement -->
+	    <div class="navbar navbar-static-top">
+	      <div class="navbar-inner">
+	        <div class="container">
+						<a href="/" class="logo"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo" /></a>
+	          <ul class="nav">
+	            <li><a href="/gettingstarted/">Getting Started</a></li>
+	            <li><a href="/documentation/latest/">Documentation</a></li>
+	            <li><a href="/downloads/">Downloads</a></li>
+	            <li><a href="/community/">Community</a></li>
+	          </ul>
+	        </div>
+	      </div>
+	    </div><!-- /.navbar -->
+
+
+      <div class="container">
+
+			<!-- magical breadcrumbs -->
+			<ul class="breadcrumb">
+			  <li>
+					<div class="dropdown">
+					  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Apache Software Foundation <b class="caret"></b></a>
+					  <ul class="dropdown-menu" role="menu">
+							<li><a href="http://www.apache.org">Apache Homepage</a></li>
+							<li><a href="http://www.apache.org/licenses/">License</a></li>
+					  	<li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>  
+					  	<li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+							<li><a href="http://www.apache.org/security/">Security</a></li>
+					  </ul>
+					</div>
+				</li>
+				<li><span class="divider">></span></li>
+				<li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+				
+			</ul><!-- /breadcrumb -->
+
+			<div class="row-fluid">
+	<div class="span4">
+		<h4>If you're new to Mesos</h4>
+		<p>See the <a href="/gettingstarted/">getting started</a> page for more information about downloading, building, and deploying Mesos.</p>
+		
+		<h4>If you'd like to get involved or you're looking for support</h4>
+		<p>See our <a href="/community/">community</a> page for more details.</p>
+	</div>
+	<div class="span8">
+		<h1>Running a web-farm on Mesos in your private cluster</h1>
+
+<p>Mesos comes with a framework written in Python that will run a web load balancer (<a href="http://haproxy.1wt.eu">HAProxy</a>) and use apache for the backend servers. The framework is in MESOS_HOME/frameworks/haproxy+apache. There is a README in that directory that might be slightly helpful, but we recommend looking a the framework scheduler and executor code to familiarize yourself with the concepts behind the framework.</p>
+
+<p>HAProxy has this annoying artifact that in order to ramp up and down in the number of servers it is load balancing between it has to kill the existing running HAProxy process and start a new one, which inevitably leads to dropped connections. Some people have looked into ways to get around the dropped connections (see <a href="http://labs.animoto.com/2010/03/10/uptime-with-haproxy">Animoto blog post about adding/removing servers to haproxy</a>).</p>
+
+<p>We recommend checking out other load balancers as well. Basically, whatever load balancer you&rsquo;re using, the framework scheduler should query the statistics of the load balancer to figure out how many web requests are being served to it and then ramp up and down the number of web server tasks based on those statistics. We&rsquo;ve also written a framework that uses <a href="http://www.linux-vs.org">Linux Virtual Server (LVS)</a> as the load balancer. LVS can be run in three different modes, and any should work with Mesos.</p>
+
+<h2>Running a web farm on Mesos on EC2</h2>
+
+<h3>Why use Mesos on EC2?</h3>
+
+<p>Many might wonder what the advantages of running a Mesos web farm on EC2 are over simply using the Amazon Elastic Load Balancer which will automatically ramp up and down the number of back end web server AMIs for you. We have found that by running Mesos on top of EC2 we are able to share a single EC2 instance between our web frameworks and our other frameworks such as Hadoop or Spark which can be used to do data analytics on top of the click logs being generated by the web frameworks, for instance.</p>
+
+<p>We have also found that we can allow multiple different users share an EC2 allocation of instances much more efficiently (and thus reduce EC2 costs) by using Mesos on that EC2 allocation.</p>
+
+<h3>Where to look to get started</h3>
+
+<p>We have also successfully used Amazon&rsquo;s Elastic Load Balancer instead of HAProxy. This is still in a non-master development branch called <a href="https://github.com/mesos/mesos/tree/andyk-elb+apache-notorque">andyk-elb+apache-notorque</a>. You will need to set up a Mesos EC2 cluster and the framework uses python boto to connect to Amazon&rsquo;s CloudWatch and EC2 so you will need to create a credentials file for boto to be able to connect to those amazon services correctly from the node on which you run the framework.</p>
+
+<p>Watch out when using ELB however, since it displays some interesting and non-intuitive behavior when ramping up and down (though it doesn&rsquo;t drop connections like HAProxy does out of the box). <a href="http://shlomoswidler.com/2009/07/elastic-in-elastic-load-balancing-elb.html">This blog post</a> details how ELB ramps up and down.</p>
+
+	</div>
+</div>
+
+			
+	      <hr>
+
+				<!-- footer -->
+	      <div class="footer">
+	        <p>&copy; 2012-2013 <a href="http://apache.org">The Apache Software Foundation</a>.
+	        Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.<p>
+	      </div><!-- /footer -->
+
+	    </div> <!-- /container -->
+
+    </body>
+</html>
