@@ -3,18 +3,17 @@ title: Apache Mesos | Getting Started
 breadcrumb: Getting Started
 ---
 
-  <div class="row-fluid">
-		<div class="span4">
-			<h4>What you'll find on this page</h4>
-  		<ul>
-				<li><a href="#system-requirements">System Requirements</a></li>
-				<li><a href="#downloading-mesos">Downloading Mesos</a></li>
-				<li><a href="#buildingmesos">Building Mesos</a></li>
-				<li><a href="#running-example-frameworks">Running Example Frameworks</a></li>
+  <div class="row">
+		<div class="col-md-2">
+			<ul class="list-group">
+				<li class="list-group-item"><a href="#system-requirements">Requirements</a></li>
+				<li class="list-group-item"><a href="#downloading-mesos">Download Mesos</a></li>
+				<li class="list-group-item"><a href="#buildingmesos">Build Mesos</a></li>
+				<li class="list-group-item"><a href="#running-example-frameworks">Run Frameworks</a></li>
 			</ul>
 		</div>
-    <div class="span8">
-      <h2>Getting Started with Apache Mesos</h2>
+    <div class="col-md-10">
+      <h1>Getting Started with Apache Mesos</h1>
 
 <h3><a name="system-requirements">System Requirements</a></h3>
 

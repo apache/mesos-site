@@ -17,7 +17,7 @@
 		       \ \ \_/\ \/\  __//\__, `\/\ \L\ \/\__, `\    
 		        \ \_\\ \_\ \____\/\____/\ \____/\/\____/    
 		         \/_/ \/_/\/____/\/___/  \/___/  \/___/     
-		
+
 -->
 <html>
     <head>
@@ -28,13 +28,9 @@
 		    <meta name="author" content="">
 
 		    <!-- Le styles -->
-		    <%= stylesheet_link_tag 'bootstrap.css' %>
-		    <%= stylesheet_link_tag 'bootstrap-responsive.min.css' %>
+				<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+		    <%#= stylesheet_link_tag 'bootstrap.min.css' %>
 		    <%= stylesheet_link_tag 'main.css' %>
-		  
-		    <!-- JS -->
-		    <%= javascript_include_tag 'jquery-1.10.1.min.js' %>
-		    <%= javascript_include_tag 'bootstrap-dropdown.js' %>
 		
 			<!-- Google Analytics Magic -->
 			<script type="text/javascript">
@@ -52,20 +48,21 @@
     </head>
     <body>			
 			<!-- navbar excitement -->
-	    <div class="navbar navbar-static-top">
+	    <div class="navbar navbar-static-top" role="navigation">
 	      <div class="navbar-inner">
 	        <div class="container">
 						<a href="/" class="logo"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo" /></a>
-	          <ul class="nav">
-	            <li><a href="/gettingstarted/">Getting Started</a></li>
-	            <li><a href="/documentation/latest/">Documentation</a></li>
-	            <li><a href="/downloads/">Downloads</a></li>
-	            <li><a href="/community/">Community</a></li>
-	          </ul>
+					<div class="nav-collapse">
+						<ul class="nav nav-pills navbar-right">
+						  <li><a href="/gettingstarted/">Getting Started</a></li>
+						  <li><a href="/documentation/latest/">Documentation</a></li>
+						  <li><a href="/downloads/">Downloads</a></li>
+						  <li><a href="/community/">Community</a></li>
+						</ul>
+					</div>
 	        </div>
 	      </div>
 	    </div><!-- /.navbar -->
-
 
       <div class="container">
 
@@ -83,11 +80,11 @@
 					  </ul>
 					</div>
 				</li>
-				<li><span class="divider">></span></li>
 				<li><a href="http://mesos.apache.org">Apache Mesos</a></li>
 				<% if current_page.data.breadcrumb %>
-				<li><span class="divider">></span></li>
 				<li><a href="/<%= current_page.data.breadcrumb.delete(' ').downcase %>/"><%= current_page.data.breadcrumb %></a></li>
+				<% elsif content_for?(:page_title) %>
+				<li><a href="/documentation/latest/"><%= yield_content :page_title %></a></li>
 				<% end %>
 			</ul><!-- /breadcrumb -->
 
@@ -103,5 +100,9 @@
 
 	    </div> <!-- /container -->
 
+	    <!-- JS -->
+	    <%= javascript_include_tag '/assets/js/jquery-1.10.1.min.js' %>
+	    <%= javascript_include_tag '/assets/js/bootstrap.js' %>
+	    <%= javascript_include_tag '/assets/js/bootstrap-dropdown.js' %>
     </body>
 </html>

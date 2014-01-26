@@ -4,7 +4,7 @@ breadcrumb: Downloads
 ---
 
 <div class="row-fluid">
-  <div class="span4">
+  <div class="col-md-4">
     <h4>Previous Releases</h4>
 
     <ul>
@@ -29,8 +29,8 @@ breadcrumb: Downloads
     </ul>
   </div>
 
-  <div class="span8">
-    <h2>Download Mesos</h2>
+  <div class="col-md-8">
+    <h1>Download Mesos</h1>
       <p>Download the most recent stable release:
 	      <a href="http://www.apache.org/dyn/mirrors/mirrors.cgi/mesos/0.15.0/">0.15.0</a>
         (<a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12311242&version=12324901">Release Notes</a>)

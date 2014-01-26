@@ -2,25 +2,24 @@
 title: Apache Mesos
 ---
 
-<!-- masthead -->
-<div class="masthead">
-	<div class="row-fluid splash">
-	  <div class="span7">
+<div class="jumbotron">
+	<div class="row">
+	  <div class="col-md-7">
 	    <h1>Making it easy to build resource-efficient distributed systems</h1>
 	    <p class="lead">Apache Mesos is a cluster manager that provides efficient resource isolation and sharing across distributed applications, or <em>frameworks</em>. It can run Hadoop, Jenkins, Spark, Aurora, and other applications on a dynamically shared pool of nodes.</p>
 	  </div>
-	  <div class="span5 text-center download">
-	    <a class="btn btn-large btn-success" href="/downloads/">Download Mesos 0.15.0</a>
+	  <div class="col-md-5 text-center download">
+	    <a class="btn btn-lg btn-success" href="/downloads/"><span class="glyphicon glyphicon-download"></span> Download Mesos 0.15.0</a>
 	    <p>or learn how to <a href="/gettingstarted/">get started</a></p>
 	  </div>
 	</div>
-</div><!-- /masthead -->
+</div>
 
 <hr>
 
 <!-- lowersection -->
-<div class="row-fluid">
-  <div class="span8">
+<div class="row">
+  <div class="col-md-8">
     <h3>Mesos Adopters</h3>
 
 		<ul class="media-list">
@@ -61,7 +60,7 @@ title: Apache Mesos
      <li>Web UI for viewing cluster state</li>
     </ul>
   </div>
-  <div class="span4">
+  <div class="col-md-4">
     <h3>News</h3>
 		<ul>
 			<li><em>January 09, 2014</em> - Mesos 0.15.0 is released! See the <a href="http://mesos.apache.org/blog/framework-authentication-in-apache-mesos-0-15-0/">blog post announcement</a> for more details.</li>
