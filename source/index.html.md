@@ -9,7 +9,7 @@ title: Apache Mesos
 	    <p class="lead">Apache Mesos is a cluster manager that provides efficient resource isolation and sharing across distributed applications, or <em>frameworks</em>. It can run Hadoop, Jenkins, Spark, Aurora, and other applications on a dynamically shared pool of nodes.</p>
 	  </div>
 	  <div class="col-md-5 text-center download">
-	    <a class="btn btn-lg btn-success" href="/downloads/"><span class="glyphicon glyphicon-download"></span> Download Mesos 0.15.0</a>
+	    <a class="btn btn-lg btn-success" href="/downloads/"><span class="glyphicon glyphicon-download"></span> Download Mesos 0.16.0</a>
 	    <p>or learn how to <a href="/gettingstarted/">get started</a></p>
 	  </div>
 	</div>
@@ -63,6 +63,7 @@ title: Apache Mesos
   <div class="col-md-4">
     <h3>News</h3>
 		<ul>
+			<li><em>Feburary 11, 2014</em> - Mesos 0.16.0 is released! See the <a href="/blog/mesos-0-16-0-released/">blog post announcement</a> for more details.</li>
 			<li><em>January 09, 2014</em> - Mesos 0.15.0 is released! See the <a href="/blog/framework-authentication-in-apache-mesos-0-15-0/">blog post announcement</a> for more details.</li>
 			<li><em>December 16, 2013</em> - Niklas Nielson becomes project's newest committer and PMC member (<a href="/blog/niklas-nielsen-becomes-mesos-committer/">Announcement</a>)</li>
 			<li><em>November 12, 2013</em> - Mesos 0.14.2 is released! See the <a href="/blog/mesos-0-14-2-released/">blog post announcement</a> for more details.</li>
