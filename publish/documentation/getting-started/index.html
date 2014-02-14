@@ -109,8 +109,8 @@
 <ol>
 <li><p>Download the latest stable release from <a href="http://mesos.apache.org/downloads/">Apache</a> (<strong><em>Recommended</em></strong>)</p>
 
-<pre><code> $ wget http://www.apache.org/dist/mesos/0.14.0/mesos-0.14.0.tar.gz
- $ tar -zxf mesos-0.14.0.tar.gz
+<pre><code> $ wget http://www.apache.org/dist/mesos/0.16.0/mesos-0.16.0.tar.gz
+ $ tar -zxf mesos-0.16.0.tar.gz
 </code></pre></li>
 <li><p>Clone the Mesos git <a href="http://git-wip-us.apache.org/repos/asf/mesos.git">repository</a> (<strong><em>Advanced Users Only</em></strong>)</p>
 
@@ -137,23 +137,22 @@
  # Install devel python.
  $ sudo apt-get install python-dev
 
- # Install devel libcurl (***Optional***).
+ # Install devel libcurl
  $ sudo apt-get install libcurl4-nss-dev
 
  # Install devel libsasl (***Only required for Mesos 0.14.0 or newer***).
  $ sudo apt-get install libsasl2-dev
 </code></pre></li>
+<li><p>If you are building from git repository, you will need to additionally install the following packages.</p>
+
+<pre><code> # Install autotoconf and automake.
+ $ sudo apt-get install autoconf
+
+ # Install libtool.
+ $ sudo apt-get install libtool
+</code></pre></li>
 </ul>
 
-
-<p>If you are building from git repository, you will need to additionally install the following packages.</p>
-
-<pre><code>    # Install autotoconf and automake.
-    $ sudo apt-get install autoconf
-
-    # Install libtool.
-    $ sudo apt-get install libtool
-</code></pre>
 
 <h2>Building Mesos</h2>
 
@@ -178,29 +177,32 @@
 
 <h2>Examples</h2>
 
-<p>Mesos comes bundled with example frameworks written in <code>C++</code>, <code>Java</code> and <code>Python</code>.</p>
+<ul>
+<li><p>Mesos comes bundled with example frameworks written in <code>C++</code>, <code>Java</code> and <code>Python</code>.</p>
 
-<pre><code>    # Change into build directory.
-    $ cd build
+<pre><code> # Change into build directory.
+ $ cd build
 
-    # Start mesos master.
-    $ ./bin/mesos-master.sh --ip=127.0.0.1
+ # Start mesos master.
+ $ ./bin/mesos-master.sh --ip=127.0.0.1
 
-    # Start mesos slave.
-    $ ./bin/mesos-slave.sh --master=127.0.0.1:5050
+ # Start mesos slave.
+ $ ./bin/mesos-slave.sh --master=127.0.0.1:5050
 
-    # Visit the mesos web page.
-    $ http://127.0.0.1:5050
+ # Visit the mesos web page.
+ $ http://127.0.0.1:5050
 
-    # Run C++ framework (***Exits after successfully running some tasks.***).
-    $ ./src/test-framework --master=127.0.0.1:5050
+ # Run C++ framework (***Exits after successfully running some tasks.***).
+ $ ./src/test-framework --master=127.0.0.1:5050
 
-    # Run Java framework (***Exits after successfully running some tasks.***).
-    $ ./src/examples/java/test-framework 127.0.0.1:5050
+ # Run Java framework (***Exits after successfully running some tasks.***).
+ $ ./src/examples/java/test-framework 127.0.0.1:5050
 
-    # Run Python framework (***Exits after successfully running some tasks.***).
-    $ ./src/examples/python/test-framework 127.0.0.1:5050
-</code></pre>
+ # Run Python framework (***Exits after successfully running some tasks.***).
+ $ ./src/examples/python/test-framework 127.0.0.1:5050
+</code></pre></li>
+</ul>
+
 
 <p><em>NOTE: To build the example frameworks, make sure you build the test suite by doing <code>make check</code>.</em></p>
 

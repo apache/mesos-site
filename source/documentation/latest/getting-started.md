@@ -10,8 +10,8 @@ There are different ways you can get Mesos:
 
 1. Download the latest stable release from [Apache](http://mesos.apache.org/downloads/) (***Recommended***)
 
-        $ wget http://www.apache.org/dist/mesos/0.14.0/mesos-0.14.0.tar.gz
-        $ tar -zxf mesos-0.14.0.tar.gz
+        $ wget http://www.apache.org/dist/mesos/0.16.0/mesos-0.16.0.tar.gz
+        $ tar -zxf mesos-0.16.0.tar.gz
 
 2. Clone the Mesos git [repository](http://git-wip-us.apache.org/repos/asf/mesos.git) (***Advanced Users Only***)
 
@@ -35,14 +35,14 @@ There are different ways you can get Mesos:
         # Install devel python.
         $ sudo apt-get install python-dev
 
-        # Install devel libcurl (***Optional***).
+        # Install devel libcurl
         $ sudo apt-get install libcurl4-nss-dev
 
         # Install devel libsasl (***Only required for Mesos 0.14.0 or newer***).
         $ sudo apt-get install libsasl2-dev
 
 
-If you are building from git repository, you will need to additionally install the following packages.
+-  If you are building from git repository, you will need to additionally install the following packages.
 
         # Install autotoconf and automake.
         $ sudo apt-get install autoconf
@@ -72,7 +72,7 @@ If you are building from git repository, you will need to additionally install t
         $ make install
 
 ## Examples
-Mesos comes bundled with example frameworks written in `C++`, `Java` and `Python`.
+-  Mesos comes bundled with example frameworks written in `C++`, `Java` and `Python`.
 
         # Change into build directory.
         $ cd build
