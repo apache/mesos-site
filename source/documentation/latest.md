@@ -6,13 +6,12 @@ layout: documentation
 
 ## Users Documentation
 
-* [Mesos Configuration](configuration) command-line arguments
+* [Mesos Configuration](configuration) for command-line arguments
 * [Deploy Scripts](deploy-scripts) for launching a Mesos cluster on a set of machines.
 * [EC2 scripts](ec2-scripts) for launching a Mesos cluster on Amazon EC2.
-* [Logging and Debugging](logging-and-debugging) -- viewing Mesos and framework logs.
+* [Logging and Debugging](logging-and-debugging) for viewing Mesos and framework logs.
 * [High Availability](high-availability) for running multiple masters simultaneously.
-* [Slave Recovery](slave-recovery)
-* [Using Mesos Submit Tool](using-the-mesos-submit-tool) for launching a framework with a single task.
+* [Slave Recovery](slave-recovery) for doing seamless upgrades
 
 ## Running Mesos Frameworks
 
@@ -36,6 +35,7 @@ layout: documentation
 
 * [Mesos Developers Guide](mesos-developers-guide) includes resources for developers contributing to Mesos and the process of submitting patches for review.
 * [C++ Style Guide](mesos-c++-style-guide)
+* [Release Guide](release-guide)
 * [Mesos Development Road Map](mesos-roadmap)
 
 ## More Info about Mesos

@@ -27,7 +27,7 @@ task :update_docs do
   
   puts "Cloning Apache Mesos codebase"
   system("mkdir -p #{tmp_dir}")
-  system("git clone --depth 1 git://git.apache.org/mesos.git #{tmp_dir}/mesos")
+  system("git clone --depth 1 http://git-wip-us.apache.org/repos/asf/mesos.git #{tmp_dir}/mesos")
   puts "Updating docs to the latest version"
   system("rm -f source/documentation/latest/*.md")
   system("cp -a #{tmp_dir}/mesos/docs/*.md source/documentation/latest/")
@@ -43,7 +43,6 @@ task :update_docs do
   end
   puts "Moving documentation index to its own 'latest' directory"
   system("mv source/documentation/latest/home.md source/documentation/latest.md")
-  system("rm -f source/documentation/latest/getting-started.md")
   puts "Documentation updated"
 end
  

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<!--
+
+		 ______                           __                
+		/\  _  \                         /\ \               
+		\ \ \L\ \  _____      __      ___\ \ \___      __   
+		 \ \  __ \/\ '__`\  /'__`\   /'___\ \  _ `\  /'__`\ 
+		  \ \ \/\ \ \ \L\ \/\ \L\.\_/\ \__/\ \ \ \ \/\  __/ 
+		   \ \_\ \_\ \ ,__/\ \__/.\_\ \____\\ \_\ \_\ \____\
+		    \/_/\/_/\ \ \/  \/__/\/_/\/____/ \/_/\/_/\/____/
+		             \ \_\                                  
+		              \/_/                                  
+                                                    
+		       /'\_/`\                                      
+		      /\      \     __    ____    ___     ____      
+		      \ \ \__\ \  /'__`\ /',__\  / __`\  /',__\     
+		       \ \ \_/\ \/\  __//\__, `\/\ \L\ \/\__, `\    
+		        \ \_\\ \_\ \____\/\____/\ \____/\/\____/    
+		         \/_/ \/_/\/____/\/___/  \/___/  \/___/     
+
+-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+		    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		    <meta name="description" content="">
+		    <meta name="author" content="">
+
+		    <!-- Le styles -->
+				<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+		    
+		    <link href="../../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+			
+			
+			<!-- Google Analytics Magic -->
+			<script type="text/javascript">
+			  var _gaq = _gaq || [];
+			  _gaq.push(['_setAccount', 'UA-20226872-1']);
+			  _gaq.push(['_setDomainName', 'apache.org']);
+			  _gaq.push(['_trackPageview']);
+
+			  (function() {
+			    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			  })();
+			</script>
+    </head>
+    <body>			
+			<!-- navbar excitement -->
+	    <div class="navbar navbar-static-top" role="navigation">
+	      <div class="navbar-inner">
+	        <div class="container">
+						<a href="/" class="logo"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo" /></a>
+					<div class="nav-collapse">
+						<ul class="nav nav-pills navbar-right">
+						  <li><a href="/gettingstarted/">Getting Started</a></li>
+						  <li><a href="/documentation/latest/">Documentation</a></li>
+						  <li><a href="/downloads/">Downloads</a></li>
+						  <li><a href="/community/">Community</a></li>
+						</ul>
+					</div>
+	        </div>
+	      </div>
+	    </div><!-- /.navbar -->
+
+      <div class="container">
+
+			<!-- magical breadcrumbs -->
+			<ul class="breadcrumb">
+			  <li>
+					<div class="dropdown">
+					  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Apache Software Foundation <b class="caret"></b></a>
+					  <ul class="dropdown-menu" role="menu">
+							<li><a href="http://www.apache.org">Apache Homepage</a></li>
+							<li><a href="http://www.apache.org/licenses/">License</a></li>
+					  	<li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>  
+					  	<li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+							<li><a href="http://www.apache.org/security/">Security</a></li>
+					  </ul>
+					</div>
+				</li>
+				<li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+				
+				
+					<li><a href="/documentation
+/">Documentation
+</a></li>
+				
+				
+			</ul><!-- /breadcrumb -->
+
+			<div class="row-fluid">
+	<div class="col-md-4">
+		<h4>If you're new to Mesos</h4>
+		<p>See the <a href="/gettingstarted/">getting started</a> page for more information about downloading, building, and deploying Mesos.</p>
+		
+		<h4>If you'd like to get involved or you're looking for support</h4>
+		<p>See our <a href="/community/">community</a> page for more details.</p>
+	</div>
+	<div class="col-md-8">
+		<h1>Release Guide</h1>
+
+<p>This guide describes the process of doing an official release of Mesos.</p>
+
+<hr />
+
+<h2>Prerequisites</h2>
+
+<ol>
+<li><p>Go to <a href="https://issues.apache.org/jira/browse/MESOS">Apache Jira</a> and make sure that
+the CHANGELOG for the release version is up to date.</p>
+
+<blockquote><p>NOTE: You should move all <strong>Unresolved</strong> tickets marked with <code>Fix Version</code> as the
+         release version to the next release version.</p>
+
+<p>PROTIP: Use <code>bulk edit</code> option in JIRA to move the tickets and make sure to
+           <strong>uncheck</strong> the option that emails everyone about the move.</p></blockquote></li>
+<li><p>Update and commit the <code>CHANGELOG</code> for the release.</p>
+
+<blockquote><p>NOTE: You should use JIRA to generate the CHANGELOG for you. Click on the release
+  version in <a href="https://issues.apache.org/jira/browse/MESOS#selectedTab=com.atlassian.jira.plugin.system.project%3Aversions-panel">JIRA</a> and click
+  on the <code>Release Notes</code>. Make sure to configure the release notes in text format.</p></blockquote></li>
+<li><p>Update and commit the <code>docs/upgrades</code> with instructions about how to upgrade
+a live cluster from the previous release version to this release version.</p></li>
+<li><p>If this is a major release please write and commit documentation for this feature.</p></li>
+</ol>
+
+
+<h2>Tagging the release candidate</h2>
+
+<ol>
+<li><p>Ensure that you can build and pass all the tests.</p>
+
+<pre><code> $ make -j3 distcheck
+</code></pre></li>
+<li><p>First tag the required SHA locally.</p>
+
+<pre><code> $ git tag &lt;X.Y.Z-rcR&gt;
+</code></pre>
+
+<blockquote><p>NOTE: <code>X.Y.Z</code> is based on <a href="http://semver.org/">semantic versioning</a> scheme. <code>R</code> is release
+         candidate version that starts with 1.</p></blockquote></li>
+<li><p>Tag the release externally and deploy the corresponding JAR to the Apache maven repository.
+It is recommended to use the <code>support/tag.sh</code> script to accomplish this.</p>
+
+<pre><code> $ ./support/tag.sh X.Y.Z R
+</code></pre>
+
+<blockquote><p>NOTE: This script assumes that you have the requisite permissions to deploy the JAR. For
+   instructions on how to set it up, please refer to <code>src/java/MESOS-MAVEN-README</code>.</p></blockquote></li>
+<li><p>It is not uncommon to release multiple release candidates, with increasing release candidate
+version, if there are bugs found.</p></li>
+</ol>
+
+
+<h2>Voting the release candidate</h2>
+
+<ol>
+<li><p>Once a release candidate is deemed worthy to be officially released you should call a vote on
+the <code>dev@meosos.apache.org</code> (and optionally <code>user@mesos.apache.org</code>) mailing list.</p></li>
+<li><p>It is recommended to use the <code>support/vote.sh</code> script to vote the release candidate.</p>
+
+<pre><code> $ ./support/vote.sh X.Y.Z R
+</code></pre></li>
+<li><p>The release script also spits out an email template that you could use to send the vote email.</p></li>
+</ol>
+
+
+<h2>Releasing the release candidate</h2>
+
+<ol>
+<li><p>You should only release an official version if the vote passes with at least <strong>3 +1 binding votes
+and no -1 votes</strong>. For more information, please refer to <a href="http://www.apache.org/dev/release.html">Apache release guidelines</a>.</p></li>
+<li><p>It is recommended to use <code>support/release.sh</code> script to release the candidate.</p>
+
+<pre><code> $ ./support/release.sh X.Y.Z R
+</code></pre></li>
+<li><p>The release script also spits out an email template that you could use to notify the mailing lists about
+the result of the vote and the release.</p>
+
+<blockquote><p>NOTE: Make sure you fill the email template with the names of binding voters.</p></blockquote></li>
+</ol>
+
+
+<h2>Updating the website</h2>
+
+<ol>
+<li><p>After a successful release please update the website pointing to the new release.</p></li>
+<li><p>It is also recommended to write a blog post announcing the feature.</p></li>
+</ol>
+
+
+	</div>
+</div>
+
+			
+	      <hr>
+
+				<!-- footer -->
+	      <div class="footer">
+	        <p>&copy; 2012-2013 <a href="http://apache.org">The Apache Software Foundation</a>.
+	        Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.<p>
+	      </div><!-- /footer -->
+
+	    </div> <!-- /container -->
+
+	    <!-- JS -->
+	    <script src="../../../assets/js/jquery-1.10.1.min.js" type="text/javascript"></script>
+	    <script src="../../../assets/js/bootstrap.js" type="text/javascript"></script>
+	    <script src="../../../assets/js/bootstrap-dropdown.js" type="text/javascript"></script>
+    </body>
+</html>
