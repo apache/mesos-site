@@ -6,21 +6,22 @@ layout: documentation
 
 ## Users Documentation
 
+* [Mesos Configuration](configuration) for command-line arguments
 * [Deploy Scripts](deploy-scripts) for launching a Mesos cluster on a set of machines.
 * [EC2 scripts](ec2-scripts) for launching a Mesos cluster on Amazon EC2.
-* [Logging and Debugging](logging-and-debugging) -- viewing Mesos and framework logs.
+* [Logging and Debugging](logging-and-debugging) for viewing Mesos and framework logs.
 * [High Availability](high-availability) for running multiple masters simultaneously.
-* [Slave Recovery](slave-recovery)
-* [Using Mesos Submit Tool](using-the-mesos-submit-tool) for launching a framework with a single task.
+* [Slave Recovery](slave-recovery) for doing seamless upgrades
 
 ## Running Mesos Frameworks
 
+* [Running Aurora on Mesos](https://github.com/apache/incubator-aurora/tree/master/docs)
+* [Running Chronos on Mesos](https://github.com/airbnb/chronos)
 * [Running Hadoop on Mesos](https://github.com/mesos/hadoop)
+* [Running Jenkins on Mesos](https://github.com/jenkinsci/mesos-plugin)
+* [Running Marathon on Mesos](https://github.com/mesosphere/marathon)
 * [Running Spark on Mesos](http://spark.incubator.apache.org/docs/latest/running-on-mesos.html)
 * [Running Torque or MPI on Mesos](running-torque-or-mpi-on-mesos)
-* [Running Jenkins on Mesos](https://github.com/jenkinsci/mesos-plugin)
-* [Running Chronos on Mesos](https://github.com/airbnb/chronos)
-* [Running Marathon on Mesos](https://github.com/mesosphere/marathon)
 * [Using Mesos with Hypertable on EC2](https://code.google.com/p/hypertable/wiki/Mesos)
 
 ## Developing Mesos Frameworks and Applications
@@ -34,6 +35,7 @@ layout: documentation
 
 * [Mesos Developers Guide](mesos-developers-guide) includes resources for developers contributing to Mesos and the process of submitting patches for review.
 * [C++ Style Guide](mesos-c++-style-guide)
+* [Release Guide](release-guide)
 * [Mesos Development Road Map](mesos-roadmap)
 
 ## More Info about Mesos

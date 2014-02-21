@@ -27,7 +27,7 @@ This guide describes the process of doing an official release of Mesos.
      on the `Release Notes`. Make sure to configure the release notes in text format.
 
 
-3. Update and commit the `docs/upgrades` with instructions about how to upgrade
+3. Update and commit the `docs/upgrades.md` with instructions about how to upgrade
    a live cluster from the previous release version to this release version.
 
 
