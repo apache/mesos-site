@@ -4,25 +4,17 @@ layout: documentation
 
 # Apache Mesos Documentation
 
-## Users Documentation
+## Running Mesos
 
 * [Mesos Configuration](configuration) for command-line arguments
-* [Deploy Scripts](deploy-scripts) for launching a Mesos cluster on a set of machines.
-* [EC2 scripts](ec2-scripts) for launching a Mesos cluster on Amazon EC2.
+* [Tools](tools) for setting up and running a Mesos cluster
 * [Logging and Debugging](logging-and-debugging) for viewing Mesos and framework logs.
 * [High Availability](high-availability) for running multiple masters simultaneously.
 * [Slave Recovery](slave-recovery) for doing seamless upgrades
 
 ## Running Mesos Frameworks
 
-* [Running Aurora on Mesos](https://github.com/apache/incubator-aurora/tree/master/docs)
-* [Running Chronos on Mesos](https://github.com/airbnb/chronos)
-* [Running Hadoop on Mesos](https://github.com/mesos/hadoop)
-* [Running Jenkins on Mesos](https://github.com/jenkinsci/mesos-plugin)
-* [Running Marathon on Mesos](https://github.com/mesosphere/marathon)
-* [Running Spark on Mesos](http://spark.incubator.apache.org/docs/latest/running-on-mesos.html)
-* [Running Torque or MPI on Mesos](running-torque-or-mpi-on-mesos)
-* [Using Mesos with Hypertable on EC2](https://code.google.com/p/hypertable/wiki/Mesos)
+ * [Mesos frameworks](mesos-frameworks) for a list of apps built on top of Mesos, and instructions on how to run them.
 
 ## Developing Mesos Frameworks and Applications
 
