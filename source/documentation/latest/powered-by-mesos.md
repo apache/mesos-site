@@ -31,6 +31,6 @@ layout: documentation
 
 ## Software projects built on Mesos
 
-See the [Mesos frameworks page](mesos-frameworks) for a list of apps built on top of Mesos, and instructions on how to use them.
+See the [Mesos frameworks page](/documentation/latest/mesos-frameworks/) for a list of apps built on top of Mesos, and instructions on how to use them.
 
 If you're using Mesos, please add yourself to the list above, or email user@mesos.apache.org and we'll add you!

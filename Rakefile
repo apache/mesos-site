@@ -36,7 +36,7 @@ task :update_docs do
     Dir.glob('*.md').each { |doc|
       puts "working on: #{doc}"
       IO.write(doc, File.open(doc) { |f|
-        f.read.gsub(/\((.*)(\.md)\)/, '(\1)')
+        f.read.gsub(/\((.*)(\.md)\)/, '(/documentation/latest/\1/)')
       })
     }
   }

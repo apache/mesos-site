@@ -37,7 +37,7 @@ You can also run `./mesos-ec2 --help` to see more usage options. The following o
 * If your job needs to access large datasets, the fastest way to do that is to load them from Amazon S3 or an Amazon EBS device into an instance of the Hadoop Distributed File System (HDFS) on your nodes. The `mesos-ec2` script already sets up a HDFS instance for you. It's installed in `/root/ephemeral-hdfs`, and can be accessed using the `bin/hadoop` script in that directory. Note that the data in this HDFS goes away when you stop and restart a machine.
 * There is also a _persistent HDFS_ instance in `/root/presistent-hdfs` that will keep data across cluster restarts. Typically each node has relatively little space of persistent data (about 3 GB), but you can use the `--ebs-vol-size` option to `mesos-ec2` to attach a persistent EBS volume to each node for storing the persistent HDFS.
 
-If you get an "Executor on slave X disconnected" error when running your framework, you probably haven't copied your code the slaves. Use the `~/mesos-ec2/copy-dir` script to do that. If you keep getting the error, though, look at the slave's logs for that framework using the Mesos web UI. Please see [logging and debugging](logging-and-debugging) for details.
+If you get an "Executor on slave X disconnected" error when running your framework, you probably haven't copied your code the slaves. Use the `~/mesos-ec2/copy-dir` script to do that. If you keep getting the error, though, look at the slave's logs for that framework using the Mesos web UI. Please see [logging and debugging](/documentation/latest/logging-and-debugging/) for details.
 
 ## Terminating a Cluster
 
@@ -56,4 +56,4 @@ The `mesos-ec2` script also supports pausing a cluster if you are using EBS-back
 
 ## Limitations
 
-* The `mesos-ec2` script currently does not use the [deploy scripts](deploy-scripts) included with Mesos to manage its clusters. This will likely be fixed in the future.
+* The `mesos-ec2` script currently does not use the [deploy scripts](/documentation/latest/deploy-scripts/) included with Mesos to manage its clusters. This will likely be fixed in the future.
