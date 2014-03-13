@@ -22,6 +22,7 @@ layout: documentation
 * [Mesos Code Internals](/documentation/latest/mesos-code-internals/) overview of the codebase and internal organization.
 * [Framework Development Guide](/documentation/latest/app-framework-development-guide/) describes how to build applications on top of Mesos.
 * [Mesos Command-Line Flags](/documentation/latest/configuration/) detailing various flags that can be set.
+* [Developer Tools](/documentation/latest/tools/) for hacking on Mesos or writing frameworks.
 
 ## Contributing to Mesos
 
