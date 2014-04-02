@@ -50,6 +50,9 @@ end
 
 page "/sitemap.xml", :layout => false
 
+# Turn off directory index for API docs because it breaks links
+page "/api/*", :directory_index => false
+
 activate :directory_indexes
 activate :syntax
 activate :livereload
