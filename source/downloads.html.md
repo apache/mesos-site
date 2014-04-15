@@ -8,14 +8,14 @@ breadcrumb: Downloads
     <h4>Previous Releases</h4>
 
     <ul>
-			<li><a href="http://www.apache.org/dyn/mirrors/mirrors.cgi/mesos/0.17.0/">0.17.0</a>
-      (<a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12311242&version=12325669">Release Notes</a>)</li>
-			<li><a href="http://www.apache.org/dyn/mirrors/mirrors.cgi/mesos/0.16.0/">0.16.0</a>
-      (<a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12311242&version=12325295">Release Notes</a>)</li>
-			<li><a href="http://www.apache.org/dyn/mirrors/mirrors.cgi/mesos/0.15.0/">0.15.0</a>
-      (<a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12311242&version=12324901">Release Notes</a>)</li>
+      <li><a href="http://archive.apache.org/dist/mesos/0.17.0/">0.17.0</a>
+      	   (<a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12311242&version=12325669">Release Notes</a>)</li>
+      <li><a href="http://archive.apache.org/dist/mesos/0.16.0/">0.16.0</a>
+      	   (<a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12311242&version=12325295">Release Notes</a>)</li>
+      <li><a href="http://archive.apache.org/dist/mesos/0.15.0/">0.15.0</a>
+      	   (<a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12311242&version=12324901">Release Notes</a>)</li>
       <li><a href="http://archive.apache.org/dist/mesos/0.14.2/">0.14.2</a>
-			    (<a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12311242&version=12325324">Release Notes</a>)</li>
+      	   (<a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12311242&version=12325324">Release Notes</a>)</li>
       <li><a href="http://archive.apache.org/dist/mesos/0.14.1/">0.14.1</a>
            (<a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12311242&version=12324994">Release Notes</a>)</li>
       <li><a href="http://archive.apache.org/dist/mesos/0.14.0/">0.14.0</a>
