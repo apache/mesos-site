@@ -63,6 +63,7 @@ title: Apache Mesos
   <div class="col-md-4">
     <h3>News</h3>
 		<ul>
+			<li><em>May 29, 2014</em> - Mesos 0.18.1 and 0.18.2 are released! See the <a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12311242&version=12326752">0.18.1 release notes</a>, <a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12311242&version=12326851">0.18.2 release notes</a> and <a href="/blog/mesos-0-18-1-and-0-18-2-released/">blog post announcement</a> for more details.</li>
 			<li><em>April 10, 2014</em> - Mesos 0.18.0 is released! See the <a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12311242&version=12326140">release notes</a> and <a href="/blog/mesos-0-18-0-released/">blog post announcement</a> for more details.</li>
 			<li><em>March 28, 2014</em> - Mesos Community Update #1. See the <a href="blog/mesos-community-update-1/">blog post</a>.</li>
 			<li><em>March 6, 2014</em> - Mesos 0.17.0 is released! See the <a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12311242&version=12325669">release notes</a> and <a href="blog/mesos-0-17-0-released-featuring-autorecovery/">blog post announcement</a>.</li>
