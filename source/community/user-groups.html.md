@@ -11,8 +11,10 @@ Mesos User Groups (MUGs) are responsible for organizing local meetups, hackathon
 
 ### USA
 <ul>
-	<li><a href="http://www.meetup.com/Bay-Area-Mesos-User-Group/">San Francisco, CA</a></li>
 	<li><a href="https://twitter.com/AtlantaMesos">Atlanta, GA</a></li>
+	<li><a href="http://www.meetup.com/Los-Angeles-Santa-Monica-Mesos-Users-Group/">Los Angeles / Santa Monica, CA</a></li>
+	<li><a href="http://www.meetup.com/Apache-Mesos-NYC-Meetup/">New York, NY</a></li>
+	<li><a href="http://www.meetup.com/Bay-Area-Mesos-User-Group/">San Francisco, CA</a></li>
 </ul>
 
 ## Start Your Own MUG
