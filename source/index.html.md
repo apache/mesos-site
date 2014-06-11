@@ -2,13 +2,13 @@
 title: Apache Mesos
 ---
 
-<div class="jumbotron">
+<div class="container-fluid homepage jumbotron">
 	<div class="row">
-	  <div class="col-md-7">
-	    <h1>Making it easy to build resource-efficient distributed systems</h1>
-	    <p class="lead">Apache Mesos is a cluster manager that provides efficient resource isolation and sharing across distributed applications, or <em>frameworks</em>. It can run Hadoop, Jenkins, Spark, Aurora, and other applications on a dynamically shared pool of nodes.</p>
+	  <div class="col-md-8">
+	    <h1>Develop and run resource-efficient distributed systems</h1>
+	    <p class="lead">Apache Mesos is a cluster manager that simplifies the complexity of running applications on a shared pool of servers.</p>
 	  </div>
-	  <div class="col-md-5 text-center download">
+	  <div class="col-md-4 text-center download">
 	    <a class="btn btn-lg btn-success" href="/downloads/"><span class="glyphicon glyphicon-download"></span> Download Mesos 0.19.0</a>
 	    <p>or learn how to <a href="/gettingstarted/">get started</a></p>
 	  </div>
@@ -19,7 +19,7 @@ title: Apache Mesos
 
 <!-- lowersection -->
 <div class="row">
-  <div class="col-md-8">
+  <div class="col-md-7">
     <h3>Mesos Adopters</h3>
 
 		<ul class="media-list">
@@ -60,7 +60,7 @@ title: Apache Mesos
      <li>Web UI for viewing cluster state</li>
     </ul>
   </div>
-  <div class="col-md-4">
+  <div class="col-md-5">
     <h3>News</h3>
       <ul>
         <li><em>June 9th, 2014</em> - Mesos 0.19.0 is released! See the <a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12311242&version=12326253">0.19.0 release notes</a>, blog post
@@ -98,15 +98,6 @@ title: Apache Mesos
 
         <li><em>October 23, 2013</em> - <a href="/blog/slave-recovery-in-apache-mesos/">New blog post</a> by
             Vinod Kone about the Slave Recovery feature introduced in Mesos 0.14.1</li>
-
-        <li><em>October 21, 2013</em>
-            - Mesos 0.14.1 is released! Now <a href="/downloads/">available for download</a>.</li>
-
-        <li><em>October 16, 2013</em>
-            - Mesos 0.14.0 is released! Now <a href="/downloads/">available for download</a>.</li>
-
-        <li><em>September 11, 2013</em>
-            - Mesos 0.13.0 is released! Now <a href="/downloads/">available for download</a>.</li>
       </ul>
 
 		<br />

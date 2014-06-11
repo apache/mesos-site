@@ -28,7 +28,7 @@
 		    <meta name="author" content="">
 
 		    <!-- Le styles -->
-				<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+				<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
 		    <%#= stylesheet_link_tag 'bootstrap.min.css' %>
 		    <%= stylesheet_link_tag 'main.css' %>
 				
@@ -50,32 +50,14 @@
 			  })();
 			</script>
     </head>
-    <body>			
-			<!-- navbar excitement -->
-	    <div class="navbar navbar-static-top" role="navigation">
-	      <div class="navbar-inner">
-	        <div class="container">
-						<a href="/" class="logo"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo" /></a>
-					<div class="nav-collapse">
-						<ul class="nav nav-pills navbar-right">
-						  <li><a href="/gettingstarted/">Getting Started</a></li>
-						  <li><a href="/documentation/latest/">Documentation</a></li>
-						  <li><a href="/downloads/">Downloads</a></li>
-						  <li><a href="/community/">Community</a></li>
-						</ul>
-					</div>
-	        </div>
-	      </div>
-	    </div><!-- /.navbar -->
-
-      <div class="container">
-
+    <body>
 			<!-- magical breadcrumbs -->
+			<div class="topnav">
 			<ul class="breadcrumb">
 			  <li>
 					<div class="dropdown">
-					  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Apache Software Foundation <b class="caret"></b></a>
-					  <ul class="dropdown-menu" role="menu">
+					  <a data-toggle="dropdown" href="#">Apache Software Foundation <span class="caret"></span></a>
+					  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
 							<li><a href="http://www.apache.org">Apache Homepage</a></li>
 							<li><a href="http://www.apache.org/licenses/">License</a></li>
 					  	<li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>  
@@ -95,6 +77,26 @@
 				<% end %>
 				<% end %>
 			</ul><!-- /breadcrumb -->
+			</div>
+			
+			<!-- navbar excitement -->
+	    <div class="navbar navbar-static-top" role="navigation">
+	      <div class="navbar-inner">
+	        <div class="container">
+						<a href="/" class="logo"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo" /></a>
+					<div class="nav-collapse">
+						<ul class="nav nav-pills navbar-right">
+						  <li><a href="/gettingstarted/">Getting Started</a></li>
+						  <li><a href="/documentation/latest/">Documentation</a></li>
+						  <li><a href="/downloads/">Downloads</a></li>
+						  <li><a href="/community/">Community</a></li>
+						</ul>
+					</div>
+	        </div>
+	      </div>
+	    </div><!-- /.navbar -->
+
+      <div class="container">
 
 			<%= yield %>
 			
@@ -102,15 +104,14 @@
 
 				<!-- footer -->
 	      <div class="footer">
-	        <p>&copy; 2012-2013 <a href="http://apache.org">The Apache Software Foundation</a>.
+	        <p>&copy; 2012-2014 <a href="http://apache.org">The Apache Software Foundation</a>.
 	        Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.<p>
 	      </div><!-- /footer -->
 
 	    </div> <!-- /container -->
 
 	    <!-- JS -->
-	    <%= javascript_include_tag '/assets/js/jquery-1.10.1.min.js' %>
-	    <%= javascript_include_tag '/assets/js/bootstrap.js' %>
-	    <%= javascript_include_tag '/assets/js/bootstrap-dropdown.js' %>
+	    <%= javascript_include_tag '//code.jquery.com/jquery-1.11.0.min.js' %>
+			<%= javascript_include_tag '//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js' %>
     </body>
 </html>
