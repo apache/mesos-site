@@ -15,7 +15,7 @@ MesosCon welcomes attendees who are advanced users, along with those that are ne
 
  * Mesos [frameworks](http://mesos.apache.org/documentation/latest/mesos-frameworks/): including [Apache Aurora](http://aurora.incubator.apache.org), [Marathon](https://github.com/mesosphere/marathon), [Spark](https://github.com/apache/spark), and a stream processing framework developed by Netflix.
  * An operations perspective on Mesos: including talks on the challenges of running an elastic cluster, and using [Docker](http://www.docker.com) with Mesos.
- * Presentations from companies who use Mesos in production: including eBay, HubSpot, Airbnb and Shopify. These presenters will also participate in a panel discussion.
+ * Presentations from companies who use Mesos in production: including eBay, HubSpot, and Airbnb. These presenters will also participate in a panel discussion.
 
 The final day will include a Mesos hackathon, generously sponsored by Atlassian. In advance of the hackathon, the community will seed ideas for specific features and projects to work on the [community mailing list](http://www.mail-archive.com/user@mesos.apache.org/).
 
