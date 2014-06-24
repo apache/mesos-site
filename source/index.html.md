@@ -62,6 +62,7 @@ title: Apache Mesos
   <div class="col-md-5">
     <h3>News</h3>
       <ul>
+				<li><em>June 24th, 2014</em> - <a href="/blog/mesos-community-survey-2014-results/">Results from the 2014 Mesos community survey</a> have been published on the Mesos blog</li>
 				<li><em>June 11th, 2014</em> - <a href="/blog/mesoscon-2014-program-announced/">#MesosCon program has been announced</a>, and <a href="https://www.regonline.com/Register/Checkin.aspx?EventID=1533330">registration is open</a>!</li>
 				
         <li><em>June 9th, 2014</em> - Mesos 0.19.0 is released! See the <a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12311242&version=12326253">0.19.0 release notes</a> and <a href="/blog/mesos-0-19-0-released/">blog post announcement for more details.</a></li>
