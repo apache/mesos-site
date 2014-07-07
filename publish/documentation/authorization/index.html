@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<!--
+
+		 ______                           __                
+		/\  _  \                         /\ \               
+		\ \ \L\ \  _____      __      ___\ \ \___      __   
+		 \ \  __ \/\ '__`\  /'__`\   /'___\ \  _ `\  /'__`\ 
+		  \ \ \/\ \ \ \L\ \/\ \L\.\_/\ \__/\ \ \ \ \/\  __/ 
+		   \ \_\ \_\ \ ,__/\ \__/.\_\ \____\\ \_\ \_\ \____\
+		    \/_/\/_/\ \ \/  \/__/\/_/\/____/ \/_/\/_/\/____/
+		             \ \_\                                  
+		              \/_/                                  
+                                                    
+		       /'\_/`\                                      
+		      /\      \     __    ____    ___     ____      
+		      \ \ \__\ \  /'__`\ /',__\  / __`\  /',__\     
+		       \ \ \_/\ \/\  __//\__, `\/\ \L\ \/\__, `\    
+		        \ \_\\ \_\ \____\/\____/\ \____/\/\____/    
+		         \/_/ \/_/\/____/\/___/  \/___/  \/___/     
+
+-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+		    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		    <meta name="description" content="">
+		    <meta name="author" content="">
+
+		    <!-- Le styles -->
+				<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+		    
+		    <link href="../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+				
+				
+			
+			<!-- Google Analytics Magic -->
+			<script type="text/javascript">
+			  var _gaq = _gaq || [];
+			  _gaq.push(['_setAccount', 'UA-20226872-1']);
+			  _gaq.push(['_setDomainName', 'apache.org']);
+			  _gaq.push(['_trackPageview']);
+
+			  (function() {
+			    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			  })();
+			</script>
+    </head>
+    <body>
+			<!-- magical breadcrumbs -->
+			<div class="topnav">
+			<ul class="breadcrumb">
+			  <li>
+					<div class="dropdown">
+					  <a data-toggle="dropdown" href="#">Apache Software Foundation <span class="caret"></span></a>
+					  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+							<li><a href="http://www.apache.org">Apache Homepage</a></li>
+							<li><a href="http://www.apache.org/licenses/">License</a></li>
+					  	<li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>  
+					  	<li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+							<li><a href="http://www.apache.org/security/">Security</a></li>
+					  </ul>
+					</div>
+				</li>
+				<li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+				
+				
+					<li><a href="/documentation
+/">Documentation
+</a></li>
+				
+				
+			</ul><!-- /breadcrumb -->
+			</div>
+			
+			<!-- navbar excitement -->
+	    <div class="navbar navbar-static-top" role="navigation">
+	      <div class="navbar-inner">
+	        <div class="container">
+						<a href="/" class="logo"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo" /></a>
+					<div class="nav-collapse">
+						<ul class="nav nav-pills navbar-right">
+						  <li><a href="/gettingstarted/">Getting Started</a></li>
+						  <li><a href="/documentation/latest/">Documentation</a></li>
+						  <li><a href="/downloads/">Downloads</a></li>
+						  <li><a href="/community/">Community</a></li>
+						</ul>
+					</div>
+	        </div>
+	      </div>
+	    </div><!-- /.navbar -->
+
+      <div class="container">
+
+			<div class="row-fluid">
+	<div class="col-md-4">
+		<h4>If you're new to Mesos</h4>
+		<p>See the <a href="/gettingstarted/">getting started</a> page for more information about downloading, building, and deploying Mesos.</p>
+		
+		<h4>If you'd like to get involved or you're looking for support</h4>
+		<p>See our <a href="/community/">community</a> page for more details.</p>
+	</div>
+	<div class="col-md-8">
+		<h1>Authorization</h1>
+
+<p>Mesos 0.20.0 adds support for framework authorization. Authorization allows</p>
+
+<ol>
+<li>Frameworks to only launch tasks/executors as authorized <code>users</code>.</li>
+<li>Frameworks to be able to receive offers for authorized <code>roles</code>.</li>
+<li>HTTP endpoints exposed by Mesos to be accessible to authorized <code>clients</code>.</li>
+</ol>
+
+
+<blockquote><p>NOTE: While ACLs support for HTTP is present, currently access to the HTTP endpoints are not authorized.</p></blockquote>
+
+<h2>ACLs</h2>
+
+<p>Authorization is implemented via Access Control Lists (ACLs). For each of the 3 cases described above there is a corresponding ACL(s) that can be set to restrict access. Operators can setup ACLs in JSON format. See <a href="https://github.com/apache/mesos/blob/master/include/mesos/mesos.proto">mesos.proto</a> for details.</p>
+
+<p>Each ACL specifies a set of <code>Subjects</code> that can perform an <code>Action</code> on a set of <code>Objects</code>.</p>
+
+<p>The currently supported <code>Actions</code> are :</p>
+
+<ol>
+<li>&ldquo;run_tasks&rdquo; : Run tasks/executors</li>
+<li>&ldquo;receive_offers&rdquo; : Receive offers</li>
+<li>&ldquo;http_get&rdquo; : HTTP GET access</li>
+<li>&ldquo;http_put&rdquo; : HTTP_PUT access</li>
+</ol>
+
+
+<p>The currently supported <code>Subjects</code> are :</p>
+
+<ol>
+<li>&ldquo;principals&rdquo; : Framework principals (used by &ldquo;run_tasks&rdquo; and &ldquo;receive_offers&rdquo; actions)</li>
+<li>&ldquo;usernames&rdquo; : Username used in HTTP Basic/Digest authentication. (used by &ldquo;http_get&rdquo; and &ldquo;http_put&rdquo; actions)</li>
+<li>&ldquo;ips&rdquo; : IP Addresses of the clients (used by &ldquo;http_get&rdquo; and &ldquo;http_put&rdquo; actions)</li>
+<li>&ldquo;hostnames&rdquo; : Hostnames of the clients (used by &ldquo;http_get&rdquo; and &ldquo;http_put&rdquo; actions)</li>
+</ol>
+
+
+<p>The currently supported <code>Objects</code> are :</p>
+
+<ol>
+<li>&ldquo;users&rdquo; : Unix user to launch the task/executor as (used by &ldquo;run_tasks&rdquo; action)</li>
+<li>&ldquo;roles&rdquo; : Resource roles to receive offers from (used by &ldquo;receive_offers&rdquo; action)</li>
+<li>&ldquo;urls&rdquo; : HTTP URL endpoint exposed by the master (used by &ldquo;http_get&rdquo; and &ldquo;http_put&rdquo; actions)</li>
+</ol>
+
+
+<blockquote><p>NOTE: Both <code>Subjects</code> and <code>Objects</code> can take a list of strings or special values (<code>ANY</code> and <code>NONE</code>).</p></blockquote>
+
+<h2>How does it work?</h2>
+
+<p>The Mesos master checks the ACLs to verify whether a request is authorized or not. For example, when  a framework launches a task, &ldquo;run_tasks&rdquo; ACLs are checked to see if the framework (<code>FrameworkInfo.principal</code>) is authorized to run the task/executor as the given user. If not authorized, the launch is rejected and the framework gets a TASK_LOST.</p>
+
+<p>Similarly, when a framework (re-)registers the Mesos master checks whether it is authorized to receive offers for given resource role (<code>FrameworkInfo.role</code>). If not authorized, the framework is not allowed to (re-)register and gets an Error message back.</p>
+
+<p>While not yet implemented, GET/PUT access to HTTP endpoints exposed by the Mesos master will be authorized in a similar way.</p>
+
+<p>There are couple of important things to note:</p>
+
+<ol>
+<li><p>ACLs are matched in the order that they are setup. In other words, the first matching ACL determines whether a request is authorized or not.</p></li>
+<li><p>If none of the specified ACLs match the given request, whether the request is authorized or not is defined by <code>ACLs.permissive</code> field. By default this &ldquo;true&rdquo; i.e., a non-matching request is authorized.</p></li>
+</ol>
+
+
+<h2>Examples</h2>
+
+<ol>
+<li><p>Frameworks <code>foo</code> and <code>bar</code> can run tasks as user <code>alice</code>.</p>
+
+<pre><code>     {
+       "run_tasks": [
+                      {
+                        "principals": { "values": ["foo", "bar"] },
+                        "users": { "values": ["alice"] }
+                      }
+                    ],
+     }
+</code></pre></li>
+<li><p>Any framework can run tasks as user <code>guest</code>.</p>
+
+<pre><code>     {
+       "run_tasks": [
+                      {
+                        "principals": { "type": "ANY" },
+                        "users": { "values": ["guest"] }
+                      }
+                    ],
+     }
+</code></pre></li>
+<li><p>No framework can run tasks as <code>root</code>.</p>
+
+<pre><code>     {
+       "run_tasks": [
+                      {
+                        "principals": { "type": "NONE" },
+                        "users": { "values": ["root"] }
+                      }
+                    ],
+     }
+</code></pre></li>
+<li><p>Framework <code>foo</code> can run tasks only as user <code>guest</code> and no other user.</p>
+
+<pre><code>     {
+       "run_tasks": [
+                      {
+                        "principals": { "values": [ "foo" ] },
+                        "users": { "values": ["guest"] }
+                      },
+                      {
+                        "principals": { "values": [ "foo" ] },
+                        "users": { "type": ["NONE"] }
+                      }
+                    ],
+     }
+</code></pre></li>
+<li><p>Framework <code>foo</code> can be offered resources for <code>analytics</code> and <code>ads</code> roles.</p>
+
+<pre><code>     {
+       "receive_offers": [
+                           {
+                             "principals": { "values": ["foo"] },
+                             "roles": { "values": ["analytics", "ads"] }
+                           }
+                         ],
+     }
+</code></pre></li>
+<li><p>Only framework <code>foo</code> and no one else can be offered resources for <code>analytics</code> role.</p>
+
+<pre><code>     {
+       "receive_offers": [
+                           {
+                             "principals": { "values": ["foo"] },
+                             "roles": { "values": ["analytics"] }
+                           },
+                           {
+                             "principals": { "type": "NONE" },
+                             "roles": { "values": ["analytics"] }
+                           }
+                         ],
+     }
+</code></pre></li>
+<li><p>Framework <code>foo</code> can only receive offers for <code>analytics</code> role but no other roles. Also, no other framework can receive offers for any role.</p>
+
+<pre><code>     {
+       "permissive" : "false",
+
+       "receive_offers": [
+                           {
+                             "principals": { "values": ["foo"] },
+                             "roles": { "values": ["analytics"] }
+                           }
+                         ],
+     }
+</code></pre></li>
+</ol>
+
+
+<h2>Enabling authorization.</h2>
+
+<p>As part of this feature, a new flag was added to the master.</p>
+
+<ul>
+<li><p><code>acls</code> :  The value could be a JSON formatted string of ACLs
+          or a file path containing the JSON formatted ACLs used
+          for authorization. Path could be of the form &lsquo;file:///path/to/file&rsquo;
+          or &lsquo;/path/to/file&rsquo;.
+          See the ACLs protobuf in mesos.proto for the expected format.</p>
+
+<pre><code>      Example:
+      {
+        "run_tasks": [
+                       {
+                         "principals": { "values": ["a", "b"] },
+                         "users": { "values": ["root"] }
+                       }
+                     ],
+        "receive_offers": [
+                            {
+                              "principals": { "type": "ANY" },
+                              "roles": { "values": ["foo"] }
+                            }
+                          ]
+      }
+</code></pre></li>
+</ul>
+
+
+<p><strong>For the complete list of master options: ./mesos-master.sh &ndash;help</strong></p>
+
+	</div>
+</div>
+
+			
+	      <hr>
+
+				<!-- footer -->
+	      <div class="footer">
+	        <p>&copy; 2012-2014 <a href="http://apache.org">The Apache Software Foundation</a>.
+	        Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.<p>
+	      </div><!-- /footer -->
+
+	    </div> <!-- /container -->
+
+	    <!-- JS -->
+	    <script src="//code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+			<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="text/javascript"></script>
+    </body>
+</html>
