@@ -9,6 +9,11 @@ Mesos User Groups (MUGs) are responsible for organizing local meetups, hackathon
 
 ## Local Groups
 
+### France
+<ul>
+	<li><a href="http://www.meetup.com/Paris-Mesos-Users-Group/">Paris</a></li>
+</ul>
+
 ### USA
 <ul>
 	<li><a href="https://twitter.com/AtlantaMesos">Atlanta, GA</a></li>
