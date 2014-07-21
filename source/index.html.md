@@ -63,7 +63,7 @@ title: Apache Mesos
     <h3>News</h3>
       <ul>
         <li><em>July 17th, 2014</em> - Mesos 0.19.1 is released!
-            See the <a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12311242&version=12327173">0.19.1 release notes for more details.</a></li>
+            See the <a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12311242&version=12327173">0.19.1 release notes</a> for more details.</li>
         
         <li><em>June 24th, 2014</em> - <a href="/blog/mesos-community-survey-2014-results/">Results from the 2014 Mesos community survey</a>
             have been published on the Mesos blog</li>
