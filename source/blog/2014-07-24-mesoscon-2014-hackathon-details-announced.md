@@ -47,7 +47,7 @@ Following sessions on day one of MesosCon, we will hold a hackathon kickoff that
 
 18:00 - Voting occurs
 
-18:15-18:15 - Winners presentation
+18:15 - Winners announced
 
 ## Registration
 Interested in participating in the hackathon? Participants must [register for MesosCon](https://www.regonline.com/register/login.aspx?eventID=1533330&MethodId=0&EventsessionId=).
