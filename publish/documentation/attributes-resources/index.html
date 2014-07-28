@@ -103,106 +103,90 @@
 		<p>See our <a href="/community/">community</a> page for more details.</p>
 	</div>
 	<div class="col-md-8">
-		<h1>Release Guide</h1>
+		<p>&ndash;</p>
 
-<p>This guide describes the process of doing an official release of Mesos.</p>
+<h2>layout: documentation</h2>
 
-<hr />
+<h1>Mesos Attributes &amp; Resources</h1>
 
-<h2>Prerequisites</h2>
+<p>The Mesos system has two basic methods to describe the slaves that comprise a cluster.  One of these is managed by the Mesos master, the other is simply passed onwards to the frameworks using the cluster.</p>
 
-<ol>
-<li><p>Go to <a href="https://issues.apache.org/jira/browse/MESOS">Apache Jira</a> and make sure that
-the CHANGELOG for the release version is up to date.</p>
+<h2>Attributes</h2>
 
-<blockquote><p>NOTE: You should move all <strong>Unresolved</strong> tickets marked with <code>Fix Version</code> as the
-         release version to the next release version.</p>
+<p>The attributes are simply key value string pairs that Mesos passes along when it sends offers to frameworks.</p>
 
-<p>PROTIP: Use <code>bulk edit</code> option in JIRA to move the tickets and make sure to
-           <strong>uncheck</strong> the option that emails everyone about the move.</p></blockquote></li>
-<li><p>Update and commit the <code>CHANGELOG</code> for the release.</p>
+<pre><code>attributes : attribute ( ";" attribute )*
 
-<blockquote><p>NOTE: You should use JIRA to generate the CHANGELOG for you. Click on the release
-  version in <a href="https://issues.apache.org/jira/browse/MESOS#selectedTab=com.atlassian.jira.plugin.system.project%3Aversions-panel">JIRA</a> and click
-  on the <code>Release Notes</code>. Make sure to configure the release notes in text format.</p></blockquote></li>
-<li><p>Update and commit the <code>docs/upgrades.md</code> with instructions about how to upgrade
-a live cluster from the previous release version to this release version.</p></li>
-<li><p>If this is a major release please write and commit documentation for this feature.</p></li>
-</ol>
-
-
-<h2>Tagging the release candidate</h2>
-
-<ol>
-<li><p>Ensure that you can build and pass all the tests.</p>
-
-<pre><code> $ make -j3 distcheck
-</code></pre></li>
-<li><p>First tag the required SHA locally.</p>
-
-<pre><code> $ git tag &lt;X.Y.Z-rcR&gt;
+attribute : labelString ":" ( labelString | "," )+
 </code></pre>
 
-<blockquote><p>NOTE: <code>X.Y.Z</code> is based on <a href="http://semver.org/">semantic versioning</a> scheme. <code>R</code> is release
-         candidate version that starts with 1.</p></blockquote></li>
-<li><p>Tag the release externally and deploy the corresponding JAR to the Apache maven repository.
-It is recommended to use the <code>support/tag.sh</code> script to accomplish this.</p>
+<h2>Resources</h2>
 
-<pre><code> $ ./support/tag.sh X.Y.Z R
+<p>The Mesos system can manage 3 different <em>types</em> of resources: scalars, ranges, and sets.  These are used to represent the different resources that a Mesos slave has to offer.  For example, a scalar resource type could be used to represent the amount of memory on a slave.  Each resource is identified by a key string.</p>
+
+<pre><code>resources : resource ( ";" resource )*
+
+resource : key ":" ( scalar | range | set )
+
+key : labelString ( "(" resourceRole ")" )?
+
+scalar : floatValue
+
+range : "[" rangeValue ( "," rangeValue )* "]"
+
+rangeValue : scalar "-" scalar
+
+set : "{" labelString ( "," labelString )* "}"
+
+resourceRole : labelString | "*"
+
+labelString : [a-zA-Z0-9_/.-]
+
+floatValue : ( intValue ( "." intValue )? ) | ...
+
+intValue : [0-9]+
 </code></pre>
 
-<blockquote><p>NOTE: This script assumes that you have the requisite permissions to deploy the JAR. For
-   instructions on how to set it up, please refer to <code>src/java/MESOS-MAVEN-README</code>.</p></blockquote></li>
-<li><p>It is not uncommon to release multiple release candidates, with increasing release candidate
-version, if there are bugs found.</p></li>
-</ol>
+<h2>Predefined Uses &amp; Conventions</h2>
+
+<p>The Mesos master has a few resources that it pre-defines in how it handles them.  At the current time, this list consist of:</p>
+
+<ul>
+<li><code>cpu</code></li>
+<li><code>mem</code></li>
+<li><code>disk</code></li>
+<li><code>ports</code></li>
+</ul>
 
 
-<h2>Voting the release candidate</h2>
+<p>In particular, a slave without <code>cpu</code> and <code>mem</code> resources will never have its resources advertised to any frameworks.  Also, the Master&rsquo;s user interface interprets the scalars in <code>mem</code> and <code>disk</code> in terms of <em><code>MB</code></em>.  IE: the value <code>15000</code> is displayed as <code>14.65GB</code>.</p>
 
-<ol>
-<li><p>Once a release candidate is deemed worthy to be officially released you should call a vote on
-the <code>dev@meosos.apache.org</code> (and optionally <code>user@mesos.apache.org</code>) mailing list.</p></li>
-<li><p>It is recommended to use the <code>support/vote.sh</code> script to vote the release candidate.</p>
+<h2>Examples</h2>
 
-<pre><code> $ ./support/vote.sh X.Y.Z R
-</code></pre></li>
-<li><p>The release script also spits out an email template that you could use to send the vote email.</p></li>
-</ol>
+<p>Here are some examples for configuring the Mesos slaves.</p>
 
+<pre><code>--resources='cpu:24;mem:24576;disk:409600;ports:[21000-24000];bugs:{a,b,c}'
+--attributes='rack:abc;zone:west;os:centos5,full'
+</code></pre>
 
-<h2>Releasing the release candidate</h2>
+<p>In this case, we have three different types of resources, scalars, a range, and a set.  They are called <code>cpu</code>, <code>mem</code>, <code>disk</code>, and the range type is <code>ports</code>.</p>
 
-<ol>
-<li><p>You should only release an official version if the vote passes with at least <strong>3 +1 binding votes
-and no -1 votes</strong>. For more information, please refer to <a href="http://www.apache.org/dev/release.html">Apache release guidelines</a>.</p></li>
-<li><p>It is recommended to use <code>support/release.sh</code> script to release the candidate.</p>
-
-<pre><code> $ ./support/release.sh X.Y.Z R
-</code></pre></li>
-<li><p>The release script also spits out an email template that you could use to notify the mailing lists about
-the result of the vote and the release.</p>
-
-<blockquote><p>NOTE: Make sure you fill the email template with the names of binding voters.</p></blockquote></li>
-</ol>
+<ul>
+<li>scalar called <code>cpu</code>, with the value <code>24</code></li>
+<li>scalar called <code>mem</code>, with the value <code>24576</code></li>
+<li>scalar called <code>disk</code>, with the value <code>409600</code></li>
+<li>range called <code>ports</code>, with values <code>21000</code> through <code>24000</code> (inclusive)</li>
+<li>set called <code>bugs</code>, with the values <code>a</code>, <code>b</code> and <code>c</code></li>
+</ul>
 
 
-<h2>Updating the website</h2>
+<p>In the case of attributes, we end up with three attributes:</p>
 
-<ol>
-<li><p>After a successful release please update the website pointing to the new release.</p></li>
-<li><p>It is also recommended to write a blog post announcing the feature.</p></li>
-</ol>
-
-
-<h2>Remove old releases from svn</h2>
-
-<p>Per the guidelines <a href="http://www.apache.org/dev/release.html#when-to-archive">when to archive</a>, we should only keep the latest release in each version under development.</p>
-
-<ol>
-<li><p>Checkout the mesos distribution folder: <code>svn co https://dist.apache.org/repos/dist/release/mesos</code></p></li>
-<li><p>Remove all minor versions that are no longer under development and commit the change.</p></li>
-</ol>
+<ul>
+<li><code>rack</code> with value <code>abc</code></li>
+<li><code>zone</code> with value <code>west</code></li>
+<li><code>os</code> with value <code>centos5,full</code></li>
+</ul>
 
 
 	</div>
