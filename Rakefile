@@ -61,6 +61,11 @@ task :javadoc => :clone_mesos do
   system("javadoc -d source/api/latest/java -sourcepath #{mesos_dir}/src/java/src org.apache.mesos")
 end
 
+desc "Generate doxygen from the C++ source files in the codebase"
+task :doxygen => :clone_mesos do
+  system("pushd #{mesos_dir} && doxygen && popd && mv #{mesos_dir}/docs/html source/api/latest/c++")
+end
+
 desc "Run the site in development mode. Preview available at http://localhost:4567/"
 task :dev do
   system("middleman server")
