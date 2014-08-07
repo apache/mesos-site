@@ -1,16 +1,14 @@
 var searchData=
 [
-  ['zookeeper',['ZooKeeper',['../classZooKeeper.html',1,'']]],
-  ['zookeepermastercontender',['ZooKeeperMasterContender',['../classmesos_1_1internal_1_1ZooKeeperMasterContender.html',1,'mesos::internal']]],
-  ['zookeepermastercontenderprocess',['ZooKeeperMasterContenderProcess',['../classmesos_1_1internal_1_1ZooKeeperMasterContenderProcess.html',1,'mesos::internal']]],
-  ['zookeepermasterdetector',['ZooKeeperMasterDetector',['../classmesos_1_1internal_1_1ZooKeeperMasterDetector.html',1,'mesos::internal']]],
-  ['zookeepermasterdetectorprocess',['ZooKeeperMasterDetectorProcess',['../classmesos_1_1internal_1_1ZooKeeperMasterDetectorProcess.html',1,'mesos::internal']]],
-  ['zookeepernetwork',['ZooKeeperNetwork',['../classZooKeeperNetwork.html',1,'']]],
-  ['zookeeperprocess',['ZooKeeperProcess',['../classZooKeeperProcess.html',1,'']]],
-  ['zookeeperserver',['ZooKeeperServer',['../classorg_1_1apache_1_1zookeeper_1_1server_1_1ZooKeeperServer.html',1,'org::apache::zookeeper::server']]],
-  ['zookeeperstate',['ZooKeeperState',['../classorg_1_1apache_1_1mesos_1_1state_1_1ZooKeeperState.html',1,'org::apache::mesos::state']]],
-  ['zookeeperstorage',['ZooKeeperStorage',['../classmesos_1_1internal_1_1state_1_1ZooKeeperStorage.html',1,'mesos::internal::state']]],
-  ['zookeeperstorageprocess',['ZooKeeperStorageProcess',['../classmesos_1_1internal_1_1state_1_1ZooKeeperStorageProcess.html',1,'mesos::internal::state']]],
-  ['zookeepertest',['ZooKeeperTest',['../classmesos_1_1internal_1_1tests_1_1ZooKeeperTest.html',1,'mesos::internal::tests']]],
-  ['zookeepertestserver',['ZooKeeperTestServer',['../classmesos_1_1internal_1_1tests_1_1ZooKeeperTestServer.html',1,'mesos::internal::tests']]]
+  ['u32handle',['U32Handle',['../classrouting_1_1filter_1_1U32Handle.html',1,'routing::filter']]],
+  ['unauthorized',['Unauthorized',['../structprocess_1_1http_1_1Unauthorized.html',1,'process::http']]],
+  ['uniqueofferidchecker',['UniqueOfferIDChecker',['../structmesos_1_1internal_1_1master_1_1UniqueOfferIDChecker.html',1,'mesos::internal::master']]],
+  ['uniquetaskidchecker',['UniqueTaskIDChecker',['../structmesos_1_1internal_1_1master_1_1UniqueTaskIDChecker.html',1,'mesos::internal::master']]],
+  ['unreachable',['Unreachable',['../structUnreachable.html',1,'']]],
+  ['unwrap',['unwrap',['../structprocess_1_1internal_1_1unwrap.html',1,'process::internal']]],
+  ['unwrap_3c_20future_3c_20x_20_3e_20_3e',['unwrap&lt; Future&lt; X &gt; &gt;',['../structprocess_1_1internal_1_1unwrap_3_01Future_3_01X_01_4_01_4.html',1,'process::internal']]],
+  ['upid',['UPID',['../structprocess_1_1UPID.html',1,'process']]],
+  ['url',['URL',['../classzookeeper_1_1URL.html',1,'zookeeper']]],
+  ['utsinfo',['UTSInfo',['../structos_1_1UTSInfo.html',1,'os']]],
+  ['uuid',['UUID',['../structUUID.html',1,'']]]
 ];

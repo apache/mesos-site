@@ -80,7 +80,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_2241064965c8d9ca993f08b926076f7d.html">log</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_b123dfa1412851c38bee4236f8a79fb1.html">src</a></li><li class="navelem"><a class="el" href="dir_c3f4b971623efc3e7d8d0dc79ef2dc0f.html">log</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -112,9 +112,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keyword">namespace </span>protocol {</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">// Some replica protocol declarations.</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">extern</span> Protocol&lt;PromiseRequest, PromiseResponse&gt; promise;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword">extern</span> Protocol&lt;WriteRequest, WriteResponse&gt; write;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keyword">extern</span> Protocol&lt;RecoverRequest, RecoverResponse&gt; recover;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">extern</span> <a class="code" href="structProtocol.html">Protocol&lt;PromiseRequest, PromiseResponse&gt;</a> promise;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword">extern</span> <a class="code" href="structProtocol.html">Protocol&lt;WriteRequest, WriteResponse&gt;</a> write;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keyword">extern</span> <a class="code" href="structProtocol.html">Protocol&lt;RecoverRequest, RecoverResponse&gt;</a> recover;</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;} <span class="comment">// namespace protocol {</span></div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
@@ -137,38 +137,38 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="comment">// Returns all the actions between the specified positions, unless</span></div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <span class="comment">// those positions are invalid, in which case returns an error.</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  process::Future&lt;std::list&lt;Action&gt; &gt; read(</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <a class="code" href="classprocess_1_1Future.html">process::Future&lt;std::list&lt;Action&gt;</a> &gt; read(</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;      uint64_t from,</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;      uint64_t to) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="comment">// Returns true if the specified position is missing in the log</span></div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="comment">// (i.e., unlearned or holes).</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  process::Future&lt;bool&gt; missing(uint64_t position) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <a class="code" href="classprocess_1_1Future.html">process::Future&lt;bool&gt;</a> missing(uint64_t position) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="comment">// Returns missing positions in the log (i.e., unlearned or holes)</span></div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="comment">// within the specified range [from, to]. We use interval set, a</span></div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="comment">// more compact representation of set, to store missing positions.</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  process::Future&lt;IntervalSet&lt;uint64_t&gt; &gt; missing(</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <a class="code" href="classprocess_1_1Future.html">process::Future&lt;IntervalSet&lt;uint64_t&gt;</a> &gt; missing(</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;      uint64_t from,</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;      uint64_t to) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <span class="comment">// Returns the beginning position of the log.</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  process::Future&lt;uint64_t&gt; beginning() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <a class="code" href="classprocess_1_1Future.html">process::Future&lt;uint64_t&gt;</a> beginning() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  <span class="comment">// Returns the last written position in the log.</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  process::Future&lt;uint64_t&gt; ending() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  <a class="code" href="classprocess_1_1Future.html">process::Future&lt;uint64_t&gt;</a> ending() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  <span class="comment">// Returns the current status of this replica.</span></div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  process::Future&lt;Metadata::Status&gt; status() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <a class="code" href="classprocess_1_1Future.html">process::Future&lt;Metadata::Status&gt;</a> status() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  <span class="comment">// Returns the highest implicit promise this replica has given.</span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  process::Future&lt;uint64_t&gt; promised() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  <a class="code" href="classprocess_1_1Future.html">process::Future&lt;uint64_t&gt;</a> promised() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  <span class="comment">// Updates the status of this replica.</span></div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  process::Future&lt;bool&gt; update(<span class="keyword">const</span> Metadata::Status&amp; status);</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  <a class="code" href="classprocess_1_1Future.html">process::Future&lt;bool&gt;</a> update(<span class="keyword">const</span> Metadata::Status&amp; status);</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  <span class="comment">// Returns the PID associated with this replica.</span></div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  process::PID&lt;ReplicaProcess&gt; pid() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  <a class="code" href="structprocess_1_1PID.html">process::PID&lt;ReplicaProcess&gt;</a> pid() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="keyword">private</span>:</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  <a class="code" href="classmesos_1_1internal_1_1log_1_1ReplicaProcess.html">ReplicaProcess</a>* process;</div>
@@ -180,11 +180,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="preprocessor">#endif // __LOG_REPLICA_HPP__</span></div>
 <div class="ttc" id="classmesos_1_1internal_1_1log_1_1Replica_html"><div class="ttname"><a href="classmesos_1_1internal_1_1log_1_1Replica.html">mesos::internal::log::Replica</a></div><div class="ttdef"><b>Definition:</b> replica.hpp:53</div></div>
+<div class="ttc" id="structProtocol_html"><div class="ttname"><a href="structProtocol.html">Protocol</a></div><div class="ttdef"><b>Definition:</b> protobuf.hpp:729</div></div>
+<div class="ttc" id="structprocess_1_1PID_html"><div class="ttname"><a href="structprocess_1_1PID.html">process::PID</a></div><div class="ttdef"><b>Definition:</b> pid.hpp:86</div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1log_1_1ReplicaProcess_html"><div class="ttname"><a href="classmesos_1_1internal_1_1log_1_1ReplicaProcess.html">mesos::internal::log::ReplicaProcess</a></div><div class="ttdef"><b>Definition:</b> replica.cpp:60</div></div>
+<div class="ttc" id="classprocess_1_1Future_html"><div class="ttname"><a href="classprocess_1_1Future.html">process::Future</a></div><div class="ttdef"><b>Definition:</b> future.hpp:51</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Aug 7 2014 15:29:36 for mesos by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Aug 7 2014 16:35:37 for mesos by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.7
 </small></address>

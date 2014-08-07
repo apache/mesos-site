@@ -1,10 +1,15 @@
 var searchData=
 [
-  ['handle',['Handle',['../classrouting_1_1queueing_1_1Handle.html',1,'routing::queueing']]],
-  ['handle',['Handle',['../classrouting_1_1filter_1_1Handle.html',1,'routing::filter']]],
-  ['hdfs',['HDFS',['../structHDFS.html',1,'']]],
-  ['healthcheckerprocess',['HealthCheckerProcess',['../classmesos_1_1internal_1_1HealthCheckerProcess.html',1,'mesos::internal']]],
-  ['healthchecktest',['HealthCheckTest',['../classHealthCheckTest.html',1,'']]],
-  ['healthtest',['HealthTest',['../classHealthTest.html',1,'']]],
-  ['hierarchicalallocatorprocess',['HierarchicalAllocatorProcess',['../classmesos_1_1internal_1_1master_1_1allocator_1_1HierarchicalAllocatorProcess.html',1,'mesos::internal::master::allocator']]]
+  ['garbagecollector',['GarbageCollector',['../classprocess_1_1GarbageCollector.html',1,'process']]],
+  ['garbagecollector',['GarbageCollector',['../classmesos_1_1internal_1_1slave_1_1GarbageCollector.html',1,'mesos::internal::slave']]],
+  ['garbagecollectorintegrationtest',['GarbageCollectorIntegrationTest',['../classGarbageCollectorIntegrationTest.html',1,'']]],
+  ['garbagecollectorprocess',['GarbageCollectorProcess',['../classmesos_1_1internal_1_1slave_1_1GarbageCollectorProcess.html',1,'mesos::internal::slave']]],
+  ['garbagecollectortest',['GarbageCollectorTest',['../classGarbageCollectorTest.html',1,'']]],
+  ['gate',['Gate',['../classGate.html',1,'']]],
+  ['gauge',['Gauge',['../classprocess_1_1metrics_1_1Gauge.html',1,'process::metrics']]],
+  ['gaugeprocess',['GaugeProcess',['../classGaugeProcess.html',1,'']]],
+  ['gigabytes',['Gigabytes',['../classGigabytes.html',1,'']]],
+  ['group',['Group',['../classzookeeper_1_1Group.html',1,'zookeeper']]],
+  ['groupprocess',['GroupProcess',['../classzookeeper_1_1GroupProcess.html',1,'zookeeper']]],
+  ['grouptest',['GroupTest',['../classGroupTest.html',1,'']]]
 ];

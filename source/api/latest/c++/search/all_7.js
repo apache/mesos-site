@@ -1,10 +1,22 @@
 var searchData=
 [
-  ['handle',['Handle',['../classrouting_1_1queueing_1_1Handle.html',1,'routing::queueing']]],
-  ['handle',['Handle',['../classrouting_1_1filter_1_1Handle.html',1,'routing::filter']]],
-  ['hdfs',['HDFS',['../structHDFS.html',1,'']]],
-  ['healthcheckerprocess',['HealthCheckerProcess',['../classmesos_1_1internal_1_1HealthCheckerProcess.html',1,'mesos::internal']]],
-  ['healthchecktest',['HealthCheckTest',['../classHealthCheckTest.html',1,'']]],
-  ['healthtest',['HealthTest',['../classHealthTest.html',1,'']]],
-  ['hierarchicalallocatorprocess',['HierarchicalAllocatorProcess',['../classmesos_1_1internal_1_1master_1_1allocator_1_1HierarchicalAllocatorProcess.html',1,'mesos::internal::master::allocator']]]
+  ['garbagecollector',['GarbageCollector',['../classprocess_1_1GarbageCollector.html',1,'process']]],
+  ['garbagecollector',['GarbageCollector',['../classmesos_1_1internal_1_1slave_1_1GarbageCollector.html',1,'mesos::internal::slave']]],
+  ['garbagecollectorintegrationtest',['GarbageCollectorIntegrationTest',['../classGarbageCollectorIntegrationTest.html',1,'']]],
+  ['garbagecollectorprocess',['GarbageCollectorProcess',['../classmesos_1_1internal_1_1slave_1_1GarbageCollectorProcess.html',1,'mesos::internal::slave']]],
+  ['garbagecollectortest',['GarbageCollectorTest',['../classGarbageCollectorTest.html',1,'']]],
+  ['gate',['Gate',['../classGate.html',1,'']]],
+  ['gauge',['Gauge',['../classprocess_1_1metrics_1_1Gauge.html',1,'process::metrics']]],
+  ['gaugeprocess',['GaugeProcess',['../classGaugeProcess.html',1,'']]],
+  ['get',['get',['../classmesos_1_1Resources.html#a714f8626f8d12642bef5d6d2fba51e84',1,'mesos::Resources::get()'],['../classZooKeeper.html#accad8e8d68a1940c2035bd66f8b5d017',1,'ZooKeeper::get()']]],
+  ['getall',['getAll',['../classmesos_1_1Resources.html#a8e6261981e23ac77679d2f73f8522543',1,'mesos::Resources']]],
+  ['getchildren',['getChildren',['../classZooKeeper.html#acdfe97fd1d1e43f5753f5a0366298906',1,'ZooKeeper']]],
+  ['getsessionid',['getSessionId',['../classZooKeeper.html#ac1cbe681777fd5b9ecb870402b897ef6',1,'ZooKeeper']]],
+  ['getsessiontimeout',['getSessionTimeout',['../classZooKeeper.html#a4eadcc47b615860d77ad89797a214a54',1,'ZooKeeper']]],
+  ['getstate',['getState',['../classZooKeeper.html#ab78974fb5546ab5f47b3db46836d62d1',1,'ZooKeeper']]],
+  ['gigabytes',['Gigabytes',['../classGigabytes.html',1,'']]],
+  ['group',['Group',['../classzookeeper_1_1Group.html',1,'zookeeper']]],
+  ['groupprocess',['GroupProcess',['../classzookeeper_1_1GroupProcess.html',1,'zookeeper']]],
+  ['grouptest',['GroupTest',['../classGroupTest.html',1,'']]],
+  ['gzip',['gzip',['../namespacegzip.html',1,'']]]
 ];

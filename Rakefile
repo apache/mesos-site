@@ -63,7 +63,7 @@ end
 
 desc "Generate doxygen from the C++ source files in the codebase"
 task :doxygen => :clone_mesos do
-  system("pushd #{mesos_dir} && doxygen && popd && mv #{mesos_dir}/docs/html source/api/latest/c++")
+  system("pushd #{mesos_dir} && doxygen && popd && rsync -avz #{mesos_dir}/docs/html/* source/api/latest/c++")
 end
 
 desc "Run the site in development mode. Preview available at http://localhost:4567/"

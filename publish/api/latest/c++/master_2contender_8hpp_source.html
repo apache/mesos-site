@@ -80,7 +80,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_ae1a660fbe587eff2b475b14d217c1ef.html">master</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_b123dfa1412851c38bee4236f8a79fb1.html">src</a></li><li class="navelem"><a class="el" href="dir_a9f8f0ee05bfd5d01ede603265e5bf09.html">master</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -109,12 +109,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keyword">namespace </span>mesos {</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">namespace </span>internal {</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keyword">extern</span> <span class="keyword">const</span> Duration MASTER_CONTENDER_ZK_SESSION_TIMEOUT;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keyword">extern</span> <span class="keyword">const</span> <a class="code" href="classDuration.html">Duration</a> MASTER_CONTENDER_ZK_SESSION_TIMEOUT;</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">// Forward declarations.</span></div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword">namespace </span>master {</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keyword">class </span>Master;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keyword">class </span><a class="code" href="classMaster.html">Master</a>;</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;}</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
@@ -132,7 +132,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <span class="comment">//   - zk://username:password@host1:port1,host2:port2,.../path</span></div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="comment">//   - file:///path/to/file (where file contains one of the above)</span></div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="comment">// Note that the returned contender still needs to be &#39;initialize()&#39;d.</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keyword">static</span> Try&lt;MasterContender*&gt; create(<span class="keyword">const</span> std::string&amp; zk);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keyword">static</span> <a class="code" href="classTry.html">Try&lt;MasterContender*&gt;</a> create(<span class="keyword">const</span> std::string&amp; zk);</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="comment">// Note that the contender&#39;s membership, if obtained, is scheduled</span></div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="comment">// to be cancelled during destruction.</span></div>
@@ -154,7 +154,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="comment">// the pending election is returned.</span></div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <span class="comment">// Recontending after candidacy is obtained causes the previous</span></div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="comment">// candidacy to be withdrawn.</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <span class="keyword">virtual</span> process::Future&lt;process::Future&lt;Nothing&gt; &gt; contend() = 0;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;process::Future&lt;Nothing&gt;</a> &gt; contend() = 0;</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;};</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
@@ -174,11 +174,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  <span class="comment">// In this basic implementation the outer Future directly returns</span></div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  <span class="comment">// and inner Future stays pending because there is only one</span></div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  <span class="comment">// contender in the contest.</span></div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  <span class="keyword">virtual</span> process::Future&lt;process::Future&lt;Nothing&gt; &gt; contend();</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;process::Future&lt;Nothing&gt;</a> &gt; contend();</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="keyword">private</span>:</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;  <span class="keywordtype">bool</span> initialized;</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  process::Promise&lt;Nothing&gt;* promise;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  <a class="code" href="classprocess_1_1Promise.html">process::Promise&lt;Nothing&gt;</a>* promise;</div>
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;};</div>
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;</div>
@@ -188,13 +188,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;  <span class="comment">// Creates a contender that uses ZooKeeper to determine (i.e.,</span></div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;  <span class="comment">// elect) a leading master.</span></div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="classmesos_1_1internal_1_1ZooKeeperMasterContender.html">ZooKeeperMasterContender</a>(<span class="keyword">const</span> <a class="code" href="classzookeeper_1_1URL.html">zookeeper::URL</a>&amp; url);</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="classmesos_1_1internal_1_1ZooKeeperMasterContender.html">ZooKeeperMasterContender</a>(process::Owned&lt;zookeeper::Group&gt; group);</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="classmesos_1_1internal_1_1ZooKeeperMasterContender.html">ZooKeeperMasterContender</a>(<a class="code" href="classprocess_1_1Owned.html">process::Owned&lt;zookeeper::Group&gt;</a> group);</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;</div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;  <span class="keyword">virtual</span> ~<a class="code" href="classmesos_1_1internal_1_1ZooKeeperMasterContender.html">ZooKeeperMasterContender</a>();</div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;</div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;  <span class="comment">// MasterContender implementation.</span></div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> initialize(<span class="keyword">const</span> MasterInfo&amp; masterInfo);</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;  <span class="keyword">virtual</span> process::Future&lt;process::Future&lt;Nothing&gt; &gt; contend();</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;process::Future&lt;Nothing&gt;</a> &gt; contend();</div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;</div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="keyword">private</span>:</div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;  <a class="code" href="classmesos_1_1internal_1_1ZooKeeperMasterContenderProcess.html">ZooKeeperMasterContenderProcess</a>* process;</div>
@@ -205,14 +205,20 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;</div>
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="preprocessor">#endif // __MASTER_CONTENDER_HPP__</span></div>
 <div class="ttc" id="classmesos_1_1internal_1_1StandaloneMasterContender_html"><div class="ttname"><a href="classmesos_1_1internal_1_1StandaloneMasterContender.html">mesos::internal::StandaloneMasterContender</a></div><div class="ttdef"><b>Definition:</b> contender.hpp:90</div></div>
+<div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdoc">Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in c...</div><div class="ttdef"><b>Definition:</b> try.hpp:26</div></div>
+<div class="ttc" id="classMaster_html"><div class="ttname"><a href="classMaster.html">Master</a></div><div class="ttdef"><b>Definition:</b> test-master.cpp:14</div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1ZooKeeperMasterContender_html"><div class="ttname"><a href="classmesos_1_1internal_1_1ZooKeeperMasterContender.html">mesos::internal::ZooKeeperMasterContender</a></div><div class="ttdef"><b>Definition:</b> contender.hpp:112</div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1ZooKeeperMasterContenderProcess_html"><div class="ttname"><a href="classmesos_1_1internal_1_1ZooKeeperMasterContenderProcess.html">mesos::internal::ZooKeeperMasterContenderProcess</a></div><div class="ttdef"><b>Definition:</b> contender.cpp:48</div></div>
+<div class="ttc" id="classDuration_html"><div class="ttname"><a href="classDuration.html">Duration</a></div><div class="ttdoc">Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in c...</div><div class="ttdef"><b>Definition:</b> duration.hpp:28</div></div>
+<div class="ttc" id="classprocess_1_1Promise_html"><div class="ttname"><a href="classprocess_1_1Promise.html">process::Promise&lt; Nothing &gt;</a></div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1MasterContender_html"><div class="ttname"><a href="classmesos_1_1internal_1_1MasterContender.html">mesos::internal::MasterContender</a></div><div class="ttdef"><b>Definition:</b> contender.hpp:52</div></div>
 <div class="ttc" id="classzookeeper_1_1URL_html"><div class="ttname"><a href="classzookeeper_1_1URL.html">zookeeper::URL</a></div><div class="ttdef"><b>Definition:</b> url.hpp:48</div></div>
+<div class="ttc" id="classprocess_1_1Owned_html"><div class="ttname"><a href="classprocess_1_1Owned.html">process::Owned&lt; zookeeper::Group &gt;</a></div></div>
+<div class="ttc" id="classprocess_1_1Future_html"><div class="ttname"><a href="classprocess_1_1Future.html">process::Future</a></div><div class="ttdef"><b>Definition:</b> future.hpp:51</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Aug 7 2014 15:29:36 for mesos by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Aug 7 2014 16:35:37 for mesos by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.7
 </small></address>
