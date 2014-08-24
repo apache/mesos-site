@@ -6,11 +6,14 @@ layout: documentation
 
 ## Running Mesos
 
-* [Mesos Configuration](/documentation/latest/configuration/) for command-line arguments
-* [Tools](/documentation/latest/tools/) for setting up and running a Mesos cluster
-* [Logging and Debugging](/documentation/latest/logging-and-debugging/) for viewing Mesos and framework logs.
+* [Configuration](/documentation/latest/configuration/) for command-line arguments
+* [Docker Containerizer](/documentation/latest/docker-containerizer/) for launching a Docker image as a Task, or as an Executor
+* [Framework Rate Limiting](/documentation/latest/framework-rate-limiting/)
 * [High Availability](/documentation/latest/high-availability/) for running multiple masters simultaneously.
+* [Logging and Debugging](/documentation/latest/logging-and-debugging/) for viewing Mesos and framework logs.
+* [Network Monitoring](/documentation/latest/network-monitoring/)
 * [Slave Recovery](/documentation/latest/slave-recovery/) for doing seamless upgrades
+* [Tools](/documentation/latest/tools/) for setting up and running a Mesos cluster
 
 ## Running Mesos Frameworks
 
@@ -25,11 +28,11 @@ layout: documentation
 
 ## Contributing to Mesos
 
-* [Mesos Developers Guide](/documentation/latest/mesos-developers-guide/) includes resources for developers contributing to Mesos and the process of submitting patches for review.
-* [Mesos Code Internals](/documentation/latest/mesos-code-internals/) overview of the codebase and internal organization.
+* [Code Internals](/documentation/latest/mesos-code-internals/) overview of the codebase and internal organization.
 * [C++ Style Guide](/documentation/latest/mesos-c++-style-guide/)
+* [Developers Guide](/documentation/latest/mesos-developers-guide/) includes resources for developers contributing to Mesos and the process of submitting patches for review.
+* [Development Road Map](/documentation/latest/mesos-roadmap/)
 * [Release Guide](/documentation/latest/release-guide/)
-* [Mesos Development Road Map](/documentation/latest/mesos-roadmap/)
 
 ## More Info about Mesos
 

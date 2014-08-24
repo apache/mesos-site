@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<!--
+
+		 ______                           __                
+		/\  _  \                         /\ \               
+		\ \ \L\ \  _____      __      ___\ \ \___      __   
+		 \ \  __ \/\ '__`\  /'__`\   /'___\ \  _ `\  /'__`\ 
+		  \ \ \/\ \ \ \L\ \/\ \L\.\_/\ \__/\ \ \ \ \/\  __/ 
+		   \ \_\ \_\ \ ,__/\ \__/.\_\ \____\\ \_\ \_\ \____\
+		    \/_/\/_/\ \ \/  \/__/\/_/\/____/ \/_/\/_/\/____/
+		             \ \_\                                  
+		              \/_/                                  
+                                                    
+		       /'\_/`\                                      
+		      /\      \     __    ____    ___     ____      
+		      \ \ \__\ \  /'__`\ /',__\  / __`\  /',__\     
+		       \ \ \_/\ \/\  __//\__, `\/\ \L\ \/\__, `\    
+		        \ \_\\ \_\ \____\/\____/\ \____/\/\____/    
+		         \/_/ \/_/\/____/\/___/  \/___/  \/___/     
+
+-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+		    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		    <meta name="description" content="">
+		    <meta name="author" content="">
+
+		    <!-- Le styles -->
+				<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+		    
+		    <link href="../../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+				
+				
+			
+			<!-- Google Analytics Magic -->
+			<script type="text/javascript">
+			  var _gaq = _gaq || [];
+			  _gaq.push(['_setAccount', 'UA-20226872-1']);
+			  _gaq.push(['_setDomainName', 'apache.org']);
+			  _gaq.push(['_trackPageview']);
+
+			  (function() {
+			    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			  })();
+			</script>
+    </head>
+    <body>
+			<!-- magical breadcrumbs -->
+			<div class="topnav">
+			<ul class="breadcrumb">
+			  <li>
+					<div class="dropdown">
+					  <a data-toggle="dropdown" href="#">Apache Software Foundation <span class="caret"></span></a>
+					  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+							<li><a href="http://www.apache.org">Apache Homepage</a></li>
+							<li><a href="http://www.apache.org/licenses/">License</a></li>
+					  	<li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>  
+					  	<li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+							<li><a href="http://www.apache.org/security/">Security</a></li>
+					  </ul>
+					</div>
+				</li>
+				<li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+				
+				
+					<li><a href="/documentation
+/">Documentation
+</a></li>
+				
+				
+			</ul><!-- /breadcrumb -->
+			</div>
+			
+			<!-- navbar excitement -->
+	    <div class="navbar navbar-static-top" role="navigation">
+	      <div class="navbar-inner">
+	        <div class="container">
+						<a href="/" class="logo"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo" /></a>
+					<div class="nav-collapse">
+						<ul class="nav nav-pills navbar-right">
+						  <li><a href="/gettingstarted/">Getting Started</a></li>
+						  <li><a href="/documentation/latest/">Documentation</a></li>
+						  <li><a href="/downloads/">Downloads</a></li>
+						  <li><a href="/community/">Community</a></li>
+						</ul>
+					</div>
+	        </div>
+	      </div>
+	    </div><!-- /.navbar -->
+
+      <div class="container">
+
+			<div class="row-fluid">
+	<div class="col-md-4">
+		<h4>If you're new to Mesos</h4>
+		<p>See the <a href="/gettingstarted/">getting started</a> page for more information about downloading, building, and deploying Mesos.</p>
+		
+		<h4>If you'd like to get involved or you're looking for support</h4>
+		<p>See our <a href="/community/">community</a> page for more details.</p>
+	</div>
+	<div class="col-md-8">
+		<h1>Framework Rate Limiting</h1>
+
+<p>Framework rate limiting is a feature introduced in Mesos 0.20.0.</p>
+
+<h2>What is Framework Rate Limiting</h2>
+
+<p>In a multi-framework environment, this feature aims to protect the throughput of high-SLA (e.g., production, service) frameworks by having the master throttle messages from other (e.g., development, batch) frameworks.</p>
+
+<p>To throttle messages from a framework, the Mesos cluster operator sets a <code>qps</code> (queries per seconds) value for each framework identified by its principal (You can also throttle a group of frameworks together but we&rsquo;ll assume individual frameworks in this doc unless otherwise stated; see the <code>RateLimits</code> <a href="https://github.com/apache/mesos/blob/master/include/mesos/mesos.proto">ProtoBuf definition</a> and the configuration notes below). The master then promises not to process messages from that framework at a rate above <code>qps</code>. The outstanding messages are stored in memory on the master.</p>
+
+<h2>Rate Limits Configuration</h2>
+
+<p>The following is a sample config file (in JSON format) which could be specified with the <code>--rate-limits</code> master flag.</p>
+
+<pre><code>{
+  "limits": [
+    {
+      "principal": "foo",
+      "qps": 55.5
+      "capacity": 100000
+    },
+    {
+      "principal": "bar",
+      "qps": 300
+    },
+    {
+      "principal": "baz",
+    }
+  ],
+  "aggregate_default_qps": 333,
+  "aggregate_default_capacity": 1000000
+}
+</code></pre>
+
+<p>In this example, framework <code>foo</code> is throttled at the configured <code>qps</code> and <code>capacity</code>, framework <code>bar</code> is given unlimited capacity and framework <code>baz</code> is not throttled at all. If there is a fourth framework <code>qux</code> or a framework without a principal connected to the master, it is throttled by the rules <code>aggregate_default_qps</code> and <code>aggregate_default_capacity</code>.</p>
+
+<h3>Configuration Notes</h3>
+
+<p>Below are the fields in the JSON configuration.</p>
+
+<ul>
+<li><strong>principal</strong>: (Required) uniquely identifies the entity being throttled or given unlimited rate explicitly.
+
+<ul>
+<li>It should match the framework&rsquo;s <code>FrameworkInfo.principal</code> (See <a href="https://github.com/apache/mesos/blob/master/include/mesos/mesos.proto">definition</a>).</li>
+<li>You can have multiple frameworks use the same principal (e.g., some Mesos frameworks launch a new framework instance for each job), in which case the combined traffic from all frameworks using the same principal are throttled at the specified QPS.</li>
+</ul>
+</li>
+<li><strong>qps</strong>: (Optional) queries per second, i.e., the rate.
+
+<ul>
+<li>Once set, the master guarantees that it does not process messages from this principal higher than this rate. However the master could be slower than this rate, especially if the specified rate is too high.</li>
+<li>To explicitly give a framework unlimited rate (i.e., not throttling it), add an entry to <code>limits</code> without the qps.</li>
+</ul>
+</li>
+<li><strong>capacity</strong>: (Optional) The number of <em>outstanding</em> messages frameworks of this principal can put on the master. If not specified, this principal is given unlimited capacity. Note that it is possible the queued messages use too much memory and cause the master to OOM if the capacity is set too high or not set.
+
+<ul>
+<li>NOTE: If <code>qps</code> is not specified, <code>capacity</code> is ignored.</li>
+</ul>
+</li>
+<li>Use <strong>aggregate_default_qps</strong> and <strong>aggregate_default_capacity</strong> to safeguard the master from unspecified frameworks. All the frameworks not specified in <code>limits</code> get this default rate and capacity.
+
+<ul>
+<li>The rate and capacity are aggregate values for all of them, i.e., their combined traffic is throttled together.</li>
+<li>Same as above, if <code>aggregate_default_qps</code> is not specified, <code>aggregate_default_capacity</code> is ignored.</li>
+<li>If these fields are not present, the unspecified frameworks are not throttled.
+This is an implicit way of giving frameworks unlimited rate compared to the explicit way above (using an entry in <code>limits</code> with only the principal).
+We recommend using the explicit option especially when the master does not require authentication to prevent unexpected frameworks from overwhelming the master.</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>Using Framework Rate Limiting</h2>
+
+<h3>Monitoring Framework Traffic</h3>
+
+<p>While a framework is registered with the master, the master exposes counters for all messages received and processed from that framework at its metrics endpoint: <code>http://&lt;master&gt;/metrics/snapshot</code>. For instance, framework <code>foo</code> has two message counters <code>frameworks/foo/messages_received</code> and <code>frameworks/foo/messages_processed</code>. Without framework rate limiting the two numbers should differ by little or none (because messages are processed ASAP) but when a framework is being throttled the difference indicates the outstanding messages as a result of the throttling.</p>
+
+<p>By continuously monitoring the counters, you can derive the rate messages arrive and how fast the message queue length for the framework is growing (if it is throttled). This should depict the characteristics of the framework in terms of network traffic.</p>
+
+<h2>Configuring Rate Limits</h2>
+
+<p>Since the goal for framework rate limiting is to prevent low-SLA frameworks from using <strong>too much</strong> resources and not to model their traffic and behavior as precisely as possible, you can start by using large <code>qps</code> values to throttle them. The fact that they are throttled (regardless of the configured <code>qps</code>) is already effective in giving messages from high-SLA frameworks higher priority because they are processed ASAP.</p>
+
+<p>To calculate how much <code>capacity</code> the master can handle, you need to know the memory limit for the master process, the amount of memory it typically uses to serve similar workload without rate limiting (e.g., use <code>ps -o rss $MASTER_PID</code>) and average sizes of the framework messages (queued messages are stored as <a href="https://github.com/apache/mesos/blob/master/3rdparty/libprocess/include/process/message.hpp">serialized Protocol Buffers with a few additional fields</a>) and you should sum up all capacity values in the config.
+However since this kind of calculation is imprecise, you should start with small values that tolerate reasonable temporary framework burstiness but far from the memory limit to leave enough headroom for the master and frameworks that don&rsquo;t have limited capacity.</p>
+
+<h2>Handling &ldquo;Capacity Exceeded&rdquo; Error</h2>
+
+<p>When a framework <strong>exceeds the capacity</strong>, a FrameworkErrorMessage is sent back to the framework which will <a href="https://github.com/apache/mesos/blob/master/src/sched/sched.cpp">abort the scheduler driver and invoke the error() callback</a>. It doesn&rsquo;t kill any tasks or the scheduler itself. The framework developer can choose to restart or failover the scheduler instance to remedy the consequences of dropped messages (unless your framework doesn&rsquo;t assume all messages sent to the master are processed).</p>
+
+<p>After version 0.20.0 we are going to iterate on this feature by having the master send an early alert when the message queue for this framework <strong>starts to build up</strong> (<a href="https://issues.apache.org/jira/browse/MESOS-1664">MESOS-1664</a>, consider it a &ldquo;soft limit&rdquo;). The scheduler can react by throttling itself (to avoid the error message) or ignoring this alert if it&rsquo;s a temporary burst by design.</p>
+
+<p>Before the early alerting is implemented we <strong>don&rsquo;t recommend using the rate limiting feature to throttle production frameworks</strong> for now unless you are sure about the consequences of the error message. Of course it&rsquo;s OK to use it to protect production frameworks by throttling other frameworks and it doesn&rsquo;t have any effect on the master if it&rsquo;s not explicitly enabled.</p>
+
+	</div>
+</div>
+
+			
+	      <hr>
+
+				<!-- footer -->
+	      <div class="footer">
+	        <p>&copy; 2012-2014 <a href="http://apache.org">The Apache Software Foundation</a>.
+	        Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.<p>
+	      </div><!-- /footer -->
+
+	    </div> <!-- /container -->
+
+	    <!-- JS -->
+	    <script src="//code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+			<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="text/javascript"></script>
+    </body>
+</html>

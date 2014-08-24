@@ -30,7 +30,7 @@
 		    <!-- Le styles -->
 				<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
 		    
-		    <link href="../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+		    <link href="../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
 				
 				
 			
@@ -103,58 +103,67 @@
 		<p>See our <a href="/community/">community</a> page for more details.</p>
 	</div>
 	<div class="col-md-8">
-		<h1>Documentation</h1>
+		<h1>Docker Containerizer</h1>
 
-<h2>Running Mesos</h2>
+<p>Mesos 0.20.0 adds the support for launching tasks that contains Docker images, with also a subset of Docker options supported while we plan on adding more in the future.</p>
 
-<ul>
-<li><a href="/documentation/latest/configuration/">Configuration</a> for command-line arguments</li>
-<li><a href="/documentation/latest/docker-containerizer/">Docker Containerizer</a> for launching a Docker image as a Task, or as an Executor</li>
-<li><a href="/documentation/latest/framework-rate-limiting/">Framework Rate Limiting</a></li>
-<li><a href="/documentation/latest/high-availability/">High Availability</a> for running multiple masters simultaneously.</li>
-<li><a href="/documentation/latest/logging-and-debugging/">Logging and Debugging</a> for viewing Mesos and framework logs.</li>
-<li><a href="/documentation/latest/network-monitoring/">Network Monitoring</a></li>
-<li><a href="/documentation/latest/slave-recovery/">Slave Recovery</a> for doing seamless upgrades</li>
-<li><a href="/documentation/latest/tools/">Tools</a> for setting up and running a Mesos cluster</li>
-</ul>
+<p>Users can either launch a Docker image as a Task, or as an Executor.</p>
 
+<p>The following sections will describe the API changes along with Docker support, and also how to setup Docker.</p>
 
-<h2>Running Mesos Frameworks</h2>
+<h2>Setup</h2>
 
-<ul>
-<li><a href="/documentation/latest/mesos-frameworks/">Mesos frameworks</a> for a list of apps built on top of Mesos, and instructions on how to run them.</li>
-</ul>
+<p>To run the slave to enable the Docker Containerizer, you must launch the slave with &ldquo;docker&rdquo; as one of the containerizers option.</p>
 
+<p>Example: mesos-slave &ndash;containerizers=docker,mesos</p>
 
-<h2>Developing Mesos Frameworks and Applications</h2>
+<p>Each slave that has the Docker containerizer should have Docker CLI client installed (version >= 1.0.0).</p>
 
-<ul>
-<li><a href="/documentation/latest/app-framework-development-guide/">Framework Development Guide</a> describes how to build applications on top of Mesos.</li>
-<li><a href="/documentation/latest/mesos-architecture/">Mesos Architecture</a> providing an overview of Mesos concepts.</li>
-<li><a href="/api/latest/java/">Javadoc</a> documents the Mesos Java API.</li>
-<li><a href="/documentation/latest/tools/">Developer Tools</a> for hacking on Mesos or writing frameworks.</li>
-</ul>
+<h2>How do I use the Docker Containerizer?</h2>
 
+<p>TaskInfo before 0.20.0 used to only support either setting a CommandInfo that launches a task running the bash command, or a ExecutorInfo that launches a custom Executor
+that will launches the task.</p>
 
-<h2>Contributing to Mesos</h2>
+<p>With 0.20.0 we added a ContainerInfo field to TaskInfo and ExecutorInfo that allows a Containerizer such as Docker to be configured to run the task or executor.</p>
 
-<ul>
-<li><a href="/documentation/latest/mesos-code-internals/">Code Internals</a> overview of the codebase and internal organization.</li>
-<li><a href="/documentation/latest/mesos-c++-style-guide/">C++ Style Guide</a></li>
-<li><a href="/documentation/latest/mesos-developers-guide/">Developers Guide</a> includes resources for developers contributing to Mesos and the process of submitting patches for review.</li>
-<li><a href="/documentation/latest/mesos-roadmap/">Development Road Map</a></li>
-<li><a href="/documentation/latest/release-guide/">Release Guide</a></li>
-</ul>
+<p>To run a Docker image as a task, in TaskInfo one must set both the command and the container field as the Docker Containerizer will use the accompanied command to launch the docker image.
+The ContainerInfo should have type Docker and a DockerInfo that has the desired docker image.</p>
 
+<p>To run a Docker image as an executor, in TaskInfo one must set the ExecutorInfo that contains a ContainerInfo with type docker and the CommandInfo that will be used to launch the executor.
+Note that the Docker image is expected to launch up as a Mesos executor that will register with the slave once it launches.</p>
 
-<h2>More Info about Mesos</h2>
+<h2>What does the Docker Containerizer do?</h2>
 
-<ul>
-<li><a href="/documentation/latest/powered-by-mesos/">Powered by Mesos</a> lists organizations and software that are powered by Apache Mesos.</li>
-<li><a href="/documentation/latest/mesos-presentations/">Video and Slides of Mesos Presentations</a></li>
-<li>Academic Papers and Project History</li>
-</ul>
+<p>The Docker Containerizer is translating Task/Executor Launch and Destroy calls to Docker CLI commands.</p>
 
+<p>Currently the Docker Containerizer when launching as task will do the following:</p>
+
+<p>1, Fetch all the files specified in the CommandInfo into the sandbox.
+2, Pull the docker image from the remote repository.
+3, Run the docker image with the configured DockerInfo options, and map the sandbox directory into the Docker container and set the directory mapping to the MESOS_SANDBOX environment variable.
+4. Stream the docker logs into the stdout/stderr files in the sandbox.
+5. Launch the Command Executor to perform a docker wait on the container.
+6. On container exit or containerizer destroy, stop and remove the docker container.</p>
+
+<p>When launching the docker image as an Executor, the only difference is that it skips launching a command executor but just reaps on the docker container executor pid.</p>
+
+<p>Note that we currently default to host networking when running a docker image, to easier support running a docker image asn an Executor.</p>
+
+<p>Also since we explicitly attempt to pull the image on launch, if the docker image is only installed locally but not avaialble on the remote repository the launch will fail as well.</p>
+
+<h2>Private Docker repository</h2>
+
+<p>To run a image from a private repository, one can include the uri pointing to a .dockercfg that contains login information. The .dockercfg file will be pulled into the sandbox the Docker Containerizer
+set the HOME environment variable pointing to the sandbox so docker cli will automatically pick up the config file.</p>
+
+<h2>CommandInfo to run Docker images</h2>
+
+<p>A docker image currently supports having a entrypoint and/or a default command.</p>
+
+<p>To run a docker image with the default command (ie: docker run image), the CommandInfo&rsquo;s value must not be set. If the value is set then it will override the default command.</p>
+
+<p>To run a docker image with an entrypoint defined, the CommandInfo&rsquo;s shell option must be set to false.
+If shell option is set to true the Docker Containerizer will run the user&rsquo;s command wrapped with /bin/sh -c which will also become parameters to the image entrypoint.</p>
 
 	</div>
 </div>
