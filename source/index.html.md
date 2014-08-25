@@ -6,10 +6,10 @@ title: Apache Mesos
 	<div class="row">
 	  <div class="col-md-7 nopadding">
 	    <h1>Develop and run resource-efficient distributed systems</h1>
-	    <p class="lead">Apache Mesos is a cluster manager that simplifies the complexity of running applications on a shared pool of servers.<br /><br /><br /><em>Learn how to <a href="/gettingstarted/">get started</a>, or <a href="/downloads/">download Mesos 0.20.0</a></em></p>
+	    <p class="lead">Apache Mesos is a cluster manager that simplifies the complexity of running applications on a shared pool of servers.<br /></p>
 	  </div>
 	  <div class="col-md-5">
-            <a href="http://events.linuxfoundation.org/events/mesoscon/"><img src="/assets/img/mesoscon-banner-small.png" style="width: 380px" alt="MesosCon banner" /></a>
+			<p class="lead"><em>Learn how to <a href="/gettingstarted/">get started</a>, or <a href="/downloads/">download Mesos 0.20.0</a></em></p>
 	  </div>
 	</div>
 </div>
