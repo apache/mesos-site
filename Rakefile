@@ -2,7 +2,7 @@ require 'rubygems'
 require 'rake/clean'
 require 'fileutils'
 
-task :default => [:update_docs, :javadoc, :build, :clean]
+task :default => [:update_docs, :build, :clean]
 
 tmp_dir = File.join(File.dirname(__FILE__), "tmp")
 mesos_dir = File.join(tmp_dir, "mesos")

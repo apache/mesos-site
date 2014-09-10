@@ -12,17 +12,23 @@ within the publish folder will be the actual deployed site.
 ## Generating the site
 To generate the site one only needs to run `rake` after performing the setup
 tasks mentioned above. This will download the latest Apache Mesos documentation
-and integrate it into the site and generate all other files within the sources
-folder.
+contained in the `docs` folder, integrate them into the site, and generate all
+other files within the source folder.
 
 		rake
 
 
-## Developement 
+## Development 
 To live edit the site run `rake dev` and then open a browser window to 
 http://localhost:4567/ . Any change you make to the sources dir will 
 be shown on the local dev site immediately. Errors will be shown in the 
 console you launched `rake dev` within.
+
+
+## Publishing the Site
+The website uses svnpubsub. The publish folder contains the websites content
+and when committed to the svn repository it will be automatically deployed to 
+the live site.
 
 
 ## Other available tasks
@@ -32,4 +38,5 @@ console you launched `rake dev` within.
 		rake clobber      # Remove any generated file
 		rake dev          # Run the site in development mode
 		rake update_docs  # Update the latest docs from the Apache Mesos codebase
-
+		rake doxygen			# Update doxygen from C++ source files
+		rake javadoc			# Update javadocs from java source files
