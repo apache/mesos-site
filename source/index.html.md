@@ -9,7 +9,7 @@ title: Apache Mesos
 	    <p class="lead">Apache Mesos is a cluster manager that simplifies the complexity of running applications on a shared pool of servers.<br /></p>
 	  </div>
     <div class="col-md-5 text-center download">
-      <a class="btn btn-lg btn-success" href="http://mesos.apache.org/downloads/"><span class="glyphicon glyphicon-download"></span> Download Mesos 0.20.0</a>
+      <a class="btn btn-lg btn-success" href="http://mesos.apache.org/downloads/"><span class="glyphicon glyphicon-download"></span> Download Mesos 0.20.1</a>
       <p>or learn how to <a href="http://mesos.apache.org/gettingstarted/">get started</a></p>
     </div>
 	</div>
@@ -63,6 +63,10 @@ title: Apache Mesos
   <div class="col-md-5">
     <h3>News</h3>
       <ul>
+        <li><em>September 23, 2014</em> - Mesos 0.20.1 is released!
+            See the <a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12311242&version=12327951">0.20.1 release notes</a>
+						and <a href="/blog/mesos-0-20-1-released/">blog post announcement</a> for more details.</li>
+        
 				<li><em>August 21, 2014</em> - Mesos 0.20.0 is released!  See the <a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12311242&version=12326835">0.20.0 release notes</a> and <a href="/blog/mesos-0-20-0-released/">blog post announcement</a> for more details.</li>
 
 				<li><em>July 24, 2014</em> - <a href="/blog/mesoscon-2014-hackathon-details-announced/">#MesosCon Hackathon Details Announced</a></li>
@@ -80,23 +84,9 @@ title: Apache Mesos
             See the <a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12311242&version=12326253">0.19.0 release notes</a>
             and <a href="/blog/mesos-0-19-0-released/">blog post announcement</a> for more details.</li>
         
-        <li><em>May 29, 2014</em> - Mesos 0.18.1 and 0.18.2 are released!
-            See the <a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12311242&version=12326752">0.18.1 release notes</a>,
-            <a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12311242&version=12326851">0.18.2 release notes</a>
-            and <a href="/blog/mesos-0-18-1-and-0-18-2-released/">blog post announcement</a> for more details.
-        </li>
-        
-        <li><em>April 10, 2014</em> - Mesos 0.18.0 is released!
-            See the <a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12311242&version=12326140">release notes</a>
-            and <a href="/blog/mesos-0-18-0-released/">blog post announcement</a> for more details.</li>
-        
         <li><em>March 28, 2014</em> - Mesos Community Update #1.
             See the <a href="blog/mesos-community-update-1/">blog post</a>.</li>
           
-        <li><em>March 6, 2014</em> - Mesos 0.17.0 is released!
-            See the <a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12311242&version=12325669">release notes</a>
-            and <a href="blog/mesos-0-17-0-released-featuring-autorecovery/">blog post announcement</a>.</li>
-
       <br />
 
       <h3>Follow Us</h3>
