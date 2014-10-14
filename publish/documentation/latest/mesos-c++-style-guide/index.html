@@ -127,7 +127,14 @@
 
 <ul>
 <li>We use <a href="http://en.wikipedia.org/wiki/CamelCase#Variations_and_synonyms">lowerCamelCase</a> for function names (Google uses mixed case for regular functions; and their accessors and mutators match the name of the variable).</li>
-<li>Leave spaces around overloaded operators.  e.g. <code>operator + (...);</code> rather than <code>operator+(...);</code></li>
+<li>Leave spaces around overloaded operators, e.g. <code>operator + (...);</code> rather than <code>operator+(...);</code></li>
+</ul>
+
+
+<h3>Namespace Names</h3>
+
+<ul>
+<li>We do not use namespace aliases.</li>
 </ul>
 
 
@@ -228,12 +235,33 @@ Try&lt;Duration&gt; failoverTimeout =
 
 <h2>C++11</h2>
 
-<p>We still support older compilers. The whitelist of supported C++11 features is:
-* Static assertions.
-* Multiple right angle brackets.
-* Type inference (<code>auto</code> and <code>decltype</code>).
-* Rvalue references.
-* Variadic templates.</p>
+<p>We still support older compilers. The whitelist of supported C++11 features is:</p>
+
+<ul>
+<li>Static assertions.</li>
+<li>Multiple right angle brackets.</li>
+<li>Type inference (<code>auto</code> and <code>decltype</code>). The main goal is to increase code readability. Here are several examples:</li>
+</ul>
+
+
+<pre>
+// 1: OK.
+const auto& i = values.find(keys.front());
+// Compare with
+const typename map::iterator& i = values.find(keys.front());
+
+// 2: Don't use.
+auto authorizer = LocalAuthorizer::create(acls);
+// Compare with
+Try<Owned<LocalAuthorizer>> authorizer = LocalAuthorizer::create();
+</pre>
+
+
+<ul>
+<li>Rvalue references.</li>
+<li>Variadic templates.</li>
+</ul>
+
 
 	</div>
 </div>
