@@ -30,7 +30,7 @@
 		    <!-- Le styles -->
 				<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
 		    
-		    <link href="../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+		    <link href="../../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
 				
 				
 			
@@ -103,67 +103,11 @@
 		<p>See our <a href="/community/">community</a> page for more details.</p>
 	</div>
 	<div class="col-md-8">
-		<h1>Documentation</h1>
+		<h1>Torque or MPI on Mesos</h1>
 
-<h2>Mesos Fundamentals</h2>
+<p>Torque is cluster scheduler that we have ported in a very simple way (via some Python wrappers around Torque) to run on top of Mesos. This port can be found in <code>MESOS_HOME/frameworks/torque</code>. There is a README.txt in that directory with some details. But for now while were in Alpha looking directly at the python source for the framework scheduler and executor will be helpful.</p>
 
-<ul>
-<li><a href="/documentation/latest/mesos-architecture/">Mesos Architecture</a> providing an overview of Mesos concepts.</li>
-<li><a href="/documentation/latest/mesos-presentations/">Video and Slides of Mesos Presentations</a></li>
-</ul>
-
-
-<h2>Running Mesos</h2>
-
-<ul>
-<li><a href="/documentation/latest/configuration/">Configuration</a> for command-line arguments.</li>
-<li><a href="/documentation/latest/docker-containerizer/">Docker Containerizer</a> for launching a Docker image as a Task, or as an Executor.</li>
-<li><a href="/documentation/latest/authorization/">Framework Authorization</a></li>
-<li><a href="/documentation/latest/framework-rate-limiting/">Framework Rate Limiting</a></li>
-<li><a href="/documentation/latest/high-availability/">High Availability</a> for running multiple masters simultaneously.</li>
-<li><a href="/documentation/latest/logging-and-debugging/">Logging and Debugging</a> for viewing Mesos and framework logs.</li>
-<li><a href="/documentation/latest/network-monitoring/">Network Monitoring</a></li>
-<li><a href="/documentation/latest/slave-recovery/">Slave Recovery</a> for doing seamless upgrades.</li>
-<li><a href="/documentation/latest/tools/">Tools</a> for setting up and running a Mesos cluster.</li>
-</ul>
-
-
-<h2>Running Mesos Frameworks</h2>
-
-<ul>
-<li><a href="/documentation/latest/mesos-frameworks/">Mesos frameworks</a> for a list of apps built on top of Mesos, and instructions on how to run them.</li>
-</ul>
-
-
-<h2>Developing Mesos Frameworks</h2>
-
-<ul>
-<li><a href="/documentation/latest/app-framework-development-guide/">Framework Development Guide</a> describes how to build applications on top of Mesos.</li>
-<li><a href="/documentation/latest/reconciliation/">Reconciliation</a> for ensuring a framework&rsquo;s state remains eventually consistent in the face of failures.</li>
-<li><a href="/api/latest/java/">Javadoc</a> documents the Mesos Java API.</li>
-<li><a href="/documentation/latest/tools/">Developer Tools</a> for hacking on Mesos or writing frameworks.</li>
-</ul>
-
-
-<h2>Contributing to Mesos</h2>
-
-<ul>
-<li><a href="/documentation/latest/committers-guide/">Committer&rsquo;s Guide</a> a guiding document for etiquette in reviews and commits.</li>
-<li><a href="/documentation/latest/mesos-code-internals/">Code Internals</a> an overview of the codebase and internal organization.</li>
-<li><a href="/documentation/latest/mesos-c++-style-guide/">C++ Style Guide</a></li>
-<li><a href="/documentation/latest/mesos-developers-guide/">Developers Guide</a> includes resources for developers contributing to Mesos and the process of submitting patches for review.</li>
-<li><a href="/documentation/latest/mesos-roadmap/">Development Road Map</a></li>
-<li><a href="/documentation/latest/release-guide/">Release Guide</a></li>
-</ul>
-
-
-<h2>More Info about Mesos</h2>
-
-<ul>
-<li><a href="/documentation/latest/powered-by-mesos/">Powered by Mesos</a> lists organizations and software that are powered by Apache Mesos.</li>
-<li>Academic Papers and Project History</li>
-</ul>
-
+<p>We have also run MPICH2 directly on top of mesos. See <code>MESOS_HOME/frameworks/mpi</code> for this port. Basically it sets up the MPICH2 MPD ring for you when you use nmpiexec (which is named that way because Mesos used to be called <strong>N</strong>exus).</p>
 
 	</div>
 </div>
