@@ -225,6 +225,24 @@ $ echo "57345 61000" &gt; /proc/sys/net/ipv4/ip_local_port_range
 ]
 </code></pre>
 
+<h1>Network Egress Rate Limit</h1>
+
+<p>Mesos 0.21.0 adds an optional feature to limit the egress network bandwidth for each container. With this feature enabled, each container&rsquo;s egress traffic is limited to the specified rate. This can prevent a single container from dominating the entire network.</p>
+
+<h2>How to enable it?</h2>
+
+<p>Egress Rate Limit requires Network Monitoring. To enable it, please follow all the steps in the <a href="#Network_Monitoring">previous section</a> to enable the Network Monitoring first, and then use the newly introduced <code>egress_rate_limit_per_container</code> flag to specify the rate limit for each container. Note that this flag expects a <code>Bytes</code> type like the following:</p>
+
+<pre><code>mesos-slave \
+    --checkpoint \
+    --log_dir=/var/log/mesos \
+    --work_dir=/var/lib/mesos \
+    --isolation=cgroups/cpu,cgroups/mem,network/port_mapping \
+    --resources=cpus:22;mem:62189;ports:[31000-32000];disk:400000;ephemeral_ports:[32768-57344] \
+    --ephemeral_ports_per_container=1024 \
+    --egress_rate_limit_per_container=37500KB # Convert to ~300Mbits/s.
+</code></pre>
+
 	</div>
 </div>
 
