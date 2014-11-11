@@ -10,6 +10,42 @@ This guide describes the process of doing an official release of Mesos.
 
 ## Prerequisites
 
+1. Ensure that you have a GPG key or generate a new one, e.g., using `gpg --gen-key`.
+
+2. Add your GPG public key to the Apache Mesos dist repository in the KEYS file.
+  - Fetch the svn repository `svn co https://dist.apache.org/repos/dist/release/mesos`
+  - Append your public key using one of methods described in KEYS,
+    e.g., `(gpg --list-sigs <your name> && gpg --armor --export <your name>) >> KEYS`.
+  - Push the commit: `svn ci`
+
+3. Submit your GPG public key to a keyserver, e.g., [MIT PGP Public Key Server](https://pgp.mit.edu).
+
+4. Add your GPG fingerprint to your [Apache account](https://id.apache.org/).
+
+5. Create a Maven settings file (`~/.m2/settings.xml`) for the Apache
+   servers. Encrypt your Apache password using `mvn --encrypt-password`.
+```
+<settings>
+  <servers>
+    <server>
+      <id>apache.snapshots.https</id>
+      <username>APACHE USERNAME</username>
+      <password>APACHE ENCRYPTED PASSWORD</password>
+    </server>
+    <server>
+      <id>apache.releases.https</id>
+      <username>APACHE USERNAME</username>
+      <password>APACHE ENCRYPTED PASSWORD</password>
+    </server>
+  </servers>
+</settings>
+```
+
+6. Use `gpg-agent` to avoid typing your passphrase repeatedly.
+
+
+## Preparation
+
 1. Go to [Apache Jira](https://issues.apache.org/jira/browse/MESOS) and make sure that
    the CHANGELOG for the release version is up to date.
 
@@ -25,12 +61,15 @@ This guide describes the process of doing an official release of Mesos.
      version in [JIRA](https://issues.apache.org/jira/browse/MESOS#selectedTab=com.atlassian.jira.plugin.system.project%3Aversions-panel) and click
      on the `Release Notes`. Make sure to configure the release notes in text format.
 
-3. If not already done, update and commit 'configure.ac' for the release.
+3. If not already done, update and commit `configure.ac` for the release.
 
-4. Update and commit the `docs/upgrades.md` with instructions about how to upgrade
+4. Update and commit `docs/configuration.md` to reflect the current state of
+   the master, slave, and configure flags.
+
+5. Update and commit `docs/upgrades.md` with instructions about how to upgrade
    a live cluster from the previous release version to this release version.
 
-5. If this is a major release please write and commit documentation for this feature.
+6. If this is a major release please write and commit documentation for this feature.
 
 
 ## Tagging the release candidate
@@ -57,6 +96,7 @@ This guide describes the process of doing an official release of Mesos.
 4. It is not uncommon to release multiple release candidates, with increasing release candidate
    version, if there are bugs found.
 
+5. Update to the *next* Mesos version in `configure.ac`: change `AC_INIT([mesos], [X.Y.Z]))` and commit.
 
 ## Voting the release candidate
 

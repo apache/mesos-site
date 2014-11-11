@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<!--
+
+		 ______                           __                
+		/\  _  \                         /\ \               
+		\ \ \L\ \  _____      __      ___\ \ \___      __   
+		 \ \  __ \/\ '__`\  /'__`\   /'___\ \  _ `\  /'__`\ 
+		  \ \ \/\ \ \ \L\ \/\ \L\.\_/\ \__/\ \ \ \ \/\  __/ 
+		   \ \_\ \_\ \ ,__/\ \__/.\_\ \____\\ \_\ \_\ \____\
+		    \/_/\/_/\ \ \/  \/__/\/_/\/____/ \/_/\/_/\/____/
+		             \ \_\                                  
+		              \/_/                                  
+                                                    
+		       /'\_/`\                                      
+		      /\      \     __    ____    ___     ____      
+		      \ \ \__\ \  /'__`\ /',__\  / __`\  /',__\     
+		       \ \ \_/\ \/\  __//\__, `\/\ \L\ \/\__, `\    
+		        \ \_\\ \_\ \____\/\____/\ \____/\/\____/    
+		         \/_/ \/_/\/____/\/___/  \/___/  \/___/     
+
+-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+		    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		    <meta name="description" content="">
+		    <meta name="author" content="">
+
+		    <!-- Le styles -->
+				<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+		    
+		    <link href="../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+				
+				
+			
+			<!-- Google Analytics Magic -->
+			<script type="text/javascript">
+			  var _gaq = _gaq || [];
+			  _gaq.push(['_setAccount', 'UA-20226872-1']);
+			  _gaq.push(['_setDomainName', 'apache.org']);
+			  _gaq.push(['_trackPageview']);
+
+			  (function() {
+			    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			  })();
+			</script>
+    </head>
+    <body>
+			<!-- magical breadcrumbs -->
+			<div class="topnav">
+			<ul class="breadcrumb">
+			  <li>
+					<div class="dropdown">
+					  <a data-toggle="dropdown" href="#">Apache Software Foundation <span class="caret"></span></a>
+					  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+							<li><a href="http://www.apache.org">Apache Homepage</a></li>
+							<li><a href="http://www.apache.org/licenses/">License</a></li>
+					  	<li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>  
+					  	<li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+							<li><a href="http://www.apache.org/security/">Security</a></li>
+					  </ul>
+					</div>
+				</li>
+				<li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+				
+				
+					<li><a href="/documentation
+/">Documentation
+</a></li>
+				
+				
+			</ul><!-- /breadcrumb -->
+			</div>
+			
+			<!-- navbar excitement -->
+	    <div class="navbar navbar-static-top" role="navigation">
+	      <div class="navbar-inner">
+	        <div class="container">
+						<a href="/" class="logo"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo" /></a>
+					<div class="nav-collapse">
+						<ul class="nav nav-pills navbar-right">
+						  <li><a href="/gettingstarted/">Getting Started</a></li>
+						  <li><a href="/documentation/latest/">Documentation</a></li>
+						  <li><a href="/downloads/">Downloads</a></li>
+						  <li><a href="/community/">Community</a></li>
+						</ul>
+					</div>
+	        </div>
+	      </div>
+	    </div><!-- /.navbar -->
+
+      <div class="container">
+
+			<div class="row-fluid">
+	<div class="col-md-4">
+		<h4>If you're new to Mesos</h4>
+		<p>See the <a href="/gettingstarted/">getting started</a> page for more information about downloading, building, and deploying Mesos.</p>
+		
+		<h4>If you'd like to get involved or you're looking for support</h4>
+		<p>See our <a href="/community/">community</a> page for more details.</p>
+	</div>
+	<div class="col-md-8">
+		<h1>Mesos Modules</h1>
+
+<p>Experimental support for Mesos modules was introduced in Mesos 0.21.0.</p>
+
+<h3>Disclaimer</h3>
+
+<ul>
+<li><p>Use and development of Mesos modules is at own risk! Only graced modules
+(modules that are part of Mesos distribution) are maintained by the Mesos
+project.</p></li>
+<li><p>Please direct all questions to the relevant module writer and/or write to
+modules@mesos.apache.org. Questions related to modules sent to user and dev list
+will be redirected to the modules list.</p></li>
+</ul>
+
+
+<h2>What are Mesos modules?</h2>
+
+<p>Mesos modules provide a way to easily extend inner workings of Mesos by creating
+and using shared libraries that are loaded on demand.  Modules can be used to
+customize Mesos without having to recompiling/relinking for each specific use
+case.  Modules can isolate external dependencies into separate libraries, thus
+resulting into a smaller Mesos core.
+Modules also make it easy to experiment with new features.
+For example, imagine loadable allocators that contain a VM (Lua, Python, &hellip;)
+which makes it possible to try out new allocator algorithms written in
+scripting languages without forcing those dependencies into the project.
+Finally, modules provide an easy way for third parties to easily extend Mesos
+without having to know all the internal details.</p>
+
+<h2>Invoking Mesos modules</h2>
+
+<p>The command-line flag <code>--modules</code> is available for Mesos master, slave, and
+tests to specify a list of modules to be loaded and be available to the internal
+subsystems.</p>
+
+<p>Use <code>--modules=filepath</code> to specify the list of modules via a
+file containing a JSON formatted string. &lsquo;filepath&rsquo; can be
+of the form &lsquo;file:///path/to/file&rsquo; or &lsquo;/path/to/file&rsquo;.</p>
+
+<p>Use <code>--modules="{...}"</code> to specify the list of modules inline.</p>
+
+<h3>Example JSON strings:</h3>
+
+<ol>
+<li><p>Load a library <code>libfoo.so</code> with two modules <code>org_apache_mesos_bar</code> and
+<code>org_apache_mesos_baz</code>.</p>
+
+<pre><code>{
+  "libraries": [
+    {
+      "file": "/path/to/libfoo.so",
+      "modules": [
+        {
+          "name": "org_apache_mesos_bar",
+        },
+        {
+          "name": "org_apache_mesos_baz"
+        }
+      ]
+    }
+  ]
+}
+</code></pre></li>
+<li><p>Load the module <code>org_apache_mesos_bar</code> from the library <code>foo</code> and pass
+the command-line argument <code>X</code> with value <code>Y</code> (module <code>org_apache_mesos_baz</code>
+is loaded without any command-line parameters):</p>
+
+<pre><code>{
+  "libraries": [
+    {
+      "name": "foo",
+      "modules": [
+        {
+          "name": "org_apache_mesos_bar"
+          "parameters": [
+            {
+              "key": "X",
+              "value": "Y",
+            }
+          ]
+        },
+        {
+          "name": "org_apache_mesos_bar"
+        }
+      ]
+    }
+  ]
+}
+</code></pre></li>
+<li><p>Specifying modules inline:</p>
+
+<pre><code>--modules='{"libraries":[{"file":"/path/to/libfoo.so", "modules":[{"name":"org_apache_mesos_bar"}]}]}'
+</code></pre></li>
+</ol>
+
+
+<h3>Library names</h3>
+
+<p>For each library, at least one of the &ldquo;file&rdquo; or &ldquo;path&rdquo; parameter must be
+specified.  The &ldquo;file&rdquo; parameter may refer to a filename (e.g., &ldquo;libfoo.so&rdquo;), a
+relative path (e.g., &ldquo;myLibs/libfoo.so&rdquo;), or an absolute path (e.g.,
+&ldquo;/home/mesos/lib/libfoo.so&rdquo;).  The &ldquo;name&rdquo; parameter refers to a library name
+(e.g., &ldquo;foo&rdquo;).  If &ldquo;name&rdquo; is specified, it is automatically expanded to a proper
+library name for the current platform (e.g., &ldquo;foo&rdquo; gets expanded to &ldquo;libfoo.so&rdquo;
+on Linux, and &ldquo;libfoo.dylib&rdquo; on OS X).</p>
+
+<p>If a library path is not specified in the &ldquo;file&rdquo; parameter, the library is
+searched in the standard library paths or directories pointed to by the
+<code>LD_LIBRARY_PATH</code> (<code>DYLD_LIBRARY_PATH</code> on OS X) environment variable.</p>
+
+<p>If both &ldquo;file&rdquo; and &ldquo;name&rdquo; are specified, &ldquo;name&rdquo; is ignored.</p>
+
+<h2>What kinds of modules are supported?</h2>
+
+<p>Mesos currently only provides Isolator and Authentication modules.  Additional
+graced modules will be added in the near future.</p>
+
+<h2>Writing Mesos modules</h2>
+
+<h3>A HelloWorld module</h3>
+
+<p>The following snippet describes the implementation of a module named
+&ldquo;org_apache_mesos_bar&rdquo; of &ldquo;TestModule&rdquo; kind:</p>
+
+<pre><code>  #include &lt;iostream&gt;
+  #include "test_module.hpp"
+
+  class TestModuleImpl : public TestModule
+  {
+  public:
+    TestModuleImpl()
+    {
+      std::cout &lt;&lt; "HelloWorld!" &lt;&lt; std::endl;
+    }
+
+    virtual int foo(char a, long b)
+    {
+      return a + b;
+    }
+
+    virtual int bar(float a, double b)
+    {
+      return a * b;
+    }
+  };
+
+  static TestModule* create()
+  {
+      return new TestModule();
+  }
+
+  static bool compatible()
+  {
+    return true;
+  }
+
+  // Declares a module named 'example' of 'TestModule' kind.
+  // Mesos core binds the module instance pointer as needed.
+  // The compatible() hook is provided by the module for compatibility checks.
+  // The create() hook returns an object of type 'TestModule'.
+  mesos::modules::Module&lt;TestModule&gt; org_apache_mesos_TestModule(
+      MESOS_MODULE_API_VERSION,
+      MESOS_VERSION,
+      "Apache Mesos",
+      "modules@mesos.apache.org",
+      "This is a test module.",
+      compatible,
+      create);
+</code></pre>
+
+<h3>Building a module</h3>
+
+<p>  The following assumes that Mesos is installed in the standard location, i.e.
+  the Mesos dynamic library and header files are available.
+<code>
+  g++ -lmesos -fpic -o test_module.o test_module.cpp
+  $ gcc -shared -o libtest_module.so test_module.o
+</code></p>
+
+<h3>Testing a modules</h3>
+
+<p>Apart from testing the module by hand with explicit use of &ndash;modules flag, one
+can run the entire mesos test suite with the given module. For example, the
+following command will run the mesos test suite with the
+<code>org_apache_mesos_TestCpuIsolator</code> module selected for isolation:
+<code>
+./bin/mesos-tests.sh --modules="/home/kapil/mesos/isolator-module/modules.json" --isolation="org_apache_mesos_TestCpuIsolator"
+</code></p>
+
+<h3>Module naming convention</h3>
+
+<p>Each module name should be unique.  Having duplicate module names in the Json
+string will cause the process to abort.</p>
+
+<p>Therefore, we encourage module writers to name their modules according to Java
+package naming scheme
+(http://docs.oracle.com/javase/tutorial/java/package/namingpkgs.html).</p>
+
+<p>For example:</p>
+
+<table>
+<tr>
+<th> Module Name </th> <th> Module Domain name </th> <th> Module Symbol Name </th>
+</tr>
+
+<tr>
+<td> foobar      </td> <td> mesos.apache.org   </td> <td> org_apache_mesos_foobar </td>
+</tr>
+
+<tr>
+<td> barBaz      </td> <td> example.com        </td> <td> com_example_barBaz       </td>
+</table>
+
+
+<p>In short:
+- Keep case of module name.
+- Lower case and reverse domain.
+- Separate with underscore.
+- Do not simply use the kind name as module name.
+- Different modules from the same organization still need different names.</p>
+
+<h2>Module Versioning and backwards compatibility</h2>
+
+<p>Before loading the above module, a dynamic library that contains the module
+needs to be loaded into Mesos. This happens early in Mesos startup code. The
+Mesos developer does not need to touch that code when introducing new module
+kinds.  However, the developer is responsible for registering what versions of
+any given module are expected to remain compatible with Mesos as it progresses.
+This information is maintained in a table in <code>src/module/manager.cpp</code>. It
+contains an entry for every possible module kind that Mesos recognizes, each
+with a corresponding Mesos release version number. This number needs to be
+adjusted by the Mesos developer to reflect the current Mesos version whenever
+compatibility between Mesos and modules that get compiled against it gets
+broken. Given that module implementation for older Mesos versions can still be
+written in the future, this may be impossible to tell and so in doubt it is best
+to just bump the required module version to the current Mesos version. But if
+one can be reasonably sure, assuming cooperative module developers, that a
+certain kind of module will continue to function across several Mesos versions,
+the table provides an easy way to specify this.</p>
+
+<p>For successfully loading the module, the following relationship
+must exist between the various versions:</p>
+
+<p><code> kind version &lt;= Library version &lt;= Mesos version</code></p>
+
+<table>
+<tr>
+<td>Mesos </td> <td>kind version </td> <td> Library </td> <td>Is module loadable </td> <td>Reason </td>
+</tr>
+
+<tr>
+<td>0.18.0 </td> <td> 0.18.0 </td> <td> 0.18.0  </td> <td> yes </td> <td> </td>
+</tr>
+
+<tr>
+<td>0.29.0 </td> <td> 0.18.0 </td> <td> 0.18.0  </td> <td> yes </td> <td> </td>
+</tr>
+
+<tr>
+<td>0.29.0 </td> <td> 0.18.0 </td> <td> 0.21.0  </td> <td> yes </td> <td> </td>
+</tr>
+
+<tr>
+<td>0.18.0 </td> <td> 0.18.0 </td> <td> 0.29.0  </td> <td> NO </td> <td> Library compiled against a newer Mesos release.                </td>
+</tr>
+
+<tr>
+<td>0.29.0 </td> <td> 0.21.0 </td> <td> 0.18.0  </td> <td> NO </td> <td> Module/Library older than the kind version supported by Mesos. </td>
+<tr>
+</tr>
+
+<tr>
+<td>0.29.0 </td> <td> 0.29.0 </td> <td> 0.18.0  </td> <td> NO </td> <td> Module/Library older than the kind version supported by Mesos. </td>
+</tr>
+</table>
+
+
+<h2>Mesos module API changes</h2>
+
+<p>Record of incompatible changes to the modules API.</p>
+
+<h3>Version 2</h3>
+
+<ul>
+<li>Added support for module-specific command-line parameters.</li>
+<li>Changed function signature for create().</li>
+</ul>
+
+
+<h3>Version 1</h3>
+
+<p>Initial version of the modules API.</p>
+
+<h2>Appendix:</h2>
+
+<h3>JSON Schema:</h3>
+
+<pre><code>  {
+    "type":"object",
+    "required":false,
+    "properties":{
+      "libraries": {
+        "type":"array",
+        "required":false,
+        "items":
+        {
+          "type":"object",
+          "required":false,
+          "properties":{
+            "file": {
+              "type":"string",
+              "required":false
+            },
+            "name": {
+              "type":"string",
+              "required":false
+            },
+            "modules": {
+              "type":"array",
+              "required":false,
+              "items":
+              {
+                "type":"object",
+                "required":false,
+                "properties":{
+                  "name": {
+                    "type":"string",
+                    "required":true
+                  },
+                  "parameters": {
+                    "type":"array",
+                    "required":false,
+                    "items":
+                    {
+                      "type":"object",
+                      "required":false,
+                      "properties":{
+                        "key": {
+                          "type":"string",
+                          "required":true
+                        },
+                        "value": {
+                          "type":"string",
+                          "required":true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+</code></pre>
+
+	</div>
+</div>
+
+			
+	      <hr>
+
+				<!-- footer -->
+	      <div class="footer">
+	        <p>&copy; 2012-2014 <a href="http://apache.org">The Apache Software Foundation</a>.
+	        Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.<p>
+	      </div><!-- /footer -->
+
+	    </div> <!-- /container -->
+
+	    <!-- JS -->
+	    <script src="//code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+			<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="text/javascript"></script>
+    </body>
+</html>
