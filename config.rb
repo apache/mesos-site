@@ -12,6 +12,7 @@
 # limitations under the License.
 #
 require "middleman-blog"
+require "htmlentities"
 
 set :markdown_engine, :rdiscount
 set :markdown, :layout_engine => :erb,
@@ -49,6 +50,8 @@ latest_doc_pages.each do |page_path|
 end
 
 page "/sitemap.xml", :layout => false
+
+page "/blog/feed.xml", :layout => false
 
 # Turn off directory index for API docs because it breaks links
 page "/api/*", :directory_index => false

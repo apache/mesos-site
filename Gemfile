@@ -7,3 +7,4 @@ gem 'middleman-blog', '3.5.1'
 
 gem "rdiscount", '2.1.7'
 
+gem "htmlentities"
