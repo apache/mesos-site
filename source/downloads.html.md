@@ -8,8 +8,6 @@ breadcrumb: Downloads
     <h4>Previous Releases</h4>
 
     <ul>
-      <li><a href="http://apache.org/dist/mesos/0.21.0/">0.21.0</a>
-           (<a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12311242&version=12327045">Release Notes</a>)</li>
       <li><a href="http://archive.apache.org/dist/mesos/0.20.0/">0.20.0</a>
            (<a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12311242&version=12326835">Release Notes</a>)</li>
       <li><a href="http://archive.apache.org/dist/mesos/0.19.1/">0.19.1</a>
