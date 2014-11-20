@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Mesos 0.21.0 Released</title>
+		    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+		    <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
+		    
+		    <link href="../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+				
+		    
+			
+			<!-- Google Analytics Magic -->
+			<script type="text/javascript">
+			  var _gaq = _gaq || [];
+			  _gaq.push(['_setAccount', 'UA-20226872-1']);
+			  _gaq.push(['_setDomainName', 'apache.org']);
+			  _gaq.push(['_trackPageview']);
+
+			  (function() {
+			    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			  })();
+			</script>
+    </head>
+    <body>
+			<!-- magical breadcrumbs -->
+			<div class="topnav">
+			<ul class="breadcrumb">
+			  <li>
+					<div class="dropdown">
+					  <a data-toggle="dropdown" href="#">Apache Software Foundation <span class="caret"></span></a>
+					  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+							<li><a href="http://www.apache.org">Apache Homepage</a></li>
+							<li><a href="http://www.apache.org/licenses/">License</a></li>
+					  	<li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>  
+					  	<li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+							<li><a href="http://www.apache.org/security/">Security</a></li>
+					  </ul>
+					</div>
+				</li>
+				<li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+				
+				
+					<li><a href="/blog
+/">Blog
+</a></li>
+				
+				
+			</ul><!-- /breadcrumb -->
+			</div>
+			
+			<!-- navbar excitement -->
+	    <div class="navbar navbar-static-top" role="navigation">
+	      <div class="navbar-inner">
+	        <div class="container">
+						<a href="/" class="logo"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo" /></a>
+					<div class="nav-collapse">
+						<ul class="nav nav-pills navbar-right">
+						  <li><a href="/gettingstarted/">Getting Started</a></li>
+						  <li><a href="/documentation/latest/">Documentation</a></li>
+						  <li><a href="/downloads/">Downloads</a></li>
+						  <li><a href="/community/">Community</a></li>
+						</ul>
+					</div>
+	        </div>
+	      </div>
+	    </div><!-- /.navbar -->
+
+      <div class="container">
+
+			<div class="row">
+
+<div class="col-md-3">
+	<div class="meta">
+		<span class="author">
+			
+			<span class="author_contact">
+			  <p><strong>Ian Downes</strong></p>
+			  <p><a href="http://twitter.com/ndwns">@ndwns</a></p>
+			</span>
+		</span>
+		<p><em>Posted November 17, 2014</em></p>
+	</div>
+	
+	<div class="share">
+		<span class="social-share-button"><a href="https://twitter.com/share" class="twitter-share-button" data-via="apachemesos">Tweet</a></span>
+		
+		<span><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></span>
+
+		<span><div class="g-plusone" data-size="medium"></div></span>
+
+		<!-- Place this tag after the last +1 button tag. -->
+		<script type="text/javascript">
+		  (function() {
+		    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+		    po.src = 'https://apis.google.com/js/plusone.js';
+		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+		  })();
+		</script>
+		
+		<script src="//platform.linkedin.com/in.js" type="text/javascript">
+		 lang: en_US
+		</script>
+		<script type="IN/Share" data-counter="right"></script>
+	</div>
+</div>
+
+<div class="post col-md-9">
+	<h1>Mesos 0.21.0 Released</h1>
+	
+	<p>The latest Mesos release, 0.21.0, is now available for <a href="http://mesos.apache.org/downloads/">download</a>. This version includes the following features and improvements:</p>
+
+<ul>
+<li>Task reconciliation for frameworks (<a href="https://issues.apache.org/jira/browse/MESOS-1407">MESOS-1407</a>)</li>
+<li>Support for Mesos modules (<a href="https://issues.apache.org/jira/browse/MESOS-1931">MESOS-1931</a>)</li>
+<li>Task status now includes source and reason (<a href="https://issues.apache.org/jira/browse/MESOS-343">MESOS-343</a>, <a href="https://issues.apache.org/jira/browse/MESOS-1143">MESOS-1143</a>)</li>
+<li>A shared filesystem isolator (<a href="https://issues.apache.org/jira/browse/MESOS-1143">MESOS-1586</a>)</li>
+<li>A pid namespace isolator (<a href="https://issues.apache.org/jira/browse/MESOS-1765">MESOS-1765</a>)</li>
+</ul>
+
+
+<p>Full release notes are available in the release <a href="https://github.com/apache/mesos/blob/master/CHANGELOG">CHANGELOG</a>.</p>
+
+<h3>State Reconciliation</h3>
+
+<p>Frameworks are now able to reconcile task state through the mesos API, to ensure that they remain eventually consistent in the face of failures. Read more about reconciliation <a href="http://mesos.apache.org/documentation/latest/reconciliation/">here</a>.</p>
+
+<h3>Mesos Modules</h3>
+
+<p>Experimental support for Mesos modules was introduced in Mesos 0.21.0;
+please note the <a href="http://mesos.apache.org/documentation/latest/modules">disclaimer</a>.</p>
+
+<p>Mesos modules provide a way to easily extend inner workings of Mesos by creating and using shared libraries that are loaded on demand.  Modules can be used to customize Mesos without having to recompiling/relinking for each specific use case. Modules can isolate external dependencies into separate libraries, thus resulting into a smaller Mesos core. Modules also make it easy to experiment with new features. For example, imagine loadable allocators that contain a VM (Lua, Python, …) which makes it possible to try out new allocator algorithms written in scripting languages without forcing those dependencies into the project. Finally, modules provide an easy way for third parties to easily extend Mesos without having to know all the internal details.</p>
+
+<p>For more details, please read the <a href="http://mesos.apache.org/documentation/latest/modules">modules documentation</a></p>
+
+<h3>Task Status Includes Source and Reason</h3>
+
+<p>The <code>TaskStatus</code> associated with a status update has relied on a single enum and free-form string to communicate the status. There are benefits to adding more data to the status update, and in Mesos 0.21.0, we have introduced the notion of a <code>Source</code> and <code>Reason</code>.</p>
+
+<p>The source of a status update is, broadly speaking, the actor that changed the status. This can currently be Master, Slave, or Executor.  Similarly, we have added an enumeration of reasons for the status update. The list can be found in <code>include/mesos/mesos.proto</code> and is fairly extensive.</p>
+
+<p>Our hope is that frameworks can use the source and reason to better communicate status updates to end users, and make better scheduling decisions.</p>
+
+<p>We have also introduced the notion of a <code>TASK_ERROR</code> state, distinct from <code>TASK_LOST</code>. The semantic difference is that tasks that are updated as lost can be rescheduled and should succeed, while tasks with status error will continue to fail if they are rescheduled. In Mesos 0.21.0 we do not send <code>TASK_ERROR</code> but it has been defined so frameworks can prepare to receive it. We will start sending it in Mesos 0.22.0.</p>
+
+<h3>Shared Filesystem Isolator</h3>
+
+<p>Mesos 0.21.0 introduces an optional shared filesystem isolator for the Mesos Containerizer. The isolator does not provide full filesystem encapsulation like Docker. It is intended for deployments where containers share the host&rsquo;s root filesystem but certain parts of the filesystem should be made private to each container.</p>
+
+<p>One example use-case is a private <code>/tmp</code> directory for each container.  Processes running in the container will see a normal <code>/tmp</code> directory but it actually refers to a subdirectory of the executor work directory, e.g., the relative path <code>./tmp</code>. Processes will not be able to see files in the host&rsquo;s <code>/tmp</code> directory or the <code>/tmp</code> directory of any other container.</p>
+
+<p>This isolator is available only on Linux.</p>
+
+<h3>Pid Namespace Isolator</h3>
+
+<p>Mesos 0.21.0 also introduces an optional pid namespace isolator for the Mesos Containerizer. The isolator runs each container in its own pid namespace such that processes inside a container will not have visibility to processes running on the host or in other containers.</p>
+
+<p>The Mesos Containerizer Launcher has been updated to use the pid namespace to terminate all processes when destroying a container. This avoids known kernel bugs and race conditions when using the freezer cgroup. If the container is not running inside a pid namespace (started with an earlier slave version), the launcher will fall back to the prior behavior and use the freezer cgroup.</p>
+
+<p>This isolator is only available on Linux.</p>
+
+<h3>Getting Involved</h3>
+
+<p>We encourage you to try out this release and let us know what you think. If you run into any issues, please let us know on the <a href="https://mesos.apache.org/community">user mailing list and IRC</a>.</p>
+
+<h3>Thanks</h3>
+
+<p>Thanks to the 27 <a href="https://github.com/apache/mesos/graphs/contributors">contributors</a> who made 0.21.0 possible:</p>
+
+<p>Adam Bordelon, Alexander Rukletsov, Benjamin Hindman, Benjamin Mahler, Bernd Mathiske, Chengwei Yang, Chi Zhang, Cody Maloney, Dave Lester, Dominic Hamon, Evelina Dumitrescu, Ian Downes, Jie Yu, Joe Gordon, Joris Van Remoortere, Dharmesh Kakadia, Kapil Arya, Michael Park, Niklas Q. Nielsen, R.B. Boyer, Thomas Rampelberg, Till Toenshoff, Timothy Chen, Timothy St. Clair, Tobi Knaup, Vinod Kone.</p>
+
+</div>
+</div>
+
+			
+	      <hr>
+
+				<!-- footer -->
+	      <div class="footer">
+	        <p>&copy; 2012-2014 <a href="http://apache.org">The Apache Software Foundation</a>.
+	        Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.<p>
+	      </div><!-- /footer -->
+
+	    </div> <!-- /container -->
+
+	    <!-- JS -->
+	    <script src="//code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+			<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="text/javascript"></script>
+    </body>
+</html>
