@@ -4,7 +4,83 @@
   <id>http://mesos.apache.org/blog</id>
   <link href="http://mesos.apache.org/blog" />
   <link href="http://mesos.apache.org/feed.xml" rel="self"/>
-  <updated>2014-09-23T00:00:00Z</updated>
+  <updated>2014-11-17T00:00:00Z</updated>
+  
+  <entry>
+    <id>http://mesos.apache.org/blog/mesos-0-21-0-released/</id>
+    <link href="/blog/mesos-0-21-0-released/" />
+    <title>
+      Mesos 0.21.0 Released
+    </title>
+    <updated>2014-11-17T00:00:00Z</updated>
+    <author>
+      <name>Ian Downes</name>
+    </author>
+    <content type="html">
+      &lt;p&gt;The latest Mesos release, 0.21.0, is now available for &lt;a href=&quot;http://mesos.apache.org/downloads/&quot;&gt;download&lt;/a&gt;. This version includes the following features and improvements:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Task reconciliation for frameworks (&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-1407&quot;&gt;MESOS-1407&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Support for Mesos modules (&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-1931&quot;&gt;MESOS-1931&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Task status now includes source and reason (&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-343&quot;&gt;MESOS-343&lt;/a&gt;, &lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-1143&quot;&gt;MESOS-1143&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;A shared filesystem isolator (&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-1143&quot;&gt;MESOS-1586&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;A pid namespace isolator (&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-1765&quot;&gt;MESOS-1765&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;Full release notes are available in the release &lt;a href=&quot;https://github.com/apache/mesos/blob/master/CHANGELOG&quot;&gt;CHANGELOG&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3&gt;State Reconciliation&lt;/h3&gt;
+
+&lt;p&gt;Frameworks are now able to reconcile task state through the mesos API, to ensure that they remain eventually consistent in the face of failures. Read more about reconciliation &lt;a href=&quot;http://mesos.apache.org/documentation/latest/reconciliation/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3&gt;Mesos Modules&lt;/h3&gt;
+
+&lt;p&gt;Experimental support for Mesos modules was introduced in Mesos 0.21.0;
+please note the &lt;a href=&quot;http://mesos.apache.org/documentation/latest/modules&quot;&gt;disclaimer&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Mesos modules provide a way to easily extend inner workings of Mesos by creating and using shared libraries that are loaded on demand.  Modules can be used to customize Mesos without having to recompiling/relinking for each specific use case. Modules can isolate external dependencies into separate libraries, thus resulting into a smaller Mesos core. Modules also make it easy to experiment with new features. For example, imagine loadable allocators that contain a VM (Lua, Python, …) which makes it possible to try out new allocator algorithms written in scripting languages without forcing those dependencies into the project. Finally, modules provide an easy way for third parties to easily extend Mesos without having to know all the internal details.&lt;/p&gt;
+
+&lt;p&gt;For more details, please read the &lt;a href=&quot;http://mesos.apache.org/documentation/latest/modules&quot;&gt;modules documentation&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3&gt;Task Status Includes Source and Reason&lt;/h3&gt;
+
+&lt;p&gt;The &lt;code&gt;TaskStatus&lt;/code&gt; associated with a status update has relied on a single enum and free-form string to communicate the status. There are benefits to adding more data to the status update, and in Mesos 0.21.0, we have introduced the notion of a &lt;code&gt;Source&lt;/code&gt; and &lt;code&gt;Reason&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;The source of a status update is, broadly speaking, the actor that changed the status. This can currently be Master, Slave, or Executor.  Similarly, we have added an enumeration of reasons for the status update. The list can be found in &lt;code&gt;include/mesos/mesos.proto&lt;/code&gt; and is fairly extensive.&lt;/p&gt;
+
+&lt;p&gt;Our hope is that frameworks can use the source and reason to better communicate status updates to end users, and make better scheduling decisions.&lt;/p&gt;
+
+&lt;p&gt;We have also introduced the notion of a &lt;code&gt;TASK_ERROR&lt;/code&gt; state, distinct from &lt;code&gt;TASK_LOST&lt;/code&gt;. The semantic difference is that tasks that are updated as lost can be rescheduled and should succeed, while tasks with status error will continue to fail if they are rescheduled. In Mesos 0.21.0 we do not send &lt;code&gt;TASK_ERROR&lt;/code&gt; but it has been defined so frameworks can prepare to receive it. We will start sending it in Mesos 0.22.0.&lt;/p&gt;
+
+&lt;h3&gt;Shared Filesystem Isolator&lt;/h3&gt;
+
+&lt;p&gt;Mesos 0.21.0 introduces an optional shared filesystem isolator for the Mesos Containerizer. The isolator does not provide full filesystem encapsulation like Docker. It is intended for deployments where containers share the host&amp;rsquo;s root filesystem but certain parts of the filesystem should be made private to each container.&lt;/p&gt;
+
+&lt;p&gt;One example use-case is a private &lt;code&gt;/tmp&lt;/code&gt; directory for each container.  Processes running in the container will see a normal &lt;code&gt;/tmp&lt;/code&gt; directory but it actually refers to a subdirectory of the executor work directory, e.g., the relative path &lt;code&gt;./tmp&lt;/code&gt;. Processes will not be able to see files in the host&amp;rsquo;s &lt;code&gt;/tmp&lt;/code&gt; directory or the &lt;code&gt;/tmp&lt;/code&gt; directory of any other container.&lt;/p&gt;
+
+&lt;p&gt;This isolator is available only on Linux.&lt;/p&gt;
+
+&lt;h3&gt;Pid Namespace Isolator&lt;/h3&gt;
+
+&lt;p&gt;Mesos 0.21.0 also introduces an optional pid namespace isolator for the Mesos Containerizer. The isolator runs each container in its own pid namespace such that processes inside a container will not have visibility to processes running on the host or in other containers.&lt;/p&gt;
+
+&lt;p&gt;The Mesos Containerizer Launcher has been updated to use the pid namespace to terminate all processes when destroying a container. This avoids known kernel bugs and race conditions when using the freezer cgroup. If the container is not running inside a pid namespace (started with an earlier slave version), the launcher will fall back to the prior behavior and use the freezer cgroup.&lt;/p&gt;
+
+&lt;p&gt;This isolator is only available on Linux.&lt;/p&gt;
+
+&lt;h3&gt;Getting Involved&lt;/h3&gt;
+
+&lt;p&gt;We encourage you to try out this release and let us know what you think. If you run into any issues, please let us know on the &lt;a href=&quot;https://mesos.apache.org/community&quot;&gt;user mailing list and IRC&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3&gt;Thanks&lt;/h3&gt;
+
+&lt;p&gt;Thanks to the 27 &lt;a href=&quot;https://github.com/apache/mesos/graphs/contributors&quot;&gt;contributors&lt;/a&gt; who made 0.21.0 possible:&lt;/p&gt;
+
+&lt;p&gt;Adam Bordelon, Alexander Rukletsov, Benjamin Hindman, Benjamin Mahler, Bernd Mathiske, Chengwei Yang, Chi Zhang, Cody Maloney, Dave Lester, Dominic Hamon, Evelina Dumitrescu, Ian Downes, Jie Yu, Joe Gordon, Joris Van Remoortere, Dharmesh Kakadia, Kapil Arya, Michael Park, Niklas Q. Nielsen, R.B. Boyer, Thomas Rampelberg, Till Toenshoff, Timothy Chen, Timothy St. Clair, Tobi Knaup, Vinod Kone.&lt;/p&gt;
+
+	</content>
+  </entry>
   
   <entry>
     <id>http://mesos.apache.org/blog/mesos-0-20-1-released/</id>
