@@ -81,76 +81,91 @@
 		<p>See our <a href="/community/">community</a> page for more details.</p>
 	</div>
 	<div class="col-md-8">
-		<h1>Documentation</h1>
+		<h1>Operational Guide</h1>
 
-<h2>Mesos Fundamentals</h2>
+<h2>Changing the master quorum</h2>
 
-<ul>
-<li><a href="/documentation/latest/mesos-architecture/">Mesos Architecture</a> providing an overview of Mesos concepts.</li>
-<li><a href="/documentation/latest/mesos-presentations/">Video and Slides of Mesos Presentations</a></li>
-</ul>
+<p>Currently the master leverages a paxos-based replicated log as its storage backend (<code>--registry=replicated_log</code> is the only storage backend supported). Each master participates in the ensemble as a log replica. The <code>--quorum</code> flag determines a majority of the masters.</p>
 
+<p>The following table shows the tolerance to master failures, for each quorum size:</p>
 
-<h2>Running Mesos</h2>
-
-<ul>
-<li><a href="/documentation/latest/configuration/">Configuration</a> for command-line arguments.</li>
-<li><a href="/documentation/latest/docker-containerizer/">Docker Containerizer</a> for launching a Docker image as a Task, or as an Executor.</li>
-<li><a href="/documentation/latest/external-containerizer/">External Containerizer</a></li>
-<li><a href="/documentation/latest/authorization/">Framework Authorization</a></li>
-<li><a href="/documentation/latest/framework-rate-limiting/">Framework Rate Limiting</a></li>
-<li><a href="/documentation/latest/logging-and-debugging/">Logging and Debugging</a> for viewing Mesos and framework logs.</li>
-<li><a href="/documentation/latest/high-availability/">High Availability</a> for running multiple masters simultaneously.</li>
-<li><a href="/documentation/latest/operational-guide/">Operational Guide</a></li>
-<li><a href="/documentation/latest/network-monitoring/">Network Monitoring</a></li>
-<li><a href="/documentation/latest/slave-recovery/">Slave Recovery</a> for doing seamless upgrades.</li>
-<li><a href="/documentation/latest/tools/">Tools</a> for setting up and running a Mesos cluster.</li>
-</ul>
-
-
-<h2>Running Mesos Frameworks</h2>
-
-<ul>
-<li><a href="/documentation/latest/mesos-frameworks/">Mesos frameworks</a> for a list of apps built on top of Mesos, and instructions on how to run them.</li>
-</ul>
-
-
-<h2>Developing Mesos Frameworks</h2>
-
-<ul>
-<li><a href="/documentation/latest/app-framework-development-guide/">Framework Development Guide</a> describes how to build applications on top of Mesos.</li>
-<li><a href="/documentation/latest/reconciliation/">Reconciliation</a> for ensuring a framework&rsquo;s state remains eventually consistent in the face of failures.</li>
-<li><a href="/api/latest/java/">Javadoc</a> documents the Mesos Java API.</li>
-<li><a href="/documentation/latest/tools/">Developer Tools</a> for hacking on Mesos or writing frameworks.</li>
-</ul>
-
-
-<h2>Mesos Modules</h2>
-
-<ul>
-<li><a href="/documentation/latest/modules/">Mesos Modules</a> for specifying mesos modules for master, slave and tests.</li>
-</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:right;"> Masters  </th>
+<th style="text-align:right;"> Quorum Size </th>
+<th style="text-align:right;"> Failure Tolerance </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">        1 </td>
+<td style="text-align:right;">           1 </td>
+<td style="text-align:right;">                 0 </td>
+</tr>
+<tr>
+<td style="text-align:right;">        3 </td>
+<td style="text-align:right;">           2 </td>
+<td style="text-align:right;">                 1 </td>
+</tr>
+<tr>
+<td style="text-align:right;">        5 </td>
+<td style="text-align:right;">           3 </td>
+<td style="text-align:right;">                 2 </td>
+</tr>
+<tr>
+<td style="text-align:right;">      &hellip; </td>
+<td style="text-align:right;">         &hellip; </td>
+<td style="text-align:right;">               &hellip; </td>
+</tr>
+<tr>
+<td style="text-align:right;">   2N - 1 </td>
+<td style="text-align:right;">           N </td>
+<td style="text-align:right;">             N - 1 </td>
+</tr>
+</tbody>
+</table>
 
 
-<h2>Contributing to Mesos</h2>
+<p>It is recommended to run with 3 or 5 masters, when desiring high availability.</p>
 
-<ul>
-<li><a href="/documentation/latest/committers-guide/">Committer&rsquo;s Guide</a> a guiding document for etiquette in reviews and commits.</li>
-<li><a href="/documentation/latest/mesos-code-internals/">Code Internals</a> an overview of the codebase and internal organization.</li>
-<li><a href="/documentation/latest/mesos-c++-style-guide/">C++ Style Guide</a></li>
-<li><a href="/documentation/latest/mesos-developers-guide/">Developers Guide</a> includes resources for developers contributing to Mesos and the process of submitting patches for review.</li>
-<li><a href="/documentation/latest/mesos-roadmap/">Development Road Map</a></li>
-<li><a href="/documentation/latest/release-guide/">Release Guide</a></li>
-</ul>
+<h3>NOTE</h3>
+
+<p>When configuring the quorum, it is essential to ensure that there are only so many masters running as specified in the table above. If additional masters are running, this violates the quorum and the log may be corrupted! As a result, it is recommended to gate the running of the master process with something that enforces a static whitelist of the master hosts. See <a href="https://issues.apache.org/jira/browse/MESOS-1546">MESOS-1546</a> for adding a safety whitelist within Mesos itself.</p>
+
+<p>For online reconfiguration of the log, see: <a href="https://issues.apache.org/jira/browse/MESOS-683">MESOS-683</a>.</p>
+
+<h3>Increasing the quorum size</h3>
+
+<p>As the size of a cluster grows, it may be desired to increase the quorum size for additional fault tolerance.</p>
+
+<p>The following steps indicate how to increment the quorum size, using 3 → 5 masters as an example (quorum size 2 → 3):</p>
+
+<ol>
+<li>Initially, 3 masters are running with <code>--quorum=2</code></li>
+<li>Restart the original 3 masters with <code>--quorum=3</code></li>
+<li>Start 2 additional masters with <code>--quorum=3</code></li>
+</ol>
 
 
-<h2>More Info about Mesos</h2>
+<p>To increase the quorum by N, repeat this process to increment the quorum size N times.</p>
 
-<ul>
-<li><a href="/documentation/latest/powered-by-mesos/">Powered by Mesos</a> lists organizations and software that are powered by Apache Mesos.</li>
-<li>Academic Papers and Project History</li>
-</ul>
+<h3>Decreasing the quorum size</h3>
 
+<p>The following steps indicate how to decrement the quorum size, using 5 → 3 masters as an example (quorum size 3 → 2):</p>
+
+<ol>
+<li>Initially, 5 masters are running with <code>--quorum=3</code></li>
+<li>Remove 2 masters from the cluster, ensure they will not be restarted (See NOTE section above). Now 3 masters are running with <code>--quorum=3</code></li>
+<li>Restart the 3 masters with <code>--quorum=2</code></li>
+</ol>
+
+
+<p>To decrease the quorum by N, repeat this process to decrement the quorum size N times.</p>
+
+<h3>Replacing a master</h3>
+
+<p>Please see the NOTE section above. So long as the failed master is guaranteed to not re-join the ensemble, it is safe to start a new master <em>with an empty log</em> and allow it to catch up.</p>
 
 	</div>
 </div>

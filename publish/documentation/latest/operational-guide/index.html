@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+		    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+		    <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
+		    
+		    <link href="../../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+				
+		    
+			
+			<!-- Google Analytics Magic -->
+			<script type="text/javascript">
+			  var _gaq = _gaq || [];
+			  _gaq.push(['_setAccount', 'UA-20226872-1']);
+			  _gaq.push(['_setDomainName', 'apache.org']);
+			  _gaq.push(['_trackPageview']);
+
+			  (function() {
+			    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			  })();
+			</script>
+    </head>
+    <body>
+			<!-- magical breadcrumbs -->
+			<div class="topnav">
+			<ul class="breadcrumb">
+			  <li>
+					<div class="dropdown">
+					  <a data-toggle="dropdown" href="#">Apache Software Foundation <span class="caret"></span></a>
+					  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+							<li><a href="http://www.apache.org">Apache Homepage</a></li>
+							<li><a href="http://www.apache.org/licenses/">License</a></li>
+					  	<li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>  
+					  	<li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+							<li><a href="http://www.apache.org/security/">Security</a></li>
+					  </ul>
+					</div>
+				</li>
+				<li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+				
+				
+					<li><a href="/documentation
+/">Documentation
+</a></li>
+				
+				
+			</ul><!-- /breadcrumb -->
+			</div>
+			
+			<!-- navbar excitement -->
+	    <div class="navbar navbar-static-top" role="navigation">
+	      <div class="navbar-inner">
+	        <div class="container">
+						<a href="/" class="logo"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo" /></a>
+					<div class="nav-collapse">
+						<ul class="nav nav-pills navbar-right">
+						  <li><a href="/gettingstarted/">Getting Started</a></li>
+						  <li><a href="/documentation/latest/">Documentation</a></li>
+						  <li><a href="/downloads/">Downloads</a></li>
+						  <li><a href="/community/">Community</a></li>
+						</ul>
+					</div>
+	        </div>
+	      </div>
+	    </div><!-- /.navbar -->
+
+      <div class="container">
+
+			<div class="row-fluid">
+	<div class="col-md-4">
+		<h4>If you're new to Mesos</h4>
+		<p>See the <a href="/gettingstarted/">getting started</a> page for more information about downloading, building, and deploying Mesos.</p>
+		
+		<h4>If you'd like to get involved or you're looking for support</h4>
+		<p>See our <a href="/community/">community</a> page for more details.</p>
+	</div>
+	<div class="col-md-8">
+		<h1>Operational Guide</h1>
+
+<h2>Changing the master quorum</h2>
+
+<p>Currently the master leverages a paxos-based replicated log as its storage backend (<code>--registry=replicated_log</code> is the only storage backend supported). Each master participates in the ensemble as a log replica. The <code>--quorum</code> flag determines a majority of the masters.</p>
+
+<p>The following table shows the tolerance to master failures, for each quorum size:</p>
+
+<table>
+<thead>
+<tr>
+<th style="text-align:right;"> Masters  </th>
+<th style="text-align:right;"> Quorum Size </th>
+<th style="text-align:right;"> Failure Tolerance </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">        1 </td>
+<td style="text-align:right;">           1 </td>
+<td style="text-align:right;">                 0 </td>
+</tr>
+<tr>
+<td style="text-align:right;">        3 </td>
+<td style="text-align:right;">           2 </td>
+<td style="text-align:right;">                 1 </td>
+</tr>
+<tr>
+<td style="text-align:right;">        5 </td>
+<td style="text-align:right;">           3 </td>
+<td style="text-align:right;">                 2 </td>
+</tr>
+<tr>
+<td style="text-align:right;">      &hellip; </td>
+<td style="text-align:right;">         &hellip; </td>
+<td style="text-align:right;">               &hellip; </td>
+</tr>
+<tr>
+<td style="text-align:right;">   2N - 1 </td>
+<td style="text-align:right;">           N </td>
+<td style="text-align:right;">             N - 1 </td>
+</tr>
+</tbody>
+</table>
+
+
+<p>It is recommended to run with 3 or 5 masters, when desiring high availability.</p>
+
+<h3>NOTE</h3>
+
+<p>When configuring the quorum, it is essential to ensure that there are only so many masters running as specified in the table above. If additional masters are running, this violates the quorum and the log may be corrupted! As a result, it is recommended to gate the running of the master process with something that enforces a static whitelist of the master hosts. See <a href="https://issues.apache.org/jira/browse/MESOS-1546">MESOS-1546</a> for adding a safety whitelist within Mesos itself.</p>
+
+<p>For online reconfiguration of the log, see: <a href="https://issues.apache.org/jira/browse/MESOS-683">MESOS-683</a>.</p>
+
+<h3>Increasing the quorum size</h3>
+
+<p>As the size of a cluster grows, it may be desired to increase the quorum size for additional fault tolerance.</p>
+
+<p>The following steps indicate how to increment the quorum size, using 3 → 5 masters as an example (quorum size 2 → 3):</p>
+
+<ol>
+<li>Initially, 3 masters are running with <code>--quorum=2</code></li>
+<li>Restart the original 3 masters with <code>--quorum=3</code></li>
+<li>Start 2 additional masters with <code>--quorum=3</code></li>
+</ol>
+
+
+<p>To increase the quorum by N, repeat this process to increment the quorum size N times.</p>
+
+<h3>Decreasing the quorum size</h3>
+
+<p>The following steps indicate how to decrement the quorum size, using 5 → 3 masters as an example (quorum size 3 → 2):</p>
+
+<ol>
+<li>Initially, 5 masters are running with <code>--quorum=3</code></li>
+<li>Remove 2 masters from the cluster, ensure they will not be restarted (See NOTE section above). Now 3 masters are running with <code>--quorum=3</code></li>
+<li>Restart the 3 masters with <code>--quorum=2</code></li>
+</ol>
+
+
+<p>To decrease the quorum by N, repeat this process to decrement the quorum size N times.</p>
+
+<h3>Replacing a master</h3>
+
+<p>Please see the NOTE section above. So long as the failed master is guaranteed to not re-join the ensemble, it is safe to start a new master <em>with an empty log</em> and allow it to catch up.</p>
+
+	</div>
+</div>
+
+			
+	      <hr>
+
+				<!-- footer -->
+	      <div class="footer">
+	        <p>&copy; 2012-2014 <a href="http://apache.org">The Apache Software Foundation</a>.
+	        Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.<p>
+	      </div><!-- /footer -->
+
+	    </div> <!-- /container -->
+
+	    <!-- JS -->
+	    <script src="//code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+			<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="text/javascript"></script>
+    </body>
+</html>
