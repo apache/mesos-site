@@ -144,11 +144,15 @@
 <li><code>make check</code></li>
 </ol>
 </li>
-<li><p>Make sure to pull in any changes that have been committed to master branch. Using Git, do this via something like:</p></li>
-<li> <code>git checkout master</code></li>
-<li> <code>git pull</code></li>
-<li> <code>git co my_branch</code></li>
-<li> Check the output of <code>git diff master</code> and make sure it lists only your changes. If other changes you did not make are listed, try a rebase to bring your branch up to date with master.</li>
+<li><p>Make sure to pull in any changes that have been committed to master branch. Using Git, do this via something like:</p>
+
+<ol>
+<li><code>git checkout master</code></li>
+<li><code>git pull</code></li>
+<li><code>git co my_branch</code></li>
+<li>Check the output of <code>git diff master</code> and make sure it lists only your changes. If other changes you did not make are listed, try a rebase to bring your branch up to date with master.</li>
+</ol>
+</li>
 </ol>
 
 
@@ -161,6 +165,7 @@
 <li>Log in or create an account at <a href="http://reviews.apache.org">Apache Review Board</a></li>
 <li>The easiest (and recommended) way to submit reviews is through <code>post-reviews.py</code> a wrapper around post-review.</li>
 <li>First, install post-review. <a href="http://www.reviewboard.org/docs/manual/dev/users/tools/post-review/">See Instructions</a></li>
+<li>Configure post-review. The easiest method is to symlink to the sample config: ln -s support/reviewboardrc .reviewboardrc</li>
 <li>From your local branch run <code>support/post-reviews.py</code>.</li>
 <li>Note that <code>post-reviews.py</code> creates a new review for every commit on your branch that is different from the <code>master</code>.</li>
 <li>Be sure to add your JIRA issue id (e.g. MESOS-01) to the field labeled &ldquo;Bugs&rdquo; (this will automatically link)</li>
@@ -170,6 +175,7 @@
 <li><p>Wait for a code review from another Mesos developer via Review Board, address their feedback and upload updated patches until you receive a &ldquo;Ship It&rdquo; from a Mesos committer.</p>
 
 <ol>
+<li>When addressing feedback, adjust your existing commit(s) instead of creating new commits, otherwise <code>post-reviews.py</code> will create a new review (<code>git rebase -i</code> is your friend).</li>
 <li>Review Board comments should be used for code-specific discussions, and JIRA comments for bigger-picture design discussions.</li>
 <li>Always respond to each RB comment that you address directly (i.e. each comment can be responded to directly) with either &ldquo;Done.&rdquo; or a comment explaining how you addressed it.</li>
 <li>If an issue has been raised in the review, please resolve the issue as &ldquo;Fixed&rdquo; or &ldquo;Dropped&rdquo;. If &ldquo;Dropped&rdquo; please add a comment explaining the reason. Also, if your fix warrants a comment (e.g., fixed differently than suggested by the reviewer) please add a comment.</li>
