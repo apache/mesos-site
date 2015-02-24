@@ -88,9 +88,7 @@
 <h3>Disclaimer</h3>
 
 <ul>
-<li><p>Use and development of Mesos modules is at own risk! Only graced modules
-(modules that are part of Mesos distribution) are maintained by the Mesos
-project.</p></li>
+<li><p>Use and development of Mesos modules is at own risk!</p></li>
 <li><p>Please direct all questions to the relevant module writer and/or write to
 modules@mesos.apache.org. Questions related to modules sent to user and dev list
 will be redirected to the modules list.</p></li>
@@ -196,8 +194,39 @@ searched in the standard library paths or directories pointed to by the
 
 <h2>What kinds of modules are supported?</h2>
 
-<p>Mesos currently only provides Isolator and Authentication modules.  Additional
-graced modules will be added in the near future.</p>
+<p>Here are the various module kinds currently available:</p>
+
+<h3>Anonymous</h3>
+
+<p>Anonymous modules do <strong>not</strong> receive any callbacks but simply
+coexists with their parent process.</p>
+
+<p>Unlike other named modules, an anonymous module does not directly
+replace or provide essential Mesos functionality (such as an
+Isolator module does). Unlike a decorator module it does not
+directly add or inject data into Mesos core either.</p>
+
+<p>Anonymous modules do not require any specific selectors (flags) as
+they are immediately instantiated when getting loaded via the
+<code>--modules</code> flag by the Mesos master or slave.</p>
+
+<h3>Authentication</h3>
+
+<p>Authenticatee and Authenticator modules allow for third parties to quickly
+develop and plug-in new authentication methods. An example for such modules
+could be to support PAM (LDAP, MySQL, NIS, UNIX) backed authentication.</p>
+
+<h3>Hook</h3>
+
+<p>Similar to Apache Webserver Modules, hooks allows module writers to tie into
+internal components which may not be suitable to be abstracted entirely behind
+modules but rather let&rsquo;s them define actions on so-called hooks.</p>
+
+<h3>Isolator</h3>
+
+<p>Isolator modules enable experimenting with specialized isolation and monitoring
+capabilities. Examples of these could be 3rdparty resource isolation mechanisms
+for GPGPU hardware, networking, etc.</p>
 
 <h2>Writing Mesos modules</h2>
 

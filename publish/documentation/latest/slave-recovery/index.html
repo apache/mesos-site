@@ -97,20 +97,24 @@
 
 <p>Slave recovery works by having the slave checkpoint enough information (e.g., Task Info, Executor Info, Status Updates) about the running tasks and executors to local disk. Once the slave <strong><em>and</em></strong> the framework(s) enable checkpointing, any subsequent slave restarts would recover the checkpointed information and reconnect with the executors. Note that if the host running the slave process is rebooted all the executors/tasks are killed.</p>
 
-<blockquote><p>NOTE: To enable slave recovery both the slave and the framework should explicitly request checkpointing.
+<blockquote><p>NOTE: To enable recovery the framework should explicitly request checkpointing.
 Alternatively, a framework that doesn&rsquo;t want the disk i/o overhead of checkpointing can opt out of checkpointing.</p></blockquote>
 
 <h2>Enabling slave checkpointing</h2>
+
+<blockquote><p>NOTE: From Mesos 0.22.0 slave checkpointing will be automatically enabled for all slaves.</p></blockquote>
 
 <p>As part of this feature, 4 new flags were added to the slave.</p>
 
 <ul>
 <li><code>checkpoint</code> :  Whether to checkpoint slave and frameworks information
-                to disk [Default: false].
+                to disk [Default: true].
 
 <ul>
 <li><p>This enables a restarted slave to recover status updates and reconnect
-with (&ndash;recover=reconnect) or kill (&ndash;recover=kill) old executors.</p></li>
+with (&ndash;recover=reconnect) or kill (&ndash;recover=kill) old executors.</p>
+
+<blockquote><p>NOTE: From Mesos 0.22.0 this flag will be removed as it will be enabled for all slaves.</p></blockquote></li>
 <li><p><code>strict</code> : Whether to do recovery in strict mode [Default: true].</p>
 
 <ul>
@@ -142,7 +146,7 @@ NOTE: This flag is only applicable when <code>--checkpoint</code> is enabled.</l
 </ul>
 
 
-<blockquote><p>NOTE: If checkpointing is enabled on the slave, but none of the frameworks have enabled checkpointing,
+<blockquote><p>NOTE: If none of the frameworks have enabled checkpointing,
 executors/tasks of frameworks die when the slave dies and are not recovered.</p></blockquote>
 
 <p>A restarted slave should re-register with master within a timeout (currently, 75s). If the slave takes longer
