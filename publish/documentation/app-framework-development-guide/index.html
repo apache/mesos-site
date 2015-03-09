@@ -287,6 +287,48 @@
 
 <p>Once you are sure that your executors are available to the mesos-slaves, you should be able to run your scheduler, which will register with the Mesos master, and start receiving resource offers!</p>
 
+<h2>Service discovery</h2>
+
+<p>When your framework registers an executor or launches a task, it can provide additional information for service discovery. This information is stored by the Mesos master along with other imporant information such as the slave currently running the task. A service discovery system can programmatically retrieve this information in order to set up DNS entries, configure proxies, or update any consistent store used for service discovery in a Mesos cluster that runs multiple frameworks and multiple tasks.</p>
+
+<p>The optional <code>DiscoveryInfo</code> message for <code>TaskInfo</code> and <code>ExecutorInfo</code> is declared in  <code>MESOS_HOME/include/mesos/mesos.proto</code></p>
+
+<pre><code>message DiscoveryInfo {
+  enum Visibility {
+    FRAMEWORK = 0;
+    CLUSTER = 1;
+    EXTERNAL = 2;
+  }
+
+  required Visibility visibility = 1;
+  optional string name = 2;
+  optional string environment = 3;
+  optional string location = 4;
+  optional string version = 5;
+  optional Ports ports = 6;
+  optional Labels labels = 7;
+}
+</code></pre>
+
+<p><code>Visibility</code> is the key parameter that instructs the service discovery system whether a service should be discoverable. We currently differentiate between three cases:</p>
+
+<ul>
+<li>a task should not be discoverable for anyone but its framework.</li>
+<li>a task should be discoverable for all frameworks running on the Mesos cluster but not externally.</li>
+<li>a task should be made discoverable broadly.</li>
+</ul>
+
+
+<p>Many service discovery systems provide additional features that manage the visibility of services (e.g., ACLs in proxy based systems, security extensions to DNS, VLAN or subnet selection). It is not the intended use of the visibility field to manage such features. When a service discovery system retrieves the task or executor information from the master, it can decide how to handle tasks without DiscoveryInfo. For instance, tasks may be made non discoverable to other frameworks (equivalent to <code>visibility=FRAMEWORK</code>) or discoverable to all frameworks (equivalent to <code>visibility=CLUSTER</code>).</p>
+
+<p>The <code>name</code> field is a string that that provides the service discovery system with the name under which the task is discoverable. The typical use of the name field will be to provide a valid hostname. If name is not provided, it is up to the service discovery system to create a name for the task based on the name field in <code>taskInfo</code> or other information.</p>
+
+<p>The <code>environment</code>, <code>location</code>, and <code>version</code> fields provide first class support for common attributes used to differentiate between similar services in large deployments. The <code>environment</code> may receive values such as <code>PROD/QA/DEV</code>, the <code>location</code> field may receive values like <code>EAST-US/WEST-US/EUROPE/AMEA</code>, and the <code>version</code> field may receive values like v2.0/v0.9. The exact use of these fields is up to the service discovery system.</p>
+
+<p>The <code>ports</code> field allows the framework to identify the ports a task listens to and explicitly name the functionality they represent and the layer-4 protocol they use (TCP, UDP, or other). For example, a Cassandra task will define ports like <code>“7000,Cluster,TCP”</code>, <code>“7001,SSL,TCP”</code>, <code>“9160,Thrift,TCP”</code>, <code>“9042,Native,TCP”</code>, and <code>“7199,JMX,TCP”</code>. It is up to the service discovery system to use these names and protocol in appropriate ways, potentially combining them with the <code>name</code> field in DiscoveryInfo.</p>
+
+<p>The <code>labels</code> field allows a framework to pass arbitrary labels to the service discovery system in the form of key/value pairs. Note that anything passed through this field is not guaranteed to be supported moving forward. Nevertheless, this field provides extensibility. Common uses of this field will allow us to identify use cases that require first class support.</p>
+
 	</div>
 </div>
 

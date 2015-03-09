@@ -107,14 +107,16 @@ Alternatively, a framework that doesn&rsquo;t want the disk i/o overhead of chec
 <p>As part of this feature, 4 new flags were added to the slave.</p>
 
 <ul>
-<li><code>checkpoint</code> :  Whether to checkpoint slave and frameworks information
-                to disk [Default: true].
+<li><p><code>checkpoint</code> :  Whether to checkpoint slave and frameworks information
+                to disk [Default: true].</p>
 
 <ul>
-<li><p>This enables a restarted slave to recover status updates and reconnect
-with (&ndash;recover=reconnect) or kill (&ndash;recover=kill) old executors.</p>
+<li>This enables a restarted slave to recover status updates and reconnect
+with (&ndash;recover=reconnect) or kill (&ndash;recover=cleanup) old executors.
 
 <blockquote><p>NOTE: From Mesos 0.22.0 this flag will be removed as it will be enabled for all slaves.</p></blockquote></li>
+</ul>
+</li>
 <li><p><code>strict</code> : Whether to do recovery in strict mode [Default: true].</p>
 
 <ul>
@@ -129,8 +131,9 @@ ignored and as much state as possible is recovered.</li>
 <li>If recover=reconnect, Reconnect with any old live executors.</li>
 <li>If recover=cleanup, Kill any old live executors and exit.
 Use this option when doing an incompatible slave or executor upgrade!).
-NOTE: If no checkpointing information exists, no recovery is performed
-and the slave registers with the master as a new slave.</li>
+
+<blockquote><p>NOTE: If no checkpointing information exists, no recovery is performed
+and the slave registers with the master as a new slave.</p></blockquote></li>
 </ul>
 </li>
 <li><p><code>recovery_timeout</code> : Amount of time allotted for the slave to recover [Default: 15 mins].</p>
@@ -138,9 +141,8 @@ and the slave registers with the master as a new slave.</li>
 <ul>
 <li>If the slave takes longer than <code>recovery_timeout</code> to recover, any executors that are waiting to
 reconnect to the slave will self-terminate.
-NOTE: This flag is only applicable when <code>--checkpoint</code> is enabled.</li>
-</ul>
-</li>
+
+<blockquote><p>NOTE: This flag is only applicable when <code>--checkpoint</code> is enabled.</p></blockquote></li>
 </ul>
 </li>
 </ul>

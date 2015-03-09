@@ -85,7 +85,14 @@
 
 <p>This document serves as a guide for users who wish to upgrade an existing mesos cluster. Some versions require particular upgrade techniques when upgrading a running cluster. Some upgrades will have incompatible changes.</p>
 
-<h2>(WIP) Upgrading from 0.21.x to 0.22.x</h2>
+<h2>Upgrading from 0.21.x to 0.22.x</h2>
+
+<p><strong>NOTE</strong> Slave checkpoint flag has been removed as it will be enabled for all
+slaves. Frameworks must still enable checkpointing during registration to take advantage
+of checkpointing their tasks.</p>
+
+<p><strong>NOTE</strong> The stats.json endpoints for masters and slaves have been deprecated.
+Please refer to the metrics/snapshot endpoint.</p>
 
 <p><strong>NOTE</strong> The C++/Java/Python scheduler bindings have been updated. In particular, the driver can be constructed with an additional argument that specifies whether to use implicit driver acknowledgements. In <code>statusUpdate</code>, the <code>TaskStatus</code> now includes a UUID to make explicit acknowledgements possible.</p>
 
