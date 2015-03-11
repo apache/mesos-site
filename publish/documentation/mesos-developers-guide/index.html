@@ -149,8 +149,8 @@
 <ol>
 <li><code>git checkout master</code></li>
 <li><code>git pull</code></li>
-<li><code>git co my_branch</code></li>
-<li>Check the output of <code>git diff master</code> and make sure it lists only your changes. If other changes you did not make are listed, try a rebase to bring your branch up to date with master.</li>
+<li><code>git checkout my_branch</code></li>
+<li>Check the output of <code>git diff master</code> and make sure it lists only your changes. If other changes you did not make are listed, try <code>git rebase master</code> to bring your branch up to date with master.</li>
 </ol>
 </li>
 </ol>
@@ -166,10 +166,11 @@
 <li>The easiest (and recommended) way to submit reviews is through <code>post-reviews.py</code> a wrapper around post-review.</li>
 <li>First, install post-review. <a href="http://www.reviewboard.org/docs/manual/dev/users/tools/post-review/">See Instructions</a></li>
 <li>Configure post-review. The easiest method is to symlink to the sample config: ln -s support/reviewboardrc .reviewboardrc</li>
+<li>Log into Review Board from the command line: run <code>rbt status</code></li>
 <li>From your local branch run <code>support/post-reviews.py</code>.</li>
 <li>Note that <code>post-reviews.py</code> creates a new review for every commit on your branch that is different from the <code>master</code>.</li>
 <li>Be sure to add your JIRA issue id (e.g. MESOS-01) to the field labeled &ldquo;Bugs&rdquo; (this will automatically link)</li>
-<li>Under &ldquo;Description&rdquo; in addition to details about your changes, include a description of any wiki documentation pages need to be added, or are affected by your changes (e.g. did you change or add any configuration options/flags? Did you add a new binary?)</li>
+<li>Under &ldquo;Description&rdquo; in addition to details about your changes, include a description of any documentation pages that need to be added, or are affected by your changes (e.g. did you change or add any configuration options/flags? Did you add a new binary?)</li>
 </ol>
 </li>
 <li><p>Wait for a code review from another Mesos developer via Review Board, address their feedback and upload updated patches until you receive a &ldquo;Ship It&rdquo; from a Mesos committer.</p>
