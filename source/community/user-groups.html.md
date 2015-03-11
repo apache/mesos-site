@@ -9,29 +9,24 @@ Mesos User Groups (MUGs) are responsible for organizing local meetups, hackathon
 
 ## Local Groups
 
+### China
+* [Shanghai](http://www.weibo.com/u/3068800961)
+
 ### France
-<ul>
-	<li><a href="http://www.meetup.com/Paris-Mesos-Users-Group/">Paris</a></li>
-</ul>
+* [Paris](http://www.meetup.com/Paris-Mesos-Users-Group/)
 
 ### Netherlands
-<ul>
-	<li><a href="http://www.meetup.com/Mesos-Amsterdam/">Amsterdam</a></li>
-</ul>
+* [Amsterdam](http://www.meetup.com/Mesos-Amsterdam/)
 
 ### United Kingdom
-<ul>
-	<li><a href="http://www.meetup.com/London-Mesos-User-Group/">London</a></li>
-</ul>
+* [London](http://www.meetup.com/London-Mesos-User-Group/)
 
 ### USA
-<ul>
-	<li><a href="https://twitter.com/AtlantaMesos">Atlanta, GA</a></li>
-	<li><a href="http://www.meetup.com/Los-Angeles-Santa-Monica-Mesos-Users-Group/">Los Angeles / Santa Monica, CA</a></li>
-	<li><a href="http://www.meetup.com/Apache-Mesos-NYC-Meetup/">New York, NY</a></li>
-	<li><a href="http://www.meetup.com/Bay-Area-Mesos-User-Group/">San Francisco, CA</a></li>
-	<li><a href="http://www.meetup.com/Seattle-Mesos-Meetup/">Seattle, WA</a>/li>
-</ul>
+* [Atlanta, GA](https://twitter.com/AtlantaMesos)
+* [Los Angeles / Santa Monica, CA](http://www.meetup.com/Los-Angeles-Santa-Monica-Mesos-Users-Group/)
+* [New York, NY](http://www.meetup.com/Apache-Mesos-NYC-Meetup/)
+* [San Francisco, CA](http://www.meetup.com/Bay-Area-Mesos-User-Group/)
+* [Seattle, WA](http://www.meetup.com/Seattle-Mesos-Meetup/)
 
 ## Start Your Own MUG
 
