@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Apache Mesos 0.22.0 Released</title>
+		    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+		    <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
+		    
+		    <link href="../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+				
+		    
+			
+			<!-- Google Analytics Magic -->
+			<script type="text/javascript">
+			  var _gaq = _gaq || [];
+			  _gaq.push(['_setAccount', 'UA-20226872-1']);
+			  _gaq.push(['_setDomainName', 'apache.org']);
+			  _gaq.push(['_trackPageview']);
+
+			  (function() {
+			    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			  })();
+			</script>
+    </head>
+    <body>
+			<!-- magical breadcrumbs -->
+			<div class="topnav">
+			<ul class="breadcrumb">
+			  <li>
+					<div class="dropdown">
+					  <a data-toggle="dropdown" href="#">Apache Software Foundation <span class="caret"></span></a>
+					  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+							<li><a href="http://www.apache.org">Apache Homepage</a></li>
+							<li><a href="http://www.apache.org/licenses/">License</a></li>
+					  	<li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>  
+					  	<li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+							<li><a href="http://www.apache.org/security/">Security</a></li>
+					  </ul>
+					</div>
+				</li>
+				<li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+				
+				
+					<li><a href="/blog
+/">Blog
+</a></li>
+				
+				
+			</ul><!-- /breadcrumb -->
+			</div>
+			
+			<!-- navbar excitement -->
+	    <div class="navbar navbar-static-top" role="navigation">
+	      <div class="navbar-inner">
+	        <div class="container">
+						<a href="/" class="logo"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo" /></a>
+					<div class="nav-collapse">
+						<ul class="nav nav-pills navbar-right">
+						  <li><a href="/gettingstarted/">Getting Started</a></li>
+						  <li><a href="/documentation/latest/">Documentation</a></li>
+						  <li><a href="/downloads/">Downloads</a></li>
+						  <li><a href="/community/">Community</a></li>
+						</ul>
+					</div>
+	        </div>
+	      </div>
+	    </div><!-- /.navbar -->
+
+      <div class="container">
+
+			<div class="row">
+
+<div class="col-md-3">
+	<div class="meta">
+		<span class="author">
+			
+			<span class="author_contact">
+			  <p><strong>Niklas Q. Nielsen</strong></p>
+			  <p><a href="http://twitter.com/quarfot">@quarfot</a></p>
+			</span>
+		</span>
+		<p><em>Posted March 25, 2015</em></p>
+	</div>
+	
+	<div class="share">
+		<span class="social-share-button"><a href="https://twitter.com/share" class="twitter-share-button" data-via="apachemesos">Tweet</a></span>
+		
+		<span><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></span>
+
+		<span><div class="g-plusone" data-size="medium"></div></span>
+
+		<!-- Place this tag after the last +1 button tag. -->
+		<script type="text/javascript">
+		  (function() {
+		    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+		    po.src = 'https://apis.google.com/js/plusone.js';
+		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+		  })();
+		</script>
+		
+		<script src="//platform.linkedin.com/in.js" type="text/javascript">
+		 lang: en_US
+		</script>
+		<script type="IN/Share" data-counter="right"></script>
+	</div>
+</div>
+
+<div class="post col-md-9">
+	<h1>Apache Mesos 0.22.0 Released</h1>
+	
+	<p>The latest Mesos release, 0.22.0, is now available for <a href="http://mesos.apache.org/downloads">download</a>. This release includes several major features:</p>
+
+<ul>
+<li>Disk quota isolation in Mesos containerizer; refer to the <a href="http://mesos.apache.org/documentation/latest/mesos-containerizer/">containerization documentation</a> to enable disk quota monitoring and enforcement.</li>
+<li>Support for explicitly sending status updates acknowledgements from schedulers; refer to the <a href="http://mesos.apache.org/documentation/latest/upgrades/">upgrades document</a> for upgrading schedulers.</li>
+<li>Rate-limiting slave removal, to safeguard against unforeseen bugs which may lead to widespread slave removal.</li>
+<li>Support for module hooks in task launch sequence. Refer to the <a href="http://mesos.apache.org/documentation/latest/modules/">modules documentation</a> for more information.</li>
+<li>Anonymous modules: a new kind of module that does not receive any callbacks but coexists with its parent process.</li>
+<li>New service discovery info in task info allows framework users to specify discoverability of tasks for external service discovery systems.
+Refer to the <a href="http://mesos.apache.org/documentation/latest/app-framework-development-guide/">framework development guide</a> for more information.</li>
+</ul>
+
+
+<p>Furthermore, many bugs have been fixed in this release. For full release notes with all features and bug fixes, please refer to the <a href="https://github.com/apache/mesos/blob/master/CHANGELOG">CHANGELOG</a>.</p>
+
+<p>Rolling upgrades may be done seamlessly, however some things have changed in 0.22.0 with regard to external tooling and upgrade paths; please refer to the <a href="http://mesos.apache.org/documentation/latest/upgrades/">upgrade guide</a> for detailed information on upgrading to this release from a 0.21.1 cluster.</p>
+
+<h2>Contributors</h2>
+
+<p>Thanks to the 35 contributors who made 0.22.0 possible:
+Adam B, Alexander Rojas, Alexander Rukletsov, Ankur Chauhan, Benjamin Hindman, Benjamin Mahler, Bernd Mathiske, Chengwei Yang, Chi Zhang, Christos Kozyrakis, Cody Maloney, Connor Doyle, Dario Rexin, Dave Lester, David Robinson, Dominic Hamon, Evelina Dumitrescu, Gabriel Monroy, Ian Downes, Jake Farrell, Jiang Yan Xu, Jie Yu, Joerg Schad, Joris Van Remoortere, Kapil Arya, Kiyonari Harigae, Michael Park, Niklas Nielsen, Palak Choudhary, R.B. Boyer, Ryan Thomas, Samuel, Till Toenshoff, Timothy Chen and Vinod Kone.</p>
+
+</div>
+</div>
+
+			
+	      <hr>
+
+				<!-- footer -->
+	      <div class="footer">
+	        <p>&copy; 2012-2014 <a href="http://apache.org">The Apache Software Foundation</a>.
+	        Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.<p>
+	      </div><!-- /footer -->
+
+	    </div> <!-- /container -->
+
+	    <!-- JS -->
+	    <script src="//code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+			<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="text/javascript"></script>
+    </body>
+</html>
