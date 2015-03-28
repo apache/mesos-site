@@ -11,6 +11,7 @@ Mesos User Groups (MUGs) are responsible for organizing local meetups, hackathon
 
 ### China
 * [Shanghai](http://www.weibo.com/u/3068800961)
+* [Shenzhen](http://www.meetup.com/Shenzhen-Mesos-User-Group/)
 
 ### France
 * [Paris](http://www.meetup.com/Paris-Mesos-Users-Group/)
