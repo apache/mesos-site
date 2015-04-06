@@ -56,7 +56,7 @@ Mesos 0.20.0 now supports building using system installed dependencies. Prior to
 Looking forward, here are a few upcoming features that are being worked on:
 
 * Improvement of Docker support in Mesos ([MESOS-1524](https://issues.apache.org/jira/browse/MESOS-1524))
-* On top of network monitoring, evaluating and providing support for per-container network isolation ([MESOS-1585](https://issues.apache.org/jira/browse/MESOS-1407))
+* On top of network monitoring, evaluating and providing support for per-container network isolation ([MESOS-1585](https://issues.apache.org/jira/browse/MESOS-1585))
 * Continued work on state reconciliation for frameworks ([MESOS-1407](https://issues.apache.org/jira/browse/MESOS-1407))
 
 ### Getting Involved
