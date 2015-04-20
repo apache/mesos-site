@@ -16,6 +16,9 @@ Mesos User Groups (MUGs) are responsible for organizing local meetups, hackathon
 ### France
 * [Paris](http://www.meetup.com/Paris-Mesos-Users-Group/)
 
+### Germany
+* [Cologne](http://www.meetup.com/Mesos-User-Group-Cologne/)
+
 ### Netherlands
 * [Amsterdam](http://www.meetup.com/Mesos-Amsterdam/)
 
@@ -23,7 +26,7 @@ Mesos User Groups (MUGs) are responsible for organizing local meetups, hackathon
 * [London](http://www.meetup.com/London-Mesos-User-Group/)
 
 ### USA
-* [Atlanta, GA](https://twitter.com/AtlantaMesos)
+* [Atlanta, GA](http://www.meetup.com/mesosatl/)
 * [Austin, TX](http://www.meetup.com/Austin-Mesos-Users-Group/)
 * [Dallas, TX](http://www.meetup.com/Metroplex-Mesos-Group/)
 * [Denver, CO](http://www.meetup.com/Denver-Mesos-User-Group/)
