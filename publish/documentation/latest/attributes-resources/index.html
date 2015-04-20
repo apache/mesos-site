@@ -81,11 +81,7 @@
 		<p>See our <a href="/community/">community</a> page for more details.</p>
 	</div>
 	<div class="col-md-8">
-		<p>&ndash;</p>
-
-<h2>layout: documentation</h2>
-
-<h1>Mesos Attributes &amp; Resources</h1>
+		<h1>Mesos Attributes &amp; Resources</h1>
 
 <p>The Mesos system has two basic methods to describe the slaves that comprise a cluster.  One of these is managed by the Mesos master, the other is simply passed onwards to the frameworks using the cluster.</p>
 
@@ -130,27 +126,27 @@ intValue : [0-9]+
 <p>The Mesos master has a few resources that it pre-defines in how it handles them.  At the current time, this list consist of:</p>
 
 <ul>
-<li><code>cpu</code></li>
+<li><code>cpus</code></li>
 <li><code>mem</code></li>
 <li><code>disk</code></li>
 <li><code>ports</code></li>
 </ul>
 
 
-<p>In particular, a slave without <code>cpu</code> and <code>mem</code> resources will never have its resources advertised to any frameworks.  Also, the Master&rsquo;s user interface interprets the scalars in <code>mem</code> and <code>disk</code> in terms of <em><code>MB</code></em>.  IE: the value <code>15000</code> is displayed as <code>14.65GB</code>.</p>
+<p>In particular, a slave without <code>cpus</code> and <code>mem</code> resources will never have its resources advertised to any frameworks.  Also, the Master&rsquo;s user interface interprets the scalars in <code>mem</code> and <code>disk</code> in terms of <em><code>MB</code></em>.  IE: the value <code>15000</code> is displayed as <code>14.65GB</code>.</p>
 
 <h2>Examples</h2>
 
 <p>Here are some examples for configuring the Mesos slaves.</p>
 
-<pre><code>--resources='cpu:24;mem:24576;disk:409600;ports:[21000-24000];bugs:{a,b,c}'
+<pre><code>--resources='cpus:24;mem:24576;disk:409600;ports:[21000-24000];bugs:{a,b,c}'
 --attributes='rack:abc;zone:west;os:centos5,full'
 </code></pre>
 
-<p>In this case, we have three different types of resources, scalars, a range, and a set.  They are called <code>cpu</code>, <code>mem</code>, <code>disk</code>, and the range type is <code>ports</code>.</p>
+<p>In this case, we have three different types of resources, scalars, a range, and a set.  They are called <code>cpus</code>, <code>mem</code>, <code>disk</code>, and the range type is <code>ports</code>.</p>
 
 <ul>
-<li>scalar called <code>cpu</code>, with the value <code>24</code></li>
+<li>scalar called <code>cpus</code>, with the value <code>24</code></li>
 <li>scalar called <code>mem</code>, with the value <code>24576</code></li>
 <li>scalar called <code>disk</code>, with the value <code>409600</code></li>
 <li>range called <code>ports</code>, with values <code>21000</code> through <code>24000</code> (inclusive)</li>

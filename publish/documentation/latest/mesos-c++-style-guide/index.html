@@ -218,7 +218,8 @@ Try&lt;Duration&gt; failoverTimeout =
 <ul>
 <li>Static assertions.</li>
 <li>Multiple right angle brackets.</li>
-<li>Type inference (<code>auto</code> and <code>decltype</code>). The main goal is to increase code readability. Here are several examples:</li>
+<li>Type inference (<code>auto</code> and <code>decltype</code>). The main goal is to increase code readability. This is safely the case if the exact same type omitted on the left is already fully stated on the right.</li>
+<li>Here are several examples:</li>
 </ul>
 
 
@@ -228,7 +229,12 @@ const auto& i = values.find(keys.front());
 // Compare with
 const typename map::iterator& i = values.find(keys.front());
 
-// 2: Don't use.
+// 2: OK.
+auto names = shared_ptr<list<string>>(new list<string>());
+// Compare with
+shared_ptr<list<string>> names = shared_ptr<list<string>>(new list<string>());
+
+// 3: Don't use.
 auto authorizer = LocalAuthorizer::create(acls);
 // Compare with
 Try&lt;Owned&lt;LocalAuthorizer>> authorizer = LocalAuthorizer::create();
