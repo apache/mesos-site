@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+		    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+		    <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
+		    
+		    <link href="../../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+				
+		    
+			
+			<!-- Google Analytics Magic -->
+			<script type="text/javascript">
+			  var _gaq = _gaq || [];
+			  _gaq.push(['_setAccount', 'UA-20226872-1']);
+			  _gaq.push(['_setDomainName', 'apache.org']);
+			  _gaq.push(['_trackPageview']);
+
+			  (function() {
+			    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			  })();
+			</script>
+    </head>
+    <body>
+			<!-- magical breadcrumbs -->
+			<div class="topnav">
+			<ul class="breadcrumb">
+			  <li>
+					<div class="dropdown">
+					  <a data-toggle="dropdown" href="#">Apache Software Foundation <span class="caret"></span></a>
+					  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+							<li><a href="http://www.apache.org">Apache Homepage</a></li>
+							<li><a href="http://www.apache.org/licenses/">License</a></li>
+					  	<li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>  
+					  	<li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+							<li><a href="http://www.apache.org/security/">Security</a></li>
+					  </ul>
+					</div>
+				</li>
+				<li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+				
+				
+					<li><a href="/documentation
+/">Documentation
+</a></li>
+				
+				
+			</ul><!-- /breadcrumb -->
+			</div>
+			
+			<!-- navbar excitement -->
+	    <div class="navbar navbar-static-top" role="navigation">
+	      <div class="navbar-inner">
+	        <div class="container">
+						<a href="/" class="logo"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo" /></a>
+					<div class="nav-collapse">
+						<ul class="nav nav-pills navbar-right">
+						  <li><a href="/gettingstarted/">Getting Started</a></li>
+						  <li><a href="/documentation/latest/">Documentation</a></li>
+						  <li><a href="/downloads/">Downloads</a></li>
+						  <li><a href="/community/">Community</a></li>
+						</ul>
+					</div>
+	        </div>
+	      </div>
+	    </div><!-- /.navbar -->
+
+      <div class="container">
+
+			<div class="row-fluid">
+	<div class="col-md-4">
+		<h4>If you're new to Mesos</h4>
+		<p>See the <a href="/gettingstarted/">getting started</a> page for more information about downloading, building, and deploying Mesos.</p>
+		
+		<h4>If you'd like to get involved or you're looking for support</h4>
+		<p>See our <a href="/community/">community</a> page for more details.</p>
+	</div>
+	<div class="col-md-8">
+		<h1>Submitting a patch</h1>
+
+<ul>
+<li>You&rsquo;ve fixed a bug or added a feature and want to contribute it. AWESOME!</li>
+<li>We use <a href="https://reviews.apache.org">Apache Review Board</a> for code reviews. If you don&rsquo;t already have an account, you&rsquo;ll need to create one (it&rsquo;s separate from your Apache JIRA account).</li>
+<li>A code review request should be created for every JIRA that involves a change to the codebase.</li>
+</ul>
+
+
+<h3>Before you submit</h3>
+
+<ol>
+<li><p>Check out the code from the Apache repository via Git. Instructions are on the <a href="http://mesos.apache.org/gettingstarted/">Getting Started</a> page.</p></li>
+<li><p>Join the dev, issues, reviews and builds mailing lists by sending emails to dev-subscribe@mesos.apache.org, issues-subscribe@mesos.apache.org, reviews-subscribe@mesos.apache.org and builds-subscribe@mesos.apache.org respectively.</p></li>
+<li><p>Find a JIRA that is currently unassigned that you want to work on at <a href="https://issues.apache.org/jira/browse/MESOS">JIRA issue tracker</a>, or create your own (you&rsquo;ll need a JIRA account for this, see below)!</p>
+
+<ol>
+<li>This could be a JIRA representing a bug (possibly a bug that you encountered and reported, e.g. when trying to build) or a new feature.</li>
+</ol>
+</li>
+<li><p>Assign the JIRA to yourself. To do this, you will need:</p>
+
+<ol>
+<li>An Apache JIRA user account (sign up for one <a href="https://issues.apache.org/jira/secure/Signup!default.jspa">here</a>).</li>
+<li>You need to be added to the list of Mesos &ldquo;contributors&rdquo; by a Mesos committer (send email to dev@mesos.apache.org) in order to be assigned (or to assign yourself) to a JIRA issue.</li>
+</ol>
+</li>
+<li><p>Formulate a plan for resolving the issue, propose your plan via comments in the JIRA.</p></li>
+<li><p>Create one or more test cases to exercise the bug or the feature (the Mesos team uses <a href="http://en.wikipedia.org/wiki/Test-driven_development">test-driven development</a>), before you start coding, make sure these test cases all fail.</p></li>
+<li><p>Make your changes to the code (using whatever IDE/editor you choose) to actually fix the bug or implement the feature.</p>
+
+<ol>
+<li>Before beginning, please read the <a href="/documentation/latest/mesos-c++-style-guide/">Mesos C++ Style Guide</a>. It is recommended to use the git pre-commit hook (<code>support/hooks/pre-commit</code>) to automatically check for style errors. See the hook script for instructions to enable it.</li>
+<li>Most of your changes will probably be to files inside of <code>BASE_MESOS_DIR</code></li>
+<li>To build, we recommend that you don&rsquo;t build inside of the src directory. We recommend you do the following:
+
+<ol>
+<li>From inside of the root Mesos directory: <code>mkdir build &amp;&amp; cd build</code></li>
+<li><code>../configure</code></li>
+<li><code>make</code></li>
+<li>Now all of the files generated by the build process will be contained in the build directory you created, instead of being spread throughout the src directory, which is a bit messier. This is both cleaner, and makes it easy to clean up if you want to get rid of the files generated by <code>configure</code> and <code>make</code>. I.e. You can reset your build process without risking changes you made in the src directory, by simply deleting the build directory, and creating a new one.</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Make sure all of your test cases now pass.</p>
+
+<ol>
+<li><code>make check</code></li>
+</ol>
+</li>
+<li><p>Make sure to pull in any changes that have been committed to master branch. Using Git, do this via something like:</p>
+
+<ol>
+<li><code>git checkout master</code></li>
+<li><code>git pull</code></li>
+<li><code>git checkout my_branch</code></li>
+<li>Check the output of <code>git diff master</code> and make sure it lists only your changes. If other changes you did not make are listed, try <code>git rebase master</code> to bring your branch up to date with master.</li>
+</ol>
+</li>
+</ol>
+
+
+<h3>Submit your patch</h3>
+
+<ol>
+<li><p>You&rsquo;re ready to submit your patch for review!</p>
+
+<ol>
+<li>Log in or create an account at <a href="http://reviews.apache.org">Apache Review Board</a></li>
+<li>The easiest (and recommended) way to submit reviews is through <code>post-reviews.py</code> a wrapper around post-review.</li>
+<li>First, install RBTools. <a href="https://www.reviewboard.org/docs/rbtools/dev/">See Instructions</a></li>
+<li>Configure post-review. The easiest method is to symlink to the sample config: ln -s support/reviewboardrc .reviewboardrc</li>
+<li>Log into Review Board from the command line: run <code>rbt status</code></li>
+<li>From your local branch run <code>support/post-reviews.py</code>.</li>
+<li>Note that <code>post-reviews.py</code> creates a new review for every commit on your branch that is different from the <code>master</code>.</li>
+<li>Be sure to add your JIRA issue id (e.g. MESOS-01) to the field labeled &ldquo;Bugs&rdquo; (this will automatically link)</li>
+<li>Under &ldquo;Description&rdquo; in addition to details about your changes, include a description of any documentation pages that need to be added, or are affected by your changes (e.g. did you change or add any configuration options/flags? Did you add a new binary?)</li>
+</ol>
+</li>
+<li><p>Wait for a code review from another Mesos developer via Review Board, address their feedback and upload updated patches until you receive a &ldquo;Ship It&rdquo; from a Mesos committer.</p>
+
+<ol>
+<li>When addressing feedback, adjust your existing commit(s) instead of creating new commits, otherwise <code>post-reviews.py</code> will create a new review (<code>git rebase -i</code> is your friend).</li>
+<li>Review Board comments should be used for code-specific discussions, and JIRA comments for bigger-picture design discussions.</li>
+<li>Always respond to each RB comment that you address directly (i.e. each comment can be responded to directly) with either &ldquo;Done.&rdquo; or a comment explaining how you addressed it.</li>
+<li>If an issue has been raised in the review, please resolve the issue as &ldquo;Fixed&rdquo; or &ldquo;Dropped&rdquo;. If &ldquo;Dropped&rdquo; please add a comment explaining the reason. Also, if your fix warrants a comment (e.g., fixed differently than suggested by the reviewer) please add a comment.</li>
+</ol>
+</li>
+<li><p>After consensus is reached on your JIRA/patch, you&rsquo;re review request will receive a &ldquo;Ship It!&rdquo; from a committer, and then a committer will commit your patch to the git repository. Congratulations and thanks for participating in our community!</p></li>
+<li><p>The last step is to ensure that the necessary documentation gets created or updated so the whole world knows about your new feature or bug fix.</p></li>
+</ol>
+
+
+<h2>Style Guides</h2>
+
+<ul>
+<li>For patches to the core, we ask that you follow the <a href="/documentation/latest/mesos-c++-style-guide/">Mesos C++ Style Guide</a></li>
+</ul>
+
+
+	</div>
+</div>
+
+			
+	      <hr>
+
+				<!-- footer -->
+	      <div class="footer">
+	        <p>&copy; 2012-2014 <a href="http://apache.org">The Apache Software Foundation</a>.
+	        Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.<p>
+	      </div><!-- /footer -->
+
+	    </div> <!-- /container -->
+
+	    <!-- JS -->
+	    <script src="//code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+			<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="text/javascript"></script>
+    </body>
+</html>
