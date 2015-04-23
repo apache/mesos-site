@@ -8,7 +8,7 @@
 		    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
 		    <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
 		    
-		    <link href="../../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+		    <link href="../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
 				
 		    
 			
@@ -81,48 +81,41 @@
 		<p>See our <a href="/community/">community</a> page for more details.</p>
 	</div>
 	<div class="col-md-8">
-		<h1>Mesos Code Internals</h1>
+		<h1>Committing</h1>
 
-<h2>Top-level directories in the Mesos distribution</h2>
+<p>Only committers have the ability to commit your change, so make sure you
+work with one during code review to get your changes committed.</p>
 
-<ul>
-<li>3rdparty - Contains necessary open source third party software that Mesos leverages for things such as logging, etc.</li>
-<li>docs - Documentation that&rsquo;s packaged/shipped with each release.</li>
-<li>ec2 - Scripts for launching a Mesos cluster on EC2. See the wiki page on &ldquo;EC2-Scripts&rdquo;.</li>
-<li>frameworks - Included Mesos Frameworks. See the READMEs in each one. See the <a href="/documentation/latest/app-framework-development-guide/">App/Framework development guide</a> for a crash course in how Mesos Frameworks get resources from the Mesos master.</li>
-<li>include - Contains headers that contain the interfaces that Mesos users need in order to interact with Mesos (e.g. the Mesos Framework API)</li>
-<li>src - Contains the entire Mesos source tree. See below for more details about the directories inside of <code>src</code>.</li>
-</ul>
+<p>If you are a committer, here are some guidelines for committing changes:</p>
 
+<ol>
+<li><strong>Follow the format of commit messages</strong>: we currently do not leverage
+any tooling to enforce the format of messages, so:
 
-<h2>Mesos source code</h2>
-
-<p>The Mesos source code (found in <code>MESOS_HOME/src</code>) is organized into the following hierarchy:</p>
-
-<ul>
-<li>common - Shared source files (such as utilities and data structures).</li>
-<li>deploy</li>
-<li>detector</li>
-<li>examples</li>
-<li>exec</li>
-<li>files</li>
-<li>launcher</li>
-<li>linux</li>
-<li>local</li>
-<li>log</li>
-<li>logging</li>
-<li>master - Source files specific to the mesos-master daemon.</li>
-<li>mesos</li>
-<li>messages</li>
-<li>python</li>
-<li>sasl</li>
-<li>scaling</li>
-<li>sched - Source files specific to the mesos-slave daemon.</li>
-<li>slave</li>
-<li>tests</li>
-<li>webui</li>
-<li>zookeeper</li>
-</ul>
+<ol type="a">
+<li>Be clear and explicit in the commit message.</li>
+<li>Include the link to the review (this will be done automatically if
+using <code>support/post-reviews.py</code> for your own changes and
+<code>support/apply-review.sh</code> for committing changes from others).
+<strong>Be sure to clean up the commit message when pulling in changes
+from others.</strong></li>
+<li>Use 72 character columns. Note that we don&rsquo;t always have a 50
+character or less summary because that restriction tends to cause
+people to write poorly.</li>
+</ol>
+</li>
+<li><strong>Keep the &lsquo;Author&rsquo; intact</strong>: <code>support/apply-review.sh</code> will handle
+this for you, but be careful when rebasing or ammending.</li>
+<li><strong>Never ever commit a merge</strong>: always rebase instead, as appropriate.
+Likewise, never &lsquo;force push&rsquo;.</li>
+<li><strong>Don&rsquo;t break the build</strong>: we support Linux and Mac OS X, however not
+all configurations are being tested in Jenkins, so be aware of that.
+Also, pay attention to the Jenkins review bot if it flags a review as
+breaking the build. Note that if you do break the build, the fixes are
+often small and inconsequential so don&rsquo;t worry about going through a
+review cycle for that, just fix things (but don&rsquo;t take that as a license
+to &ldquo;wait until the build fails to fix things&rdquo;).</li>
+</ol>
 
 
 	</div>
