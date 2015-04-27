@@ -91,8 +91,29 @@
 
 <ul>
 <li>We use <a href="http://en.wikipedia.org/wiki/CamelCase#Variations_and_synonyms">lowerCamelCase</a> for variable names (Google uses snake_case, and their class member variables have trailing underscores).</li>
+<li>We prepend constructor and function arguments with a leading underscore to avoid ambiguity and / or shadowing:</li>
 </ul>
 
+
+<pre><code>Try(State _state, T* _t = NULL, const std::string&amp; _message = "")
+  : state(_state), t(_t), message(_message) {}
+</code></pre>
+
+<ul>
+<li><p>Prefer trailing underscores for use as member fields (but not required). Some trailing underscores are used to distinguish between similar variables in the same scope (think prime symbols), <em>but this should be avoided as much as possible, including removing existing instances in the code base.</em></p></li>
+<li><p>If you find yourself creating a copy of an argument passed by const reference, consider passing it by value instead (if you don&rsquo;t want to use a leading underscore and copy in the body of the function):</p></li>
+</ul>
+
+
+<pre><code>// You can pass-by-value in ProtobufProcess::install() handlers.
+void Slave::statusUpdate(StatusUpdate update, const UPID&amp; pid)
+{
+  ...
+  update.mutable_status()-&gt;set_source(
+      pid == UPID() ? TaskStatus::SOURCE_SLAVE : TaskStatus::SOURCE_EXECUTOR);
+  ...
+}
+</code></pre>
 
 <h3>Constant Names</h3>
 
@@ -126,7 +147,7 @@
 <h2>Comments</h2>
 
 <ul>
-<li>End each sentence with a period.</li>
+<li>End each sentence within a comment with a punctuation mark (please note that we generally prefer periods); this applies to incomplete sentences as well.</li>
 <li>At most 70 characters per line in comments.</li>
 <li>For trailing comments, leave one space.</li>
 </ul>
@@ -157,16 +178,15 @@
 </ul>
 
 
-<pre>
-// 1: OK.
-allocator->resourcesRecovered(frameworkId, slaveId, resources, filters);
+<pre><code>// 1: OK.
+allocator-&gt;resourcesRecovered(frameworkId, slaveId, resources, filters);
 
 // 2: Don't use.
-allocator->resourcesRecovered(frameworkId, slaveId,
-                           resources, filters);
+allocator-&gt;resourcesRecovered(frameworkId, slaveId,
+                              resources, filters);
 
 // 3: Don't use in this case due to "jaggedness".
-allocator->resourcesRecovered(frameworkId,
+allocator-&gt;resourcesRecovered(frameworkId,
                               slaveId,
                               resources,
                               filters);
@@ -177,17 +197,16 @@ foobar(someArgument,
        theLastArgument);
 
 // 4: OK.
-allocator->resourcesRecovered(
+allocator-&gt;resourcesRecovered(
     frameworkId,
     slaveId,
     resources,
     filters);
 
 // 5: OK.
-allocator->resourcesRecovered(
+allocator-&gt;resourcesRecovered(
     frameworkId, slaveId, resources, filters);
-</pre>
-
+</code></pre>
 
 <h3>Continuation</h3>
 
@@ -196,11 +215,9 @@ allocator->resourcesRecovered(
 </ul>
 
 
-<pre>
-Try&lt;Duration&gt; failoverTimeout =
+<pre><code>Try&amp;lt;Duration&amp;gt; failoverTimeout =
   Duration::create(FrameworkInfo().failover_timeout());
-</pre>
-
+</code></pre>
 
 <h2>Empty Lines</h2>
 
@@ -218,28 +235,25 @@ Try&lt;Duration&gt; failoverTimeout =
 <ul>
 <li>Static assertions.</li>
 <li>Multiple right angle brackets.</li>
-<li>Type inference (<code>auto</code> and <code>decltype</code>). The main goal is to increase code readability. This is safely the case if the exact same type omitted on the left is already fully stated on the right.</li>
-<li>Here are several examples:</li>
+<li>Type inference (<code>auto</code> and <code>decltype</code>). The main goal is to increase code readability. This is safely the case if the exact same type omitted on the left is already fully stated on the right. Here are several examples:</li>
 </ul>
 
 
-<pre>
-// 1: OK.
-const auto& i = values.find(keys.front());
+<pre><code>// 1: OK.
+const auto&amp; i = values.find(keys.front());
 // Compare with
-const typename map::iterator& i = values.find(keys.front());
+const typename map::iterator&amp; i = values.find(keys.front());
 
 // 2: OK.
-auto names = shared_ptr<list<string>>(new list<string>());
+auto names = shared_ptr&lt;list&lt;string&gt;&gt;(new list&lt;string&gt;());
 // Compare with
-shared_ptr<list<string>> names = shared_ptr<list<string>>(new list<string>());
+shared_ptr&lt;list&lt;string&gt;&gt; names = shared_ptr&lt;list&lt;string&gt;&gt;(new list&lt;string&gt;());
 
 // 3: Don't use.
 auto authorizer = LocalAuthorizer::create(acls);
 // Compare with
-Try&lt;Owned&lt;LocalAuthorizer>> authorizer = LocalAuthorizer::create();
-</pre>
-
+Try&amp;lt;Owned&amp;lt;LocalAuthorizer&gt;&gt; authorizer = LocalAuthorizer::create();
+</code></pre>
 
 <ul>
 <li>Rvalue references.</li>
@@ -247,16 +261,16 @@ Try&lt;Owned&lt;LocalAuthorizer>> authorizer = LocalAuthorizer::create();
 <li>Mutexes.
 
 <ul>
-<li>std::mutex.</li>
-<li>std::lock_guard&lt;std::mutex>.</li>
-<li>std::unique_lock&lt;std::mutex>.</li>
+<li><code>std::mutex</code></li>
+<li><code>std::lock_guard&lt;std::mutex&gt;</code></li>
+<li><code>std::unique_lock&lt;std::mutex&gt;</code></li>
 </ul>
 </li>
 <li>Shared from this.
 
 <ul>
-<li>class T : public std::enable_shared_from_this<T>.</li>
-<li>shared_from_this().</li>
+<li><code>class T : public std::enable_shared_from_this&lt;T&gt;</code></li>
+<li><code>shared_from_this()</code></li>
 </ul>
 </li>
 </ul>

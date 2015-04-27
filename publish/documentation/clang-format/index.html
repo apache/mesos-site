@@ -83,17 +83,13 @@
 	<div class="col-md-8">
 		<h1>ClangFormat</h1>
 
-<p><a href="http://llvm.org/releases/3.5.0/tools/clang/docs/ClangFormat.html">ClangFormat</a> is an automatic source code formatting tool which help us focus on the code rather than the formatting.</p>
+<p><a href="http://llvm.org/releases/3.5.1/tools/clang/docs/ClangFormat.html">ClangFormat</a> is an automatic source code formatting tool which helps us focus on the code rather than the formatting.</p>
 
-<blockquote><p>The provided configurations try to honor the <a href="http://mesos.apache.org/documentation/latest/mesos-c++-style-guide/">Mesos C++ Style Guide</a> as much as possible, but there are some limitations. Even with these limitations however, ClangFormat will likely be extremely useful for your workflow!</p></blockquote>
-
-<h2>Quick Start</h2>
-
-<p>If you already have an installation of <code>clang-format</code> version >= 3.5, follow your editor&rsquo;s <a href="#integrate-with-your-editor">integration instructions</a> then start formatting!</p>
+<blockquote><p>The provided configurations try to honor the <a href="http://mesos.apache.org/documentation/latest/mesos-c++-style-guide/">Mesos C++ Style Guide</a> as much as possible, but there are some limitations which require manual attention. Even with these limitations however, ClangFormat will be extremely useful for your workflow!</p></blockquote>
 
 <h2>Setup</h2>
 
-<h3>Install clang 3.5</h3>
+<h3>Install <code>clang-format-3.5</code></h3>
 
 <h4>Ubuntu 14.04</h4>
 
@@ -106,32 +102,26 @@ sudo apt-get install clang-format-3.5
 
 <h4>OS X Yosemite</h4>
 
-<pre><code class="bash"># Download and extract the clang-3.5 source.
-$ wget http://llvm.org/releases/3.5.0/cfe-3.5.0.src.tar.xz
-$ tar -xzf cfe-3.5.0.src.tar.xz
+<pre><code class="bash"># Install clang-3.5. The binaries are suffixed with '-3.5', e.g. 'clang++-3.5'.
+$ brew install llvm35 --with-clang
 
-# Download and extract the clang-3.5 pre-built binaries.
-$ wget http://llvm.org/releases/3.5.0/clang+llvm-3.5.0-macosx-apple-darwin.tar.xz
-$ tar -xzf clang+llvm-3.5.0-macosx-apple-darwin.tar.xz
-
-# Create a directory for clang.
-$ mkdir `brew --cellar`/clang
-
-# Install the pre-built binaries.
-$ mv clang+llvm-3.5.0-macosx-apple-darwin `brew --cellar`/clang/3.5
-
-# Install the clang-format tools.
-$ mkdir `brew --cellar`/clang/3.5/share/clang
-$ cp cfe-3.5.0.src/tools/clang-format/clang-format* `brew --cellar`/clang/3.5/share/clang
-
-# Link!
-$ brew link clang
-Linking /usr/local/Cellar/clang/3.5... 491 symlinks created
-
-# You can delete cleanly by running `brew uninstall clang`
+# Download and install the clang-format scripts.
+$ wget http://llvm.org/releases/3.5.1/cfe-3.5.1.src.tar.xz
+$ tar -xzf cfe-3.5.1.src.tar.xz
+$ cp cfe-3.5.1.src/tools/clang-format/clang-format* `brew --cellar`/llvm35/3.5.1/share/clang-3.5
 </code></pre>
 
-<h3>Integrate with your editor</h3>
+<h3>Formatting Configuration</h3>
+
+<p>By default, ClangFormat uses the configuration defined in a <code>.clang-format</code> or
+<code>_clang-format</code> file located in the nearest parent directory of the input file.
+The <code>bootstrap</code> script creates a <code>.clang-format</code> symlink at the top-level
+directory which points to <code>support/clang-format</code> for ClangFormat to find.</p>
+
+<blockquote><p>NOTE: If you&rsquo;re using <code>clang-format-3.6</code>, you&rsquo;ll need to add a new option
+<code>BinPackArguments: false</code> to the <code>.clang-format</code> file!</p></blockquote>
+
+<h3>Editor Integration</h3>
 
 <h4>Vim</h4>
 
@@ -145,8 +135,8 @@ imap &lt;C-K&gt; &lt;c-o&gt;:pyf /usr/share/vim/addons/syntax/clang-format-3.5.p
 
 <p>OS X:</p>
 
-<pre><code>map &lt;C-K&gt; :pyf /usr/local/share/clang/clang-format.py&lt;cr&gt;
-imap &lt;C-K&gt; &lt;c-o&gt;:pyf /usr/local/share/clang/clang-format.py&lt;cr&gt;
+<pre><code>map &lt;C-K&gt; :pyf /usr/local/share/clang-3.5/clang-format.py&lt;cr&gt;
+imap &lt;C-K&gt; &lt;c-o&gt;:pyf /usr/local/share/clang-3.5/clang-format.py&lt;cr&gt;
 </code></pre>
 
 <p>The first line enables clang-format for <code>NORMAL</code> and <code>VISUAL</code> mode, the second line adds support for <code>INSERT</code> mode. Change <code>C-K</code> to another binding if you need clang-format on a different key (<code>C-K</code> stands for <code>Ctrl+k</code>).</p>
@@ -155,7 +145,7 @@ imap &lt;C-K&gt; &lt;c-o&gt;:pyf /usr/local/share/clang/clang-format.py&lt;cr&gt
 
 <p>It operates on the current, potentially unsaved buffer and does not create or save any files. To revert a formatting, just undo.</p>
 
-<blockquote><p>Source: http://llvm.org/releases/3.5.0/tools/clang/docs/ClangFormat.html</p></blockquote>
+<blockquote><p>Source: http://llvm.org/releases/3.5.1/tools/clang/docs/ClangFormat.html</p></blockquote>
 
 <h4>Emacs</h4>
 
@@ -169,13 +159,13 @@ imap &lt;C-K&gt; &lt;c-o&gt;:pyf /usr/local/share/clang/clang-format.py&lt;cr&gt
 
 <p>OS X:</p>
 
-<pre><code>(load "/usr/local/share/clang/clang-format.el")
+<pre><code>(load "/usr/local/share/clang-3.5/clang-format.el")
 (global-set-key [C-M-tab] 'clang-format-region)
 </code></pre>
 
 <p>This binds the function <code>clang-format-region</code> to <code>C-M-tab</code>, which then formats the current line or selected region.</p>
 
-<blockquote><p>Source: http://llvm.org/releases/3.5.0/tools/clang/docs/ClangFormat.html</p></blockquote>
+<blockquote><p>Source: http://llvm.org/releases/3.5.1/tools/clang/docs/ClangFormat.html</p></blockquote>
 
 <h2>Known Limitations</h2>
 
