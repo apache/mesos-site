@@ -19,7 +19,7 @@ layout: community_section
 	<p>New bugs can be reported on our <a href="http://issues.apache.org/jira/browse/MESOS">issue tracker</a>. In order to create a new issue, you'll need to signup for an account.</p>
 
 	<h3 name="contribute">Contribute a core patch</h3>
-	<p>Follow our <a href="/documentation/latest/mesos-developers-guide">contribution guidelines</a> when submitting a patch. We love patches. :)</p>
+	<p>Follow our <a href="/documentation/latest/submitting-a-patch">contribution guidelines</a> when submitting a patch. We love patches. :)</p>
 
 </div>
 <div class="col-md-6">
