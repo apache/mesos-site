@@ -14,7 +14,7 @@ The latest Mesos release, 0.21.0, is now available for [download](http://mesos.a
 * Task reconciliation for frameworks ([MESOS-1407](https://issues.apache.org/jira/browse/MESOS-1407))
 * Support for Mesos modules ([MESOS-1931](https://issues.apache.org/jira/browse/MESOS-1931))
 * Task status now includes source and reason ([MESOS-343](https://issues.apache.org/jira/browse/MESOS-343), [MESOS-1143](https://issues.apache.org/jira/browse/MESOS-1143))
-* A shared filesystem isolator ([MESOS-1586](https://issues.apache.org/jira/browse/MESOS-1143))
+* A shared filesystem isolator ([MESOS-1586](https://issues.apache.org/jira/browse/MESOS-1586))
 * A pid namespace isolator ([MESOS-1765](https://issues.apache.org/jira/browse/MESOS-1765))
 
 Full release notes are available in the release [CHANGELOG](https://github.com/apache/mesos/blob/master/CHANGELOG).

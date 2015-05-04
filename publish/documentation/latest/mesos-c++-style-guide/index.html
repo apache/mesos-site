@@ -215,7 +215,7 @@ allocator-&gt;resourcesRecovered(
 </ul>
 
 
-<pre><code>Try&amp;lt;Duration&amp;gt; failoverTimeout =
+<pre><code>Try&lt;Duration&gt; failoverTimeout =
   Duration::create(FrameworkInfo().failover_timeout());
 </code></pre>
 
@@ -230,7 +230,7 @@ allocator-&gt;resourcesRecovered(
 
 <h2>C++11</h2>
 
-<p>We still support older compilers. The whitelist of supported C++11 features is:</p>
+<p>We support C++11 and require GCC 4.8+ or Clang 3.5+ compilers. The whitelist of supported C++11 features is:</p>
 
 <ul>
 <li>Static assertions.</li>
@@ -252,7 +252,7 @@ shared_ptr&lt;list&lt;string&gt;&gt; names = shared_ptr&lt;list&lt;string&gt;&gt
 // 3: Don't use.
 auto authorizer = LocalAuthorizer::create(acls);
 // Compare with
-Try&amp;lt;Owned&amp;lt;LocalAuthorizer&gt;&gt; authorizer = LocalAuthorizer::create();
+Try&lt;Owned&lt;LocalAuthorizer&gt;&gt; authorizer = LocalAuthorizer::create();
 </code></pre>
 
 <ul>
@@ -273,6 +273,260 @@ Try&amp;lt;Owned&amp;lt;LocalAuthorizer&gt;&gt; authorizer = LocalAuthorizer::cr
 <li><code>shared_from_this()</code></li>
 </ul>
 </li>
+<li><p>Lambdas!</p>
+
+<ul>
+<li><p>Don&rsquo;t put a space between the capture list and the parameter list:</p>
+
+<pre><code>// 1: OK.
+[]() { ...; };
+
+// 2: Don't use.
+[] () { ...; };
+</code></pre></li>
+<li><p>Prefer default capture by value, explicit capture by value, then capture by reference. To avoid dangling-pointer bugs, <em>never</em> use default capture by reference:</p>
+
+<pre><code>// 1: OK.
+[=]() { ... }; // Default capture by value.
+[n]() { ... }; // Explicit capture by value.
+[&amp;n]() { ... }; // Explicit capture by reference.
+[=, &amp;n]() { ... }; // Default capture by value, explicit capture by reference.
+
+// 2: Don't use.
+[&amp;]() { ... }; // Default capture by reference.
+</code></pre></li>
+<li><p>Use <code>mutable</code> only when absolutely necessary.</p>
+
+<pre><code>// 1: OK.
+[]() mutable { ...; };
+</code></pre></li>
+<li><p>Feel free to ignore the return type by default, adding it as necessary to appease the compiler or be more explicit for the reader.</p>
+
+<pre><code>// 1: OK.
+[]() { return true; };
+[]() -&gt; bool { return ambiguous(); };
+</code></pre></li>
+<li><p>Feel free to use <code>auto</code> when naming a lambda expression:</p>
+
+<pre><code>// 1: OK.
+auto lambda = []() { ...; };
+</code></pre></li>
+<li><p>Format lambdas similar to how we format functions and methods. Feel free to let lambdas be one-liners:</p>
+
+<pre><code>// 1: OK.
+auto lambda = []() {
+  ...;
+};
+
+// 2: OK.
+auto lambda = []() { ...; };
+</code></pre>
+
+<p>Feel free to inline lambdas within function arguments:</p>
+
+<pre><code>socket.send([]() {
+  ...;
+});
+</code></pre>
+
+<p>Chain function calls on a newline after the closing brace of the lambda and the closing parenthesis of function call:</p>
+
+<pre><code>// 1: OK.
+instance
+  .method([]() {
+    ...;
+  })
+  .then([]() { ...; })
+  .then([]() {
+    ...;
+  });
+
+// 2: OK (when no chaining, compare to 1).
+instance.method([]() {
+  ...;
+});
+
+// 3: OK (if no 'instance.method').
+function([]() {
+  ...;
+})
+.then([]() { ...; })
+.then([]() {
+  ...;
+});
+
+// 3: OK (but prefer 1).
+instance.method([]() {
+  ...;
+})
+.then([]() { ...; })
+.then([]() {
+  ...;
+});
+</code></pre>
+
+<p>Wrap capture lists indepedently of parameters, <em>use the same formatting as if the capture list were template parameters</em>:</p>
+
+<pre><code>// 1: OK.
+function([&amp;capture1, &amp;capture2, &amp;capture3](
+    const T1&amp; p1, const T2&amp; p2, const T3&amp; p3) {
+  ...;
+});
+
+function(
+    [&amp;capture1, &amp;capture2, &amp;capture3](
+        const T1&amp; p1, const T2&amp; p2, const T3&amp; p3) {
+  ...;
+});
+
+auto lambda = [&amp;capture1, &amp;capture2, &amp;capture3](
+    const T1&amp; p1, const T2&amp; p2, const T3&amp; p3) {
+  ...;
+};
+
+
+auto lambda =
+  [&amp;capture1, &amp;capture2, &amp;capture3](
+      const T1&amp; p1, const T2&amp; p2, const T3&amp; p3) {
+  ...;
+};
+
+// 2: OK (when capture list is longer than 80 characters).
+function([
+    &amp;capture1,
+    &amp;capture2,
+    &amp;capture3,
+    &amp;capture4](
+        const T1&amp; p1, const T2&amp; p2) {
+  ...;
+});
+
+auto lambda = [
+    &amp;capture1,
+    &amp;capture2,
+    &amp;capture3,
+    &amp;capture4](
+        const T1&amp; p1, const T2&amp; p2) {
+  ...;
+};
+
+// 3: OK (but prefer 2).
+function([
+    &amp;capture1,
+    &amp;capture2,
+    &amp;capture3,
+    &amp;capture4](const T1&amp; p1, const T2&amp; t2) {
+  ...;
+});
+
+auto lambda = [
+    &amp;capture1,
+    &amp;capture2,
+    &amp;capture3,
+    &amp;capture4](const T1&amp; p1, const T2&amp; p2) {
+  ...;
+};
+
+// 3: Don't use.
+function([&amp;capture1,
+          &amp;capture2,
+          &amp;capture3,
+          &amp;capture4](const T1&amp; p1, const T2&amp; p2) {
+  ...;
+});
+
+auto lambda = [&amp;capture1,
+               &amp;capture2,
+               &amp;capture3,
+               &amp;capture4](const T1&amp; p1, const T2&amp; p2) {
+  ...;
+};
+
+// 4: Don't use.
+function([&amp;capture1,
+          &amp;capture2,
+          &amp;capture3,
+          &amp;capture4](
+    const T1&amp; p1, const T2&amp; p2, const T3&amp; p3) {
+  ...;
+});
+
+auto lambda = [&amp;capture1,
+               &amp;capture2,
+               &amp;capture3,
+               &amp;capture4](
+    const T1&amp; p1, const T2&amp; p2, const T3&amp; p3) {
+  ...;
+};
+
+// 5: Don't use.
+function([&amp;capture1,
+          &amp;capture2,
+          &amp;capture3,
+          &amp;capture4](
+    const T1&amp; p1,
+    const T2&amp; p2,
+    const T3&amp; p3) {
+  ...;
+});
+
+auto lambda = [&amp;capture1,
+               &amp;capture2,
+               &amp;capture3,
+               &amp;capture4](
+    const T1&amp; p1,
+    const T2&amp; p2,
+    const T3&amp; p3) {
+  ...;
+};
+
+// 6: OK (parameter list longer than 80 characters).
+function([&amp;capture1, &amp;capture2, &amp;capture3](
+    const T1&amp; p1,
+    const T2&amp; p2,
+    const T3&amp; p3,
+    const T4&amp; p4) {
+  ...;
+});
+
+auto lambda = [&amp;capture1, &amp;capture2, &amp;capture3](
+    const T1&amp; p1,
+    const T2&amp; p2,
+    const T3&amp; p3,
+    const T4&amp; p4) {
+  ...;
+};
+
+// 7: OK (capture and parameter lists longer than 80 characters).
+function([
+    &amp;capture1,
+    &amp;capture2,
+    &amp;capture3,
+    &amp;capture4](
+        const T1&amp; p1,
+        const T2&amp; p2,
+        const T3&amp; p3,
+        const T4&amp; p4) {
+  ...;
+});
+
+auto lambda = [
+    &amp;capture1,
+    &amp;capture2,
+    &amp;capture3,
+    &amp;capture4](
+        const T1&amp; p1,
+        const T2&amp; p2,
+        const T3&amp; p3,
+        const T4&amp; p4) {
+  ...;
+};
+</code></pre></li>
+</ul>
+</li>
+<li><p>Unrestricted Union.</p>
+
+<p>Like the pre-existing <code>union</code>, we can overlap storage allocation for objects that never exist simultaneously. However, with C++11 we are no longer <em>restricted to having only non-POD types in unions</em>. Adding non-POD types to unions complicates things, however, because we need to make sure to properly call constructors and destructors. Therefore, only use unrestricted unions (i.e., unions with non-POD types) when the union has only a single field. What does this buy us? Now we can avoid dynamic memory allocations for &ldquo;container&rdquo; like types, e.g., <code>Option</code>, <code>Try</code>, <code>Result</code>, etc. In effect, we treat the union like a dynamic allocation, calling <em>placement new</em>, <code>new (&amp;t) T(...)</code> anyplace we would have just called <code>new T(...)</code> and the destructor <code>t.~T()</code> anyplace we would have called <code>delete t</code>.</p></li>
 </ul>
 
 
