@@ -222,6 +222,20 @@ could be to support PAM (LDAP, MySQL, NIS, UNIX) backed authentication.</p>
 internal components which may not be suitable to be abstracted entirely behind
 modules but rather let&rsquo;s them define actions on so-called hooks.</p>
 
+<p>To load a hook into Mesos, you need to</p>
+
+<ul>
+<li><p>introduce it to Mesos by listing it in the <code>--modules</code> configuration,</p></li>
+<li><p>select it as a hook module via the <code>--hooks</code> flag.</p></li>
+</ul>
+
+
+<p>For example, the following command will run the Mesos slave with the
+<code>TestTaskHook</code> hook:</p>
+
+<pre><code>./bin/mesos-slave.sh --master=&lt;IP&gt;:&lt;PORT&gt; --modules="file://&lt;path-to-modules-config&gt;.json" --hooks=TestTaskHook
+</code></pre>
+
 <h3>Isolator</h3>
 
 <p>Isolator modules enable experimenting with specialized isolation and monitoring
