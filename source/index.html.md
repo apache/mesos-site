@@ -9,8 +9,7 @@ title: Apache Mesos
 	    <p class="lead">Apache Mesos abstracts CPU, memory, storage, and other compute resources away from machines (physical or virtual), enabling fault-tolerant and elastic distributed systems to easily be built and run effectively.</p>
 	  </div>
     <div class="col-md-5 text-center download">
-      <a class="btn btn-lg btn-success" href="http://mesos.apache.org/downloads/"><span class="glyphicon glyphicon-download"></span> Download Mesos 0.22.1</a>
-      <p>or learn how to <a href="http://mesos.apache.org/gettingstarted/">get started</a></p>
+	  <a href="http://events.linuxfoundation.org/events/mesoscon/attend/register"><img src="/assets/img/mesoscon-2015-banner-small.png" alt="MesosCon Registration Banner" /></a>
     </div>
 	</div>
 </div>
