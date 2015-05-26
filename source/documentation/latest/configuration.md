@@ -859,6 +859,43 @@ file:///path/to/file (where file contains one of the above)</code></pre>
   </tr>
   <tr>
     <td>
+      --[no-]docker_kill_orphans
+    </td>
+    <td>
+      Enable docker containerizer to kill orphaned containers.
+      You should consider setting this to false when you launch multiple
+      slaves in the same OS, to avoid one of the DockerContainerizer removing
+      docker tasks launched by other slaves. However you should also make sure
+      you enable checkpoint for the slave so the same slave id can be reused,
+      otherwise docker tasks on slave restart will not be cleaned up.
+      (default: true)
+    </td>
+  </tr>
+  <tr>
+    <td>
+      --docker_sock=VALUE
+    </td>
+    <td>
+      The UNIX socket path to be mounted into the docker executor container to
+      provide docker CLI access to the docker daemon. This must be the path used
+      by the slave's docker image.
+      (default: /var/run/docker.sock)
+    </td>
+  </tr>
+  <tr>
+    <td>
+      --docker_mesos_image=VALUE
+    </td>
+    <td>
+      The docker image used to launch this mesos slave instance.
+      If an image is specified, the docker containerizer assumes the slave
+      is running in a docker container, and launches executors with
+      docker containers in order to recover them when the slave restarts and
+      recovers.
+    </td>
+  </tr>
+  <tr>
+    <td>
       --docker_sandbox_directory=VALUE
     </td>
     <td>

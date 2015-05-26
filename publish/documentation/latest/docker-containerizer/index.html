@@ -118,18 +118,17 @@ Note that the Docker image is expected to launch up as a Mesos executor that wil
 
 <p>1, Fetch all the files specified in the CommandInfo into the sandbox.
 2, Pull the docker image from the remote repository.
-3, Run the docker image with the configured DockerInfo options, and map the sandbox directory into the Docker container and set the directory mapping to the MESOS_SANDBOX environment variable.
-4. Stream the docker logs into the stdout/stderr files in the sandbox.
-5. Launch the Command Executor to perform a docker wait on the container.
-6. On container exit or containerizer destroy, stop and remove the docker container.</p>
+3, Run the docker image with the Docker executor, and map the sandbox directory into the Docker container and set the directory mapping to the MESOS_SANDBOX environment variable.
+   The executor will also stream the container logs into stdout/stderr files in the sandbox.
+4. On container exit or containerizer destroy, stop and remove the docker container.</p>
 
-<p>The Docker Containerizer launches all containers with the &ldquo;mesos-&rdquo; prefix (ie: mesos-abcdefghji), and also assumes all containers with the &ldquo;mesos-&rdquo; prefix is managed by the slave and is free to stop or kill the containers.</p>
+<p>The Docker Containerizer launches all containers with the &ldquo;mesos-&rdquo; prefix plus the slave id (ie: mesos-slave1-abcdefghji), and also assumes all containers with the &ldquo;mesos-&rdquo; prefix is managed by the slave and is free to stop or kill the containers.</p>
 
 <p>When launching the docker image as an Executor, the only difference is that it skips launching a command executor but just reaps on the docker container executor pid.</p>
 
-<p>Note that we currently default to host networking when running a docker image, to easier support running a docker image asn an Executor.</p>
+<p>Note that we currently default to host networking when running a docker image, to easier support running a docker image as an Executor.</p>
 
-<p>Also since we explicitly attempt to pull the image on launch, if the docker image is only installed locally but not avaialble on the remote repository the launch will fail as well.</p>
+<p>The containerizer also supports optional force pulling of the image, and if disabled the docker image will only be updated again if it&rsquo;s not available on the host.</p>
 
 <h2>Private Docker repository</h2>
 
@@ -144,6 +143,12 @@ set the HOME environment variable pointing to the sandbox so docker cli will aut
 
 <p>To run a docker image with an entrypoint defined, the CommandInfo&rsquo;s shell option must be set to false.
 If shell option is set to true the Docker Containerizer will run the user&rsquo;s command wrapped with /bin/sh -c which will also become parameters to the image entrypoint.</p>
+
+<h2>Recover Docker containers on slave recovery</h2>
+
+<p>The Docker containerizer supports recovering Docker containers when the slave restarts, which supports both when the slave is running in a Docker container or not.</p>
+
+<p>With the docker_mesos_image flag enabled, the Docker containerizer assumes the containerizer is running in a container itself and modifies the mechanism it recovers and launches docker containers accordingly.</p>
 
 	</div>
 </div>
