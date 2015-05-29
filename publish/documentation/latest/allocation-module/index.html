@@ -83,124 +83,70 @@
 	<div class="col-md-8">
 		<h1>Mesos Allocation Module</h1>
 
-<p>The logic that the Mesos master uses to determine which frameworks to make offer resource offers to is encapsulated in the Master&rsquo;s <em>allocation module</em>.  The allocation module is a pluggable component that organizations can use to implement their own sharing policy, e.g. fair-sharing, Dominant Resource Fairness (see <a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2010/EECS-2010-55.pdf">the DRF paper</a>), priority, etc.</p>
+<p>The logic that the Mesos master uses to determine which frameworks to make resource offers to is encapsulated in the Master&rsquo;s <em>allocator module</em>. The allocator is a pluggable component that organizations can use to implement their own sharing policy, e.g. fair-sharing, priority, etc., or tune the default hierarchical Dominant Resource Fairness algorithm (see <a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2010/EECS-2010-55.pdf">the DRF paper</a>).</p>
 
-<h2>Allocation Module API</h2>
+<p>To use a custom allocator in Mesos, one must:</p>
 
-<p>Mesos is implemented in C++, so allocation modules are implemented in C++, and inherit the @AllocatorProcess@ class defined in @MESOS_HOME/src/master/allocator.hpp@. As of the time of this writing (5/29/13), the API for allocation modules is as follows:</p>
+<ul>
+<li><p><a href="#writing-a-custom-allocator">Implement</a> an <code>Allocator</code> interface as defined in <code>mesos/master/allocator.hpp</code>,</p></li>
+<li><p><a href="#wiring-up-a-custom-allocator">Wrap</a> the allocator implementation in a module and load it in the Mesos master.</p></li>
+</ul>
 
-<pre><code>  virtual ~AllocatorProcess() {}
 
-  virtual void initialize(
-      const Flags&amp; flags,
-      const process::PID&lt;Master&gt;&amp; master,
-      const hashmap&lt;std::string, RoleInfo&gt;&amp; roles) = 0;
+<h2>Writing a custom allocator</h2>
 
-  virtual void frameworkAdded(
-      const FrameworkID&amp; frameworkId,
-      const FrameworkInfo&amp; frameworkInfo,
-      const Resources&amp; used) = 0;
+<p>Allocator modules are implemented in C++, the same language in which Mesos is written. They must subclass the <code>Allocator</code> interface defined in <code>mesos/master/allocator.hpp</code>. However, your implementation can be a C++ proxy, which delegates calls to an actual allocator written in a language of your choice.</p>
 
-  virtual void frameworkRemoved(
-      const FrameworkID&amp; frameworkId) = 0;
+<p>The default allocator is <code>HierarchicalDRFAllocatorProcess</code>, which lives in <code>$MESOS_HOME/src/master/allocator/mesos/hierarchical.hpp</code>. Like most Mesos components, it is actor-based, which means all interface methods are non-blocking and return immediately after putting the corresponding action into the actor&rsquo;s queue. If you would like to design your custom allocator in a similar manner, subclass <code>MesosAllocatorProcess</code> from <code>$MESOS_HOME/src/master/allocator/mesos/allocator.hpp</code> and wrap your actor-based allocator in <code>MesosAllocator</code>. This dispatches calls to the underlying actor and controls its lifetime. You can refer to <code>HierarchicalDRFAllocatorProcess</code> as a starting place if you choose to write your own actor-based allocation module.</p>
 
-  virtual void frameworkActivated(
-      const FrameworkID&amp; frameworkId,
-      const FrameworkInfo&amp; frameworkInfo) = 0;
+<p>Additionally, the built-in hierarchical allocator can be extended without the need to reimplement the entirety of the allocation logic. This is possible through the use of the <code>Sorter</code> abstraction. Sorters define the order in which hierarchy layers (e.g. roles or frameworks) should be offered resources by taking &ldquo;client&rdquo; objects and some information about those clients and returning an ordered list of clients.</p>
 
-  virtual void frameworkDeactivated(
-      const FrameworkID&amp; frameworkId) = 0;
+<p>Sorters are implemented in C++ and inherit the <code>Sorter</code> class defined in <code>$MESOS_HOME/src/master/allocator/sorter/sorter.hpp</code>. The default sorter is <code>DRFSorter</code>, which implements fair sharing and can be found in <code>$MESOS_HOME/src/master/allocator/sorter/drf/sorter.hpp</code>. This sorter is capable of expressing priorities by specifying weights in <code>Sorter::add()</code>. Each client&rsquo;s share is divided by its weight. For example, a role that has a weight of <code>2</code> will be offered twice as many resources as a role with weight <code>1</code>.</p>
 
-  virtual void slaveAdded(
-      const SlaveID&amp; slaveId,
-      const SlaveInfo&amp; slaveInfo,
-      const hashmap&lt;FrameworkID, Resources&gt;&amp; used) = 0;
+<h2>Wiring up a custom allocator</h2>
 
-  virtual void slaveRemoved(
-      const SlaveID&amp; slaveId) = 0;
+<p>Once a custom allocator has been written, the next step is to override the built-in implementation with your own. This process consists of several steps:</p>
 
-  virtual void updateWhitelist(
-      const Option&lt;hashset&lt;std::string&gt; &gt;&amp; whitelist) = 0;
+<ul>
+<li><p>Wrap your allocator in a Mesos allocator module,</p></li>
+<li><p>Load this module in Mesos master.</p></li>
+</ul>
 
-  virtual void resourcesRequested(
-      const FrameworkID&amp; frameworkId,
-      const std::vector&lt;Request&gt;&amp; requests) = 0;
 
-  // Whenever resources are "recovered" in the cluster (e.g., a task
-  // finishes, an offer is removed because a framework has failed or
-  // is failing over), or a framework refuses them, the master
-  // invokes this callback.
-  virtual void resourcesRecovered(
-      const FrameworkID&amp; frameworkId,
-      const SlaveID&amp; slaveId,
-      const Resources&amp; resources,
-      const Option&lt;Filters&gt;&amp; filters) = 0;
+<p>An allocator module is a factory function and a module description, as defined in <code>mesos/module/allocator.hpp</code>. Assuming the allocation logic is implemented by the <code>ExternalAllocator</code> class declared in <code>external_allocator.hpp</code>, the following snippet describes the implementation of an allocator module named <code>ExternalAllocatorModule</code>:</p>
 
-  // Whenever a framework that has filtered resources wants to revive
-  // offers for those resources the master invokes this callback.
-  virtual void offersRevived(
-      const FrameworkID&amp; frameworkId) = 0;
+<pre><code>#include &lt;mesos/master/allocator.hpp&gt;
+#include &lt;mesos/module/allocator.hpp&gt;
+#include &lt;stout/try.hpp&gt;
+
+#include "external_allocator.hpp"
+
+using namespace mesos;
+using mesos::master::allocator::Allocator;
+using mesos::internal::master::allocator::HierarchicalDRFAllocator;
+
+static Allocator* createExternalAllocator(const Parameters&amp; parameters)
+{
+  Try&lt;Allocator*&gt; allocator = ExternalAllocator::create();
+  if (allocator.isError()) {
+    return NULL;
+  }
+
+  return allocator.get();
+}
+
+// Declares an ExternalAllocator module named 'ExternalAllocatorModule'.
+mesos::modules::Module&lt;Allocator&gt; ExternalAllocatorModule(
+    MESOS_MODULE_API_VERSION,
+    MESOS_VERSION,
+    "Mesos Contributor",
+    "engineer@example.com",
+    "External Allocator module.",
+    NULL,
+    createExternalAllocator);
 </code></pre>
 
-<p>The default allocation module is the HierarchicalAllocatorProcess, which can be found in @MESOS_HOME/src/master/hierarchical_allocator_process.hpp@. You can reference this as a starting place if you choose to write your own allocation module.</p>
-
-<h2>Sorter API</h2>
-
-<p>Additionally, the hierarchical allocator module can be extended without the need to reimplement the entirety of the allocation logic through the use of the @Sorter@ abstraction.</p>
-
-<p>Sorters define the order that roles or frameworks should be offered resources in by taking &ldquo;client&rdquo; objects and some information about those clients and returning an ordered list of clients.</p>
-
-<p>Sorters are implemented in C++ and inherit the @Sorter@ class defined in @MESOS_HOME/src/master/sorter.hpp@. As of the time of this writing, the API for Sorters is as follows:</p>
-
-<pre><code>  virtual ~Sorter() {}
-
-  // Adds a client to allocate resources to. A client
-  // may be a user or a framework.
-  virtual void add(const std::string&amp; client, double weight = 1) = 0;
-
-  // Removes a client.
-  virtual void remove(const std::string&amp; client) = 0;
-
-  // Readds a client to the sort after deactivate.
-  virtual void activate(const std::string&amp; client) = 0;
-
-  // Removes a client from the sort, so it won't get allocated to.
-  virtual void deactivate(const std::string&amp; client) = 0;
-
-  // Specify that resources have been allocated to the given client.
-  virtual void allocated(const std::string&amp; client,
-                         const Resources&amp; resources) = 0;
-
-  // Specify that resources have been unallocated from the given client.
-  virtual void unallocated(const std::string&amp; client,
-                           const Resources&amp; resources) = 0;
-
-  // Returns the resources that have been allocated to this client.
-  virtual Resources allocation(const std::string&amp; client) = 0;
-
-  // Add resources to the total pool of resources this
-  // Sorter should consider.
-  virtual void add(const Resources&amp; resources) = 0;
-
-  // Remove resources from the total pool.
-  virtual void remove(const Resources&amp; resources) = 0;
-
-  // Returns a list of all clients, in the order that they
-  // should be allocated to, according to this Sorter's policy.
-  virtual std::list&lt;std::string&gt; sort() = 0;
-
-  // Returns true if this Sorter contains the specified client,
-  // either active or deactivated.
-  virtual bool contains(const std::string&amp; client) = 0;
-
-  // Returns the number of clients this Sorter contains,
-  // either active or deactivated.
-  virtual int count() = 0;
-</code></pre>
-
-<p>The default @Sorter@ is the DRFSorter, which implements fair sharing and can be found at @MESOS_HOME/src/master/drf_sorter.hpp@.</p>
-
-<p>For DRF, if weights are specified in Sorter::add, a client&rsquo;s share will be divided by the weight, creating a form of priority. For example, a role that has a weight of 2 will be offered twice as many resources as a role with weight 1.</p>
+<p>Refer to the <a href="http://mesos.apache.org/documentation/latest/modules/">Mesos Modules documentation</a> for instructions how to compile and load a module in Mesos master.</p>
 
 	</div>
 </div>

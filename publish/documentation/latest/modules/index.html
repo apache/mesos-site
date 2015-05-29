@@ -194,7 +194,24 @@ searched in the standard library paths or directories pointed to by the
 
 <h2>What kinds of modules are supported?</h2>
 
-<p>Here are the various module kinds currently available:</p>
+<p>Here are the various module kinds currently available.</p>
+
+<h3>Allocator</h3>
+
+<p>The Mesos master&rsquo;s <em>allocator</em> periodically determines which framework(s) should be offered the cluster&rsquo;s available resources. Allocator modules enable experimenting with specialized resource allocation algorithms. An example of these could be an allocator that provides a feature currently not supported by the built-in Hierarchical Dominant Resource Fairness allocator, like oversubscription with preemption.</p>
+
+<p>To load a custom allocator into Mesos master, you need to:</p>
+
+<ul>
+<li><p>Introduce it to the Mesos master by listing it in the <code>--modules</code> configuration,</p></li>
+<li><p>Select it as the allocator via the <code>--allocator</code> flag.</p></li>
+</ul>
+
+
+<p>For example, the following command will run the Mesos master with <code>ExternalAllocatorModule</code> (see <a href="#Example-JSON-strings">this section</a> for JSON format):</p>
+
+<pre><code>./bin/mesos-master.sh --work_dir=m/work --modules="file://&lt;modules-including-allocator&gt;.json" --allocator=ExternalAllocatorModule
+</code></pre>
 
 <h3>Anonymous</h3>
 
