@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+		    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+		    <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
+		    
+		    <link href="../../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+				
+		    
+			
+			<!-- Google Analytics Magic -->
+			<script type="text/javascript">
+			  var _gaq = _gaq || [];
+			  _gaq.push(['_setAccount', 'UA-20226872-1']);
+			  _gaq.push(['_setDomainName', 'apache.org']);
+			  _gaq.push(['_trackPageview']);
+
+			  (function() {
+			    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			  })();
+			</script>
+    </head>
+    <body>
+			<!-- magical breadcrumbs -->
+			<div class="topnav">
+			<ul class="breadcrumb">
+			  <li>
+					<div class="dropdown">
+					  <a data-toggle="dropdown" href="#">Apache Software Foundation <span class="caret"></span></a>
+					  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+							<li><a href="http://www.apache.org">Apache Homepage</a></li>
+							<li><a href="http://www.apache.org/licenses/">License</a></li>
+					  	<li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>  
+					  	<li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+							<li><a href="http://www.apache.org/security/">Security</a></li>
+					  </ul>
+					</div>
+				</li>
+				<li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+				
+				
+					<li><a href="/documentation
+/">Documentation
+</a></li>
+				
+				
+			</ul><!-- /breadcrumb -->
+			</div>
+			
+			<!-- navbar excitement -->
+	    <div class="navbar navbar-static-top" role="navigation">
+	      <div class="navbar-inner">
+	        <div class="container">
+						<a href="/" class="logo"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo" /></a>
+					<div class="nav-collapse">
+						<ul class="nav nav-pills navbar-right">
+						  <li><a href="/gettingstarted/">Getting Started</a></li>
+						  <li><a href="/documentation/latest/">Documentation</a></li>
+						  <li><a href="/downloads/">Downloads</a></li>
+						  <li><a href="/community/">Community</a></li>
+						</ul>
+					</div>
+	        </div>
+	      </div>
+	    </div><!-- /.navbar -->
+
+      <div class="container">
+
+			<div class="row-fluid">
+	<div class="col-md-4">
+		<h4>If you're new to Mesos</h4>
+		<p>See the <a href="/gettingstarted/">getting started</a> page for more information about downloading, building, and deploying Mesos.</p>
+		
+		<h4>If you'd like to get involved or you're looking for support</h4>
+		<p>See our <a href="/community/">community</a> page for more details.</p>
+	</div>
+	<div class="col-md-8">
+		<h1>Apache Mesos Doxygen Style Guide</h1>
+
+<p>This guide introduces a consistent style
+for <a href="http://mesos.apache.org/api/latest/c++">documenting Mesos source code</a>
+using <a href="http://www.doxygen.org">Doxygen</a>.
+There is an ongoing, incremental effort with the goal to document all public Mesos, libprocess, and stout APIs this way.
+For now, existing code may not follow these guidelines, but new code should.</p>
+
+<h2>Preliminaries</h2>
+
+<p>We follow the <a href="https://www.ietf.org/rfc/rfc2119.txt">IETF RFC2119</a>
+on how to use words such as &ldquo;must&rdquo;, &ldquo;should&rdquo;, &ldquo;can&rdquo;,
+and other requirement-related notions.</p>
+
+<h2>Building Doxygen Documentation</h2>
+
+<p>As of right now, the Doxygen documentation should be built from the <em>build</em> subdirectory using <em>doxygen ../Doxyfile</em> . The documentation will then be generated into the <em>./doxygen</em> subdirectory.
+Todo: We should create a regular make target.</p>
+
+<h2>Doxygen Tags</h2>
+
+<p><em>When following these links be aware that the doxygen documentation is using another syntax in that @param is explained as \param.</em></p>
+
+<ul>
+<li><a href="http://doxygen.org/manual/commands.html#cmdparam">@param</a> Describes function parameters.</li>
+<li><a href="http://doxygen.org/manual/commands.html#cmdreturn">@return</a> Describes return values.</li>
+<li><a href="http://doxygen.org/manual/commands.html#cmdsa">@see</a> Describes a cross-reference to classes, functions, methods, variables, files or URL.</li>
+<li><a href="http://doxygen.org/manual/commands.html#cmdfile">@file</a> Describes a refence to a file. It is required when documenting global functions, variables, typedefs, or enums in separate files.</li>
+<li><a href="http://doxygen.org/manual/commands.html#cmdlink">@link</a> and <a href="http://doxygen.org/manual/commands.html#cmdendlink">@endlink</a> Describes a link to a file, class, or member.</li>
+<li><a href="http://doxygen.org/manual/commands.html#cmdexample">@example</a> Describes source code examples.</li>
+<li><a href="http://doxygen.org/manual/commands.html#cmdtodo">@todo</a> Describes a TODO item.</li>
+<li><a href="http://doxygen.org/manual/commands.html#cmdimage">@image</a> Describes an image.</li>
+</ul>
+
+
+<h2>Wrapping</h2>
+
+<p>We wrap long descriptions using 4 spaces on the next line.
+~~~
+@param uncompressed The input string that requires
+    a very long description and an even longer
+    description on this line as well.
+~~~</p>
+
+<h2>Outside Source Code</h2>
+
+<h3>Library and Component Overview Pages and User Guides</h3>
+
+<p>Substantial libraries, components, and subcomponents of the Mesos system such as
+stout, libprocess, master, slave, containerizer, allocator, and others
+should have an overview page in markdown format that explains their
+purpose, overall structure, and general use. This can even be a complete user guide.</p>
+
+<p>This page must be located in the top directory of the library/component and named &ldquo;REAMDE.md&rdquo;.</p>
+
+<p>The first line in such a document must be a section heading bearing the title which will appear in the generated Doxygen index.
+Example: &ldquo;# Libprocess User Guide&rdquo;</p>
+
+<h2>In Source Code</h2>
+
+<p>Doxygen documentation needs only to be applied to source code parts that
+constitute an interface for which we want to generate Mesos API documentation
+files. Implementation code that does not participate in this should still be
+enhanced by source code comments as appropriate, but these comments should not follow the doxygen style.</p>
+
+<p>We follow the <a href="http://en.wikipedia.org/wiki/Javadoc">Javadoc syntax</a> to mark comment blocks.
+These have the general form:</p>
+
+<pre><code>/**
+ * Brief summary.
+ *
+ * Detailed description. More detail.
+ * @see Some reference
+ *
+ * @param &lt;name&gt; Parameter description.
+ * @return Return value description.
+ */
+</code></pre>
+
+<p>Example:</p>
+
+<pre><code>/**
+ * Returns a compressed version of a string.
+ *
+ * Compresses an input string using the foobar algorithm.
+ *
+ * @param uncompressed The input string.
+ * @return A compressed version of the input string.
+ */
+ std::string compress(const std::string&amp; uncompressed);
+</code></pre>
+
+<h3>Constants and Variables</h3>
+
+<h3>Functions</h3>
+
+<h3>Classes</h3>
+
+<h4>Methods</h4>
+
+<h4>Fields</h4>
+
+<h3>Templates</h3>
+
+<h3>Macros</h3>
+
+<h3>Global declarations outside classes</h3>
+
+	</div>
+</div>
+
+			
+	      <hr>
+
+				<!-- footer -->
+	      <div class="footer">
+	        <p>&copy; 2012-2014 <a href="http://apache.org">The Apache Software Foundation</a>.
+	        Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.<p>
+	      </div><!-- /footer -->
+
+	    </div> <!-- /container -->
+
+	    <!-- JS -->
+	    <script src="//code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+			<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="text/javascript"></script>
+    </body>
+</html>
