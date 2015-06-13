@@ -33,20 +33,24 @@ layout: documentation
 * [Framework Development Guide](/documentation/latest/app-framework-development-guide/) describes how to build applications on top of Mesos.
 * [Reconciliation](/documentation/latest/reconciliation/) for ensuring a framework's state remains eventually consistent in the face of failures.
 * [Javadoc](/api/latest/java/) documents the Mesos Java API.
+* [Doxygen](/api/latest/c++/namespacemesos.html) documents the Mesos C++ API.
 * [Developer Tools](/documentation/latest/tools/) for hacking on Mesos or writing frameworks.
 
 ## Mesos Modules
 
-* [Mesos Modules](/documentation/latest/modules/) for specifying mesos modules for master, slave and tests.
+* [Mesos Modules](/documentation/latest/modules/) for specifying Mesos modules for master, slave and tests.
 
 ## Contributing to Mesos
 
 * [Reporting an Issue, Improvement, or Feature](/documentation/latest/reporting-a-bug/) for getting started with JIRA.
 * [Submitting a Patch](/documentation/latest/submitting-a-patch/) for getting started with ReviewBoard, and our tooling around it.
 * [Effective Code Reviewing](/documentation/latest/effective-code-reviewing/) guidelines, tips, and learnings for how to do effective code reviews.
+* [Engineering Principles and Practices](/documentation/latest/engineering-principles-and-practices/) to serve as a shared set of project-level values for the community.
 * [Committing](/documentation/latest/committing/) guidelines for committing changes.
 * [Committers and Maintainers](/documentation/latest/committers/) a listing of project committers and component maintainers; useful when seeking feedback.
+* [Doxygen](/api/latest/c++/) documents the internal Mesos APIs.
 * [C++ Style Guide](/documentation/latest/mesos-c++-style-guide/)
+* [Doxygen Style Guide](/documentation/latest/mesos-doxygen-style-guide/)
 * [Development Roadmap](/documentation/latest/mesos-roadmap/)
 * [Release Guide](/documentation/latest/release-guide/)
 

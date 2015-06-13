@@ -282,13 +282,7 @@ const T t = T("Hello").member();
 </ul>
 
 
-<pre><code>hashmap&lt;int, hashset&lt;int&gt;&gt; index;
-
-struct T
-{
-  int number;
-  string name;
-};
+<pre><code>hashmap&lt;string, hashset&lt;int&gt;&gt; index;
 
 // 1: Ok.
 const hashset&lt;int&gt;&amp; values = index[2];
@@ -299,9 +293,9 @@ for (auto iterator = index.begin(); iterator != index.end(); ++iterator) {
 }
 
 // 3: Ok.
-foreachpair (const int&amp; key, hashset&lt;int&gt;&amp; values, index) {}
+foreachpair (const string&amp; key, const hashset&lt;int&gt;&amp; values, index) {}
 foreachvalue (const hashset&lt;int&gt;&amp; values, index) {}
-foreachkey (const int&amp; key, index) {}
+foreachkey (const string&amp; key, index) {}
 
 // 4: Avoid aliases in most circumstances as they can be dangerous.
 //    This is an example of a dangling alias!

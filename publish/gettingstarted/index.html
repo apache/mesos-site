@@ -107,48 +107,47 @@
 </ul>
 
 
-<h3>Ubuntu 12.04</h3>
+<h3>Ubuntu</h3>
 
-<ul>
-<li><p>Following are the instructions for stock Ubuntu 12.04 64 Bit. If you are using a different OS please install the packages accordingly.</p>
+<p>The following assumes a stock install of Ubuntu 14.04 LTS, to which you should add a current
+Java JDK (for example, OpenJDK):</p>
 
-<pre><code> # Ensure apt-get is up to date.
- $ sudo apt-get update
+<pre><code>    # Update the packages
+    $ sudo apt-get update
 
- # Install build tools.
- $ sudo apt-get install build-essential
+    # Installs the latest OpenJDK (***Only required if you don't already have a working JDK***)
+    $ sudo apt-get install -y openjdk-7-jdk
+</code></pre>
 
- # Install OpenJDK java.
- $ sudo apt-get install openjdk-6-jdk
+<p>If you are building from git repository, you will need to additionally install the following packages:</p>
 
- # Install devel python.
- $ sudo apt-get install python-dev python-boto
+<pre><code>    # Only necessary if building from git repository
+    $ sudo apt-get install -y autoconf libtool
+</code></pre>
 
- # Install devel libcurl
- $ sudo apt-get install libcurl4-nss-dev
+<p>The following are the necessary dependencies for <code>Mesos 0.22</code>:</p>
 
- # Install devel libsasl (***Only required for Mesos 0.14.0 or newer***).
- $ sudo apt-get install libsasl2-dev
+<pre><code>    $ sudo apt-get -y install build-essential python-dev python-boto \
+        libcurl4-nss-dev libsasl2-dev \
+        maven libapr1-dev libsvn-dev
+</code></pre>
 
- # Install Maven (***Only required for Mesos 0.18.1 or newer***).
- $ sudo apt-get install maven
+<h3>Mac OSX (Yosemite)</h3>
 
- # Install devel libapr1 (***Only required for Mesos 0.21.0 or newer***)
- $ sudo apt-get install libapr1-dev
+<p>Before starting, you will need to install <a href="https://developer.apple.com/xcode/">XCode</a> and
+the Command Line Tools via the AppStore.</p>
 
- # Install devel libsvn (***Only required for Mesos 0.21.0 or newer***)
- $ sudo apt-get install libsvn-dev
-</code></pre></li>
-<li><p>If you are building from git repository, you will need to additionally install the following packages.</p>
+<p>Use <a href="http://brew.sh/">homebrew</a> to install the additional dependencies:</p>
 
-<pre><code> # Install autotoconf and automake.
- $ sudo apt-get install autoconf
+<pre><code>    # If you don't already have `brew` installed
+    $ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
- # Install libtool.
- $ sudo apt-get install libtool
-</code></pre></li>
-</ul>
+    # Install libraries
+    brew install autoconf automake libtool subversion maven
+</code></pre>
 
+<p>You may (optionally) also need <a href="https://www.python.org/downloads">Python 3</a> as it&rsquo;s not installed by default
+on OSX.</p>
 
 <h3>CentOS 6.5</h3>
 
@@ -191,8 +190,12 @@
     $ cd build
     $ ../configure
     $ make
+</code></pre>
 
-    # Run test suite.
+<p>to speed up the build and reduce verbosity of the logs, you can append <code>-j=&lt;number of cores&gt; V=0</code>
+to <code>make</code>.</p>
+
+<pre><code>    # Run test suite.
     $ make check
 
     # Install (***Optional***).
