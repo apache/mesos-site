@@ -19,78 +19,112 @@ There are different ways you can get Mesos:
 
 ## System Requirements
 
--  Mesos runs on Linux (64 Bit) and Mac OSX (64 Bit).
+Mesos runs on Linux (64 Bit) and Mac OS X (64 Bit).
 
-### Ubuntu
+### Ubuntu 14.04
 
-The following assumes a stock install of Ubuntu 14.04 LTS, to which you should add a current
-Java JDK (for example, OpenJDK):
+Following are the instructions for stock Ubuntu 14.04. If you are using a different OS, please install the packages accordingly.
 
-        # Update the packages
+        # Update the packages.
         $ sudo apt-get update
 
-        # Installs the latest OpenJDK (***Only required if you don't already have a working JDK***)
+        # Install the latest OpenJDK.
         $ sudo apt-get install -y openjdk-7-jdk
 
-If you are building from git repository, you will need to additionally install the following packages:
-
-        # Only necessary if building from git repository
+        # Install autotools (Only necessary if building from git repository).
         $ sudo apt-get install -y autoconf libtool
 
-The following are the necessary dependencies for `Mesos 0.22`:
+        # Install other Mesos dependencies.
+        $ sudo apt-get -y install build-essential python-dev python-boto libcurl4-nss-dev libsasl2-dev maven libapr1-dev libsvn-dev
 
-        $ sudo apt-get -y install build-essential python-dev python-boto \
-            libcurl4-nss-dev libsasl2-dev \
-            maven libapr1-dev libsvn-dev
+### Mac OS X Yosemite
 
+Following are the instructions for stock Mac OS X Yosemite. If you are using a different OS, please install the packages accordingly.
 
-### Mac OSX (Yosemite)
+        # Install Command Line Tools.
+        $ xcode-select --install
 
-Before starting, you will need to install [XCode](https://developer.apple.com/xcode/) and
-the Command Line Tools via the AppStore.
-
-Use [homebrew](http://brew.sh/) to install the additional dependencies:
-
-        # If you don't already have `brew` installed
+        # Install Homebrew.
         $ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
-        # Install libraries
-        brew install autoconf automake libtool subversion maven
+        # Install libraries.
+        $ brew install autoconf automake libtool subversion maven
 
-You may (optionally) also need [Python 3](https://www.python.org/downloads) as it's not installed by default
-on OSX.
+### CentOS 6.6
 
+Following are the instructions for stock CentOS 6.6. If you are using a different OS, please install the packages accordingly.
 
-### CentOS 6.5
+        # Install a few utility tools
+        $ sudo yum install -y tar wget which
 
-- Following are the instructions for stock CentOS 6.5. If you are using a different OS, please install the packages accordingly.
+        # 'Mesos > 0.21.0' requires a C++ compiler with full C++11 support,
+        # (e.g. GCC > 4.8) which is available via 'devtoolset-2'.
+        # Fetch the Scientific Linux CERN devtoolset repo file.
+        $ sudo wget -O /etc/yum.repos.d/slc6-devtoolset.repo http://linuxsoft.cern.ch/cern/devtoolset/slc6-devtoolset.repo
 
-        Mesos 0.21.0+ requires subversion 1.8+ devel package which is not available by default by yum.
-        Add one of the repo that has subversion-devel 1.8 available, i.e:
+        # Import the CERN GPG key.
+        $ sudo rpm --import http://linuxsoft.cern.ch/cern/centos/7/os/x86_64/RPM-GPG-KEY-cern
 
-        Add new repo /etc/yum.repos.d/wandisco-svn.repo, with:
+        # Fetch the Apache Maven repo file.
+        $ sudo wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo
 
-        [WandiscoSVN]
-        name=Wandisco SVN Repo
-        baseurl=http://opensource.wandisco.com/centos/6/svn-1.8/RPMS/$basearch/
-        enabled=1
-        gpgcheck=0
+        # 'Mesos > 0.21.0' requires 'subversion > 1.8' devel package, which is
+        # not available in the default repositories.
+        # Add the WANdisco SVN repo file: '/etc/yum.repos.d/wandisco-svn.repo' with content:
 
+          [WANdiscoSVN]
+          name=WANdisco SVN Repo 1.8
+          enabled=1
+          baseurl=http://opensource.wandisco.com/centos/6/svn-1.8/RPMS/$basearch/
+          gpgcheck=1
+          gpgkey=http://opensource.wandisco.com/RPM-GPG-KEY-WANdisco
+
+        # Install essential development tools.
         $ sudo yum groupinstall -y "Development Tools"
 
-        $ sudo yum install -y python-devel java-1.7.0-openjdk-devel zlib-devel libcurl-devel openssl-devel cyrus-sasl-devel cyrus-sasl-md5 apr-devel subversion-devel apr-util-devel
+        # Install 'devtoolset-2-toolchain' which includes GCC 4.8.2 and related packages.
+        $ sudo yum install -y devtoolset-2-toolchain
 
-        # Install maven.
-        $ wget http://mirror.nexcess.net/apache/maven/maven-3/3.0.5/binaries/apache-maven-3.0.5-bin.tar.gz
-        $ sudo tar -zxf apache-maven-3.0.5-bin.tar.gz -C /opt/
-        $ sudo ln -s /opt/apache-maven-3.0.5/bin/mvn /usr/bin/mvn
+        # Install other Mesos dependencies.
+        $ sudo yum install -y apache-maven python-devel java-1.7.0-openjdk-devel zlib-devel libcurl-devel openssl-devel cyrus-sasl-devel cyrus-sasl-md5 apr-devel subversion-devel apr-util-devel
+
+        # Enter a shell with 'devtoolset-2' enabled.
+        $ scl enable devtoolset-2 bash
+        $ g++ --version  # Make sure you've got GCC > 4.8!
+
+### CentOS 7.1
+
+- Following are the instructions for stock CentOS 7.1. If you are using a different OS, please install the packages accordingly.
+
+        # Install a few utility tools
+        $ sudo yum install -y tar wget
+
+        # Fetch the Apache Maven repo file.
+        $ sudo wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo
+
+        # 'Mesos > 0.21.0' requires 'subversion > 1.8' devel package, which is
+        # not available in the default repositories.
+        # Add the WANdisco SVN repo file: '/etc/yum.repos.d/wandisco-svn.repo' with content:
+
+          [WANdiscoSVN]
+          name=WANdisco SVN Repo 1.9
+          enabled=1
+          baseurl=http://opensource.wandisco.com/centos/7/svn-1.9/RPMS/$basearch/
+          gpgcheck=1
+          gpgkey=http://opensource.wandisco.com/RPM-GPG-KEY-WANdisco
+
+        # Install essential development tools.
+        $ sudo yum groupinstall -y "Development Tools"
+
+        # Install other Mesos dependencies.
+        $ sudo yum install -y apache-maven python-devel java-1.7.0-openjdk-devel zlib-devel libcurl-devel openssl-devel cyrus-sasl-devel cyrus-sasl-md5 apr-devel subversion-devel apr-util-devel
 
 ## Building Mesos
 
         # Change working directory.
         $ cd mesos
 
-        # Bootstrap (***Skip this if you are not building from git repo***).
+        # Bootstrap (Only required if building from git repository).
         $ ./bootstrap
 
         # Configure and build.
@@ -99,22 +133,22 @@ on OSX.
         $ ../configure
         $ make
 
-to speed up the build and reduce verbosity of the logs, you can append `-j=<number of cores> V=0`
-to `make`.
+In order to speed up the build and reduce verbosity of the logs, you can append `-j=<number of cores> V=0` to `make`.
 
         # Run test suite.
         $ make check
 
-        # Install (***Optional***).
+        # Install (Optional).
         $ make install
 
 ## Examples
--  Mesos comes bundled with example frameworks written in `C++`, `Java` and `Python`.
+
+Mesos comes bundled with example frameworks written in C++, Java and Python.
 
         # Change into build directory.
         $ cd build
 
-        # Start mesos master (***Ensure work directory exists and has proper permissions***).
+        # Start mesos master (Ensure work directory exists and has proper permissions).
         $ ./bin/mesos-master.sh --ip=127.0.0.1 --work_dir=/var/lib/mesos
 
         # Start mesos slave.
@@ -123,13 +157,13 @@ to `make`.
         # Visit the mesos web page.
         $ http://127.0.0.1:5050
 
-        # Run C++ framework (***Exits after successfully running some tasks.***).
+        # Run C++ framework (Exits after successfully running some tasks.).
         $ ./src/test-framework --master=127.0.0.1:5050
 
-        # Run Java framework (***Exits after successfully running some tasks.***).
+        # Run Java framework (Exits after successfully running some tasks.).
         $ ./src/examples/java/test-framework 127.0.0.1:5050
 
-        # Run Python framework (***Exits after successfully running some tasks.***).
+        # Run Python framework (Exits after successfully running some tasks.).
         $ ./src/examples/python/test-framework 127.0.0.1:5050
 
 *NOTE: To build the example frameworks, make sure you build the test suite by doing `make check`.*
