@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+		    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+		    <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
+		    
+		    <link href="../../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+				
+		    
+			
+			<!-- Google Analytics Magic -->
+			<script type="text/javascript">
+			  var _gaq = _gaq || [];
+			  _gaq.push(['_setAccount', 'UA-20226872-1']);
+			  _gaq.push(['_setDomainName', 'apache.org']);
+			  _gaq.push(['_trackPageview']);
+
+			  (function() {
+			    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			  })();
+			</script>
+    </head>
+    <body>
+			<!-- magical breadcrumbs -->
+			<div class="topnav">
+			<ul class="breadcrumb">
+			  <li>
+					<div class="dropdown">
+					  <a data-toggle="dropdown" href="#">Apache Software Foundation <span class="caret"></span></a>
+					  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+							<li><a href="http://www.apache.org">Apache Homepage</a></li>
+							<li><a href="http://www.apache.org/licenses/">License</a></li>
+					  	<li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>  
+					  	<li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+							<li><a href="http://www.apache.org/security/">Security</a></li>
+					  </ul>
+					</div>
+				</li>
+				<li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+				
+				
+					<li><a href="/documentation
+/">Documentation
+</a></li>
+				
+				
+			</ul><!-- /breadcrumb -->
+			</div>
+			
+			<!-- navbar excitement -->
+	    <div class="navbar navbar-static-top" role="navigation">
+	      <div class="navbar-inner">
+	        <div class="container">
+						<a href="/" class="logo"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo" /></a>
+					<div class="nav-collapse">
+						<ul class="nav nav-pills navbar-right">
+						  <li><a href="/gettingstarted/">Getting Started</a></li>
+						  <li><a href="/documentation/latest/">Documentation</a></li>
+						  <li><a href="/downloads/">Downloads</a></li>
+						  <li><a href="/community/">Community</a></li>
+						</ul>
+					</div>
+	        </div>
+	      </div>
+	    </div><!-- /.navbar -->
+
+      <div class="container">
+
+			<div class="row-fluid">
+	<div class="col-md-4">
+		<h4>If you're new to Mesos</h4>
+		<p>See the <a href="/gettingstarted/">getting started</a> page for more information about downloading, building, and deploying Mesos.</p>
+		
+		<h4>If you'd like to get involved or you're looking for support</h4>
+		<p>See our <a href="/community/">community</a> page for more details.</p>
+	</div>
+	<div class="col-md-8">
+		<h1>Mesos Testing Patterns</h1>
+
+<p>A collection of common testing patterns used in Mesos tests. If you have found a good way to test a certain condition that you think may be useful for other cases, please document it here together with motivation and background.</p>
+
+<h2>Using <code>Clock</code> magic to ensure an event is processed</h2>
+
+<p>Scheduling a sequence of events in an asynchronous environment is not easy: a function call usually initiates an action and returns immediately, while the action runs in background. A simple, obvious, and bad solution is to use <code>os::sleep()</code> to wait for action completion. The time the action needs to finish may vary on different machines, while increasing sleep duration increases the test execution time and slows down <code>make check</code>. One of the right ways to do it is to wait for an action to finish and proceed right after. This is possible using libprocess' <code>Clock</code> routines.</p>
+
+<p>Every message enqueued in a libprocess process' (or actor&rsquo;s, to avoid ambiguity with OS processes) mailbox is processed by <code>ProcessManager</code> (right now there is a single instance of <code>ProcessManager</code> per OS process, but this may change in the future). <code>ProcessManager</code> fetches actors from the runnable actors list and services all events from the actor&rsquo;s mailbox. Using <code>Clock::settle()</code> call we can block the calling thread until <code>ProcessManager</code> empties mailboxes of all actors. Here is the example of this pattern:</p>
+
+<pre><code class="{.cpp}">  // As Master::killTask isn't doing anything, we shouldn't get a status update.
+  EXPECT_CALL(sched, statusUpdate(&amp;driver, _))
+    .Times(0);
+
+  // Set expectation that Master receives killTask message.
+  Future&lt;KillTaskMessage&gt; killTaskMessage =
+    FUTURE_PROTOBUF(KillTaskMessage(), _, master.get());
+
+  // Attempt to kill unknown task while slave is transitioning.
+  TaskID unknownTaskId;
+  unknownTaskId.set_value("2");
+
+  // Stop the clock.
+  Clock::pause();
+
+  // Initiate an action.
+  driver.killTask(unknownTaskId);
+
+  // Make sure the event associated with the action has been queued.
+  AWAIT_READY(killTaskMessage);
+
+  // Wait for all messages to be dispatched and processed completely to satisfy
+  // the expectation that we didn't receive a status update.
+  Clock::settle();
+
+  Clock::resume();
+</code></pre>
+
+<h2>Intercepting a message sent to a different OS process</h2>
+
+<p>Intercepting messages sent between libprocess processes (let&rsquo;s call them actors to avoid ambiguity with OS processes) that live in the same OS process is easy, e.g.:</p>
+
+<pre><code class="{.cpp}">  Future&lt;SlaveReregisteredMessage&gt; slaveReregisteredMessage =
+    FUTURE_PROTOBUF(SlaveReregisteredMessage(), _, _);
+  ...
+  AWAIT_READY(slaveReregisteredMessage);
+</code></pre>
+
+<p>However, this won&rsquo;t work if we want to intercept a message sent to an actor (technically a <code>UPID</code>) that lives in another OS process. For example, <code>CommandExecutor</code> spawned by a slave will live in a separate OS process, though master and slave instances live in the same OS process together with our test (see <code>mesos/src/tests/cluster.hpp</code>). The wait in this code will fail:</p>
+
+<pre><code class="{.cpp}">  Future&lt;ExecutorRegisteredMessage&gt; executorRegisteredMessage =
+    FUTURE_PROTOBUF(ExecutorRegisteredMessage(), _, _);
+  ...
+  AWAIT_READY(executorRegisteredMessage);
+</code></pre>
+
+<h3>Why messages sent outside the OS process are not intercepted?</h3>
+
+<p>Libprocess events may be filtered (see <code>libprocess/include/process/filter.hpp</code>). <code>FUTURE_PROTOBUF</code> uses this ability and sets an expectation on a <code>filter</code> method of <code>TestsFilter</code> class with a <code>MessageMatcher</code>, that matches the message we want to intercept. The actual filtering happens in <code>ProcessManager::resume()</code>, which fetches messages from the queue of the received events.</p>
+
+<p><em>No</em> filtering happens when sending, encoding, or transporting the message (see e.g. <code>ProcessManager::deliver()</code> or <code>SocketManager::send()</code>). Therefore in the aforementioned example, <code>ExecutorRegisteredMessage</code> leaves the slave undetected by the filter, reaches another OS process where executor lives, gets enqueued into the <code>CommandExecutorProcess</code>&lsquo; mailbox and can be filtered there, but remember our expectation is set in another OS process!</p>
+
+<h3>How to workaround</h3>
+
+<p>Consider setting expectations on corresponding incoming messages ensuring they are processed and therefore ACK message is sent.</p>
+
+<p>For the aforementioned example, instead of intercepting <code>ExecutorRegisteredMessage</code>, we can intercept <code>RegisterExecutorMessage</code> and wait until its processed, which includes sending <code>ExecutorRegisteredMessage</code> (see <code>Slave::registerExecutor()</code>):</p>
+
+<pre><code class="{.cpp}">  Future&lt;RegisterExecutorMessage&gt; registerExecutorMessage =
+    FUTURE_PROTOBUF(RegisterExecutorMessage(), _, _);
+  ...
+  AWAIT_READY(registerExecutorMessage);
+  Clock::pause();
+  Clock::settle();
+  Clock::resume();
+</code></pre>
+
+	</div>
+</div>
+
+			
+	      <hr>
+
+				<!-- footer -->
+	      <div class="footer">
+	        <p>&copy; 2012-2014 <a href="http://apache.org">The Apache Software Foundation</a>.
+	        Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.<p>
+	      </div><!-- /footer -->
+
+	    </div> <!-- /container -->
+
+	    <!-- JS -->
+	    <script src="//code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+			<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="text/javascript"></script>
+    </body>
+</html>
