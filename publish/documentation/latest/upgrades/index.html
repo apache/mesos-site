@@ -89,6 +89,12 @@
 
 <p><strong>NOTE</strong> In order to enable decorator modules to remove metadata (environment variables or labels), we changed the meaning of the return value for decorator hooks in Mesos 0.23.0. Please refer to the modules documentation for more details.</p>
 
+<p><strong>NOTE</strong> Slave ping timeouts are now configurable on the master via <code>--slave_ping_timeout</code> and <code>--max_slave_ping_timeouts</code>. Slaves should be upgraded to 0.23.x before changing these flags.</p>
+
+<p><strong>NOTE</strong> A new scheduler driver API, <code>acceptOffers</code>, has been introduced. This is a more general version of the <code>launchTasks</code> API, which allows the scheduler to accept an offer and specify a list of operations (Offer.Operation) to perform using the resources in the offer. Currently, the supported operations include LAUNCH (launching tasks), RESERVE (making dynamic reservations), UNRESERVE (releasing dynamic reservations), CREATE (creating persistent volumes) and DESTROY (releasing persistent volumes). Similar to the <code>launchTasks</code> API, any unused resources will be considered declined, and the specified filters will be applied on all unused resources.</p>
+
+<p><strong>NOTE</strong> The Resource protobuf has been extended to include more metadata for supporting persistence (DiskInfo), dynamic reservations (ReservationInfo) and oversubscription (RevocableInfo). You must not combine two Resource objects if they have different metadata.</p>
+
 <h2>Upgrading from 0.21.x to 0.22.x</h2>
 
 <p><strong>NOTE</strong> Slave checkpoint flag has been removed as it will be enabled for all
@@ -175,13 +181,13 @@ Please refer to the metrics/snapshot endpoint.</p>
 
 <p>To ensure a smooth upgrade, we recommend to upgrade your python framework and executor first. You will be able to either import using the new configuration or the old. Replace the existing imports with something like the following:</p>
 
-<pre><code>    try:
-        from mesos.native import MesosExecutorDriver, MesosSchedulerDriver
-        from mesos.interface import Executor, Scheduler
-        from mesos.interface import mesos_pb2
-    except ImportError:
-        from mesos import Executor, MesosExecutorDriver, MesosSchedulerDriver, Scheduler
-        import mesos_pb2
+<pre><code>try:
+    from mesos.native import MesosExecutorDriver, MesosSchedulerDriver
+    from mesos.interface import Executor, Scheduler
+    from mesos.interface import mesos_pb2
+except ImportError:
+    from mesos import Executor, MesosExecutorDriver, MesosSchedulerDriver, Scheduler
+    import mesos_pb2
 </code></pre>
 
 <p><strong>NOTE</strong>: If you&rsquo;re using a pure language binding, please ensure that it sends status update acknowledgements through the master before upgrading.</p>

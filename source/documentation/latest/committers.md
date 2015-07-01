@@ -111,13 +111,6 @@ We'd like to thank the following committers to the Apache Mesos project who have
       <td>tmarshall@apache.org</td>
     </tr>
     <tr>
-      <td>+1</td>
-      <td>Bernd Mathiske</td>
-      <td>Mesosphere</td>
-      <td>bernd-mesos</td>
-      <td>bernd@apache.org</td>
-    </tr>
-    <tr>
       <td>-8</td>
       <td>Brenden Matthews</td>
       <td>Mesosphere</td>
@@ -160,7 +153,7 @@ We'd like to thank the following committers to the Apache Mesos project who have
       <td>tstclair@apache.org</td>
     </tr>
     <tr>
-      <td>+1</td>
+      <td>+2</td>
       <td>Till Toenshoff</td>
       <td>Mesosphere</td>
       <td>tillt</td>

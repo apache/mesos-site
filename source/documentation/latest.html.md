@@ -20,6 +20,7 @@ layout: documentation
 * [Logging and Debugging](/documentation/latest/logging-and-debugging/) for viewing Mesos and framework logs.
 * [High Availability](/documentation/latest/high-availability/) for running multiple masters simultaneously.
 * [Operational Guide](/documentation/latest/operational-guide/)
+* [Monitoring](/documentation/latest/monitoring/)
 * [Network Monitoring](/documentation/latest/network-monitoring/)
 * [Slave Recovery](/documentation/latest/slave-recovery/) for doing seamless upgrades.
 * [Tools](/documentation/latest/tools/) for setting up and running a Mesos cluster.
@@ -50,8 +51,10 @@ layout: documentation
 * [Committing](/documentation/latest/committing/) guidelines for committing changes.
 * [Committers and Maintainers](/documentation/latest/committers/) a listing of project committers and component maintainers; useful when seeking feedback.
 * [Doxygen](/api/latest/c++/) documents the internal Mesos APIs.
-* [C++ Style Guide](/documentation/latest/mesos-c++-style-guide/)
-* [Doxygen Style Guide](/documentation/latest/mesos-doxygen-style-guide/)
+* [Documentation Guide](/documentation/latest/mesos-documentation-guide/)
+  * [C++ Style Guide](/documentation/latest/mesos-c++-style-guide/)
+  * [Doxygen Style Guide](/documentation/latest/mesos-doxygen-style-guide/)
+  * [Markdown Style Guide](/documentation/latest/mesos-markdown-style-guide/)
 * [Development Roadmap](/documentation/latest/mesos-roadmap/)
 * [Release Guide](/documentation/latest/release-guide/)
 

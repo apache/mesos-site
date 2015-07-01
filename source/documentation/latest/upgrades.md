@@ -10,6 +10,12 @@ This document serves as a guide for users who wish to upgrade an existing mesos 
 
 **NOTE** In order to enable decorator modules to remove metadata (environment variables or labels), we changed the meaning of the return value for decorator hooks in Mesos 0.23.0. Please refer to the modules documentation for more details.
 
+**NOTE** Slave ping timeouts are now configurable on the master via `--slave_ping_timeout` and `--max_slave_ping_timeouts`. Slaves should be upgraded to 0.23.x before changing these flags.
+
+**NOTE** A new scheduler driver API, `acceptOffers`, has been introduced. This is a more general version of the `launchTasks` API, which allows the scheduler to accept an offer and specify a list of operations (Offer.Operation) to perform using the resources in the offer. Currently, the supported operations include LAUNCH (launching tasks), RESERVE (making dynamic reservations), UNRESERVE (releasing dynamic reservations), CREATE (creating persistent volumes) and DESTROY (releasing persistent volumes). Similar to the `launchTasks` API, any unused resources will be considered declined, and the specified filters will be applied on all unused resources.
+
+**NOTE** The Resource protobuf has been extended to include more metadata for supporting persistence (DiskInfo), dynamic reservations (ReservationInfo) and oversubscription (RevocableInfo). You must not combine two Resource objects if they have different metadata.
+
 ## Upgrading from 0.21.x to 0.22.x
 
 **NOTE** Slave checkpoint flag has been removed as it will be enabled for all
@@ -23,12 +29,11 @@ Please refer to the metrics/snapshot endpoint.
 
 **NOTE**: The Authentication API has changed slightly in this release to support additional authentication mechanisms. The change from 'string' to 'bytes' for AuthenticationStartMessage.data has no impact on C++ or the over-the-wire representation, so it only impacts pure language bindings for languages like Java and Python that use different types for UTF-8 strings vs. byte arrays.
 
-```
-message AuthenticationStartMessage {
-  required string mechanism = 1;
-  optional bytes data = 2;
-}
-```
+    message AuthenticationStartMessage {
+      required string mechanism = 1;
+      optional bytes data = 2;
+    }
+
 
 **NOTE** All Mesos arguments can now be passed using file:// to read them out of a file (either an absolute or relative path). The --credentials, --whitelist, and any flags that expect JSON backed arguments (such as --modules) behave as before, although support for just passing a absolute path for any JSON flags rather than file:// has been deprecated and will produce a warning (and the absolute path behavior will be removed in a future release).
 
@@ -41,6 +46,7 @@ In order to upgrade a running cluster:
   * For Python schedulers, upgrade to use a 0.22.0 egg. If constructing `MesosSchedulerDriverImpl` with `Credentials`, your code must be updated to pass the `implicitAcknowledgements` argument before `Credentials`. You may run a 0.21.0 Python scheduler against a 0.22.0 master, and vice versa.
 * Restart the schedulers.
 * Upgrade the executors by linking the latest native library / jar / egg.
+
 
 ## Upgrading from 0.20.x to 0.21.x
 
@@ -59,25 +65,23 @@ In order to upgrade a running cluster:
 
 **NOTE**: The Mesos API has been changed slightly in this release. The CommandInfo has been changed (see below), which makes launching a command more flexible. The 'value' field has been changed from _required_ to _optional_. However, it will not cause any issue during the upgrade (since the existing schedulers always set this field).
 
-```
-message CommandInfo {
-  ...
-  // There are two ways to specify the command:
-  // 1) If 'shell == true', the command will be launched via shell
-  //    (i.e., /bin/sh -c 'value'). The 'value' specified will be
-  //    treated as the shell command. The 'arguments' will be ignored.
-  // 2) If 'shell == false', the command will be launched by passing
-  //    arguments to an executable. The 'value' specified will be
-  //    treated as the filename of the executable. The 'arguments'
-  //    will be treated as the arguments to the executable. This is
-  //    similar to how POSIX exec families launch processes (i.e.,
-  //    execlp(value, arguments(0), arguments(1), ...)).
-  optional bool shell = 6 [default = true];
-  optional string value = 3;
-  repeated string arguments = 7;
-  ...
-}
-```
+    message CommandInfo {
+      ...
+      // There are two ways to specify the command:
+      // 1) If 'shell == true', the command will be launched via shell
+      //    (i.e., /bin/sh -c 'value'). The 'value' specified will be
+      //    treated as the shell command. The 'arguments' will be ignored.
+      // 2) If 'shell == false', the command will be launched by passing
+      //    arguments to an executable. The 'value' specified will be
+      //    treated as the filename of the executable. The 'arguments'
+      //    will be treated as the arguments to the executable. This is
+      //    similar to how POSIX exec families launch processes (i.e.,
+      //    execlp(value, arguments(0), arguments(1), ...)).
+      optional bool shell = 6 [default = true];
+      optional string value = 3;
+      repeated string arguments = 7;
+      ...
+    }
 
 **NOTE**: The Python bindings are also changing in this release. There are now sub-modules which allow you to use either the interfaces and/or the native driver.
 
@@ -86,7 +90,6 @@ message CommandInfo {
 
 To ensure a smooth upgrade, we recommend to upgrade your python framework and executor first. You will be able to either import using the new configuration or the old. Replace the existing imports with something like the following:
 
-```
     try:
         from mesos.native import MesosExecutorDriver, MesosSchedulerDriver
         from mesos.interface import Executor, Scheduler
@@ -94,7 +97,6 @@ To ensure a smooth upgrade, we recommend to upgrade your python framework and ex
     except ImportError:
         from mesos import Executor, MesosExecutorDriver, MesosSchedulerDriver, Scheduler
         import mesos_pb2
-```
 
 **NOTE**: If you're using a pure language binding, please ensure that it sends status update acknowledgements through the master before upgrading.
 

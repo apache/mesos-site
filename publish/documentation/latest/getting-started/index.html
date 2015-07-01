@@ -180,34 +180,31 @@
 
 <h3>CentOS 7.1</h3>
 
-<ul>
-<li><p>Following are the instructions for stock CentOS 7.1. If you are using a different OS, please install the packages accordingly.</p>
+<p>Following are the instructions for stock CentOS 7.1. If you are using a different OS, please install the packages accordingly.</p>
 
-<pre><code>  # Install a few utility tools
-  $ sudo yum install -y tar wget
+<pre><code>    # Install a few utility tools
+    $ sudo yum install -y tar wget
 
-  # Fetch the Apache Maven repo file.
-  $ sudo wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo
+    # Fetch the Apache Maven repo file.
+    $ sudo wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo
 
-  # 'Mesos &gt; 0.21.0' requires 'subversion &gt; 1.8' devel package, which is
-  # not available in the default repositories.
-  # Add the WANdisco SVN repo file: '/etc/yum.repos.d/wandisco-svn.repo' with content:
+    # 'Mesos &gt; 0.21.0' requires 'subversion &gt; 1.8' devel package, which is
+    # not available in the default repositories.
+    # Add the WANdisco SVN repo file: '/etc/yum.repos.d/wandisco-svn.repo' with content:
 
-    [WANdiscoSVN]
-    name=WANdisco SVN Repo 1.9
-    enabled=1
-    baseurl=http://opensource.wandisco.com/centos/7/svn-1.9/RPMS/$basearch/
-    gpgcheck=1
-    gpgkey=http://opensource.wandisco.com/RPM-GPG-KEY-WANdisco
+      [WANdiscoSVN]
+      name=WANdisco SVN Repo 1.9
+      enabled=1
+      baseurl=http://opensource.wandisco.com/centos/7/svn-1.9/RPMS/$basearch/
+      gpgcheck=1
+      gpgkey=http://opensource.wandisco.com/RPM-GPG-KEY-WANdisco
 
-  # Install essential development tools.
-  $ sudo yum groupinstall -y "Development Tools"
+    # Install essential development tools.
+    $ sudo yum groupinstall -y "Development Tools"
 
-  # Install other Mesos dependencies.
-  $ sudo yum install -y apache-maven python-devel java-1.7.0-openjdk-devel zlib-devel libcurl-devel openssl-devel cyrus-sasl-devel cyrus-sasl-md5 apr-devel subversion-devel apr-util-devel
-</code></pre></li>
-</ul>
-
+    # Install other Mesos dependencies.
+    $ sudo yum install -y apache-maven python-devel java-1.7.0-openjdk-devel zlib-devel libcurl-devel openssl-devel cyrus-sasl-devel cyrus-sasl-md5 apr-devel subversion-devel apr-util-devel
+</code></pre>
 
 <h2>Building Mesos</h2>
 
@@ -224,7 +221,7 @@
     $ make
 </code></pre>
 
-<p>In order to speed up the build and reduce verbosity of the logs, you can append <code>-j=&lt;number of cores&gt; V=0</code> to <code>make</code>.</p>
+<p>In order to speed up the build and reduce verbosity of the logs, you can append <code>-j &lt;number of cores&gt; V=0</code> to <code>make</code>.</p>
 
 <pre><code>    # Run test suite.
     $ make check

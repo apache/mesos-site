@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+		    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+		    <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
+		    
+		    <link href="../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+				
+		    
+			
+			<!-- Google Analytics Magic -->
+			<script type="text/javascript">
+			  var _gaq = _gaq || [];
+			  _gaq.push(['_setAccount', 'UA-20226872-1']);
+			  _gaq.push(['_setDomainName', 'apache.org']);
+			  _gaq.push(['_trackPageview']);
+
+			  (function() {
+			    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			  })();
+			</script>
+    </head>
+    <body>
+			<!-- magical breadcrumbs -->
+			<div class="topnav">
+			<ul class="breadcrumb">
+			  <li>
+					<div class="dropdown">
+					  <a data-toggle="dropdown" href="#">Apache Software Foundation <span class="caret"></span></a>
+					  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+							<li><a href="http://www.apache.org">Apache Homepage</a></li>
+							<li><a href="http://www.apache.org/licenses/">License</a></li>
+					  	<li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>  
+					  	<li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+							<li><a href="http://www.apache.org/security/">Security</a></li>
+					  </ul>
+					</div>
+				</li>
+				<li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+				
+				
+					<li><a href="/documentation
+/">Documentation
+</a></li>
+				
+				
+			</ul><!-- /breadcrumb -->
+			</div>
+			
+			<!-- navbar excitement -->
+	    <div class="navbar navbar-static-top" role="navigation">
+	      <div class="navbar-inner">
+	        <div class="container">
+						<a href="/" class="logo"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo" /></a>
+					<div class="nav-collapse">
+						<ul class="nav nav-pills navbar-right">
+						  <li><a href="/gettingstarted/">Getting Started</a></li>
+						  <li><a href="/documentation/latest/">Documentation</a></li>
+						  <li><a href="/downloads/">Downloads</a></li>
+						  <li><a href="/community/">Community</a></li>
+						</ul>
+					</div>
+	        </div>
+	      </div>
+	    </div><!-- /.navbar -->
+
+      <div class="container">
+
+			<div class="row-fluid">
+	<div class="col-md-4">
+		<h4>If you're new to Mesos</h4>
+		<p>See the <a href="/gettingstarted/">getting started</a> page for more information about downloading, building, and deploying Mesos.</p>
+		
+		<h4>If you'd like to get involved or you're looking for support</h4>
+		<p>See our <a href="/community/">community</a> page for more details.</p>
+	</div>
+	<div class="col-md-8">
+		<h1>Reservation</h1>
+
+<p>Mesos provides mechanisms to <strong>reserve</strong> resources in specific slaves.
+The concept was first introduced with <strong>static reservation</strong> in 0.14.0
+which enabled operators to specify the reserved resources on slave startup.
+This was extended with <strong>dynamic reservation</strong> in 0.23.0 which enabled operators
+and authorized <strong>frameworks</strong> to dynamically reserve resources in the cluster.</p>
+
+<p>No breaking changes were introduced with dynamic reservation, which means the
+existing static reservation mechanism continues to be fully supported.</p>
+
+<p>In both types of reservations, resources are reserved for a <strong>role</strong>.</p>
+
+<h2>Static Reservation (since 0.14.0)</h2>
+
+<p>An operator can configure a slave with resources reserved for a role.
+The reserved resources are specified via the <code>--resources</code> flag.
+For example, suppose we have 12 CPUs and 6144 MB of RAM available on a slave and
+that we want to reserve 8 CPUs and 4096 MB of RAM for the <code>ads</code> role.
+We start the slave like so:</p>
+
+<pre><code>    $ mesos-slave \
+      --master=&lt;ip&gt;:&lt;port&gt; \
+      --resources="cpus:4;mem:2048;cpus(ads):8;mem(ads):4096"
+</code></pre>
+
+<p>We now have 8 CPUs and 4096 MB of RAM reserved for <code>ads</code> on this slave.</p>
+
+<p><strong>CAVEAT:</strong> In order to modify a static reservation, the operator must drain and
+            restart the slave with the new configuration specifed in the
+            <code>--resources</code> flag.</p>
+
+<p><strong>NOTE:</strong> This feature is supported for backwards compatibility.
+          The recommended approach is to specify the total resources available
+          on the slave as unreserved via the <code>--resources</code> flag and manage
+          reservations dynamically via the master HTTP endpoints.</p>
+
+<h2>Dynamic Reservation (since 0.23.0)</h2>
+
+<p>As mentioned in <a href="#static-reservation-since-0140">Static Reservation</a>, specifying the
+reserved resources via the <code>--resources</code> flag makes the reservation static.
+This is, statically reserved resources cannot be reserved for another role nor
+be unreserved. Dynamic Reservation enables operators and authorized frameworks
+to reserve and unreserve resources post slave-startup.</p>
+
+<p>We require a <code>principal</code> from the operator or framework in order to
+authenticate/authorize the operations. <a href="/documentation/latest/authorization/">Authorization</a> is
+specified via the existing ACL mechanism. (<em>Coming Soon</em>)</p>
+
+<ul>
+<li><code>Offer::Operation::Reserve</code> and <code>Offer::Operation::Unreserve</code> messages are
+available for <strong>frameworks</strong> to send back via the <code>acceptOffers</code> API as a
+response to a resource offer.</li>
+<li><code>/reserve</code> and <code>/unreserve</code> HTTP endpoints are available for <strong>operators</strong>
+to manage dynamic reservations through the master. (<em>Coming Soon</em>).</li>
+</ul>
+
+
+<p>In the following sections, we will walk through examples of each of the
+interfaces described above.</p>
+
+<h3><code>Offer::Operation::Reserve</code></h3>
+
+<p>A framework is able to reserve resources through the resource offer cycle.
+Suppose we receive a resource offer with 12 CPUs and 6144 MB of RAM unreserved.</p>
+
+<pre><code>    {
+      "id": &lt;offer_id&gt;,
+      "framework_id": &lt;framework_id&gt;,
+      "slave_id": &lt;slave_id&gt;,
+      "hostname": &lt;hostname&gt;,
+      "resources": [
+        {
+          "name": "cpus",
+          "type": "SCALAR",
+          "scalar": { "value": 12 },
+          "role": "*",
+        },
+        {
+          "name": "mem",
+          "type": "SCALAR",
+          "scalar": { "value": 6144 },
+          "role": "*",
+        }
+      ]
+    }
+</code></pre>
+
+<p>We can reserve 8 CPUs and 4096 MB of RAM by sending the following
+<code>Offer::Operation</code> message. <code>Offer::Operation::Reserve</code> has a <code>resources</code> field
+which we specify with the resources to be reserved. We need to expicitly set
+the <code>role</code> and <code>principal</code> fields with the framework&rsquo;s role and principal.</p>
+
+<pre><code>    {
+      "type": Offer::Operation::RESERVE,
+      "reserve": {
+        "resources": [
+          {
+            "name": "cpus",
+            "type": "SCALAR",
+            "scalar": { "value": 8 },
+            "role": &lt;framework_role&gt;,
+            "reservation": {
+              "principal": &lt;framework_principal&gt;
+            }
+          },
+          {
+            "name": "mem",
+            "type": "SCALAR",
+            "scalar": { "value": 4096 },
+            "role": &lt;framework_role&gt;,
+            "reservation": {
+              "principal": &lt;framework_principal&gt;
+            }
+          }
+        ]
+      }
+    }
+</code></pre>
+
+<p>The subsequent resource offer will <strong>contain</strong> the following reserved resources:</p>
+
+<pre><code>    {
+      "id": &lt;offer_id&gt;,
+      "framework_id": &lt;framework_id&gt;,
+      "slave_id": &lt;slave_id&gt;,
+      "hostname": &lt;hostname&gt;,
+      "resources": [
+        {
+          "name": "cpus",
+          "type": "SCALAR",
+          "scalar": { "value": 8 },
+          "role": &lt;framework_role&gt;,
+          "reservation": {
+            "principal": &lt;framework_principal&gt;
+          }
+        },
+        {
+          "name": "mem",
+          "type": "SCALAR",
+          "scalar": { "value": 4096 },
+          "role": &lt;framework_role&gt;,
+          "reservation": {
+            "principal": &lt;framework_principal&gt;
+          }
+        },
+      ]
+    }
+</code></pre>
+
+<h3><code>Offer::Operation::Unreserve</code></h3>
+
+<p>A framework is able to unreserve resources through the resource offer cycle.
+In <a href="#offeroperationreserve">Offer::Operation::Reserve</a>, we reserved 8 CPUs
+and 4096 MB of RAM for our <code>role</code>. The master will continue to offer these
+resources to our <code>role</code>. Suppose we would like to unreserve these resources.
+First, we receive a resource offer (copy/pasted from above):</p>
+
+<pre><code>    {
+      "id": &lt;offer_id&gt;,
+      "framework_id": &lt;framework_id&gt;,
+      "slave_id": &lt;slave_id&gt;,
+      "hostname": &lt;hostname&gt;,
+      "resources": [
+        {
+          "name": "cpus",
+          "type": "SCALAR",
+          "scalar": { "value": 8 },
+          "role": &lt;framework_role&gt;,
+          "reservation": {
+            "principal": &lt;framework_principal&gt;
+          }
+        },
+        {
+          "name": "mem",
+          "type": "SCALAR",
+          "scalar": { "value": 4096 },
+          "role": &lt;framework_role&gt;,
+          "reservation": {
+            "principal": &lt;framework_principal&gt;
+          }
+        },
+      ]
+    }
+</code></pre>
+
+<p>We unreserve the 8 CPUs and 4096 MB of RAM by sending the following
+<code>Offer::Operation</code> message. <code>Offer::Operation::Unreserve</code> has a <code>resources</code> field
+which we specify with the resources to be unreserved.</p>
+
+<pre><code>    {
+      "type": Offer::Operation::UNRESERVE,
+      "unreserve": {
+        "resources": [
+          {
+            "name": "cpus",
+            "type": "SCALAR",
+            "scalar": { "value": 8 },
+            "role": &lt;framework_role&gt;,
+            "reservation": {
+              "principal": &lt;framework_principal&gt;
+            }
+          },
+          {
+            "name": "mem",
+            "type": "SCALAR",
+            "scalar": { "value": 4096 },
+            "role": &lt;framework_role&gt;,
+            "reservation": {
+              "principal": &lt;framework_principal&gt;
+            }
+          }
+        ]
+      }
+    }
+</code></pre>
+
+<p>The unreserved resources may now be offered to other frameworks.</p>
+
+<h3><code>/reserve</code> (<em>Coming Soon</em>)</h3>
+
+<p>Suppose we want to reserve 8 CPUs and 4096 MB of RAM for the <code>ads</code> role on
+a slave with id=<code>&lt;slave_id&gt;</code>. We send an HTTP POST request to the <code>/reserve</code>
+HTTP endpoint like so:</p>
+
+<pre><code>    $ curl -i \
+      -u &lt;operator_principal&gt;:&lt;password&gt; \
+      -d slaveId=&lt;slave_id&gt; \
+      -d resources='[ \
+        { \
+          "name": "cpus", \
+          "type": "SCALAR", \
+          "scalar": { "value": 8 }, \
+          "role": "ads", \
+          "reservation": { \
+            "principal": &lt;operator_principal&gt; \
+          } \
+        }, \
+        { \
+          "name": "mem", \
+          "type": "SCALAR", \
+          "scalar": { "value": 4096 }, \
+          "role": "ads", \
+          "reservation": { \
+            "principal": &lt;operator_principal&gt; \
+          } \
+        } \
+      ]' \
+      -X POST http://&lt;ip&gt;:&lt;port&gt;/master/reserve
+</code></pre>
+
+<p>The user receives one of the following HTTP responses:</p>
+
+<ul>
+<li><code>200 OK</code>: Success</li>
+<li><code>400 BadRequest</code>: Invalid arguments (e.g. missing parameters).</li>
+<li><code>401 Unauthorized</code>: Unauthorized request.</li>
+<li><code>409 Conflict</code>: Insufficient resources to satisfy the reserve operation.</li>
+</ul>
+
+
+<h3><code>/unreserve</code> (<em>Coming Soon</em>)</h3>
+
+<p>Suppose we want to unreserve the resources that we dynamically reserved above.
+We can send an HTTP POST request to the <code>/unreserve</code> HTTP endpoint like so:</p>
+
+<pre><code>    $ curl -i \
+      -u &lt;operator_principal&gt;:&lt;password&gt; \
+      -d slaveId=&lt;slave_id&gt; \
+      -d resources='[ \
+        { \
+          "name": "cpus", \
+          "type": "SCALAR", \
+          "scalar": { "value": 8 }, \
+          "role": "ads", \
+          "reservation": { \
+            "principal": &lt;operator_principal&gt; \
+          } \
+        }, \
+        { \
+          "name": "mem", \
+          "type": "SCALAR", \
+          "scalar": { "value": 4096 }, \
+          "role": "ads", \
+          "reservation": { \
+            "principal": &lt;operator_principal&gt; \
+          } \
+        } \
+      ]' \
+      -X POST http://&lt;ip&gt;:&lt;port&gt;/master/unreserve
+</code></pre>
+
+<p>The user receives one of the following HTTP responses:</p>
+
+<ul>
+<li><code>200 OK</code>: Success</li>
+<li><code>400 BadRequest</code>: Invalid arguments (e.g. missing parameters).</li>
+<li><code>401 Unauthorized</code>: Unauthorized request.</li>
+<li><code>409 Conflict</code>: Insufficient resources to satisfy unreserve operation.</li>
+</ul>
+
+
+	</div>
+</div>
+
+			
+	      <hr>
+
+				<!-- footer -->
+	      <div class="footer">
+	        <p>&copy; 2012-2014 <a href="http://apache.org">The Apache Software Foundation</a>.
+	        Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.<p>
+	      </div><!-- /footer -->
+
+	    </div> <!-- /container -->
+
+	    <!-- JS -->
+	    <script src="//code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+			<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="text/javascript"></script>
+    </body>
+</html>

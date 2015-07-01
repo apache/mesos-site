@@ -94,7 +94,7 @@ Following are the instructions for stock CentOS 6.6. If you are using a differen
 
 ### CentOS 7.1
 
-- Following are the instructions for stock CentOS 7.1. If you are using a different OS, please install the packages accordingly.
+Following are the instructions for stock CentOS 7.1. If you are using a different OS, please install the packages accordingly.
 
         # Install a few utility tools
         $ sudo yum install -y tar wget
@@ -133,7 +133,7 @@ Following are the instructions for stock CentOS 6.6. If you are using a differen
         $ ../configure
         $ make
 
-In order to speed up the build and reduce verbosity of the logs, you can append `-j=<number of cores> V=0` to `make`.
+In order to speed up the build and reduce verbosity of the logs, you can append `-j <number of cores> V=0` to `make`.
 
         # Run test suite.
         $ make check

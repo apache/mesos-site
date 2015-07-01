@@ -6,54 +6,8 @@ using [Doxygen](http://www.doxygen.org).
 There is an ongoing, incremental effort with the goal to document all public Mesos, libprocess, and stout APIs this way.
 For now, existing code may not follow these guidelines, but new code should.
 
-## Preliminaries
 
-We follow the [IETF RFC2119](https://www.ietf.org/rfc/rfc2119.txt)
-on how to use words such as "must", "should", "can",
-and other requirement-related notions.
-
-
-## Building Doxygen Documentation
-As of right now, the Doxygen documentation should be built from the *build* subdirectory using *doxygen ../Doxyfile* . The documentation will then be generated into the *./doxygen* subdirectory.
-Todo: We should create a regular make target.
-
-
-## Doxygen Tags
-*When following these links be aware that the doxygen documentation is using another syntax in that @param is explained as \param.*
-
-* [@param](http://doxygen.org/manual/commands.html#cmdparam) Describes function parameters.
-* [@return](http://doxygen.org/manual/commands.html#cmdreturn) Describes return values.
-* [@see](http://doxygen.org/manual/commands.html#cmdsa) Describes a cross-reference to classes, functions, methods, variables, files or URL.
-* [@file](http://doxygen.org/manual/commands.html#cmdfile) Describes a refence to a file. It is required when documenting global functions, variables, typedefs, or enums in separate files.
-* [@link](http://doxygen.org/manual/commands.html#cmdlink) and [@endlink](http://doxygen.org/manual/commands.html#cmdendlink) Describes a link to a file, class, or member.
-* [@example](http://doxygen.org/manual/commands.html#cmdexample) Describes source code examples.
-* [@todo](http://doxygen.org/manual/commands.html#cmdtodo) Describes a TODO item.
-* [@image](http://doxygen.org/manual/commands.html#cmdimage) Describes an image.
-
-## Wrapping
-We wrap long descriptions using 4 spaces on the next line.
-~~~
-@param uncompressed The input string that requires
-    a very long description and an even longer
-    description on this line as well.
-~~~
-
-
-## Outside Source Code
-
-### Library and Component Overview Pages and User Guides
-
-Substantial libraries, components, and subcomponents of the Mesos system such as
-stout, libprocess, master, slave, containerizer, allocator, and others
-should have an overview page in markdown format that explains their
-purpose, overall structure, and general use. This can even be a complete user guide.
-
-This page must be located in the top directory of the library/component and named "REAMDE.md".
-
-The first line in such a document must be a section heading bearing the title which will appear in the generated Doxygen index.
-Example: "# Libprocess User Guide"
-
-## In Source Code
+## Source Code Documentation Syntax
 
 Doxygen documentation needs only to be applied to source code parts that
 constitute an interface for which we want to generate Mesos API documentation
@@ -62,6 +16,13 @@ enhanced by source code comments as appropriate, but these comments should not f
 
 We follow the [Javadoc syntax](http://en.wikipedia.org/wiki/Javadoc) to mark comment blocks.
 These have the general form:
+
+
+<!-- NOTE: In order to show the comments as part of the code blocks in
+this we must use indentation instead of fenced code blocks (i.e.,
+~~~{.cpp}) because doxygen will remove all of the comments and just
+render the code. -->
+
 
     /**
      * Brief summary.
@@ -85,18 +46,143 @@ Example:
      */
      std::string compress(const std::string& uncompressed);
 
+
+### Doxygen Tags
+
+This is the allowed set of doxygen tags that can be used.
+
+ * [\@param](http://doxygen.org/manual/commands.html#cmdparam) Describes function parameters.
+ * [\@return](http://doxygen.org/manual/commands.html#cmdreturn) Describes return values.
+ * [\@see](http://doxygen.org/manual/commands.html#cmdsa) Describes a cross-reference to classes, functions, methods, variables, files or URL.
+ * [\@file](http://doxygen.org/manual/commands.html#cmdfile) Describes a refence to a file. It is required when documenting global functions, variables, typedefs, or enums in separate files.
+ * [\@link](http://doxygen.org/manual/commands.html#cmdlink) and [\@endlink](http://doxygen.org/manual/commands.html#cmdendlink) Describes a link to a file, class, or member.
+ * [\@example](http://doxygen.org/manual/commands.html#cmdexample) Describes source code examples.
+ * [\@todo](http://doxygen.org/manual/commands.html#cmdtodo) Describes a TODO item.
+ * [\@image](http://doxygen.org/manual/commands.html#cmdimage) Describes an image.
+
+ * When following these links be aware that the doxygen documentation is using another syntax in that \@param is explained as \\param.
+
+
+### Wrapping
+
+We wrap long descriptions using four spaces on the next line.
+
+    @param uncompressed The input string that requires
+        a very long description and an even longer
+        description on this line as well.
+
+
 ### Constants and Variables
 
-### Functions
+Example:
 
-### Classes
+    /**
+     * Prefix used to name Docker containers in order to distinguish
+     * those created by Mesos from those created manually.
+     */
+    extern const std::string DOCKER_NAME_PREFIX;
 
-#### Methods
 
 #### Fields
 
-### Templates
+Example:
 
-### Macros
+    /**
+     * The parent side of the pipe for stdin.
+     * If the mode is not PIPE, None will be stored.
+     * @note: stdin is a macro on some systems, hence this name instead.
+     */
+    Option<int> in;
 
-### Global declarations outside classes
+
+### Functions and Methods
+
+Example:
+
+    /**
+     * Forks a subprocess and execs the specified 'path' with the
+     * specified 'argv', redirecting stdin, stdout, and stderr as
+     * specified by 'in', 'out', and 'err' respectively.
+     *
+     * If 'setup' is not None, runs the specified function after forking
+     * but before exec'ing. If the return value of 'setup' is non-zero
+     * then that gets returned in 'status()' and we will not exec.
+     *
+     * @param path Relative or absolute path in the filesytem to the
+     *     executable.
+     * @param argv Argument vector to pass to exec.
+     * @param in Redirection specification for stdin.
+     * @param out Redirection specification for stdout.
+     * @param err Redirection specification for stderr.
+     * @param flags Flags to be stringified and appended to 'argv'.
+     * @param environment Environment variables to use for the new
+     *     subprocess or if None (the default) then the new subprocess
+     *     will inherit the environment of the current process.
+     * @param setup Function to be invoked after forking but before
+     *     exec'ing. NOTE: Take extra care not to invoke any
+     *     async unsafe code in the body of this function.
+     * @param clone Function to be invoked in order to fork/clone the
+     *     subprocess.
+     * @return The subprocess or an error if one occurred.
+     */
+    Try<Subprocess> subprocess(
+        const std::string& path,
+        std::vector<std::string> argv,
+        const Subprocess::IO& in = Subprocess::FD(STDIN_FILENO),
+        const Subprocess::IO& out = Subprocess::FD(STDOUT_FILENO),
+        const Subprocess::IO& err = Subprocess::FD(STDERR_FILENO),
+        const Option<flags::FlagsBase>& flags = None(),
+        const Option<std::map<std::string, std::string>>& environment = None(),
+        const Option<lambda::function<int()>>& setup = None(),
+        const Option<lambda::function<
+            pid_t(const lambda::function<int()>&)>>& clone = None());
+
+
+### Classes and Structs
+
+Example:
+
+    /**
+     * Represents a fork() exec()ed subprocess. Access is provided to the
+     * input / output of the process, as well as the exit status. The
+     * input / output file descriptors are only closed after:
+     *   1. The subprocess has terminated.
+     *   2. There are no longer any references to the associated
+     *      Subprocess object.
+     */
+    class Subprocess
+    {
+    public:
+
+
+## Library and Component Overview Pages and Developer Guides
+
+Substantial libraries, components, and subcomponents of the Mesos system such as
+stout, libprocess, master, slave, containerizer, allocator, and others
+should have an overview page in markdown format that explains their
+purpose, overall structure, and general use. This can even be a complete developer guide.
+
+This page must be located in the top directory of the library/component and named "REAMDE.md".
+
+The first line in such a document must be a section heading bearing the title which will appear in the generated Doxygen index.
+Example: "# Libprocess Developer Guide"
+
+### Example Code
+
+C++ code examples should be enclosed by '~~~{.cpp}'.
+
+Example:
+
+~~~{.cpp}
+int main(int argc, char** argv)
+{
+  ...
+}
+~~~
+
+**NOTE**: Because of shortcomings of Doxygen's markdown parser we currently use indentation for wrapping all non C++ code blocks.
+
+
+## Building Doxygen Documentation
+
+As of right now, the Doxygen documentation should be built from the *build* subdirectory using *doxygen ../Doxyfile* . The documentation will then be generated into the *./doxygen* subdirectory.
