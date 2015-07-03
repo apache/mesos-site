@@ -9,9 +9,11 @@ breadcrumb: Downloads
 
     <ul>
       <li><a href="http://archive.apache.org/dist/mesos/0.22.1/">0.22.1</a>
-		  (<a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12311242&version=12329855">Release Notes</a>)</li>
+	   (<a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12311242&version=12329855">Release Notes</a>)</li>
       <li><a href="http://archive.apache.org/dist/mesos/0.22.0/">0.22.0</a>
            (<a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12311242&version=12328650">Release Notes</a>)</li>
+      <li><a href="http://archive.apache.org/dist/mesos/0.21.1/">0.21.1</a>
+           (<a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12311242&version=12329076">Release Notes</a>)</li>
       <li><a href="http://archive.apache.org/dist/mesos/0.21.0/">0.21.0</a>
            (<a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12311242&version=12327045">Release Notes</a>)</li>
       <li><a href="http://archive.apache.org/dist/mesos/0.20.0/">0.20.0</a>
