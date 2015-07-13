@@ -54,10 +54,18 @@ This is the allowed set of doxygen tags that can be used.
  * [\@param](http://doxygen.org/manual/commands.html#cmdparam) Describes function parameters.
  * [\@return](http://doxygen.org/manual/commands.html#cmdreturn) Describes return values.
  * [\@see](http://doxygen.org/manual/commands.html#cmdsa) Describes a cross-reference to classes, functions, methods, variables, files or URL.
+
+Example:
+
+    /**
+     * Available kinds of implementations.
+     *
+     * @see process::network::PollSocketImpl
+     */
+
  * [\@file](http://doxygen.org/manual/commands.html#cmdfile) Describes a refence to a file. It is required when documenting global functions, variables, typedefs, or enums in separate files.
  * [\@link](http://doxygen.org/manual/commands.html#cmdlink) and [\@endlink](http://doxygen.org/manual/commands.html#cmdendlink) Describes a link to a file, class, or member.
  * [\@example](http://doxygen.org/manual/commands.html#cmdexample) Describes source code examples.
- * [\@todo](http://doxygen.org/manual/commands.html#cmdtodo) Describes a TODO item.
  * [\@image](http://doxygen.org/manual/commands.html#cmdimage) Describes an image.
 
  * When following these links be aware that the doxygen documentation is using another syntax in that \@param is explained as \\param.
@@ -90,7 +98,7 @@ Example:
     /**
      * The parent side of the pipe for stdin.
      * If the mode is not PIPE, None will be stored.
-     * @note: stdin is a macro on some systems, hence this name instead.
+     * **NOTE**: stdin is a macro on some systems, hence this name instead.
      */
     Option<int> in;
 
@@ -162,7 +170,7 @@ stout, libprocess, master, slave, containerizer, allocator, and others
 should have an overview page in markdown format that explains their
 purpose, overall structure, and general use. This can even be a complete developer guide.
 
-This page must be located in the top directory of the library/component and named "REAMDE.md".
+This page must be located in the top directory of the library/component and named "README.md".
 
 The first line in such a document must be a section heading bearing the title which will appear in the generated Doxygen index.
 Example: "# Libprocess Developer Guide"

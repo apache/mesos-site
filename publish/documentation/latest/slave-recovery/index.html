@@ -164,6 +164,19 @@ Therefore, it is highly recommended to automate the process of restarting a slav
 <blockquote><p>NOTE: Frameworks that have enabled checkpointing will only get offers from checkpointing slaves. So, before setting <code>checkpoint=True</code> on FrameworkInfo, ensure that there are slaves in your cluster that have enabled checkpointing.
 Because, if there are no checkpointing slaves, the framework would not get any offers and hence cannot launch any tasks/executors!</p></blockquote>
 
+<h2>Known issues with <code>systemd</code> and POSIX isolation</h2>
+
+<p>There is a known issue when using <code>systemd</code> to launch the <code>mesos-slave</code> while also using only <code>posix</code> isolation mechanisms that prevents tasks from recovering. The problem is that the default <a href="http://www.freedesktop.org/software/systemd/man/systemd.kill.html">KillMode</a> for systemd processes is <code>cgroup</code> and hence all child processes are killed when the slave stops. Explicitly setting <code>KillMode</code> to <code>process</code> allows the executors to survive and reconnect.</p>
+
+<p>The following excerpt of a <code>systemd</code> unit configuration file shows how to set the flag:</p>
+
+<pre><code>[Service]
+ExecStart=/usr/bin/mesos-slave
+KillMode=process
+</code></pre>
+
+<blockquote><p>NOTE: There are also known issues with using <code>systemd</code> and raw <code>cgroups</code> based isolation, for now the suggested non-Posix isolation mechanism is to use Docker containerization.</p></blockquote>
+
 <h2>Upgrading to 0.14.0</h2>
 
 <p>If you want to upgrade a running Mesos cluster to 0.14.0 to take advantage of slave recovery please follow the <a href="/documentation/latest/upgrades/">upgrade instructions</a>.</p>
