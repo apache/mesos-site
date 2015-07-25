@@ -91,11 +91,18 @@
 
 <ol>
 <li><p>Ensure that you have a GPG key or generate a new one, e.g., using <code>gpg --gen-key</code>.</p></li>
-<li><p>Add your GPG public key to the Apache Mesos dist repository in the KEYS file.</p></li>
-<li>Fetch the svn repository <code>svn co https://dist.apache.org/repos/dist/release/mesos</code></li>
-<li>Append your public key using one of methods described in KEYS,
-e.g., <code>(gpg --list-sigs &lt;your name&gt; &amp;&amp; gpg --armor --export &lt;your name&gt;) &gt;&gt; KEYS</code>.</li>
-<li><p>Push the commit: <code>svn ci</code></p></li>
+<li><p>Add your GPG public key to the Apache Mesos dist repository in the KEYS file.</p>
+
+<ul>
+<li><p>Fetch the svn repository:<br>
+<code>svn co https://dist.apache.org/repos/dist/release/mesos</code></p></li>
+<li><p>Append your public key using one of methods described in KEYS,
+e.g.,<br>
+<code>(gpg --list-sigs &lt;your name&gt; &amp;&amp; gpg --armor --export &lt;your name&gt;) &gt;&gt; KEYS</code>.</p></li>
+<li><p>Push the commit:<br>
+<code>svn ci</code></p></li>
+</ul>
+</li>
 <li><p>Submit your GPG public key to a keyserver, e.g., <a href="https://pgp.mit.edu">MIT PGP Public Key Server</a>.</p></li>
 <li><p>Add your GPG fingerprint to your <a href="https://id.apache.org/">Apache account</a>.</p></li>
 <li><p>Create a Maven settings file (<code>~/.m2/settings.xml</code>) for the Apache
@@ -129,22 +136,32 @@ password</a>.</p>
 <li><p>Go to <a href="https://issues.apache.org/jira/browse/MESOS">Apache Jira</a> and make sure that
 the CHANGELOG for the release version is up to date.</p>
 
-<blockquote><p>NOTE: You should move all <strong>Unresolved</strong> tickets marked with <code>Fix Version</code> as the
-         release version to the next release version.</p>
+<blockquote><p>NOTE: You should move all <strong>Unresolved</strong> tickets marked with <code>Fix Version</code>
+   or <code>Target Version</code> as the release version to the next release version.</p>
+
+<p>PROTIP: Use a JIRA dashboard <a href="https://issues.apache.org/jira/secure/Dashboard.jspa?selectPageId=12326227">(example)</a>
+   to track the progress of targeted issues as the release date approaches.</p>
 
 <p>PROTIP: Use <code>bulk edit</code> option in JIRA to move the tickets and make sure to
-           <strong>uncheck</strong> the option that emails everyone about the move.</p></blockquote></li>
-<li><p>Update and commit the <code>CHANGELOG</code> for the release.</p>
+   <strong>uncheck</strong> the option that emails everyone about the move.</p></blockquote></li>
+<li><p>Update and commit the <code>CHANGELOG</code> for the release. For major releases we like to call
+out any major features, API changes, or deprecations.</p>
 
 <blockquote><p>NOTE: You should use JIRA to generate the CHANGELOG for you. Click on the release
-  version in <a href="https://issues.apache.org/jira/browse/MESOS#selectedTab=com.atlassian.jira.plugin.system.project%3Aversions-panel">JIRA</a> and click
-  on the <code>Release Notes</code>. Make sure to configure the release notes in text format.</p></blockquote></li>
+   version in <a href="https://issues.apache.org/jira/browse/MESOS#selectedTab=com.atlassian.jira.plugin.system.project%3Aversions-panel">JIRA</a> and click
+   on the <code>Release Notes</code>. Make sure to configure the release notes in text format.</p>
+
+<p>NOTE: The JIRA Release Notes will list only tickets with <code>Fix Version</code> set
+   to that version. You should check for any Resolved tickets that have
+   <code>Target Version</code> set but not <code>Fix Version</code>. Also check for any Unresolved
+   or <code>Duplicate</code>/<code>Invalid</code> tickets that incorrectly set the <code>Fix Version</code>.</p></blockquote></li>
 <li><p>If not already done, update and commit <code>configure.ac</code> for the release.</p></li>
 <li><p>Update and commit <code>docs/configuration.md</code> to reflect the current state of
 the master, slave, and configure flags.</p></li>
 <li><p>Update and commit <code>docs/upgrades.md</code> with instructions about how to upgrade
 a live cluster from the previous release version to this release version.</p></li>
-<li><p>If this is a major release please write and commit documentation for this feature.</p></li>
+<li><p>If this is a major release, please ensure that user documentation has been
+added for any new features.</p></li>
 </ol>
 
 
@@ -153,7 +170,7 @@ a live cluster from the previous release version to this release version.</p></l
 <ol>
 <li><p>Ensure that you can build and pass all the tests.</p>
 
-<pre><code> $ make -j3 distcheck
+<pre><code> $ sudo make -j3 distcheck
 </code></pre></li>
 <li><p>First tag the required SHA locally.</p>
 
@@ -169,7 +186,10 @@ It is recommended to use the <code>support/tag.sh</code> script to accomplish th
 </code></pre>
 
 <blockquote><p>NOTE: This script assumes that you have the requisite permissions to deploy the JAR. For
-   instructions on how to set it up, please refer to <code>src/java/MESOS-MAVEN-README</code>.</p></blockquote></li>
+   instructions on how to set it up, please refer to <code>src/java/MESOS-MAVEN-README</code>.</p>
+
+<p>NOTE: gnu-sed (Linux) requires <code>-i''</code> instead of the <code>-i ''</code> (space-separated) that default OSX uses.
+   You may need to modify your local copy of tag.sh for it to complete successfully.</p></blockquote></li>
 <li><p>It is not uncommon to release multiple release candidates, with increasing release candidate
 version, if there are bugs found.</p></li>
 <li><p>Update to the <em>next</em> Mesos version in <code>configure.ac</code>: change <code>AC_INIT([mesos], [X.Y.Z]))</code> and commit.</p></li>
@@ -185,7 +205,27 @@ the <code>dev@mesos.apache.org</code> (and optionally <code>user@mesos.apache.or
 
 <pre><code> $ ./support/vote.sh X.Y.Z R
 </code></pre></li>
-<li><p>The release script also spits out an email template that you could use to send the vote email.</p></li>
+<li><p>The release script also spits out an email template that you could use to send the vote email.</p>
+
+<blockquote><p>NOTE: The <code>date -v+3d</code> command does not work on some platforms (e.g. Ubuntu),
+   so you may need to fill in the vote end date manually. The vote should last
+   for 3 business days instead of 3 calendar days anyway. Sometimes we prefer a
+   weeklong vote, to allow more time for integration testing.</p></blockquote></li>
+</ol>
+
+
+<h2>Preparing a new release candidate</h2>
+
+<ol>
+<li><p>If the vote does not pass (any -1s or showstopper bugs), track the issues as new JIRAs for the release.</p></li>
+<li><p>When all known issues are resolved, update the CHANGELOG with the newly fixed JIRAs.</p></li>
+<li><p>Once all patches are committed to master, cherry-pick them on top of the previous release candidate tag.
+This is the same process used for point releases (e.g. 0.22.1) as well.</p>
+
+<pre><code> $ git checkout X.Y.Z-rcR
+ $ git cherry-pick abcdefgh...
+</code></pre></li>
+<li><p>Now go back up to the &ldquo;Tagging the release candidate&rdquo; section and repeat.</p></li>
 </ol>
 
 
@@ -208,8 +248,14 @@ the result of the vote and the release.</p>
 <h2>Updating the website</h2>
 
 <ol>
-<li><p>After a successful release please update the website pointing to the new release.</p></li>
-<li><p>It is also recommended to write a blog post announcing the feature.</p></li>
+<li><p>After a successful release, please update the website pointing to the new release.
+See our <a href="http://svn.apache.org/repos/asf/mesos/site/">website README</a> and
+the general <a href="https://www.apache.org/dev/project-site.html">Apache project website guide</a>
+for details on how to build and publish the website.</p>
+
+<pre><code> $ svn co https://svn.apache.org/repos/asf/mesos/site mesos-site
+</code></pre></li>
+<li><p>Write a blog post announcing the new release and its features and major bug fixes.</p></li>
 </ol>
 
 
@@ -226,14 +272,27 @@ the result of the vote and the release.</p>
 <h2>Set the release date</h2>
 
 <ol>
-<li>Find the released Mesos version on https://issues.apache.org/jira/plugins/servlet/project-config/MESOS/versions, and update the release date.</li>
+<li>Find the released Mesos version on https://issues.apache.org/jira/plugins/servlet/project-config/MESOS/versions, and &ldquo;release&rdquo; it with the correct release date.</li>
 </ol>
 
 
 <h2>Update external tooling</h2>
 
+<p>Upload the mesos.interface package to PyPi.</p>
+
 <ol>
-<li>Update the Mesos Homebrew package.</li>
+<li> Create/use a PyPi account with access to the <a href="https://pypi.python.org/pypi?name=mesos.interface&amp;:action=submit_form">mesos.interface submit form</a>.
+ You may need to ask a current package owner to add you as an owner/maintainer.</li>
+<li> Setup your <a href="https://docs.python.org/2/distutils/packageindex.html#pypirc"><code>~/.pypirc</code></a> with your PyPi username and password.</li>
+<li> After a successful Mesos <code>make</code> (any architecture), cd to <code>build/src/python/interface</code>.</li>
+<li> Run <code>python setup.py register</code> to register this package.</li>
+<li> Run <code>python setup.py bdist_egg upload</code> to upload the egg for this package.</li>
+</ol>
+
+
+<p>Update the Mesos Homebrew package.</p>
+
+<ol>
 <li> Update the <a href="https://github.com/Homebrew/homebrew/blob/master/Library/Formula/mesos.rb">Homebrew formula for Mesos</a> and test.</li>
 <li> Submit a PR to the <a href="https://github.com/Homebrew/homebrew">Homebrew repo</a>.</li>
 <li> Once accepted, verify that <code>brew install mesos</code> works.</li>
@@ -248,7 +307,7 @@ the result of the vote and the release.</p>
 
 				<!-- footer -->
 	      <div class="footer">
-	        <p>&copy; 2012-2014 <a href="http://apache.org">The Apache Software Foundation</a>.
+	        <p>&copy; 2012-2015 <a href="http://apache.org">The Apache Software Foundation</a>.
 	        Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.<p>
 	      </div><!-- /footer -->
 

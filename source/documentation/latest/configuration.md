@@ -87,11 +87,20 @@ If you have special compilation requirements, please refer to `./configure --hel
       --ip=VALUE
     </td>
     <td>
-      IP address to listen on
-
+      IP address to listen on; this cannot be used in conjunction
+      with --ip_discovery_command.
     </td>
   </tr>
   <tr>
+    <td>
+      --ip_discovery_command=VALUE
+    </td>
+    <td>
+      Optional IP discovery command: if set, it is expected to emit
+      the IP address which Master will try to bind to.  Cannot be used
+      in conjunction with --ip.
+    </td>
+  </tr>  <tr>
     <td>
       --log_dir=VALUE
     </td>
@@ -970,21 +979,21 @@ file:///path/to/file (where file contains one of the above)</code></pre>
   </tr>
   <tr>
     <td>
-      --docker_sandbox_directory=VALUE
-    </td>
-    <td>
-      The absolute path for the directory in the container where the
-      sandbox is mapped to.
-      (default: /mnt/mesos/sandbox)
-    </td>
-  </tr>
-  <tr>
-    <td>
       --docker_stop_timeout=VALUE
     </td>
     <td>
       The time as a duration for docker to wait after stopping an instance
       before it kills that instance. (default: 0secs)
+    </td>
+  </tr>
+  <tr>
+    <td>
+      --sandbox_directory=VALUE
+    </td>
+    <td>
+      The absolute path for the directory in the container where the
+      sandbox is mapped to.
+      (default: /mnt/mesos/sandbox)
     </td>
   </tr>
   <tr>
