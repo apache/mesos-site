@@ -40,6 +40,7 @@ title: Apache Mesos
   <div class="col-md-5">
     <h3>News</h3>
       <ul>
+	    <li><em>July 28, 2015</em> - <a href="/blog/register-for-mesoscon-seattle-save/">Register for #MesosCon by 7/31 and Save $100</a></li>
 	    <li><em>July 22, 2015</em> - Mesos 0.23.0 is released! See the <a href="https://git-wip-us.apache.org/repos/asf?p=mesos.git;a=blob_plain;f=CHANGELOG;hb=0.23.0">CHANGELOG</a> for more details. <!--a href="/blog/mesos-0-23-0-released/"-->Blog post<!--/a--> coming soon.</li>
 	    <li><em>July 13, 2015</em> - MesosCon pre-conference and social activities announced! See the <a href="/blog/mesoscon-seattle-preconference-and-social-activities/">blog post</a> for more details.</li>
 	    <li><em>July 1, 2015</em> - MesosCon Seattle 2015 keynote speakers announced! See the <a href="/blog/mesoscon-seattle-keynote-speakers-announced/">blog post</a> for more details.</li>
