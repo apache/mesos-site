@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Apache Mesos 0.23.0 Released</title>
+		    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+		    <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
+		    
+		    <link href="../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+				
+		    
+			
+			<!-- Google Analytics Magic -->
+			<script type="text/javascript">
+			  var _gaq = _gaq || [];
+			  _gaq.push(['_setAccount', 'UA-20226872-1']);
+			  _gaq.push(['_setDomainName', 'apache.org']);
+			  _gaq.push(['_trackPageview']);
+
+			  (function() {
+			    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			  })();
+			</script>
+    </head>
+    <body>
+			<!-- magical breadcrumbs -->
+			<div class="topnav">
+			<ul class="breadcrumb">
+			  <li>
+					<div class="dropdown">
+					  <a data-toggle="dropdown" href="#">Apache Software Foundation <span class="caret"></span></a>
+					  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+							<li><a href="http://www.apache.org">Apache Homepage</a></li>
+							<li><a href="http://www.apache.org/licenses/">License</a></li>
+					  	<li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>  
+					  	<li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+							<li><a href="http://www.apache.org/security/">Security</a></li>
+					  </ul>
+					</div>
+				</li>
+				<li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+				
+				
+					<li><a href="/blog
+/">Blog
+</a></li>
+				
+				
+			</ul><!-- /breadcrumb -->
+			</div>
+			
+			<!-- navbar excitement -->
+	    <div class="navbar navbar-static-top" role="navigation">
+	      <div class="navbar-inner">
+	        <div class="container">
+						<a href="/" class="logo"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo" /></a>
+					<div class="nav-collapse">
+						<ul class="nav nav-pills navbar-right">
+						  <li><a href="/gettingstarted/">Getting Started</a></li>
+						  <li><a href="/documentation/latest/">Documentation</a></li>
+						  <li><a href="/downloads/">Downloads</a></li>
+						  <li><a href="/community/">Community</a></li>
+						</ul>
+					</div>
+	        </div>
+	      </div>
+	    </div><!-- /.navbar -->
+
+      <div class="container">
+
+			<div class="row">
+
+<div class="col-md-3">
+	<div class="meta">
+		<span class="author">
+			
+			<span class="author_contact">
+			  <p><strong>Adam B</strong></p>
+			  <p><a href="http://twitter.com/">@</a></p>
+			</span>
+		</span>
+		<p><em>Posted July 29, 2015</em></p>
+	</div>
+	
+	<div class="share">
+		<span class="social-share-button"><a href="https://twitter.com/share" class="twitter-share-button" data-via="apachemesos">Tweet</a></span>
+		
+		<span><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></span>
+
+		<span><div class="g-plusone" data-size="medium"></div></span>
+
+		<!-- Place this tag after the last +1 button tag. -->
+		<script type="text/javascript">
+		  (function() {
+		    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+		    po.src = 'https://apis.google.com/js/plusone.js';
+		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+		  })();
+		</script>
+		
+		<script src="//platform.linkedin.com/in.js" type="text/javascript">
+		 lang: en_US
+		</script>
+		<script type="IN/Share" data-counter="right"></script>
+	</div>
+</div>
+
+<div class="post col-md-9">
+	<h1>Apache Mesos 0.23.0 Released</h1>
+	
+	<p>The latest Mesos release, 0.23.0, is now available for <a href="http://mesos.apache.org/downloads">download</a>. This release includes the following features and improvements:</p>
+
+<h4>Per-container network isolation (<a href="https://issues.apache.org/jira/browse/MESOS-1585">MESOS-1585</a>)</h4>
+
+<p>Mesos 0.23 provides support for per-container network monitoring and isolation. Network isolation prevents a single container from exhausting the available network ports, consuming an unfair share of the network bandwidth or significantly delaying packet transmission for others. Network statistics for each active container are published through the /monitor/statistics.json endpoint on the slave. Network isolation is transparent for the majority of tasks running on a slave (those that bind to port 0 and let the kernel allocate their port). This feature is only available on Linux and requires a configure-time flag.
+Refer to the <a href="http://mesos.apache.org/documentation/latest/network-monitoring/">network monitoring and isolation documentation</a> for more information.</p>
+
+<h4>SSL (<a href="https://issues.apache.org/jira/browse/MESOS-910">MESOS-910</a>)</h4>
+
+<p>Experimental support for SSL encryption of any libprocess communication via libevent. Encrypting traffic between the Mesos master and its slaves and frameworks is important for information security, as it prevents eavesdropping and impersonation. This feature requires a configure-time flag and will have some performance impact.
+Refer to the <a href="http://mesos.apache.org/documentation/latest/mesos-ssl/">Mesos SSL documentation</a> for instructions on building and enabling SSL.</p>
+
+<h4>Oversubscription (<a href="https://issues.apache.org/jira/browse/MESOS-354">MESOS-354</a>)</h4>
+
+<p>Experimental support for launching tasks/executors on revocable resources.  These resources can be revoked by Mesos at any time, causing the tasks using them to be throttled or preempted.</p>
+
+<p>High-priority user-facing services are typically provisioned on large clusters for peak load and unexpected load spikes. Hence, for most of time, the provisioned resources remain underutilized. Oversubscription takes advantage of temporarily unused resources to execute best-effort tasks such as background analytics, video/image processing, chip simulations, and other low priority jobs.</p>
+
+<p>Oversubscription adds two new slave components: a Resource Estimator and a Quality of Service (QoS) Controller, alongside extending the existing resource allocator, resource monitor, and mesos slave.
+Refer to the <a href="http://mesos.apache.org/documentation/latest/oversubscription/">oversubscription documentation</a> for more information.</p>
+
+<h4>Persistent volumes (<a href="https://issues.apache.org/jira/browse/MESOS-1554">MESOS-1554</a>)</h4>
+
+<p>Experimental support for frameworks creating Persistent Volumes from disk resources.  This enables stateful services such as HDFS and Cassandra to store their data within Mesos rather than having to resort to network-mounted EBS volumes or unmanaged disk resources that need to be placed in a well-known location.
+Refer to the <a href="http://mesos.apache.org/documentation/latest/persistent-volume/">persistent volume documentation</a> for more information.</p>
+
+<h4>Dynamic reservations (<a href="https://issues.apache.org/jira/browse/MESOS-2018">MESOS-2018</a>)</h4>
+
+<p>Experimental support for frameworks dynamically reserving resources on specific slaves for their role.  Rather than requiring an operator to specify a fixed, precalculated set of &ldquo;static&rdquo; reservations on slave startup, a framework can now reserve resources as they are being offered, without requiring a slave restart.
+No breaking changes were introduced with dynamic reservation, which means the existing static reservation mechanism continues to be fully supported.
+Refer to the <a href="http://mesos.apache.org/documentation/latest/reservation/">reservation documentation</a> for more information.</p>
+
+<h4>Fetcher caching (<a href="https://issues.apache.org/jira/browse/MESOS-336">MESOS-336</a>)</h4>
+
+<p>Experimental support for fetcher caching of executor/task binaries. The fetcher can be instructed to cache URI downloads in a dedicated directory for reuse by subsequent downloads.  If the URI’s “cache” field has the value “true”, then the fetcher cache is in effect. If a URI is encountered for the first time (for a particular user), it is first downloaded into the cache, then copied to the sandbox directory from there. If the same URI is encountered again (for the same user), and a corresponding cache file is resident in the cache or still en route into the cache, then downloading is omitted and the fetcher proceeds directly to copying from the cache.
+Refer to the <a href="http://mesos.apache.org/documentation/latest/fetcher/">fetcher documentation</a> for more information.</p>
+
+<h4>NOTE: Experimental status</h4>
+
+<p>SSL, Oversubscription, Persistent Volumes, Dynamic Reservations, and Fetcher Caching are all released as &ldquo;experimental&rdquo; features, meaning that they are feature complete, at least for some use case, but have not yet been tested in production environments. We welcome your feedback.</p>
+
+<h3>Changelog</h3>
+
+<p>Hundreds of other bug fixes/improvements are included in Mesos 0.23.0.
+See the <a href="https://git-wip-us.apache.org/repos/asf?p=mesos.git;a=blob_plain;f=CHANGELOG;hb=0.23.0">CHANGELOG</a> for a full list of resolved JIRA issues.</p>
+
+<h3>Upgrades</h3>
+
+<p>Rolling upgrades from a Mesos 0.22.x cluster to Mesos 0.23 are straightforward, but there are a few caveats/deprecations.
+Please refer to the <a href="http://mesos.apache.org/documentation/latest/upgrades/">upgrade guide</a> for detailed information on upgrading to Mesos 0.23.</p>
+
+<h3>Compiler version requirement</h3>
+
+<p>Please note that Mesos 0.23.0 now requires gcc 4.8+ or clang 3.5+, so that we can take advantage of C++11 language features.</p>
+
+<h3>Try it out</h3>
+
+<p>We encourage you to try out this release and let us know what you think. If you run into any issues, please let us know on the <a href="https://mesos.apache.org/community">user mailing list and IRC</a>.</p>
+
+<h3>Thanks!</h3>
+
+<p>Thanks to the 52 contributors who made 0.23.0 possible:
+Aaron Bell, Adam B, Aditi Dixit, Akanksha Agrawal, Alexander Rojas, Alexander Rukletsov, Anand Mazumdar, Artem Harutyunyan, Bartek Plotka, Benjamin Hindman, Benjamin Mahler, Bernd Mathiske, Brendan Chang, Brian Wickman, Chi Zhang, Christos Kozyrakis, Cody Maloney, Cong Wang, Connor Doyle, Dave Lester, Dominic Hamon, Evelina Dumitrescu, Gajewski, Greg Mann, haosdent huang, Ian Babrou, Ian Downes, Isabel Jimenez, Itamar Ostricher, James Peach, Jan Schlicht, Jay Buffington, Jiang Yan Xu, Jie Yu, Joerg Schad, Jojy Varghese, Joris Van Remoortere, Kapil Arya, Marco Massenzio, Mark Wang, Michael Park, Nancy  Ko, Niklas Q. Nielsen, Oliver Nicholas, Paul Brett, Ricardo Cervera-Navarro, Stan Teresen, Till Toenshoff, Timothy Chen, Vinod Kone, weitao zhou, and Zhiwei Chen</p>
+
+</div>
+</div>
+
+			
+	      <hr>
+
+				<!-- footer -->
+	      <div class="footer">
+	        <p>&copy; 2012-2015 <a href="http://apache.org">The Apache Software Foundation</a>.
+	        Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.<p>
+	      </div><!-- /footer -->
+
+	    </div> <!-- /container -->
+
+	    <!-- JS -->
+	    <script src="//code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+			<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="text/javascript"></script>
+    </body>
+</html>
