@@ -81,9 +81,7 @@
 		<p>See our <a href="/community/">community</a> page for more details.</p>
 	</div>
 	<div class="col-md-8">
-		<p>&mdash; layout: documentation &mdash;</p>
-
-<h1>Oversubscription</h1>
+		<h1>Oversubscription</h1>
 
 <p>High-priority user-facing services are typically provisioned on large clusters
 for peak load and unexpected load spikes. Hence, for most of time, the
@@ -136,7 +134,7 @@ resources such as cpu shares, bandwidth, etc.</li>
 the regular launchTasks() API. To safe-guard frameworks that are not
 designed to deal with preemption, only frameworks registering with the
 <code>REVOCABLE_RESOURCES</code> capability set in its framework info will receive offers
-with revocable resources.  Further more, recovable resources cannot be
+with revocable resources.  Further more, revocable resources cannot be
 dynamically reserved and persistent volumes should not be created on revocable
 disk resources.</li>
 </ul>
@@ -187,8 +185,8 @@ instructions how to configure Mesos for oversubscription.</p></blockquote>
 
 <h3>Launching tasks using revocable resources</h3>
 
-<p>Launching tasks using recovable resources is done through the existing
-<code>launchTasks</code> API. Revocable resources will have the <code>recovable</code> field set. See
+<p>Launching tasks using revocable resources is done through the existing
+<code>launchTasks</code> API. Revocable resources will have the <code>revocable</code> field set. See
 below for an example offer with regular and revocable resources.</p>
 
 <pre><code class="{.json}">{
@@ -392,7 +390,7 @@ between these corrections is controlled by this flag. (default: 0ns)
 <p>In the example above, a fixed amount of 14 cpus will be offered as revocable
 resources.</p>
 
-<p>To select custom a resource estimator and QoS controller, please refer to the
+<p>To install a custom resource estimator and QoS controller, please refer to the
 <a href="/documentation/latest/modules/">modules documentation</a>.</p>
 
 	</div>

@@ -139,7 +139,7 @@
 
 <p>Similarly, when a framework launches a task(s), &ldquo;run_tasks&rdquo; ACLs are checked to see if the framework (<code>FrameworkInfo.principal</code>) is authorized to run the task/executor as the given <code>user</code>. If not authorized, the launch is rejected and the framework gets a TASK_LOST.</p>
 
-<p>In the same vein, when a user/principal attempts to shutdown a framework through the &ldquo;/shutdown&rdquo; HTTP endpoint on the master, &ldquo;shutdown_frameworks&rdquo; ACLs are checked to see if the <code>principal</code> is authorized to shutdown the given framework. If not authorized, the shutdown is rejected and the user receives an <code>Unauthorized</code> HTTP response.</p>
+<p>In the same vein, when a user/principal attempts to shutdown a framework through the &ldquo;/teardown&rdquo; HTTP endpoint on the master, &ldquo;shutdown_frameworks&rdquo; ACLs are checked to see if the <code>principal</code> is authorized to shutdown the given framework. If not authorized, the shutdown is rejected and the user receives an <code>Unauthorized</code> HTTP response.</p>
 
 <p>There are couple of important things to note:</p>
 
@@ -239,7 +239,7 @@
                               ]
      }
 </code></pre></li>
-<li><p>Only <code>ops</code> principal can shutdown any frameworks through &ldquo;/shutdown&rdquo; HTTP endpoint.</p>
+<li><p>Only <code>ops</code> principal can shutdown any frameworks through &ldquo;/teardown&rdquo; HTTP endpoint.</p>
 
 <pre><code>     {
        "permissive" : false,
