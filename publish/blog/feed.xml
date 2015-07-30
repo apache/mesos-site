@@ -4,7 +4,85 @@
   <id>http://mesos.apache.org/blog</id>
   <link href="http://mesos.apache.org/blog" />
   <link href="http://mesos.apache.org/blog/feed.xml" rel="self"/>
-  <updated>2015-07-28T00:00:00Z</updated>
+  <updated>2015-07-29T00:00:00Z</updated>
+  
+  <entry>
+    <id>http://mesos.apache.org/blog/mesos-0-23-0-released/</id>
+    <link href="/blog/mesos-0-23-0-released/" />
+    <title>
+      Apache Mesos 0.23.0 Released
+    </title>
+    <updated>2015-07-29T00:00:00Z</updated>
+    <author>
+      <name>Adam B</name>
+    </author>
+    <content type="html">
+      &lt;p&gt;The latest Mesos release, 0.23.0, is now available for &lt;a href=&quot;http://mesos.apache.org/downloads&quot;&gt;download&lt;/a&gt;. This release includes the following features and improvements:&lt;/p&gt;
+
+&lt;h4&gt;Per-container network isolation (&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-1585&quot;&gt;MESOS-1585&lt;/a&gt;)&lt;/h4&gt;
+
+&lt;p&gt;Mesos 0.23 provides support for per-container network monitoring and isolation. Network isolation prevents a single container from exhausting the available network ports, consuming an unfair share of the network bandwidth or significantly delaying packet transmission for others. Network statistics for each active container are published through the /monitor/statistics.json endpoint on the slave. Network isolation is transparent for the majority of tasks running on a slave (those that bind to port 0 and let the kernel allocate their port). This feature is only available on Linux and requires a configure-time flag.
+Refer to the &lt;a href=&quot;http://mesos.apache.org/documentation/latest/network-monitoring/&quot;&gt;network monitoring and isolation documentation&lt;/a&gt; for more information.&lt;/p&gt;
+
+&lt;h4&gt;SSL (&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-910&quot;&gt;MESOS-910&lt;/a&gt;)&lt;/h4&gt;
+
+&lt;p&gt;Experimental support for SSL encryption of any libprocess communication via libevent. Encrypting traffic between the Mesos master and its slaves and frameworks is important for information security, as it prevents eavesdropping and impersonation. This feature requires a configure-time flag and will have some performance impact.
+Refer to the &lt;a href=&quot;http://mesos.apache.org/documentation/latest/mesos-ssl/&quot;&gt;Mesos SSL documentation&lt;/a&gt; for instructions on building and enabling SSL.&lt;/p&gt;
+
+&lt;h4&gt;Oversubscription (&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-354&quot;&gt;MESOS-354&lt;/a&gt;)&lt;/h4&gt;
+
+&lt;p&gt;Experimental support for launching tasks/executors on revocable resources.  These resources can be revoked by Mesos at any time, causing the tasks using them to be throttled or preempted.&lt;/p&gt;
+
+&lt;p&gt;High-priority user-facing services are typically provisioned on large clusters for peak load and unexpected load spikes. Hence, for most of time, the provisioned resources remain underutilized. Oversubscription takes advantage of temporarily unused resources to execute best-effort tasks such as background analytics, video/image processing, chip simulations, and other low priority jobs.&lt;/p&gt;
+
+&lt;p&gt;Oversubscription adds two new slave components: a Resource Estimator and a Quality of Service (QoS) Controller, alongside extending the existing resource allocator, resource monitor, and mesos slave.
+Refer to the &lt;a href=&quot;http://mesos.apache.org/documentation/latest/oversubscription/&quot;&gt;oversubscription documentation&lt;/a&gt; for more information.&lt;/p&gt;
+
+&lt;h4&gt;Persistent volumes (&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-1554&quot;&gt;MESOS-1554&lt;/a&gt;)&lt;/h4&gt;
+
+&lt;p&gt;Experimental support for frameworks creating Persistent Volumes from disk resources.  This enables stateful services such as HDFS and Cassandra to store their data within Mesos rather than having to resort to network-mounted EBS volumes or unmanaged disk resources that need to be placed in a well-known location.
+Refer to the &lt;a href=&quot;http://mesos.apache.org/documentation/latest/persistent-volume/&quot;&gt;persistent volume documentation&lt;/a&gt; for more information.&lt;/p&gt;
+
+&lt;h4&gt;Dynamic reservations (&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-2018&quot;&gt;MESOS-2018&lt;/a&gt;)&lt;/h4&gt;
+
+&lt;p&gt;Experimental support for frameworks dynamically reserving resources on specific slaves for their role.  Rather than requiring an operator to specify a fixed, precalculated set of &amp;ldquo;static&amp;rdquo; reservations on slave startup, a framework can now reserve resources as they are being offered, without requiring a slave restart.
+No breaking changes were introduced with dynamic reservation, which means the existing static reservation mechanism continues to be fully supported.
+Refer to the &lt;a href=&quot;http://mesos.apache.org/documentation/latest/reservation/&quot;&gt;reservation documentation&lt;/a&gt; for more information.&lt;/p&gt;
+
+&lt;h4&gt;Fetcher caching (&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-336&quot;&gt;MESOS-336&lt;/a&gt;)&lt;/h4&gt;
+
+&lt;p&gt;Experimental support for fetcher caching of executor/task binaries. The fetcher can be instructed to cache URI downloads in a dedicated directory for reuse by subsequent downloads.  If the URI’s “cache” field has the value “true”, then the fetcher cache is in effect. If a URI is encountered for the first time (for a particular user), it is first downloaded into the cache, then copied to the sandbox directory from there. If the same URI is encountered again (for the same user), and a corresponding cache file is resident in the cache or still en route into the cache, then downloading is omitted and the fetcher proceeds directly to copying from the cache.
+Refer to the &lt;a href=&quot;http://mesos.apache.org/documentation/latest/fetcher/&quot;&gt;fetcher documentation&lt;/a&gt; for more information.&lt;/p&gt;
+
+&lt;h4&gt;NOTE: Experimental status&lt;/h4&gt;
+
+&lt;p&gt;SSL, Oversubscription, Persistent Volumes, Dynamic Reservations, and Fetcher Caching are all released as &amp;ldquo;experimental&amp;rdquo; features, meaning that they are feature complete, at least for some use case, but have not yet been tested in production environments. We welcome your feedback.&lt;/p&gt;
+
+&lt;h3&gt;Changelog&lt;/h3&gt;
+
+&lt;p&gt;Hundreds of other bug fixes/improvements are included in Mesos 0.23.0.
+See the &lt;a href=&quot;https://git-wip-us.apache.org/repos/asf?p=mesos.git;a=blob_plain;f=CHANGELOG;hb=0.23.0&quot;&gt;CHANGELOG&lt;/a&gt; for a full list of resolved JIRA issues.&lt;/p&gt;
+
+&lt;h3&gt;Upgrades&lt;/h3&gt;
+
+&lt;p&gt;Rolling upgrades from a Mesos 0.22.x cluster to Mesos 0.23 are straightforward, but there are a few caveats/deprecations.
+Please refer to the &lt;a href=&quot;http://mesos.apache.org/documentation/latest/upgrades/&quot;&gt;upgrade guide&lt;/a&gt; for detailed information on upgrading to Mesos 0.23.&lt;/p&gt;
+
+&lt;h3&gt;Compiler version requirement&lt;/h3&gt;
+
+&lt;p&gt;Please note that Mesos 0.23.0 now requires gcc 4.8+ or clang 3.5+, so that we can take advantage of C++11 language features.&lt;/p&gt;
+
+&lt;h3&gt;Try it out&lt;/h3&gt;
+
+&lt;p&gt;We encourage you to try out this release and let us know what you think. If you run into any issues, please let us know on the &lt;a href=&quot;https://mesos.apache.org/community&quot;&gt;user mailing list and IRC&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3&gt;Thanks!&lt;/h3&gt;
+
+&lt;p&gt;Thanks to the 52 contributors who made 0.23.0 possible:
+Aaron Bell, Adam B, Aditi Dixit, Akanksha Agrawal, Alexander Rojas, Alexander Rukletsov, Anand Mazumdar, Artem Harutyunyan, Bartek Plotka, Benjamin Hindman, Benjamin Mahler, Bernd Mathiske, Brendan Chang, Brian Wickman, Chi Zhang, Christos Kozyrakis, Cody Maloney, Cong Wang, Connor Doyle, Dave Lester, Dominic Hamon, Evelina Dumitrescu, Gajewski, Greg Mann, haosdent huang, Ian Babrou, Ian Downes, Isabel Jimenez, Itamar Ostricher, James Peach, Jan Schlicht, Jay Buffington, Jiang Yan Xu, Jie Yu, Joerg Schad, Jojy Varghese, Joris Van Remoortere, Kapil Arya, Marco Massenzio, Mark Wang, Michael Park, Nancy  Ko, Niklas Q. Nielsen, Oliver Nicholas, Paul Brett, Ricardo Cervera-Navarro, Stan Teresen, Till Toenshoff, Timothy Chen, Vinod Kone, weitao zhou, and Zhiwei Chen&lt;/p&gt;
+
+	</content>
+  </entry>
   
   <entry>
     <id>http://mesos.apache.org/blog/register-for-mesoscon-seattle-save/</id>
