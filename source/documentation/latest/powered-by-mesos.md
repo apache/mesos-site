@@ -18,6 +18,7 @@ layout: documentation
 * [Branding Brand](http://www.brandingbrand.com)
 * [Brigade](http://www.brigade.com)
 * [Categorize](http://categorize.co)
+* [CERN](http://cern.ch)
 * [Cisco](http://www.cisco.com)
 * [CloudPhysics](http://cloudphysics.com)
 * [Conviva](http://www.conviva.com)
@@ -39,6 +40,7 @@ layout: documentation
 * [iQIYI](http://www.iqiyi.com/)
 * [Learnium](http://www.learnium.net/)
 * [LIFX](http://lifx.co)
+* [Linkernetworks](http://www.linkernetworks.com)
 * [Localsensor](http://www.localsensor.com)
 * [Magine TV](https://magine.com)
 * [Medallia](http://www.medallia.com)
@@ -82,6 +84,7 @@ layout: documentation
 * [Yelp](http://www.yelp.com)
 * [Yieldbot](http://www.yieldbot.com)
 * [Yodle](http://www.yodle.com)
+* [Xiaomi](http://www.xiaomi.com)
 * [Xogito](http://www.xogito.com)
 
 ## Software projects built on Mesos

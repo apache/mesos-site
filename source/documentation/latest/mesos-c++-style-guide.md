@@ -37,7 +37,6 @@ void Slave::statusUpdate(StatusUpdate update, const UPID& pid)
 
 ### Function Names
 * We use [lowerCamelCase](http://en.wikipedia.org/wiki/CamelCase#Variations_and_synonyms) for function names (Google uses mixed case for regular functions; and their accessors and mutators match the name of the variable).
-* Leave spaces around overloaded operators, e.g. `operator + (...);` rather than `operator+(...);`
 
 ### Namespace Names
 * We do not use namespace aliases.
@@ -51,7 +50,7 @@ void Slave::statusUpdate(StatusUpdate update, const UPID& pid)
 * For trailing comments, leave one space.
 
 ## Breaks
-* Break before braces on function, class, struct and union definitions. (Google attaches braces to the surrounding context)
+* Break before braces on enum, function, and record (i.e. struct, class, union) definitions.
 
 ## Indentation
 
@@ -535,8 +534,9 @@ auto lambda = [
 
   `constexpr` behaves as a combination of `inline` and `const` and hence must be defined before use in another `constexpr`.
 
-  Prefer `constexpr to `const` for all constant POD declarations, `constexpr` `char` arrays are preferred to `const` `string` literals.
-  ```
+  Prefer `constexpr` to `const` for all constant POD declarations, `constexpr` `char` arrays are preferred to `const` `string` literals.
+
+~~~{.cpp}
   // OK
   constexpr char LITERAL[] = "value";
 
@@ -547,18 +547,20 @@ auto lambda = [
   // Not OK - uncertain initialization order, cannot be used in other
   // constexpr statements.
   const string LITERAL("value");
+~~~
 
-  ```
   `constexpr` functions are evaluated at compile time if all their arguments are constant expressions. Otherwise they default to initialization at runtime. However `constexpr` functions are limited in that they cannot perform dynamic casts, memory allocation or calls to non-constexpr functions.  Prefer `constexpr` over const inline functions.
 
-  ```
+~~~{.cpp}
   constexpr size_t MIN = 200;
   constexpr size_t MAX = 1000;
   constexpr size_t SPAN() { return MAX-MIN; }
   int array[SPAN()];
-  ```
-  Const expression constructors allow object initialization at compile time provided that all the constructor arguments are constexpr and the constuctor body is empty, i.e. all initialization is performed in the initialization list.  Classes which provide constexpr constructors should normally also provide constexpr copy constructors to allow the class to be used in the return value from a constexpr function.
-  ```
+~~~
+
+Const expression constructors allow object initialization at compile time provided that all the constructor arguments are `constexpr` and the constuctor body is empty, i.e. all initialization is performed in the initialization list.  Classes which provide `constexpr` constructors should normally also provide `constexpr` copy constructors to allow the class to be used in the return value from a `constexpr` function.
+
+~~~{.cpp}
   class C
   {
   public:
@@ -567,6 +569,6 @@ auto lambda = [
   private:
     const int i;
   };
+~~~
 
-  ```
-  C++11 does not provide constexpr string or containers in the STL and hence constexpr cannot be used for any class using stout's Error() class.
+  C++11 does not provide `constexpr string` or `constexpr` containers in the STL and hence `constexpr` cannot be used for any class using stout's Error() class.

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+		    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+		    <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
+		    
+		    <link href="../../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+				
+		    
+			
+			<!-- Google Analytics Magic -->
+			<script type="text/javascript">
+			  var _gaq = _gaq || [];
+			  _gaq.push(['_setAccount', 'UA-20226872-1']);
+			  _gaq.push(['_setDomainName', 'apache.org']);
+			  _gaq.push(['_trackPageview']);
+
+			  (function() {
+			    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			  })();
+			</script>
+    </head>
+    <body>
+			<!-- magical breadcrumbs -->
+			<div class="topnav">
+			<ul class="breadcrumb">
+			  <li>
+					<div class="dropdown">
+					  <a data-toggle="dropdown" href="#">Apache Software Foundation <span class="caret"></span></a>
+					  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+							<li><a href="http://www.apache.org">Apache Homepage</a></li>
+							<li><a href="http://www.apache.org/licenses/">License</a></li>
+					  	<li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>  
+					  	<li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+							<li><a href="http://www.apache.org/security/">Security</a></li>
+					  </ul>
+					</div>
+				</li>
+				<li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+				
+				
+					<li><a href="/documentation
+/">Documentation
+</a></li>
+				
+				
+			</ul><!-- /breadcrumb -->
+			</div>
+			
+			<!-- navbar excitement -->
+	    <div class="navbar navbar-static-top" role="navigation">
+	      <div class="navbar-inner">
+	        <div class="container">
+						<a href="/" class="logo"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo" /></a>
+					<div class="nav-collapse">
+						<ul class="nav nav-pills navbar-right">
+						  <li><a href="/gettingstarted/">Getting Started</a></li>
+						  <li><a href="/documentation/latest/">Documentation</a></li>
+						  <li><a href="/downloads/">Downloads</a></li>
+						  <li><a href="/community/">Community</a></li>
+						</ul>
+					</div>
+	        </div>
+	      </div>
+	    </div><!-- /.navbar -->
+
+      <div class="container">
+
+			<div class="row-fluid">
+	<div class="col-md-4">
+		<h4>If you're new to Mesos</h4>
+		<p>See the <a href="/gettingstarted/">getting started</a> page for more information about downloading, building, and deploying Mesos.</p>
+		
+		<h4>If you'd like to get involved or you're looking for support</h4>
+		<p>See our <a href="/community/">community</a> page for more details.</p>
+	</div>
+	<div class="col-md-8">
+		<h1>Authentication</h1>
+
+<p>Mesos 0.15.0 added support for framework authentication, and 0.19.0 added slave authentication.  Authentication permits only trusted entities to interact with the Mesos cluster.</p>
+
+<p>Authentication is used by Mesos in three ways:</p>
+
+<ol>
+<li>Require that frameworks must be authenticated in order to register with the master.</li>
+<li>Require that slaves must be authenticated in order to offer resources to the master.</li>
+<li>To restrict access to the /teardown endpoint.</li>
+</ol>
+
+
+<h2>How Does It Work?</h2>
+
+<p>Mesos uses the <a href="http://asg.web.cmu.edu/sasl/">Cyrus SASL library</a> to implement authentication.  SASL is a very flexible authentication framework that allows two endpoints to authenticate with each other and also has support for various authentication mechanisms (ANONYMOUS, PLAIN, CRAM-MD5, GSSAPI etc).  Currently, Mesos provides support for CRAM-MD5 authentication, but users can provide their own authentication modules.  CRAM-MD5 makes use of a <strong>principal</strong> and <strong>secret</strong> pair, with the principal representing the framework&rsquo;s identity.  Note that this is different from the framework <em>user</em>, which is the account used by the executor to run tasks, and the <em>role</em> which is used to determine what resources frameworks can use.</p>
+
+<h2>Configuration</h2>
+
+<p>The <a href="http://mesos.apache.org/documentation/latest/configuration/">configuration options</a> that are used by the authentication mechanism are as follows:</p>
+
+<h3>Masters</h3>
+
+<ul>
+<li>&ndash;[no-]authenticate - If authenticate is &lsquo;true&rsquo; only authenticated frameworks are allowed to register. If &lsquo;false&rsquo; unauthenticated frameworks are also allowed to register.</li>
+<li>&ndash;[no-]authenticate_slaves - If &lsquo;true&rsquo; only authenticated slaves are allowed to register. If &lsquo;false&rsquo; unauthenticated slaves are also allowed to register.</li>
+<li>&ndash;authenticators - Specifies which authenticator module to use.  The default is crammd5, but additional modules can be added with the &ndash;modules option.</li>
+<li>&ndash;credentials - The path to the text file which contains a list (either plain text or JSON) of accepted credentials.  This may be optional depending on the authenticator being used.  However, if specified, the credentials will be valid for the /teardown endpoint regardless of which authenticator is used.</li>
+</ul>
+
+
+<h3>Slaves</h3>
+
+<ul>
+<li>&ndash;authenticatee - Analog to the master &ndash;authenticators option to specify what module to use.  Defaults to crammd5.</li>
+<li>&ndash;credential - Just like the master &ndash;credentials option, except only one credential is allowed, since this credential is used to identify the slave to the master.</li>
+</ul>
+
+
+<h2>CRAM-MD5 Example</h2>
+
+<ol>
+<li><p>First, create a credentials file for the masters, the contents of which should look like this:</p>
+
+<pre><code> principal1 secret1
+ principal2 secret2
+</code></pre></li>
+<li><p>Now, start the master process using your credentials file (assuming the file is ~/credentials):</p>
+
+<pre><code> ./bin/mesos-master.sh --ip=127.0.0.1 --work_dir=/var/lib/mesos --authenticate --authenticate_slaves --credentials=~/credentials
+</code></pre></li>
+<li><p>Now create another file with a single credential in it (~/slave_credential):</p>
+
+<pre><code> principal1 secret1
+</code></pre></li>
+<li><p>That file will be used to identify the slave process.  Start the slave:</p>
+
+<pre><code>./bin/mesos-slave.sh --master=127.0.0.1:5050 --credential=~/slave_credential
+</code></pre></li>
+<li><p>Your new slave should have now successfully authenticated with the master.  With these settings, any framework that you&rsquo;d like to use must also authenticate against the Mesos master.  The method of configuring framework authentication may vary by framework, but is simple to implement as the scheduler driver will handle authentication when a Credential object is passed to its constructor.  You can test out framework authentication using the test framework provided with Mesos as follows:</p>
+
+<pre><code>MESOS_AUTHENTICATE=true DEFAULT_PRINCIPAL=principal2 DEFAULT_SECRET=secret2 ./src/test-framework --master=127.0.0.1:5050
+</code></pre></li>
+</ol>
+
+
+	</div>
+</div>
+
+			
+	      <hr>
+
+				<!-- footer -->
+	      <div class="footer">
+	        <p>&copy; 2012-2015 <a href="http://apache.org">The Apache Software Foundation</a>.
+	        Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.<p>
+	      </div><!-- /footer -->
+
+	    </div> <!-- /container -->
+
+	    <!-- JS -->
+	    <script src="//code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+			<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="text/javascript"></script>
+    </body>
+</html>

@@ -171,6 +171,25 @@ If you have special compilation requirements, please refer to `./configure --hel
         Explanation
       </th>
   </thead>
+   <tr>
+     <td>
+      --advertise_ip=VALUE
+    </td>
+    <td>
+      IP address advertised to reach mesos master. Mesos master does not bind using this
+      IP address. However, this IP address may be used to access Mesos master.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      --advertise_port=VALUE
+    </td>
+    <td>
+      Port advertised to reach mesos master (alongwith advertise_ip). Mesos master does not
+      bind using this port. However, this port (alongwith advertise_ip) may be used to
+      access Mesos master.
+    </td>
+  </tr>
   <tr>
     <td>
       --quorum=VALUE
@@ -304,6 +323,23 @@ file:///path/to/file (where file contains one of the above)</code></pre>
       and/or slaves. Use the default <code>crammd5</code>, or
       load an alternate authenticator module using <code>--modules</code>.
       (default: crammd5)
+    </td>
+  </tr>
+  <tr>
+    <td>
+      --authorizers=VALUE
+    </td>
+    <td>
+      Authorizer implementation to use when authorizating actions that
+      required it. Use the default <code>local</code>, or load an alternate
+      authorizer module using <code>--modules</code>.
+      <br/>
+      Note that if the flag <code>--authorizers</code> is provided with a
+      value different than the default <code>local</code>, the ACLs passed
+      through the <code>--acls</code> flag will be ignored.
+      <br/>
+      Currently there's no support for multiple authorizers.<br/>
+      (default: <code>local</code>)
     </td>
   </tr>
   <tr>
