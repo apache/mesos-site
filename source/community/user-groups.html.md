@@ -28,6 +28,7 @@ Mesos User Groups (MUGs) are responsible for organizing local meetups, hackathon
 * [London](http://www.meetup.com/London-Mesos-User-Group/)
 
 ### USA
+* [Albany, NY](http://www.meetup.com/Apache-Mesos-Albany-NY-Meetup/)
 * [Atlanta, GA](http://www.meetup.com/mesosatl/)
 * [Austin, TX](http://www.meetup.com/Austin-Mesos-Users-Group/)
 * [Dallas, TX](http://www.meetup.com/Metroplex-Mesos-Group/)
