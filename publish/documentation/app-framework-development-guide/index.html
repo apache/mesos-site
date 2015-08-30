@@ -287,6 +287,62 @@ virtual void error(ExecutorDriver* driver, const std::string&amp; message) = 0;
 
 <p>Once you are sure that your executors are available to the mesos-slaves, you should be able to run your scheduler, which will register with the Mesos master, and start receiving resource offers!</p>
 
+<h2>Labels</h2>
+
+<p><code>Labels</code> can be found in the <code>TaskInfo</code>, <code>DiscoveryInfo</code> and <code>TaskStatus</code>s and
+let&rsquo;s framework and module writers use Labels to tag and pass unstructured
+information around Mesos. Labels are free-form key-value pairs supplied by the
+framework scheduler or label decorator hooks. Below is the protobuf definitions
+of labels:</p>
+
+<pre><code class="{.proto}">  optional Labels labels = 11;
+</code></pre>
+
+<pre><code class="{.proto}">/**
+ * Collection of labels.
+ */
+message Labels {
+    repeated Label labels = 1;
+}
+
+/**
+ * Key, value pair used to store free form user-data.
+ */
+message Label {
+  required string key = 1;
+  optional string value = 2;
+}
+</code></pre>
+
+<p>Labels are not interpreted by Mesos itself, but will be made available over
+master and slave state endpoints. Further more, the executor and scheduler can
+introspect labels on the TaskInfo and TaskStatus programmatically.
+Below is an example of how two label pairs (<code>"environment": "prod"</code> and
+<code>"bananas": "apples"</code>) can be fetched from the master state endpoint.</p>
+
+<pre><code class="{.sh}">$ curl http://master/state.json
+...
+{
+  "executor_id": "default",
+  "framework_id": "20150312-120017-16777343-5050-39028-0000",
+  "id": "3",
+  "labels": [
+    {
+      "key": "environment",
+      "value": "prod"
+    },
+    {
+      "key": "bananas",
+      "value": "apples"
+    }
+  ],
+  "name": "Task 3",
+  "slave_id": "20150312-115625-16777343-5050-38751-S0",
+  "state": "TASK_FINISHED",
+  ...
+},
+</code></pre>
+
 <h2>Service discovery</h2>
 
 <p>When your framework registers an executor or launches a task, it can provide additional information for service discovery. This information is stored by the Mesos master along with other imporant information such as the slave currently running the task. A service discovery system can programmatically retrieve this information in order to set up DNS entries, configure proxies, or update any consistent store used for service discovery in a Mesos cluster that runs multiple frameworks and multiple tasks.</p>
