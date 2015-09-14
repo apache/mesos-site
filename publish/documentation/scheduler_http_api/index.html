@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+		    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+		    <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
+		    
+		    <link href="../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+				
+		    
+			
+			<!-- Google Analytics Magic -->
+			<script type="text/javascript">
+			  var _gaq = _gaq || [];
+			  _gaq.push(['_setAccount', 'UA-20226872-1']);
+			  _gaq.push(['_setDomainName', 'apache.org']);
+			  _gaq.push(['_trackPageview']);
+
+			  (function() {
+			    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			  })();
+			</script>
+    </head>
+    <body>
+			<!-- magical breadcrumbs -->
+			<div class="topnav">
+			<ul class="breadcrumb">
+			  <li>
+					<div class="dropdown">
+					  <a data-toggle="dropdown" href="#">Apache Software Foundation <span class="caret"></span></a>
+					  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+							<li><a href="http://www.apache.org">Apache Homepage</a></li>
+							<li><a href="http://www.apache.org/licenses/">License</a></li>
+					  	<li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>  
+					  	<li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+							<li><a href="http://www.apache.org/security/">Security</a></li>
+					  </ul>
+					</div>
+				</li>
+				<li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+				
+				
+					<li><a href="/documentation
+/">Documentation
+</a></li>
+				
+				
+			</ul><!-- /breadcrumb -->
+			</div>
+			
+			<!-- navbar excitement -->
+	    <div class="navbar navbar-static-top" role="navigation">
+	      <div class="navbar-inner">
+	        <div class="container">
+						<a href="/" class="logo"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo" /></a>
+					<div class="nav-collapse">
+						<ul class="nav nav-pills navbar-right">
+						  <li><a href="/gettingstarted/">Getting Started</a></li>
+						  <li><a href="/documentation/latest/">Documentation</a></li>
+						  <li><a href="/downloads/">Downloads</a></li>
+						  <li><a href="/community/">Community</a></li>
+						</ul>
+					</div>
+	        </div>
+	      </div>
+	    </div><!-- /.navbar -->
+
+      <div class="container">
+
+			<div class="row-fluid">
+	<div class="col-md-4">
+		<h4>If you're new to Mesos</h4>
+		<p>See the <a href="/gettingstarted/">getting started</a> page for more information about downloading, building, and deploying Mesos.</p>
+		
+		<h4>If you'd like to get involved or you're looking for support</h4>
+		<p>See our <a href="/community/">community</a> page for more details.</p>
+	</div>
+	<div class="col-md-8">
+		<h1>Scheduler HTTP API</h1>
+
+<p>Mesos 0.24.0 added <strong>experimental</strong> support for v1 Scheduler HTTP API.</p>
+
+<h2>Overview</h2>
+
+<p>The scheduler interacts with Mesos via  “/api/v1/scheduler” endpoint hosted by the Mesos master. The fully qualified URL of the endpoint might look like:</p>
+
+<pre><code>http://masterhost:5050/api/v1/scheduler
+</code></pre>
+
+<p>Note that we refer to this endpoint with its suffix &ldquo;/scheduler&rdquo; in the rest of this document. This endpoint accepts HTTP POST requests with data encoded as JSON (Content-Type: application/json) or binary Protobuf (Content-Type: application/x-protobuf). The first request that a scheduler sends to “/scheduler” endpoint is called SUBSCRIBE and results in a streaming response (“200 OK” status code with Transfer-Encoding: chunked). <strong>Schedulers are expected to keep the subscription connection open as long as possible (barring errors in network, software, hardware etc.) and incrementally process the response</strong> (NOTE: HTTP client libraries that can only parse the response after the connection is closed cannot be used). For the encoding used, please refer to <strong>Events</strong> section below.</p>
+
+<p>All the subsequent (non subscribe) requests to “/scheduler” endpoint (see details below in <strong>Calls</strong> section) must be sent using a different connection(s) than the one being used for subscription. Master responds to these HTTP POST requests with “202 Accepted” status codes (or, for unsuccessful requests, with 4xx or 5xx status codes; details in later sections). The “202 Accepted” response means that a request has been accepted for processing, not that the processing of the request has been completed. The request might or might not be acted upon by Mesos (e.g., master fails during the processing of the request). Any asynchronous responses from these requests will be streamed on long-lived subscription connection.</p>
+
+<h2>Calls</h2>
+
+<p>The following calls are currently accepted by the master. The canonical source of this information is <a href="https://github.com/apache/mesos/blob/master/include/mesos/v1/scheduler/scheduler.proto">scheduler.proto</a> (NOTE: The protobuf definitions are subject to change before the beta API is finalized). Note that when sending JSON encoded Calls, schedulers should encode raw bytes in Base64 and strings in UTF-8.</p>
+
+<h3>SUBSCRIBE</h3>
+
+<p>This is the first step in the communication process between the scheduler and the master. This is also to be considered as subscription to the “/scheduler” events stream.</p>
+
+<p>To subscribe with the master, the scheduler sends a HTTP POST request with encoded  <code>SUBSCRIBE</code> message with the required FrameworkInfo. Note that if &ldquo;subscribe.framework_info.id&rdquo; is not set, master considers the scheduler as a new one and subscribes it by assigning it a FrameworkID. The HTTP response is a stream with RecordIO encoding, with the first event being <code>SUBSCRIBED</code> event (see details in <strong>Events</strong> section).</p>
+
+<pre><code>SUBSCRIBE Request (JSON):
+
+POST /api/v1/scheduler  HTTP/1.1
+
+Host: masterhost:5050
+Content-Type: application/json
+Accept: application/json
+Connection: close
+
+{
+   “type”       : “SUBSCRIBE”,
+
+   “subscribe”  : {
+      “framework_info”  : {
+        “user” :  “foo”,
+        “name” :  “Example HTTP Framework”
+      },
+
+      “force” : true
+  }
+}
+
+SUBSCRIBE Response Event (JSON):
+HTTP/1.1 200 OK
+
+Content-Type: application/json
+Transfer-Encoding: chunked
+
+&lt;event length&gt;
+{
+ “type”         : “SUBSCRIBED”,
+ “subscribed”   : {
+     “framework_id”               : {“value”:“12220-3440-12532-2345”},
+     "heartbeat_interval_seconds" : 15
+  }
+}
+&lt;more events&gt;
+</code></pre>
+
+<p>Alternatively, if “subscribe.framework_info.id” is set, master considers this a request from an already subscribed scheduler reconnecting after a disconnection (e.g., due to failover or network disconnection) and responds with <code>SUBSCRIBED</code> event containing the same FrameworkID. The “subscribe.force” field describes how the master reacts when multiple scheduler instances (with the same framework id) attempt to subscribe with the master at the same time (e.g., due to network partition). See the semantics in <strong>Disconnections</strong> section below.</p>
+
+<p>NOTE: In the old version of the API, (re-)registered callbacks also included MasterInfo, which contained information about the master the driver currently connected to. With the new API, since schedulers explicitly subscribe with the leading master (see details below in <strong>Master Detection</strong> section), it’s not relevant anymore.</p>
+
+<p>If subscription fails for whatever reason (e.g., invalid request), a HTTP 4xx response is returned with the error message as part of the body and the connection is closed.</p>
+
+<p>Scheduler must make additional HTTP requests to the “/scheduler” endpoint only after it has opened a persistent connection to it by sending a <code>SUBSCRIBE</code> request and received a <code>SUBSCRIBED</code> response. Calls made without subscription will result in a “403 Forbidden“ instead of a “202 Accepted“ response. A scheduler might also receive a “400 Bad Request” response if the HTTP request is malformed (e.g., malformed HTTP headers).</p>
+
+<h3>TEARDOWN</h3>
+
+<p>Sent by the scheduler when it wants to tear itself down. When Mesos receives this request it will shut down all executors (and consequently kill tasks) and remove persistent volumes (if requested). It then removes the framework and closes all open connections from this scheduler to the Master.</p>
+
+<pre><code>TEARDOWN Request (JSON):
+POST /api/v1/scheduler  HTTP/1.1
+
+Host: masterhost:5050
+Content-Type: application/json
+
+{
+  “framework_id”    : {“value” : “12220-3440-12532-2345”},
+  “type”            : “TEARDOWN”,
+}
+
+TEARDOWN Response:
+HTTP/1.1 202 Accepted
+</code></pre>
+
+<h3>ACCEPT</h3>
+
+<p>Sent by the scheduler when it accepts offer(s) sent by the master. The <code>ACCEPT</code> request includes the type of operations (e.g., launch task, reserve resources, create volumes) that the scheduler wants to perform on the offers. Note that until the scheduler replies (accepts or declines) to an offer, its resources are considered allocated to the framework. Also, any of the offer’s resources not used in the <code>ACCEPT</code> call (e.g., to launch a task) are considered declined and might be reoffered to other frameworks. In other words, the same <code>OfferID</code> cannot be used in more than one <code>ACCEPT</code> call. These semantics might change when we add new features to Mesos (e.g., persistence, reservations, optimistic offers, resizeTask, etc.).</p>
+
+<pre><code>ACCEPT Request (JSON):
+POST /api/v1/scheduler  HTTP/1.1
+
+Host: masterhost:5050
+Content-Type: application/json
+
+{
+  “framework_id”    : {“value” : “12220-3440-12532-2345”},
+  “type”            : “ACCEPT”,
+  “accept”          : {
+    “offer_ids”     : [
+                       {“value” : “12220-3440-12532-O12”},
+                       {“value” : “12220-3440-12532-O12”}
+                      ],
+    “operations”    : [ {“type” : “LAUNCH”, “launch” : {...}} ],
+    “filters”       : {...}
+  }
+}
+
+ACCEPT Response:
+HTTP/1.1 202 Accepted
+</code></pre>
+
+<h3>DECLINE</h3>
+
+<p>Sent by the scheduler to explicitly decline offer(s) received. Note that this is same as sending an <code>ACCEPT</code> call with no operations.</p>
+
+<pre><code>DECLINE Request (JSON):
+POST /api/v1/scheduler  HTTP/1.1
+
+Host: masterhost:5050
+Content-Type: application/json
+
+{
+  “framework_id”    : {“value” : “12220-3440-12532-2345”},
+  “type”            : “DECLINE”,
+  “decline”         : {
+    “offer_ids” : [
+                   {“value” : “12220-3440-12532-O12”},
+                   {“value” : “12220-3440-12532-O13”}
+                  ],
+    “filters”   : {...}
+  }
+}
+
+DECLINE Response:
+HTTP/1.1 202 Accepted
+</code></pre>
+
+<h3>REVIVE</h3>
+
+<p>Sent by the scheduler to remove any/all filters that it has previously set via <code>ACCEPT</code> or <code>DECLINE</code> calls.</p>
+
+<pre><code>REVIVE Request (JSON):
+POST /api/v1/scheduler  HTTP/1.1
+
+Host: masterhost:5050
+Content-Type: application/json
+
+{
+  “framework_id”    : {“value” : “12220-3440-12532-2345”},
+  “type”            : “REVIVE”,
+}
+
+REVIVE Response:
+HTTP/1.1 202 Accepted
+</code></pre>
+
+<h3>KILL</h3>
+
+<p>Sent by the scheduler to kill a specific task. If the scheduler has a custom executor, the kill is forwarded to the executor and it is up to the executor to kill the task and send a <code>TASK_KILLED</code> (or <code>TASK_FAILED</code>) update. Mesos releases the resources for a task once it receives a terminal update for the task. If the task is unknown to the master, a <code>TASK_LOST</code> will be generated.</p>
+
+<pre><code>KILL Request (JSON):
+POST /api/v1/scheduler  HTTP/1.1
+
+Host: masterhost:5050
+Content-Type: application/json
+
+{
+  “framework_id”    : {“value” : “12220-3440-12532-2345”},
+  “type”            : “KILL”,
+  “kill”            : {
+    “task_id”   :  {“value” : “12220-3440-12532-my-task”},
+    “agent_id”  :  {“value” : “12220-3440-12532-S1233”}
+  }
+}
+
+KILL Response:
+HTTP/1.1 202 Accepted
+</code></pre>
+
+<h3>SHUTDOWN</h3>
+
+<p>Sent by the scheduler to shutdown a specific custom executor (NOTE: This is a new call that was not present in the old API). When an executor gets a shutdown event, it is expected to kill all its tasks (and send <code>TASK_KILLED</code> updates) and terminate. If an executor doesn’t terminate within a certain timeout (configurable via  “&ndash;executor_shutdown_grace_period” agent flag), the agent will forcefully destroy the container (executor and its tasks) and transitions its active tasks to <code>TASK_LOST</code>.</p>
+
+<pre><code>SHUTDOWN Request (JSON):
+POST /api/v1/scheduler  HTTP/1.1
+
+Host: masterhost:5050
+Content-Type: application/json
+
+{
+  “framework_id”    : {“value” : “12220-3440-12532-2345”},
+  “type”            : “SHUTDOWN”,
+  “shutdown”        : {
+    “executor_id”   :  {“value” : “123450-2340-1232-my-executor”},
+    “agent_id”      :  {“value” : “12220-3440-12532-S1233”}
+  }
+}
+
+SHUTDOWN Response:
+HTTP/1.1 202 Accepted
+</code></pre>
+
+<h3>ACKNOWLEDGE</h3>
+
+<p>Sent by the scheduler to acknowledge a status update. Note that with the new API, schedulers are responsible for explicitly acknowledging the receipt of status updates that have “status.uuid()” set. These status updates are reliably retried until they are acknowledged by the scheduler. The scheduler must not acknowledge status updates that do not have “status.uuid()” set as they are not retried. &ldquo;uuid&rdquo; is raw bytes encoded in Base64.</p>
+
+<pre><code>ACKNOWLEDGE Request (JSON):
+POST /api/v1/scheduler  HTTP/1.1
+
+Host: masterhost:5050
+Content-Type: application/json
+
+{
+  “framework_id”    : {“value” : “12220-3440-12532-2345”},
+  “type”            : “ACKNOWLEDGE”,
+  “acknowledge”     : {
+    “agent_id”  :  {“value” : “12220-3440-12532-S1233”},
+    “task_id”   :  {“value” : “12220-3440-12532-my-task”},
+    “uuid”      :  “jhadf73jhakdlfha723adf”
+  }
+}
+
+ACKNOWLEDGE Response:
+HTTP/1.1 202 Accepted
+</code></pre>
+
+<h3>RECONCILE</h3>
+
+<p>Sent by the scheduler to query the status of non-terminal tasks. This causes the master to send back <code>UPDATE</code> events for each task in the list. Tasks that are no longer known to Mesos will result in <code>TASK_LOST</code> updates. If the list of tasks is empty, master will send <code>UPDATE</code> events for all currently known tasks of the framework.</p>
+
+<pre><code>RECONCILE Request (JSON):
+POST /api/v1/scheduler   HTTP/1.1
+
+Host: masterhost:5050
+Content-Type: application/json
+
+{
+  “framework_id”    : {“value” : “12220-3440-12532-2345”},
+  “type”            : “RECONCILE”,
+  “reconcile”       : {
+    “tasks”     : [
+                   { “task_id”  : { “value” : “312325” },
+                     “agent_id” : { “value” : “123535” }
+                   }
+                  ]
+  }
+}
+
+RECONCILE Response:
+HTTP/1.1 202 Accepted
+</code></pre>
+
+<h3>MESSAGE</h3>
+
+<p>Sent by the scheduler to send arbitrary binary data to the executor. Note that Mesos neither interprets this data nor makes any guarantees about the delivery of this message to the executor. &ldquo;data&rdquo; is raw bytes encoded in Base64.</p>
+
+<pre><code>MESSAGE Request (JSON):
+POST /api/v1/scheduler   HTTP/1.1
+
+Host: masterhost:5050
+Content-Type: application/json
+
+{
+  “framework_id”    : {“value” : “12220-3440-12532-2345”},
+  “type”            : “MESSAGE”,
+  “message”         : {
+    “agent_id”       : {“value” : “12220-3440-12532-S1233”},
+    “executor_id”    : {“value” : “my-framework-executor”},
+    “data”           : “adaf838jahd748jnaldf”
+  }
+}
+
+MESSAGE Response:
+HTTP/1.1 202 Accepted
+</code></pre>
+
+<h3>REQUEST</h3>
+
+<p>Sent by the scheduler to request resources from the master/allocator. The built-in hierarchical allocator simply ignores this request but other allocators (modules) can interpret this in a customizable fashion.</p>
+
+<pre><code>Request (JSON):
+POST /api/v1/scheduler   HTTP/1.1
+
+Host: masterhost:5050
+Content-Type: application/json
+
+{
+  “framework_id”    : {“value” : “12220-3440-12532-2345”},
+  “type”            : “REQUEST”,
+  “requests”        : [
+      {
+         “agent_id”       : {“value” : “12220-3440-12532-S1233”},
+         “resources”      : {}
+      },
+  ]
+}
+
+REQUEST Response:
+HTTP/1.1 202 Accepted
+</code></pre>
+
+<h2>Events</h2>
+
+<p>Scheduler is expected to keep a <strong>persistent</strong> connection open to “/scheduler” endpoint even after getting a SUBSCRIBED HTTP Response event. This is indicated by “Connection: keep-alive” and “Transfer-Encoding: chunked” headers with <em>no</em> “Content-Length” header set. All subsequent events that are relevant to this framework  generated by Mesos are streamed on this connection. Master encodes each Event in RecordIO format, i.e., string representation of length of the event in bytes followed by JSON or binary Protobuf  (possibly compressed) encoded event. Note that the value of length will never be ‘0’ and the size of the length will be the size of unsigned integer (i.e., 64 bits). Also, note that the RecordIO encoding should be decoded by the scheduler whereas the underlying HTTP chunked encoding is typically invisible at the application (scheduler) layer. The type of content encoding used for the events will be determined by the accept header of the POST request (e.g., Accept: application/json).</p>
+
+<p>The following events are currently sent by the master. The canonical source of this information is at <a href="include/mesos/v1/scheduler/scheduler.proto">scheduler.proto</a>. Note that when sending JSON encoded events, master encodes raw bytes in Base64 and strings in UTF-8.</p>
+
+<h3>SUBSCRIBED</h3>
+
+<p>The first event sent by the master when the scheduler sends a <code>SUBSCRIBE</code> request on the persistent connection. See <code>SUBSCRIBE</code> in Calls section for the format.</p>
+
+<h3>OFFERS</h3>
+
+<p>Sent by the master whenever there are new resources that can be offered to the framework. Each offer corresponds to a set of resources on a agent. Until the scheduler &lsquo;Accept&rsquo;s or 'Decline&rsquo;s an offer the resources are considered allocated to the scheduler, unless the offer is otherwise rescinded, e.g. due to a lost agent or <code>--offer_timeout</code>.</p>
+
+<pre><code>OFFERS Event (JSON)
+&lt;event-length&gt;
+{
+  “type”    : “OFFERS”,
+  “offers”  : [
+    {
+      “offer_id”:{“value”: “12214-23523-O235235”},
+      “framework_id”:{“value”: “12124-235325-32425”},
+      “agent_id”:{“value”: “12325-23523-S23523”},
+      “hostname”:“agent.host”,
+      “resources”:[...],
+      “attributes”:[...],
+      “executor_ids”:[]
+    }
+  ]
+}
+</code></pre>
+
+<h3>RESCIND</h3>
+
+<p>Sent by the master when a particular offer is no longer valid (e.g., the agent corresponding to the offer has been removed) and hence needs to be rescinded. Any future calls (<code>ACCEPT</code> / <code>DECLINE</code>) made by the scheduler regarding this offer will be invalid.</p>
+
+<pre><code>RESCIND Event (JSON)
+&lt;event-length&gt;
+{
+  “type”    : “RESCIND”,
+  “rescind” : {
+    “offer_id”  : { “value” : “12214-23523-O235235”}
+  }
+}
+</code></pre>
+
+<h3>UPDATE</h3>
+
+<p>Sent by the master whenever there is a status update that is generated by the executor, agent or master. Status updates should be used by executors to reliably communicate the status of the tasks that they manage. It is crucial that a terminal update (e.g., <code>TASK_FINISHED</code>, <code>TASK_KILLED</code>, <code>TASK_FAILED</code>) is sent by the executor as soon as the task terminates, in order for Mesos to release the resources allocated to the task. It is also the responsibility of the scheduler to explicitly acknowledge the receipt of status updates that are reliably retried. See <code>ACKNOWLEDGE</code> in the Calls section above for the semantics. Note that <code>uuid</code> and <code>data</code> are raw bytes encoded in Base64.</p>
+
+<pre><code>UPDATE Event (JSON)
+
+&lt;event-length&gt;
+{
+  “type”    : “UPDATE”,
+  “update”  : {
+    “status”    : {
+        “task_id”   : { “value” : “12344-my-task”},
+        “state”     : “TASK_RUNNING”,
+        “source”    : “SOURCE_EXECUTOR”,
+        “uuid”      : “adfadfadbhgvjayd23r2uahj”,
+        "bytes"     : "uhdjfhuagdj63d7hadkf"
+
+      }
+  }
+}
+</code></pre>
+
+<h3>MESSAGE</h3>
+
+<p>A custom message generated by the executor that is forwarded to the scheduler by the master. Note that this message is not interpreted by Mesos and is only forwarded (without reliability guarantees) to the scheduler. It is up to the executor to retry if the message is dropped  for any reason. Note that <code>data</code> is raw bytes encoded as Base64.</p>
+
+<pre><code>MESSAGE Event (JSON)
+
+&lt;event-length&gt;
+{
+  “type”    : “MESSAGE”,
+  “message” : {
+    “agent_id”      : { “value” : “12214-23523-S235235”},
+    “executor_id”   : { “value” : “12214-23523-my-executor”},
+    “data”          : “adfadf3t2wa3353dfadf”
+  }
+}
+</code></pre>
+
+<h3>FAILURE</h3>
+
+<p>Sent by the master when a agent is removed from the cluster (e.g., failed health checks) or when an executor is terminated. Note that, this event coincides with receipt of terminal <code>UPDATE</code> events for any active tasks belonging to the agent or executor and receipt of <code>RESCIND</code> events for any outstanding offers belonging to the agent. Note that there is no guaranteed order between the <code>FAILURE</code>, <code>UPDATE</code> and <code>RESCIND</code> events.</p>
+
+<pre><code>FAILURE Event (JSON)
+
+&lt;event-length&gt;
+{
+  “type”    : “FAILURE”,
+  “failure” : {
+    “agent_id”      : { “value” : “12214-23523-S235235”},
+    “executor_id”   : { “value” : “12214-23523-my-executor”},
+    “status”        : 1
+  }
+}
+</code></pre>
+
+<h3>ERROR</h3>
+
+<p>Sent by the master when an asynchronous error event is generated (e.g., a framework is not authorized to subscribe with the given role). It is recommended that the framework abort when it receives an error and retry subscription as necessary.</p>
+
+<pre><code>ERROR Event (JSON)
+
+&lt;event-length&gt;
+{
+  “type”    : “ERROR”,
+  “message” : “Framework is not authorized”
+}
+</code></pre>
+
+<h3>HEARTBEAT</h3>
+
+<p>This event is periodically sent by the master to inform the scheduler that a connection is alive. This also helps ensure that network intermediates do not close the persistent subscription connection due to lack of data flow. See the next section on how a scheduler can use this event to deal with network partitions.</p>
+
+<pre><code>HEARTBEAT Event (JSON)
+
+&lt;event-length&gt;
+{
+  “type”    : “HEARTBEAT”,
+}
+</code></pre>
+
+<h2>Disconnections</h2>
+
+<p>Master considers a scheduler disconnected if the persistent subscription connection (opened via <code>SUBSCRIBE</code> request) to “/scheduler” breaks. The connection could break for several reasons, e.g., scheduler restart, scheduler failover, network error. Note that the master doesn’t keep track of non-subscription connection(s) to
+“/scheduler” because it is not expected to be a persistent connection.</p>
+
+<p>If master realizes that the subscription connection is broken, it marks the scheduler as “disconnected” and starts a failover timeout (failover timeout is part of FrameworkInfo). It also drops any pending events in its queue. Additionally, it rejects subsequent non-subscribe HTTP requests to “/scheduler” with “403 Forbidden”, until the scheduler subscribes again with “/scheduler”. If the scheduler <em>does not</em> re-subscribe within the failover timeout, the master considers the scheduler gone forever and shuts down all its executors, thus killing all its tasks. Therefore, all production schedulers are recommended to use a high value (e.g., 4 weeks) for the failover timeout.</p>
+
+<p>NOTE: To force shutdown a framework before the framework timeout elapses (e.g., during framework development and testing), either the framework can send <code>TEARDOWN</code> call (part of Scheduler API) or an operator can use the “/master/teardown” endpoint (part of Operator API).</p>
+
+<p>If the scheduler realizes that its subscription connection to “/scheduler” is broken, it should attempt to open a new persistent connection to the
+“/scheduler” (on possibly new master based on the result of master detection) and resubscribe. It should not send new non-subscribe HTTP requests to “/scheduler” unless it gets a <code>SUBSCRIBED</code> event; such requests will result in “403 Forbidden”.</p>
+
+<p>If the master does not realize that the subscription connection is broken, but the scheduler realizes it, the scheduler might open a new persistent connection to
+“/scheduler” via <code>SUBSCRIBE</code>. In this case, the semantics depend on the value of <code>subscribe.force</code>. If set to true, master closes the existing subscription connection and allows subscription on the new connection. If set to false, the new connection attempt is disallowed in favor of the existing connection. The invariant here is that, only one persistent subscription connection for a given FrameworkID is allowed on the master. For HA schedulers, it is recommended that a scheduler instance set <code>subscribe.force</code> to true only when it just got elected and set it to false for all subsequent reconnection attempts (e.g, due to disconnection or master failover).</p>
+
+<h3>Network partitions</h3>
+
+<p>In the case of a network partition, the subscription connection between the scheduler and master might not necessarily break. To be able to detect this scenario, master periodically (e.g., 15s) sends <code>HEARTBEAT</code> events (similar in vein to Twitter’s Streaming API). If a scheduler doesn’t receive a bunch (e.g., 5) of these heartbeats within a time window, it should immediately disconnect and try to re-subscribe. It is highly recommended for schedulers to use an exponential backoff strategy (e.g., upto a maximum of 15s) to avoid overwhelming the master while reconnecting. Schedulers can use a similar timeout (e.g., 75s) for receiving responses to any HTTP requests.</p>
+
+<h2>Master detection</h2>
+
+<p>Mesos has a high-availability mode that uses multiple Mesos masters; one active master (/documentation/latest/called the leader or leading master) and several standbys in case it fails. The masters elect the leader, with ZooKeeper coordinating the election. For more details please refer to the <a href="high-availability/">documentation</a>.</p>
+
+<p>Schedulers are expected to make HTTP requests to the leading master. If requests are made to a non-leading master a “HTTP 307 Temporary Redirect” will be received with the “Location” header pointing to the leading master.</p>
+
+<p>Example subscription workflow with redirection when the scheduler hits a non-leading master.</p>
+
+<pre><code>Scheduler → Master
+POST /api/v1/scheduler  HTTP/1.1
+
+Host: masterhost1:5050
+Content-Type: application/json
+Accept: application/json
+Connection: keep-alive
+
+{
+  “framework_info”  : {
+    “user” :  “foo”,
+    “name” :  “Example HTTP Framework”
+  },
+  “type”            : “SUBSCRIBE”
+}
+
+Master → Scheduler
+HTTP/1.1 307 Temporary Redirect
+Location: masterhost2:5050
+
+
+Scheduler → Master
+POST /api/v1/scheduler  HTTP/1.1
+
+Host: masterhost2:5050
+Content-Type: application/json
+Accept: application/json
+Connection: keep-alive
+
+{
+  “framework_info”  : {
+    “user” :  “foo”,
+    “name” :  “Example HTTP Framework”
+  },
+  “type”            : “SUBSCRIBE”
+}
+</code></pre>
+
+<p>If the scheduler knows the list of master’s hostnames for a cluster, it could use this mechanism to find the leading master to subscribe with. Alternatively, the scheduler could use a pure language library that detects the leading master given a ZooKeeper (or etcd) URL. For a <code>C++</code> library that does ZooKeeper based master detection please look at <code>src/scheduler/scheduler.cpp</code>.</p>
+
+	</div>
+</div>
+
+			
+	      <hr>
+
+				<!-- footer -->
+	      <div class="footer">
+	        <p>&copy; 2012-2015 <a href="http://apache.org">The Apache Software Foundation</a>.
+	        Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.<p>
+	      </div><!-- /footer -->
+
+	    </div> <!-- /container -->
+
+	    <!-- JS -->
+	    <script src="//code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+			<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="text/javascript"></script>
+    </body>
+</html>

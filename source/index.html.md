@@ -8,7 +8,7 @@ title: Apache Mesos
 	    <h1>Program against your datacenter like it’s a single pool of resources</h1>
 	    <p class="lead">Apache Mesos abstracts CPU, memory, storage, and other compute resources away from machines (physical or virtual), enabling fault-tolerant and elastic distributed systems to easily be built and run effectively.</p>
 
-      <a class="btn btn-lg btn-success" href="downloads/"><span class="glyphicon glyphicon-download"></span> Download Mesos 0.23.0</a>
+      <a class="btn btn-lg btn-success" href="downloads/"><span class="glyphicon glyphicon-download"></span> Download Mesos 0.24.0</a>
       <p>or learn how to <a href="gettingstarted/">get started</a></p>
 	  </div>
     <div class="col-md-5 text-center download">

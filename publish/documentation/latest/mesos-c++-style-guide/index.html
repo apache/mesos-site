@@ -147,7 +147,6 @@ void Slave::statusUpdate(StatusUpdate update, const UPID&amp; pid)
 
 <ul>
 <li>End each sentence within a comment with a punctuation mark (please note that we generally prefer periods); this applies to incomplete sentences as well.</li>
-<li>At most 70 characters per line in comments.</li>
 <li>For trailing comments, leave one space.</li>
 </ul>
 
@@ -396,6 +395,13 @@ Try&lt;Owned&lt;LocalAuthorizer&gt;&gt; authorizer = LocalAuthorizer::create();
 <li><code>std::unique_lock&lt;std::mutex&gt;</code></li>
 </ul>
 </li>
+<li>Atomics (<code>std::atomic</code>)
+
+<ul>
+<li>The standard defines a number of predefined typedefs for atomic types (e.g., <code>std::atomic_int</code>), in addition to <code>std::atomic&lt;T&gt;</code>. When a typedef is available, it should be preferred over explicit template specialization of <code>std::atomic&lt;T&gt;</code>.</li>
+<li>When reading from and writing to atomic values, the <code>load</code> and <code>store</code> member functions should be used instead of the overloads of <code>operator T()</code> and <code>operator=</code>. Being explicit helps to draw the reader&rsquo;s attention to the fact that atomic values are being manipulated.</li>
+</ul>
+</li>
 <li>Shared from this.
 
 <ul>
@@ -526,7 +532,7 @@ instance.method([]() {
 </code></pre>
 
 <ul>
-<li>Wrap capture lists indepedently of parameters, <em>use the same formatting as if the capture list were template parameters</em>:</li>
+<li>Wrap capture lists independently of parameters, <em>use the same formatting as if the capture list were template parameters</em>:</li>
 </ul>
 
 
@@ -719,7 +725,7 @@ auto lambda = [
   int array[SPAN()];
 </code></pre>
 
-<p>Const expression constructors allow object initialization at compile time provided that all the constructor arguments are <code>constexpr</code> and the constuctor body is empty, i.e. all initialization is performed in the initialization list.  Classes which provide <code>constexpr</code> constructors should normally also provide <code>constexpr</code> copy constructors to allow the class to be used in the return value from a <code>constexpr</code> function.</p>
+<p>Const expression constructors allow object initialization at compile time provided that all the constructor arguments are <code>constexpr</code> and the constructor body is empty, i.e. all initialization is performed in the initialization list.  Classes which provide <code>constexpr</code> constructors should normally also provide <code>constexpr</code> copy constructors to allow the class to be used in the return value from a <code>constexpr</code> function.</p>
 
 <pre><code class="{.cpp}">  class C
   {

@@ -83,10 +83,16 @@
 	<div class="col-md-8">
 		<h1>Persistent Volume</h1>
 
-<p>Mesos provides a mechanism to create a persistent volume from disk resources.
-This enables stateful services such as HDFS and Cassandra to store their data
-within Mesos rather than having to resort to network-mounted EBS volumes that
-needs to be placed in a well-known location.</p>
+<p>Mesos provides a mechanism to create a persistent volume from disk
+resources. When launching a task, you can create a volume that exists outside
+the task&rsquo;s sandbox and will persist on the node even after the task dies or
+completes. When the task exits, its resources &ndash; including the persistent volume
+&ndash; can be offered back to the framework, so that the framework can launch the
+same task again, launch a recovery task, or launch a new task that consumes the
+previous task&rsquo;s output as its input. Persistent volumes enable stateful services
+such as HDFS and Cassandra to store their data within Mesos rather than having
+to resort to workarounds (e.g., writing task state to a distributed filesystem
+that is mounted at a well-known location outside the task&rsquo;s sandbox).</p>
 
 <p>Persistent volumes can only be created from <strong>reserved</strong> disk resources, whether
 it be statically reserved or dynamically reserved. A dynamically reserved
@@ -95,9 +101,8 @@ the volume. These rules exist to limit the accidental mistakes such as:
 a persistent volume containing sensitive data being offered to other frameworks
 in the cluster.</p>
 
-<p>Please refer to the
-<a href="/documentation/latest/reservation/">Reservation</a> documentation for details regarding reservation
-mechanisms available in Mesos.</p>
+<p>Please refer to the <a href="/documentation/latest/reservation/">Reservation</a> documentation for details
+regarding reservation mechanisms available in Mesos.</p>
 
 <p>Persistent volumes can be created by <strong>operators</strong> and authorized
 <strong>frameworks</strong>. We require a <code>principal</code> from the operator or framework in order
@@ -301,7 +306,7 @@ reserved disk resources:</p>
 
 <p>Note that in 0.23, even after you destroy the persistent volume, its content
 will still be on the disk. The garbage collection for persistent volumes is
-coming soon: <a href="https://issues.apache.org/jira/browse/MESOS-2408">MESOS-2048</a>.</p>
+coming soon: <a href="https://issues.apache.org/jira/browse/MESOS-2408">MESOS-2408</a>.</p>
 
 <h3><code>/create</code> (<em>Coming Soon</em>)</h3>
 
