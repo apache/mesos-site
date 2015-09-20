@@ -7,10 +7,17 @@ title: Apache Mesos
 	  <div class="col-md-7 nopadding">
 	    <h1>Program against your datacenter like it’s a single pool of resources</h1>
 	    <p class="lead">Apache Mesos abstracts CPU, memory, storage, and other compute resources away from machines (physical or virtual), enabling fault-tolerant and elastic distributed systems to easily be built and run effectively.</p>
+
+			<p> <a href="downloads/"><span class="glyphicon glyphicon-download"></span> Download Mesos 0.24.0</a> or learn how to <a href="gettingstarted/">get started</a></p>
 	  </div>
     <div class="col-md-5 text-center download">
-		<a class="btn btn-lg btn-success" href="downloads/"><span class="glyphicon glyphicon-download"></span> Download Mesos 0.24.0</a>
-		<p>or learn how to <a href="gettingstarted/">get started</a></p>
+			<div class="homepage-featured">
+				<h2>MesosCon Europe</h2>
+				<p>Dublin, October 8 - 9th, 2015</p>
+				#MesosCon Europe is conference organized by the Apache Mesos community, bringing together users and developers to share and learn about the project and its growing ecosystem.
+				<br /><br />
+				<a class="btn btn-default btn-success" href="http://events.linuxfoundation.org/events/mesoscon-europe/attend/register" role="button">REGISTER TODAY</a>
+			</div>
     </div>
 	</div>
 </div>
@@ -44,8 +51,6 @@ title: Apache Mesos
 	    <li><em>July 22, 2015</em> - Mesos 0.23.0 is released! See the <a href="https://git-wip-us.apache.org/repos/asf?p=mesos.git;a=blob_plain;f=CHANGELOG;hb=0.23.0">CHANGELOG</a> and <a href="/blog/mesos-0-23-0-released/">blog post</a> for more details.</li>
 	    <li><em>July 13, 2015</em> - MesosCon pre-conference and social activities announced! See the <a href="/blog/mesoscon-seattle-preconference-and-social-activities/">blog post</a> for more details.</li>
 	    <li><em>July 1, 2015</em> - MesosCon Seattle 2015 keynote speakers announced! See the <a href="/blog/mesoscon-seattle-keynote-speakers-announced/">blog post</a> for more details.</li>
-	    <li><em>May 12, 2015</em> - Mesos 0.22.1 is released! See the <a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12311242&version=12329855">0.22.1 release notes</a> and <a href="/blog/mesos-0-22-1-released/">blog post</a> for more details.</li>
-        <li><em>March 25, 2015</em> - Mesos 0.22.0 is released! See the <a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12311242&version=12328650">0.22.0 release notes</a> and <a href="/blog/mesos-0-22-0-released/">blog post</a> for more details.</li>
 	  </ul>
 
       <h3>Follow Us</h3>
