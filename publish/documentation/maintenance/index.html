@@ -86,10 +86,14 @@
 <p>Operators regularly need to perform maintenance tasks on machines that comprise
 a Mesos cluster.  Most Mesos upgrades can be done without affecting running
 tasks, but there are situations where maintenance may affect running tasks.
-For example:
-* Hardware repair
-* Kernel upgrades
-* Agent upgrades (e.g. adjusting agent attributes or resources)</p>
+For example:</p>
+
+<ul>
+<li>Hardware repair</li>
+<li>Kernel upgrades</li>
+<li>Agent upgrades (e.g. adjusting agent attributes or resources)</li>
+</ul>
+
 
 <p>Frameworks require visibility into any actions that disrupt cluster operation
 in order to meet Service Level Agreements or to ensure uninterrupted services
@@ -105,29 +109,33 @@ frameworks and operator.</p>
 which manages the Mesos cluster.</p>
 
 <p>Maintenance primitives add several new concepts to the Mesos cluster.
-Those concepts are:
-* <strong>Maintenance</strong> - An operation that makes resources on a machine unavailable,
-  either temporarily or permanently.
-* <strong>Maintenance window</strong> - A set of machines and an associated interval during
-  which some maintenance is planned on those machines.
-* <strong>Maintenance schedule</strong> - A list of maintenance windows.
-  A single machine may only appear in a schedule once.
-* <strong>Unavailability</strong> - An operator-specified interval, defined by a start time
-  and duration, during which an associated machine may become unavailable.
-  In general, no assumptions should be made about the availability of the
-  machine (or resources) after the unavailability.
-* <strong>Drain</strong> - An interval between the scheduling of maintenance and when the
-  machine(s) become unavailable.  Offers sent with resources from draining
-  machines will contain unavailability information.  Frameworks running on
-  draining machines will receive inverse offers (see next).  Frameworks
-  utilizing resources on affected machines are expected either to take
-  preemptive steps to prepare for the unavailability; or to communicate the
-  framework&rsquo;s inability to conform to the maintenance schedule.
-* <strong>Inverse offer</strong> - A communication mechanism for the master to ask for
-  resources back from a framework.  This notifies frameworks about any
-  unavailability and gives frameworks a mechanism to respond about their
-  capability to comply.  Inverse offers are similar to offers in that they
-  can be accepted, rejected, re-offered, and rescinded.</p>
+Those concepts are:</p>
+
+<ul>
+<li><strong>Maintenance</strong> - An operation that makes resources on a machine unavailable,
+either temporarily or permanently.</li>
+<li><strong>Maintenance window</strong> - A set of machines and an associated interval during
+which some maintenance is planned on those machines.</li>
+<li><strong>Maintenance schedule</strong> - A list of maintenance windows.
+A single machine may only appear in a schedule once.</li>
+<li><strong>Unavailability</strong> - An operator-specified interval, defined by a start time
+and duration, during which an associated machine may become unavailable.
+In general, no assumptions should be made about the availability of the
+machine (or resources) after the unavailability.</li>
+<li><strong>Drain</strong> - An interval between the scheduling of maintenance and when the
+machine(s) become unavailable.  Offers sent with resources from draining
+machines will contain unavailability information.  Frameworks running on
+draining machines will receive inverse offers (see next).  Frameworks
+utilizing resources on affected machines are expected either to take
+preemptive steps to prepare for the unavailability; or to communicate the
+framework&rsquo;s inability to conform to the maintenance schedule.</li>
+<li><strong>Inverse offer</strong> - A communication mechanism for the master to ask for
+resources back from a framework.  This notifies frameworks about any
+unavailability and gives frameworks a mechanism to respond about their
+capability to comply.  Inverse offers are similar to offers in that they
+can be accepted, rejected, re-offered, and rescinded.</li>
+</ul>
+
 
 <p><strong>Note</strong>: Unavailability and inverse offers are not specific to maintenance.
 The same concepts can be used for non-maintenance goals, such as reallocating
@@ -160,9 +168,9 @@ uninterrupted service by the frameworks.</p>
 <p>For example, in a cluster of three machines, the operator can schedule two
 machines for one hour of maintenance, followed by another hour for the last
 machine.  The timestamps for unavailability are in nanoseconds since the epoch.
-The schedule might look like:
-<code>json
-{
+The schedule might look like:</p>
+
+<pre><code>{
   "windows" : [
     {
       "machine_ids" : [
@@ -184,15 +192,15 @@ The schedule might look like:
     }
   ]
 }
-</code></p>
+</code></pre>
 
-<p>The operator then posts the schedule to the master&rsquo;s maintenance endpoints.
-<code>bash
-curl http://localhost:5050/master/maintenance/schedule
+<p>The operator then posts the schedule to the master&rsquo;s maintenance endpoints.</p>
+
+<pre><code>curl http://localhost:5050/master/maintenance/schedule
   -H "Content-type: application/json"
   -X POST
   -d @schedule.json
-</code></p>
+</code></pre>
 
 <p>The machines in a maintenance schedule do not necessarily need to be registered
 with the Mesos master.  The operator may add a machine to the maintenance
@@ -228,31 +236,39 @@ schedule, make the necessary changes, and then post the modified schedule.</p>
 
 <h3>Draining mode</h3>
 
-<p>As soon as a schedule is posted to the Mesos master, the following things occur:
-* The schedule is stored in the replicated log.  This means
-  the schedule is persisted in case of master failover.
-* All machines in the schedule are immediately transitioned into Draining
-  mode.  The mode of each machine is also persisted in the replicated log.
-* All frameworks using resources on affected agents are immediately
-  notified.  Existing offers from the affected agents are rescinded
-  and re-sent with additional unavailability data.  All Frameworks using
-  resources from the affected agents are given inverse offers.
-* New offers from the affected agents will also include
-  the additional unavailability data.</p>
+<p>As soon as a schedule is posted to the Mesos master, the following things occur:</p>
+
+<ul>
+<li>The schedule is stored in the replicated log.  This means
+the schedule is persisted in case of master failover.</li>
+<li>All machines in the schedule are immediately transitioned into Draining
+mode.  The mode of each machine is also persisted in the replicated log.</li>
+<li>All frameworks using resources on affected agents are immediately
+notified.  Existing offers from the affected agents are rescinded
+and re-sent with additional unavailability data.  All Frameworks using
+resources from the affected agents are given inverse offers.</li>
+<li>New offers from the affected agents will also include
+the additional unavailability data.</li>
+</ul>
+
 
 <p>With this additional information, frameworks should perform scheduling in a
 maintenance-aware fashion.  Inverse offers communicate the frameworks' ability
 to conform to the maintenance schedule.
-For example:
-* A framework with long-running tasks may choose agents with no unavailability
-  or with unavailability further in the future.
-* A datastore may choose to start a new replica if one of its agents is
-  scheduled for extensive maintenance or decommissioning.  If the datastore
-  can reasonably copy data into a new agent before maintenance,
-  it would accept any inverse offers.  Otherwise, it would decline them.
-* A stateful task, on an eminently unavailable agent, may be migrated to
-  another available agent.  If the framework has sufficient resources to do
-  so, it would accept any inverse offers.  Otherwise, it would decline them.</p>
+For example:</p>
+
+<ul>
+<li>A framework with long-running tasks may choose agents with no unavailability
+or with unavailability further in the future.</li>
+<li>A datastore may choose to start a new replica if one of its agents is
+scheduled for extensive maintenance or decommissioning.  If the datastore
+can reasonably copy data into a new agent before maintenance,
+it would accept any inverse offers.  Otherwise, it would decline them.</li>
+<li>A stateful task, on an eminently unavailable agent, may be migrated to
+another available agent.  If the framework has sufficient resources to do
+so, it would accept any inverse offers.  Otherwise, it would decline them.</li>
+</ul>
+
 
 <p>Accepting an inverse offer indicates that the framework is ok with the
 maintenance schedule as it currently stands, given the current state of
@@ -281,27 +297,31 @@ maintenance endpoint.</p>
 
 <p>See the definition of a <a href="https://github.com/apache/mesos/blob/016b02d7ed5a65bcad9261a133c8237c2df66e6e/include/mesos/v1/mesos.proto#L157-L167">MachineID</a>.</p>
 
-<p>For example, to start maintenance on two machines:
-<code>json
-[
+<p>For example, to start maintenance on two machines:</p>
+
+<pre><code>[
   { "hostname" : "machine1", "ip" : "10.0.0.1" },
   { "hostname" : "machine2", "ip" : "10.0.0.2" }
 ]
-</code>
-<code>bash
-curl http://localhost:5050/master/machine/down
+</code></pre>
+
+<pre><code>curl http://localhost:5050/master/machine/down
   -H "Content-type: application/json"
   -X POST
   -d @machines.json
-</code></p>
+</code></pre>
 
-<p>The master checks that a list of machines has the following properties:
-* The list of machines must not be empty.
-* Each machine must only appear once.
-* Each machine must have at least a hostname or IP included.
-  The hostname is not case-sensitive.
-* If a machine&rsquo;s IP is included, it must be correctly formed.
-* All listed machines must be present in the schedule.</p>
+<p>The master checks that a list of machines has the following properties:</p>
+
+<ul>
+<li>The list of machines must not be empty.</li>
+<li>Each machine must only appear once.</li>
+<li>Each machine must have at least a hostname or IP included.
+The hostname is not case-sensitive.</li>
+<li>If a machine&rsquo;s IP is included, it must be correctly formed.</li>
+<li>All listed machines must be present in the schedule.</li>
+</ul>
+
 
 <p>If any of these properties are not met, the list of machines is rejected
 with a corresponding error message and the master&rsquo;s state does not change.</p>
@@ -328,19 +348,19 @@ machines in maintenance are also prevented from registering with the master.</p>
 <p>When maintenance is complete, or if maintenance needs to be cancelled,
 the operator can stop maintenance.  The process is very similar
 to starting maintenance (same validation criterion as the previous section).
-The operator posts a list of machines to the master&rsquo;s endpoints:
-<code>json
-[
+The operator posts a list of machines to the master&rsquo;s endpoints:</p>
+
+<pre><code>[
   { "hostname" : "machine1", "ip" : "10.0.0.1" },
   { "hostname" : "machine2", "ip" : "10.0.0.2" }
 ]
-</code>
-<code>bash
-curl http://localhost:5050/master/machine/up
+</code></pre>
+
+<pre><code>curl http://localhost:5050/master/machine/up
   -H "Content-type: application/json"
   -X POST
   -d @machines.json
-</code></p>
+</code></pre>
 
 <p><strong>Note</strong>: The duration of the maintenance, as indicated by the &ldquo;unavailability&rdquo;
 field, is a best-effort guess made by the operator.  Stopping maintenance
