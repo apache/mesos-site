@@ -21,6 +21,14 @@ layout: community_section
 	<h3 name="contribute">Contribute a core patch</h3>
 	<p>Follow our <a href="/documentation/latest/submitting-a-patch">contribution guidelines</a> when submitting a patch. We love patches. :)</p>
 
+  <h3 name="workinggroups">Working Groups</h3>
+
+  <p>
+  As the community has scaled, we work on larger and more involved features and components in separate interest or <i>working</i> groups.
+  We keep track of these working groups <a href="https://cwiki.apache.org/confluence/display/MESOS/Apache+Mesos+Working+Groups">here</a>.
+  In this list, you will be able to get in touch with the stakeholders, contributors and committers interested in certain features for Mesos and join in on the design meetings.
+  </p>
+
 </div>
 <div class="col-md-6">
 	<h2>Get In Touch</h2>
