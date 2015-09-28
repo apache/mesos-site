@@ -7,7 +7,7 @@ within the publish folder will be the actual deployed site.
 
 		gem install bundler
 		bundle install
-		
+
 
 ## Generating the site
 To generate the site one only needs to run `rake` after performing the setup
@@ -18,16 +18,16 @@ other files within the source folder.
 		rake
 
 
-## Development 
-To live edit the site run `rake dev` and then open a browser window to 
-http://localhost:4567/ . Any change you make to the sources dir will 
-be shown on the local dev site immediately. Errors will be shown in the 
+## Development
+To live edit the site run `rake dev` and then open a browser window to
+http://localhost:4567/ . Any change you make to the sources dir will
+be shown on the local dev site immediately. Errors will be shown in the
 console you launched `rake dev` within.
 
 
 ## Publishing the Site
 The website uses svnpubsub. The publish folder contains the websites content
-and when committed to the svn repository it will be automatically deployed to 
+and when committed to the svn repository it will be automatically deployed to
 the live site.
 
 
