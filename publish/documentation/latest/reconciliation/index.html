@@ -85,17 +85,17 @@
 
 <p>There&rsquo;s no getting around it, <strong>frameworks on Mesos are distributed systems</strong>.</p>
 
-<p><strong>Distributed systems must deal with failures</strong>, and partitions (the two are
+<p><strong>Distributed systems must deal with failures</strong> and partitions (the two are
 indistinguishable from a system&rsquo;s perspective).</p>
 
 <p>Concretely, what does this mean for frameworks? Mesos uses an actor-like
-<strong>message passing programming model, in which messages are delivered
-at-most-once</strong>. (Exceptions to this include task status updates, most of
+<strong>message passing</strong> programming model, in which messages are delivered
+<strong>at-most-once</strong>. (Exceptions to this include task status updates, most of
 which are delivered at-least-once through the use of acknowledgements).
 <strong>The messages passed between the master and the framework are therefore
 susceptible to be dropped, in the presence of failures</strong>.</p>
 
-<p>When these non-reliable messages are dropped, inconsistent state can arise
+<p>When these unreliable messages are dropped, inconsistent state can arise
 between the framework and Mesos.</p>
 
 <p>As a simple example, consider a launch task request sent by a framework.

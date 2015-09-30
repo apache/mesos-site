@@ -4,7 +4,13 @@ layout: documentation
 
 # Mesos C++ Style Guide
 
-The Mesos codebase follows the [Google C++ Style Guide](http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml) with the following differences:
+The Mesos codebase follows the [Google C++ Style Guide](http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml) with some notable differences, as described below. Note that the [clang-format](/documentation/latest/clang-format/) tool can be helpful to ensure that some of the mechanical style rules are obeyed.
+
+## Scoping
+
+### Namespaces
+* We avoid `using namespace foo` statements as it is not explicit about which symbols are pulled in, and it can often pull in a lot of symbols, which sometimes lead to conflicts.
+* It is OK to use namespace aliases to help pull in sub-namespaces, such as `namespace http = process::http;`. These should only be present at the top of the .cpp file.
 
 ## Naming
 
@@ -37,9 +43,6 @@ void Slave::statusUpdate(StatusUpdate update, const UPID& pid)
 
 ### Function Names
 * We use [lowerCamelCase](http://en.wikipedia.org/wiki/CamelCase#Variations_and_synonyms) for function names (Google uses mixed case for regular functions; and their accessors and mutators match the name of the variable).
-
-### Namespace Names
-* We do not use namespace aliases.
 
 ## Strings
 * Strings used in log and error messages should end without a period.

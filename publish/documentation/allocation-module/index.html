@@ -81,14 +81,14 @@
 		<p>See our <a href="/community/">community</a> page for more details.</p>
 	</div>
 	<div class="col-md-8">
-		<h1>Mesos Allocation Module</h1>
+		<h1>Mesos Allocation Modules</h1>
 
-<p>The logic that the Mesos master uses to determine which frameworks to make resource offers to is encapsulated in the Master&rsquo;s <em>allocator module</em>. The allocator is a pluggable component that organizations can use to implement their own sharing policy, e.g. fair-sharing, priority, etc., or tune the default hierarchical Dominant Resource Fairness algorithm (see <a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2010/EECS-2010-55.pdf">the DRF paper</a>).</p>
+<p>The logic that the Mesos master uses to determine which frameworks to make resource offers to is encapsulated in the master&rsquo;s <em>allocator module</em>. The allocator is a pluggable component that organizations can use to implement their own sharing policy, e.g. fair-sharing, priority, etc., or tune the default hierarchical Dominant Resource Fairness algorithm (see <a href="https://www.cs.berkeley.edu/~alig/papers/drf.pdf">the DRF paper</a>).</p>
 
 <p>To use a custom allocator in Mesos, one must:</p>
 
 <ul>
-<li><p><a href="#writing-a-custom-allocator">Implement</a> an <code>Allocator</code> interface as defined in <code>mesos/master/allocator.hpp</code>,</p></li>
+<li><p><a href="#writing-a-custom-allocator">Implement</a> the <code>Allocator</code> interface as defined in <code>mesos/master/allocator.hpp</code>,</p></li>
 <li><p><a href="#wiring-up-a-custom-allocator">Wrap</a> the allocator implementation in a module and load it in the Mesos master.</p></li>
 </ul>
 
@@ -101,7 +101,7 @@
 
 <p>Additionally, the built-in hierarchical allocator can be extended without the need to reimplement the entirety of the allocation logic. This is possible through the use of the <code>Sorter</code> abstraction. Sorters define the order in which hierarchy layers (e.g. roles or frameworks) should be offered resources by taking &ldquo;client&rdquo; objects and some information about those clients and returning an ordered list of clients.</p>
 
-<p>Sorters are implemented in C++ and inherit the <code>Sorter</code> class defined in <code>$MESOS_HOME/src/master/allocator/sorter/sorter.hpp</code>. The default sorter is <code>DRFSorter</code>, which implements fair sharing and can be found in <code>$MESOS_HOME/src/master/allocator/sorter/drf/sorter.hpp</code>. This sorter is capable of expressing priorities by specifying weights in <code>Sorter::add()</code>. Each client&rsquo;s share is divided by its weight. For example, a role that has a weight of <code>2</code> will be offered twice as many resources as a role with weight <code>1</code>.</p>
+<p>Sorters are implemented in C++ and inherit the <code>Sorter</code> class defined in <code>$MESOS_HOME/src/master/allocator/sorter/sorter.hpp</code>. The default sorter is <code>DRFSorter</code>, which implements fair sharing and can be found in <code>$MESOS_HOME/src/master/allocator/sorter/drf/sorter.hpp</code>. This sorter is capable of expressing priorities by specifying weights in <code>Sorter::add()</code>. Each client&rsquo;s share is divided by its weight. For example, a role that has a weight of 2 will be offered twice as many resources as a role with weight 1.</p>
 
 <h2>Wiring up a custom allocator</h2>
 

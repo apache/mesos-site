@@ -83,7 +83,7 @@
 	<div class="col-md-8">
 		<h1>Mesos Fetcher Cache Internals</h1>
 
-<p>It assumed that readers of this document are well familiar with the contents of the overview and user guide of the Mesos fetcher in &ldquo;fetcher.md&rdquo;. The present document makes direct references to notions defined in the former.</p>
+<p>It assumed that readers of this document are familiar with the contents of the <a href="/documentation/latest/fetcher/">Mesos fetcher user guide</a>. The present document makes direct references to notions defined in the former.</p>
 
 <h2>Design goals for the initial fetcher cache prototype:</h2>
 
@@ -97,9 +97,13 @@
 </ol>
 
 
-<p>For future releases, we foresee additional features:
-1. Automatic refreshing of cache content when a URI&rsquo;s content has changed.
-2. Prefetching URIs for subsequent tasks. Prefetching can run in parallel with task execution.</p>
+<p>For future releases, we foresee additional features:</p>
+
+<ol>
+<li>Automatic refreshing of cache content when a URI&rsquo;s content has changed.</li>
+<li>Prefetching URIs for subsequent tasks. Prefetching can run in parallel with task execution.</li>
+</ol>
+
 
 <h2>How the fetcher cache works</h2>
 
@@ -138,7 +142,7 @@
 
 <p>The fetcher process uses a private instance of class Cache to represent what URIs are cached, where the respective cache files are, what stage of processing they are in, and so on.</p>
 
-<p>The main data structure to hold all this information is a hashmap from URI/user combinations to Cache::Entry objects, which each contain information about an individual cache file on disk. These objects are referenced by shared_ptr, because they can be addressed by multiple callbacks on behalf of concurrent fetch attempts while also being held in the hashmap.</p>
+<p>The main data structure to hold all this information is a hashmap from URI/user combinations to <code>Cache::Entry</code> objects, which each contain information about an individual cache file on disk. These objects are referenced by shared_ptr, because they can be addressed by multiple callbacks on behalf of concurrent fetch attempts while also being held in the hashmap.</p>
 
 <p>A cache entry corresponds directly to a cache file on disk throughout the entire life time of the latter, including before and after its existence. It holds all pertinent state to inform about the phase and results of fetching the corresponding URI.</p>
 
@@ -150,10 +154,14 @@
 
 <p>The two blue states are essentially the same: no cache file exists. The two green disk states on the right are also the same.</p>
 
-<p>The figure only depicts what happens from the point of view of one isolated fetch run. Any given cache entry can be referenced simultaniously by another concurrent fetch run. It must not be evicted as long as it is referenced by any fetching activity. We implement this by reference counting. Every cache entry has a reference count field that gets incremented at the beginning of its use by a fetch run and decremented at its end. The latter must happen no matter whether the run has been successful or whether there has been an error. Increments happen when:
-- A new cache entry is created. It is immediately referenced.
-- An existing cache entry&rsquo;s file download is going to be waited for.
-- An existing cache entry has a resident cache file that is going to be retrieved.</p>
+<p>The figure only depicts what happens from the point of view of one isolated fetch run. Any given cache entry can be referenced simultaniously by another concurrent fetch run. It must not be evicted as long as it is referenced by any fetching activity. We implement this by reference counting. Every cache entry has a reference count field that gets incremented at the beginning of its use by a fetch run and decremented at its end. The latter must happen no matter whether the run has been successful or whether there has been an error. Increments happen when:</p>
+
+<ul>
+<li>A new cache entry is created. It is immediately referenced.</li>
+<li>An existing cache entry&rsquo;s file download is going to be waited for.</li>
+<li>An existing cache entry has a resident cache file that is going to be retrieved.</li>
+</ul>
+
 
 <p>Every increment is recorded in a list. At the very end of the fetch procedure, no matter what its outcome is, each entry in the list gets its reference count decremented.</p>
 
@@ -165,16 +173,24 @@
 
 <p><img src="images/fetch_flow.jpg?raw=true" alt="Determining Fetcher Actions" /></p>
 
-<p>After going through this procedure for each URI, the fetcher process assembles the gathered list of per-URI actions into a JSON object (FetcherInfo), which is passed to the mesos-fetcher program in an environment variable. The possible fetch actions for a URI are shown at the bottom of the flow chart. After they are determined, the fetcher process invokes mesos-fetcher.</p>
+<p>After going through this procedure for each URI, the fetcher process assembles the gathered list of per-URI actions into a JSON object (<code>FetcherInfo</code>), which is passed to the mesos-fetcher program in an environment variable. The possible fetch actions for a URI are shown at the bottom of the flow chart. After they are determined, the fetcher process invokes mesos-fetcher.</p>
 
 <p>The implementation is oriented at this control flow but its code structure cannot match it directly, because some of these branches must span multiple libprocess continuations. There are two layers of futures, one for each of these phases.</p>
 
 <ol>
-<li>Before making fetcher cache items.</li>
-<li>a) Wait for concurrent downloads for pre-existing cache entries</li>
-<li><p>b) Wait for size fetching combined and then space reservation for new cache entries.</p></li>
-<li><p>After making fetcher cache items and running mesos-fetcher.</p></li>
+<li> Before making fetcher cache items,
+
+<ol type="a">
+<li>Wait for concurrent downloads for pre-existing cache entries.</li>
+<li>Wait for size fetching combined and then space reservation for new cache entries.</li>
+</ol>
+</li>
+<li> After making fetcher cache items and running mesos-fetcher,
+
+<ol type="a">
 <li>Complete new cache items with success/failure, which as an important side-effect informs concurrent fetch runs' futures in phase 1/a.</li>
+</ol>
+</li>
 </ol>
 
 
@@ -192,9 +208,13 @@
 
 <p>The resources named &ldquo;A&rdquo; and &ldquo;B&rdquo; have been fetched with caching into sandbox 1 and 2 below. In the course of this, two cache entries have been created and two files have been downloaded into the cache and named &ldquo;1&rdquo; and &ldquo;2&rdquo;. (Cache file names have unique names that comprise serial numbers.)</p>
 
-<p>The next figure illustrates the state after fetching a different cached URI into sandbox 3, which in this case requires evicting a cache-resident file and its entry. Cache eviction removes cache entries in the order of the least recently used cache entries. Steps if &ldquo;A&rdquo; was fetched before &ldquo;B&rdquo;:
-1. Remove the cache entry for &ldquo;A&rdquo; from the fetcher process' cache entry table. Its faded depiction is supposed to indicate this. This immediately makes it appear as if the URI has never been cached, even though the cache file is still around.
-2. Proceed with fetching &ldquo;C&rdquo;. This creates a new cache file, which has a different unique name. (The fetcher process remembers in its cache entry which file name belongs to which URI.)</p>
+<p>The next figure illustrates the state after fetching a different cached URI into sandbox 3, which in this case requires evicting a cache-resident file and its entry. Cache eviction removes cache entries in the order of the least recently used cache entries. Steps if &ldquo;A&rdquo; was fetched before &ldquo;B&rdquo;:</p>
+
+<ol>
+<li>Remove the cache entry for &ldquo;A&rdquo; from the fetcher process' cache entry table. Its faded depiction is supposed to indicate this. This immediately makes it appear as if the URI has never been cached, even though the cache file is still around.</li>
+<li>Proceed with fetching &ldquo;C&rdquo;. This creates a new cache file, which has a different unique name. (The fetcher process remembers in its cache entry which file name belongs to which URI.)</li>
+</ol>
+
 
 <p><img src="images/fetch_evict2.jpg?raw=true" alt="After eviction" /></p>
 

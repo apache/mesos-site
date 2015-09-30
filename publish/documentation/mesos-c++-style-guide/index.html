@@ -83,7 +83,17 @@
 	<div class="col-md-8">
 		<h1>Mesos C++ Style Guide</h1>
 
-<p>The Mesos codebase follows the <a href="http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml">Google C++ Style Guide</a> with the following differences:</p>
+<p>The Mesos codebase follows the <a href="http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml">Google C++ Style Guide</a> with some notable differences, as described below. Note that the <a href="/documentation/latest/clang-format/">clang-format</a> tool can be helpful to ensure that some of the mechanical style rules are obeyed.</p>
+
+<h2>Scoping</h2>
+
+<h3>Namespaces</h3>
+
+<ul>
+<li>We avoid <code>using namespace foo</code> statements as it is not explicit about which symbols are pulled in, and it can often pull in a lot of symbols, which sometimes lead to conflicts.</li>
+<li>It is OK to use namespace aliases to help pull in sub-namespaces, such as <code>namespace http = process::http;</code>. These should only be present at the top of the .cpp file.</li>
+</ul>
+
 
 <h2>Naming</h2>
 
@@ -126,13 +136,6 @@ void Slave::statusUpdate(StatusUpdate update, const UPID&amp; pid)
 
 <ul>
 <li>We use <a href="http://en.wikipedia.org/wiki/CamelCase#Variations_and_synonyms">lowerCamelCase</a> for function names (Google uses mixed case for regular functions; and their accessors and mutators match the name of the variable).</li>
-</ul>
-
-
-<h3>Namespace Names</h3>
-
-<ul>
-<li>We do not use namespace aliases.</li>
 </ul>
 
 
