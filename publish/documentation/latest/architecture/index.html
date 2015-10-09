@@ -83,11 +83,11 @@
 	<div class="col-md-8">
 		<h1>Mesos Architecture</h1>
 
-<p><img src="http://mesos.apache.org/assets/img/documentation/architecture3.jpg" alt="Mesos Architecture" /></p>
+<p><img src="images/architecture3.jpg" alt="Mesos Architecture" /></p>
 
 <p>The above figure shows the main components of Mesos.  Mesos consists of a <em>master</em> daemon that manages <em>slave</em> daemons running on each cluster node, and <em>mesos applications</em> (also called <em>frameworks</em>) that run <em>tasks</em> on these slaves.</p>
 
-<p>The master enables fine-grained sharing of resources (cpu, ram, &hellip;) across applications by making them <em>resource offers</em>. Each resource offer contains a list of <slave ID, resource1: amount1, resource2, amount2, ...>.  The master decides <em>how many</em> resources to offer to each framework according to a given organizational policy, such as fair sharing, or strict priority. To support a diverse set of policies, the master employs a modular architecture that makes it easy to add new allocation modules via a plugin mechanism.</p>
+<p>The master enables fine-grained sharing of resources (cpu, ram, &hellip;) across applications by making them <em>resource offers</em>. Each resource offer contains a list of &lt;slave ID, resource1: amount1, resource2, amount2, &hellip;&gt;.  The master decides <em>how many</em> resources to offer to each framework according to a given organizational policy, such as fair sharing, or strict priority. To support a diverse set of policies, the master employs a modular architecture that makes it easy to add new allocation modules via a plugin mechanism.</p>
 
 <p>A framework running on top of Mesos consists of two components: a <em>scheduler</em> that registers with the master to be offered resources, and an <em>executor</em> process that is launched on slave nodes to run the framework&rsquo;s tasks (/documentation/latest/see the <a href="app-framework-development-guide/">App/Framework development guide</a> for more details about application schedulers and executors). While the master determines <strong>how many</strong> resources are offered to each framework, the frameworks' schedulers select <strong>which</strong> of the offered resources to use. When a frameworks accepts offered resources, it passes to Mesos a description of the tasks it wants to run on them. In turn, Mesos launches the tasks on the corresponding slaves.</p>
 
@@ -95,7 +95,7 @@
 
 <p>The figure below shows an example of how a framework gets scheduled to run a task.</p>
 
-<p><img src="http://mesos.apache.org/assets/img/documentation/architecture-example.jpg" alt="Mesos Architecture" /></p>
+<p><img src="images/architecture-example.jpg" alt="Mesos Architecture" /></p>
 
 <p>Let&rsquo;s walk through the events in the figure.</p>
 
