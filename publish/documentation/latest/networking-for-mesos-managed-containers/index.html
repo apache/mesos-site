@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+		    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+		    <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
+		    
+		    <link href="../../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+				
+		    
+			
+			<!-- Google Analytics Magic -->
+			<script type="text/javascript">
+			  var _gaq = _gaq || [];
+			  _gaq.push(['_setAccount', 'UA-20226872-1']);
+			  _gaq.push(['_setDomainName', 'apache.org']);
+			  _gaq.push(['_trackPageview']);
+
+			  (function() {
+			    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			  })();
+			</script>
+    </head>
+    <body>
+			<!-- magical breadcrumbs -->
+			<div class="topnav">
+			<ul class="breadcrumb">
+			  <li>
+					<div class="dropdown">
+					  <a data-toggle="dropdown" href="#">Apache Software Foundation <span class="caret"></span></a>
+					  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+							<li><a href="http://www.apache.org">Apache Homepage</a></li>
+							<li><a href="http://www.apache.org/licenses/">License</a></li>
+					  	<li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>  
+					  	<li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+							<li><a href="http://www.apache.org/security/">Security</a></li>
+					  </ul>
+					</div>
+				</li>
+				<li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+				
+				
+					<li><a href="/documentation
+/">Documentation
+</a></li>
+				
+				
+			</ul><!-- /breadcrumb -->
+			</div>
+			
+			<!-- navbar excitement -->
+	    <div class="navbar navbar-static-top" role="navigation">
+	      <div class="navbar-inner">
+	        <div class="container">
+						<a href="/" class="logo"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo" /></a>
+					<div class="nav-collapse">
+						<ul class="nav nav-pills navbar-right">
+						  <li><a href="/gettingstarted/">Getting Started</a></li>
+						  <li><a href="/documentation/latest/">Documentation</a></li>
+						  <li><a href="/downloads/">Downloads</a></li>
+						  <li><a href="/community/">Community</a></li>
+						</ul>
+					</div>
+	        </div>
+	      </div>
+	    </div><!-- /.navbar -->
+
+      <div class="container">
+
+			<div class="row-fluid">
+	<div class="col-md-4">
+		<h4>If you're new to Mesos</h4>
+		<p>See the <a href="/gettingstarted/">getting started</a> page for more information about downloading, building, and deploying Mesos.</p>
+		
+		<h4>If you'd like to get involved or you're looking for support</h4>
+		<p>See our <a href="/community/">community</a> page for more details.</p>
+	</div>
+	<div class="col-md-8">
+		<h1>Networking for Mesos-managed containers</h1>
+
+<p>While networking plays a key role in data center infrastructure, it is &ndash; for
+now &ndash; beyond the scope of Mesos to try to address the concerns of networking
+setup, topology and performance. However, Mesos can ease integrations with
+existing networking solutions and enable features, like IP per container,
+task-granular task isolation and service discovery. More often than not, it
+will be challenging to provide a one-size-fits-all networking solution. The
+requirements and available solutions will vary across all cloud-only,
+on-premise, and hybrid deployments.</p>
+
+<p>One of the primary goals for the networking support in Mesos was to have a
+pluggable mechanism to allow users to enable custom networking solution as
+needed. As a result, several extensions were added to Mesos components in
+version 0.25.0 to enable networking support. Further, all the extensions are
+opt-in to allow older frameworks and applications without networking support to
+coexist with the newer ones.</p>
+
+<p>The rest of this document describes the overall architecture of all the involved
+components, configuration steps for enabling IP-per-container, and required
+framework changes.</p>
+
+<h2>How does it work?</h2>
+
+<p><img src="images/networking-architecture.png" alt="Mesos Networking Architecture" /></p>
+
+<p>A key observation is that the networking support is enabled via a Mesos module
+and thus the Mesos master and agents are completely oblivious of it. It is
+completely up to the networking module to provide the desired support. Next,
+the IP requests are provided on a best effort manner. Thus, the framework should
+be willing to handle ignored (in cases where the module(s) are not present) or
+declined (the IPs can&rsquo;t be assigned due to various reasons) requests.</p>
+
+<p>To maximize backwards-compatibility with existing frameworks, schedulers must
+opt-in to network isolation per-container. Schedulers opt in to network
+isolation using new data structures in the TaskInfo message.</p>
+
+<h3>Terminology</h3>
+
+<ul>
+<li><p>IP Address Management (IPAM) Server</p>
+
+<ul>
+<li>assigns IPs on demand</li>
+<li>recycles IPs once they have been released</li>
+<li>(optionally) can tag IPs with a given string/id.</li>
+</ul>
+</li>
+<li><p>IPAM client</p>
+
+<ul>
+<li>tightly coupled with a particular IPAM server</li>
+<li>acts as a bridge between the &ldquo;Network Isolator Module&rdquo; and the IPAM server</li>
+<li>communicates with the server to request/release IPs</li>
+</ul>
+</li>
+<li><p>Network Isolator Module (NIM):</p>
+
+<ul>
+<li>a Mesos module for the Agent implementing the <code>Isolator</code> interface</li>
+<li>looks at TaskInfos to detect the IP requirements for the tasks</li>
+<li>communicates with the IPAM client to request/release IPs</li>
+<li>communicates with an external network virtualizer/isolator to enable network
+isolation</li>
+</ul>
+</li>
+<li><p>Cleanup Module:</p>
+
+<ul>
+<li>responsible for doing a cleanup (releasing IPs, etc.) during a Agent lost
+event, dormant otherwise</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Framework requests IP address for containers</h3>
+
+<ol>
+<li><p>A Mesos framework uses the TaskInfo message to requests IPs for each
+container being launched. (The request is ignored if the Mesos cluster
+doesn&rsquo;t have support for IP-per-container.)</p></li>
+<li><p>Mesos Master processes TaskInfos and forwards them to the Agent for launching
+tasks.</p></li>
+</ol>
+
+
+<h3>Network isolator module gets IP from IPAM server</h3>
+
+<ol>
+<li><p>Mesos Agent inspects the TaskInfo to detect the container requirements
+(MesosContainerizer in this case) and prepares various Isolators for the
+to-be-launched container.</p>
+
+<ul>
+<li>The NIM inspects the TaskInfo to decide whether to enable network isolator
+or not.</li>
+</ul>
+</li>
+<li><p>If network isolator is to be enabled, NIM requests IP address(es) via IPAM
+  client and informs the Agent.</p></li>
+</ol>
+
+
+<h3>Agent launches container with a network namespace</h3>
+
+<ol>
+<li>The Agent launches a container within a new network namespace.
+
+<ul>
+<li>The Agent calls into NIM to perform &ldquo;isolation&rdquo;</li>
+<li>The NIM then calls into network virtualizer to isolate the container.</li>
+</ul>
+</li>
+</ol>
+
+
+<h3>Network virtualizer assigns IP address to the container and isolates it.</h3>
+
+<ol>
+<li>NIM then &ldquo;decorates&rdquo; the TaskStatus with the IP information.
+
+<ul>
+<li>The IP address(es) from TaskStatus are made available at Master&rsquo;s
+state endpoint.</li>
+<li>The TaskStatus is also forwarded to the framework to inform it of the IP
+addresses.</li>
+<li>When a task is killed or lost, NIM communicates with IPAM client to release
+corresponding IP address(es).</li>
+</ul>
+</li>
+</ol>
+
+
+<h3>Cleanup module detects lost Agents and performs cleanup</h3>
+
+<ol>
+<li><p>The cleanup module gets notified if there is an Agent-lost event.</p></li>
+<li><p>The cleanup module communicates with the IPAM client to release all IP
+address(es) associated with the lost Agent. The IPAM may have a grace period
+before the address(es) are recycled.</p></li>
+</ol>
+
+
+<h2>Configuration</h2>
+
+<p>The network isolator module is not part of standard Mesos distribution. However,
+there is an example implementation at https://github.com/mesosphere/net-modules.</p>
+
+<p>Once the network isolation module has been built into a shared dynamic library,
+we can load it into Mesos Agent (/documentation/latest/see <a href="modules/">modules documentation</a> on
+instructions for building and loading a module).</p>
+
+<h2>Enabling frameworks for IP-per-container capability</h2>
+
+<h3>NetworkInfo</h3>
+
+<p>A new NetworkInfo message has been introduced:</p>
+
+<pre><code class="{.proto}">message NetworkInfo {
+  enum Protocol {
+    IPv4 = 0,
+    IPv6 = 1
+  }
+
+  optional Protocol protocol = 1;
+
+  optional string ip_address = 2;
+
+  repeated string groups = 3;
+
+  optional Labels labels = 4;
+};
+</code></pre>
+
+<p>When requesting an IP address from the IPAM, one needs to set the <code>protocol</code>
+field to <code>IPv4</code> or <code>IPv6</code>. Setting <code>ip_address</code> to a valid IP address allows the
+framework to specify a static IP address for the container (if supported by the
+NIM). This is helpful in situations where a task must be bound to a particular
+IP address even as it is killed and restarted on a different node.</p>
+
+<h3>Examples of specifying network requirements</h3>
+
+<p>Frameworks wanting to enable IP per container, need to provide <code>NetworkInfo</code>
+message in TaskInfo. Here are a few examples:</p>
+
+<ol>
+<li><p>A request for one address of unspecified protocol version using the default
+command executor</p>
+
+<pre><code>TaskInfo {
+  ...
+  command: ...,
+  container: ContainerInfo {
+    network_infos: [
+      NetworkInfo {
+        protocol: None;
+        ip_address: None;
+        groups: [];
+        labels: None;
+      }
+    ]
+  }
+}
+</code></pre></li>
+<li><p>A request for one IPv4 and one IPv6 address, in two separate groups using the
+default command executor</p>
+
+<pre><code>TaskInfo {
+  ...
+  command: ...,
+  container: ContainerInfo {
+    network_infos: [
+      NetworkInfo {
+        protocol: IPv4;
+        ip_address: None;
+        groups: ["public"];
+        labels: None;
+      },
+      NetworkInfo {
+        protocol: IPv6;
+        ip_address: None;
+        groups: ["private"];
+        labels: None;
+      }
+    ]
+  }
+}
+</code></pre></li>
+<li><p>A request for a specific IP address using a custom executor</p>
+
+<pre><code>TaskInfo {
+  ...
+  executor: ExecutorInfo {
+    ...,
+    container: ContainerInfo {
+      network_infos: [
+        NetworkInfo {
+          protocol: None;
+          ip_address: "10.1.2.3";
+          groups: [];
+          labels: None;
+        }
+      ]
+    }
+  }
+}
+</code></pre></li>
+</ol>
+
+
+<p>NOTE: The Mesos Containerizer will reject any CommandInfo that has a ContainerInfo. For this reason, when opting in to network isolation when using the Mesos Containerizer, set TaskInfo.ContainerInfo.NetworkInfo.</p>
+
+<h2>Address Discovery</h2>
+
+<p>The NetworkInfo message allows frameworks to request IP address(es) to be
+assigned at task launch time on the Mesos agent.  After opting in to network
+isolation for a given executor’s container in this way, frameworks will need to
+know what address(es) were ultimately assigned in order to perform health
+checks, or any other out-of-band communication.</p>
+
+<p>This is accomplished by adding a new field to the TaskStatus message.</p>
+
+<pre><code class="{.proto}">message ContainerStatus {
+   repeated NetworkInfo network_infos;
+}
+
+message TaskStatus {
+  ...
+  optional ContainerStatus container;
+  ...
+};
+</code></pre>
+
+<p>Further, the container IP addresses are also exposed via Master&rsquo;s state
+endpoint. The JSON output from Master&rsquo;s state endpoint contains a list of task
+statuses. If a task&rsquo;s container was started with it&rsquo;s own IP address, the
+assigned IP address will be exposed as part of the <code>TASK_RUNNING</code> status.</p>
+
+<p>NOTE: Since per-container address(es) are strictly opt-in from the framework,
+the framework may ignore the IP address(es) provided in StatusUpdate if it
+didn&rsquo;t set NetworkInfo in the first place.</p>
+
+<h2>Writing a Custom Network Isolator Module</h2>
+
+<p>A network isolator module implements the Isolator interface provided by Mesos.
+The module is loaded as a dynamic shared library in to the Mesos Agent and gets
+hooked up in the container launch sequence. A network isolator may communicate
+with external IPAM and network virtualizer tools to fulfill framework
+requirements.</p>
+
+<p>In terms of the Isolator API, there are three key callbacks that a network
+isolator module should implement:</p>
+
+<ol>
+<li><p><code>Isolator::prepare()</code> provides the module with a chance to decide whether or
+not the enable network isolation for the given task container. If the network
+isolation is to be enabled, the Isolator::prepare call would inform the Agent
+to create a private network namespace for the coordinator. It is this
+interface, that will also generate an IP address (statically or with the help
+of an external IPAM agent) for the container.</p></li>
+<li><p><code>Isolator::isolate()</code> provide the module with the opportunity to <em>isolate</em>
+the container <em>after</em> it has been created but before the executor is launched
+inside the container. This would involve creating virtual ethernet adapter
+for the container and assigning it an IP address. The module can also use
+help of an external network virtualizer/isolator for setting up network for
+the container.</p></li>
+<li><p><code>Isolator::cleanup()</code> is called when the container terminates. This allows the
+module to perform any cleanups such as recovering resources and releasing IP
+addresses as needed.</p></li>
+</ol>
+
+
+	</div>
+</div>
+
+			
+	      <hr>
+
+				<!-- footer -->
+	      <div class="footer">
+	        <p>&copy; 2012-2015 <a href="http://apache.org">The Apache Software Foundation</a>.
+	        Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.<p>
+	      </div><!-- /footer -->
+
+	    </div> <!-- /container -->
+
+	    <!-- JS -->
+	    <script src="//code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+			<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="text/javascript"></script>
+    </body>
+</html>
