@@ -99,7 +99,7 @@ filesystem.</p>
 
 <p>The modifications are specified in the ContainerInfo included in the
 ExecutorInfo, either by a framework or by using the
-&ndash;default_container_info slave flag.</p>
+<code>--default_container_info</code> slave flag.</p>
 
 <p>ContainerInfo specifies Volumes which map parts of the shared
 filesystem (host_path) into the container&rsquo;s view of the filesystem
@@ -113,8 +113,8 @@ must exist) in the shared filesystem.</p>
 
 <p>The primary use-case for this isolator is to selectively make parts of
 the shared filesystem private to each container. For example, a
-private &ldquo;/tmp&rdquo; directory can be achieved with host_path=&ldquo;tmp&rdquo; and
-container_path=&ldquo;/tmp&rdquo; which will create a directory &ldquo;tmp&rdquo; inside the
+private &ldquo;/tmp&rdquo; directory can be achieved with <code>host_path="tmp"</code> and
+<code>container_path="/tmp"</code> which will create a directory &ldquo;tmp&rdquo; inside the
 executor&rsquo;s work directory (mode 1777) and simultaneously mount it as
 /tmp inside the container. This is transparent to processes running
 inside the container. Containers will not be able to see the host&rsquo;s
@@ -123,13 +123,17 @@ inside the container. Containers will not be able to see the host&rsquo;s
 <h3>Pid Namespace</h3>
 
 <p>The Pid Namespace isolator can be used to isolate each container in
-a separate pid namespace with two main benefits:
-1. Visibility: Processes running in the container (executor and
-   descendants) are unable to see or signal processes outside the
-   namespace.
-2. Clean termination: Termination of the leading process in a pid
-   namespace will result in the kernel terminating all other processes
-   in the namespace.</p>
+a separate pid namespace with two main benefits:</p>
+
+<ol>
+<li><p>Visibility: Processes running in the container (executor and
+descendants) are unable to see or signal processes outside the
+namespace.</p></li>
+<li><p>Clean termination: Termination of the leading process in a pid
+namespace will result in the kernel terminating all other processes
+in the namespace.</p></li>
+</ol>
+
 
 <p>The Launcher will use (2) during destruction of a container in
 preference to the freezer cgroup, avoiding known kernel issues related

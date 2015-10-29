@@ -81,7 +81,13 @@
 		<p>See our <a href="/community/">community</a> page for more details.</p>
 	</div>
 	<div class="col-md-8">
-		<h1>Configuration</h1>
+		<h1>SSL in Mesos</h1>
+
+<p>By default, all the messages that flow through the Mesos cluster are unencrypted, making it possible for anyone with access to the cluster to intercept and potentially control arbitrary tasks.</p>
+
+<p>SSL/TLS support was added to libprocess in Mesos 0.23.0, which encypts the low-level communication that Mesos uses for network communication between Mesos components.  Additionally, HTTPS support was added to the Mesos WebUI.</p>
+
+<h1>Configuration</h1>
 
 <p>There is currently only one implementation of the <a href="https://github.com/apache/mesos/blob/master/3rdparty/libprocess/include/process/socket.hpp">libprocess socket interface</a> that supports SSL. This implementation uses <a href="https://github.com/libevent/libevent">libevent</a>. Specifically it relies on the <code>libevent-openssl</code> library that wraps <code>openssl</code>.</p>
 
@@ -96,19 +102,27 @@
 
 <h4>SSL_ENABLED=(false|0,true|1) [default=false|0]</h4>
 
-<p>Turn on or off SSL. When it is turned off it is the equivalent of default mesos with libevent as the backing for events. All sockets default to the non-SSL implementation. When it is turned on, the default configuration for sockets is SSL. This means outgoing connections will use SSL, and incoming connections will be expected to speak SSL as well. None of the below flags are relevant if SSL is not enabled.</p>
+<p>Turn on or off SSL. When it is turned off it is the equivalent of default mesos with libevent as the backing for events. All sockets default to the non-SSL implementation. When it is turned on, the default configuration for sockets is SSL. This means outgoing connections will use SSL, and incoming connections will be expected to speak SSL as well. None of the below flags are relevant if SSL is not enabled.  If SSL is enabled, <code>SSL_CERT_FILE</code> and <code>SSL_KEY_FILE</code> must be supplied.</p>
 
 <h4>SSL_SUPPORT_DOWNGRADE=(false|0,true|1) [default=false|0]</h4>
 
 <p>Control whether or not non-SSL connections can be established. If this is enabled <strong>on the accepting side</strong>, then the accepting side will downgrade to a non-SSL socket if the connecting side is attempting to communicate via non-SSL. (e.g. HTTP). See <a href="#Upgrading">Upgrading Your Cluster</a> for more details.</p>
 
+<h4>SSL_KEY_FILE=(path to key)</h4>
+
+<p>The location of the private key used by OpenSSL.</p>
+
+<pre><code>// For example, to generate a key with OpenSSL:
+openssl genrsa -des3 -f4 -passout pass:some_password -out key.pem 4096
+</code></pre>
+
 <h4>SSL_CERT_FILE=(path to certificate)</h4>
 
 <p>The location of the certificate that will be presented.</p>
 
-<h4>SSL_KEY_FILE=(path to key)</h4>
-
-<p>The location of the private key used by OpenSSL.</p>
+<pre><code>// For example, to generate a certificate with OpenSSL:
+openssl req -new -x509 -passin pass:some_password -days 365 -key key.pem -out cert.pem
+</code></pre>
 
 <h4>SSL_VERIFY_CERT=(false|0,true|1) [default=false|0]</h4>
 
@@ -184,6 +198,8 @@ SSL_ENABLED=true SSL_SUPPORT_DOWNGRADE=false SSL_KEY_FILE=&lt;path-to-your-priva
 <h1><a name="WebUI"></a>WebUI</h1>
 
 <p>The default Mesos WebUI uses relative links. Some of these links transition between endpoints served by the master and slaves. The WebUI currently does not have enough information to change the &lsquo;http&rsquo; vs &lsquo;https&rsquo; links based on whether the target endpoint is currently being served by an SSL-enabled binary. This may cause certain links in the WebUI to be broken when a cluster is in a transition state between SSL and non-SSL. Any tools that hit these endpoints will still be able to access them as long as they hit the endpoint using the right protocol, or the <code>SSL_SUPPORT_DOWNGRADE</code> option is set to true.</p>
+
+<p><strong>NOTE:</strong> Frameworks with their own WebUI will need to add HTTPS support separately.</p>
 
 <h3>Certificates</h3>
 

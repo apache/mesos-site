@@ -1022,7 +1022,7 @@ file:///path/to/file (where file contains one of the above)</code></pre>
   </tr>
   <tr>
     <td>
-      --docker_sock=VALUE
+      --docker_socket=VALUE
     </td>
     <td>
       The UNIX socket path to be mounted into the docker executor container to
@@ -1389,15 +1389,6 @@ file:///path/to/file (where file contains one of the above)</code></pre>
   </tr>
   <tr>
     <td>
-      --resource_monitoring_interval=VALUE
-    </td>
-    <td>
-      Periodic time interval for monitoring executor
-      resource usage (e.g., 10secs, 1min, etc) (default: 1secs)
-    </td>
-  </tr>
-  <tr>
-    <td>
       --resources=VALUE
     </td>
     <td>
@@ -1447,9 +1438,13 @@ file:///path/to/file (where file contains one of the above)</code></pre>
       --[no-]switch_user
     </td>
     <td>
-      Whether to run tasks as the user who
-      submitted them rather than the user running
-      the slave (requires setuid permission) (default: true)
+      If set to `true`, the agent will attempt to run tasks as
+      the `user` who launched them (as defined in `FrameworkInfo`)
+      (this requires `setuid` permission and that the given `user`
+      exists on the agent).
+      If the user does not exist, an error occurs and the task will fail.
+      If set to `false`, tasks will be run as the same user as the Mesos
+      agent process.  (default: true)
     </td>
   </tr>
   <tr>
@@ -1653,6 +1648,26 @@ file:///path/to/file (where file contains one of the above)</code></pre>
     <td>
 
       optimize for fast installation [default=yes]
+    </td>
+  </tr>
+  <tr>
+    <td>
+      --enable-libevent
+    </td>
+    <td>
+      use <a href="https://github.com/libevent/libevent">libevent</a>
+      instead of libev for the libprocess event loop [default=no].
+      Note that the libevent version 2+ development package is required
+    </td>
+  </tr>
+  <tr>
+    <td>
+      --enable-ssl
+    </td>
+    <td>
+      enable <a href="/documentation/latest/ssl">SSL</a> for libprocess
+      communication [default=no].
+      Note that --enable-libevent is currently required for SSL functionality
     </td>
   </tr>
   <tr>
@@ -1870,10 +1885,36 @@ file:///path/to/file (where file contains one of the above)</code></pre>
   </tr>
   <tr>
     <td>
+      --with-libevent=[=DIR]
+    </td>
+    <td>
+      specify where to locate the libevent library
+    </td>
+  </tr>
+  <tr>
+    <td>
+      --with-ssl=[=DIR]
+    </td>
+    <td>
+      specify where to locate the ssl library
+    </td>
+  </tr>
+  <tr>
+    <td>
       --with-network-isolator
     </td>
     <td>
       builds the network isolator
+    </td>
+  </tr>
+  <tr>
+    <td>
+      --with-nl=[=DIR]
+    </td>
+    <td>
+      specify where to locate the
+      <a href="https://www.infradead.org/~tgr/libnl/">libnl3</a> library
+      (required for the network isolator)
     </td>
   </tr>
 </table>
