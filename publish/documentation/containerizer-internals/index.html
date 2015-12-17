@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+		    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+		    <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
+		    
+		    <link href="../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+				
+		    
+			
+			<!-- Google Analytics Magic -->
+			<script type="text/javascript">
+			  var _gaq = _gaq || [];
+			  _gaq.push(['_setAccount', 'UA-20226872-1']);
+			  _gaq.push(['_setDomainName', 'apache.org']);
+			  _gaq.push(['_trackPageview']);
+
+			  (function() {
+			    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			  })();
+			</script>
+    </head>
+    <body>
+			<!-- magical breadcrumbs -->
+			<div class="topnav">
+			<ul class="breadcrumb">
+			  <li>
+					<div class="dropdown">
+					  <a data-toggle="dropdown" href="#">Apache Software Foundation <span class="caret"></span></a>
+					  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+							<li><a href="http://www.apache.org">Apache Homepage</a></li>
+							<li><a href="http://www.apache.org/licenses/">License</a></li>
+					  	<li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>  
+					  	<li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+							<li><a href="http://www.apache.org/security/">Security</a></li>
+					  </ul>
+					</div>
+				</li>
+				<li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+				
+				
+					<li><a href="/documentation
+/">Documentation
+</a></li>
+				
+				
+			</ul><!-- /breadcrumb -->
+			</div>
+			
+			<!-- navbar excitement -->
+	    <div class="navbar navbar-static-top" role="navigation">
+	      <div class="navbar-inner">
+	        <div class="container">
+						<a href="/" class="logo"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo" /></a>
+					<div class="nav-collapse">
+						<ul class="nav nav-pills navbar-right">
+						  <li><a href="/gettingstarted/">Getting Started</a></li>
+						  <li><a href="/documentation/latest/">Documentation</a></li>
+						  <li><a href="/downloads/">Downloads</a></li>
+						  <li><a href="/community/">Community</a></li>
+						</ul>
+					</div>
+	        </div>
+	      </div>
+	    </div><!-- /.navbar -->
+
+      <div class="container">
+
+			<div class="row-fluid">
+	<div class="col-md-4">
+		<h4>If you're new to Mesos</h4>
+		<p>See the <a href="/gettingstarted/">getting started</a> page for more information about downloading, building, and deploying Mesos.</p>
+		
+		<h4>If you'd like to get involved or you're looking for support</h4>
+		<p>See our <a href="/community/">community</a> page for more details.</p>
+	</div>
+	<div class="col-md-8">
+		<h1>Containerizer</h1>
+
+<p>Containerizers are Mesos components responsible for launching
+containers. They own the containers launched for the tasks/executors,
+and are responsible for their isolation, resource management, and
+events (e.g., statistics).</p>
+
+<h1>Containerizer internals</h1>
+
+<h3>Containerizer creation and launch</h3>
+
+<ul>
+<li>Agent creates a containerizer based on the flags (using slave flag
+<code>--containerizers</code>). If multiple containerizers (e.g., docker,
+mesos) are specified using the <code>--containerizers</code> flag, then the
+composing containerizer will be used to create a containerizer.</li>
+<li>If an executor is not specified in <code>TaskInfo</code>, Mesos agent will use
+the default executor for the task (depending on the Containerizer
+  the agent is using, it could be <code>mesos-executor</code> or
+<code>mesos-docker-executor</code>). TODO: Update this after MESOS-1718 is
+completed. After this change, master will be responsible for
+generating executor information.</li>
+</ul>
+
+
+<h3>Types of containerizers</h3>
+
+<p>Mesos currently supports the following containerizers:</p>
+
+<ul>
+<li>Composing</li>
+<li>Docker</li>
+<li>Mesos</li>
+<li>External (deprecated)</li>
+</ul>
+
+
+<h4>Composing Containerizer</h4>
+
+<p>Composing containerizer will compose the specified containerizers
+(using slave flag <code>--containerizers</code>) and act like a single
+containerizer. This is an implementation of <code>composite</code> design
+pattern.</p>
+
+<h4>Docker Containerizer</h4>
+
+<p>Docker containerizer manages containers using docker engine provided
+in the docker package.</p>
+
+<h5>Container launch</h5>
+
+<ul>
+<li>Docker containerizer will attempt to launch the task in docker only
+if <code>ContainerInfo::type</code> is set to DOCKER.</li>
+<li>Docker containerizer will first pull the image.</li>
+<li>Calls pre-launch hook.</li>
+<li>The executor will be launched in one of the two ways:</li>
+</ul>
+
+
+<p>A) Mesos agent runs in a docker container</p>
+
+<ul>
+<li>This is indicated by the presence of agent flag
+<code>--docker_mesos_image</code>. In this case, the value of flag
+<code>--docker_mesos_image</code> is assumed to be the docker image used to
+launch the Mesos agent.</li>
+<li>If the task uses an executor to run (not the default command
+executor), then that executor is launched in a docker container.</li>
+<li>If the task uses <code>TaskInfo</code>, then the default executor
+<code>mesos-docker-executor</code> is lunched in a docker container.</li>
+</ul>
+
+
+<p>B) Mesos agent does not run in a docker container</p>
+
+<ul>
+<li>If task uses <code>TaskInfo</code>, then it forks a subprocess to execute
+<code>mesos-docker-executor</code>. mesos-docker-executor spawns shell to
+execute docker commands (e.g., docker run).</li>
+<li>If the task uses a custom executor, then its launched in a docker
+container.</li>
+</ul>
+
+
+<h4>Mesos Containerizer</h4>
+
+<p>Mesos containerizer is the native Mesos containerizer. Mesos
+Containerizer will handle any executor/task that does not specify
+<code>ContainerInfo::DockerInfo</code>.</p>
+
+<h5>Container launch</h5>
+
+<ul>
+<li>Calls prepare on each isolator.</li>
+<li>Forks the executor using Launcher (see <a href="#Launcher">Launcher</a>). The
+forked child is blocked from executing until it is been isolated.</li>
+<li>Isolate the executor. Call isolate with the pid for each isolator
+(see <a href="#Isolators">Isolators</a>).</li>
+<li>Fetch the executor.</li>
+<li>Exec the executor. The forked child is signalled to continue. It
+will first execute any preparation commands from isolators and then
+exec the executor.</li>
+</ul>
+
+
+<p><a name="Launcher"></a></p>
+
+<h5>Launcher</h5>
+
+<p>Launcher is responsible for forking/destroying containers.</p>
+
+<ul>
+<li>Forks a new process in the containerized context. The child will
+exec the binary at the given path with the given argv, flags, and
+environment.</li>
+<li>The I/O of the child will be redirected according to the specified
+I/O descriptors.</li>
+</ul>
+
+
+<h6>Linux launcher</h6>
+
+<ul>
+<li>Creates a “freezer” cgroup for the container.</li>
+<li>Creates posix “pipe” to enable communication between host (parent
+process) and container process.</li>
+<li>Spawn child process(container process) using <code>clone</code> system call.</li>
+<li>Moves the new container process to the freezer hierarchy.</li>
+<li>Signals the child process to continue (exec’ing) by writing a
+character to the write end of the pipe in the parent process.</li>
+</ul>
+
+
+<h6>Posix launcher (TBD)</h6>
+
+<p><a name="Isolators"></a></p>
+
+<h5>Isolators</h5>
+
+<p>Isolators are responsible for creating an environment for the
+containers where resources like cpu, network, storage and memory can
+be isolated from other containers.</p>
+
+<h3>Containerizer states</h3>
+
+<h4>Docker</h4>
+
+<ul>
+<li>FETCHING</li>
+<li>PULLING</li>
+<li>RUNNING</li>
+<li>DESTROYING</li>
+</ul>
+
+
+<h4>Mesos</h4>
+
+<ul>
+<li>PREPARING</li>
+<li>ISOLATING</li>
+<li>FETCHING</li>
+<li>RUNNING</li>
+<li>DESTROYING</li>
+</ul>
+
+
+	</div>
+</div>
+
+			
+	      <hr>
+
+				<!-- footer -->
+	      <div class="footer">
+	        <p>&copy; 2012-2015 <a href="http://apache.org">The Apache Software Foundation</a>.
+	        Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.<p>
+	      </div><!-- /footer -->
+
+	    </div> <!-- /container -->
+
+	    <!-- JS -->
+	    <script src="//code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+			<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="text/javascript"></script>
+    </body>
+</html>

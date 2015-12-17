@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+		    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+		    <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
+		    
+		    <link href="../../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+				
+		    
+			
+			<!-- Google Analytics Magic -->
+			<script type="text/javascript">
+			  var _gaq = _gaq || [];
+			  _gaq.push(['_setAccount', 'UA-20226872-1']);
+			  _gaq.push(['_setDomainName', 'apache.org']);
+			  _gaq.push(['_trackPageview']);
+
+			  (function() {
+			    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			  })();
+			</script>
+    </head>
+    <body>
+			<!-- magical breadcrumbs -->
+			<div class="topnav">
+			<ul class="breadcrumb">
+			  <li>
+					<div class="dropdown">
+					  <a data-toggle="dropdown" href="#">Apache Software Foundation <span class="caret"></span></a>
+					  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+							<li><a href="http://www.apache.org">Apache Homepage</a></li>
+							<li><a href="http://www.apache.org/licenses/">License</a></li>
+					  	<li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>  
+					  	<li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+							<li><a href="http://www.apache.org/security/">Security</a></li>
+					  </ul>
+					</div>
+				</li>
+				<li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+				
+				
+					<li><a href="/documentation
+/">Documentation
+</a></li>
+				
+				
+			</ul><!-- /breadcrumb -->
+			</div>
+			
+			<!-- navbar excitement -->
+	    <div class="navbar navbar-static-top" role="navigation">
+	      <div class="navbar-inner">
+	        <div class="container">
+						<a href="/" class="logo"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo" /></a>
+					<div class="nav-collapse">
+						<ul class="nav nav-pills navbar-right">
+						  <li><a href="/gettingstarted/">Getting Started</a></li>
+						  <li><a href="/documentation/latest/">Documentation</a></li>
+						  <li><a href="/downloads/">Downloads</a></li>
+						  <li><a href="/community/">Community</a></li>
+						</ul>
+					</div>
+	        </div>
+	      </div>
+	    </div><!-- /.navbar -->
+
+      <div class="container">
+
+			<div class="row-fluid">
+	<div class="col-md-4">
+		<h4>If you're new to Mesos</h4>
+		<p>See the <a href="/gettingstarted/">getting started</a> page for more information about downloading, building, and deploying Mesos.</p>
+		
+		<h4>If you'd like to get involved or you're looking for support</h4>
+		<p>See our <a href="/community/">community</a> page for more details.</p>
+	</div>
+	<div class="col-md-8">
+		<h1>Mesos &ldquo;Sandbox&rdquo;</h1>
+
+<p>Mesos refers to the &ldquo;sandbox&rdquo; as a temporary directory that holds files specific
+to a single executor.  Each time an executor is run, the executor is given its
+own sandbox and the executor&rsquo;s working directory is set to the sandbox.</p>
+
+<h2>Sandbox files</h2>
+
+<p>The sandbox holds:</p>
+
+<ul>
+<li>Files <a href="/documentation/latest/fetcher/">fetched by Mesos</a>, prior to starting
+the executor&rsquo;s tasks.</li>
+<li>The output of the executor and tasks (as files &ldquo;stdout&rdquo; and &ldquo;stderr&rdquo;).</li>
+<li>Files created by the executor and tasks, with some exceptions.</li>
+</ul>
+
+
+<blockquote><p><strong>NOTE:</strong> With the introduction of
+<a href="/documentation/latest/persistent-volume/">persistent volumes</a>, executors
+and tasks should never create files outside of the sandbox.  However,
+some containerizers do not enforce this sandboxing.</p></blockquote>
+
+<h2><a name="where-is-it"></a>Where is the sandbox?</h2>
+
+<p>The sandbox is located within the agent&rsquo;s working directory (which is specified
+via the <code>--work_dir</code> flag).  To find a particular executor&rsquo;s sandbox, you must
+know the agent&rsquo;s ID, the executor&rsquo;s framework&rsquo;s ID, and the executor&rsquo;s ID.
+Each run of the executor will have a corresponding sandbox, denoted by a
+container ID.</p>
+
+<p>The sandbox is located on the agent, inside a directory tree like the following:</p>
+
+<pre><code>root ('--work_dir')
+|-- slaves
+|   |-- latest (symlink)
+|   |-- &lt;agent ID&gt;
+|       |-- frameworks
+|           |-- &lt;framework ID&gt;
+|               |-- executors
+|                   |-- &lt;executor ID&gt;
+|                       |-- runs
+|                           |-- latest (symlink)
+|                           |-- &lt;container ID&gt; (Sandbox!)
+</code></pre>
+
+<h2>Using the sandbox</h2>
+
+<blockquote><p><strong>NOTE:</strong> For anything other than Mesos, the executor, or the task(s), the
+sandbox should be considered a read-only directory.  This is not enforced via
+permissions, but the executor/tasks may malfunction if the sandbox is
+mutated unexpectedly.</p></blockquote>
+
+<h3>Via a file browser</h3>
+
+<p>If you have access to the machine running the agent, you can <a href="#where-is-it">navigate to the
+sandbox directory directly</a>.</p>
+
+<h3>Via the Mesos web UI</h3>
+
+<p>Sandboxes can be browsed and downloaded via the Mesos web UI.  Tasks and
+executors will be shown with a &ldquo;Sandbox&rdquo; link.  Any files that live in the
+sandbox will appear in the web UI.</p>
+
+<h3>Via the <code>/files</code> endpoint</h3>
+
+<p>Underneath the web UI, the files are fetched from the agent via the <code>/files</code>
+endpoint running on the agent.</p>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th width="30%">
+        Endpoint
+      </th>
+      <th>
+        Description
+      </th>
+    </tr>
+  </thead>
+
+  <tr>
+    <td>
+       <code>/files/browse?path=...</code>
+    </td>
+    <td>
+      Returns a JSON list of files and directories contained in the path.
+      Each list is a JSON object containing all the fields normally found in
+      <code>ls -l</code>.
+    </td>
+  </tr>
+  <tr>
+    <td>
+       <code>/files/debug</code>
+    </td>
+    <td>
+      Returns a JSON object holding the internal mapping of files managed by
+      this endpoint.  This endpoint can be used to quickly fetch the paths
+      of all files exposed on the agent.
+    </td>
+  </tr>
+  <tr>
+    <td>
+       <code>/files/download?path=...</code>
+    </td>
+    <td>
+      Returns the raw contents of the file located at the given path.
+      Where the file extension is understood, the <code>Content-Type</code>
+      header will be set appropriately.
+    </td>
+  </tr>
+  <tr>
+    <td>
+       <code>/files/read?path=...</code>
+    </td>
+    <td>
+      Reads a chunk of the file located at the given path and returns a JSON
+      object containing the read <code>"data"</code> and the
+      <code>"offset"</code> in bytes.
+      <blockquote>
+        <p>
+          <strong>NOTE:</strong> This endpoint is not designed to read
+          arbitrary binary files. Binary files may be returned as
+          invalid/un-parseable JSON.
+          Use <code>/files/download</code> instead.
+        </p>
+      </blockquote>
+      Optional query parameters:
+      <ul>
+        <li><code>offset</code> - can be used to page through the file.</li>
+        <li><code>length</code> - maximum size of the chunk to read.</li>
+      </ul>
+    </td>
+  </tr>
+</table>
+
+
+<h2>Sandbox size</h2>
+
+<p>The maximum size of the sandbox is dependent on the containerization of the
+executor and isolators :</p>
+
+<ul>
+<li>Mesos containerizer - For backwards compatibility, the Mesos containerizer
+does not enforce a container&rsquo;s disk quota by default.  However, if the
+<code>--enforce_container_disk_quota</code> flag is enabled on the agent, and
+<code>posix/disk</code> is specified in the <code>--isolation</code> flag, the executor
+will be killed if the sandbox size exceeds the executor&rsquo;s <code>disk</code> resource.</li>
+<li>Docker containerizer - As of Docker <code>1.9.1</code>, the Docker containerizer
+does not enforce nor support a disk quota.  See the
+<a href="https://github.com/docker/docker/issues/3804">Docker issue</a>.</li>
+<li><a href="/documentation/latest/external-containerizer/">External containerizer</a>.</li>
+</ul>
+
+
+<h2>Sandbox lifecycle</h2>
+
+<p>Sandbox files are scheduled for garbage collection when:</p>
+
+<ul>
+<li>An executor is removed or terminated.</li>
+<li>A framework is removed.</li>
+<li>An executor is recovered unsuccessfully during agent recovery.</li>
+</ul>
+
+
+<blockquote><p><strong>NOTE:</strong> During agent recovery, all of the executor&rsquo;s runs, except for the
+latest run, are scheduled for garbage collection as well.</p></blockquote>
+
+<p>Garbage collection is scheduled based on the <code>--gc_delay</code> agent flag.  By
+default, this is one week since the sandbox was last modified.
+After the delay, the files are deleted.</p>
+
+<p>Additionally, according to the <code>--disk_watch_interval</code> agent flag, files
+scheduled for garbage collection are pruned based on the available disk and
+the <code>--gc_disk_headroom</code> agent flag.
+See <a href="/documentation/latest/configuration/#gc_disk_headroom">the formula here</a>.</p>
+
+	</div>
+</div>
+
+			
+	      <hr>
+
+				<!-- footer -->
+	      <div class="footer">
+	        <p>&copy; 2012-2015 <a href="http://apache.org">The Apache Software Foundation</a>.
+	        Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.<p>
+	      </div><!-- /footer -->
+
+	    </div> <!-- /container -->
+
+	    <!-- JS -->
+	    <script src="//code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+			<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="text/javascript"></script>
+    </body>
+</html>
