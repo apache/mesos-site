@@ -151,8 +151,21 @@ void Slave::statusUpdate(StatusUpdate update, const UPID&amp; pid)
 <ul>
 <li>End each sentence within a comment with a punctuation mark (please note that we generally prefer periods); this applies to incomplete sentences as well.</li>
 <li>For trailing comments, leave one space.</li>
+<li>Use backticks when quoting code excerpts or object/variable/function names. For example:</li>
 </ul>
 
+
+<pre><code class="{.cpp}">// Use `SchedulerDriver::acceptOffers()` to send several offer
+// operations. This makes use of the `RESERVE()` and `UNRESERVE()`
+// helpers, which take a `Resources` object as input and produce
+// appropriate offer operations. Note that we are unreserving the
+// resources contained in `dynamicallyReserved1`.
+driver.acceptOffers({offer.id()},
+    {UNRESERVE(dynamicallyReserved1),
+     RESERVE(dynamicallyReserved2),
+     RESERVE(dynamicallyReserved3)},
+    filters);
+</code></pre>
 
 <h2>Breaks</h2>
 
@@ -230,9 +243,24 @@ allocator-&gt;resourcesRecovered(
 <h2>Empty Lines</h2>
 
 <ul>
-<li>1 blank line at the end of the file.</li>
-<li>Elements outside classes (classes, structs, global functions, etc.) should be spaced apart by 2 blank lines.</li>
-<li>Elements inside classes (member variables and functions) should not be spaced apart by more than 1 blank line.</li>
+<li>One empty line at the end of the file.</li>
+<li>Inside a code block, every multi-line statement should be followed by one empty line.</li>
+</ul>
+
+
+<pre><code class="{.cpp}">Try&lt;very_very_long_type&gt; long_name =
+    ::protobuf::parse&lt;very_very_long_type&gt;(
+        request);
+
+for (int i = 0; i &lt; very_very_long_expression();
+     i++) {
+  // No empty line here for control constructs.
+}
+</code></pre>
+
+<ul>
+<li>Elements outside classes (classes, structs, global functions, etc.) should be spaced apart by two empty lines.</li>
+<li>Elements inside classes (member variables and functions) should not be spaced apart by more than one empty line.</li>
 </ul>
 
 
@@ -321,69 +349,105 @@ s += "world"; // THIS IS A DANGLING REFERENCE!
 <ul>
 <li><p>Mesos source files must contain the &ldquo;ASF&rdquo; header:</p>
 
-<pre><code>  /**
-   * Licensed to the Apache Software Foundation (ASF) under one
-   * or more contributor license agreements.  See the NOTICE file
-   * distributed with this work for additional information
-   * regarding copyright ownership.  The ASF licenses this file
-   * to you under the Apache License, Version 2.0 (the
-   * "License"); you may not use this file except in compliance
-   * with the License.  You may obtain a copy of the License at
-   *
-   *     http://www.apache.org/licenses/LICENSE-2.0
-   *
-   * Unless required by applicable law or agreed to in writing, software
-   * distributed under the License is distributed on an "AS IS" BASIS,
-   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   * See the License for the specific language governing permissions and
-   * limitations under the License.
-   */
+<pre><code>   // Licensed to the Apache Software Foundation (ASF) under one
+   // or more contributor license agreements.  See the NOTICE file
+   // distributed with this work for additional information
+   // regarding copyright ownership.  The ASF licenses this file
+   // to you under the Apache License, Version 2.0 (the
+   // "License"); you may not use this file except in compliance
+   // with the License.  You may obtain a copy of the License at
+   //
+   //     http://www.apache.org/licenses/LICENSE-2.0
+   //
+   // Unless required by applicable law or agreed to in writing, software
+   // distributed under the License is distributed on an "AS IS" BASIS,
+   // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   // See the License for the specific language governing permissions and
+   // limitations under the License.
 </code></pre></li>
 <li><p>Stout and libprocess source files must contain the &ldquo;Apache License Version 2.0&rdquo; header:</p>
 
-<pre><code>  /**
-   * Licensed under the Apache License, Version 2.0 (the "License");
-   * you may not use this file except in compliance with the License.
-   * You may obtain a copy of the License at
-   *
-   *     http://www.apache.org/licenses/LICENSE-2.0
-   *
-   * Unless required by applicable law or agreed to in writing, software
-   * distributed under the License is distributed on an "AS IS" BASIS,
-   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   * See the License for the specific language governing permissions and
-   * limitations under the License
-   */
+<pre><code>   // Licensed under the Apache License, Version 2.0 (the "License");
+   // you may not use this file except in compliance with the License.
+   // You may obtain a copy of the License at
+   //
+   //     http://www.apache.org/licenses/LICENSE-2.0
+   //
+   // Unless required by applicable law or agreed to in writing, software
+   // distributed under the License is distributed on an "AS IS" BASIS,
+   // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   // See the License for the specific language governing permissions and
+   // limitations under the License
 </code></pre></li>
 </ul>
 
 
-<h2>C++11</h2>
+<h2>Order of includes</h2>
 
-<p>We support C++11 and require GCC 4.8+ or Clang 3.5+ compilers. The whitelist of supported C++11 features is:</p>
+<p>In addition to the ordering rules from the Google style guide, Mesos related headers are separated into sections. Newline to separate each section.
+Mesos related headers in <code>include</code> directories are partitioned by their subfolders, sorted alphabetically, and included using brackets.
+Header in <code>src</code> directories are included afterwards, using the same rules but with quotes instead of brackets.</p>
 
-<ul>
-<li>Static assertions.</li>
-<li>Multiple right angle brackets.</li>
-<li>Type inference (<code>auto</code> and <code>decltype</code>). The main goal is to increase code readability. This is safely the case if the exact same type omitted on the left is already fully stated on the right. Here are several examples:</li>
-</ul>
+<p>Example for <code>src/common/foo.cpp</code>:
+~~~{.cpp}</p>
 
+<h1>include &ldquo;common/foo.hpp&rdquo;</h1>
 
-<pre><code class="{.cpp}">// 1: OK.
+<h1>include &lt;stdint.h></h1>
+
+<h1>include <string></h1>
+
+<h1>include <vector></h1>
+
+<h1>include &lt;boost/circular_buffer.hpp></h1>
+
+<h1>include &lt;mesos/mesos.hpp></h1>
+
+<h1>include &lt;mesos/type_utils.hpp></h1>
+
+<h1>include &lt;mesos/module/authenticator.hpp></h1>
+
+<h1>include &lt;mesos/scheduler/scheduler.hpp></h1>
+
+<h1>include &lt;process/http.hpp></h1>
+
+<h1>include &lt;process/protobuf.hpp></h1>
+
+<h1>include &lt;stout/foreach.hpp></h1>
+
+<h1>include &lt;stout/hashmap.hpp></h1>
+
+<h1>include &ldquo;common/build.hpp&rdquo;</h1>
+
+<h1>include &ldquo;common/protobuf_utils.hpp&rdquo;</h1>
+
+<h1>include &ldquo;master/flags.hpp&rdquo;</h1>
+
+<pre><code>
+## C++11
+
+We support C++11 and require GCC 4.8+ or Clang 3.5+ compilers. The whitelist of supported C++11 features is:
+
+* Static assertions.
+* Multiple right angle brackets.
+* Type inference (`auto` and `decltype`). The main goal is to increase code readability. This is safely the case if the exact same type omitted on the left is already fully stated on the right. Here are several examples:
+</code></pre>
+
+<p>// 1: OK.
 const auto i = values.find(keys.front());
 // Compare with
-const typename map::iterator i = values.find(keys.front());
+const typename map::iterator i = values.find(keys.front());</p>
 
-// 2: OK.
-auto names = shared_ptr&lt;list&lt;string&gt;&gt;(new list&lt;string&gt;());
+<p>// 2: OK.
+auto names = shared_ptr&lt;list<string>>(new list<string>());
 // Compare with
-shared_ptr&lt;list&lt;string&gt;&gt; names = shared_ptr&lt;list&lt;string&gt;&gt;(new list&lt;string&gt;());
+shared_ptr&lt;list<string>> names = shared_ptr&lt;list<string>>(new list<string>());</p>
 
-// 3: Don't use.
+<p>// 3: Don&rsquo;t use.
 auto authorizer = LocalAuthorizer::create(acls);
 // Compare with
-Try&lt;Owned&lt;LocalAuthorizer&gt;&gt; authorizer = LocalAuthorizer::create();
-</code></pre>
+Try&lt;Owned<LocalAuthorizer>> authorizer = LocalAuthorizer::create();
+~~~</p>
 
 <ul>
 <li>Rvalue references.</li>

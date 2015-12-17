@@ -81,7 +81,7 @@
 		<p>See our <a href="/community/">community</a> page for more details.</p>
 	</div>
 	<div class="col-md-8">
-		<h1>Mesos High Availability Mode</h1>
+		<h1>Mesos High-Availability Mode</h1>
 
 <p>If the Mesos master is unavailable, existing tasks can continue to execute, but new resources cannot be allocated and new tasks cannot be launched. To reduce the chance of this situation occurring, Mesos has a high-availability mode that uses multiple Mesos masters: one active master (called the <em>leader</em> or leading master) and several <em>backups</em> in case it fails. The masters elect the leader, with <a href="http://zookeeper.apache.org/">Apache ZooKeeper</a> both coordinating the election and handling leader detection by masters, slaves, and scheduler drivers. More information regarding <a href="http://zookeeper.apache.org/doc/trunk/recipes.html#sc_leaderElection">how leader election works</a> is available on the Apache Zookeeper website.</p>
 
@@ -98,7 +98,7 @@
 <ul>
 <li><p>Start the mesos-master binaries using the <code>--zk</code> flag, e.g. <code>--zk=zk://host1:port1,host2:port2,.../path</code></p></li>
 <li><p>Start the mesos-slave binaries with <code>--master=zk://host1:port1,host2:port2,.../path</code></p></li>
-<li><p>Start any framework schedulers using the same <code>zk</code> path as in the last two steps. The SchedulerDriver must be constructed with this path, as shown in the <a href="http://mesos.apache.org/documentation/latest/app-framework-development-guide/">Framework Development Guide</a>.</p></li>
+<li><p>Start any framework schedulers using the same <code>zk</code> path as in the last two steps. The SchedulerDriver must be constructed with this path, as shown in the <a href="/documentation/latest/app-framework-development-guide/">Framework Development Guide</a>.</p></li>
 </ul>
 </li>
 </ol>
@@ -106,7 +106,7 @@
 
 <p>From now on, the Mesos masters and slaves all communicate with ZooKeeper to find out which master is the current leading master. This is in addition to the usual communication between the leading master and the slaves.</p>
 
-<p>Refer to the <a href="http://mesos.apache.org/documentation/latest/app-framework-development-guide/">Scheduler API</a> for how to deal with leadership changes.</p>
+<p>Refer to the <a href="/documentation/latest/app-framework-development-guide/">Scheduler API</a> for how to deal with leadership changes.</p>
 
 <h2>Component Disconnection Handling</h2>
 
@@ -134,7 +134,7 @@
 
 <ul>
 <li><p>The slave fails health checks from the leader.</p></li>
-<li><p>The leader marks the slave as deactivated and sends its tasks to the LOST state. The  <a href="http://mesos.apache.org/documentation/latest/app-framework-development-guide/">Framework Development Guide</a> describes these various task states.</p></li>
+<li><p>The leader marks the slave as deactivated and sends its tasks to the LOST state. The  <a href="/documentation/latest/app-framework-development-guide/">Framework Development Guide</a> describes these various task states.</p></li>
 <li><p>Deactivated slaves may not re-register with the leader and are told to shut down upon any post-deactivation communication.</p></li>
 </ul>
 

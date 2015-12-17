@@ -162,6 +162,7 @@ the master, slave, and configure flags.</p></li>
 a live cluster from the previous release version to this release version.</p></li>
 <li><p>If this is a major release, please ensure that user documentation has been
 added for any new features.</p></li>
+<li><p>Make sure that for any updates of the API, specifically the scheduler API, the public mesos protobuf definitions are part of both, <code>include/mesos</code> as well as <code>include/mesos/v1</code>. NOTE: This might actually demand code updates if any omissions were identified.</p></li>
 </ol>
 
 
@@ -192,7 +193,7 @@ It is recommended to use the <code>support/tag.sh</code> script to accomplish th
    You may need to modify your local copy of tag.sh for it to complete successfully.</p></blockquote></li>
 <li><p>It is not uncommon to release multiple release candidates, with increasing release candidate
 version, if there are bugs found.</p></li>
-<li><p>Update to the <em>next</em> Mesos version in <code>configure.ac</code>: change <code>AC_INIT([mesos], [X.Y.Z]))</code> and commit.</p></li>
+<li><p>Update to the <em>next</em> Mesos version in <code>configure.ac</code>: change <code>AC_INIT([mesos], [X.Y.Z]))</code>, as well as in <code>CMakeLists.txt</code>: change <code>set(MESOS_MAJOR_VERSION X)</code>, <code>set(MESOS_MINOR_VERSION Y)</code>, <code>set(MESOS_PATCH_VERSION Z)</code> and then commit.</p></li>
 </ol>
 
 

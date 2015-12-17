@@ -117,7 +117,47 @@ attribute : text ":" ( scalar | range | text )
 
 <h2>Resources</h2>
 
-<p>The Mesos system can manage 3 different <em>types</em> of resources: scalars, ranges, and sets.  These are used to represent the different resources that a Mesos slave has to offer.  For example, a scalar resource type could be used to represent the amount of memory on a slave.  Each resource is identified by a key string.</p>
+<p>The Mesos system can manage 3 different <em>types</em> of resources: scalars, ranges, and sets.  These are used to represent the different resources that a Mesos slave has to offer.  For example, a scalar resource type could be used to represent the amount of memory on a slave.  Resources can be specified either with a JSON array or a semicolon-delimited string of key:value pairs.  If, after examining the examples below, you have questions about the format of the JSON, inspect the <code>Resource</code> protobuf message definition in <code>include/mesos/mesos.proto</code>.</p>
+
+<p>As JSON:</p>
+
+<pre><code>[
+  {
+    "name": "&lt;resource_name&gt;",
+    "type": "SCALAR",
+    "scalar": {
+      "value": &lt;resource_value&gt;
+    }
+  },
+  {
+    "name": "&lt;resource_name&gt;",
+    "type": "RANGES",
+    "ranges": {
+      "range": [
+        {
+          "begin": &lt;range_beginning&gt;,
+          "end": &lt;range_ending&gt;
+        },
+        ...
+      ]
+    }
+  },
+  {
+    "name": "&lt;resource_name&gt;",
+    "type": "SET",
+    "set": {
+      "item": [
+        "&lt;first_item&gt;",
+        ...
+      ]
+    },
+    "role": "&lt;role_name&gt;"
+  },
+  ...
+]
+</code></pre>
+
+<p>As a list of key:value pairs:</p>
 
 <pre><code>resources : resource ( ";" resource )*
 
@@ -127,6 +167,8 @@ key : text ( "(" resourceRole ")" )?
 
 resourceRole : text | "*"
 </code></pre>
+
+<p>Note that <code>resourceRole</code> must be one of the <a href="/documentation/latest/roles/">roles</a> that was defined when the Mesos master was started.</p>
 
 <h2>Predefined Uses &amp; Conventions</h2>
 
@@ -146,22 +188,87 @@ resourceRole : text | "*"
 
 <p>Here are some examples for configuring the Mesos slaves.</p>
 
-<pre><code>--resources='cpus:24;mem:24576;disk:409600;ports:[21000-24000];bugs:{a,b,c}'
+<pre><code>--resources='cpus:24;mem:24576;disk:409600;ports:[21000-24000,30000-34000];bugs(debug_role):{a,b,c}'
+
+--resources='[{"name":"cpus","type":"SCALAR","scalar":{"value":24}},{"name":"mem","type":"SCALAR","scalar":{"value":24576}},{"name":"disk","type":"SCALAR","scalar":{"value":409600}},{"name":"ports","type":"RANGES","ranges":{"range":[{"begin":21000,"end":24000},{"begin":30000,"end":34000}]}},{"name":"bugs","type":"SET","set":{"item":["a","b","c"]},"role":"debug_role"}]'
+
 --attributes='rack:abc;zone:west;os:centos5;level:10;keys:[1000-1500]'
 </code></pre>
 
-<p>In this case, we have three different types of resources, scalars, a range, and a set.  They are called <code>cpus</code>, <code>mem</code>, <code>disk</code>, and the range type is <code>ports</code>.</p>
+<p>Or given a file <code>resources.txt</code> containing the following:</p>
+
+<pre><code>[
+  {
+    "name": "cpus",
+    "type": "SCALAR",
+    "scalar": {
+      "value": 24
+    }
+  },
+  {
+    "name": "mem",
+    "type": "SCALAR",
+    "scalar": {
+      "value": 24576
+    }
+  },
+  {
+    "name": "disk",
+    "type": "SCALAR",
+    "scalar": {
+      "value": 409600
+    }
+  },
+  {
+    "name": "ports",
+    "type": "RANGES",
+    "ranges": {
+      "range": [
+        {
+          "begin": 21000,
+          "end": 24000
+        },
+        {
+          "begin": 30000,
+          "end": 34000
+        }
+      ]
+    }
+  },
+  {
+    "name": "bugs",
+    "type": "SET",
+    "set": {
+      "item": [
+        "a",
+        "b",
+        "c"
+      ]
+    },
+    "role": "debug_role"
+  }
+]
+</code></pre>
+
+<p>You can do:</p>
+
+<pre><code>$ path/to/mesos-slave --resources=file:///path/to/resources.txt ...
+</code></pre>
+
+<p>In this case, we have five resources of three different types: scalars, a range, and a set.  There are scalars called <code>cpus</code>, <code>mem</code> and <code>disk</code>, a range called <code>ports</code>, and a set called <code>bugs</code>. <code>bugs</code> is assigned to the role <code>debug_role</code>, while the other resources do not specify a role and are thus assigned to the default role.</p>
+
+<p>Note: the &ldquo;default role&rdquo; can be set by the <code>--default_role</code> flag.</p>
 
 <ul>
 <li>scalar called <code>cpus</code>, with the value <code>24</code></li>
 <li>scalar called <code>mem</code>, with the value <code>24576</code></li>
 <li>scalar called <code>disk</code>, with the value <code>409600</code></li>
-<li>range called <code>ports</code>, with values <code>21000</code> through <code>24000</code> (inclusive)</li>
-<li>set called <code>bugs</code>, with the values <code>a</code>, <code>b</code> and <code>c</code></li>
+<li>range called <code>ports</code>, with values <code>21000</code> through <code>24000</code> and <code>30000</code> through <code>34000</code> (inclusive)</li>
+<li>set called <code>bugs</code>, with the values <code>a</code>, <code>b</code> and <code>c</code>, assigned to the role <code>debug_role</code></li>
 </ul>
 
 
-<p>In the case of attributes, we end up with three attributes:</p>
+<p>In the case of attributes, we end up with five attributes:</p>
 
 <ul>
 <li><code>rack</code> with text value <code>abc</code></li>

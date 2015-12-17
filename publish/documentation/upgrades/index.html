@@ -83,7 +83,7 @@
 	<div class="col-md-8">
 		<h1>Upgrading Mesos</h1>
 
-<p>This document serves as a guide for users who wish to upgrade an existing mesos cluster. Some versions require particular upgrade techniques when upgrading a running cluster. Some upgrades will have incompatible changes.</p>
+<p>This document serves as a guide for users who wish to upgrade an existing Mesos cluster. Some versions require particular upgrade techniques when upgrading a running cluster. Some upgrades will have incompatible changes.</p>
 
 <h2>Upgrading from 0.25.x to 0.26.x</h2>
 
@@ -94,6 +94,14 @@
 <li>REASON_EXECUTOR_PREEMPTED -> REASON_CONTAINER_PREEMPTED</li>
 </ul>
 
+
+<p><strong>NOTE</strong> The <code>Credential</code> protobuf has been changed. <code>Credential</code> field <code>secret</code> is now a string, it used to be bytes. This will affect framework developers and language bindings ought to update their generated protobuf with the new version. This fixes JSON based credentials file support.</p>
+
+<p><strong>NOTE</strong> The <code>/state</code> endpoints on master and slave will no longer include <code>data</code> fields as part of the JSON models for <code>ExecutorInfo</code> and <code>TaskInfo</code> out of consideration for memory scalability (see <a href="https://issues.apache.org/jira/browse/MESOS-3794">MESOS-3794</a> and <a href="http://www.mail-archive.com/dev@mesos.apache.org/msg33536.html">this email thread</a>).
+On master, the affected <code>data</code> field was originally found via <code>frameworks[*].executors[*].data</code>.
+On slaves, the affected <code>data</code> field was originally found via <code>executors[*].tasks[*].data</code>.</p>
+
+<p><strong>NOTE</strong> The <code>NetworkInfo</code> protobuf has been changed. The fields <code>protocol</code> and <code>ip_address</code> are now deprecated. The new field <code>ip_addresses</code> subsumes the information provided by them.</p>
 
 <h2>Upgrading from 0.24.x to 0.25.x</h2>
 
