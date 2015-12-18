@@ -388,66 +388,62 @@ s += "world"; // THIS IS A DANGLING REFERENCE!
 Mesos related headers in <code>include</code> directories are partitioned by their subfolders, sorted alphabetically, and included using brackets.
 Header in <code>src</code> directories are included afterwards, using the same rules but with quotes instead of brackets.</p>
 
-<p>Example for <code>src/common/foo.cpp</code>:
-~~~{.cpp}</p>
+<p>Example for <code>src/common/foo.cpp</code>:</p>
 
-<h1>include &ldquo;common/foo.hpp&rdquo;</h1>
+<pre><code class="{.cpp}">#include "common/foo.hpp"
 
-<h1>include &lt;stdint.h></h1>
+#include &lt;stdint.h&gt;
 
-<h1>include <string></h1>
+#include &lt;string&gt;
+#include &lt;vector&gt;
 
-<h1>include <vector></h1>
+#include &lt;boost/circular_buffer.hpp&gt;
 
-<h1>include &lt;boost/circular_buffer.hpp></h1>
+#include &lt;mesos/mesos.hpp&gt;
+#include &lt;mesos/type_utils.hpp&gt;
 
-<h1>include &lt;mesos/mesos.hpp></h1>
+#include &lt;mesos/module/authenticator.hpp&gt;
 
-<h1>include &lt;mesos/type_utils.hpp></h1>
+#include &lt;mesos/scheduler/scheduler.hpp&gt;
 
-<h1>include &lt;mesos/module/authenticator.hpp></h1>
+#include &lt;process/http.hpp&gt;
+#include &lt;process/protobuf.hpp&gt;
 
-<h1>include &lt;mesos/scheduler/scheduler.hpp></h1>
+#include &lt;stout/foreach.hpp&gt;
+#include &lt;stout/hashmap.hpp&gt;
 
-<h1>include &lt;process/http.hpp></h1>
+#include "common/build.hpp"
+#include "common/protobuf_utils.hpp"
 
-<h1>include &lt;process/protobuf.hpp></h1>
-
-<h1>include &lt;stout/foreach.hpp></h1>
-
-<h1>include &lt;stout/hashmap.hpp></h1>
-
-<h1>include &ldquo;common/build.hpp&rdquo;</h1>
-
-<h1>include &ldquo;common/protobuf_utils.hpp&rdquo;</h1>
-
-<h1>include &ldquo;master/flags.hpp&rdquo;</h1>
-
-<pre><code>
-## C++11
-
-We support C++11 and require GCC 4.8+ or Clang 3.5+ compilers. The whitelist of supported C++11 features is:
-
-* Static assertions.
-* Multiple right angle brackets.
-* Type inference (`auto` and `decltype`). The main goal is to increase code readability. This is safely the case if the exact same type omitted on the left is already fully stated on the right. Here are several examples:
+#include "master/flags.hpp"
 </code></pre>
 
-<p>// 1: OK.
+<h2>C++11</h2>
+
+<p>We support C++11 and require GCC 4.8+ or Clang 3.5+ compilers. The whitelist of supported C++11 features is:</p>
+
+<ul>
+<li>Static assertions.</li>
+<li>Multiple right angle brackets.</li>
+<li>Type inference (<code>auto</code> and <code>decltype</code>). The main goal is to increase code readability. This is safely the case if the exact same type omitted on the left is already fully stated on the right. Here are several examples:</li>
+</ul>
+
+
+<pre><code class="{.cpp}">// 1: OK.
 const auto i = values.find(keys.front());
 // Compare with
-const typename map::iterator i = values.find(keys.front());</p>
+const typename map::iterator i = values.find(keys.front());
 
-<p>// 2: OK.
-auto names = shared_ptr&lt;list<string>>(new list<string>());
+// 2: OK.
+auto names = shared_ptr&lt;list&lt;string&gt;&gt;(new list&lt;string&gt;());
 // Compare with
-shared_ptr&lt;list<string>> names = shared_ptr&lt;list<string>>(new list<string>());</p>
+shared_ptr&lt;list&lt;string&gt;&gt; names = shared_ptr&lt;list&lt;string&gt;&gt;(new list&lt;string&gt;());
 
-<p>// 3: Don&rsquo;t use.
+// 3: Don't use.
 auto authorizer = LocalAuthorizer::create(acls);
 // Compare with
-Try&lt;Owned<LocalAuthorizer>> authorizer = LocalAuthorizer::create();
-~~~</p>
+Try&lt;Owned&lt;LocalAuthorizer&gt;&gt; authorizer = LocalAuthorizer::create();
+</code></pre>
 
 <ul>
 <li>Rvalue references.</li>
