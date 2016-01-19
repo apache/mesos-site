@@ -83,32 +83,19 @@
 	<div class="col-md-8">
 		<h1>Mesos Configuration</h1>
 
-<p>The Mesos master and slave can take a variety of configuration options
-through command-line arguments, or environment variables. A list of
-the available options can be seen by running <code>mesos-master --help</code> or
-<code>mesos-slave --help</code>. Each option can be set in two ways:</p>
+<p>The Mesos master and slave can take a variety of configuration options through command-line arguments, or environment variables. A list of the available options can be seen by running <code>mesos-master --help</code> or <code>mesos-slave --help</code>. Each option can be set in two ways:</p>
 
 <ul>
-<li><p>By passing it to the binary using <code>--option_name=value</code>, either
-specifying the value directly, or specifying a file in which the value
-resides (<code>--option_name=file://path/to/file</code>). The path can be
-absolute or relative to the current working directory.</p></li>
-<li><p>By setting the environment variable <code>MESOS_OPTION_NAME</code> (the option
-name with a <code>MESOS_</code> prefix added to it).</p></li>
+<li>By passing it to the binary using <code>--option_name=value</code>, either specifying the value directly, or specifying a file in which the value resides (<code>--option_name=file://path/to/file</code>). The path can be absolute or relative to the current working directory.</li>
+<li>By setting the environment variable <code>MESOS_OPTION_NAME</code> (the option name with a <code>MESOS_</code> prefix added to it).</li>
 </ul>
 
 
-<p>Configuration values are searched for first in the environment, then
-on the command-line.</p>
+<p>Configuration values are searched for first in the environment, then on the command-line.</p>
 
 <p><strong>Important Options</strong></p>
 
-<p>If you have special compilation requirements, please refer to
-<code>./configure --help</code> when configuring Mesos. Additionally, this
-documentation lists only a recent snapshot of the options in Mesos. A
-definitive source for which flags your version of Mesos supports can
-be found by running the binary with the flag <code>--help</code>, for example
-<code>mesos-master --help</code>.</p>
+<p>If you have special compilation requirements, please refer to <code>./configure --help</code> when configuring Mesos. Additionally, this documentation lists only a recent snapshot of the options in Mesos. A definitive source for which flags your version of Mesos supports can be found by running the binary with the flag <code>--help</code>, for example <code>mesos-master --help</code>.</p>
 
 <h2>Master and Slave Options</h2>
 
@@ -126,26 +113,6 @@ be found by running the binary with the flag <code>--help</code>, for example
     </tr>
   </thead>
 
-  <tr>
-    <td>
-      --advertise_ip=VALUE
-    </td>
-    <td>
-      IP address advertised to reach mesos master/slave. Mesos master/slave
-      does not bind using this IP address. However, this IP address may be
-      used to access Mesos master/slave.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      --advertise_port=VALUE
-    </td>
-    <td>
-      Port advertised to reach mesos master/slave (alongwith advertise_ip).
-      Mesos master/slave does not bind using this port. However, this port
-      (alongwith advertise_ip) may be used to access Mesos master/slave.
-    </td>
-  </tr>
   <tr>
     <td>
       --external_log_file=VALUE
@@ -173,7 +140,7 @@ be found by running the binary with the flag <code>--help</code>, for example
   "disabled_endpoints" : {
     "paths" : [
       "/files/browse",
-      "/slave(0)/stats.json"
+      "/slave(0)/stats.json",
     ]
   }
 }</code></pre>
@@ -290,6 +257,25 @@ be found by running the binary with the flag <code>--help</code>, for example
       </th>
     </tr>
   </thead>
+   <tr>
+     <td>
+      --advertise_ip=VALUE
+    </td>
+    <td>
+      IP address advertised to reach mesos master. Mesos master does not bind using this
+      IP address. However, this IP address may be used to access Mesos master.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      --advertise_port=VALUE
+    </td>
+    <td>
+      Port advertised to reach mesos master (alongwith advertise_ip). Mesos master does not
+      bind using this port. However, this port (alongwith advertise_ip) may be used to
+      access Mesos master.
+    </td>
+  </tr>
   <tr>
     <td>
       --quorum=VALUE
@@ -1299,7 +1285,6 @@ file:///path/to/file (where file contains one of the above)</code></pre>
   </tr>
   <tr>
     <td>
-      <a name="gc_disk_headroom"></a>
       --gc_disk_headroom=VALUE
     </td>
     <td>
@@ -1363,9 +1348,7 @@ file:///path/to/file (where file contains one of the above)</code></pre>
       'cgroups/cpu,cgroups/mem', or network/port_mapping
       (configure with flag: --with-network-isolator to enable),
       or 'external', or load an alternate isolator module using
-      the <code>--modules</code> flag. Note that this flag is only
-      relevant for the Mesos Containerizer.
-      (default: posix/cpu,posix/mem)
+      the <code>--modules</code> flag. Note that this flag is only relevant for the Mesos Containerizer. (default: posix/cpu,posix/mem)
     </td>
   </tr>
   <tr>
@@ -1670,16 +1653,9 @@ file:///path/to/file (where file contains one of the above)</code></pre>
       --fetcher_cache_dir=VALUE
     </td>
     <td>
-      Parent directory for fetcher cache directories (one subdirectory
-      per slave). By default this directory is held inside the work
-      directory, so everything can be deleted or archived in one
-      swoop, in particular during testing. However, a typical
-      production scenario is to use a separate cache volume. First, it
-      is not meant to be backed up. Second, you want to avoid that
-      sandbox directories and the cache directory can interfere with
-      each other in unpredictable ways by occupying shared space. So
-      it is recommended to set the cache directory explicitly.
-      (default: /tmp/mesos/fetch) </td>
+      Parent directory for fetcher cache directories (one subdirectory per slave). By default this directory is held inside the work directory, so everything can be deleted or archived in one swoop, in particular during testing. However, a typical production scenario is to use a separate cache volume. First, it is not meant to be backed up. Second, you want to avoid that sandbox directories and the cache directory can interfere with each other in unpredictable ways by occupying shared space. So it is recommended to set the cache directory explicitly.
+      (default: /tmp/mesos/fetch)
+    </td>
   </tr>
   <tr>
     <td>
@@ -1744,33 +1720,6 @@ file:///path/to/file (where file contains one of the above)</code></pre>
       If not specified or specified as zero, the network isolator will
       impose no limits to containers' egress traffic throughput.
       This flag uses the Bytes type, defined in stout.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      --[no-]-egress_unique_flow_per_container
-    </td>
-    <td>
-      Whether to assign an individual flow for each container for the
-      egress traffic. fq_codel qdisc is used to isolate egress traffic
-      for containers. This flag is used for the 'network/port_mapping'
-      isolator. Note, fq_codel qdisc is installed at root and is not
-      removed after mesos slave exits. (default: false)
-    </td>
-  </tr>
-  <tr>
-    <td>
-      --egress_flow_classifier_parent=root/X:Y
-    </td>
-    <td>
-      When --egress_unique_flow_per_container is enabled, we need to install
-      a flow classifier (fq_codel qdisc) on egress side. This flag specifies
-      where to install it in the whole qdisc hierarchy. By default, we install
-      it at root. But, for example, if you have already installed an HTB qdisc
-      at root, you may want this to be installed in other place than root,
-      specify an HTB class ID (X:Y) as its parent. X:Y must be hexadecimal
-      numbers without "0x" prefix. Note, it is always your responsibility to
-      ensure the whole qdisc hierarchy is meaningful and correct.
     </td>
   </tr>
   <tr>

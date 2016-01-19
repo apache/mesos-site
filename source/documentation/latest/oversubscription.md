@@ -294,4 +294,4 @@ In the example above, a fixed amount of 14 cpus will be offered as revocable
 resources.
 
 To install a custom resource estimator and QoS controller, please refer to the
-[modules documentation](/documentation/latest/modules/).
+[modules documentation](modules.md).

@@ -10,8 +10,8 @@ There are different ways you can get Mesos:
 
 1. Download the latest stable release from [Apache](http://mesos.apache.org/downloads/) (***Recommended***)
 
-        $ wget http://www.apache.org/dist/mesos/0.25.0/mesos-0.25.0.tar.gz
-        $ tar -zxf mesos-0.25.0.tar.gz
+        $ wget http://www.apache.org/dist/mesos/0.24.0/mesos-0.24.0.tar.gz
+        $ tar -zxf mesos-0.24.0.tar.gz
 
 2. Clone the Mesos git [repository](https://git-wip-us.apache.org/repos/asf/mesos.git) (***Advanced Users Only***)
 
@@ -20,6 +20,10 @@ There are different ways you can get Mesos:
 ## System Requirements
 
 Mesos runs on Linux (64 Bit) and Mac OS X (64 Bit).
+
+For full support of process isolation under Linux a recent kernel >=3.10 is required.
+
+Make sure your hostname is resolvable via DNS or via `/etc/hosts` to allow full support of Docker's host-networking capabilities, needed for some of the Mesos tests. When in doubt, please validate that `/etc/hosts` contains your hostname.
 
 ### Ubuntu 14.04
 
@@ -54,8 +58,18 @@ Following are the instructions for stock Mac OS X Yosemite. If you are using a d
 
 Following are the instructions for stock CentOS 6.6. If you are using a different OS, please install the packages accordingly.
 
-        # Install a few utility tools
-        $ sudo yum install -y tar wget which
+        # Install a recent kernel for full support of process isolation.
+        $ sudo rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
+        $ sudo rpm -Uvh http://www.elrepo.org/elrepo-release-6-6.el6.elrepo.noarch.rpm
+        $ sudo yum --enablerepo=elrepo-kernel install -y kernel-lt
+
+        # Make the just installed kernel the one booted by default, and reboot.
+        $ sudo sed -i 's/default=1/default=0/g' /boot/grub/grub.conf
+        $ sudo reboot
+
+        # Install a few utility tools. This also forces an update of `nss`,
+        # which is necessary for the Java bindings to build properly.
+        $ sudo yum install -y tar wget which nss
 
         # 'Mesos > 0.21.0' requires a C++ compiler with full C++11 support,
         # (e.g. GCC > 4.8) which is available via 'devtoolset-2'.

@@ -10,10 +10,7 @@ which enabled operators to specify the reserved resources on slave startup.
 This was extended with __dynamic reservation__ in 0.23.0 which enabled operators
 and authorized __frameworks__ to dynamically reserve resources in the cluster.
 
-No breaking changes were introduced with dynamic reservation, which means the
-existing static reservation mechanism continues to be fully supported.
-
-In both types of reservations, resources are reserved for a __role__.
+In both types of reservations, resources are reserved for a [__role__](roles.md).
 
 
 ## Static Reservation (since 0.14.0)
@@ -49,7 +46,7 @@ be unreserved. Dynamic Reservation enables operators and authorized frameworks
 to reserve and unreserve resources post slave-startup.
 
 We require a `principal` from the operator or framework in order to
-authenticate/authorize the operations. [Authorization](/documentation/latest/authorization/) is
+authenticate/authorize the operations. [Authorization](authorization.md) is
 specified via the existing ACL mechanism. (_Coming Soon_)
 
 * `Offer::Operation::Reserve` and `Offer::Operation::Unreserve` messages are

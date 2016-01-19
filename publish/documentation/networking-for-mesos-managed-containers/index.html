@@ -280,33 +280,33 @@ message in TaskInfo. Here are a few examples:</p>
 command executor</p>
 
 <pre><code>TaskInfo {
-  ...
-  command: ...,
-  container: ContainerInfo {
-    network_infos: [
-      NetworkInfo {
+  ...
+  command: ...,
+  container: ContainerInfo {
+    network_infos: [
+      NetworkInfo {
         ip_addresses: [
           IPAddress {
-            protocol: None;
-            ip_address: None;
+            protocol: None;
+            ip_address: None;
           }
         ]
-        groups: [];
-        labels: None;
-      }
-    ]
-  }
+        groups: [];
+        labels: None;
+      }
+    ]
+  }
 }
 </code></pre></li>
 <li><p>A request for one IPv4 and one IPv6 address, in two groups using the
 default command executor</p>
 
 <pre><code>TaskInfo {
-  ...
-  command: ...,
-  container: ContainerInfo {
-    network_infos: [
-      NetworkInfo {
+  ...
+  command: ...,
+  container: ContainerInfo {
+    network_infos: [
+      NetworkInfo {
         ip_addresses: [
           IPAddress {
             protocol: IPv4;
@@ -317,43 +317,43 @@ default command executor</p>
             ip_address: None;
           }
         ]
-        groups: ["dev", "test"];
-        labels: None;
-      }
-    ]
-  }
+        groups: ["dev", "test"];
+        labels: None;
+      }
+    ]
+  }
 }
 </code></pre></li>
 <li><p>A request for two network interfaces, each with one IP address, each in
 a different network group using the default command executor</p>
 
 <pre><code>TaskInfo {
-  ...
-  command: ...,
-  container: ContainerInfo {
-    network_infos: [
-      NetworkInfo {
+  ...
+  command: ...,
+  container: ContainerInfo {
+    network_infos: [
+      NetworkInfo {
         ip_addresses: [
           IPAddress {
             protocol: None;
             ip_address: None;
           }
         ]
-        groups: ["foo"];
-        labels: None;
-      },
-      NetworkInfo {
+        groups: ["foo"];
+        labels: None;
+      },
+      NetworkInfo {
         ip_addresses: [
           IPAddress {
             protocol: None;
             ip_address: None;
           }
         ]
-        groups: ["bar"];
-        labels: None;
-      },
-    ]
-  }
+        groups: ["bar"];
+        labels: None;
+      },
+    ]
+  }
 }
 </code></pre></li>
 <li><p>A request for a specific IP address using a custom executor</p>
@@ -389,8 +389,8 @@ using the Mesos Containerizer, set TaskInfo.ContainerInfo.NetworkInfo.</p>
 <h2>Address Discovery</h2>
 
 <p>The NetworkInfo message allows frameworks to request IP address(es) to be
-assigned at task launch time on the Mesos agent. After opting in to network
-isolation for a given executor&rsquo;s container in this way, frameworks will need to
+assigned at task launch time on the Mesos agent.  After opting in to network
+isolation for a given executor’s container in this way, frameworks will need to
 know what address(es) were ultimately assigned in order to perform health
 checks, or any other out-of-band communication.</p>
 
