@@ -187,7 +187,7 @@ is bounded by the <code>--slave_reregister_timeout</code> flag on the master).</
 <li>let <code>remaining = { T in tasks | T is non-terminal }</code></li>
 <li>Perform reconciliation: <code>reconcile(remaining)</code></li>
 <li>Wait for status updates to arrive (use truncated exponential backoff). For each update, note the time of arrival.</li>
-<li>let <code>remaining = { T ϵ remaining | T.last_update_arrival() &lt; start }</code></li>
+<li>let <code>remaining = { T in remaining | T.last_update_arrival() &lt; start }</code></li>
 <li>If <code>remaining</code> is non-empty, go to 3.</li>
 </ol>
 
