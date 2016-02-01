@@ -13,7 +13,7 @@ Mesos slave could be restarted for an upgrade or due to a crash. This feature is
 
 ## How does it work?
 
-Slave recovery works by having the slave checkpoint enough information (e.g., Task Info, Executor Info, Status Updates) about the running tasks and executors to local disk. Once the slave ***and*** the framework(s) enable checkpointing, any subsequent slave restarts would recover the checkpointed information and reconnect with the executors. Note that if the host running the slave process is rebooted all the executors/tasks are killed.
+Slave recovery works by having the slave checkpoint enough information (e.g., Task Info, Executor Info, Status Updates) about the running tasks and executors to local disk. Once a framework enables checkpointing, any subsequent slave restarts would recover the checkpointed information and reconnect with the executors. Note that if the host running the slave process is rebooted all the executors/tasks are killed.
 
 > NOTE: To enable recovery the framework should explicitly request checkpointing.
 > Alternatively, a framework that doesn't want the disk i/o overhead of checkpointing can opt out of checkpointing.
@@ -60,9 +60,6 @@ Therefore, it is highly recommended to automate the process of restarting a slav
 
 As part of this feature, `FrameworkInfo` has been updated to include an optional `checkpoint` field. A framework that would like to opt in to checkpointing should set `FrameworkInfo.checkpoint=True` before registering with the master.
 
-> NOTE: Frameworks that have enabled checkpointing will only get offers from checkpointing slaves. So, before setting `checkpoint=True` on FrameworkInfo, ensure that there are slaves in your cluster that have enabled checkpointing.
-> Because, if there are no checkpointing slaves, the framework would not get any offers and hence cannot launch any tasks/executors!
-
 ## Known issues with `systemd` and POSIX isolation
 
 There is a known issue when using `systemd` to launch the `mesos-slave` while also using only `posix` isolation mechanisms that prevents tasks from recovering. The problem is that the default [KillMode](http://www.freedesktop.org/software/systemd/man/systemd.kill.html) for systemd processes is `cgroup` and hence all child processes are killed when the slave stops. Explicitly setting `KillMode` to `process` allows the executors to survive and reconnect.
@@ -80,4 +77,4 @@ KillMode=process
 
 ## Upgrading to 0.14.0
 
-If you want to upgrade a running Mesos cluster to 0.14.0 to take advantage of slave recovery please follow the [upgrade instructions](upgrades.md).
+If you want to upgrade a running Mesos cluster to 0.14.0 to take advantage of slave recovery please follow the [upgrade instructions](/documentation/latest/upgrades/).

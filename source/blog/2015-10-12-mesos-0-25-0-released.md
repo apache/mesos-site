@@ -34,4 +34,3 @@ If you run into any issues, please let us know on the [user mailing list and IRC
 
 Thanks to the 40 contributors who made 0.25.0 possible:
 Adam B, Aditi Dixit, Alex Clemmer, Alexander Rukletsov, Anand Mazumdar, Artem Harutyunyan, Ben Mahler, Bernd Mathiske, Chi Zhang, Cong Wang, Eijsermans, Eren Güve, Felix Abecassis, Greg Mann, Guangya Liu, Isabel Jimenez, James Peach, Jan Schlicht, Jiang Yan Xu, Jie Yu, Joerg Schad, Jojy Varghese, Joris Van Remoortere, Joseph Wu, Kapil Arya, Klaus Ma, Lily Chen, M Bauer, Marco Massenzio, Michael Park, Neil Conway, Niklas Nielsen, Paul Brett, Qian Zhang, Timothy Chen, Vaibhav Khanduja, Vinod Kone, Wojciech Sielski, Yong Qiao Wang and Haosdent Huang
-

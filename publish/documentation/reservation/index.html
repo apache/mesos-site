@@ -107,7 +107,7 @@ We start the slave like so:</p>
 <p>We now have 8 CPUs and 4096 MB of RAM reserved for <code>ads</code> on this slave.</p>
 
 <p><strong>CAVEAT:</strong> In order to modify a static reservation, the operator must drain and
-            restart the slave with the new configuration specifed in the
+            restart the slave with the new configuration specified in the
             <code>--resources</code> flag.</p>
 
 <p><strong>NOTE:</strong> This feature is supported for backwards compatibility.
@@ -117,32 +117,46 @@ We start the slave like so:</p>
 
 <h2>Dynamic Reservation (since 0.23.0)</h2>
 
-<p>As mentioned in <a href="#static-reservation-since-0140">Static Reservation</a>, specifying the
-reserved resources via the <code>--resources</code> flag makes the reservation static.
+<p>As mentioned in <a href="#static-reservation-since-0140">Static Reservation</a>, specifying
+the reserved resources via the <code>--resources</code> flag makes the reservation static.
 This is, statically reserved resources cannot be reserved for another role nor
 be unreserved. Dynamic Reservation enables operators and authorized frameworks
 to reserve and unreserve resources post slave-startup.</p>
 
 <p>We require a <code>principal</code> from the operator or framework in order to
-authenticate/authorize the operations. <a href="/documentation/latest/authorization/">Authorization</a> is
-specified via the existing ACL mechanism. (<em>Coming Soon</em>)</p>
+authenticate/authorize the operations. Permissions are specified via the
+existing ACL mechanism. To use authorization with reserve/unreserve operations,
+the Mesos master must be configured with the desired ACLs. For more information,
+see the <a href="/documentation/latest/authorization/">authorization documentation</a>.</p>
 
 <ul>
 <li><code>Offer::Operation::Reserve</code> and <code>Offer::Operation::Unreserve</code> messages are
 available for <strong>frameworks</strong> to send back via the <code>acceptOffers</code> API as a
 response to a resource offer.</li>
-<li><code>/reserve</code> and <code>/unreserve</code> HTTP endpoints are available for <strong>operators</strong>
-to manage dynamic reservations through the master. (<em>Coming Soon</em>).</li>
+<li><code>/reserve</code> and <code>/unreserve</code> HTTP endpoints allow <strong>operators</strong> to manage
+dynamic reservations through the master. NOTE: As of 0.27.0, these endpoints
+cannot be used when HTTP authentication is disabled due to the current
+implementation. This will change in version 0.28.0.</li>
 </ul>
 
 
 <p>In the following sections, we will walk through examples of each of the
 interfaces described above.</p>
 
-<h3><code>Offer::Operation::Reserve</code></h3>
+<p>Note that if two dynamic reservations are made for resources at a single slave,
+the reservations will be combined by adding together the resources reserved by
+each request. Similarly, &ldquo;partial&rdquo; unreserve operations are allowed: an
+unreserve operation can release only some of the resources at a slave that have
+been reserved for a given role. In this case, the unreserved resources will be
+subtracted from the previous reservation, and any remaining resources will still
+be reserved.</p>
 
-<p>A framework is able to reserve resources through the resource offer cycle.
-Suppose we receive a resource offer with 12 CPUs and 6144 MB of RAM unreserved.</p>
+<h3>Framework Scheduler API</h3>
+
+<h4><code>Offer::Operation::Reserve</code></h4>
+
+<p>A framework can reserve resources through the resource offer cycle.  Suppose we
+receive a resource offer with 12 CPUs and 6144 MB of RAM unreserved.</p>
 
 <pre><code>    {
       "id": &lt;offer_id&gt;,
@@ -168,7 +182,7 @@ Suppose we receive a resource offer with 12 CPUs and 6144 MB of RAM unreserved.<
 
 <p>We can reserve 8 CPUs and 4096 MB of RAM by sending the following
 <code>Offer::Operation</code> message. <code>Offer::Operation::Reserve</code> has a <code>resources</code> field
-which we specify with the resources to be reserved. We need to expicitly set
+which we specify with the resources to be reserved. We need to explicitly set
 the <code>role</code> and <code>principal</code> fields with the framework&rsquo;s role and principal.</p>
 
 <pre><code>    {
@@ -198,7 +212,8 @@ the <code>role</code> and <code>principal</code> fields with the framework&rsquo
     }
 </code></pre>
 
-<p>The subsequent resource offer will <strong>contain</strong> the following reserved resources:</p>
+<p>If the reservation is successful, a subsequent resource offer will contain the
+following reserved resources:</p>
 
 <pre><code>    {
       "id": &lt;offer_id&gt;,
@@ -228,13 +243,14 @@ the <code>role</code> and <code>principal</code> fields with the framework&rsquo
     }
 </code></pre>
 
-<h3><code>Offer::Operation::Unreserve</code></h3>
+<h4><code>Offer::Operation::Unreserve</code></h4>
 
-<p>A framework is able to unreserve resources through the resource offer cycle.
+<p>A framework can unreserve resources through the resource offer cycle.
 In <a href="#offeroperationreserve">Offer::Operation::Reserve</a>, we reserved 8 CPUs
-and 4096 MB of RAM for our <code>role</code>. The master will continue to offer these
-resources to our <code>role</code>. Suppose we would like to unreserve these resources.
-First, we receive a resource offer (copy/pasted from above):</p>
+and 4096 MB of RAM on a particular slave for our <code>role</code>. The master will
+continue to only offer these resources to our <code>role</code>. Suppose we would like to
+unreserve these resources. First, we receive a resource offer (copy/pasted
+from above):</p>
 
 <pre><code>    {
       "id": &lt;offer_id&gt;,
@@ -264,9 +280,9 @@ First, we receive a resource offer (copy/pasted from above):</p>
     }
 </code></pre>
 
-<p>We unreserve the 8 CPUs and 4096 MB of RAM by sending the following
+<p>We can unreserve the 8 CPUs and 4096 MB of RAM by sending the following
 <code>Offer::Operation</code> message. <code>Offer::Operation::Unreserve</code> has a <code>resources</code> field
-which we specify with the resources to be unreserved.</p>
+which we can use to specify the resources to be unreserved.</p>
 
 <pre><code>    {
       "type": Offer::Operation::UNRESERVE,
@@ -297,34 +313,44 @@ which we specify with the resources to be unreserved.</p>
 
 <p>The unreserved resources may now be offered to other frameworks.</p>
 
-<h3><code>/reserve</code> (since 0.25.0)</h3>
+<h3>Operator HTTP Endpoints</h3>
 
-<p>Suppose we want to reserve 8 CPUs and 4096 MB of RAM for the <code>ads</code> role on
-a slave with id=<code>&lt;slave_id&gt;</code>. We send an HTTP POST request to the <code>/reserve</code>
-HTTP endpoint like so:</p>
+<p>As described above, dynamic reservations can be made by a framework scheduler,
+typically in response to a resource offer. However, dynamic reservations can
+also be created and deleted by sending HTTP requests to the <code>/reserve</code> and
+<code>/unreserve</code> endpoints, respectively. This capability is intended for use by
+operators and administrative tools.</p>
+
+<h4><code>/reserve</code> (since 0.25.0)</h4>
+
+<p>Suppose we want to reserve 8 CPUs and 4096 MB of RAM for the <code>ads</code> role on a
+slave with id=<code>&lt;slave_id&gt;</code> (note that it is up to the user to find the ID of the
+slave that hosts the desired resources; the request will fail if sufficient
+unreserved resources cannot be found on the slave). We send an HTTP POST request
+to the <code>/reserve</code> HTTP endpoint like so:</p>
 
 <pre><code>    $ curl -i \
       -u &lt;operator_principal&gt;:&lt;password&gt; \
       -d slaveId=&lt;slave_id&gt; \
-      -d resources='[ \
-        { \
-          "name": "cpus", \
-          "type": "SCALAR", \
-          "scalar": { "value": 8 }, \
-          "role": "ads", \
-          "reservation": { \
-            "principal": &lt;operator_principal&gt; \
-          } \
-        }, \
-        { \
-          "name": "mem", \
-          "type": "SCALAR", \
-          "scalar": { "value": 4096 }, \
-          "role": "ads", \
-          "reservation": { \
-            "principal": &lt;operator_principal&gt; \
-          } \
-        } \
+      -d resources='[
+        {
+          "name": "cpus",
+          "type": "SCALAR",
+          "scalar": { "value": 8 },
+          "role": "ads",
+          "reservation": {
+            "principal": &lt;operator_principal&gt;
+          }
+        },
+        {
+          "name": "mem",
+          "type": "SCALAR",
+          "scalar": { "value": 4096 },
+          "role": "ads",
+          "reservation": {
+            "principal": &lt;operator_principal&gt;
+          }
+        }
       ]' \
       -X POST http://&lt;ip&gt;:&lt;port&gt;/master/reserve
 </code></pre>
@@ -332,14 +358,15 @@ HTTP endpoint like so:</p>
 <p>The user receives one of the following HTTP responses:</p>
 
 <ul>
-<li><code>200 OK</code>: Success</li>
-<li><code>400 BadRequest</code>: Invalid arguments (e.g. missing parameters).</li>
-<li><code>401 Unauthorized</code>: Unauthorized request.</li>
+<li><code>200 OK</code>: Success (the requested resources have been reserved).</li>
+<li><code>400 BadRequest</code>: Invalid arguments (e.g., missing parameters).</li>
+<li><code>401 Unauthorized</code>: Unauthenticated request.</li>
+<li><code>403 Forbidden</code>: Unauthorized request.</li>
 <li><code>409 Conflict</code>: Insufficient resources to satisfy the reserve operation.</li>
 </ul>
 
 
-<h3><code>/unreserve</code> (since 0.25.0)</h3>
+<h4><code>/unreserve</code> (since 0.25.0)</h4>
 
 <p>Suppose we want to unreserve the resources that we dynamically reserved above.
 We can send an HTTP POST request to the <code>/unreserve</code> HTTP endpoint like so:</p>
@@ -347,25 +374,25 @@ We can send an HTTP POST request to the <code>/unreserve</code> HTTP endpoint li
 <pre><code>    $ curl -i \
       -u &lt;operator_principal&gt;:&lt;password&gt; \
       -d slaveId=&lt;slave_id&gt; \
-      -d resources='[ \
-        { \
-          "name": "cpus", \
-          "type": "SCALAR", \
-          "scalar": { "value": 8 }, \
-          "role": "ads", \
-          "reservation": { \
-            "principal": &lt;operator_principal&gt; \
-          } \
-        }, \
-        { \
-          "name": "mem", \
-          "type": "SCALAR", \
-          "scalar": { "value": 4096 }, \
-          "role": "ads", \
-          "reservation": { \
-            "principal": &lt;operator_principal&gt; \
-          } \
-        } \
+      -d resources='[
+        {
+          "name": "cpus",
+          "type": "SCALAR",
+          "scalar": { "value": 8 },
+          "role": "ads",
+          "reservation": {
+            "principal": &lt;operator_principal&gt;
+          }
+        },
+        {
+          "name": "mem",
+          "type": "SCALAR",
+          "scalar": { "value": 4096 },
+          "role": "ads",
+          "reservation": {
+            "principal": &lt;operator_principal&gt;
+          }
+        }
       ]' \
       -X POST http://&lt;ip&gt;:&lt;port&gt;/master/unreserve
 </code></pre>
@@ -373,10 +400,11 @@ We can send an HTTP POST request to the <code>/unreserve</code> HTTP endpoint li
 <p>The user receives one of the following HTTP responses:</p>
 
 <ul>
-<li><code>200 OK</code>: Success</li>
-<li><code>400 BadRequest</code>: Invalid arguments (e.g. missing parameters).</li>
-<li><code>401 Unauthorized</code>: Unauthorized request.</li>
-<li><code>409 Conflict</code>: Insufficient resources to satisfy unreserve operation.</li>
+<li><code>200 OK</code>: Success (the requested resources have been unreserved).</li>
+<li><code>400 BadRequest</code>: Invalid arguments (e.g., missing parameters).</li>
+<li><code>401 Unauthorized</code>: Unauthenticated request.</li>
+<li><code>403 Forbidden</code>: Unauthorized request.</li>
+<li><code>409 Conflict</code>: Insufficient resources to satisfy the unreserve operation.</li>
 </ul>
 
 

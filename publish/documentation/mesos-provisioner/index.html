@@ -101,28 +101,29 @@
 
 <p>We introduced a new protobuf message <code>Image</code> that describes a container filesystem image.</p>
 
-<p>message Image {
+<pre><code class="{.proto}">message Image {
   enum Type {
     APPC = 1;
     DOCKER = 2;
     // More Image types.
-  }</p>
+  }
 
-<p>  message Appc {
+  message Appc {
     // Appc configurations.
-  }</p>
+  }
 
-<p>  message Docker {
+  message Docker {
     // Docker configurations
-  }</p>
+  }
 
-<p>  required Type type = 1;</p>
+  required Type type = 1;
 
-<p>  // Only one of the following image messages should be set to match
+  // Only one of the following image messages should be set to match
   // the type.
   optional Appc appc = 2;
   optional Docker docker = 3;
-}</p>
+}
+</code></pre>
 
 <p>This <code>Image</code> message type contains the type of image specification and the corresponding configurations for that type.</p>
 
@@ -135,12 +136,12 @@ that volume will be mounted with the image filesystem configured.</p>
 
 <h2>Setup and Agent Flags</h2>
 
-<p>To run the agent to enable Mesos containerizer, you must launch the agent with mesos as a containerizer option, which is the default containerizer for the mesos agent. It also has to enable linux/filesystem as part of the enabled isolators. The supported image providers can also be configured through agent flags, as well as the supported image provider backend.</p>
+<p>To run the agent to enable Mesos containerizer, you must launch the agent with mesos as a containerizer option, which is the default containerizer for the mesos agent. It also has to enable filesystem/linux as part of the enabled isolators. The supported image providers can also be configured through agent flags, as well as the supported image provider backend.</p>
 
 <p>Mesos agent also needs to be running under linux with root permissions.</p>
 
 <ul>
-<li>Example: <code>mesos-slave --containerizers=mesos --image_providers=appc,docker --image_provisioner_backend=copy --isolation=linux/filesystem</code></li>
+<li>Example: <code>mesos-slave --containerizers=mesos --image_providers=appc,docker --image_provisioner_backend=copy --isolation=filesystem/linux</code></li>
 </ul>
 
 
@@ -165,11 +166,11 @@ Mesos agent supports multiple image providers and the <code>image_providers</cod
 
 <p>https://github.com/docker/docker/blob/master/image/spec/v1.md</p>
 
-<p>Docker image provider supports two different methods of finding and pulling images: local and registry. The <code>docker_puller</code> agent flag allows the slave to choose between these methods.</p>
+<p>Docker image provider supports two different methods of finding and pulling images: local and registry. The <code>docker_registry</code> agent flag allows the slave to choose between these methods based on the URL scheme.</p>
 
-<p>Local puller finds docker images based on image name and tag in the host filesystem, in the directory configured by <code>docker_local_archives_dir</code>.</p>
+<p>By specifying a URL in <code>docker_registry</code> agent flag pointing to a local directory (file:///tmp/mesos/images/docker), the provisioner will use the Local puller to find docker images based on image name and tag in the host filesystem.</p>
 
-<p>Registry puller finds and downloads images by contacting Docker registry, and by default contacts server configured by <code>docker_registry</code> and <code>docker_registry_port</code> agent flag when no custom registry is specified.</p>
+<p>If the URL configured in <code>docker_registry</code> isn&rsquo;t pointing to a local directory, it will be assumed to be a registry referring to a Docker registry. The Registry puller will find and download images by contacting Docker registry with the configured URL when no custom registry is specified.</p>
 
 <p>Note that to run the Registry puller Mesos agent must be running with SSL enabled.</p>
 
@@ -196,8 +197,8 @@ backend tracked by MESOS-2971). For small images (10&rsquo;s to 100&rsquo;s of M
 
 <h2>Related Docs</h2>
 
-<p>For more information on the Mesos containerizer filesystem, namespace, and isolator features, visit <a href="/documentation/latest/https://github.com/apache/mesos/blob/master/docs/containerizer/">here</a>.
-For more information on launching Docker containers through the Docker containerizer, visit <a href="/documentation/latest/https://github.com/apache/mesos/blob/master/docs/docker-containerizer/">here</a>.</p>
+<p>For more information on the Mesos containerizer filesystem, namespace, and isolator features, visit <a href="/documentation/latest/mesos-containerizer/">Mesos Containerizer</a>.
+For more information on launching Docker containers through the Docker containerizer, visit <a href="/documentation/latest/docker-containerizer/">Docker Containerizer</a>.</p>
 
 	</div>
 </div>

@@ -71,7 +71,7 @@ virtual void resourceOffers(SchedulerDriver* driver,
  * whatever reason an offer is never rescinded (e.g., dropped
  * message, failing over framework, etc.), a framework that attempts
  * to launch tasks using an invalid offer will receive TASK_LOST
- * status updats for those tasks (see Scheduler::resourceOffers).
+ * status updates for those tasks (see Scheduler::resourceOffers).
  */
 virtual void offerRescinded(SchedulerDriver* driver,
                             const OfferID& offerId) = 0;
@@ -114,6 +114,8 @@ virtual void slaveLost(SchedulerDriver* driver,
  * Invoked when an executor has exited/terminated. Note that any
  * tasks running will have TASK_LOST status updates automagically
  * generated.
+ *
+ * NOTE: This callback is not reliably delivered.
  */
 virtual void executorLost(SchedulerDriver* driver,
                           const ExecutorID& executorId,
@@ -127,6 +129,9 @@ virtual void executorLost(SchedulerDriver* driver,
  */
 virtual void error(SchedulerDriver* driver, const std::string& message) = 0;
 ~~~
+
+### Handling Failures
+How to build Mesos frameworks that remain available in the face of failures is discussed in a [separate document](/documentation/latest/high-availability-framework-guide/).
 
 ## Working with Executors
 

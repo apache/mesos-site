@@ -39,6 +39,7 @@ task :update_docs => :clone_mesos do
   docs_dir = File.join(File.dirname(__FILE__), "source/documentation")
 
   puts "Cleaning up docs directories"
+  FileUtils.rm_f(Dir.glob("source/*"))
   FileUtils.rm_f(Dir.glob("source/documentation/latest/*.md"))
   FileUtils.rm_f(Dir.glob("source/documentation/latest/images/*"))
   if !File.exists?(File.expand_path("source/documentation/latest/images/"))
@@ -46,6 +47,7 @@ task :update_docs => :clone_mesos do
   end
 
   puts "Updating docs to the latest version"
+  FileUtils.cp_r(Dir.glob("#{mesos_dir}/site/source/*"), File.expand_path("source/"))
   FileUtils.cp_r(Dir.glob("#{mesos_dir}/docs/*.md"), File.expand_path("source/documentation/latest/"))
   FileUtils.cp_r(Dir.glob("#{mesos_dir}/docs/images/*"), File.expand_path("source/documentation/latest/images/"))
   puts "Parse documentation files to removing md extension in any links"

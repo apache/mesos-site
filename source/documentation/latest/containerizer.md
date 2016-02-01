@@ -2,83 +2,93 @@
 layout: documentation
 ---
 
-# Mesos Containerizer
+# Containerizer
 
-The MesosContainerizer provides lightweight containerization and
-resource isolation of executors using Linux-specific functionality
-such as control cgroups and namespaces. It is composable so operators
-can selectively enable different isolators.
+## Motivation
 
-It also provides basic support for POSIX systems (e.g., OSX) but
-without any actual isolation, only resource usage reporting.
+Containerizers are intended to run tasks in 'containers' which in turn are used
+to:
 
-### Shared Filesystem
-
-The SharedFilesystem isolator can optionally be used on Linux hosts to
-enable modifications to each container's view of the shared
-filesystem.
-
-The modifications are specified in the ContainerInfo included in the
-ExecutorInfo, either by a framework or by using the
-`--default_container_info` slave flag.
-
-ContainerInfo specifies Volumes which map parts of the shared
-filesystem (host\_path) into the container's view of the filesystem
-(container\_path), as read-write or read-only. The host\_path can be
-absolute, in which case it will make the filesystem subtree rooted at
-host\_path also accessible under container\_path for each container.
-If host\_path is relative then it is considered as a directory
-relative to the executor's work directory. The directory will be
-created and permissions copied from the corresponding directory (which
-must exist) in the shared filesystem.
-
-The primary use-case for this isolator is to selectively make parts of
-the shared filesystem private to each container. For example, a
-private "/tmp" directory can be achieved with `host_path="tmp"` and
-`container_path="/tmp"` which will create a directory "tmp" inside the
-executor's work directory (mode 1777) and simultaneously mount it as
-/tmp inside the container. This is transparent to processes running
-inside the container. Containers will not be able to see the host's
-/tmp or any other container's /tmp.
-
-### Pid Namespace
-
-The Pid Namespace isolator can be used to isolate each container in
-a separate pid namespace with two main benefits:
-
-1. Visibility: Processes running in the container (executor and
-   descendants) are unable to see or signal processes outside the
-   namespace.
-
-2. Clean termination: Termination of the leading process in a pid
-   namespace will result in the kernel terminating all other processes
-   in the namespace.
-
-The Launcher will use (2) during destruction of a container in
-preference to the freezer cgroup, avoiding known kernel issues related
-to freezing cgroups under OOM conditions.
-
-/proc will be mounted for containers so tools such as 'ps' will work
-correctly.
+* Isolate a task from other running tasks.
+* 'Contain' tasks to run in limited resource runtime environment.
+* Control task's individual resources (e.g, CPU, memory) programatically.
+* Run software in a pre-packaged file system image, allowing it to run in
+  different environments.
 
 
-### Posix Disk Isolator
+## Types of containerizers
 
-The Posix Disk isolator provides basic disk isolation. It is able to
-report the disk usage for each sandbox and optionally enforce the disk
-quota. It can be used on both Linux and OS X.
+Mesos plays well with existing container technologies (e.g., docker) and also
+provides its own container technology. It also supports composing different
+container technologies(e.g., docker and mesos).
 
-To enable the Posix Disk isolator, append `posix/disk` to the
-`--isolation` flag when starting the slave.
+Mesos implements the following containerizers:
 
-By default, the disk quota enforcement is disabled. To enable it,
-specify `--enforce_container_disk_quota` when starting the slave.
+* [Composing](#Composing)
+* [Docker](#Docker)
+* [Mesos (default)](#Mesos)
+* External (deprecated)
 
-The Posix Disk isolator reports disk usage for each sandbox by
-periodically running the `du` command. The disk usage can be retrieved
-from the resource statistics endpoint (`/monitor/statistics.json`).
+User can specify the types of containerizers to use via the agent flag
+`--containerizers`.
 
-The interval between two `du`s can be controlled by the slave flag
-`--container_disk_watch_interval`. For example,
-`--container_disk_watch_interval=1mins` sets the interval to be 1
-minute. The default interval is 15 seconds.
+
+<a name="Composing"></a>
+### Composing containerizer
+
+This feature allows multiple container technologies to play together. It is
+enabled when you configure the `--containerizers` agent flag with multiple comma
+seperated containerizer names (e.g., `--containerizers=mesos,docker`). The order
+of the comma separated list is important as the first containerizer that
+supports the task's container configuration will be used to launch the task.
+
+Use cases:
+
+* For testing tasks with different types of resource isolations. Since 'mesos'
+  containerizers have more isolation abilities, a framework can use composing
+  containerizer to test a task using 'mesos' containerizer's controlled
+  environment and at the same time test it to work with 'docker' containers by
+  just changing the container parameters for the task.
+
+
+<a name="Docker"></a>
+### Docker containerizer
+
+Docker containerizer allows tasks to be run inside docker container. This
+containerizer is enabled when you configure the agent flag as
+`--containerizers=docker`.
+
+Use cases:
+
+* If task needs to be run with the tooling that comes with the docker package.
+* If Mesos agent is running inside a docker container.
+
+For more details, see
+[Docker Containerizer](/documentation/latest/docker-containerizer/).
+
+<a name="Mesos"></a>
+### Mesos containerizer
+
+This containerizer allows tasks to be run with an array of pluggable isolators
+provided by Mesos. This is the native Mesos containerizer solution and is
+enabled when you configure the agent flag as `--containerizers=mesos`.
+
+Use cases:
+
+* Allow Mesos to control the task's runtime environment without depending on
+  other container technologies (e.g., docker).
+* Want fine grained operating system controls (e.g., cgroups/namespaces provided
+  by linux).
+* Want Mesos's latest container technology features.
+* Need additional resource controls like disk usage limits, which
+  might not be provided by other container technologies.
+* Want to add custom isolation for tasks.
+
+For more details, see
+[Mesos Containerizer](/documentation/latest/mesos-containerizer/).
+
+
+## References
+
+* [Containerizer Internals](/documentation/latest/containerizer-internals/) for
+  implementation details of containerizers.

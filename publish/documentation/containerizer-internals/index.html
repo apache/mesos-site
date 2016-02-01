@@ -112,9 +112,9 @@ generating executor information.</li>
 
 <ul>
 <li>Composing</li>
-<li>Docker</li>
-<li>Mesos</li>
-<li>External (deprecated)</li>
+<li><a href="/documentation/latest/docker-containerizer/">Docker</a></li>
+<li><a href="/documentation/latest/containerizer/">Mesos</a></li>
+<li><a href="/documentation/latest/external-containerizer/">External</a> (deprecated)</li>
 </ul>
 
 
@@ -148,21 +148,23 @@ if <code>ContainerInfo::type</code> is set to DOCKER.</li>
 <code>--docker_mesos_image</code>. In this case, the value of flag
 <code>--docker_mesos_image</code> is assumed to be the docker image used to
 launch the Mesos agent.</li>
-<li>If the task uses an executor to run (not the default command
-executor), then that executor is launched in a docker container.</li>
-<li>If the task uses <code>TaskInfo</code>, then the default executor
-<code>mesos-docker-executor</code> is lunched in a docker container.</li>
+<li>If the task includes an executor (custom executor), then that executor is
+launched in a docker container.</li>
+<li>If the task does not include an executor i.e. it defines a command, the
+default executor <code>mesos-docker-executor</code> is launched in a docker container to
+execute the command via Docker CLI.</li>
 </ul>
 
 
 <p>B) Mesos agent does not run in a docker container</p>
 
 <ul>
-<li>If task uses <code>TaskInfo</code>, then it forks a subprocess to execute
-<code>mesos-docker-executor</code>. mesos-docker-executor spawns shell to
-execute docker commands (e.g., docker run).</li>
-<li>If the task uses a custom executor, then its launched in a docker
-container.</li>
+<li>If the task includes an executor (custom executor), then that executor is
+launched in a docker container.</li>
+<li>If task does not include an executor i.e. it defines a command, a subprocess
+is forked to execute the default executor <code>mesos-docker-executor</code>.
+<code>mesos-docker-executor</code> then spawns a shell to execute the command via Docker
+CLI.</li>
 </ul>
 
 

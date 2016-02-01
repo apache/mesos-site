@@ -83,7 +83,7 @@
 	<div class="col-md-8">
 		<h1>Mesos C++ Style Guide</h1>
 
-<p>The Mesos codebase follows the <a href="http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml">Google C++ Style Guide</a> with some notable differences, as described below. Note that the <a href="/documentation/latest/clang-format/">clang-format</a> tool can be helpful to ensure that some of the mechanical style rules are obeyed.</p>
+<p>The Mesos codebase follows the <a href="/documentation/latest/http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml">Google C++ Style Guide</a> with some notable differences, as described below. Note that the <a href="clang-format/">clang-format</a> tool can be helpful to ensure that some of the mechanical style rules are obeyed.</p>
 
 <h2>Scoping</h2>
 
@@ -151,8 +151,21 @@ void Slave::statusUpdate(StatusUpdate update, const UPID&amp; pid)
 <ul>
 <li>End each sentence within a comment with a punctuation mark (please note that we generally prefer periods); this applies to incomplete sentences as well.</li>
 <li>For trailing comments, leave one space.</li>
+<li>Use backticks when quoting code excerpts or object/variable/function names. For example:</li>
 </ul>
 
+
+<pre><code class="{.cpp}">// Use `SchedulerDriver::acceptOffers()` to send several offer
+// operations. This makes use of the `RESERVE()` and `UNRESERVE()`
+// helpers, which take a `Resources` object as input and produce
+// appropriate offer operations. Note that we are unreserving the
+// resources contained in `dynamicallyReserved1`.
+driver.acceptOffers({offer.id()},
+    {UNRESERVE(dynamicallyReserved1),
+     RESERVE(dynamicallyReserved2),
+     RESERVE(dynamicallyReserved3)},
+    filters);
+</code></pre>
 
 <h2>Breaks</h2>
 
@@ -167,7 +180,7 @@ void Slave::statusUpdate(StatusUpdate update, const UPID&amp; pid)
 
 <ul>
 <li>Access modifiers are not indented (Google uses one space indentation).</li>
-<li>Constructor initializers are indented by 2 spaces (Google indents by 4).</li>
+<li>Constructor initializers are indented by two spaces (Google indents by four).</li>
 </ul>
 
 
@@ -181,7 +194,7 @@ void Slave::statusUpdate(StatusUpdate update, const UPID&amp; pid)
 <h3>Function Definition/Invocation</h3>
 
 <ul>
-<li>Newline when calling or defining a function: indent with 4 spaces.</li>
+<li>Newline when calling or defining a function: indent with four spaces.</li>
 <li>We do not follow Google&rsquo;s style of wrapping on the open parenthesis, the general goal is to reduce visual &ldquo;jaggedness&rdquo; in the code. Prefer (1), (4), (5), sometimes (3), never (2):</li>
 </ul>
 
@@ -219,7 +232,7 @@ allocator-&gt;resourcesRecovered(
 <h3>Continuation</h3>
 
 <ul>
-<li>Newline for an assignment statement: indent with 2 spaces.</li>
+<li>Newline for an assignment statement: indent with two spaces.</li>
 </ul>
 
 
@@ -230,9 +243,24 @@ allocator-&gt;resourcesRecovered(
 <h2>Empty Lines</h2>
 
 <ul>
-<li>1 blank line at the end of the file.</li>
-<li>Elements outside classes (classes, structs, global functions, etc.) should be spaced apart by 2 blank lines.</li>
-<li>Elements inside classes (member variables and functions) should not be spaced apart by more than 1 blank line.</li>
+<li>One empty line at the end of the file.</li>
+<li>Inside a code block, every multi-line statement should be followed by one empty line.</li>
+</ul>
+
+
+<pre><code class="{.cpp}">Try&lt;very_very_long_type&gt; long_name =
+    ::protobuf::parse&lt;very_very_long_type&gt;(
+        request);
+
+for (int i = 0; i &lt; very_very_long_expression();
+     i++) {
+  // No empty line here for control constructs.
+}
+</code></pre>
+
+<ul>
+<li>Elements outside classes (classes, structs, global functions, etc.) should be spaced apart by two empty lines.</li>
+<li>Elements inside classes (member variables and functions) should not be spaced apart by more than one empty line.</li>
 </ul>
 
 
@@ -321,42 +349,74 @@ s += "world"; // THIS IS A DANGLING REFERENCE!
 <ul>
 <li><p>Mesos source files must contain the &ldquo;ASF&rdquo; header:</p>
 
-<pre><code>  /**
-   * Licensed to the Apache Software Foundation (ASF) under one
-   * or more contributor license agreements.  See the NOTICE file
-   * distributed with this work for additional information
-   * regarding copyright ownership.  The ASF licenses this file
-   * to you under the Apache License, Version 2.0 (the
-   * "License"); you may not use this file except in compliance
-   * with the License.  You may obtain a copy of the License at
-   *
-   *     http://www.apache.org/licenses/LICENSE-2.0
-   *
-   * Unless required by applicable law or agreed to in writing, software
-   * distributed under the License is distributed on an "AS IS" BASIS,
-   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   * See the License for the specific language governing permissions and
-   * limitations under the License.
-   */
+<pre><code>   // Licensed to the Apache Software Foundation (ASF) under one
+   // or more contributor license agreements.  See the NOTICE file
+   // distributed with this work for additional information
+   // regarding copyright ownership.  The ASF licenses this file
+   // to you under the Apache License, Version 2.0 (the
+   // "License"); you may not use this file except in compliance
+   // with the License.  You may obtain a copy of the License at
+   //
+   //     http://www.apache.org/licenses/LICENSE-2.0
+   //
+   // Unless required by applicable law or agreed to in writing, software
+   // distributed under the License is distributed on an "AS IS" BASIS,
+   // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   // See the License for the specific language governing permissions and
+   // limitations under the License.
 </code></pre></li>
 <li><p>Stout and libprocess source files must contain the &ldquo;Apache License Version 2.0&rdquo; header:</p>
 
-<pre><code>  /**
-   * Licensed under the Apache License, Version 2.0 (the "License");
-   * you may not use this file except in compliance with the License.
-   * You may obtain a copy of the License at
-   *
-   *     http://www.apache.org/licenses/LICENSE-2.0
-   *
-   * Unless required by applicable law or agreed to in writing, software
-   * distributed under the License is distributed on an "AS IS" BASIS,
-   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   * See the License for the specific language governing permissions and
-   * limitations under the License
-   */
+<pre><code>   // Licensed under the Apache License, Version 2.0 (the "License");
+   // you may not use this file except in compliance with the License.
+   // You may obtain a copy of the License at
+   //
+   //     http://www.apache.org/licenses/LICENSE-2.0
+   //
+   // Unless required by applicable law or agreed to in writing, software
+   // distributed under the License is distributed on an "AS IS" BASIS,
+   // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   // See the License for the specific language governing permissions and
+   // limitations under the License
 </code></pre></li>
 </ul>
 
+
+<h2>Order of includes</h2>
+
+<p>In addition to the ordering rules from the Google style guide, Mesos related headers are separated into sections. Newline to separate each section.
+Mesos related headers in <code>include</code> directories are partitioned by their subfolders, sorted alphabetically, and included using brackets.
+Header in <code>src</code> directories are included afterwards, using the same rules but with quotes instead of brackets.</p>
+
+<p>Example for <code>src/common/foo.cpp</code>:</p>
+
+<pre><code class="{.cpp}">#include "common/foo.hpp"
+
+#include &lt;stdint.h&gt;
+
+#include &lt;string&gt;
+#include &lt;vector&gt;
+
+#include &lt;boost/circular_buffer.hpp&gt;
+
+#include &lt;mesos/mesos.hpp&gt;
+#include &lt;mesos/type_utils.hpp&gt;
+
+#include &lt;mesos/module/authenticator.hpp&gt;
+
+#include &lt;mesos/scheduler/scheduler.hpp&gt;
+
+#include &lt;process/http.hpp&gt;
+#include &lt;process/protobuf.hpp&gt;
+
+#include &lt;stout/foreach.hpp&gt;
+#include &lt;stout/hashmap.hpp&gt;
+
+#include "common/build.hpp"
+#include "common/protobuf_utils.hpp"
+
+#include "master/flags.hpp"
+</code></pre>
 
 <h2>C++11</h2>
 

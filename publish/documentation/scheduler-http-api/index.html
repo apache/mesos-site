@@ -100,6 +100,8 @@
 
 <p>The following calls are currently accepted by the master. The canonical source of this information is <a href="https://github.com/apache/mesos/blob/master/include/mesos/v1/scheduler/scheduler.proto">scheduler.proto</a> (NOTE: The protobuf definitions are subject to change before the beta API is finalized). Note that when sending JSON encoded Calls, schedulers should encode raw bytes in Base64 and strings in UTF-8.</p>
 
+<p><a id="recordio-response-format"></a></p>
+
 <h3>RecordIO response format</h3>
 
 <p>The response returned from the <code>SUBSCRIBE</code> call (see <a href="#subscribe">below</a> is encoded in RecordIO format, which essentially prepends to a single record (either JSON or serialized Protobuf) its length in bytes, followed by a newline and then the data:</p>
@@ -139,7 +141,9 @@
 
 <p>Network intermediaries e.g. proxies are free to change the chunk boundaries and this should not have any effect on the recipient application (scheduler layer). We wanted a way to delimit/encode two events for JSON/Protobuf responses consistently and RecordIO format allowed us to do that.</p>
 
-<h3><a id="subscribe"></a>SUBSCRIBE</h3>
+<p><a id="subscribe"></a></p>
+
+<h3>SUBSCRIBE</h3>
 
 <p>This is the first step in the communication process between the scheduler and the master. This is also to be considered as subscription to the &ldquo;/scheduler&rdquo; events stream.</p>
 
@@ -440,7 +444,7 @@ HTTP/1.1 202 Accepted
 
 <h3>OFFERS</h3>
 
-<p>Sent by the master whenever there are new resources that can be offered to the framework. Each offer corresponds to a set of resources on a agent. Until the scheduler &lsquo;Accept&rsquo;s or 'Decline&rsquo;s an offer the resources are considered allocated to the scheduler, unless the offer is otherwise rescinded, e.g. due to a lost agent or <code>--offer_timeout</code>.</p>
+<p>Sent by the master whenever there are new resources that can be offered to the framework. Each offer corresponds to a set of resources on an agent. Until the scheduler &lsquo;Accept&rsquo;s or 'Decline&rsquo;s an offer the resources are considered allocated to the scheduler, unless the offer is otherwise rescinded, e.g. due to a lost agent or <code>--offer_timeout</code>.</p>
 
 <pre><code>OFFERS Event (JSON)
 &lt;event-length&gt;
@@ -515,7 +519,7 @@ HTTP/1.1 202 Accepted
 
 <h3>FAILURE</h3>
 
-<p>Sent by the master when a agent is removed from the cluster (e.g., failed health checks) or when an executor is terminated. Note that, this event coincides with receipt of terminal <code>UPDATE</code> events for any active tasks belonging to the agent or executor and receipt of <code>RESCIND</code> events for any outstanding offers belonging to the agent. Note that there is no guaranteed order between the <code>FAILURE</code>, <code>UPDATE</code> and <code>RESCIND</code> events.</p>
+<p>Sent by the master when an agent is removed from the cluster (e.g., failed health checks) or when an executor is terminated. Note that, this event coincides with receipt of terminal <code>UPDATE</code> events for any active tasks belonging to the agent or executor and receipt of <code>RESCIND</code> events for any outstanding offers belonging to the agent. Note that there is no guaranteed order between the <code>FAILURE</code>, <code>UPDATE</code> and <code>RESCIND</code> events.</p>
 
 <pre><code>FAILURE Event (JSON)
 
@@ -576,7 +580,7 @@ HTTP/1.1 202 Accepted
 
 <h2>Master detection</h2>
 
-<p>Mesos has a high-availability mode that uses multiple Mesos masters; one active master (called the leader or leading master) and several standbys in case it fails. The masters elect the leader, with ZooKeeper coordinating the election. For more details please refer to the <a href="/documentation/latest//documentation/latest/high-availability/">documentation</a>.</p>
+<p>Mesos has a high-availability mode that uses multiple Mesos masters; one active master (/documentation/latest/called the leader or leading master) and several standbys in case it fails. The masters elect the leader, with ZooKeeper coordinating the election. For more details please refer to the <a href="high-availability/">documentation</a>.</p>
 
 <p>Schedulers are expected to make HTTP requests to the leading master. If requests are made to a non-leading master a &ldquo;HTTP 307 Temporary Redirect&rdquo; will be received with the &ldquo;Location&rdquo; header pointing to the leading master.</p>
 

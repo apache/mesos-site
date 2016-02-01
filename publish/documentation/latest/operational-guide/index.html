@@ -85,7 +85,7 @@
 
 <h2>Using a process supervisor</h2>
 
-<p>Mesos uses a &ldquo;<a href="https://en.wikipedia.org/wiki/Fail-fast">fail-fast</a>&rdquo; approach to error handling: if a serious error occurs, Mesos will typically exit rather than trying to continue running in a possibly erroneous state. For example, when Mesos is configured for <a href="/documentation/latest/high-availability">high availability</a>, the leading master will abort itself when it discovers it has been partitioned away from the Zookeeper quorum. This is a safety precaution to ensure the previous leader doesn&rsquo;t continue communicating in an unsafe state.</p>
+<p>Mesos uses a &ldquo;<a href="/documentation/latest/https://en.wikipedia.org/wiki/Fail-fast">fail-fast</a>&rdquo; approach to error handling: if a serious error occurs, Mesos will typically exit rather than trying to continue running in a possibly erroneous state. For example, when Mesos is configured for <a href="high-availability/">high availability</a>, the leading master will abort itself when it discovers it has been partitioned away from the Zookeeper quorum. This is a safety precaution to ensure the previous leader doesn&rsquo;t continue communicating in an unsafe state.</p>
 
 <p>To ensure that such failures are handled appropriately, production deployments of Mesos typically use a <em>process supervisor</em> (such as systemd or supervisord) to detect when Mesos processes exit. The supervisor can be configured to restart the failed process automatically and/or to notify the cluster operator to investigate the situation.</p>
 

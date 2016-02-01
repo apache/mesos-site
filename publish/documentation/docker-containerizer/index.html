@@ -104,7 +104,7 @@ iptables -A INPUT -s 172.17.0.0/16 -i docker0 -p tcp -j ACCEPT
 
 <h2>How do I use the Docker Containerizer?</h2>
 
-<p>TaskInfo before 0.20.0 used to only support either setting a CommandInfo that launches a task running the bash command, or a ExecutorInfo that launches a custom Executor
+<p>TaskInfo before 0.20.0 used to only support either setting a CommandInfo that launches a task running the bash command, or an ExecutorInfo that launches a custom Executor
 that will launches the task.</p>
 
 <p>With 0.20.0 we added a ContainerInfo field to TaskInfo and ExecutorInfo that allows a Containerizer such as Docker to be configured to run the task or executor.</p>
@@ -135,11 +135,11 @@ Note that the Docker image is expected to launch up as a Mesos executor that wil
 
 <p>Note that we currently default to host networking when running a docker image, to easier support running a docker image as an Executor.</p>
 
-<p>The containerizer also supports optional force pulling of the image, and if disabled the docker image will only be updated again if it&rsquo;s not available on the host.</p>
+<p>The containerizer also supports optional force pulling of the image. It is set disabled as default, so the docker image will only be updated again if it&rsquo;s not available on the host. To enable force pulling an image, <code>force_pull_image</code> has to be set as true.</p>
 
 <h2>Private Docker repository</h2>
 
-<p>To run a image from a private repository, one can include the uri pointing to a <code>.dockercfg</code> that contains login information. The <code>.dockercfg</code> file will be pulled into the sandbox the Docker Containerizer
+<p>To run an image from a private repository, one can include the uri pointing to a <code>.dockercfg</code> that contains login information. The <code>.dockercfg</code> file will be pulled into the sandbox the Docker Containerizer
 set the HOME environment variable pointing to the sandbox so docker cli will automatically pick up the config file.</p>
 
 <h2>CommandInfo to run Docker images</h2>

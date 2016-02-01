@@ -90,10 +90,11 @@ from local file systems.</p>
 
 <h2>What is the Mesos fetcher?</h2>
 
-<p>The Mesos fetcher is a mechanism to download resources into the sandbox
-directory of a task in preparation of running the task. As part of a TaskInfo
-message, the framework ordering the task&rsquo;s execution provides a list of
-<code>CommandInfo::URI</code> protobuf values, which becomes the input to the Mesos fetcher.</p>
+<p>The Mesos fetcher is a mechanism to download resources into the <a href="/documentation/latest/sandbox/">sandbox
+directory</a> of a task in preparation of running
+the task. As part of a TaskInfo message, the framework ordering the task&rsquo;s
+execution provides a list of <code>CommandInfo::URI</code> protobuf values, which becomes
+the input to the Mesos fetcher.</p>
 
 <p>The Mesos fetcher can copy files from a local filesytem and it also natively
 supports the HTTP, HTTPS, FTP and FTPS protocols. If the requested URI is based
@@ -310,6 +311,42 @@ falls back on bypassing the cache for the given URI as described above.</p>
 <p>If multiple evictions happen concurrently, each of them is pursuing its own
 separate space goals. However, leftover freed up space from one effort is
 automatically awarded to others.</p>
+
+<h2>HTTP and SOCKS proxy settings</h2>
+
+<p>Sometimes it is desirable to use a proxy to download the file. The Mesos
+fetcher uses libcurl internally for downloading content from
+HTTP/HTTPS/FTP/FTPS servers, and libcurl can use a proxy automatically if
+certain environment variables are set.</p>
+
+<p>The respective environment variable name is <code>[protocol]_proxy</code>, where
+<code>protocol</code> can be one of socks4, socks5, http, https.</p>
+
+<p>For example, the value of the <code>http_proxy</code> environment variable would be used
+as the proxy for fetching http contents, while <code>https_proxy</code> would be used for
+fetching https contents. Pay attention that these variable names must be
+entirely in lower case.</p>
+
+<p>The value of the proxy variable is of the format
+<code>[protocol://][user:password@]machine[:port]</code>, where <code>protocol</code> can be one of
+socks4, socks5, http, https.</p>
+
+<p>FTP/FTPS requests with a proxy also make use of a HTTP/HTTPS proxy. Even
+though in general this constrains the available FTP protocol operations,
+everything the fetcher uses is supported.</p>
+
+<p>Your proxy settings can be placed in <code>/etc/default/mesos-slave</code>. Here is an
+example:</p>
+
+<pre><code>export http_proxy=https://proxy.example.com:3128
+export https_proxy=https://proxy.example.com:3128
+</code></pre>
+
+<p>The fetcher will pick up these environment variable settings since the utility
+program <code>mesos-fetcher</code> which it employs is a child of mesos-slave.</p>
+
+<p>For more details, please check the
+<a href="http://curl.haxx.se/libcurl/c/libcurl-tutorial.html">libcurl manual</a>.</p>
 
 <h2>Slave flags</h2>
 

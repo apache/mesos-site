@@ -96,35 +96,40 @@ that is mounted at a well-known location outside the task&rsquo;s sandbox).</p>
 
 <p>Persistent volumes can only be created from <strong>reserved</strong> disk resources, whether
 it be statically reserved or dynamically reserved. A dynamically reserved
-persistent volume also cannot be unreserved without having explicitly destroyed
-the volume. These rules exist to limit the accidental mistakes such as:
-a persistent volume containing sensitive data being offered to other frameworks
-in the cluster.</p>
+persistent volume also cannot be unreserved without first explicitly destroying
+the volume. These rules exist to limit accidental mistakes, such as a persistent
+volume containing sensitive data being offered to other frameworks in the
+cluster.</p>
 
 <p>Please refer to the <a href="/documentation/latest/reservation/">Reservation</a> documentation for details
 regarding reservation mechanisms available in Mesos.</p>
 
 <p>Persistent volumes can be created by <strong>operators</strong> and authorized
 <strong>frameworks</strong>. We require a <code>principal</code> from the operator or framework in order
-to authenticate/authorize the operations. <a href="/documentation/latest/authorization/">Authorization</a> is
-specified via the existing ACL mechanism. (<strong><em>Coming Soon</em></strong>)</p>
+to authenticate/authorize the operations. Permissions are specified via the
+existing ACL mechanism. To use authorization with reserve, unreserve, create,
+and destroy operations, the Mesos master must be configured with the desired
+ACLs. For more information, see the
+<a href="/documentation/latest/authorization/">authorization documentation</a>.</p>
 
 <ul>
 <li><code>Offer::Operation::Create</code> and <code>Offer::Operation::Destroy</code> messages are
 available for <strong>frameworks</strong> to send back via the <code>acceptOffers</code> API as a
 response to a resource offer.</li>
-<li><code>/create</code> and <code>/destroy</code> HTTP endpoints are available for <strong>operators</strong>
-to manage persistent volumes through the master. (<strong><em>Coming Soon</em></strong>).</li>
+<li><code>/create-volumes</code> and <code>/destroy-volumes</code> HTTP endpoints allow
+<strong>operators</strong> to manage persistent volumes through the master.</li>
 </ul>
 
 
 <p>In the following sections, we will walk through examples of each of the
 interfaces described above.</p>
 
-<h2><code>Offer::Operation::Create</code></h2>
+<h3>Framework Scheduler API</h3>
 
-<p>A framework is able to create volumes through the resource offer cycle.
-Suppose we receive a resource offer with 2048 MB of dynamically reserved disk.</p>
+<h4><code>Offer::Operation::Create</code></h4>
+
+<p>A framework can create volumes through the resource offer cycle.  Suppose we
+receive a resource offer with 2048 MB of dynamically reserved disk.</p>
 
 <pre><code>{
   "id" : &lt;offer_id&gt;,
@@ -146,12 +151,12 @@ Suppose we receive a resource offer with 2048 MB of dynamically reserved disk.</
 </code></pre>
 
 <p>We can create a persistent volume from the 2048 MB of disk resources by sending
-the following <code>Offer::Operation</code> message via the <code>acceptOffers</code> API.
-<code>Offer::Operation::Create</code> has a <code>volumes</code> field which we specify with the
-persistent volume information. We need to specify the following:</p>
+an <code>Offer::Operation</code> message via the <code>acceptOffers</code> API.
+<code>Offer::Operation::Create</code> has a <code>volumes</code> field which specifies the persistent
+volume information. We need to specify the following:</p>
 
 <ol>
-<li>ID of the persistent volume which needs to be unique per role on each slave.</li>
+<li>The ID for the persistent volume; this must be unique per role on each slave.</li>
 <li>The non-nested relative path within the container to mount the volume.</li>
 <li>The permissions for the volume. Currently, <code>"RW"</code> is the only possible value.</li>
 </ol>
@@ -184,7 +189,8 @@ persistent volume information. We need to specify the following:</p>
 }
 </code></pre>
 
-<p>The subsequent resource offer will <strong>contain</strong> the following persistent volume:</p>
+<p>If this succeeds, a subsequent resource offer will contain the following
+persistent volume:</p>
 
 <pre><code>{
   "id" : &lt;offer_id&gt;,
@@ -214,12 +220,12 @@ persistent volume information. We need to specify the following:</p>
 }
 </code></pre>
 
-<h2><code>Offer::Operation::Destroy</code></h2>
+<h4><code>Offer::Operation::Destroy</code></h4>
 
-<p>A framework is able to destroy persistent volumes through the resource offer
-cycle. In <a href="#offeroperationcreate">Offer::Operation::Create</a>, we created a
-persistent volume from 2048 MB of disk resources. Mesos will not garbage-collect
-this volume until we explicitly destroy it. Suppose we would like to destroy the
+<p>A framework can destroy persistent volumes through the resource offer cycle. In
+<a href="#offeroperationcreate">Offer::Operation::Create</a>, we created a persistent
+volume from 2048 MB of disk resources. Mesos will not garbage-collect this
+volume until we explicitly destroy it. Suppose we would like to destroy the
 volume we created. First, we receive a resource offer (copy/pasted from above):</p>
 
 <pre><code>{
@@ -252,7 +258,7 @@ volume we created. First, we receive a resource offer (copy/pasted from above):<
 
 <p>We destroy the persistent volume by sending the <code>Offer::Operation</code> message via
 the <code>acceptOffers</code> API. <code>Offer::Operation::Destroy</code> has a <code>volumes</code> field which
-we specify the persistent volumes to be destroyed.</p>
+specifies the persistent volumes to be destroyed.</p>
 
 <pre><code>{
   "type" : Offer::Operation::DESTROY,
@@ -281,9 +287,9 @@ we specify the persistent volumes to be destroyed.</p>
 }
 </code></pre>
 
-<p>The persistent volume will be destroyed, but the disk resources will still be
-reserved. As such, the subsequent resource offer will <strong>contain</strong> the following
-reserved disk resources:</p>
+<p>If this request succeeds, the persistent volume will be destroyed but the disk
+resources will still be reserved. As such, a subsequent resource offer will
+contain the following reserved disk resources:</p>
 
 <pre><code>{
   "id" : &lt;offer_id&gt;,
@@ -304,13 +310,196 @@ reserved disk resources:</p>
 }
 </code></pre>
 
-<p>Note that in 0.23, even after you destroy the persistent volume, its content
-will still be on the disk. The garbage collection for persistent volumes is
-coming soon: <a href="https://issues.apache.org/jira/browse/MESOS-2408">MESOS-2048</a>.</p>
+<p>Those reserved resources can then be used as normal: e.g., they can be used to
+create another persistent volume or can be unreserved.</p>
 
-<h3><code>/create</code> (<em>Coming Soon</em>)</h3>
+<p>Garbage collection for persistent volumes is planned but has not been
+implemented yet &ndash; <a href="https://issues.apache.org/jira/browse/MESOS-2408">MESOS-2408</a>.
+In the mean time, even after you destroy a persistent volume, its content will
+remain on disk.</p>
 
-<h3><code>/destroy</code> (<em>Coming Soon</em>)</h3>
+<h3>Operator HTTP Endpoints</h3>
+
+<p>As described above, persistent volumes can be created by a framework scheduler
+as part of the resource offer cycle. Persistent volumes can also be created and
+destroyed by sending HTTP requests to the <code>/create-volumes</code> and
+<code>/destroy-volumes</code> endpoints, respectively. This capability is intended for use
+by operators and administrative tools.</p>
+
+<h4><code>/create-volumes</code></h4>
+
+<p>To use this endpoint, the operator should first ensure that a reservation for
+the necessary resources has been made on the appropriate slave (e.g., by using
+the <code>/reserve</code> HTTP endpoint or by configuring a static reservation).</p>
+
+<p>To create a 512MB persistent volume for the <code>ads</code> role on a dynamically reserved
+disk resource, we can send a request like so:</p>
+
+<pre><code>curl -i \
+     -u &lt;operator_principal&gt;:&lt;password&gt; \
+     -d slaveId=&lt;slave_id&gt; \
+     -d volumes='[
+       {
+         "name": "disk",
+         "type": "SCALAR",
+         "scalar": { "value": 512 },
+         "role": "ads",
+         "reservation": {
+           "principal": &lt;operator_principal&gt;
+         },
+         "disk": {
+           "persistence": {
+             "id" : &lt;persistence_id&gt;
+           },
+           "volume": {
+             "mode": "RW",
+             "container_path": &lt;path&gt;
+           }
+         }
+       }
+     ]' \
+     -X POST http://&lt;ip&gt;:&lt;port&gt;/master/create-volumes
+</code></pre>
+
+<p>The user receives one of the following HTTP responses:</p>
+
+<ul>
+<li><code>200 OK</code>: Success (the persistent volumes have been created).</li>
+<li><code>400 BadRequest</code>: Invalid arguments (e.g., missing parameters).</li>
+<li><code>401 Unauthorized</code>: Unauthenticated request.</li>
+<li><code>403 Forbidden</code>: Unauthorized request.</li>
+<li><code>409 Conflict</code>: Insufficient resources to create the volumes.</li>
+</ul>
+
+
+<p>Note that a single <code>/create-volumes</code> request can create multiple persistent
+volumes, but all of the volumes must be on the same slave.</p>
+
+<h4><code>/destroy-volumes</code></h4>
+
+<p>To destroy the volume created above, we can send an HTTP POST like so:</p>
+
+<pre><code>curl -i \
+     -u &lt;operator_principal&gt;:&lt;password&gt; \
+     -d slaveId=&lt;slave_id&gt; \
+     -d volumes='[
+       {
+         "name": "disk",
+         "type": "SCALAR",
+         "scalar": { "value": 512 },
+         "role": "ads",
+         "reservation": {
+           "principal": &lt;operator_principal&gt;
+         },
+         "disk": {
+           "persistence": {
+             "id" : &lt;persistence_id&gt;
+           },
+           "volume": {
+             "mode": "RW",
+             "container_path": &lt;path&gt;
+           }
+         }
+       }
+     ]' \
+     -X POST http://&lt;ip&gt;:&lt;port&gt;/master/destroy-volumes
+</code></pre>
+
+<p>The user receives one of the following HTTP responses:</p>
+
+<ul>
+<li><code>200 OK</code>: Success (the volumes have been destroyed).</li>
+<li><code>400 BadRequest</code>: Invalid arguments (e.g., missing parameters).</li>
+<li><code>401 Unauthorized</code>: Unauthenticated request.</li>
+<li><code>403 Forbidden</code>: Unauthorized request.</li>
+<li><code>409 Conflict</code>: Insufficient resources to destroy the volumes.</li>
+</ul>
+
+
+<p>Note that a single <code>/destroy-volumes</code> request can destroy multiple persistent
+volumes, but all of the volumes must be on the same slave.</p>
+
+<h3>Programming with Persistent Volumes</h3>
+
+<p>Some suggestions to keep in mind when building applications that use persistent
+volumes:</p>
+
+<ul>
+<li><p>A single <code>acceptOffers</code> call can be used to both create a new dynamic
+reservation (via <code>Offer::Operation::Reserve</code>) and create a new persistent
+volume on those newly reserved resources (via <code>Offer::Operation::Create</code>).</p></li>
+<li><p>Attempts to dynamically reserve resources or create persistent volumes might
+fail&mdash;for example, because the network message containing the operation did
+not reach the master or because the master rejected the operation.
+Applications should be prepared to detect failures and correct for them (e.g.,
+by retrying the operation).</p></li>
+<li><p>When using HTTP endpoints to reserve resources or create persistent volumes,
+<em>some</em> failures can be detected by examining the HTTP response code returned
+to the client. However, it is still possible for a <code>200</code> response code to be
+returned to the client but for the associated operation to fail.</p></li>
+<li><p>When using the scheduler API, detecting that a dynamic reservation has failed
+is a little tricky: reservations do not have unique identifiers, and the Mesos
+master does not provide explicit feedback on whether a reservation request has
+succeeded or failed. Hence, framework schedulers typically use a combination
+of two techniques:</p>
+
+<ol>
+<li><p>They use timeouts to detect that a reservation request may have failed
+(because they don&rsquo;t receive a resource offer containing the expected
+resources after a given period of time).</p></li>
+<li><p>To check whether a resource offer includes the effect of a dynamic
+reservation, applications <em>cannot</em> check for the presence of a &ldquo;reservation
+ID&rdquo; or similar value (because reservations do not have IDs). Instead,
+applications should examine the resource offer and check it contains
+sufficient reserved resources for the application&rsquo;s role. If it does not,
+the application should make additional reservation requests as necessary.</p></li>
+</ol>
+</li>
+<li><p>When a scheduler issues a dynamic reservation request, the reserved resources
+might <em>not</em> be present in the next resource offer the scheduler receives.
+There are two reasons for this: first, the reservation request might fail or
+be dropped by the network, as discussed above. Second, the reservation request
+might simply be delayed, so that the next resource offer from the master will
+be issued before the reservation request is received by the master. This is
+why the text above suggests that applications wait for a timeout before
+assuming that a reservation request should be retried.</p></li>
+<li><p>A consequence of using timeouts to detect failures is that an application
+might submit more reservation requests than intended (e.g., a timeout fires
+and an application makes another reservation request; meanwhile, the original
+reservation request is also processed). Recall that two reservations for the
+same role at the same agent are &ldquo;merged&rdquo;: for example, role <code>foo</code> makes two
+requests to reserve 2 CPUs at a single agent and both reservation requests
+succeed, the result will be a single reservation of 4 CPUs. To handle this
+situation, applications should be prepared for resource offers that contain
+more resources than expected. Some applications may also want to detect this
+situation and unreserve an additional reserved resources that will not be
+required.</p></li>
+<li><p>It often makes sense to structure application logic as a &ldquo;state machine&rdquo;,
+where the application moves from its initial state (no reserved resources and
+no persistent volumes) and eventually transitions toward a single terminal
+state (necessary resources reserved and persistent volume created). As new
+events (such as timeouts and resource offers) are received, the application
+compares the event with its current state and decides what action to take
+next.</p></li>
+<li><p>Because persistent volumes are associated with roles, a volume might be
+offered to <em>any</em> of the frameworks that are registered in that role. For
+example, a persistent volume might be created by one framework and then
+offered to a different framework in the same role. This can be used to pass
+large volumes of data between frameworks in a convenient way. However, this
+behavior might also allow sensitive data created by one framework to be read
+or modified by another framework in the same role. It can also make it more
+difficult for frameworks to determine whether a dynamic reservation has
+succeeded: as discussed above, frameworks need to wait for an offer that
+contains the &ldquo;expected&rdquo; reserved resources to determine when a reservation
+request has succeeded. Determining what a framework should &ldquo;expect&rdquo; to find in
+an offer is more difficult when multiple frameworks can be making reservations
+for the same role concurrently. In general, whenever multiple frameworks are
+allowed to register in the same role, the operator should ensure that those
+frameworks are configured to collaborate with one another when using
+role-specific resources. For more information, see the discussion of
+<a href="roles.md#roles-multiple-frameworks">multiple frameworks in the same role</a>.</p></li>
+</ul>
+
 
 	</div>
 </div>

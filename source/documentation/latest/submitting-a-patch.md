@@ -26,14 +26,14 @@ layout: documentation
 
 6. Find a **shepherd** to collaborate on your patch. A shepherd is a Mesos committer that will work with you to give you feedback on your proposed design, and to eventually commit your change into the Mesos source tree.
     1. To find a shepherd, email the dev mailing list (include a link to your JIRA issue). You can also try asking by adding a comment to your JIRA issue.
-    2. You can also find a shepherd by asking the developers on IRC (in the [mesos channel](irc://irc.freenode.net/mesos) on [Freenode](https://freenode.net)). You can find the current list of committers [here](committers.md): a developer that has previously worked on the component you are modifying might be a good candidate shepherd.
+    2. You can also find a shepherd by asking the developers on IRC (/documentation/latest/in the [mesos channel](irc://irc.freenode.net/mesos) on [Freenode](https://freenode.net)). You can find the current list of committers [here](committers/): a developer that has previously worked on the component you are modifying might be a good candidate shepherd.
 
 ### Create your patch
 1. Create one or more test cases to exercise the bug or the feature (the Mesos team uses [test-driven development](http://en.wikipedia.org/wiki/Test-driven_development)). Before you start coding, make sure these test cases all fail.
-    1. The [testing patterns](testing-patterns.md) page has some suggestions for writing test cases.
+    1. The [testing patterns](/documentation/latest/testing-patterns/) page has some suggestions for writing test cases.
 
 2. Make your changes to the code (using whatever IDE/editor you choose) to actually fix the bug or implement the feature.
-    1. Before beginning, please read the [Mesos C++ Style Guide](c++-style-guide.md). It is recommended to use the git pre-commit hook (`support/hooks/pre-commit`) to automatically check for style errors. See the hook script for instructions to enable it.
+    1. Before beginning, please read the [Mesos C++ Style Guide](/documentation/latest/c++-style-guide/). It is recommended to use the git pre-commit hook (`support/hooks/pre-commit`) to automatically check for style errors. See the hook script for instructions to enable it.
     2. Most of your changes will probably be to files inside of `BASE_MESOS_DIR`
     3. From inside of the root Mesos directory: `./bootstrap` (Only required if building from git repository).
     4. To build, we recommend that you don't build inside of the src directory. We recommend you do the following:
@@ -46,9 +46,10 @@ layout: documentation
     1. To build all tests without executing them, use something like: `make tests`.
     2. To execute a single unit test (helpful when trying to debug a test case failure), use something like: `make check GTEST_FILTER="HTTPTest.Delete"`.
 
-4. Divide your change into one or more Git commits. Each commit should represent a single logical (atomic) change to the Mesos source code: this makes your changes easier to review. For more information, see the [reviewer guidelines](effective-code-reviewing.md).
+4. Divide your change into one or more Git commits. Each commit should represent a single logical (/documentation/latest/atomic) change to the Mesos source code: this makes your changes easier to review. For more information, see the [reviewer guidelines](effective-code-reviewing/).
     1. Try to avoid including other, unrelated cleanups (e.g., typo fixes or style nits) in the same commit that makes functional changes. While typo fixes are great, including them in the same commit as functional changes makes the commit history harder to read.
     2. Developers often make incremental commits to save their progress when working on a change, and then "rewrite history" (e.g., using `git rebase -i`) to create a clean set of commits once the change is ready to be reviewed.
+    3. Commit messages should be in past tense. The first sentence should summarize the change; it should start with a capital letter, not exceed 72 characters and end in a period.
 
 5. Make sure to pull in any changes that have been committed to master branch. Using Git, do this via something like:
     1. `git checkout master`
@@ -82,4 +83,4 @@ layout: documentation
 4. The last step is to ensure that the necessary documentation gets created or updated so the whole world knows about your new feature or bug fix.
 
 ## Style Guides
-* For patches to the core, we ask that you follow the [Mesos C++ Style Guide](c++-style-guide.md).
+* For patches to the core, we ask that you follow the [Mesos C++ Style Guide](/documentation/latest/c++-style-guide/).

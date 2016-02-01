@@ -14,6 +14,7 @@ layout: documentation
 * [Atigeo](http://www.atigeo.com)
 * [Atlassian](http://www.atlassian.com)
 * [Auchan Ecommerce France](http://www.auchan.fr)
+* [Blue Yonder](http://www.blue-yonder.com)
 * [Bol.com](http://www.bol.com)
 * [Branding Brand](http://www.brandingbrand.com)
 * [Brigade](http://www.brigade.com)
@@ -33,8 +34,10 @@ layout: documentation
 * [eBay](http://www.ebay.com)
 * [Ericsson](http://www.ericsson.com/)
 * [Foursquare](http://www.foursquare.com)
+* [GenOuest](http://www.genouest.org)
 * [GoCardless](http://www.gocardless.com)
 * [Groupon](http://www.groupon.com)
+* [GSShop](http://www.gsshop.com)
 * [Gutefrage.net](http://www.gutefrage.net)
 * [Hootsuite](https://hootsuite.com)
 * [HubSpot](http://www.hubspot.com)
@@ -54,6 +57,7 @@ layout: documentation
 * [Motus](http://www.motus.com)
 * [Netflix](http://www.netflix.com)
 * [Oakmore Labs](http://www.oakmorelabs.com)
+* [Orbitz Worldwide](http://www.orbitz.com/)
 * [OpenCredo](http://www.opencredo.com/)
 * [OpenTable](http://www.opentable.com)
 * [Oscar Insurance](https://www.hioscar.com/)
@@ -61,6 +65,7 @@ layout: documentation
 * [Pinkbike](http://www.pinkbike.com)
 * [ProfitStars](http://www.profitstars.com)
 * [Qubit](http://www.qubitproducts.com)
+* [Qunar](http://www.qunar.com)
 * [RelateIQ](http://www.relateiq.com)
 * [Revisely](http://revise.ly)
 * [Sabre Labs](http://www.sabre.com)
@@ -95,6 +100,6 @@ layout: documentation
 
 ## Software projects built on Mesos
 
-See the [Mesos frameworks page](frameworks.md) for a list of apps built on top of Mesos, and instructions on how to use them.
+See the [Mesos frameworks page](/documentation/latest/frameworks/) for a list of apps built on top of Mesos, and instructions on how to use them.
 
 If you're using Mesos, please add yourself to the list above, or email user@mesos.apache.org and we'll add you!

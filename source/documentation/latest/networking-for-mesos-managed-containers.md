@@ -60,7 +60,7 @@ isolation using new data structures in the TaskInfo message.
     isolation
 
 * Cleanup Module:
-  * responsible for doing a cleanup (releasing IPs, etc.) during a Agent lost
+  * responsible for doing a cleanup (releasing IPs, etc.) during an Agent lost
     event, dormant otherwise
 
 ### Framework requests IP address for containers
@@ -113,7 +113,7 @@ The network isolator module is not part of standard Mesos distribution. However,
 there is an example implementation at https://github.com/mesosphere/net-modules.
 
 Once the network isolation module has been built into a shared dynamic library,
-we can load it into Mesos Agent (see [modules documentation](modules.md) on
+we can load it into Mesos Agent (/documentation/latest/see [modules documentation](modules/) on
 instructions for building and loading a module).
 
 ## Enabling frameworks for IP-per-container capability
@@ -165,22 +165,22 @@ message in TaskInfo. Here are a few examples:
 
    ```
    TaskInfo {
-     ...
-     command: ...,
-     container: ContainerInfo {
-       network_infos: [
-         NetworkInfo {
+     ...
+     command: ...,
+     container: ContainerInfo {
+       network_infos: [
+         NetworkInfo {
            ip_addresses: [
              IPAddress {
-               protocol: None;
-               ip_address: None;
+               protocol: None;
+               ip_address: None;
              }
            ]
-           groups: [];
-           labels: None;
-         }
-       ]
-     }
+           groups: [];
+           labels: None;
+         }
+       ]
+     }
    }
    ```
 
@@ -190,11 +190,11 @@ message in TaskInfo. Here are a few examples:
 
    ```
    TaskInfo {
-     ...
-     command: ...,
-     container: ContainerInfo {
-       network_infos: [
-         NetworkInfo {
+     ...
+     command: ...,
+     container: ContainerInfo {
+       network_infos: [
+         NetworkInfo {
            ip_addresses: [
              IPAddress {
                protocol: IPv4;
@@ -205,11 +205,11 @@ message in TaskInfo. Here are a few examples:
                ip_address: None;
              }
            ]
-           groups: ["dev", "test"];
-           labels: None;
-         }
-       ]
-     }
+           groups: ["dev", "test"];
+           labels: None;
+         }
+       ]
+     }
    }
    ```
 
@@ -219,32 +219,32 @@ message in TaskInfo. Here are a few examples:
 
    ```
    TaskInfo {
-     ...
-     command: ...,
-     container: ContainerInfo {
-       network_infos: [
-         NetworkInfo {
+     ...
+     command: ...,
+     container: ContainerInfo {
+       network_infos: [
+         NetworkInfo {
            ip_addresses: [
              IPAddress {
                protocol: None;
                ip_address: None;
              }
            ]
-           groups: ["foo"];
-           labels: None;
-         },
-         NetworkInfo {
+           groups: ["foo"];
+           labels: None;
+         },
+         NetworkInfo {
            ip_addresses: [
              IPAddress {
                protocol: None;
                ip_address: None;
              }
            ]
-           groups: ["bar"];
-           labels: None;
-         },
-       ]
-     }
+           groups: ["bar"];
+           labels: None;
+         },
+       ]
+     }
    }
    ```
 
@@ -280,8 +280,8 @@ using the Mesos Containerizer, set TaskInfo.ContainerInfo.NetworkInfo.
 ## Address Discovery
 
 The NetworkInfo message allows frameworks to request IP address(es) to be
-assigned at task launch time on the Mesos agent.  After opting in to network
-isolation for a given executor’s container in this way, frameworks will need to
+assigned at task launch time on the Mesos agent. After opting in to network
+isolation for a given executor's container in this way, frameworks will need to
 know what address(es) were ultimately assigned in order to perform health
 checks, or any other out-of-band communication.
 

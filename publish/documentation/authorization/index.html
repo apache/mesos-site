@@ -83,27 +83,36 @@
 	<div class="col-md-8">
 		<h1>Authorization</h1>
 
-<p>Mesos 0.20.0 adds support for framework authorization. Authorization allows</p>
+<p>Authorization currently allows</p>
 
 <ol>
-<li>Frameworks to (re-)register with authorized <code>roles</code>.</li>
-<li>Frameworks to launch tasks/executors as authorized <code>users</code>.</li>
-<li>Authorized <code>principals</code> to shutdown framework(s) through &ldquo;/shutdown&rdquo; HTTP endpoint.</li>
+<li>Frameworks to (re-)register with authorized <em>roles</em>.</li>
+<li>Frameworks to launch tasks/executors as authorized <em>users</em>.</li>
+<li>Authorized <em>principals</em> to teardown frameworks through the &ldquo;/teardown&rdquo; HTTP endpoint.</li>
+<li>Authorized <em>principals</em> to set and remove quotas through the &ldquo;/quota&rdquo; HTTP endpoint.</li>
+<li>Authorized <em>principals</em> to reserve and unreserve resources through the &ldquo;/reserve&rdquo; and &ldquo;/unreserve&rdquo; HTTP endpoints, as well as with the <code>RESERVE</code> and <code>UNRESERVE</code> offer operations.</li>
+<li>Authorized <em>principals</em> to create and destroy persistent volumes through the &ldquo;/create-volumes&rdquo; and &ldquo;/destroy-volumes&rdquo; HTTP endpoints, as well as with the <code>CREATE</code> and <code>DESTROY</code> offer operations.</li>
 </ol>
 
 
 <h2>ACLs</h2>
 
-<p>Authorization is implemented via Access Control Lists (ACLs). For each of the 3 cases described above there is a corresponding ACL(s) that can be set to restrict access. Operators can setup ACLs in JSON format. See <a href="https://github.com/apache/mesos/blob/master/include/mesos/mesos.proto">mesos.proto</a> for details.</p>
+<p>Authorization is implemented via Access Control Lists (ACLs). For each of the above cases, ACLs can be used to restrict access. Operators can setup ACLs in JSON format. See <a href="https://github.com/apache/mesos/blob/master/include/mesos/authorizer/authorizer.proto">authorizer.proto</a> for details.</p>
 
 <p>Each ACL specifies a set of <code>Subjects</code> that can perform an <code>Action</code> on a set of <code>Objects</code>.</p>
 
 <p>The currently supported <code>Actions</code> are:</p>
 
 <ol>
-<li>&ldquo;register_frameworks&rdquo;: Register Frameworks</li>
+<li>&ldquo;register_frameworks&rdquo;: Register frameworks</li>
 <li>&ldquo;run_tasks&rdquo;: Run tasks/executors</li>
-<li>&ldquo;shutdown_frameworks&rdquo;: Shutdown frameworks</li>
+<li>&ldquo;teardown_frameworks&rdquo;: Teardown frameworks</li>
+<li>&ldquo;set_quotas&rdquo;: Set quotas</li>
+<li>&ldquo;remove_quotas&rdquo;: Remove quotas</li>
+<li>&ldquo;reserve_resources&rdquo;: Reserve resources</li>
+<li>&ldquo;unreserve_resources&rdquo;: Unreserve resources</li>
+<li>&ldquo;create_volumes&rdquo;: Create persistent volumes</li>
+<li>&ldquo;destroy_volumes&rdquo;: Destroy persistent volumes</li>
 </ol>
 
 
@@ -113,8 +122,8 @@
 <li>&ldquo;principals&rdquo;
 
 <ul>
-<li>Framework principals (used by &ldquo;register_frameworks&rdquo; and &ldquo;run_tasks&rdquo; actions)</li>
-<li>Usernames (used by &ldquo;shutdown_frameworks&rdquo; action)</li>
+<li>Framework principals (used by &ldquo;register_frameworks&rdquo;, &ldquo;run_tasks&rdquo;, &ldquo;reserve&rdquo;, &ldquo;unreserve&rdquo;, &ldquo;create_volumes&rdquo;, and &ldquo;destroy_volumes&rdquo; actions)</li>
+<li>Usernames (used by &ldquo;teardown_frameworks&rdquo;, &ldquo;set_quotas&rdquo;, &ldquo;remove_quotas&rdquo;, &ldquo;reserve&rdquo;, &ldquo;unreserve&rdquo;, &ldquo;create_volumes&rdquo;, and &ldquo;destroy_volumes&rdquo; actions)</li>
 </ul>
 </li>
 </ol>
@@ -123,29 +132,36 @@
 <p>The currently supported <code>Objects</code> are:</p>
 
 <ol>
-<li>&ldquo;roles&rdquo;: Resource <a href="/documentation/latest/roles/">roles</a> that framework can register with (used by &ldquo;register_frameworks&rdquo; action)</li>
-<li>&ldquo;users&rdquo;: Unix user to launch the task/executor as (used by &ldquo;run_tasks&rdquo; action)</li>
-<li>&ldquo;framework_principals&rdquo;: Framework principals that can be shutdown by HTTP POST (used by &ldquo;shutdown_frameworks&rdquo; action).</li>
+<li>&ldquo;roles&rdquo;: Resource <a href="/documentation/latest/roles/">roles</a> that framework can register with (used by &ldquo;register_frameworks&rdquo; and &ldquo;set_quotas&rdquo; actions)</li>
+<li>&ldquo;users&rdquo;: Unix user to launch the task/executor as (used by &ldquo;run_tasks&rdquo; actions)</li>
+<li>&ldquo;framework_principals&rdquo;: Framework principals that can be torn down by HTTP POST (used by &ldquo;teardown_frameworks&rdquo; actions).</li>
+<li>&ldquo;resources&rdquo;: Resources that can be reserved. Currently the only types considered by the default authorizer are <code>ANY</code> and <code>NONE</code> (used by &ldquo;reserves&rdquo; action).</li>
+<li>&ldquo;reserver_principals&rdquo;: Framework principals whose reserved resources can be unreserved (used by &ldquo;unreserves&rdquo; action).</li>
+<li>&ldquo;volume_types&rdquo;: Types of volumes that can be created by a given principal. Currently the only types considered by the default authorizer are <code>ANY</code> and <code>NONE</code> (used by &ldquo;create_volumes&rdquo; action).</li>
+<li>&ldquo;creator_principals&rdquo;: Principals whose persistent volumes can be destroyed (used by &ldquo;destroy_volumes&rdquo; action).</li>
+<li>&ldquo;quota_principals&rdquo;: Principals that set the quota to be removed (used by &ldquo;remove_quotas&rdquo; action)</li>
 </ol>
 
 
-<blockquote><p>NOTE: Both <code>Subjects</code> and <code>Objects</code> can take a list of strings or special values (<code>ANY</code> or <code>NONE</code>).</p></blockquote>
+<blockquote><p>NOTE: Both <code>Subjects</code> and <code>Objects</code> can be either an array of strings or one of the special values <code>ANY</code> or <code>NONE</code>.</p></blockquote>
 
 <h2>How does it work?</h2>
 
 <p>The Mesos master checks the ACLs to verify whether a request is authorized or not.</p>
 
-<p>For example, when a framework (re-)registers with the master, the &ldquo;register_frameworks&rdquo; ACLs are checked to see if the framework (<code>FrameworkInfo.principal</code>) is authorized to receive offers for the given resource role (<code>FrameworkInfo.role</code>). If not authorized, the framework is not allowed to (re-)register and gets an <code>Error</code> message back (which aborts the scheduler driver).</p>
+<p>For example, when a framework (re-)registers with the master, &ldquo;register_frameworks&rdquo; ACLs are checked to see if the framework (<code>FrameworkInfo.principal</code>) is authorized to receive offers for the given resource role (<code>FrameworkInfo.role</code>). If not authorized, the framework is not allowed to (re-)register and gets an <code>Error</code> message back (which aborts the scheduler driver).</p>
 
-<p>Similarly, when a framework launches a task(s), &ldquo;run_tasks&rdquo; ACLs are checked to see if the framework (<code>FrameworkInfo.principal</code>) is authorized to run the task/executor as the given <code>user</code>. If not authorized, the launch is rejected and the framework gets a TASK_LOST.</p>
+<p>Similarly, when a framework launches a task, &ldquo;run_tasks&rdquo; ACLs are checked to see if the framework (<code>FrameworkInfo.principal</code>) is authorized to run the task/executor as the given user. If not authorized, the launch is rejected and the framework gets a TASK_LOST.</p>
 
-<p>In the same vein, when a user/principal attempts to shutdown a framework through the &ldquo;/teardown&rdquo; HTTP endpoint on the master, &ldquo;shutdown_frameworks&rdquo; ACLs are checked to see if the <code>principal</code> is authorized to shutdown the given framework. If not authorized, the shutdown is rejected and the user receives an <code>Unauthorized</code> HTTP response.</p>
+<p>In the same vein, when a user/principal attempts to teardown a framework using the &ldquo;/teardown&rdquo; HTTP endpoint on the master, &ldquo;teardown_frameworks&rdquo; ACLs are checked to see if the principal is authorized to teardown the given framework. If not authorized, the teardown is rejected and the user receives a <code>Forbidden</code> HTTP response.</p>
+
+<p>If no user/principal is provided in a request to an HTTP endpoint and authentication is disabled, the <code>ANY</code> subject is used in the authorization.</p>
 
 <p>There are couple of important things to note:</p>
 
 <ol>
-<li><p>ACLs are matched in the order that they are setup. In other words, the first matching ACL determines whether a request is authorized or not.</p></li>
-<li><p>If none of the specified ACLs match the given request, whether the request is authorized or not is defined by <code>ACLs.permissive</code> field. By default this is &ldquo;true&rdquo; i.e., a non-matching request is authorized.</p></li>
+<li><p>ACLs are matched in the order that they are specified. In other words, the first matching ACL determines whether a request is authorized or not.</p></li>
+<li><p>If no ACLs match a request, whether the request is authorized or not is determined by the <code>ACLs.permissive</code> field. This is &ldquo;true&rdquo; by default &ndash; i.e., non-matching requests are authorized.</p></li>
 </ol>
 
 
@@ -154,121 +170,140 @@
 <ol>
 <li><p>Frameworks <code>foo</code> and <code>bar</code> can run tasks as user <code>alice</code>.</p>
 
-<pre><code>     {
-       "run_tasks": [
-                      {
-                        "principals": { "values": ["foo", "bar"] },
-                        "users": { "values": ["alice"] }
-                      }
-                    ]
-     }
+<pre><code> {
+   "run_tasks": [
+                  {
+                    "principals": { "values": ["foo", "bar"] },
+                    "users": { "values": ["alice"] }
+                  }
+                ]
+ }
 </code></pre></li>
 <li><p>Any framework can run tasks as user <code>guest</code>.</p>
 
-<pre><code>     {
-       "run_tasks": [
-                      {
-                        "principals": { "type": "ANY" },
-                        "users": { "values": ["guest"] }
-                      }
-                    ]
-     }
+<pre><code> {
+   "run_tasks": [
+                  {
+                    "principals": { "type": "ANY" },
+                    "users": { "values": ["guest"] }
+                  }
+                ]
+ }
 </code></pre></li>
 <li><p>No framework can run tasks as <code>root</code>.</p>
 
-<pre><code>     {
-       "run_tasks": [
-                      {
-                        "principals": { "type": "NONE" },
-                        "users": { "values": ["root"] }
-                      }
-                    ]
-     }
+<pre><code> {
+   "run_tasks": [
+                  {
+                    "principals": { "type": "NONE" },
+                    "users": { "values": ["root"] }
+                  }
+                ]
+ }
 </code></pre></li>
 <li><p>Framework <code>foo</code> can run tasks only as user <code>guest</code> and no other user.</p>
 
-<pre><code>     {
-       "run_tasks": [
-                      {
-                        "principals": { "values": [ "foo" ] },
-                        "users": { "values": ["guest"] }
-                      },
-                      {
-                        "principals": { "values": [ "foo" ] },
-                        "users": { "type": "NONE" }
-                      }
-                    ]
-     }
+<pre><code> {
+   "run_tasks": [
+                  {
+                    "principals": { "values": ["foo"] },
+                    "users": { "values": ["guest"] }
+                  },
+                  {
+                    "principals": { "values": ["foo"] },
+                    "users": { "type": "NONE" }
+                  }
+                ]
+ }
 </code></pre></li>
-<li><p>Framework <code>foo</code> can register with <code>analytics</code> and <code>ads</code> roles.</p>
+<li><p>Framework <code>foo</code> can register with the <code>analytics</code> and <code>ads</code> roles.</p>
 
-<pre><code>     {
-       "register_frameworks": [
-                                {
-                                  "principals": { "values": ["foo"] },
-                                  "roles": { "values": ["analytics", "ads"] }
-                                }
-                              ]
-     }
+<pre><code> {
+   "register_frameworks": [
+                            {
+                              "principals": {
+                                "values": ["foo"]
+                              },
+                              "roles": {
+                                "values": ["analytics", "ads"]
+                              }
+                            }
+                          ]
+ }
 </code></pre></li>
-<li><p>Only framework <code>foo</code> and no one else can register with <code>analytics</code> role.</p>
+<li><p>Only framework <code>foo</code> and no one else can register with the <code>analytics</code> role.</p>
 
-<pre><code>     {
-       "register_frameworks": [
-                                {
-                                  "principals": { "values": ["foo"] },
-                                  "roles": { "values": ["analytics"] }
-                                },
-                                {
-                                  "principals": { "type": "NONE" },
-                                  "roles": { "values": ["analytics"] }
-                                }
-                              ]
-     }
+<pre><code> {
+   "register_frameworks": [
+                            {
+                              "principals": {
+                                "values": ["foo"]
+                              },
+                              "roles": {
+                                "values": ["analytics"]
+                              }
+                            },
+                            {
+                              "principals": {
+                                "type": "NONE"
+                              },
+                              "roles": {
+                                "values": ["analytics"]
+                              }
+                            }
+                          ]
+ }
 </code></pre></li>
-<li><p>Framework <code>foo</code> can only register with <code>analytics</code> role but no other roles. Also, no other framework can register with any roles.</p>
+<li><p>Framework <code>foo</code> can only register with the <code>analytics</code> role but no other roles. Also, no other framework can register with any roles or run tasks.</p>
 
-<pre><code>     {
-       "permissive" : false,
-
-       "register_frameworks": [
-                                {
-                                  "principals": { "values": ["foo"] },
-                                  "roles": { "values": ["analytics"] }
-                                }
-                              ]
-     }
+<pre><code> {
+   "permissive": false,
+   "register_frameworks": [
+                            {
+                              "principals": {
+                                "values": ["foo"]
+                              },
+                              "roles": {
+                                "values": ["analytics"]
+                              }
+                            }
+                          ]
+ }
 </code></pre></li>
-<li><p>Only <code>ops</code> principal can shutdown any frameworks through &ldquo;/teardown&rdquo; HTTP endpoint.</p>
+<li><p>The <code>ops</code> principal can teardown any framework using the &ldquo;/teardown&rdquo; HTTP endpoint. No other framework can register with any roles or run tasks.</p>
 
-<pre><code>     {
-       "permissive" : false,
-
-       "shutdown_frameworks": [
-                                {
-                                  "principals": { "values": ["ops"] },
-                                  "framework_principals": { "type": "ANY" }
-                                }
-                              ]
-     }
+<pre><code> {
+   "permissive": false,
+   "teardown_frameworks": [
+                            {
+                              "principals": {
+                                "values": ["ops"]
+                              },
+                              "framework_principals": {
+                                "type": "ANY"
+                              }
+                            }
+                          ]
+ }
 </code></pre></li>
 </ol>
 
 
-<h2>Enabling authorization</h2>
+<h2>Configuring authorization</h2>
 
-<p>As part of this feature, a new flag was added to the master.</p>
+<p>Authorization is configured by specifying the <code>--acls</code> flag when starting the master:</p>
 
 <ul>
-<li><code>acls</code> :  The value could be a JSON-formatted string of ACLs
-          or a file path containing the JSON-formatted ACLs used
-          for authorization. Path could be of the form &lsquo;file:///path/to/file&rsquo;
-          or &lsquo;/path/to/file&rsquo;.
-          See the ACLs protobuf in mesos.proto for the expected format.</li>
+<li><code>acls</code>:  The value could be a JSON-formatted string of ACLs
+         or a file path containing the JSON-formatted ACLs used
+         for authorization. Path could be of the form &lsquo;file:///path/to/file&rsquo;
+         or &lsquo;/path/to/file&rsquo;.
+         See the ACLs protobuf in authorizer.proto for the expected format.</li>
 </ul>
 
 
-<p><strong>For the complete list of master options: ./mesos-master.sh &ndash;help</strong></p>
+<p>For more information on master command-line flags, see the
+<a href="/documentation/latest/configuration/">configuration</a> page.</p>
 
 	</div>
 </div>

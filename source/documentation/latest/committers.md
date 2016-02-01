@@ -8,7 +8,7 @@ An Apache Mesos committer is a contributor who has been given write access to th
 
 ## Becoming a committer
 
-Every new committer has to be proposed by a current committer and then voted in by the members of the Mesos PMC. For details about this process and for candidate requirements see the general [Apache guidelines for assessing new candidates for committership](https://community.apache.org/newcommitter.html). Candidates prepare for their nomination as committer by contributing to the Mesos project and its community, by acting according to the [Apache Way](http://theapacheway.com), and by generally following the path [from contributor to committer](https://community.apache.org/contributors/) for Apache projects. Specifically for the Mesos project, you can make use of the [Apache Mesos Committer Candidate Checklist](/documentation/latest/committer-candidate-checklist/) for suggestions of what kind of contributions and demonstrated behaviors can be instrumental, and to keep track of your progress.
+Every new committer has to be proposed by a current committer and then voted in by the members of the Mesos PMC. For details about this process and for candidate requirements see the general [Apache guidelines for assessing new candidates for committership](/documentation/latest/https://community.apache.org/newcommitter.html). Candidates prepare for their nomination as committer by contributing to the Mesos project and its community, by acting according to the [Apache Way](http://theapacheway.com), and by generally following the path [from contributor to committer](https://community.apache.org/contributors/) for Apache projects. Specifically for the Mesos project, you can make use of the [Apache Mesos Committer Candidate Checklist](committer-candidate-checklist/) for suggestions of what kind of contributions and demonstrated behaviors can be instrumental, and to keep track of your progress.
 
 ## Current Committers
 
@@ -28,7 +28,7 @@ We'd like to thank the following committers to the Apache Mesos project who have
     <tr>
       <td>-8</td>
       <td>Ross Allen</td>
-      <td></td>
+      <td>Facebook</td>
       <td></td>
       <td>ssorallen@apache.org</td>
     </tr>
@@ -43,7 +43,7 @@ We'd like to thank the following committers to the Apache Mesos project who have
       <td>-8</td>
       <td>Adam B</td>
       <td>Mesosphere</td>
-      <td></td>
+      <td>adam-mesos</td>
       <td>me@apache.org</td>
     </tr>
     <tr>
@@ -70,7 +70,7 @@ We'd like to thank the following committers to the Apache Mesos project who have
     <tr>
       <td>-8</td>
       <td>Dominic Hamon</td>
-      <td></td>
+      <td>YouTube</td>
       <td></td>
       <td>dma@apache.org</td>
     </tr>
@@ -91,14 +91,14 @@ We'd like to thank the following committers to the Apache Mesos project who have
     <tr>
       <td>-8</td>
       <td>Vinod Kone</td>
-      <td>Twitter</td>
+      <td>Mesosphere</td>
       <td>vinodkone</td>
       <td>vinodkone@apache.org</td>
     </tr>
     <tr>
       <td>-8</td>
       <td>Andy Konwinski</td>
-      <td>UC Berkeley</td>
+      <td>Databricks</td>
       <td></td>
       <td>andrew@apache.org</td>
     </tr>
@@ -112,7 +112,7 @@ We'd like to thank the following committers to the Apache Mesos project who have
     <tr>
       <td>-8</td>
       <td>Benjamin Mahler</td>
-      <td>Twitter</td>
+      <td>Mesosphere</td>
       <td>bmahler</td>
       <td>bmahler@apache.org</td>
     </tr>
@@ -147,9 +147,16 @@ We'd like to thank the following committers to the Apache Mesos project who have
     <tr>
       <td>-8</td>
       <td>Niklas Quarfot Nielsen</td>
-      <td>Mesosphere</td>
+      <td>Intel</td>
       <td>niq_</td>
       <td>nnielsen@apache.org</td>
+    </tr>
+    <tr>
+      <td>-5</td>
+      <td>Michael Park</td>
+      <td>Mesosphere</td>
+      <td>mpark</td>
+      <td>mpark@apache.org</td>
     </tr>
     <tr>
       <td>-8</td>
@@ -189,7 +196,7 @@ We'd like to thank the following committers to the Apache Mesos project who have
     <tr>
       <td>-8</td>
       <td>Jie Yu</td>
-      <td>Twitter</td>
+      <td>Mesosphere</td>
       <td>jieyu</td>
       <td>jieyu@apache.org</td>
     </tr>

@@ -95,7 +95,7 @@
 
 <h2>How does it work?</h2>
 
-<p>Slave recovery works by having the slave checkpoint enough information (e.g., Task Info, Executor Info, Status Updates) about the running tasks and executors to local disk. Once the slave <strong><em>and</em></strong> the framework(s) enable checkpointing, any subsequent slave restarts would recover the checkpointed information and reconnect with the executors. Note that if the host running the slave process is rebooted all the executors/tasks are killed.</p>
+<p>Slave recovery works by having the slave checkpoint enough information (e.g., Task Info, Executor Info, Status Updates) about the running tasks and executors to local disk. Once a framework enables checkpointing, any subsequent slave restarts would recover the checkpointed information and reconnect with the executors. Note that if the host running the slave process is rebooted all the executors/tasks are killed.</p>
 
 <blockquote><p>NOTE: To enable recovery the framework should explicitly request checkpointing.
 Alternatively, a framework that doesn&rsquo;t want the disk i/o overhead of checkpointing can opt out of checkpointing.</p></blockquote>
@@ -160,9 +160,6 @@ Therefore, it is highly recommended to automate the process of restarting a slav
 <h2>Enabling framework checkpointing</h2>
 
 <p>As part of this feature, <code>FrameworkInfo</code> has been updated to include an optional <code>checkpoint</code> field. A framework that would like to opt in to checkpointing should set <code>FrameworkInfo.checkpoint=True</code> before registering with the master.</p>
-
-<blockquote><p>NOTE: Frameworks that have enabled checkpointing will only get offers from checkpointing slaves. So, before setting <code>checkpoint=True</code> on FrameworkInfo, ensure that there are slaves in your cluster that have enabled checkpointing.
-Because, if there are no checkpointing slaves, the framework would not get any offers and hence cannot launch any tasks/executors!</p></blockquote>
 
 <h2>Known issues with <code>systemd</code> and POSIX isolation</h2>
 

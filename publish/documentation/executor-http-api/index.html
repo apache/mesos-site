@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+		    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+		    <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
+		    
+		    <link href="../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+				
+		    
+			
+			<!-- Google Analytics Magic -->
+			<script type="text/javascript">
+			  var _gaq = _gaq || [];
+			  _gaq.push(['_setAccount', 'UA-20226872-1']);
+			  _gaq.push(['_setDomainName', 'apache.org']);
+			  _gaq.push(['_trackPageview']);
+
+			  (function() {
+			    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			  })();
+			</script>
+    </head>
+    <body>
+			<!-- magical breadcrumbs -->
+			<div class="topnav">
+			<ul class="breadcrumb">
+			  <li>
+					<div class="dropdown">
+					  <a data-toggle="dropdown" href="#">Apache Software Foundation <span class="caret"></span></a>
+					  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+							<li><a href="http://www.apache.org">Apache Homepage</a></li>
+							<li><a href="http://www.apache.org/licenses/">License</a></li>
+					  	<li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>  
+					  	<li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+							<li><a href="http://www.apache.org/security/">Security</a></li>
+					  </ul>
+					</div>
+				</li>
+				<li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+				
+				
+					<li><a href="/documentation
+/">Documentation
+</a></li>
+				
+				
+			</ul><!-- /breadcrumb -->
+			</div>
+			
+			<!-- navbar excitement -->
+	    <div class="navbar navbar-static-top" role="navigation">
+	      <div class="navbar-inner">
+	        <div class="container">
+						<a href="/" class="logo"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo" /></a>
+					<div class="nav-collapse">
+						<ul class="nav nav-pills navbar-right">
+						  <li><a href="/gettingstarted/">Getting Started</a></li>
+						  <li><a href="/documentation/latest/">Documentation</a></li>
+						  <li><a href="/downloads/">Downloads</a></li>
+						  <li><a href="/community/">Community</a></li>
+						</ul>
+					</div>
+	        </div>
+	      </div>
+	    </div><!-- /.navbar -->
+
+      <div class="container">
+
+			<div class="row-fluid">
+	<div class="col-md-4">
+		<h4>If you're new to Mesos</h4>
+		<p>See the <a href="/gettingstarted/">getting started</a> page for more information about downloading, building, and deploying Mesos.</p>
+		
+		<h4>If you'd like to get involved or you're looking for support</h4>
+		<p>See our <a href="/community/">community</a> page for more details.</p>
+	</div>
+	<div class="col-md-8">
+		<h1>Executor HTTP API</h1>
+
+<p>Mesos 0.27.0 added <strong>experimental</strong> support for V1 Executor HTTP API.</p>
+
+<h2>Overview</h2>
+
+<p>The executor interacts with Mesos via  &ldquo;/api/v1/executor&rdquo; endpoint hosted by the Mesos agent. The fully qualified URL of the endpoint might look like:</p>
+
+<pre><code>http://agenthost:5051/api/v1/executor
+</code></pre>
+
+<p>Note that we refer to this endpoint with its suffix &ldquo;/executor&rdquo; in the rest of this document. This endpoint accepts HTTP POST requests with data encoded as JSON (Content-Type: application/json) or binary Protobuf (Content-Type: application/x-protobuf). The first request that the executor sends to &ldquo;/executor&rdquo; endpoint is called SUBSCRIBE and results in a streaming response (&ldquo;200 OK&rdquo; status code with Transfer-Encoding: chunked). <strong>Executors are expected to keep the subscription connection open as long as possible (barring errors in network, agent process restarts, software bugs etc.) and incrementally process the response</strong> (NOTE: HTTP client libraries that can only parse the response after the connection is closed cannot be used). For the encoding used, please refer to <strong>Events</strong> section below.</p>
+
+<p>All the subsequent (non subscribe) requests to &ldquo;/executor&rdquo; endpoint (see details below in <strong>Calls</strong> section) must be sent using a different connection(s) than the one being used for subscription. Agent responds to these HTTP POST requests with &ldquo;202 Accepted&rdquo; status codes (or, for unsuccessful requests, with 4xx or 5xx status codes; details in later sections). The &ldquo;202 Accepted&rdquo; response means that a request has been accepted for processing, not that the processing of the request has been completed. The request might or might not be acted upon by Mesos (e.g., agent fails during the processing of the request). Any asynchronous responses from these requests will be streamed on the long-lived subscription connection.</p>
+
+<h2>Calls</h2>
+
+<p>The following calls are currently accepted by the agent. The canonical source of this information is <a href="https://github.com/apache/mesos/blob/master/include/mesos/v1/executor/executor.proto">executor.proto</a> (NOTE: The protobuf definitions are subject to change before the Beta API is finalized). Note that when sending JSON encoded Calls, executors should encode raw bytes in Base64 and strings in UTF-8.</p>
+
+<h3>SUBSCRIBE</h3>
+
+<p>This is the first step in the communication process between the executor and agent. This is also to be considered as subscription to the &ldquo;/executor&rdquo; events stream.</p>
+
+<p>To subscribe with the agent, the executor sends a HTTP POST request with encoded <code>SUBSCRIBE</code> message. The HTTP response is a stream with <a href="scheduler-http-api.md#recordio-response-format">RecordIO</a> encoding, with the first event being <code>SUBSCRIBED</code> event (see details in <strong>Events</strong> section).</p>
+
+<p>Additionally, if the executor is connecting to the agent after a <a href="#disconnections">disconnection</a>, it can also send a list of:</p>
+
+<ul>
+<li><strong>Unacknowledged Status Updates</strong>: The executor is expected to maintain a list of status updates not acknowledged by the agent via the <code>ACKNOWLEDGE</code> events.</li>
+<li><strong>Unacknowledged Tasks</strong>: The executor is expected to maintain a list of tasks that have not been acknowledged by the agent. A task is considered acknowledged if atleast one of the status updates for this task is acknowledged by the slave.</li>
+</ul>
+
+
+<pre><code>SUBSCRIBE Request (JSON):
+
+POST /api/v1/executor  HTTP/1.1
+
+Host: agenthost:5051
+Content-Type: application/json
+Accept: application/json
+
+{
+  "type": "SUBSCRIBE",
+  "executor_id": {
+    "value": "387aa966-8fc5-4428-a794-5a868a60d3eb"
+  },
+  "framework_id": {
+    "value": "49154f1b-8cf6-4421-bf13-8bd11dccd1f1"
+  },
+  "subscribe": {
+    "unacknowledged_tasks": [
+      {
+        "name": "dummy-task",
+        "task_id": {
+          "value": "d40f3f3e-bbe3-44af-a230-4cb1eae72f67"
+        },
+        "agent_id": {
+          "value": "f1c9cdc5-195e-41a7-a0d7-adaa9af07f81"
+        },
+        "command": {
+          "value": "ls",
+          "arguments": [
+            "-l",
+            "\/tmp"
+          ]
+        }
+      }
+    ],
+    "unacknowledged_updates": [
+      {
+        "framework_id": {
+          "value": "49154f1b-8cf6-4421-bf13-8bd11dccd1f1"
+        },
+        "status": {
+          "source": "SOURCE_EXECUTOR",
+          "task_id": {
+            "value": "d40f3f3e-bbe3-44af-a230-4cb1eae72f67"
+          },
+        "state": "TASK_RUNNING",
+        "uuid": "ZDQwZjNmM2UtYmJlMy00NGFmLWEyMzAtNGNiMWVhZTcyZjY3Cg=="
+        }
+      }
+    ]
+  }
+}
+
+SUBSCRIBE Response Event (JSON):
+HTTP/1.1 200 OK
+
+Content-Type: application/json
+Transfer-Encoding: chunked
+
+&lt;event-length&gt;
+{
+  "type": "SUBSCRIBED",
+  "subscribed": {
+    "executor_info": {
+      "executor_id": {
+        "value": "387aa966-8fc5-4428-a794-5a868a60d3eb"
+      },
+      "command": {
+        "value": "\/path\/to\/executor"
+      },
+      "framework_id": {
+        "value": "49154f1b-8cf6-4421-bf13-8bd11dccd1f1"
+      }
+    },
+    "framework_info": {
+      "user": "foo",
+      "name": "my_framework"
+    },
+    "agent_id": {
+      "value": "f1c9cdc5-195e-41a7-a0d7-adaa9af07f81"
+    },
+    "agent_info": {
+      "host": "agenthost",
+      "port": 5051
+    }
+  }
+}
+&lt;more events&gt;
+</code></pre>
+
+<p>NOTE: Once an executor is launched, the agent waits for a duration of <code>--executor_registration_timeout</code> (configurable at agent startup) for the executor to subscribe. If the executor fails to subscribe within this duration, the agent forcefully destroys the container executor is running in.</p>
+
+<h3>UPDATE</h3>
+
+<p>Sent by the executor to reliably communicate the state of managed tasks. It is crucial that a terminal update (e.g., <code>TASK_FINISHED</code>, <code>TASK_KILLED</code> or <code>TASK_FAILED</code>) is sent to the agent as soon as the task terminates, in order to allow Mesos to release the resources allocated to the task.</p>
+
+<p>The scheduler must explicitly respond to this call through an <code>ACKNOWLEDGE</code> message (see <code>ACKNOWLEDGED</code> in the Events section below for the semantics). The executor must maintain a list of unacknowledged updates. If for some reason, the executor is disconnected from the agent, these updates must be sent as part of <code>SUBSCRIBE</code> request in the <code>unacknowledged_updates</code> field.</p>
+
+<pre><code>UPDATE Request (JSON):
+
+POST /api/v1/executor  HTTP/1.1
+
+Host: agenthost:5051
+Content-Type: application/json
+Accept: application/json
+
+{
+  "executor_id": {
+    "value": "387aa966-8fc5-4428-a794-5a868a60d3eb"
+  },
+  "framework_id": {
+    "value": "9aaa9d0d-e00d-444f-bfbd-23dd197939a0-0000"
+  },
+  "type": "UPDATE",
+  "update": {
+    "status": {
+      "executor_id": {
+        "value": "387aa966-8fc5-4428-a794-5a868a60d3eb"
+      },
+      "source": "SOURCE_EXECUTOR",
+      "state": "TASK_RUNNING",
+      "task_id": {
+        "value": "66724cec-2609-4fa0-8d93-c5fb2099d0f8"
+      },
+      "uuid": "ZDQwZjNmM2UtYmJlMy00NGFmLWEyMzAtNGNiMWVhZTcyZjY3Cg=="
+    }
+  }
+}
+
+UPDATE Response:
+HTTP/1.1 202 Accepted
+</code></pre>
+
+<h3>MESSAGE</h3>
+
+<p>Sent by the executor to send arbitrary binary data to the scheduler. Note that Mesos neither interprets this data nor makes any guarantees about the delivery of this message to the scheduler. The <code>data</code> field is raw bytes encoded in Base64.</p>
+
+<pre><code>MESSAGE Request (JSON):
+
+POST /api/v1/executor  HTTP/1.1
+
+Host: agenthost:5051
+Content-Type: application/json
+Accept: application/json
+
+{
+  "executor_id": {
+    "value": "387aa966-8fc5-4428-a794-5a868a60d3eb"
+  },
+  "framework_id": {
+    "value": "9aaa9d0d-e00d-444f-bfbd-23dd197939a0-0000"
+  },
+  "type": "MESSAGE",
+  "data": "t+Wonz5fRFKMzCnEptlv5A=="
+}
+
+MESSAGE Response:
+HTTP/1.1 202 Accepted
+</code></pre>
+
+<h2>Events</h2>
+
+<p>Executor is expected to keep a <strong>persistent</strong> connection open to &ldquo;/executor&rdquo; endpoint even after getting a <code>SUBSCRIBED</code> HTTP Response event. This is indicated by &ldquo;Connection: keep-alive&rdquo; and &ldquo;Transfer-Encoding: chunked&rdquo; headers with <em>no</em> &ldquo;Content-Length&rdquo; header set. All subsequent events that are relevant to this executor generated by Mesos are streamed on this connection. Agent encodes each Event in <a href="scheduler-http-api.md#recordio-response-format">RecordIO</a> format, i.e., string representation of length of the event in bytes followed by JSON or binary Protobuf  (possibly compressed) encoded event. Note that the value of length will never be ‘0’ and the size of the length will be the size of unsigned integer (i.e., 64 bits). Also, note that the <code>RecordIO</code> encoding should be decoded by the executor whereas the underlying HTTP chunked encoding is typically invisible at the application (executor) layer. The type of content encoding used for the events will be determined by the accept header of the POST request (e.g., &ldquo;Accept: application/json&rdquo;).</p>
+
+<p>The following events are currently sent by the agent. The canonical source of this information is at <a href="include/mesos/v1/executor/executor.proto">executor.proto</a>. Note that when sending JSON encoded events, agent encodes raw bytes in Base64 and strings in UTF-8.</p>
+
+<h3>SUBSCRIBED</h3>
+
+<p>The first event sent by the agent when the executor sends a <code>SUBSCRIBE</code> request on the persistent connection. See <code>SUBSCRIBE</code> in Calls section for the format.</p>
+
+<h3>LAUNCH</h3>
+
+<p>Sent by the agent whenever it needs to assign a new task to the executor. The executor is required to send an <code>UPDATE</code> message back to the agent indicating the success or failure of the task initialization.</p>
+
+<p>The executor must maintain a list of unacknowledged tasks (see <code>SUBSCRIBE</code> in <code>Calls</code> section). If for some reason, the executor is disconnected from the agent, these tasks must be sent as part of <code>SUBSCRIBE</code> request in the <code>tasks</code> field.</p>
+
+<pre><code>LAUNCH Event (JSON)
+&lt;event-length&gt;
+{
+  "type": "LAUNCH",
+  "launch": {
+    "framework_info": {
+      "id": {
+        "value": "49154f1b-8cf6-4421-bf13-8bd11dccd1f1"
+      },
+      "user": "foo",
+      "name": "my_framework"
+    },
+    "task": {
+      "name": "dummy-task",
+      "task_id": {
+        "value": "d40f3f3e-bbe3-44af-a230-4cb1eae72f67"
+      },
+      "agent_id": {
+        "value": "f1c9cdc5-195e-41a7-a0d7-adaa9af07f81"
+      },
+      "command": {
+        "value": "sleep",
+        "arguments": [
+          "100"
+        ]
+      }
+    }
+  }
+}
+</code></pre>
+
+<h3>KILL</h3>
+
+<p>The <code>KILL</code> event is sent whenever the scheduler needs to stop execution of a specific task. The executor is required to send a terminal update (e.g., <code>TASK_FINISHED</code>, <code>TASK_KILLED</code> or <code>TASK_FAILED</code>) back to the agent once it has stopped/killed the task. Mesos will mark the task resources as freed once the terminal update is received.</p>
+
+<pre><code>LAUNCH Event (JSON)
+&lt;event-length&gt;
+{
+  "type" : "KILL",
+  "kill" : {
+    "task_id" : {"value" : "d40f3f3e-bbe3-44af-a230-4cb1eae72f67"}
+  }
+}
+</code></pre>
+
+<h3>ACKNOWLEDGED</h3>
+
+<p>Sent by the agent in order to signal the executor that a status update was received as part of the reliable message passing mechanism. Acknowledged updates must not be retried.</p>
+
+<pre><code>ACKNOWLEDGED Event (JSON)
+&lt;event-length&gt;
+{
+  "type" : "ACKNOWLEDGED",
+  "acknowledged" : {
+    "task_id" : {"value" : "d40f3f3e-bbe3-44af-a230-4cb1eae72f67"},
+    "uuid" : "ZDQwZjNmM2UtYmJlMy00NGFmLWEyMzAtNGNiMWVhZTcyZjY3Cg=="
+  }
+}
+</code></pre>
+
+<h3>MESSAGE</h3>
+
+<p>Custom message generated by the scheduler and forwarded all the way to the executor. These messages are delivered &ldquo;as-is&rdquo; by Mesos and have no delivery guarantees. It is up to the scheduler to retry if a message is dropped for any reason. Note that <code>data</code> is raw bytes encoded as Base64.</p>
+
+<pre><code>MESSAGE Event (JSON)
+&lt;event-length&gt;
+{
+  "type" : "MESSAGE",
+  "message" : {
+    "data" : "c2FtcGxlIGRhdGE="
+  }
+}
+</code></pre>
+
+<h3>SHUTDOWN</h3>
+
+<p>Sent by the agent in order to shutdown the executor. Once an executor gets a <code>SHUTDOWN</code> event it is required to kill all its tasks, send <code>TASK_KILLED</code> updates and gracefully exit. If an executor doesn&rsquo;t terminate within a certain period after the event was emitted (<code>grace_period_seconds</code>), the agent will forcefully destroy the container where the executor is running. The agent would then send <code>TASK_LOST</code> updates for any remaining active tasks of this executor.</p>
+
+<pre><code>SHUTDOWN Event (JSON)
+&lt;event-length&gt;
+{
+  "type" : "SHUTDOWN",
+  "shutdown" : {
+    "grace_period_seconds" : 5
+  }
+}
+</code></pre>
+
+<h3>ERROR</h3>
+
+<p>Sent by the agent when an asynchronous error event is generated. It is recommended that the executor abort when it receives an error event and retry subscription.</p>
+
+<pre><code>ERROR Event (JSON)
+&lt;event-length&gt;
+{
+  "type" : "ERROR",
+  "error" : {
+    "message" : "Unrecoverable error"
+  }
+}
+</code></pre>
+
+<h2>Executor Environment Variables</h2>
+
+<p>The following environment variables are set by the agent that can be used by the executor upon startup:</p>
+
+<ul>
+<li><code>MESOS_FRAMEWORK_ID</code>: <code>FrameworkID</code> of the scheduler needed as part of the <code>SUBSCRIBE</code> call.</li>
+<li><code>MESOS_EXECUTOR_ID</code>: <code>ExecutorID</code> of the executor needed as part of the <code>SUBSCRIBE</code> call.</li>
+<li><code>MESOS_DIRECTORY</code>: Path to the working directory for the executor.</li>
+<li><code>MESOS_AGENT_ENDPOINT</code>: Agent endpoint i.e. ip:port to be used by the executor to connect to the agent.</li>
+<li><code>MESOS_CHECKPOINT</code>: If set to true, denotes that framework has checkpointing enabled.</li>
+</ul>
+
+
+<p>If <code>MESOS_CHECKPOINT</code> is set i.e. when framework checkpointing is enabled, the following additional variables are also set that can be used by the executor for retrying upon a disconnection with the agent:</p>
+
+<ul>
+<li><code>MESOS_RECOVERY_TIMEOUT</code>: The total duration that the executor should spend retrying before shutting itself down when it is disconnected from the agent (e.g., <code>15mins</code>, <code>5secs</code> etc.). This is configurable at agent startup via the flag <code>--recovery_timeout</code>.</li>
+<li><code>MESOS_SUBSCRIPTION_BACKOFF_MAX</code>: The maximum backoff duration to be used by the executor between two retries when disconnected (e.g., <code>250ms</code>, <code>1mins</code> etc.). This is configurable at agent startup via the flag <code>--executor_reregistration_timeout</code>.</li>
+</ul>
+
+
+<p>NOTE: Additionally, the executor also inherits all the agent&rsquo;s environment variables.</p>
+
+<h2>Disconnections</h2>
+
+<p>An executor considers itself disconnected if the persistent subscription connection (opened via SUBSCRIBE request) to &ldquo;/executor&rdquo; breaks. The disconnection can happen due to an agent process failure etc.</p>
+
+<p>Upon detecting a disconnection from the agent, the retry behavior depends on whether framework checkpointing is enabled:</p>
+
+<ul>
+<li>If framework checkpointing is disabled, the executor is not supposed to retry subscription and gracefully exit.</li>
+<li>If framework checkpointing is enabled, the executor is supposed to retry subscription using a suitable <a href="#backoff-strategies">backoff strategy</a> for a duration of <code>MESOS_RECOVERY_TIMEOUT</code>. If it is not able to establish a subscription with the agent within this duration, it should gracefully exit.</li>
+</ul>
+
+
+<h2>Agent Recovery</h2>
+
+<p>Upon agent startup, an agent performs <a href="/documentation/latest/slave-recovery/">recovery</a>. This allows the agent to recover status updates and reconnect with old executors. Currently, the agent supports the following recovery mechanisms specified via the <code>--recover</code> flag:</p>
+
+<ul>
+<li><strong>reconnect</strong> (default): This mode allows the agent to reconnect with any of it’s old live executors provided the framework has enabled checkpointing. The recovery of the agent is only marked complete once all the disconnected executors have connected and hung executors have been destroyed. Hence, it is mandatory that every executor retries at least once within the interval (<code>MESOS_SUBSCRIPTION_BACKOFF_MAX</code>) to ensure it is not shutdown by the agent due to being hung/unresponsive.</li>
+<li><strong>cleanup</strong> : This mode kills any old live executors and then exits the agent. This is usually done by operators when making a non-compatible slave/executor upgrade. Upon receiving a <code>SUBSCRIBE</code> request from the executor of a framework with checkpointing enabled, the agent would send it a <code>SHUTDOWN</code> event as soon as it reconnects. For hung executors, the agent would wait for a duration of <code>--executor_shutdown_grace_period</code> (configurable at agent startup) and then forcefully kill the container where the executor is running in.</li>
+</ul>
+
+
+<h2>Backoff Strategies</h2>
+
+<p>Executors are encouraged to retry subscription using a suitable backoff strategy like linear backoff, when they notice a disconnection with the agent. A disconnection typically happens when the agent process terminates (e.g., restarted for an upgrade). Each retry interval should be bounded by the value of <code>MESOS_SUBSCRIPTION_BACKOFF_MAX</code> which is set as an environment variable.</p>
+
+	</div>
+</div>
+
+			
+	      <hr>
+
+				<!-- footer -->
+	      <div class="footer">
+	        <p>&copy; 2012-2015 <a href="http://apache.org">The Apache Software Foundation</a>.
+	        Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.<p>
+	      </div><!-- /footer -->
+
+	    </div> <!-- /container -->
+
+	    <!-- JS -->
+	    <script src="//code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+			<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="text/javascript"></script>
+    </body>
+</html>
