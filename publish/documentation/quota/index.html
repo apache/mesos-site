@@ -88,13 +88,13 @@
 resources to frameworks even though they are beyond their fair share (e.g., when
 no other framework currently accepts these resources). There is no mechanism to
 lay away resources for future consumption in an entire cluster. Even though
-<a href="/documentation/latest/reservation/">dynamic reservations</a> allow both operators and frameworks
+<a href="/documentation/latest/./reservation/">dynamic reservations</a> allow both operators and frameworks
 to dynamically reserve resources on particular Mesos agents, it does not solve
 the above problem because any individual agents might fail.</p>
 
 <p>Since version 0.27.0 Mesos provides a mechanism to reserve a certain amount of
 resources in an entire cluster, i.e. not tied to a particular agent. <em>Quota</em>
-allows operators to lay away resources for a given <a href="/documentation/latest/roles/">role</a>. These
+allows operators to lay away resources for a given <a href="/documentation/latest/./roles/">role</a>. These
 resources cannot be hijacked by other roles and are guaranteed to be available
 for the role if there are enough resources in the cluster. Quota can be viewed
 as a cluster-wide dynamic reservation available for operators only.</p>
@@ -157,7 +157,7 @@ in order to update a quota for a given role, the operator has to remove the
 existing quota and then set a new one.</p>
 
 <p>The endpoint can optionally use authentication and authorization. See the
-<a href="/documentation/latest/authentication/">authentication guide</a> for details.</p>
+<a href="/documentation/latest/./authentication/">authentication guide</a> for details.</p>
 
 <p><a name="setRequest"></a></p>
 
@@ -194,7 +194,7 @@ can use the following <code>jsonMessageBody</code>:</p>
 
 <p>A set request is only valid for roles for which no quota is currently set.
 However if the master is configured without an explicit
-<a href="/documentation/latest/roles/">role whitelist</a> a set request can introduce new roles.</p>
+<a href="/documentation/latest/./roles/">role whitelist</a> a set request can introduce new roles.</p>
 
 <p>In order to bypass the <a href="#capacityHeuristic">capacity heuristic</a> check the
 operator should set an optional <code>force</code> field:</p>
@@ -311,10 +311,10 @@ possible to set quota for port resources).</p>
 endpoint, the following steps are triggered:</p>
 
 <ol>
-<li><a href="/documentation/latest/authentication/">Authenticate</a> the HTTP request.</li>
+<li><a href="/documentation/latest/./authentication/">Authenticate</a> the HTTP request.</li>
 <li>Parse and validate the request.
 See <a href="#setRequest">description of possible error codes</a>.</li>
-<li><a href="/documentation/latest/authentication/">Authorize</a> the HTTP request if authorization is enabled.</li>
+<li><a href="/documentation/latest/./authentication/">Authorize</a> the HTTP request if authorization is enabled.</li>
 <li>Run the <a href="#capacityHeuristic">capacity heuristic</a> if not disabled by
 <a href="#setRequest">the <code>force</code> flag</a>.</li>
 <li>Reliably store quota. See <a href="#failover">details on failover recovery</a>.</li>
@@ -326,10 +326,10 @@ See <a href="#setRequest">description of possible error codes</a>.</li>
 The quota remove request processing is simpler and triggers the following steps:</p>
 
 <ol>
-<li><a href="/documentation/latest/authentication/">Authenticate</a> the HTTP request.</li>
+<li><a href="/documentation/latest/./authentication/">Authenticate</a> the HTTP request.</li>
 <li>Validate the request.
 See <a href="#removeRequest">description of potential error codes</a>.</li>
-<li><a href="/documentation/latest/authentication/">Authorize</a> the HTTP request if authorization is enabled.</li>
+<li><a href="/documentation/latest/./authentication/">Authorize</a> the HTTP request if authorization is enabled.</li>
 <li>Reliably remove quota.</li>
 </ol>
 

@@ -210,7 +210,7 @@ virtual void error(SchedulerDriver* driver, const std::string&amp; message) = 0;
 
 <h3>Handling Failures</h3>
 
-<p>How to build Mesos frameworks that remain available in the face of failures is discussed in a <a href="/documentation/latest/high-availability-framework-guide/">separate document</a>.</p>
+<p>How to build Mesos frameworks that remain available in the face of failures is discussed in a <a href="/documentation/latest/./high-availability-framework-guide/">separate document</a>.</p>
 
 <h2>Working with Executors</h2>
 
@@ -310,7 +310,7 @@ virtual void error(ExecutorDriver* driver, const std::string&amp; message) = 0;
 
 <p>After creating your custom executor, you need to make it available to all slaves in the cluster.</p>
 
-<p>One way to distribute your framework executor is to let the <a href="/documentation/latest/fetcher/">Mesos fetcher</a> download it on-demand when your scheduler launches tasks on that slave. <code>ExecutorInfo</code> is a Protocol Buffer Message class (defined in <code>include/mesos/mesos.proto</code>), and it contains a field of type <code>CommandInfo</code>.  <code>CommandInfo</code> allows schedulers to specify, among other things, a number of resources as URIs. These resources are fetched to a sandbox directory on the slave before attempting to execute the <code>ExecutorInfo</code> command. Several URI schemes are supported, including HTTP, FTP, HDFS, and S3 (e.g. see src/examples/java/TestFramework.java for an example of this).</p>
+<p>One way to distribute your framework executor is to let the <a href="/documentation/latest/./fetcher/">Mesos fetcher</a> download it on-demand when your scheduler launches tasks on that slave. <code>ExecutorInfo</code> is a Protocol Buffer Message class (defined in <code>include/mesos/mesos.proto</code>), and it contains a field of type <code>CommandInfo</code>.  <code>CommandInfo</code> allows schedulers to specify, among other things, a number of resources as URIs. These resources are fetched to a sandbox directory on the slave before attempting to execute the <code>ExecutorInfo</code> command. Several URI schemes are supported, including HTTP, FTP, HDFS, and S3 (e.g. see src/examples/java/TestFramework.java for an example of this).</p>
 
 <p>Alternatively, you can pass the <code>frameworks_home</code> configuration option (defaults to: <code>MESOS_HOME/frameworks</code>) to your <code>mesos-slave</code> daemons when you launch them to specify where your framework executors are stored (e.g. on an NFS mount that is available to all slaves), then use a relative path in <code>CommandInfo.uris</code>, and the slave will prepend the value of <code>frameworks_home</code> to the relative path provided.</p>
 

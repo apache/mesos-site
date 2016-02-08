@@ -94,7 +94,7 @@
 
 <p>Note that we refer to this endpoint with its suffix &ldquo;/scheduler&rdquo; in the rest of this document. This endpoint accepts HTTP POST requests with data encoded as JSON (Content-Type: application/json) or binary Protobuf (Content-Type: application/x-protobuf). The first request that a scheduler sends to &ldquo;/scheduler&rdquo; endpoint is called SUBSCRIBE and results in a streaming response (&ldquo;200 OK&rdquo; status code with Transfer-Encoding: chunked). <strong>Schedulers are expected to keep the subscription connection open as long as possible (barring errors in network, software, hardware etc.) and incrementally process the response</strong> (NOTE: HTTP client libraries that can only parse the response after the connection is closed cannot be used). For the encoding used, please refer to <strong>Events</strong> section below.</p>
 
-<p>All the subsequent (non subscribe) requests to &ldquo;/scheduler&rdquo; endpoint (see details below in <strong>Calls</strong> section) must be sent using a different connection(s) than the one being used for subscription. Master responds to these HTTP POST requests with &ldquo;202 Accepted&rdquo; status codes (or, for unsuccessful requests, with 4xx or 5xx status codes; details in later sections). The &ldquo;202 Accepted&rdquo; response means that a request has been accepted for processing, not that the processing of the request has been completed. The request might or might not be acted upon by Mesos (e.g., master fails during the processing of the request). Any asynchronous responses from these requests will be streamed on long-lived subscription connection.</p>
+<p>All the subsequent (non subscribe) requests to &ldquo;/scheduler&rdquo; endpoint (see details below in <strong>Calls</strong> section) must be sent using a different connection(s) than the one being used for subscription. Master responds to these HTTP POST requests with &ldquo;202 Accepted&rdquo; status codes (or, for unsuccessful requests, with 4xx or 5xx status codes; details in later sections). The &ldquo;202 Accepted&rdquo; response means that a request has been accepted for processing, not that the processing of the request has been completed. The request might or might not be acted upon by Mesos (e.g., master fails during the processing of the request). Any asynchronous responses from these requests will be streamed on the long-lived subscription connection.</p>
 
 <h2>Calls</h2>
 
@@ -104,7 +104,7 @@
 
 <h3>RecordIO response format</h3>
 
-<p>The response returned from the <code>SUBSCRIBE</code> call (see <a href="#subscribe">below</a> is encoded in RecordIO format, which essentially prepends to a single record (either JSON or serialized Protobuf) its length in bytes, followed by a newline and then the data:</p>
+<p>The response returned from the <code>SUBSCRIBE</code> call (see <a href="#subscribe">below</a>) is encoded in RecordIO format, which essentially prepends to a single record (either JSON or serialized Protobuf) its length in bytes, followed by a newline and then the data:</p>
 
 <p>The <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec2.html#sec2.1">BNF grammar</a> for a RecordIO-encoded streaming response is:</p>
 
@@ -580,7 +580,7 @@ HTTP/1.1 202 Accepted
 
 <h2>Master detection</h2>
 
-<p>Mesos has a high-availability mode that uses multiple Mesos masters; one active master (called the leader or leading master) and several standbys in case it fails. The masters elect the leader, with ZooKeeper coordinating the election. For more details please refer to the <a href="/documentation/latest/high-availability/">documentation</a>.</p>
+<p>Mesos has a high-availability mode that uses multiple Mesos masters; one active master (called the leader or leading master) and several standbys in case it fails. The masters elect the leader, with ZooKeeper coordinating the election. For more details please refer to the <a href="/documentation/latest/./high-availability/">documentation</a>.</p>
 
 <p>Schedulers are expected to make HTTP requests to the leading master. If requests are made to a non-leading master a &ldquo;HTTP 307 Temporary Redirect&rdquo; will be received with the &ldquo;Location&rdquo; header pointing to the leading master.</p>
 

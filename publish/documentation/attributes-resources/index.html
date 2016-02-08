@@ -168,31 +168,33 @@ key : text ( "(" resourceRole ")" )?
 resourceRole : text | "*"
 </code></pre>
 
-<p>Note that <code>resourceRole</code> must be a valid role name; see the <a href="/documentation/latest/roles/">roles</a> documentation for details.</p>
+<p>Note that <code>resourceRole</code> must be a valid role name; see the <a href="/documentation/latest/./roles/">roles</a> documentation for details.</p>
 
 <h2>Predefined Uses &amp; Conventions</h2>
 
-<p>The Mesos master has a few resources that it pre-defines in how it handles them.  At the current time, this list consist of:</p>
+<p>There are several kinds of resources that have predefined behavior:</p>
 
 <ul>
 <li><code>cpus</code></li>
-<li><code>mem</code></li>
 <li><code>disk</code></li>
+<li><code>mem</code></li>
 <li><code>ports</code></li>
 </ul>
 
 
-<p>In particular, a slave without <code>cpus</code> and <code>mem</code> resources will never have its resources advertised to any frameworks.  Also, the Master&rsquo;s user interface interprets the scalars in <code>mem</code> and <code>disk</code> in terms of <em><code>MB</code></em>.  IE: the value <code>15000</code> is displayed as <code>14.65GB</code>.</p>
+<p>Note that <code>disk</code> and <code>mem</code> resources are specified in megabytes. The master&rsquo;s user interface will convert resource values into a more human-readable format: for example, the value <code>15000</code> will be displayed as <code>14.65GB</code>.</p>
+
+<p>A slave without <code>cpus</code> and <code>mem</code> resources will not have its resources advertised to any frameworks.</p>
 
 <h2>Examples</h2>
 
-<p>Here are some examples for configuring the Mesos slaves.</p>
+<p>By default, Mesos will try to autodetect the resources available at the local machine when <code>mesos-slave</code> starts up. Alternatively, you can explicitly configure which resources a slave should make available.</p>
+
+<p>Here are some examples of how to configure the resources at a Mesos slave:</p>
 
 <pre><code>--resources='cpus:24;mem:24576;disk:409600;ports:[21000-24000,30000-34000];bugs(debug_role):{a,b,c}'
 
 --resources='[{"name":"cpus","type":"SCALAR","scalar":{"value":24}},{"name":"mem","type":"SCALAR","scalar":{"value":24576}},{"name":"disk","type":"SCALAR","scalar":{"value":409600}},{"name":"ports","type":"RANGES","ranges":{"range":[{"begin":21000,"end":24000},{"begin":30000,"end":34000}]}},{"name":"bugs","type":"SET","set":{"item":["a","b","c"]},"role":"debug_role"}]'
-
---attributes='rack:abc;zone:west;os:centos5;level:10;keys:[1000-1500]'
 </code></pre>
 
 <p>Or given a file <code>resources.txt</code> containing the following:</p>
@@ -268,7 +270,12 @@ resourceRole : text | "*"
 </ul>
 
 
-<p>In the case of attributes, we end up with five attributes:</p>
+<p>To configure the attributes of a Mesos slave, you can use the <code>--attributes</code> command-line flag of <code>mesos-slave</code>:</p>
+
+<pre><code>--attributes='rack:abc;zone:west;os:centos5;level:10;keys:[1000-1500]'
+</code></pre>
+
+<p>That will result in configuring the following five attributes:</p>
 
 <ul>
 <li><code>rack</code> with text value <code>abc</code></li>

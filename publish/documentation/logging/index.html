@@ -92,7 +92,7 @@ degree of control Mesos has over the source code of the component.</p>
 <li><a href="#Internal">Internal</a> - Master and Agent.</li>
 <li><a href="#Containers">Containers</a> - Executors and Tasks.</li>
 <li>External - Components launched outside of Mesos, like
-Frameworks and <a href="/documentation/latest/high-availability/">ZooKeeper</a>.  These are expected to
+Frameworks and <a href="/documentation/latest/./high-availability/">ZooKeeper</a>.  These are expected to
 implement their own logging solution.</li>
 </ul>
 
@@ -102,7 +102,7 @@ implement their own logging solution.</li>
 <p>The Mesos Master and Agent use the
 <a href="https://github.com/google/glog">Google&rsquo;s logging library</a>.
 For information regarding the command-line options used to configure this
-library, see the <a href="/documentation/latest/configuration/">configuration documentation</a>.
+library, see the <a href="/documentation/latest/./configuration/">configuration documentation</a>.
 Google logging options that are not explicitly mentioned there can be
 configured via environment variables.</p>
 
@@ -118,12 +118,12 @@ original level after the given duration.</p>
 
 <h2><a name="Containers"></a>Containers</h2>
 
-<p>For background, see <a href="/documentation/latest/containerizer/">the containerizer documentation</a>.</p>
+<p>For background, see <a href="/documentation/latest/./containerizer/">the containerizer documentation</a>.</p>
 
 <p>Mesos does not assume any structured logging for entities running inside
 containers.  Instead, Mesos will store the stdout and stderr of containers
 into plain files (&ldquo;stdout&rdquo; and &ldquo;stderr&rdquo;) located inside
-<a href="/documentation/latest/sandbox/#where-is-it">the sandbox</a>.</p>
+<a href="/documentation/latest/./sandbox/#where-is-it">the sandbox</a>.</p>
 
 <p>In some cases, the default Container logger behavior of Mesos is not ideal:</p>
 
@@ -166,7 +166,7 @@ specified maximum number of files is reached.</p>
 
 <p>The <code>LogrotateContainerLogger</code> can be loaded by specifying the library
 <code>liblogrotate_container_logger.so</code> in the
-<a href="/documentation/latest/modules/#Invoking"><code>--modules</code> flag</a> when starting the Agent and by
+<a href="/documentation/latest/./modules/#Invoking"><code>--modules</code> flag</a> when starting the Agent and by
 setting the <code>--container_logger</code> Agent flag to
 <code>org_apache_mesos_LogrotateContainerLogger</code>.</p>
 
@@ -263,7 +263,7 @@ will continue to run.</p>
 
 <h3>Writing a Custom <code>ContainerLogger</code></h3>
 
-<p>For basics on module writing, see <a href="/documentation/latest/modules/">the modules documentation</a>.</p>
+<p>For basics on module writing, see <a href="/documentation/latest/./modules/">the modules documentation</a>.</p>
 
 <p>There are several caveats to consider when designing a new <code>ContainerLogger</code>:</p>
 
@@ -278,7 +278,7 @@ that the container has exited.  This provides a stronger guarantee that the
 <li>The <code>ContainerLogger</code> should not assume that containers have been launched
 with any specific <code>ContainerLogger</code>.  The Agent may be restarted with a
 different <code>ContainerLogger</code>.</li>
-<li>Each <a href="/documentation/latest/containerizer/">containerizer</a> running on an Agent uses its own
+<li>Each <a href="/documentation/latest/./containerizer/">containerizer</a> running on an Agent uses its own
 instance of the <code>ContainerLogger</code>.  This means more than one <code>ContainerLogger</code>
 may be running in a single Agent.  However, each Agent will only run a single
 type of <code>ContainerLogger</code>.</li>

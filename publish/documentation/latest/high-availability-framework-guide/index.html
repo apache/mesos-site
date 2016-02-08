@@ -91,7 +91,7 @@ should consider include:</p>
 <ul>
 <li><p>The Mesos master that a framework scheduler is connected to might fail, for
 example by crashing or by losing network connectivity. If the master has been
-configured to use <a href="/documentation/latest/high-availability/">high-availability mode</a>, this will
+configured to use <a href="/documentation/latest/./high-availability/">high-availability mode</a>, this will
 result in promoting another Mesos master replica to become the current
 leader. In this situation, the scheduler should re-register with the new
 master and ensure that task state is consistent.</p></li>
@@ -127,7 +127,7 @@ launch a task, that message might not be received by the Mesos master (e.g.,
 due to a transient network failure). To address this, the framework scheduler
 should set a timeout after attempting to launch a new task. If the scheduler
 hasn&rsquo;t seen a status update for the new task before the timeout fires, it
-should take corrective action&mdash;for example, by performing <a href="/documentation/latest/reconciliation/">task state reconciliation</a>,
+should take corrective action&mdash;for example, by performing <a href="/documentation/latest/./reconciliation/">task state reconciliation</a>,
 and then launching a new copy of the task if necessary.</p>
 
 <ul>
@@ -250,7 +250,7 @@ initial state and several possible terminal states:</p>
 <li><p>A task begins in the <code>TASK_STAGING</code> state. A task is in this state when the
 master has received the framework&rsquo;s request to launch the task but the task
 has not yet started to run. In this state, the task&rsquo;s dependencies are
-fetched&mdash;for example, using the <a href="/documentation/latest/fetcher/">Mesos fetcher cache</a>.</p></li>
+fetched&mdash;for example, using the <a href="/documentation/latest/./fetcher/">Mesos fetcher cache</a>.</p></li>
 <li><p>The <code>TASK_STARTING</code> state is optional and intended primarily for use by
 custom executors. It can be used to describe the fact that a custom executor
 has learned about the task (and maybe started fetching its dependencies) but has
@@ -262,7 +262,7 @@ terminal states listed below).</p>
 <ul>
 <li><p>If a framework attempts to launch a task but does not receive a status
 update for it within a timeout, the framework should perform
-<a href="/documentation/latest/reconciliation/">reconciliation</a>. That is, it should ask the master for
+<a href="/documentation/latest/./reconciliation/">reconciliation</a>. That is, it should ask the master for
 the current state of the task. The master will reply with <code>TASK_LOST</code> for
 unknown tasks. The framework can then use this to distinguish between tasks
 that are slow to launch and tasks that the master has never heard about
@@ -309,7 +309,7 @@ that the agent has failed and takes steps to remove it from the cluster. Specifi
 agent gets disconnected are as follows for each framework running on that agent:</p>
 
 <ul>
-<li><p>If the framework is <a href="/documentation/latest/slave-recovery/">checkpointing</a>: No immediate action is taken. The agent is
+<li><p>If the framework is <a href="/documentation/latest/./slave-recovery/">checkpointing</a>: No immediate action is taken. The agent is
 given a chance to reconnect until health checks time out.</p></li>
 <li><p>If the framework is not-checkpointing: All the framework&rsquo;s tasks and executors are considered lost. Master
 immediately sends <code>TASK_LOST</code> status updates for the tasks. These updates are not delivered reliably to the
