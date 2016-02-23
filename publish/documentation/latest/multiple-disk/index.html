@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+		    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+		    <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
+		    
+		    <link href="../../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+				
+		    
+			
+			<!-- Google Analytics Magic -->
+			<script type="text/javascript">
+			  var _gaq = _gaq || [];
+			  _gaq.push(['_setAccount', 'UA-20226872-1']);
+			  _gaq.push(['_setDomainName', 'apache.org']);
+			  _gaq.push(['_trackPageview']);
+
+			  (function() {
+			    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			  })();
+			</script>
+    </head>
+    <body>
+			<!-- magical breadcrumbs -->
+			<div class="topnav">
+			<ul class="breadcrumb">
+			  <li>
+					<div class="dropdown">
+					  <a data-toggle="dropdown" href="#">Apache Software Foundation <span class="caret"></span></a>
+					  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+							<li><a href="http://www.apache.org">Apache Homepage</a></li>
+							<li><a href="http://www.apache.org/licenses/">License</a></li>
+					  	<li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>  
+					  	<li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+							<li><a href="http://www.apache.org/security/">Security</a></li>
+					  </ul>
+					</div>
+				</li>
+				<li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+				
+				
+					<li><a href="/documentation
+/">Documentation
+</a></li>
+				
+				
+			</ul><!-- /breadcrumb -->
+			</div>
+			
+			<!-- navbar excitement -->
+	    <div class="navbar navbar-static-top" role="navigation">
+	      <div class="navbar-inner">
+	        <div class="container">
+						<a href="/" class="logo"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo" /></a>
+					<div class="nav-collapse">
+						<ul class="nav nav-pills navbar-right">
+						  <li><a href="/gettingstarted/">Getting Started</a></li>
+						  <li><a href="/documentation/latest/">Documentation</a></li>
+						  <li><a href="/downloads/">Downloads</a></li>
+						  <li><a href="/community/">Community</a></li>
+						</ul>
+					</div>
+	        </div>
+	      </div>
+	    </div><!-- /.navbar -->
+
+      <div class="container">
+
+			<div class="row-fluid">
+	<div class="col-md-4">
+		<h4>If you're new to Mesos</h4>
+		<p>See the <a href="/gettingstarted/">getting started</a> page for more information about downloading, building, and deploying Mesos.</p>
+		
+		<h4>If you'd like to get involved or you're looking for support</h4>
+		<p>See our <a href="/community/">community</a> page for more details.</p>
+	</div>
+	<div class="col-md-8">
+		<h1>Multiple Disks</h1>
+
+<p>Mesos provides a mechanism for operators to expose multiple disk resources. When
+creating <a href="/documentation/latest/./persistent-volume/">persistent volumes</a> frameworks can decide
+whether to use specific disks by examining the <code>source</code> field on the disk
+resources offered.</p>
+
+<p><code>Disk</code> resources come in three forms:</p>
+
+<ul>
+<li>A <code>Root</code> disk is presented by not having the <code>source</code> set in <code>DiskInfo</code>.</li>
+<li>A <code>Path</code> disk is presented by having the <code>PATH</code> enum set for <code>source</code> in
+<code>DiskInfo</code>. It also has a <code>root</code> which the operator uses to specify the
+directory to be used to store data.</li>
+<li>A <code>Mount</code> disk is presented by having the <code>MOUNT</code> enum set for <code>source</code> in
+<code>DiskInfo</code>. It also has a <code>root</code> which the operator uses to specify the
+mount point used to store data.</li>
+</ul>
+
+
+<p>Operators can use the JSON-formated <code>--resources</code> option on the agent to provide
+these different kind of disk resources on agent start-up.</p>
+
+<h4><code>Root</code> disk</h4>
+
+<p>A <code>Root</code> disk is the basic disk resource in Mesos. It usually maps to the
+storage on the main operating system drive that the operator has presented to
+the agent. Data is mapped into the <code>work_dir</code> of the agent.</p>
+
+<pre><code>    {
+      "resources" : [
+        {
+          "name" : "disk",
+          "type" : "SCALAR",
+          "scalar" : { "value" : 2048 },
+          "role" : &lt;framework_role&gt;
+        }
+      ]
+    }
+</code></pre>
+
+<h4><code>Path</code> disks</h4>
+
+<p>A <code>Path</code> disk is an auxiliary disk resource provided by the operator. This can
+can be carved up into smaller chunks by accepting less than the total amount as
+frameworks see fit. Common uses for this kind of disk are extra logging space,
+file archives or caches, or other non performance-critical applications.
+Operators can present extra disks on their agents as <code>Path</code> disks simply by
+creating a directory and making that the <code>root</code> of the <code>Path</code> in <code>DiskInfo</code>&rsquo;s
+<code>source</code>.</p>
+
+<p><code>Path</code> disks are also useful for mocking up a multiple disk environment by
+creating some directories on the operating system drive. This should only be
+done in a testing or staging environment.</p>
+
+<pre><code>    {
+      "resources" : [
+        {
+          "name" : "disk",
+          "type" : "SCALAR",
+          "scalar" : { "value" : 2048 },
+          "role" : &lt;framework_role&gt;,
+          "disk" : {
+            "source" : {
+              "type" : "PATH",
+              "path" : { "root" : "/mnt/data" }
+            }
+          }
+        }
+      ]
+    }
+</code></pre>
+
+<h4><code>Mount</code> disks</h4>
+
+<p>A <code>Mount</code> disk is an auxiliary disk resource provided by the operator. This
+<strong>cannot</strong> be carved up into smaller chunks by frameworks. This lack of
+flexibility allows operators to provide assurances to frameworks that they will
+have exclusive access to the disk device. Common uses for this kind of disk
+include database storage, write-ahead logs, or other performance-critical
+applications.</p>
+
+<p>Another requirement of <code>Mount</code> disks is that (on Linux) they map to a <code>mount</code>
+point in the <code>/proc/mounts</code> table. Operators should mount a physical disk with
+their preferred file system and provide the mount point as the <code>root</code> of the
+<code>Mount</code> in <code>DiskInfo</code>&rsquo;s <code>source</code>.</p>
+
+<p>Aside from the performance advantages of <code>Mount</code> disks, applications running on
+them should be able to rely on disk errors when they attempt to exceed the
+capacity of the volume. This holds true as long as the file system in use
+correctly propagates these errors. Due to this expectation, the <code>posix/disk</code>
+isolation is disabled for <code>Mount</code> disks.</p>
+
+<pre><code>    {
+      "resources" : [
+        {
+          "name" : "disk",
+          "type" : "SCALAR",
+          "scalar" : { "value" : 2048 },
+          "role" : &lt;framework_role&gt;,
+          "disk" : {
+            "source" : {
+              "type" : "MOUNT",
+              "mount" : { "root" : "/mnt/data" }
+            }
+          }
+        }
+      ]
+    }
+</code></pre>
+
+<h4><code>Block</code> disks</h4>
+
+<p>Mesos currently does not allow operators to expose raw block devices. It may do
+so in the future, but there are security and flexibility concerns that need to
+be addressed in a design document first.</p>
+
+<h3>Storage Management</h3>
+
+<p>Mesos currently does not clean up or destroy data when persistent volumes are
+destroyed. It may do so in the future; however, the expectation is currently
+upon the framework, executor, and application to delete their data before
+destroying their persistent volumes. This is strongly encouraged for both
+security and ensuring that future users of the underlying disk resource are not
+penalized due to prior consumption of the disk capacity.</p>
+
+<h3>Implementation</h3>
+
+<p>A <code>Path</code> disk will have sub-directories created within the <code>root</code> which will be
+used to differentiate the different volumes that are created on it.</p>
+
+<p>A <code>Mount</code> disk will <strong>not</strong> have sub-directories created, allowing applications
+to use the full file system mounted on the device. This construct allows Mesos
+tasks to access volumes that contain pre-existing directory structures. This can
+be useful to simplify ingesting data such as a pre-existing Postgres database or
+HDFS data directory.</p>
+
+<p>Operators should be aware of these distinctions when inspecting or cleaning up
+remnant data.</p>
+
+	</div>
+</div>
+
+			
+	      <hr>
+
+				<!-- footer -->
+	      <div class="footer">
+	        <p>&copy; 2012-2015 <a href="http://apache.org">The Apache Software Foundation</a>.
+	        Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.<p>
+	      </div><!-- /footer -->
+
+	    </div> <!-- /container -->
+
+	    <!-- JS -->
+	    <script src="//code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+			<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="text/javascript"></script>
+    </body>
+</html>
