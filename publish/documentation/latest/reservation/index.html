@@ -91,7 +91,7 @@ and authorized <strong>frameworks</strong> to dynamically reserve resources in t
 
 <p>In both types of reservations, resources are reserved for a <a href="/documentation/latest/./roles/"><strong>role</strong></a>.</p>
 
-<h2>Static Reservation (since 0.14.0)</h2>
+<h2>Static Reservation</h2>
 
 <p>An operator can configure a slave with resources reserved for a role.
 The reserved resources are specified via the <code>--resources</code> flag.
@@ -115,13 +115,13 @@ We start the slave like so:</p>
           on the slave as unreserved via the <code>--resources</code> flag and manage
           reservations dynamically via the master HTTP endpoints.</p>
 
-<h2>Dynamic Reservation (since 0.23.0)</h2>
+<h2>Dynamic Reservation</h2>
 
 <p>As mentioned in <a href="#static-reservation-since-0140">Static Reservation</a>, specifying
 the reserved resources via the <code>--resources</code> flag makes the reservation static.
-This is, statically reserved resources cannot be reserved for another role nor
-be unreserved. Dynamic Reservation enables operators and authorized frameworks
-to reserve and unreserve resources post slave-startup.</p>
+That is, statically reserved resources cannot be reserved for another role nor
+be unreserved. Dynamic reservation enables operators and authorized frameworks
+to reserve and unreserve resources after slave-startup.</p>
 
 <p>We require a <code>principal</code> from the operator or framework in order to
 authenticate/authorize the operations. Permissions are specified via the
@@ -132,24 +132,36 @@ see the <a href="/documentation/latest/./authorization/">authorization documenta
 <ul>
 <li><code>Offer::Operation::Reserve</code> and <code>Offer::Operation::Unreserve</code> messages are
 available for <strong>frameworks</strong> to send back via the <code>acceptOffers</code> API as a
-response to a resource offer.</li>
+response to a resource offer. Each framework may only reserve resources for
+its own role.</li>
 <li><code>/reserve</code> and <code>/unreserve</code> HTTP endpoints allow <strong>operators</strong> to manage
-dynamic reservations through the master. NOTE: As of 0.27.0, these endpoints
-cannot be used when HTTP authentication is disabled due to the current
-implementation. This will change in version 0.28.0.</li>
+dynamic reservations through the master. Operators may currently reserve
+resources for any role, although this
+<a href="https://issues.apache.org/jira/browse/MESOS-4591">will change</a>.</li>
 </ul>
 
 
 <p>In the following sections, we will walk through examples of each of the
 interfaces described above.</p>
 
-<p>Note that if two dynamic reservations are made for resources at a single slave,
-the reservations will be combined by adding together the resources reserved by
-each request. Similarly, &ldquo;partial&rdquo; unreserve operations are allowed: an
-unreserve operation can release only some of the resources at a slave that have
-been reserved for a given role. In this case, the unreserved resources will be
-subtracted from the previous reservation, and any remaining resources will still
-be reserved.</p>
+<p>If two dynamic reservations are made for the same role at a single slave (using
+the same labels, if any; see below), the reservations will be combined by adding
+together the resources reserved by each request. This will result in a single
+reserved resource at the slave. Similarly, &ldquo;partial&rdquo; unreserve operations are
+allowed: an unreserve operation can release some but not all of the resources at
+a slave that have been reserved for a role. In this case, the unreserved
+resources will be subtracted from the previous reservation and any remaining
+resources will still be reserved.</p>
+
+<h3>Labeled Reservations</h3>
+
+<p>Dynamic reservations can optionally include a list of <em>labels</em>, which are
+arbitrary key-value pairs. Labels can be used to associate arbitrary metadata
+with a resource reservation. For example, frameworks can use labels to identify
+the intended purpose for a portion of the resources that have been reserved at a
+given slave. Note that two reservations with different labels will not be
+combined together into a single reservation, even if the reservations are at the
+same slave and use the same role.</p>
 
 <h3>Framework Scheduler API</h3>
 
@@ -326,8 +338,10 @@ operators and administrative tools.</p>
 <p>Suppose we want to reserve 8 CPUs and 4096 MB of RAM for the <code>ads</code> role on a
 slave with id=<code>&lt;slave_id&gt;</code> (note that it is up to the user to find the ID of the
 slave that hosts the desired resources; the request will fail if sufficient
-unreserved resources cannot be found on the slave). We send an HTTP POST request
-to the <code>/reserve</code> HTTP endpoint like so:</p>
+unreserved resources cannot be found on the slave). In this case, the principal
+included in the request will be the principal of an authorized operator rather
+than the principal of a framework registered under the <code>ads</code> role. We send an
+HTTP POST request to the <code>/reserve</code> HTTP endpoint like so:</p>
 
 <pre><code>    $ curl -i \
       -u &lt;operator_principal&gt;:&lt;password&gt; \
@@ -358,13 +372,22 @@ to the <code>/reserve</code> HTTP endpoint like so:</p>
 <p>The user receives one of the following HTTP responses:</p>
 
 <ul>
-<li><code>200 OK</code>: Success (the requested resources have been reserved).</li>
+<li><code>200 OK</code>: Request accepted (see below).</li>
 <li><code>400 BadRequest</code>: Invalid arguments (e.g., missing parameters).</li>
 <li><code>401 Unauthorized</code>: Unauthenticated request.</li>
 <li><code>403 Forbidden</code>: Unauthorized request.</li>
 <li><code>409 Conflict</code>: Insufficient resources to satisfy the reserve operation.</li>
 </ul>
 
+
+<p>Note that when <code>200 OK</code> is returned by this endpoint, it does <strong>not</strong> mean that
+the requested resources have been reserved. Instead, this return code indicates
+that the reservation request has been validated successfully by the master. The
+reservation request is then forwarded asynchronously to the Mesos slave where
+the resources are located. That asynchronous message may not be delivered, in
+which case no resources will be reserved. To determine if a reserve operation
+has succeeded, the user can examine the state of the appropriate Mesos slave
+(e.g., via the slave&rsquo;s <code>/state</code> HTTP endpoint).</p>
 
 <h4><code>/unreserve</code> (since 0.25.0)</h4>
 
@@ -381,7 +404,7 @@ We can send an HTTP POST request to the <code>/unreserve</code> HTTP endpoint li
           "scalar": { "value": 8 },
           "role": "ads",
           "reservation": {
-            "principal": &lt;operator_principal&gt;
+            "principal": &lt;reserver_principal&gt;
           }
         },
         {
@@ -390,23 +413,38 @@ We can send an HTTP POST request to the <code>/unreserve</code> HTTP endpoint li
           "scalar": { "value": 4096 },
           "role": "ads",
           "reservation": {
-            "principal": &lt;operator_principal&gt;
+            "principal": &lt;reserver_principal&gt;
           }
         }
       ]' \
       -X POST http://&lt;ip&gt;:&lt;port&gt;/master/unreserve
 </code></pre>
 
+<p>Note that <code>reserver_principal</code> is the principal that was used to make the
+reservation, while <code>operator_principal</code> is the principal that is attempting to
+perform the unreserve operation&mdash;in some cases, these principals might be the
+same. The <code>operator_principal</code> must be <a href="/documentation/latest/./authorization/">authorized</a> to
+unreserve reservations made by <code>reserver_principal</code>.</p>
+
 <p>The user receives one of the following HTTP responses:</p>
 
 <ul>
-<li><code>200 OK</code>: Success (the requested resources have been unreserved).</li>
+<li><code>200 OK</code>: Request accepted (see below).</li>
 <li><code>400 BadRequest</code>: Invalid arguments (e.g., missing parameters).</li>
 <li><code>401 Unauthorized</code>: Unauthenticated request.</li>
 <li><code>403 Forbidden</code>: Unauthorized request.</li>
 <li><code>409 Conflict</code>: Insufficient resources to satisfy the unreserve operation.</li>
 </ul>
 
+
+<p>Note that when <code>200 OK</code> is returned by this endpoint, it does <strong>not</strong> mean that
+the requested resources have been unreserved. Instead, this return code
+indicates that the unreserve request has been validated successfully by the
+master. The request is then forwarded asynchronously to the Mesos slave where
+the resources are located. That asynchronous message may not be delivered, in
+which case no resources will be unreserved. To determine if an unreserve
+operation has succeeded, the user can examine the state of the appropriate Mesos
+slave (e.g., via the slave&rsquo;s <code>/state</code> HTTP endpoint).</p>
 
 	</div>
 </div>

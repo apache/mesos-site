@@ -104,6 +104,9 @@ cluster.</p>
 <p>Please refer to the <a href="/documentation/latest/./reservation/">Reservation</a> documentation for details
 regarding reservation mechanisms available in Mesos.</p>
 
+<p>Persistent volumes can also be created on isolated and auxiliary disks by
+reserving <a href="/documentation/latest/./multiple-disk/">multiple disk resources</a>.</p>
+
 <p>Persistent volumes can be created by <strong>operators</strong> and authorized
 <strong>frameworks</strong>. We require a <code>principal</code> from the operator or framework in order
 to authenticate/authorize the operations. Permissions are specified via the
@@ -364,7 +367,7 @@ disk resource, we can send a request like so:</p>
 <p>The user receives one of the following HTTP responses:</p>
 
 <ul>
-<li><code>200 OK</code>: Success (the persistent volumes have been created).</li>
+<li><code>200 OK</code>: Request accepted (see below).</li>
 <li><code>400 BadRequest</code>: Invalid arguments (e.g., missing parameters).</li>
 <li><code>401 Unauthorized</code>: Unauthenticated request.</li>
 <li><code>403 Forbidden</code>: Unauthorized request.</li>
@@ -372,8 +375,18 @@ disk resource, we can send a request like so:</p>
 </ul>
 
 
-<p>Note that a single <code>/create-volumes</code> request can create multiple persistent
-volumes, but all of the volumes must be on the same slave.</p>
+<p>A single <code>/create-volumes</code> request can create multiple persistent volumes, but
+all of the volumes must be on the same slave.</p>
+
+<p>Note that when <code>200 OK</code> is returned by this endpoint, it does <strong>not</strong> mean that
+the persistent volumes have been created successfully. Instead, this return code
+indicates that the create operation has been validated successfully by the
+master. The request is then forwarded asynchronously to the Mesos slave where
+the reserved resources are located. That asynchronous message may not be
+delivered or creating the volumes at the slave might fail, in which case no
+volumes will be created. To determine if a create operation has succeeded, the
+user can examine the state of the appropriate Mesos slave (e.g., via the slave&rsquo;s
+<code>/state</code> HTTP endpoint).</p>
 
 <h4><code>/destroy-volumes</code></h4>
 
@@ -408,7 +421,7 @@ volumes, but all of the volumes must be on the same slave.</p>
 <p>The user receives one of the following HTTP responses:</p>
 
 <ul>
-<li><code>200 OK</code>: Success (the volumes have been destroyed).</li>
+<li><code>200 OK</code>: Request accepted (see below).</li>
 <li><code>400 BadRequest</code>: Invalid arguments (e.g., missing parameters).</li>
 <li><code>401 Unauthorized</code>: Unauthenticated request.</li>
 <li><code>403 Forbidden</code>: Unauthorized request.</li>
@@ -416,8 +429,18 @@ volumes, but all of the volumes must be on the same slave.</p>
 </ul>
 
 
-<p>Note that a single <code>/destroy-volumes</code> request can destroy multiple persistent
-volumes, but all of the volumes must be on the same slave.</p>
+<p>A single <code>/destroy-volumes</code> request can destroy multiple persistent volumes, but
+all of the volumes must be on the same slave.</p>
+
+<p>Note that when <code>200 OK</code> is returned by this endpoint, it does <strong>not</strong> mean that
+the persistent volumes have been destroyed successfully. Instead, this return
+code indicates that the destroy operation has been validated successfully by the
+master. The request is then forwarded asynchronously to the Mesos slave where
+the persistent volumes are located. That asynchronous message may not be
+delivered or destroying the volumes at the slave might fail, in which case no
+volumes will be destroyed. To determine if a destroy operation has succeeded,
+the user can examine the state of the appropriate Mesos slave (e.g., via the
+slave&rsquo;s <code>/state</code> HTTP endpoint).</p>
 
 <h3>Programming with Persistent Volumes</h3>
 
@@ -436,7 +459,8 @@ by retrying the operation).</p></li>
 <li><p>When using HTTP endpoints to reserve resources or create persistent volumes,
 <em>some</em> failures can be detected by examining the HTTP response code returned
 to the client. However, it is still possible for a <code>200</code> response code to be
-returned to the client but for the associated operation to fail.</p></li>
+returned to the client but for the associated operation to fail&mdash;see
+discussion above.</p></li>
 <li><p>When using the scheduler API, detecting that a dynamic reservation has failed
 is a little tricky: reservations do not have unique identifiers, and the Mesos
 master does not provide explicit feedback on whether a reservation request has

@@ -165,12 +165,28 @@
 </ol>
 
 
+<h2>Role vs. Principal</h2>
+
+<p>A principal identifies an entity (i.e., a framework or an operator) that interacts with Mesos. A role, on the other hand, is used to associate resources with frameworks in various ways. A useful, if not entirely precise, analogy can be made with user management in the Unix world: principals correspond to usernames, while roles approximately correspond to groups. For more information about roles, see the <a href="/documentation/latest/./roles/">role documentation</a>.</p>
+
+<p>In a real-world organization, principals and roles might be used to represent various individuals or groups; for example, principals could correspond to people responsible for particular frameworks, while roles could correspond to departments within the organization which run frameworks on the cluster. To illustrate this point, consider a company that wants to allocate datacenter resources amongst multiple departments, one of which is the accounting department. Here is a possible scenario in which the accounting department launches a Mesos framework and then attempts to destroy a persistent volume:</p>
+
+<ul>
+<li>An accountant launches their framework, which authenticates with the Mesos master using its <code>principal</code> and <code>secret</code>. Here, let the framework principal be <code>payroll-framework</code>; this principal represents the trusted identity of the framework.</li>
+<li>The framework now sends a registration message to the master. This message includes a <code>FrameworkInfo</code> object containing a <code>principal</code> and a <code>role</code>; in this case, it will use the role <code>accounting</code>. The principal in this message must be <code>payroll-framework</code>, to match the one used by the framework for authentication.</li>
+<li>The master looks through its ACLs to see if it has a <code>RegisterFramework</code> ACL which authorizes the principal <code>payroll-framework</code> to register with the <code>accounting</code> role. It does find such an ACL, so the framework registers successfully. Now that the framework belongs to the <code>accounting</code> role, any <a href="/documentation/latest/./roles/">weights</a>, <a href="/documentation/latest/./reservation/">reservations</a>, <a href="/documentation/latest/./persistent-volume/">persistent volumes</a>, or <a href="/documentation/latest/./quota/">quota</a> associated with the accounting department&rsquo;s role will apply. This allows operators to control the resource consumption of this department.</li>
+<li>Suppose the framework has created a persistent volume on a slave which it now wishes to destroy. The framework sends an <code>ACCEPT</code> call containing an offer operation which will <code>DESTROY</code> the persistent volume.</li>
+<li>However, datacenter operators have decided that they don&rsquo;t want the accounting frameworks to delete volumes. Rather, the operators will manually remove the accounting department&rsquo;s persistent volumes to ensure that no important financial data is deleted accidentally. To accomplish this, they have set a <code>DestroyVolume</code> ACL which asserts that the principal <code>payroll-framework</code> can destroy volumes created by a <code>creator_principal</code> of <code>NONE</code>; in other words, this framework cannot destroy persistent volumes, so the operation will be refused.</li>
+</ul>
+
+
 <h2>Examples</h2>
 
 <ol>
-<li><p>Frameworks <code>foo</code> and <code>bar</code> can run tasks as user <code>alice</code>.</p>
+<li><p>Principals <code>foo</code> and <code>bar</code> can run tasks as the agent operating system user <code>alice</code> and no other user. No other principals can run tasks.</p>
 
 <pre><code> {
+   "permissive": false,
    "run_tasks": [
                   {
                     "principals": { "values": ["foo", "bar"] },
@@ -179,29 +195,7 @@
                 ]
  }
 </code></pre></li>
-<li><p>Any framework can run tasks as user <code>guest</code>.</p>
-
-<pre><code> {
-   "run_tasks": [
-                  {
-                    "principals": { "type": "ANY" },
-                    "users": { "values": ["guest"] }
-                  }
-                ]
- }
-</code></pre></li>
-<li><p>No framework can run tasks as <code>root</code>.</p>
-
-<pre><code> {
-   "run_tasks": [
-                  {
-                    "principals": { "type": "NONE" },
-                    "users": { "values": ["root"] }
-                  }
-                ]
- }
-</code></pre></li>
-<li><p>Framework <code>foo</code> can run tasks only as user <code>guest</code> and no other user.</p>
+<li><p>Principal <code>foo</code> can run tasks only as the agent operating system user <code>guest</code> and no other user. Any other principal (or framework without a principal) can run tasks as any user.</p>
 
 <pre><code> {
    "run_tasks": [
@@ -216,7 +210,30 @@
                 ]
  }
 </code></pre></li>
-<li><p>Framework <code>foo</code> can register with the <code>analytics</code> and <code>ads</code> roles.</p>
+<li><p>Any principal can run tasks as the agent operating system user <code>guest</code>. Tasks cannot be run as any other user.</p>
+
+<pre><code> {
+   "permissive": false,
+   "run_tasks": [
+                  {
+                    "principals": { "type": "ANY" },
+                    "users": { "values": ["guest"] }
+                  }
+                ]
+ }
+</code></pre></li>
+<li><p>No principal can run tasks as the agent operating system user <code>root</code>. Any principal (or framework without a principal) can run tasks as any other user.</p>
+
+<pre><code> {
+   "run_tasks": [
+                  {
+                    "principals": { "type": "NONE" },
+                    "users": { "values": ["root"] }
+                  }
+                ]
+ }
+</code></pre></li>
+<li><p>Principal <code>foo</code> can register frameworks with the <code>analytics</code> and <code>ads</code> roles and no other role. Any other principal (or framework without a principal) can register frameworks with any role.</p>
 
 <pre><code> {
    "register_frameworks": [
@@ -227,11 +244,19 @@
                               "roles": {
                                 "values": ["analytics", "ads"]
                               }
+                            },
+                            {
+                              "principals": {
+                                "values": ["foo"]
+                              },
+                              "roles": {
+                                "type": "NONE"
+                              }
                             }
                           ]
  }
 </code></pre></li>
-<li><p>Only framework <code>foo</code> and no one else can register with the <code>analytics</code> role.</p>
+<li><p>Only principal <code>foo</code> and no one else can register frameworks with the <code>analytics</code> role. Any other principal (or framework without a principal) can register frameworks with any other role.</p>
 
 <pre><code> {
    "register_frameworks": [
@@ -254,7 +279,7 @@
                           ]
  }
 </code></pre></li>
-<li><p>Framework <code>foo</code> can only register with the <code>analytics</code> role but no other roles. Also, no other framework can register with any roles or run tasks.</p>
+<li><p>Principal <code>foo</code> can register frameworks with the <code>analytics</code> role and no other role. No other principal can register frameworks with any role, including <code>*</code>.</p>
 
 <pre><code> {
    "permissive": false,
@@ -270,7 +295,7 @@
                           ]
  }
 </code></pre></li>
-<li><p>The <code>ops</code> principal can teardown any framework using the &ldquo;/teardown&rdquo; HTTP endpoint. No other framework can register with any roles or run tasks.</p>
+<li><p>The <code>ops</code> principal can teardown any framework using the &ldquo;/teardown&rdquo; HTTP endpoint. No other principal can teardown any frameworks.</p>
 
 <pre><code> {
    "permissive": false,
@@ -285,6 +310,149 @@
                             }
                           ]
  }
+</code></pre></li>
+<li><p>The principal <code>foo</code> can reserve any resources, and no other principal can reserve resources.</p>
+
+<pre><code> {
+   "permissive": false,
+   "reserve_resources": [
+                          {
+                            "principals": {
+                              "values": ["foo"]
+                            },
+                            "resources": {
+                              "type": "ANY"
+                            }
+                          }
+                        ]
+ }
+</code></pre></li>
+<li><p>The principal <code>foo</code> cannot reserve any resources, and any other principal (or framework without a principal) can reserve resources.</p>
+
+<pre><code>{
+  "reserve_resources": [
+                         {
+                           "principals": {
+                             "values": ["foo"]
+                           },
+                           "resources": {
+                             "type": "NONE"
+                           }
+                         }
+                       ]
+}
+</code></pre></li>
+<li><p>The principal <code>foo</code> can unreserve resources reserved by itself and by the principal <code>bar</code>. The principal <code>bar</code>, however, can only unreserve its own resources. No other principals can unreserve resources.</p>
+
+<pre><code>{
+  "permissive": false,
+  "unreserve_resources": [
+                           {
+                             "principals": {
+                               "values": ["foo"]
+                             },
+                             "reserver_principals": {
+                               "values": ["foo", "bar"]
+                             }
+                           },
+                           {
+                             "principals": {
+                               "values": ["bar"]
+                             },
+                             "reserver_principals": {
+                               "values": ["bar"]
+                             }
+                           }
+                         ]
+}
+</code></pre></li>
+<li><p>The principal <code>foo</code> can create persistent volumes, and no other principal can create persistent volumes.</p>
+
+<pre><code>{
+  "permissive": false,
+  "create_volumes": [
+                      {
+                        "principals": {
+                          "values": ["foo"]
+                        },
+                        "volume_types": {
+                          "type": "ANY"
+                        }
+                      }
+                    ]
+}
+</code></pre></li>
+<li><p>The principal <code>foo</code> can destroy volumes created by itself and by the principal <code>bar</code>. The principal <code>bar</code>, however, can only destroy its own volumes. No other principals can destroy volumes.</p>
+
+<pre><code>{
+  "permissive": false,
+  "destroy_volumes": [
+                       {
+                         "principals": {
+                           "values": ["foo"]
+                         },
+                         "creator_principals": {
+                           "values": ["foo", "bar"]
+                         }
+                       },
+                       {
+                         "principals": {
+                           "values": ["bar"]
+                         },
+                         "creator_principals": {
+                           "values": ["bar"]
+                         }
+                       }
+                     ]
+}
+</code></pre></li>
+<li><p>The principal <code>ops</code> can set quota for any role. The principal <code>foo</code>, however, can only set quota for <code>foo-role</code>. No other principals can set quota.</p>
+
+<pre><code>{
+  "permissive": false,
+  "set_quotas": [
+                  {
+                    "principals": {
+                      "values": ["ops"]
+                    },
+                    "roles": {
+                      "type": "ANY"
+                    }
+                  },
+                  {
+                    "principals": {
+                      "values": ["foo"]
+                    },
+                    "roles": {
+                      "values": ["foo-role"]
+                    }
+                  }
+                ]
+}
+</code></pre></li>
+<li><p>The principal <code>ops</code> can remove quota which was set by any principal. The principal <code>foo</code>, however, can only remove quota which was set by itself. No other principals can remove quota.</p>
+
+<pre><code>{
+  "permissive": false,
+  "remove_quotas": [
+                     {
+                       "principals": {
+                         "values": ["ops"]
+                       },
+                       "quota_principals": {
+                         "type": "ANY"
+                       }
+                     },
+                     {
+                       "principals": {
+                         "values": ["foo"]
+                       },
+                       "quota_principals": {
+                         "values": ["foo"]
+                       }
+                     }
+                   ]
+}
 </code></pre></li>
 </ol>
 

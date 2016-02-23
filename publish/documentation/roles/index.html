@@ -91,13 +91,16 @@ resources are offered to frameworks. Some use-cases for roles include:</p>
 <ul>
 <li>arranging for all the resources on a particular agent to only be offered to a
 particular framework.</li>
-<li>dividing a cluster between two organizations: resources assigned for use by
+<li>dividing a cluster between two organizations: resources reserved for use by
 organization <em>A</em> will only be offered to frameworks that have registered
-using organization <em>A</em>&rsquo;s role.</li>
+using organization <em>A</em>&rsquo;s role (see the
+<a href="/documentation/latest/./reservation/">reservation documentation</a>).</li>
 <li>ensuring that <a href="/documentation/latest/./persistent-volume/">persistent volumes</a> created by one
 framework are not offered to frameworks registered with a different role.</li>
 <li>expressing that one group of frameworks should be considered &ldquo;higher priority&rdquo;
 (and offered more resources) than another group of frameworks.</li>
+<li>setting a guaranteed resource allocation for one or more frameworks belonging
+to a role (see the <a href="/documentation/latest/./quota/">quota documentation</a>).</li>
 </ul>
 
 
@@ -204,6 +207,20 @@ the frameworks in that role are then offered additional resources in turn.</p>
 roles: a role with a weight of 2 will be allocated twice the fair share of a
 role with a weight of 1. Weights are optional, and can be specified via the
 <code>--weights</code> command-line flag when starting the Mesos master.</p>
+
+<h2>Role vs. Principal</h2>
+
+<p>A principal identifies an entity that interacts with Mesos; principals are
+similar to user names. For example, frameworks supply a principal when they
+register with the Mesos master, and operators provide a principal when using the
+operator HTTP endpoints. An entity may be required to
+<a href="/documentation/latest/./authentication/">authenticate</a> with its principal in order to prove its
+identity, and the principal may be used to <a href="/documentation/latest/./authorization/">authorize</a> actions
+performed by an entity, such as <a href="/documentation/latest/./reservation/">resource reservation</a> and
+<a href="/documentation/latest/./persistent-volume/">persistent volume</a> creation/destruction.</p>
+
+<p>Roles, on the other hand, are used exclusively to associate resources with
+frameworks in various ways, as covered above.</p>
 
 	</div>
 </div>
