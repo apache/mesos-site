@@ -289,6 +289,11 @@ messaging between the scheduler and the master is ordered.</li>
 </li>
 </ul>
 </li>
+<li><p>The <code>TASK_KILLING</code> state is optional and is intended to indicate that the
+request to kill the task has been received by the executor, but the task has
+not yet been killed. This is useful for tasks that require some time to
+terminate gracefully. Executors must not generate this state unless the
+framework has the <code>TASK_KILLING_STATE</code> framework capability.</p></li>
 <li><p>There are several terminal states:</p>
 
 <ul>
