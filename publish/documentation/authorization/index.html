@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title></title>
+        <title>Apache Mesos - Authorization</title>
 		    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 		    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
@@ -97,7 +97,7 @@
 
 <h2>ACLs</h2>
 
-<p>Authorization is implemented via Access Control Lists (ACLs). For each of the above cases, ACLs can be used to restrict access. Operators can setup ACLs in JSON format. See <a href="https://github.com/apache/mesos/blob/master/include/mesos/authorizer/authorizer.proto">authorizer.proto</a> for details.</p>
+<p>Authorization is implemented via Access Control Lists (ACLs). For each of the above cases, ACLs can be used to restrict access. Operators can setup ACLs in JSON format when starting the master (see <a href="#aclsConfiguration">Configuring Authorization</a> for details).</p>
 
 <p>Each ACL specifies a set of <code>Subjects</code> that can perform an <code>Action</code> on a set of <code>Objects</code>.</p>
 
@@ -123,7 +123,7 @@
 
 <ul>
 <li>Framework principals (used by &ldquo;register_frameworks&rdquo;, &ldquo;run_tasks&rdquo;, &ldquo;reserve&rdquo;, &ldquo;unreserve&rdquo;, &ldquo;create_volumes&rdquo;, and &ldquo;destroy_volumes&rdquo; actions)</li>
-<li>Usernames (used by &ldquo;teardown_frameworks&rdquo;, &ldquo;set_quotas&rdquo;, &ldquo;remove_quotas&rdquo;, &ldquo;reserve&rdquo;, &ldquo;unreserve&rdquo;, &ldquo;create_volumes&rdquo;, and &ldquo;destroy_volumes&rdquo; actions)</li>
+<li>Operator usernames (used by &ldquo;teardown_frameworks&rdquo;, &ldquo;set_quotas&rdquo;, &ldquo;remove_quotas&rdquo;, &ldquo;reserve&rdquo;, &ldquo;unreserve&rdquo;, &ldquo;create_volumes&rdquo;, and &ldquo;destroy_volumes&rdquo; actions)</li>
 </ul>
 </li>
 </ol>
@@ -132,14 +132,12 @@
 <p>The currently supported <code>Objects</code> are:</p>
 
 <ol>
-<li>&ldquo;roles&rdquo;: Resource <a href="/documentation/latest/./roles/">roles</a> that framework can register with (used by &ldquo;register_frameworks&rdquo; and &ldquo;set_quotas&rdquo; actions)</li>
-<li>&ldquo;users&rdquo;: Unix user to launch the task/executor as (used by &ldquo;run_tasks&rdquo; actions)</li>
+<li>&ldquo;roles&rdquo;: Resource <a href="/documentation/latest/./roles/">roles</a> that frameworks can register with, <a href="/documentation/latest/./reservation/">reserve resources</a> for, or create <a href="/documentation/latest/./persistent-volume/">persistent volumes</a> for (used by &ldquo;register_frameworks&rdquo;, &ldquo;set_quotas&rdquo;, &ldquo;reserve_resources&rdquo;, and &ldquo;create_volumes&rdquo; actions).</li>
+<li>&ldquo;users&rdquo;: Unix user to launch the task/executor as (used by &ldquo;run_tasks&rdquo; actions).</li>
 <li>&ldquo;framework_principals&rdquo;: Framework principals that can be torn down by HTTP POST (used by &ldquo;teardown_frameworks&rdquo; actions).</li>
-<li>&ldquo;resources&rdquo;: Resources that can be reserved. Currently the only types considered by the default authorizer are <code>ANY</code> and <code>NONE</code> (used by &ldquo;reserves&rdquo; action).</li>
 <li>&ldquo;reserver_principals&rdquo;: Framework principals whose reserved resources can be unreserved (used by &ldquo;unreserves&rdquo; action).</li>
-<li>&ldquo;volume_types&rdquo;: Types of volumes that can be created by a given principal. Currently the only types considered by the default authorizer are <code>ANY</code> and <code>NONE</code> (used by &ldquo;create_volumes&rdquo; action).</li>
 <li>&ldquo;creator_principals&rdquo;: Principals whose persistent volumes can be destroyed (used by &ldquo;destroy_volumes&rdquo; action).</li>
-<li>&ldquo;quota_principals&rdquo;: Principals that set the quota to be removed (used by &ldquo;remove_quotas&rdquo; action)</li>
+<li>&ldquo;quota_principals&rdquo;: Principals that set the quota to be removed (used by &ldquo;remove_quotas&rdquo; action).</li>
 </ol>
 
 
@@ -151,7 +149,7 @@
 
 <p>For example, when a framework (re-)registers with the master, &ldquo;register_frameworks&rdquo; ACLs are checked to see if the framework (<code>FrameworkInfo.principal</code>) is authorized to receive offers for the given resource role (<code>FrameworkInfo.role</code>). If not authorized, the framework is not allowed to (re-)register and gets an <code>Error</code> message back (which aborts the scheduler driver).</p>
 
-<p>Similarly, when a framework launches a task, &ldquo;run_tasks&rdquo; ACLs are checked to see if the framework (<code>FrameworkInfo.principal</code>) is authorized to run the task/executor as the given user. If not authorized, the launch is rejected and the framework gets a TASK_LOST.</p>
+<p>Similarly, when a framework launches a task, &ldquo;run_tasks&rdquo; ACLs are checked to see if the framework (<code>FrameworkInfo.principal</code>) is authorized to run the task/executor as the given user. If not authorized, the launch is rejected and the framework gets a <code>TASK_LOST</code>.</p>
 
 <p>In the same vein, when a user/principal attempts to teardown a framework using the &ldquo;/teardown&rdquo; HTTP endpoint on the master, &ldquo;teardown_frameworks&rdquo; ACLs are checked to see if the principal is authorized to teardown the given framework. If not authorized, the teardown is rejected and the user receives a <code>Forbidden</code> HTTP response.</p>
 
@@ -311,7 +309,7 @@
                           ]
  }
 </code></pre></li>
-<li><p>The principal <code>foo</code> can reserve any resources, and no other principal can reserve resources.</p>
+<li><p>The principal <code>foo</code> can reserve resources for any role, and no other principal can reserve resources.</p>
 
 <pre><code> {
    "permissive": false,
@@ -320,14 +318,14 @@
                             "principals": {
                               "values": ["foo"]
                             },
-                            "resources": {
+                            "roles": {
                               "type": "ANY"
                             }
                           }
                         ]
  }
 </code></pre></li>
-<li><p>The principal <code>foo</code> cannot reserve any resources, and any other principal (or framework without a principal) can reserve resources.</p>
+<li><p>The principal <code>foo</code> cannot reserve resources, and any other principal (or framework without a principal) can reserve resources for any role.</p>
 
 <pre><code>{
   "reserve_resources": [
@@ -335,8 +333,24 @@
                            "principals": {
                              "values": ["foo"]
                            },
-                           "resources": {
+                           "roles": {
                              "type": "NONE"
+                           }
+                         }
+                       ]
+}
+</code></pre></li>
+<li><p>The principal <code>foo</code> can reserve resources only for roles <code>prod</code> and <code>dev</code>, and no other principal (or framework without a principal) can reserve resources for any role.</p>
+
+<pre><code>{
+  "permissive": false,
+  "reserve_resources": [
+                         {
+                           "principals": {
+                             "values": ["foo"]
+                           },
+                           "roles": {
+                             "values": ["prod", "dev"]
                            }
                          }
                        ]
@@ -366,7 +380,7 @@
                          ]
 }
 </code></pre></li>
-<li><p>The principal <code>foo</code> can create persistent volumes, and no other principal can create persistent volumes.</p>
+<li><p>The principal <code>foo</code> can create persistent volumes for any role, and no other principal can create persistent volumes.</p>
 
 <pre><code>{
   "permissive": false,
@@ -375,8 +389,39 @@
                         "principals": {
                           "values": ["foo"]
                         },
-                        "volume_types": {
+                        "roles": {
                           "type": "ANY"
+                        }
+                      }
+                    ]
+}
+</code></pre></li>
+<li><p>The principal <code>foo</code> cannot create persistent volumes for any role, and any other principal can create persistent volumes for any role.</p>
+
+<pre><code>{
+  "create_volumes": [
+                      {
+                        "principals": {
+                          "values": ["foo"]
+                        },
+                        "roles": {
+                          "type": "NONE"
+                        }
+                      }
+                    ]
+}
+</code></pre></li>
+<li><p>The principal <code>foo</code> can create persistent volumes only for roles <code>prod</code> and <code>dev</code>, and no other principal can create persistent volumes for any role.</p>
+
+<pre><code>{
+  "permissive": false,
+  "create_volumes": [
+                      {
+                        "principals": {
+                          "values": ["foo"]
+                        },
+                        "roles": {
+                          "values": ["prod", "dev"]
                         }
                       }
                     ]
@@ -457,7 +502,9 @@
 </ol>
 
 
-<h2>Configuring authorization</h2>
+<p><a name="aclsConfiguration"></a></p>
+
+<h2>Configuring Authorization</h2>
 
 <p>Authorization is configured by specifying the <code>--acls</code> flag when starting the master:</p>
 
@@ -466,7 +513,7 @@
          or a file path containing the JSON-formatted ACLs used
          for authorization. Path could be of the form &lsquo;file:///path/to/file&rsquo;
          or &lsquo;/path/to/file&rsquo;.
-         See the ACLs protobuf in authorizer.proto for the expected format.</li>
+         See the ACLs protobuf in <a href="https://github.com/apache/mesos/blob/master/include/mesos/authorizer/authorizer.proto">authorizer.proto</a> for the expected format.</li>
 </ul>
 
 

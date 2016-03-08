@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title></title>
+        <title>Apache Mesos - Reservation</title>
 		    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 		    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
@@ -123,21 +123,21 @@ That is, statically reserved resources cannot be reserved for another role nor
 be unreserved. Dynamic reservation enables operators and authorized frameworks
 to reserve and unreserve resources after slave-startup.</p>
 
-<p>We require a <code>principal</code> from the operator or framework in order to
-authenticate/authorize the operations. Permissions are specified via the
-existing ACL mechanism. To use authorization with reserve/unreserve operations,
-the Mesos master must be configured with the desired ACLs. For more information,
-see the <a href="/documentation/latest/./authorization/">authorization documentation</a>.</p>
+<p>By default, frameworks and operators can reserve resources for any role, and can
+unreserve any dynamically reserved resources. <a href="/documentation/latest/./authorization/">Authorization</a>
+allows this behavior to be limited so that only particular roles can be reserved
+for, and only particular resources can be unreserved. For these operations to be
+authorized, the framework or operator should provide a <code>principal</code> to identify
+itself. To use authorization with reserve/unreserve operations, the Mesos master
+must be configured with the appropriate ACLs. For more information, see the
+<a href="/documentation/latest/./authorization/">authorization documentation</a>.</p>
 
 <ul>
 <li><code>Offer::Operation::Reserve</code> and <code>Offer::Operation::Unreserve</code> messages are
 available for <strong>frameworks</strong> to send back via the <code>acceptOffers</code> API as a
-response to a resource offer. Each framework may only reserve resources for
-its own role.</li>
+response to a resource offer.</li>
 <li><code>/reserve</code> and <code>/unreserve</code> HTTP endpoints allow <strong>operators</strong> to manage
-dynamic reservations through the master. Operators may currently reserve
-resources for any role, although this
-<a href="https://issues.apache.org/jira/browse/MESOS-4591">will change</a>.</li>
+dynamic reservations through the master.</li>
 </ul>
 
 
@@ -341,7 +341,8 @@ slave that hosts the desired resources; the request will fail if sufficient
 unreserved resources cannot be found on the slave). In this case, the principal
 included in the request will be the principal of an authorized operator rather
 than the principal of a framework registered under the <code>ads</code> role. We send an
-HTTP POST request to the <code>/reserve</code> HTTP endpoint like so:</p>
+HTTP POST request to the master&rsquo;s <a href="/documentation/latest/./endpoints/master/reserve/">/reserve</a>
+endpoint like so:</p>
 
 <pre><code>    $ curl -i \
       -u &lt;operator_principal&gt;:&lt;password&gt; \
@@ -387,12 +388,13 @@ reservation request is then forwarded asynchronously to the Mesos slave where
 the resources are located. That asynchronous message may not be delivered, in
 which case no resources will be reserved. To determine if a reserve operation
 has succeeded, the user can examine the state of the appropriate Mesos slave
-(e.g., via the slave&rsquo;s <code>/state</code> HTTP endpoint).</p>
+(e.g., via the slave&rsquo;s <a href="/documentation/latest/./endpoints/slave/state/">/state</a> HTTP endpoint).</p>
 
 <h4><code>/unreserve</code> (since 0.25.0)</h4>
 
 <p>Suppose we want to unreserve the resources that we dynamically reserved above.
-We can send an HTTP POST request to the <code>/unreserve</code> HTTP endpoint like so:</p>
+We can send an HTTP POST request to the master&rsquo;s
+<a href="/documentation/latest/./endpoints/master/unreserve/">/unreserve</a> endpoint like so:</p>
 
 <pre><code>    $ curl -i \
       -u &lt;operator_principal&gt;:&lt;password&gt; \
@@ -444,7 +446,13 @@ master. The request is then forwarded asynchronously to the Mesos slave where
 the resources are located. That asynchronous message may not be delivered, in
 which case no resources will be unreserved. To determine if an unreserve
 operation has succeeded, the user can examine the state of the appropriate Mesos
-slave (e.g., via the slave&rsquo;s <code>/state</code> HTTP endpoint).</p>
+slave (e.g., via the slave&rsquo;s <a href="/documentation/latest/./endpoints/slave/state/">/state</a> HTTP endpoint).</p>
+
+<h3>Listing Reservations</h3>
+
+<p>Information about the reserved resources at each slave in the cluster can be
+found by querying the <a href="/documentation/latest/./endpoints/master/slaves/">/slaves</a> master endpoint
+(under the <code>reserved_resources_full</code> key).</p>
 
 	</div>
 </div>

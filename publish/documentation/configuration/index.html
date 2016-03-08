@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title></title>
+        <title>Apache Mesos - Configuration</title>
 		    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 		    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
@@ -163,7 +163,7 @@ Example:
   "disabled_endpoints" : {
     "paths" : [
       "/files/browse",
-      "/slave(0)/stats.json"
+      "/metrics/snapshot"
     ]
   }
 }</code></pre>
@@ -671,6 +671,7 @@ ping from the master. Slaves that do not respond within
 Duration of time before an offer is rescinded from a framework.
 This helps fairness when running frameworks that hold on to offers,
 or frameworks that accidentally drop offers.
+If not set, offers do not timeout.
   </td>
 </tr>
 <tr>
@@ -1011,6 +1012,16 @@ the primary handle for the net_cls cgroup.
 </tr>
 <tr>
   <td>
+    --cgroups_net_cls_secondary_handles
+  </td>
+  <td>
+A range of the form 0xAAAA,0xBBBB, specifying the valid secondary
+handles that can be used with the primary handle. This will take
+effect only when the <code>--cgroups_net_cls_primary_handle</code> is set.
+  </td>
+</tr>
+<tr>
+  <td>
     --cgroups_root=VALUE
   </td>
   <td>
@@ -1295,6 +1306,7 @@ the available disk usage. (default: 1weeks)
 </tr>
 <tr>
   <td>
+    <a name="gc_disk_headroom"></a>
     --gc_disk_headroom=VALUE
   </td>
   <td>
@@ -1770,6 +1782,17 @@ isolator. (default: false)
       this port will not actually be bound (the local LIBPROCESS_PORT
       will be), so redirection to the local IP and port must be
       provided separately.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      LIBPROCESS_METRICS_SNAPSHOT_ENDPOINT_RATE_LIMIT
+    </td>
+    <td>
+      If set, this variable can be used to configure the rate limit
+      applied to the /metrics/snapshot endpoint. The format is
+      `<number of requests>/<interval duration>`.
+      Examples: `10/1secs`, `100/10secs`, etc.
     </td>
   </tr>
 </table>

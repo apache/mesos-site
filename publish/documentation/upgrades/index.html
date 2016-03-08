@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title></title>
+        <title>Apache Mesos - Upgrading Mesos</title>
 		    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 		    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
@@ -85,6 +85,26 @@
 
 <p>This document serves as a guide for users who wish to upgrade an existing Mesos cluster. Some versions require particular upgrade techniques when upgrading a running cluster. Some upgrades will have incompatible changes.</p>
 
+<h2>Upgrading from 0.27.x to 0.28.x</h2>
+
+<ul>
+<li><p>Mesos 0.28 only supports three decimal digits of precision for scalar resource values. For example, frameworks can reserve &ldquo;0.001&rdquo; CPUs but more fine-grained reservations (e.g., &ldquo;0.0001&rdquo; CPUs) are no longer supported (although they did not work reliably in prior versions of Mesos anyway). Internally, resource math is now done using a fixed-point format that supports three decimal digits of precision, and then converted to/from floating point for input and output, respectively. Frameworks that do their own resource math and manipulate fractional resources may observe differences in roundoff error and numerical precision.</p></li>
+<li><p>Mesos 0.28 changes the definitions of two ACLs used for authorization. The objects of the <code>ReserveResources</code> and <code>CreateVolume</code> ACLs have been changed to <code>roles</code>. In both cases, principals can now be authorized to perform these operations for particular roles. This means that by default, a framework or operator can reserve resources/create volumes for any role. To restrict this behavior, <a href="/documentation/latest/./authorization/">ACLs can be added</a> to the master which authorize principals to reserve resources/create volumes for specified roles only. Previously, frameworks could only reserve resources for their own role; this behavior can be preserved by configuring the <code>ReserveResources</code> ACLs such that the framework&rsquo;s principal is only authorized to reserve for the framework&rsquo;s role. <strong>NOTE</strong> This renders existing <code>ReserveResources</code> and <code>CreateVolume</code> ACL definitions obsolete; if you are authorizing these operations, your ACL definitions should be updated.</p></li>
+</ul>
+
+
+<p>In order to upgrade a running cluster:</p>
+
+<ol>
+<li>Rebuild and install any modules so that upgraded masters/slaves can use them.</li>
+<li>Install the new master binaries and restart the masters.</li>
+<li>Install the new slave binaries and restart the slaves.</li>
+<li>Upgrade the schedulers by linking the latest native library / jar / egg (if necessary).</li>
+<li>Restart the schedulers.</li>
+<li>Upgrade the executors by linking the latest native library / jar / egg (if necessary).</li>
+</ol>
+
+
 <h2>Upgrading from 0.26.x to 0.27.x</h2>
 
 <ul>
@@ -97,27 +117,56 @@
 </ul>
 
 
+<p>In order to upgrade a running cluster:</p>
+
+<ol>
+<li>Rebuild and install any modules so that upgraded masters/slaves can use them.</li>
+<li>Install the new master binaries and restart the masters.</li>
+<li>Install the new slave binaries and restart the slaves.</li>
+<li>Upgrade the schedulers by linking the latest native library / jar / egg (if necessary).</li>
+<li>Restart the schedulers.</li>
+<li>Upgrade the executors by linking the latest native library / jar / egg (if necessary).</li>
+</ol>
+
+
 <h2>Upgrading from 0.25.x to 0.26.x</h2>
 
-<p><strong>NOTE</strong> The names of some TaskStatus::Reason enums have been changed. But the tag numbers remain unchanged, so it is backwards compatible. Frameworks using the new version might need to do some compile time adjustments:</p>
+<ul>
+<li><p>The names of some TaskStatus::Reason enums have been changed. But the tag numbers remain unchanged, so it is backwards compatible. Frameworks using the new version might need to do some compile time adjustments:</p>
 
 <ul>
 <li>REASON_MEM_LIMIT -> REASON_CONTAINER_LIMITATION_MEMORY</li>
 <li>REASON_EXECUTOR_PREEMPTED -> REASON_CONTAINER_PREEMPTED</li>
 </ul>
+</li>
+<li><p>The <code>Credential</code> protobuf has been changed. <code>Credential</code> field <code>secret</code> is now a string, it used to be bytes. This will affect framework developers and language bindings ought to update their generated protobuf with the new version. This fixes JSON based credentials file support.</p></li>
+<li><p>The <code>/state</code> endpoints on master and slave will no longer include <code>data</code> fields as part of the JSON models for <code>ExecutorInfo</code> and <code>TaskInfo</code> out of consideration for memory scalability (see <a href="https://issues.apache.org/jira/browse/MESOS-3794">MESOS-3794</a> and <a href="http://www.mail-archive.com/dev@mesos.apache.org/msg33536.html">this email thread</a>).</p>
+
+<ul>
+<li>On master, the affected <code>data</code> field was originally found via <code>frameworks[*].executors[*].data</code>.</li>
+<li>On slaves, the affected <code>data</code> field was originally found via <code>executors[*].tasks[*].data</code>.</li>
+</ul>
+</li>
+<li><p>The <code>NetworkInfo</code> protobuf has been changed. The fields <code>protocol</code> and <code>ip_address</code> are now deprecated. The new field <code>ip_addresses</code> subsumes the information provided by them.</p></li>
+</ul>
 
 
-<p><strong>NOTE</strong> The <code>Credential</code> protobuf has been changed. <code>Credential</code> field <code>secret</code> is now a string, it used to be bytes. This will affect framework developers and language bindings ought to update their generated protobuf with the new version. This fixes JSON based credentials file support.</p>
+<p>In order to upgrade a running cluster:</p>
 
-<p><strong>NOTE</strong> The <code>/state</code> endpoints on master and slave will no longer include <code>data</code> fields as part of the JSON models for <code>ExecutorInfo</code> and <code>TaskInfo</code> out of consideration for memory scalability (see <a href="https://issues.apache.org/jira/browse/MESOS-3794">MESOS-3794</a> and <a href="http://www.mail-archive.com/dev@mesos.apache.org/msg33536.html">this email thread</a>).
-On master, the affected <code>data</code> field was originally found via <code>frameworks[*].executors[*].data</code>.
-On slaves, the affected <code>data</code> field was originally found via <code>executors[*].tasks[*].data</code>.</p>
+<ol>
+<li>Rebuild and install any modules so that upgraded masters/slaves can use them.</li>
+<li>Install the new master binaries and restart the masters.</li>
+<li>Install the new slave binaries and restart the slaves.</li>
+<li>Upgrade the schedulers by linking the latest native library / jar / egg (if necessary).</li>
+<li>Restart the schedulers.</li>
+<li>Upgrade the executors by linking the latest native library / jar / egg (if necessary).</li>
+</ol>
 
-<p><strong>NOTE</strong> The <code>NetworkInfo</code> protobuf has been changed. The fields <code>protocol</code> and <code>ip_address</code> are now deprecated. The new field <code>ip_addresses</code> subsumes the information provided by them.</p>
 
 <h2>Upgrading from 0.24.x to 0.25.x</h2>
 
-<p><strong>NOTE</strong> The following endpoints will be deprecated in favor of new endpoints. Both versions will be available in 0.25 but the deprecated endpoints will be removed in a subsequent release.</p>
+<ul>
+<li><p>The following endpoints will be deprecated in favor of new endpoints. Both versions will be available in 0.25 but the deprecated endpoints will be removed in a subsequent release.</p>
 
 <p>For master endpoints:</p>
 
@@ -130,8 +179,8 @@ On slaves, the affected <code>data</code> field was originally found via <code>e
 <p>For slave endpoints:</p>
 
 <ul>
-<li>/state.json becomes /state</li>
-<li>/monitor/statistics.json becomes /monitor/statistics</li>
+<li>/state.json becomes /stateπ</li>
+<li>/monitor/statistics.json becomes /monitor/statisticsπ</li>
 </ul>
 
 
@@ -143,143 +192,141 @@ On slaves, the affected <code>data</code> field was originally found via <code>e
 <li>/files/download.json becomes /files/download</li>
 <li>/files/read.json becomes /files/read</li>
 </ul>
+</li>
+<li><p>The C++/Java/Python scheduler bindings have been updated. In particular, the driver can make a suppressOffers() call to stop receiving offers (until reviveOffers() is called).</p></li>
+</ul>
 
-
-<p><strong>NOTE</strong> The C++/Java/Python scheduler bindings have been updated. In particular, the driver can make a suppressOffers() call to stop receiving offers (until reviveOffers() is called).</p>
 
 <p>In order to upgrade a running cluster:</p>
 
-<ul>
+<ol>
 <li>Rebuild and install any modules so that upgraded masters/slaves can use them.</li>
 <li>Install the new master binaries and restart the masters.</li>
 <li>Install the new slave binaries and restart the slaves.</li>
 <li>Upgrade the schedulers by linking the latest native library / jar / egg (if necessary).</li>
 <li>Restart the schedulers.</li>
 <li>Upgrade the executors by linking the latest native library / jar / egg (if necessary).</li>
-</ul>
+</ol>
 
 
 <h2>Upgrading from 0.23.x to 0.24.x</h2>
 
-<p><strong>NOTE</strong> Support for live upgrading a driver based scheduler to HTTP based (experimental) scheduler has been added.</p>
+<ul>
+<li><p>Support for live upgrading a driver based scheduler to HTTP based (experimental) scheduler has been added.</p></li>
+<li><p>Master now publishes its information in ZooKeeper in JSON (instead of protobuf). Make sure schedulers are linked against >= 0.23.0 libmesos before upgrading the master.</p></li>
+</ul>
 
-<p><strong>NOTE</strong> Master now publishes its information in ZooKeeper in JSON (instead of protobuf). Make sure schedulers are linked against >= 0.23.0 libmesos before upgrading the master.</p>
 
 <p>In order to upgrade a running cluster:</p>
 
-<ul>
+<ol>
 <li>Rebuild and install any modules so that upgraded masters/slaves can use them.</li>
 <li>Install the new master binaries and restart the masters.</li>
 <li>Install the new slave binaries and restart the slaves.</li>
 <li>Upgrade the schedulers by linking the latest native library / jar / egg (if necessary).</li>
 <li>Restart the schedulers.</li>
 <li>Upgrade the executors by linking the latest native library / jar / egg (if necessary).</li>
-</ul>
+</ol>
 
 
 <h2>Upgrading from 0.22.x to 0.23.x</h2>
 
-<p><strong>NOTE</strong> The &lsquo;stats.json&rsquo; endpoints for masters and slaves have been removed. Please use the &lsquo;metrics/snapshot&rsquo; endpoints instead.</p>
+<ul>
+<li><p>The &lsquo;stats.json&rsquo; endpoints for masters and slaves have been removed. Please use the &lsquo;metrics/snapshot&rsquo; endpoints instead.</p></li>
+<li><p>The &lsquo;/master/shutdown&rsquo; endpoint is deprecated in favor of the new &lsquo;/master/teardown&rsquo; endpoint.</p></li>
+<li><p>In order to enable decorator modules to remove metadata (environment variables or labels), we changed the meaning of the return value for decorator hooks in Mesos 0.23.0. Please refer to the modules documentation for more details.</p></li>
+<li><p>Slave ping timeouts are now configurable on the master via <code>--slave_ping_timeout</code> and <code>--max_slave_ping_timeouts</code>. Slaves should be upgraded to 0.23.x before changing these flags.</p></li>
+<li><p>A new scheduler driver API, <code>acceptOffers</code>, has been introduced. This is a more general version of the <code>launchTasks</code> API, which allows the scheduler to accept an offer and specify a list of operations (Offer.Operation) to perform using the resources in the offer. Currently, the supported operations include LAUNCH (launching tasks), RESERVE (making dynamic reservations), UNRESERVE (releasing dynamic reservations), CREATE (creating persistent volumes) and DESTROY (releasing persistent volumes). Similar to the <code>launchTasks</code> API, any unused resources will be considered declined, and the specified filters will be applied on all unused resources.</p></li>
+<li><p>The Resource protobuf has been extended to include more metadata for supporting persistence (DiskInfo), dynamic reservations (ReservationInfo) and oversubscription (RevocableInfo). You must not combine two Resource objects if they have different metadata.</p></li>
+</ul>
 
-<p><strong>NOTE</strong> The &lsquo;/master/shutdown&rsquo; endpoint is deprecated in favor of the new &lsquo;/master/teardown&rsquo; endpoint.</p>
-
-<p><strong>NOTE</strong> In order to enable decorator modules to remove metadata (environment variables or labels), we changed the meaning of the return value for decorator hooks in Mesos 0.23.0. Please refer to the modules documentation for more details.</p>
-
-<p><strong>NOTE</strong> Slave ping timeouts are now configurable on the master via <code>--slave_ping_timeout</code> and <code>--max_slave_ping_timeouts</code>. Slaves should be upgraded to 0.23.x before changing these flags.</p>
-
-<p><strong>NOTE</strong> A new scheduler driver API, <code>acceptOffers</code>, has been introduced. This is a more general version of the <code>launchTasks</code> API, which allows the scheduler to accept an offer and specify a list of operations (Offer.Operation) to perform using the resources in the offer. Currently, the supported operations include LAUNCH (launching tasks), RESERVE (making dynamic reservations), UNRESERVE (releasing dynamic reservations), CREATE (creating persistent volumes) and DESTROY (releasing persistent volumes). Similar to the <code>launchTasks</code> API, any unused resources will be considered declined, and the specified filters will be applied on all unused resources.</p>
-
-<p><strong>NOTE</strong> The Resource protobuf has been extended to include more metadata for supporting persistence (DiskInfo), dynamic reservations (ReservationInfo) and oversubscription (RevocableInfo). You must not combine two Resource objects if they have different metadata.</p>
 
 <p>In order to upgrade a running cluster:</p>
 
-<ul>
+<ol>
 <li>Rebuild and install any modules so that upgraded masters/slaves can use them.</li>
 <li>Install the new master binaries and restart the masters.</li>
 <li>Install the new slave binaries and restart the slaves.</li>
 <li>Upgrade the schedulers by linking the latest native library / jar / egg (if necessary).</li>
 <li>Restart the schedulers.</li>
 <li>Upgrade the executors by linking the latest native library / jar / egg (if necessary).</li>
-</ul>
+</ol>
 
 
 <h2>Upgrading from 0.21.x to 0.22.x</h2>
 
-<p><strong>NOTE</strong> Slave checkpoint flag has been removed as it will be enabled for all
+<ul>
+<li><p>Slave checkpoint flag has been removed as it will be enabled for all
 slaves. Frameworks must still enable checkpointing during registration to take advantage
-of checkpointing their tasks.</p>
+of checkpointing their tasks.</p></li>
+<li><p>The stats.json endpoints for masters and slaves have been deprecated.
+Please refer to the metrics/snapshot endpoint.</p></li>
+<li><p>The C++/Java/Python scheduler bindings have been updated. In particular, the driver can be constructed with an additional argument that specifies whether to use implicit driver acknowledgements. In <code>statusUpdate</code>, the <code>TaskStatus</code> now includes a UUID to make explicit acknowledgements possible.</p></li>
+<li><p>The Authentication API has changed slightly in this release to support additional authentication mechanisms. The change from &lsquo;string&rsquo; to &lsquo;bytes&rsquo; for AuthenticationStartMessage.data has no impact on C++ or the over-the-wire representation, so it only impacts pure language bindings for languages like Java and Python that use different types for UTF-8 strings vs. byte arrays.</p>
 
-<p><strong>NOTE</strong> The stats.json endpoints for masters and slaves have been deprecated.
-Please refer to the metrics/snapshot endpoint.</p>
+<p>  message AuthenticationStartMessage {
+    required string mechanism = 1;
+    optional bytes data = 2;
+  }</p></li>
+<li><p>All Mesos arguments can now be passed using file:// to read them out of a file (either an absolute or relative path). The &ndash;credentials, &ndash;whitelist, and any flags that expect JSON backed arguments (such as &ndash;modules) behave as before, although support for just passing an absolute path for any JSON flags rather than file:// has been deprecated and will produce a warning (and the absolute path behavior will be removed in a future release).</p></li>
+</ul>
 
-<p><strong>NOTE</strong> The C++/Java/Python scheduler bindings have been updated. In particular, the driver can be constructed with an additional argument that specifies whether to use implicit driver acknowledgements. In <code>statusUpdate</code>, the <code>TaskStatus</code> now includes a UUID to make explicit acknowledgements possible.</p>
-
-<p><strong>NOTE</strong>: The Authentication API has changed slightly in this release to support additional authentication mechanisms. The change from &lsquo;string&rsquo; to &lsquo;bytes&rsquo; for AuthenticationStartMessage.data has no impact on C++ or the over-the-wire representation, so it only impacts pure language bindings for languages like Java and Python that use different types for UTF-8 strings vs. byte arrays.</p>
-
-<pre><code>message AuthenticationStartMessage {
-  required string mechanism = 1;
-  optional bytes data = 2;
-}
-</code></pre>
-
-<p><strong>NOTE</strong> All Mesos arguments can now be passed using file:// to read them out of a file (either an absolute or relative path). The &ndash;credentials, &ndash;whitelist, and any flags that expect JSON backed arguments (such as &ndash;modules) behave as before, although support for just passing an absolute path for any JSON flags rather than file:// has been deprecated and will produce a warning (and the absolute path behavior will be removed in a future release).</p>
 
 <p>In order to upgrade a running cluster:</p>
 
-<ul>
+<ol>
 <li>Install the new master binaries and restart the masters.</li>
 <li>Install the new slave binaries and restart the slaves.</li>
-<li>Upgrade the schedulers:
-
-<ul>
-<li>For Java schedulers, link the new native library against the new JAR. The JAR contains API changes per the <strong>NOTE</strong> above. A 0.21.0 JAR will work with a 0.22.0 libmesos. A 0.22.0 JAR will work with a 0.21.0 libmesos if explicit acks are not being used. 0.22.0 and 0.21.0 are inter-operable at the protocol level between the master and the scheduler.</li>
+<li>Upgrade the schedulers:</li>
+<li>For Java schedulers, link the new native library against the new JAR. The JAR contains API above changes. A 0.21.0 JAR will work with a 0.22.0 libmesos. A 0.22.0 JAR will work with a 0.21.0 libmesos if explicit acks are not being used. 0.22.0 and 0.21.0 are inter-operable at the protocol level between the master and the scheduler.</li>
 <li>For Python schedulers, upgrade to use a 0.22.0 egg. If constructing <code>MesosSchedulerDriverImpl</code> with <code>Credentials</code>, your code must be updated to pass the <code>implicitAcknowledgements</code> argument before <code>Credentials</code>. You may run a 0.21.0 Python scheduler against a 0.22.0 master, and vice versa.</li>
-</ul>
-</li>
 <li>Restart the schedulers.</li>
 <li>Upgrade the executors by linking the latest native library / jar / egg.</li>
-</ul>
+</ol>
 
 
 <h2>Upgrading from 0.20.x to 0.21.x</h2>
 
-<p><strong>NOTE</strong> Disabling slave checkpointing has been deprecated; the slave &ndash;checkpoint flag has been deprecated and will be removed in a future release.</p>
+<ul>
+<li>Disabling slave checkpointing has been deprecated; the slave &ndash;checkpoint flag has been deprecated and will be removed in a future release.</li>
+</ul>
+
 
 <p>In order to upgrade a running cluster:</p>
 
-<ul>
+<ol>
 <li>Install the new master binaries and restart the masters.</li>
 <li>Install the new slave binaries and restart the slaves.</li>
 <li>Upgrade the schedulers by linking the latest native library (mesos jar upgrade not necessary).</li>
 <li>Restart the schedulers.</li>
 <li>Upgrade the executors by linking the latest native library and mesos jar (if necessary).</li>
-</ul>
+</ol>
 
 
 <h2>Upgrading from 0.19.x to 0.20.x.</h2>
 
-<p><strong>NOTE</strong>: The Mesos API has been changed slightly in this release. The CommandInfo has been changed (see below), which makes launching a command more flexible. The &lsquo;value&rsquo; field has been changed from <em>required</em> to <em>optional</em>. However, it will not cause any issue during the upgrade (since the existing schedulers always set this field).</p>
+<ul>
+<li><p>The Mesos API has been changed slightly in this release. The CommandInfo has been changed (see below), which makes launching a command more flexible. The &lsquo;value&rsquo; field has been changed from <em>required</em> to <em>optional</em>. However, it will not cause any issue during the upgrade (since the existing schedulers always set this field).</p>
 
-<pre><code>message CommandInfo {
-  ...
-  // There are two ways to specify the command:
-  // 1) If 'shell == true', the command will be launched via shell
-  //    (i.e., /bin/sh -c 'value'). The 'value' specified will be
-  //    treated as the shell command. The 'arguments' will be ignored.
-  // 2) If 'shell == false', the command will be launched by passing
-  //    arguments to an executable. The 'value' specified will be
-  //    treated as the filename of the executable. The 'arguments'
-  //    will be treated as the arguments to the executable. This is
-  //    similar to how POSIX exec families launch processes (i.e.,
-  //    execlp(value, arguments(0), arguments(1), ...)).
-  optional bool shell = 6 [default = true];
-  optional string value = 3;
-  repeated string arguments = 7;
-  ...
-}
-</code></pre>
-
-<p><strong>NOTE</strong>: The Python bindings are also changing in this release. There are now sub-modules which allow you to use either the interfaces and/or the native driver.</p>
+<pre><code>  message CommandInfo {
+    ...
+    // There are two ways to specify the command:
+    // 1) If 'shell == true', the command will be launched via shell
+    //    (i.e., /bin/sh -c 'value'). The 'value' specified will be
+    //    treated as the shell command. The 'arguments' will be ignored.
+    // 2) If 'shell == false', the command will be launched by passing
+    //    arguments to an executable. The 'value' specified will be
+    //    treated as the filename of the executable. The 'arguments'
+    //    will be treated as the arguments to the executable. This is
+    //    similar to how POSIX exec families launch processes (i.e.,
+    //    execlp(value, arguments(0), arguments(1), ...)).
+    optional bool shell = 6 [default = true];
+    optional string value = 3;
+    repeated string arguments = 7;
+    ...
+  }
+</code></pre></li>
+<li><p>The Python bindings are also changing in this release. There are now sub-modules which allow you to use either the interfaces and/or the native driver.</p>
 
 <ul>
 <li><code>import mesos.native</code> for the native drivers</li>
@@ -289,58 +336,61 @@ Please refer to the metrics/snapshot endpoint.</p>
 
 <p>To ensure a smooth upgrade, we recommend to upgrade your python framework and executor first. You will be able to either import using the new configuration or the old. Replace the existing imports with something like the following:</p>
 
-<pre><code>try:
-    from mesos.native import MesosExecutorDriver, MesosSchedulerDriver
-    from mesos.interface import Executor, Scheduler
-    from mesos.interface import mesos_pb2
-except ImportError:
-    from mesos import Executor, MesosExecutorDriver, MesosSchedulerDriver, Scheduler
-    import mesos_pb2
-</code></pre>
+<p>  try:
+      from mesos.native import MesosExecutorDriver, MesosSchedulerDriver
+      from mesos.interface import Executor, Scheduler
+      from mesos.interface import mesos_pb2
+  except ImportError:
+      from mesos import Executor, MesosExecutorDriver, MesosSchedulerDriver, Scheduler
+      import mesos_pb2</p></li>
+<li><p>If you&rsquo;re using a pure language binding, please ensure that it sends status update acknowledgements through the master before upgrading.</p></li>
+</ul>
 
-<p><strong>NOTE</strong>: If you&rsquo;re using a pure language binding, please ensure that it sends status update acknowledgements through the master before upgrading.</p>
 
 <p>In order to upgrade a running cluster:</p>
 
-<ul>
+<ol>
 <li>Install the new master binaries and restart the masters.</li>
 <li>Install the new slave binaries and restart the slaves.</li>
 <li>Upgrade the schedulers by linking the latest native library (install the latest mesos jar and python egg if necessary).</li>
 <li>Restart the schedulers.</li>
 <li>Upgrade the executors by linking the latest native library (install the latest mesos jar and python egg if necessary).</li>
-</ul>
+</ol>
 
 
 <h2>Upgrading from 0.18.x to 0.19.x.</h2>
 
-<p><strong>NOTE</strong>: There are new required flags on the master (<code>--work_dir</code> and <code>--quorum</code>) to support the <em>Registrar</em> feature, which adds replicated state on the masters.</p>
+<ul>
+<li><p>There are new required flags on the master (<code>--work_dir</code> and <code>--quorum</code>) to support the <em>Registrar</em> feature, which adds replicated state on the masters.</p></li>
+<li><p>No required upgrade ordering across components.</p></li>
+</ul>
 
-<p><strong>NOTE</strong>: No required upgrade ordering across components.</p>
 
 <p>In order to upgrade a running cluster:</p>
 
-<ul>
+<ol>
 <li>Install the new master binaries and restart the masters.</li>
 <li>Install the new slave binaries and restart the slaves.</li>
 <li>Upgrade the schedulers by linking the latest native library (mesos jar upgrade not necessary).</li>
 <li>Restart the schedulers.</li>
 <li>Upgrade the executors by linking the latest native library and mesos jar (if necessary).</li>
-</ul>
+</ol>
 
 
 <h2>Upgrading from 0.17.0 to 0.18.x.</h2>
 
+<ul>
+<li>This upgrade requires a system reboot for slaves that use Linux cgroups for isolation.</li>
+</ul>
+
+
 <p>In order to upgrade a running cluster:</p>
 
-<p><strong>NOTE</strong>: This upgrade requires a system reboot for slaves that use Linux cgroups for isolation.</p>
-
-<ul>
+<ol>
 <li>Install the new master binaries and restart the masters.</li>
 <li>Upgrade the schedulers by linking the latest native library and mesos jar (if necessary).</li>
 <li>Restart the schedulers.</li>
-<li>Install the new slave binaries then perform one of the following two steps, depending on if cgroups isolation is used:
-
-<ul>
+<li>Install the new slave binaries then perform one of the following two steps, depending on if cgroups isolation is used:</li>
 <li>[no cgroups]
 
 <ul>
@@ -354,106 +404,119 @@ except ImportError:
 <li>The suggested configuration is to mount a tmpfs filesystem to /sys/fs/cgroup and to let the slave mount the required controllers. However, the slave will also use previously mounted controllers if they are appropriately mounted under &ldquo;&ndash;cgroups_hierarchy&rdquo;.</li>
 <li>It has been observed that unmounting and remounting of cgroups from the single to separate configuration is unreliable and a reboot into the new configuration is strongly advised. Restart the slaves after reboot.</li>
 <li>The &ldquo;&ndash;cgroups_hierarchy&rdquo; now defaults to &ldquo;/sys/fs/cgroup&rdquo;. The &ldquo;&ndash;cgroups_root&rdquo; flag default remains &ldquo;mesos&rdquo;.</li>
-<li> The &ldquo;&ndash;isolation&rdquo; flag has changed and &ldquo;cgroups&rdquo; has been deprecated in favor of &ldquo;cgroups/cpu,cgroups/mem&rdquo;.</li>
+<li>The &ldquo;&ndash;isolation&rdquo; flag has changed and &ldquo;cgroups&rdquo; has been deprecated in favor of &ldquo;cgroups/cpu,cgroups/mem&rdquo;.</li>
 <li>The &ldquo;&ndash;cgroup_subsystems&rdquo; flag is no longer required and will be ignored.</li>
 </ul>
 </li>
-</ul>
-</li>
 <li>Upgrade the executors by linking the latest native library and mesos jar (if necessary).</li>
-</ul>
+</ol>
 
 
 <h2>Upgrading from 0.16.0 to 0.17.0.</h2>
 
 <p>In order to upgrade a running cluster:</p>
 
-<ul>
+<ol>
 <li>Install the new master binaries and restart the masters.</li>
 <li>Upgrade the schedulers by linking the latest native library and mesos jar (if necessary).</li>
 <li>Restart the schedulers.</li>
 <li>Install the new slave binaries and restart the slaves.</li>
 <li>Upgrade the executors by linking the latest native library and mesos jar (if necessary).</li>
-</ul>
+</ol>
 
 
 <h2>Upgrading from 0.15.0 to 0.16.0.</h2>
 
 <p>In order to upgrade a running cluster:</p>
 
-<ul>
+<ol>
 <li>Install the new master binaries and restart the masters.</li>
 <li>Upgrade the schedulers by linking the latest native library and mesos jar (if necessary).</li>
 <li>Restart the schedulers.</li>
 <li>Install the new slave binaries and restart the slaves.</li>
 <li>Upgrade the executors by linking the latest native library and mesos jar (if necessary).</li>
-</ul>
+</ol>
 
 
 <h2>Upgrading from 0.14.0 to 0.15.0.</h2>
 
-<p>In order to upgrade a running cluster:</p>
-
 <ul>
-<li>Install the new master binaries.</li>
-<li>Restart the masters with &ndash;credentials pointing to credentials of the framework(s).</li>
-<li>NOTE: &ndash;authentication=false (default) allows both authenticated and unauthenticated frameworks to register.</li>
-<li>Install the new slave binaries and restart the slaves.</li>
-<li>Upgrade the executors by linking the latest native library and mesos jar (if necessary).</li>
-<li>Upgrade the schedulers by linking the latest native library and mesos jar (if necessary).</li>
-<li>NOTE: Schedulers should implement the new <code>reconcileTasks</code> driver method.</li>
+<li>Schedulers should implement the new <code>reconcileTasks</code> driver method.</li>
 <li>Schedulers should call the new <code>MesosSchedulerDriver</code> constructor that takes <code>Credential</code> to authenticate.</li>
-<li>Restart the schedulers.</li>
-<li>Restart the masters with &ndash;authentication=true.</li>
-<li>NOTE: After the restart unauthenticated frameworks <em>will not</em> be allowed to register.</li>
+<li>&ndash;authentication=false (default) allows both authenticated and unauthenticated frameworks to register.</li>
 </ul>
 
 
+<p>In order to upgrade a running cluster:</p>
+
+<ol>
+<li>Install the new master binaries.</li>
+<li>Restart the masters with &ndash;credentials pointing to credentials of the framework(s).</li>
+<li>Install the new slave binaries and restart the slaves.</li>
+<li>Upgrade the executors by linking the latest native library and mesos jar (if necessary).</li>
+<li>Upgrade the schedulers by linking the latest native library and mesos jar (if necessary).</li>
+<li>Restart the schedulers.
+Restart the masters with &ndash;authentication=true.</li>
+</ol>
+
+
+<p>NOTE: After the restart unauthenticated frameworks <em>will not</em> be allowed to register.</p>
+
 <h2>Upgrading from 0.13.0 to 0.14.0.</h2>
+
+<ul>
+<li>/vars endpoint has been removed.</li>
+</ul>
+
 
 <p>In order to upgrade a running cluster:</p>
 
-<ul>
+<ol>
 <li>Install the new master binaries and restart the masters.</li>
-<li>NOTE: /vars endpoint has been removed.</li>
 <li>Upgrade the executors by linking the latest native library and mesos jar (if necessary).</li>
 <li>Install the new slave binaries.</li>
 <li>Restart the slaves after adding &ndash;checkpoint flag to enable checkpointing.</li>
-<li>NOTE: /vars endpoint has been removed.</li>
 <li>Upgrade the schedulers by linking the latest native library and mesos jar (if necessary).</li>
 <li>Set FrameworkInfo.checkpoint in the scheduler if checkpointing is desired (recommended).</li>
 <li>Restart the schedulers.</li>
 <li>Restart the masters (to get rid of the cached FrameworkInfo).</li>
 <li>Restart the slaves (to get rid of the cached FrameworkInfo).</li>
-</ul>
+</ol>
 
 
 <h2>Upgrading from 0.12.0 to 0.13.0.</h2>
 
+<ul>
+<li>cgroups_hierarchy_root slave flag is renamed as cgroups_hierarchy</li>
+</ul>
+
+
 <p>In order to upgrade a running cluster:</p>
 
-<ul>
+<ol>
 <li>Install the new master binaries and restart the masters.</li>
 <li>Upgrade the schedulers by linking the latest native library and mesos jar (if necessary).</li>
 <li>Restart the schedulers.</li>
 <li>Install the new slave binaries.</li>
-<li>NOTE: cgroups_hierarchy_root slave flag is renamed as cgroups_hierarchy</li>
 <li>Restart the slaves.</li>
 <li>Upgrade the executors by linking the latest native library and mesos jar (if necessary).</li>
-</ul>
+</ol>
 
 
 <h2>Upgrading from 0.11.0 to 0.12.0.</h2>
 
-<p>In order to upgrade a running cluster:</p>
-
 <ul>
-<li>Install the new slave binaries and restart the slaves.</li>
-<li>Install the new master binaries and restart the masters.</li>
+<li>If you are a framework developer, you will want to examine the new &lsquo;source&rsquo; field in the ExecutorInfo protobuf. This will allow you to take further advantage of the resource monitoring.</li>
 </ul>
 
 
-<p>If you are a framework developer, you will want to examine the new &lsquo;source&rsquo; field in the ExecutorInfo protobuf. This will allow you to take further advantage of the resource monitoring.</p>
+<p>In order to upgrade a running cluster:</p>
+
+<ol>
+<li>Install the new slave binaries and restart the slaves.</li>
+<li>Install the new master binaries and restart the masters.</li>
+</ol>
+
 
 	</div>
 </div>

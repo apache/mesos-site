@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title></title>
+        <title>Apache Mesos - Per-container Network Monitoring and Isolation</title>
 		    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 		    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
@@ -87,7 +87,7 @@
 isolation. The network isolation prevents a single container from exhausting the
 available network ports, consuming an unfair share of the network bandwidth or
 significantly delaying packet transmission for others. Network statistics for
-each active container are published through the <code>/monitor/statistics.json</code>
+each active container are published through the <a href="/documentation/latest/./endpoints/monitor/statistics/">/monitor/statistics</a>
 endpoint on the slave. The network isolation is transparent for the majority of
 tasks running on a slave (those that bind to port 0 and let the kernel allocate
 their port).</p>
@@ -275,7 +275,7 @@ enabled would thus be:</p>
 <h2>Monitoring container network statistics</h2>
 
 <p>Mesos exposes statistics from the Linux network stack for each container network
-on the <code>/monitor/statistics.json</code> slave endpoint.</p>
+on the <a href="/documentation/latest/./endpoints/monitor/statistics/">/monitor/statistics</a> slave endpoint.</p>
 
 <p>From the network interface inside the container, we report the following
 counters (since container creation) under the <code>statistics</code> key:</p>
@@ -384,9 +384,9 @@ for each of these elements includes:</p>
 </table>
 
 
-<p>[1] <code>backlog</code> is only reported on the bloat_reduction interface</p>
+<p>[1] <code>backlog</code> is only reported on the bloat_reduction interface.</p>
 
-<p>[2] <code>overlimits</code> are only reported on the bw_limit interface</p>
+<p>[2] <code>overlimits</code> are only reported on the bw_limit interface.</p>
 
 <p>[3] Currently always reported as 0 by the underlying Traffic Control element.</p>
 

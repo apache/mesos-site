@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title></title>
+        <title>Apache Mesos - Executor HTTP API</title>
 		    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 		    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
@@ -83,7 +83,7 @@
 	<div class="col-md-8">
 		<h1>Executor HTTP API</h1>
 
-<p>Mesos 0.27.0 added <strong>experimental</strong> support for V1 Executor HTTP API.</p>
+<p>Mesos 0.28.0 added <strong>experimental</strong> support for V1 Executor HTTP API.</p>
 
 <h2>Overview</h2>
 
@@ -366,15 +366,12 @@ HTTP/1.1 202 Accepted
 
 <h3>SHUTDOWN</h3>
 
-<p>Sent by the agent in order to shutdown the executor. Once an executor gets a <code>SHUTDOWN</code> event it is required to kill all its tasks, send <code>TASK_KILLED</code> updates and gracefully exit. If an executor doesn&rsquo;t terminate within a certain period after the event was emitted (<code>grace_period_seconds</code>), the agent will forcefully destroy the container where the executor is running. The agent would then send <code>TASK_LOST</code> updates for any remaining active tasks of this executor.</p>
+<p>Sent by the agent in order to shutdown the executor. Once an executor gets a <code>SHUTDOWN</code> event it is required to kill all its tasks, send <code>TASK_KILLED</code> updates and gracefully exit. If an executor doesn&rsquo;t terminate within a certain period <code>MESOS_EXECUTOR_SHUTDOWN_GRACE_PERIOD</code> (an environment variable set by the agent upon executor startup), the agent will forcefully destroy the container where the executor is running. The agent would then send <code>TASK_LOST</code> updates for any remaining active tasks of this executor.</p>
 
 <pre><code>SHUTDOWN Event (JSON)
 &lt;event-length&gt;
 {
-  "type" : "SHUTDOWN",
-  "shutdown" : {
-    "grace_period_seconds" : 5
-  }
+  "type" : "SHUTDOWN"
 }
 </code></pre>
 
@@ -402,6 +399,7 @@ HTTP/1.1 202 Accepted
 <li><code>MESOS_DIRECTORY</code>: Path to the working directory for the executor.</li>
 <li><code>MESOS_AGENT_ENDPOINT</code>: Agent endpoint i.e. ip:port to be used by the executor to connect to the agent.</li>
 <li><code>MESOS_CHECKPOINT</code>: If set to true, denotes that framework has checkpointing enabled.</li>
+<li><code>MESOS_EXECUTOR_SHUTDOWN_GRACE_PERIOD</code>: Amount of time the agent would wait for an executor to shut down (e.g., 60 secs, 3mins etc.) after sending a <code>SHUTDOWN</code> event.</li>
 </ul>
 
 

@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title></title>
+        <title>Apache Mesos - Designing Highly Available Mesos Frameworks</title>
 		    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 		    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
@@ -317,9 +317,12 @@ using two different mechanisms:</p>
 
 <ol>
 <li><p>The state of a persistent TCP connection between the master and the agent.</p></li>
-<li><p>Health checks via periodic ping messages to the agent which are expected to
-be responded with pongs (this behavior is controlled by the
-<code>--slave_ping_timeout</code> and <code>--max_slave_ping_timeouts</code> master flags).</p></li>
+<li><p><em>Health checks</em> using periodic ping messages to the agent. The master sends
+&ldquo;ping&rdquo; messages to the agent and expects a &ldquo;pong&rdquo; response message within a
+configurable timeout. The agent is considered to have failed if it does not
+respond promptly to a certain number of ping messages in a row. This behavior
+is controlled by the <code>--slave_ping_timeout</code> and <code>--max_slave_ping_timeouts</code>
+master flags.</p></li>
 </ol>
 
 
@@ -340,36 +343,55 @@ out.</p></li>
 executors are considered lost. The master immediately sends <code>TASK_LOST</code>
 status updates for the tasks. These updates are not delivered reliably to
 the scheduler (see NOTE below). The agent is given a chance to reconnect
-until health checks timeout.</p></li>
-</ul>
-</li>
-<li><p>If the agent fails health checks it is scheduled for removal. The removals can
-be rate limited by the master (see <code>---slave_removal_rate_limit</code> master flag)
-to avoid removing a slew of slaves at once (e.g., during a network partition).</p></li>
-<li><p>Once it is time to remove an agent, the master marks it as &ldquo;removed&rdquo; in the
-master&rsquo;s durable state (this will survive master failover). If an agent marked
-as &ldquo;removed&rdquo; attempts to reconnect to the master (e.g., after a network
-partition is healed), the connection attempt will be refused and the agent
-will be asked to shutdown. The agent will then shutdown all running tasks and
-executors, but any persistent volumes and dynamic reservations will be
-preserved.</p>
+until health checks timeout. If the agent does reconnect, any tasks for
+which <code>TASK_LOST</code> updates were previously sent will be killed.</p>
 
 <ul>
-<li>To allow the removed agent node to rejoin the cluster, a new <code>mesos-slave</code>
-process can be started. This will ensure the agent will receive a new agent
-ID. The agent can then register with the master, and can also retain any
-previously created persistent volumes and dynamic reservations. In effect,
-the agent will be treated as a newly joined agent.</li>
+<li>The rationale for this behavior is that, using typical TCP settings, an
+error in the persistent TCP connection between the master and the agent is
+more likely to correspond to an agent error (e.g., the <code>mesos-slave</code>
+process terminating unexpectedly) than a network partition, because the
+Mesos health-check timeouts are much smaller than the typical values of
+the corresponding TCP-level timeouts. Since non-checkpointing frameworks
+will not survive a restart of the <code>mesos-slave</code> process, the master sends
+<code>TASK_LOST</code> status updates so that these tasks can be rescheduled
+promptly.  Of course, the heuristic that TCP errors do not correspond to
+network partitions may not be true in some environments.</li>
 </ul>
 </li>
-<li><p>For each agent that is marked &ldquo;removed&rdquo;, the scheduler receives a <code>slaveLost</code>
-callback. The scheduler will also receive <code>TASK_LOST</code> status updates for each
-task that was running on a removed agent.</p>
+</ul>
+</li>
+<li><p>If the agent fails health checks, it is scheduled for removal. The removals can
+be rate limited by the master (see <code>---slave_removal_rate_limit</code> master flag)
+to avoid removing a slew of slaves at once (e.g., during a network partition).</p></li>
+<li><p>When it is time to remove an agent, the master marks the agent as &ldquo;removed&rdquo; in
+the master&rsquo;s <a href="/documentation/latest/./replicated-log-internals/">durable state</a> (this will survive
+master failover). The master sends a <code>slaveLost</code> callback to every registered
+scheduler driver; it also sends <code>TASK_LOST</code> status updates for every task that
+was running on the removed agent.</p>
 
-<blockquote><p>NOTE: Neither the callback nor the updates are reliably delivered by the
-  master. For example, if the master or scheduler fails over or there is a
+<blockquote><p>NOTE: Neither the callback nor the status updates are delivered reliably by
+  the master. For example, if the master or scheduler fails over or there is a
   network connectivity issue during the delivery of these messages, they will
   not be resent.</p></blockquote></li>
+<li><p>Meanwhile, any tasks at the removed agent will continue to run and the agent
+will repeatedly attempt to reconnect to the master. Once a removed agent is
+able to reconnect to the master (e.g., because the network partition has
+healed), the reregistration attempt will be refused and the agent will be
+asked to shutdown. The agent will then shutdown all running tasks and
+executors.  Persistent volumes and dynamic reservations on the removed agent
+will be preserved.</p>
+
+<ul>
+<li>A removed agent can rejoin the cluster by starting a new copy of the
+<code>mesos-slave</code> process. When a removed agent is shutdown by the master, Mesos
+ensures that the next time <code>mesos-slave</code> is started (using the same work
+directory at the same host), the agent will receive a new agent ID; in
+effect, the agent will be treated as a newly joined agent. The agent will
+retain any previously created persistent volumes and dynamic reservations,
+although the agent ID associated with these resources will have changed.</li>
+</ul>
+</li>
 </ul>
 
 
@@ -386,20 +408,20 @@ framework authors.</p>
 <h2>Dealing with Partitioned or Failed Masters</h2>
 
 <p>The behavior described above does not apply during the period immediately after
-a new Mesos master is elected. As noted above, most Mesos master state is kept
-in-memory; hence, when the leading master fails and a new master is elected, the
-new master will have little knowledge of the current state of the cluster.
-Instead, it rebuilds this information as the frameworks and agents notice that a
-new master has been elected and then <em>reregister</em> with it.</p>
+a new Mesos master is elected. As noted above, most Mesos master state is only
+kept in memory; hence, when the leading master fails and a new master is
+elected, the new master will have little knowledge of the current state of the
+cluster.  Instead, it rebuilds this information as the frameworks and agents
+notice that a new master has been elected and then <em>reregister</em> with it.</p>
 
 <h3>Framework Reregistration</h3>
 
 <p>When master failover occurs, frameworks that were connected to the previous
-leading master should reconnect to the new leading master. The
-<code>MesosSchedulerDriver</code> handles most of the details of detecting when the
+leading master should reconnect to the new leading
+master. <code>MesosSchedulerDriver</code> handles most of the details of detecting when the
 previous leading master has failed and connecting to the new leader; when the
 framework has successfully reregistered with the new leading master, the
-<code>reregistered</code> scheduler callback will be invoked.</p>
+<code>reregistered</code> scheduler driver callback will be invoked.</p>
 
 <h3>Agent Reregistration</h3>
 

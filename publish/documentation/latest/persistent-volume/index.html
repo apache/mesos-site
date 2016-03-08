@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title></title>
+        <title>Apache Mesos - Persistent Volumes</title>
 		    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 		    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
@@ -108,11 +108,14 @@ regarding reservation mechanisms available in Mesos.</p>
 reserving <a href="/documentation/latest/./multiple-disk/">multiple disk resources</a>.</p>
 
 <p>Persistent volumes can be created by <strong>operators</strong> and authorized
-<strong>frameworks</strong>. We require a <code>principal</code> from the operator or framework in order
-to authenticate/authorize the operations. Permissions are specified via the
-existing ACL mechanism. To use authorization with reserve, unreserve, create,
-and destroy operations, the Mesos master must be configured with the desired
-ACLs. For more information, see the
+<strong>frameworks</strong>. By default, frameworks and operators can create volumes for any
+role and destroy any persistent volumes. <a href="/documentation/latest/./authorization/">Authorization</a>
+allows this behavior to be limited so that volumes can only be created for
+particular roles and only particular volumes can be destroyed. For these
+operations to be authorized, the framework or operator should provide a
+<code>principal</code> to identify itself. To use authorization with reserve, unreserve,
+create, and destroy operations, the Mesos master must be configured with the
+appropriate ACLs. For more information, see the
 <a href="/documentation/latest/./authorization/">authorization documentation</a>.</p>
 
 <ul>
@@ -161,36 +164,36 @@ volume information. We need to specify the following:</p>
 <ol>
 <li>The ID for the persistent volume; this must be unique per role on each slave.</li>
 <li>The non-nested relative path within the container to mount the volume.</li>
-<li>The permissions for the volume. Currently, <code>"RW"</code> is the only possible value.</li>
+<li><p>The permissions for the volume. Currently, <code>"RW"</code> is the only possible value.</p>
+
+<pre><code> {
+   "type" : Offer::Operation::CREATE,
+   "create": {
+     "volumes" : [
+       {
+         "name" : "disk",
+         "type" : "SCALAR",
+         "scalar" : { "value" : 2048 },
+         "role" : &lt;framework_role&gt;,
+         "reservation" : {
+           "principal" : &lt;framework_principal&gt;
+         },
+         "disk": {
+           "persistence": {
+             "id" : &lt;persistent_volume_id&gt;
+           },
+           "volume" : {
+             "container_path" : &lt;container_path&gt;,
+             "mode" : &lt;mode&gt;
+           }
+         }
+       }
+     ]
+   }
+ }
+</code></pre></li>
 </ol>
 
-
-<pre><code>{
-  "type" : Offer::Operation::CREATE,
-  "create": {
-    "volumes" : [
-      {
-        "name" : "disk",
-        "type" : "SCALAR",
-        "scalar" : { "value" : 2048 },
-        "role" : &lt;framework_role&gt;,
-        "reservation" : {
-          "principal" : &lt;framework_principal&gt;
-        },
-        "disk": {
-          "persistence": {
-            "id" : &lt;persistent_volume_id&gt;
-          },
-          "volume" : {
-            "container_path" : &lt;container_path&gt;,
-            "mode" : &lt;mode&gt;
-          }
-        }
-      }
-    ]
-  }
-}
-</code></pre>
 
 <p>If this succeeds, a subsequent resource offer will contain the following
 persistent volume:</p>
@@ -333,10 +336,12 @@ by operators and administrative tools.</p>
 
 <p>To use this endpoint, the operator should first ensure that a reservation for
 the necessary resources has been made on the appropriate slave (e.g., by using
-the <code>/reserve</code> HTTP endpoint or by configuring a static reservation).</p>
+the <a href="/documentation/latest/./endpoints/master/reserve/">/reserve</a> HTTP endpoint or by configuring a
+static reservation).</p>
 
 <p>To create a 512MB persistent volume for the <code>ads</code> role on a dynamically reserved
-disk resource, we can send a request like so:</p>
+disk resource, we can send an HTTP POST request to the master&rsquo;s
+<a href="/documentation/latest/./endpoints/master/create-volumes/">/create-volumes</a> endpoint like so:</p>
 
 <pre><code>curl -i \
      -u &lt;operator_principal&gt;:&lt;password&gt; \
@@ -386,11 +391,12 @@ the reserved resources are located. That asynchronous message may not be
 delivered or creating the volumes at the slave might fail, in which case no
 volumes will be created. To determine if a create operation has succeeded, the
 user can examine the state of the appropriate Mesos slave (e.g., via the slave&rsquo;s
-<code>/state</code> HTTP endpoint).</p>
+<a href="/documentation/latest/./endpoints/slave/state/">/state</a> HTTP endpoint).</p>
 
 <h4><code>/destroy-volumes</code></h4>
 
-<p>To destroy the volume created above, we can send an HTTP POST like so:</p>
+<p>To destroy the volume created above, we can send an HTTP POST to the master&rsquo;s
+<a href="/documentation/latest/./endpoints/master/destroy-volumes/">/destroy-volumes</a> endpoint like so:</p>
 
 <pre><code>curl -i \
      -u &lt;operator_principal&gt;:&lt;password&gt; \
@@ -440,7 +446,13 @@ the persistent volumes are located. That asynchronous message may not be
 delivered or destroying the volumes at the slave might fail, in which case no
 volumes will be destroyed. To determine if a destroy operation has succeeded,
 the user can examine the state of the appropriate Mesos slave (e.g., via the
-slave&rsquo;s <code>/state</code> HTTP endpoint).</p>
+slave&rsquo;s <a href="/documentation/latest/./endpoints/slave/state/">/state</a> HTTP endpoint).</p>
+
+<h3>Listing Persistent Volumes</h3>
+
+<p>Information about the persistent volumes at each slave in the cluster can be
+found by querying the <a href="/documentation/latest/./endpoints/master/slaves/">/slaves</a> master endpoint
+(under the <code>reserved_resources_full</code> key).</p>
 
 <h3>Programming with Persistent Volumes</h3>
 
@@ -496,7 +508,7 @@ requests to reserve 2 CPUs at a single agent and both reservation requests
 succeed, the result will be a single reservation of 4 CPUs. To handle this
 situation, applications should be prepared for resource offers that contain
 more resources than expected. Some applications may also want to detect this
-situation and unreserve an additional reserved resources that will not be
+situation and unreserve any additional reserved resources that will not be
 required.</p></li>
 <li><p>It often makes sense to structure application logic as a &ldquo;state machine&rdquo;,
 where the application moves from its initial state (no reserved resources and
@@ -516,7 +528,7 @@ difficult for frameworks to determine whether a dynamic reservation has
 succeeded: as discussed above, frameworks need to wait for an offer that
 contains the &ldquo;expected&rdquo; reserved resources to determine when a reservation
 request has succeeded. Determining what a framework should &ldquo;expect&rdquo; to find in
-an offer is more difficult when multiple frameworks can be making reservations
+an offer is more difficult when multiple frameworks can make reservations
 for the same role concurrently. In general, whenever multiple frameworks are
 allowed to register in the same role, the operator should ensure that those
 frameworks are configured to collaborate with one another when using
