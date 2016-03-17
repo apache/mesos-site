@@ -85,11 +85,148 @@
 
 <p>This document serves as a guide for users who wish to upgrade an existing Mesos cluster. Some versions require particular upgrade techniques when upgrading a running cluster. Some upgrades will have incompatible changes.</p>
 
+<h2>Overview</h2>
+
+<p>This section provides an overview of the changes for each version (in particular when upgrading from the next lower version). For more details please check the respective sections below.</p>
+
+<p>We categorize the changes as follows:</p>
+
+<pre><code>A New feature/behavior
+C Changed feature/behavior
+D Deprecated feature/behavior
+R Removed feature/behavior
+</code></pre>
+
+<table class="table table-bordered" style="table-layout: fixed;">
+  <thead>
+    <tr>
+      <th width="10%">
+        Version
+      </th>
+      <th width="18%">
+        Mesos Core
+      </th>
+      <th width="18%">
+        Flags
+      </th>
+      <th width="18%">
+        Framework API
+      </th>
+      <th width="18%">
+        Module API
+      </th>
+      <th width="18%">
+        Endpoints
+      </th>
+    </tr>
+  </thead>
+<tr>
+  <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Version-->
+  0.28.x
+  </td>
+  <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Mesos Core-->
+    <ul style="padding-left:10px;">
+      <li>C <a href="#0-28-x-resource-precision">Resource Precision</a></li>
+    </ul>
+  </td>
+  <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Flags-->
+    <ul style="padding-left:10px;">
+      <li>C <a href="#0-28-x-autherization-acls">Authentication ACLs</a></li>
+    </ul>
+  </td>
+  <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Framework API-->
+  </td>
+  <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Module API-->
+  </td>
+  <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Endpoints-->
+  </td>
+</tr>
+<tr>
+  <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Version-->
+  0.27.x
+  </td>
+  <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Mesos Core-->
+  </td>
+  <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Flags-->
+    <ul style="padding-left:10px;">
+      <li>D <a href="#0-27-x-implicit-roles">--roles</a></li>
+      <li>D <a href="#0-27-x-acl-shutdown-flag">--acls (shutdown_frameworks)</a></li>
+    </ul>
+  </td>
+  <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Framework API-->
+    <ul style="padding-left:10px;">
+      <li>C <a href="#0-27-x-executor-lost-callback">executorLost callback</a></li>
+    </ul>
+  </td>
+  <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Module API-->
+    <ul style="padding-left:10px;">
+      <li>C <a href="#0-27-x-allocator-api">Allocator API</a></li>
+      <li>C <a href="#0-27-x-isolator-api">Isolator API</a></li>
+    </ul>
+  </td>
+  <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Endpoints-->
+  </td>
+</tr>
+<tr>
+  <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Version-->
+  0.26.x
+  </td>
+  <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Mesos Core-->
+  </td>
+  <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Flags-->
+  </td>
+  <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Framework API-->
+    <ul style="padding-left:10px;">
+      <li>C <a href="#0-26-x-taskstatus-reason">TaskStatus::Reason Enum</a></li>
+      <li>C <a href="#0-26-x-credential-protobuf">Credential Protobuf</a></li>
+      <li>C <a href="#0-26-x-network-info-protobuf">NetworkInfo Protobuf</a></li>
+    </ul>
+  </td>
+  <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Module API-->
+  </td>
+  <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Endpoints-->
+    <ul style="padding-left:10px;">
+      <li>C <a href="#0-26-x-state-endpoint">State Endpoint</a></li>
+    </ul>
+  </td>
+</tr>
+<tr>
+  <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Version-->
+  0.25.x
+  </td>
+  <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Mesos Core-->
+  </td>
+  <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Flags-->
+  </td>
+  <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Framework API-->
+    <ul style="padding-left:10px;">
+      <li>C <a href="#0-25-x-scheduler-bindings">C++/Java/Python Scheduler Bindings</a></li?
+    </ul>
+  </td>
+  <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Module API-->
+  </td>
+  <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Endpoints-->
+    <ul style="padding-left:10px;">
+      <li>D <a href="#0-25-x-json-endpoints">*.json Endpoints</a></li>
+    </ul>
+  </td>
+</tr>
+</table>
+
+
 <h2>Upgrading from 0.27.x to 0.28.x</h2>
 
+<p><a name="0-28-x-resource-precision"></a></p>
+
 <ul>
-<li><p>Mesos 0.28 only supports three decimal digits of precision for scalar resource values. For example, frameworks can reserve &ldquo;0.001&rdquo; CPUs but more fine-grained reservations (e.g., &ldquo;0.0001&rdquo; CPUs) are no longer supported (although they did not work reliably in prior versions of Mesos anyway). Internally, resource math is now done using a fixed-point format that supports three decimal digits of precision, and then converted to/from floating point for input and output, respectively. Frameworks that do their own resource math and manipulate fractional resources may observe differences in roundoff error and numerical precision.</p></li>
-<li><p>Mesos 0.28 changes the definitions of two ACLs used for authorization. The objects of the <code>ReserveResources</code> and <code>CreateVolume</code> ACLs have been changed to <code>roles</code>. In both cases, principals can now be authorized to perform these operations for particular roles. This means that by default, a framework or operator can reserve resources/create volumes for any role. To restrict this behavior, <a href="/documentation/latest/./authorization/">ACLs can be added</a> to the master which authorize principals to reserve resources/create volumes for specified roles only. Previously, frameworks could only reserve resources for their own role; this behavior can be preserved by configuring the <code>ReserveResources</code> ACLs such that the framework&rsquo;s principal is only authorized to reserve for the framework&rsquo;s role. <strong>NOTE</strong> This renders existing <code>ReserveResources</code> and <code>CreateVolume</code> ACL definitions obsolete; if you are authorizing these operations, your ACL definitions should be updated.</p></li>
+<li>Mesos 0.28 only supports three decimal digits of precision for scalar resource values. For example, frameworks can reserve &ldquo;0.001&rdquo; CPUs but more fine-grained reservations (e.g., &ldquo;0.0001&rdquo; CPUs) are no longer supported (although they did not work reliably in prior versions of Mesos anyway). Internally, resource math is now done using a fixed-point format that supports three decimal digits of precision, and then converted to/from floating point for input and output, respectively. Frameworks that do their own resource math and manipulate fractional resources may observe differences in roundoff error and numerical precision.</li>
+</ul>
+
+
+<p><a name="0-28-x-autherization-acls"></a></p>
+
+<ul>
+<li>Mesos 0.28 changes the definitions of two ACLs used for authorization. The objects of the <code>ReserveResources</code> and <code>CreateVolume</code> ACLs have been changed to <code>roles</code>. In both cases, principals can now be authorized to perform these operations for particular roles. This means that by default, a framework or operator can reserve resources/create volumes for any role. To restrict this behavior, <a href="/documentation/latest/./authorization/">ACLs can be added</a> to the master which authorize principals to reserve resources/create volumes for specified roles only. Previously, frameworks could only reserve resources for their own role; this behavior can be preserved by configuring the <code>ReserveResources</code> ACLs such that the framework&rsquo;s principal is only authorized to reserve for the framework&rsquo;s role. <strong>NOTE</strong> This renders existing <code>ReserveResources</code> and <code>CreateVolume</code> ACL definitions obsolete; if you are authorizing these operations, your ACL definitions should be updated.</li>
 </ul>
 
 
@@ -107,11 +244,37 @@
 
 <h2>Upgrading from 0.26.x to 0.27.x</h2>
 
+<p><a name="0-27-x-implicit-roles"></a></p>
+
 <ul>
-<li><p>Mesos 0.27 introduces the concept of <em>implicit roles</em>. In previous releases, configuring roles required specifying a static whitelist of valid role names on master startup (via the <code>--roles</code> flag). In Mesos 0.27, if <code>--roles</code> is omitted, <em>any</em> role name can be used; controlling which principals are allowed to register as which roles should be done using <a href="/documentation/latest/./authorization/">ACLs</a>. The role whitelist functionality is still supported but is deprecated.</p></li>
-<li><p>The Allocator API has changed due to the introduction of implicit roles. Custom allocator implementations will need to be updated. See <a href="https://issues.apache.org/jira/browse/MESOS-4000">MESOS-4000</a> for more information.</p></li>
-<li><p>The <code>executorLost</code> callback in the Scheduler interface will now be called whenever the slave detects termination of a custom executor. This callback was never called in previous versions, so please make sure any framework schedulers can now safely handle this callback. Note that this callback may not be reliably delivered.</p></li>
-<li><p>The isolator <code>prepare</code> interface has been changed slightly. Instead of keeping adding parameters to the <code>prepare</code> interface, we decide to use a protobuf (<code>ContainerConfig</code>). Also, we renamed <code>ContainerPrepareInfo</code> to <code>ContainerLaunchInfo</code> to better capture the purpose of this struct. See <a href="https://issues.apache.org/jira/browse/MESOS-4240">MESOS-4240</a> and <a href="https://issues.apache.org/jira/browse/MESOS-4282">MESOS-4282</a> for more information. If you are an isolator module writer, you will have to adjust your isolator module according to the new interface and re-compile with 0.27.</p></li>
+<li>Mesos 0.27 introduces the concept of <em>implicit roles</em>. In previous releases, configuring roles required specifying a static whitelist of valid role names on master startup (via the <code>--roles</code> flag). In Mesos 0.27, if <code>--roles</code> is omitted, <em>any</em> role name can be used; controlling which principals are allowed to register as which roles should be done using <a href="/documentation/latest/./authorization/">ACLs</a>. The role whitelist functionality is still supported but is deprecated.</li>
+</ul>
+
+
+<p><a name="0-27-x-allocator-api"></a></p>
+
+<ul>
+<li>The Allocator API has changed due to the introduction of implicit roles. Custom allocator implementations will need to be updated. See <a href="https://issues.apache.org/jira/browse/MESOS-4000">MESOS-4000</a> for more information.</li>
+</ul>
+
+
+<p><a name="0-27-x-executor-lost-callback"></a></p>
+
+<ul>
+<li>The <code>executorLost</code> callback in the Scheduler interface will now be called whenever the slave detects termination of a custom executor. This callback was never called in previous versions, so please make sure any framework schedulers can now safely handle this callback. Note that this callback may not be reliably delivered.</li>
+</ul>
+
+
+<p><a name="0-27-x-isolator-api"></a></p>
+
+<ul>
+<li>The isolator <code>prepare</code> interface has been changed slightly. Instead of keeping adding parameters to the <code>prepare</code> interface, we decide to use a protobuf (<code>ContainerConfig</code>). Also, we renamed <code>ContainerPrepareInfo</code> to <code>ContainerLaunchInfo</code> to better capture the purpose of this struct. See <a href="https://issues.apache.org/jira/browse/MESOS-4240">MESOS-4240</a> and <a href="https://issues.apache.org/jira/browse/MESOS-4282">MESOS-4282</a> for more information. If you are an isolator module writer, you will have to adjust your isolator module according to the new interface and re-compile with 0.27.</li>
+</ul>
+
+
+<p><a name="0-27-x-acl-shutdown-flag"></a></p>
+
+<ul>
 <li><p>ACLs.shutdown_frameworks has been deprecated in favor of the new ACLs.teardown_frameworks. This affects the <code>--acls</code> master flag for the local authorizer.</p></li>
 <li><p>Reserved resources are now accounted for in the DRF role sorter. Previously unaccounted reservations will influence the weighted DRF sorter. If role weights were explicitly set, they may need to be adjusted in order to account for the reserved resources in the cluster.</p></li>
 </ul>
@@ -131,6 +294,8 @@
 
 <h2>Upgrading from 0.25.x to 0.26.x</h2>
 
+<p><a name="0-26-x-taskstatus-reason"></a></p>
+
 <ul>
 <li><p>The names of some TaskStatus::Reason enums have been changed. But the tag numbers remain unchanged, so it is backwards compatible. Frameworks using the new version might need to do some compile time adjustments:</p>
 
@@ -139,15 +304,33 @@
 <li>REASON_EXECUTOR_PREEMPTED -> REASON_CONTAINER_PREEMPTED</li>
 </ul>
 </li>
-<li><p>The <code>Credential</code> protobuf has been changed. <code>Credential</code> field <code>secret</code> is now a string, it used to be bytes. This will affect framework developers and language bindings ought to update their generated protobuf with the new version. This fixes JSON based credentials file support.</p></li>
-<li><p>The <code>/state</code> endpoints on master and slave will no longer include <code>data</code> fields as part of the JSON models for <code>ExecutorInfo</code> and <code>TaskInfo</code> out of consideration for memory scalability (see <a href="https://issues.apache.org/jira/browse/MESOS-3794">MESOS-3794</a> and <a href="http://www.mail-archive.com/dev@mesos.apache.org/msg33536.html">this email thread</a>).</p>
+</ul>
+
+
+<p><a name="0-26-x-credential-protobuf"></a></p>
+
+<ul>
+<li>The <code>Credential</code> protobuf has been changed. <code>Credential</code> field <code>secret</code> is now a string, it used to be bytes. This will affect framework developers and language bindings ought to update their generated protobuf with the new version. This fixes JSON based credentials file support.</li>
+</ul>
+
+
+<p><a name="0-26-x-state-endpoint"></a></p>
+
+<ul>
+<li>The <code>/state</code> endpoints on master and slave will no longer include <code>data</code> fields as part of the JSON models for <code>ExecutorInfo</code> and <code>TaskInfo</code> out of consideration for memory scalability (see <a href="https://issues.apache.org/jira/browse/MESOS-3794">MESOS-3794</a> and <a href="http://www.mail-archive.com/dev@mesos.apache.org/msg33536.html">this email thread</a>).
 
 <ul>
 <li>On master, the affected <code>data</code> field was originally found via <code>frameworks[*].executors[*].data</code>.</li>
 <li>On slaves, the affected <code>data</code> field was originally found via <code>executors[*].tasks[*].data</code>.</li>
 </ul>
 </li>
-<li><p>The <code>NetworkInfo</code> protobuf has been changed. The fields <code>protocol</code> and <code>ip_address</code> are now deprecated. The new field <code>ip_addresses</code> subsumes the information provided by them.</p></li>
+</ul>
+
+
+<p><a name="0-26-x-network-info-protobuf"></a></p>
+
+<ul>
+<li>The <code>NetworkInfo</code> protobuf has been changed. The fields <code>protocol</code> and <code>ip_address</code> are now deprecated. The new field <code>ip_addresses</code> subsumes the information provided by them.</li>
 </ul>
 
 
@@ -164,6 +347,8 @@
 
 
 <h2>Upgrading from 0.24.x to 0.25.x</h2>
+
+<p><a name="0-25-x-json-endpoints"></a></p>
 
 <ul>
 <li><p>The following endpoints will be deprecated in favor of new endpoints. Both versions will be available in 0.25 but the deprecated endpoints will be removed in a subsequent release.</p>
@@ -193,7 +378,13 @@
 <li>/files/read.json becomes /files/read</li>
 </ul>
 </li>
-<li><p>The C++/Java/Python scheduler bindings have been updated. In particular, the driver can make a suppressOffers() call to stop receiving offers (until reviveOffers() is called).</p></li>
+</ul>
+
+
+<p><a name="0-25-x-scheduler-bindings"></a></p>
+
+<ul>
+<li>The C++/Java/Python scheduler bindings have been updated. In particular, the driver can make a suppressOffers() call to stop receiving offers (until reviveOffers() is called).</li>
 </ul>
 
 

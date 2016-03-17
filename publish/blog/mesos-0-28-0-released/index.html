@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Apache Mesos 0.27.2 Released</title>
+        <title>Apache Mesos 0.28.0 Released</title>
 		    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 		    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
@@ -78,14 +78,12 @@
 	<div class="meta">
 		<span class="author">
 			
-			  <img src="http://www.gravatar.com/avatar/2ab9cab3a7cf782261c583c1f48a81b0?s=80" class="author_gravatar">
-			
 			<span class="author_contact">
-			  <p><strong>Michael Park</strong></p>
-			  <p><a href="http://twitter.com/mcypark">@mcypark</a></p>
+			  <p><strong>Vinod Kone</strong></p>
+			  <p><a href="http://twitter.com/vinodkone">@vinodkone</a></p>
 			</span>
 		</span>
-		<p><em>Posted March  7, 2016</em></p>
+		<p><em>Posted March 17, 2016</em></p>
 	</div>
 	
 	<div class="share">
@@ -112,25 +110,67 @@
 </div>
 
 <div class="post col-md-9">
-	<h1>Apache Mesos 0.27.2 Released</h1>
+	<h1>Apache Mesos 0.28.0 Released</h1>
 	
-	<p>The latest Mesos release, 0.27.2, is now available for <a href="http://mesos.apache.org/downloads">download</a>.
-This release includes fixes and improvements for the following:</p>
+	<p>The latest Mesos release, 0.28.0, is now available for <a href="http://mesos.apache.org/downloads">download</a>.</p>
+
+<p>This release includes the following features and improvements:</p>
 
 <ul>
-<li><a href="https://issues.apache.org/jira/browse/MESOS-4693">MESOS-4693</a> - Variable shadowing in HookManager::slavePreLaunchDockerHook.</li>
-<li><a href="https://issues.apache.org/jira/browse/MESOS-4711">MESOS-4711</a> - Race condition in libevent poll implementation causes crash.</li>
-<li><a href="https://issues.apache.org/jira/browse/MESOS-4754">MESOS-4754</a> - The &ldquo;executors&rdquo; field is exposed under a backwards incompatible schema.</li>
-<li><a href="https://issues.apache.org/jira/browse/MESOS-4687">MESOS-4687</a> - Implement reliable floating point for scalar resources.</li>
+<li><p>[MESOS-4343] - A new cgroups isolator for enabling the net_cls subsystem in
+Linux. The cgroups/net_cls isolator allows operators to provide network
+performance isolation and network segmentation for containers within a Mesos
+cluster. To enable the cgroups/net_cls isolator, append <code>cgroups/net_cls</code> to
+the <code>--isolation</code> flag when starting the slave. Please refer to
+docs/mesos-containerizer.md for more details.</p></li>
+<li><p>[MESOS-4687] - The implementation of scalar resource values (e.g., &ldquo;2.5
+CPUs&rdquo;) has changed. Mesos now reliably supports resources with up to three
+decimal digits of precision (e.g., &ldquo;2.501 CPUs&rdquo;); resources with more than
+three decimal digits of precision will be rounded. Internally, resource math
+is now done using a fixed-point format that supports three decimal digits of
+precision, and then converted to/from floating point for input and output,
+respectively. Frameworks that do their own resource math and manipulate
+fractional resources may observe differences in roundoff error and numerical
+precision.</p></li>
+<li><p>[MESOS-4479] - Reserved resources can now optionally include &ldquo;labels&rdquo;.
+Labels are a set of key-value pairs that can be used to associate metadata
+with a reserved resource. For example, frameworks can use this feature to
+distinguish between two reservations for the same role at the same agent
+that are intended for different purposes.</p></li>
+<li><p>[MESOS-2840] - <strong>Experimental</strong> support for container images in Mesos
+containerizer (a.k.a. Unified Containerizer). This allows frameworks to
+launch Docker/Appc containers using Mesos containerizer without relying on
+docker daemon (engine) or rkt. The isolation of the containers is done using
+isolators. Please refer to docs/container-image.md for currently supported
+features and limitations.</p></li>
+<li><p>[MESOS-4793] - <strong>Experimental</strong> support for v1 Executor HTTP API. This
+allows executors to send HTTP requests to the /api/v1/executor agent
+endpoint without the need for an executor driver. Please refer to
+docs/executor-http-api.md for more details.</p></li>
+<li><p>[MESOS-4370] Added support for service discovery of Docker containers that
+use Docker Remote API v1.21.</p></li>
 </ul>
 
 
-<p>Full release notes are available in the release <a href="https://git-wip-us.apache.org/repos/asf?p=mesos.git;a=blob_plain;f=CHANGELOG;hb=0.27.2">CHANGELOG</a>.</p>
+<p>Additional API Changes:</p>
+
+<ul>
+<li>[MESOS-4066] - Agent should not return partial state when a request is made to /state endpoint during recovery.</li>
+<li>[MESOS-4547] - Introduce TASK_KILLING state.</li>
+<li>[MESOS-4712] - Remove &lsquo;force&rsquo; field from the Subscribe Call in v1 Scheduler API.</li>
+<li>[MESOS-4591] - Change the object of ReserveResources and CreateVolume ACLs to <code>roles</code>.</li>
+<li>[MESOS-3583] - Add stream IDs for HTTP schedulers.</li>
+<li>[MESOS-4427] - Ensure ip_address in state.json (from NetworkInfo) is valid</li>
+</ul>
+
+
+<p>Furthermore, several bugfixes and improvements made it into this release.
+For full release notes with all features and bug fixes, please refer to the <a href="https://git-wip-us.apache.org/repos/asf?p=mesos.git;a=blob_plain;f=CHANGELOG;hb=0.28.0">CHANGELOG</a>.</p>
 
 <h3>Upgrades</h3>
 
-<p>Rolling upgrades from a Mesos 0.27.1 cluster to Mesos 0.27.2 are straightforward.
-Please refer to the <a href="http://mesos.apache.org/documentation/latest/upgrades/">upgrade guide</a> for detailed information on upgrading to Mesos 0.27.2.</p>
+<p>Rolling upgrades from a Mesos 0.27.0 cluster to Mesos 0.28.0 are straightforward. There are just some minor, backwards compatible deprecations.
+Please refer to the <a href="http://mesos.apache.org/documentation/latest/upgrades/">upgrade guide</a> for detailed information on upgrading to Mesos 0.28.0.</p>
 
 <h3>Try it out</h3>
 
@@ -139,9 +179,9 @@ If you run into any issues, please let us know on the <a href="https://mesos.apa
 
 <h3>Thanks!</h3>
 
-<p>Thanks to the 4 contributors who made 0.27.2 possible:</p>
+<p>Thanks to the 44 contributors who made 0.28.0 possible:</p>
 
-<p>Alexander Rojas, Kevin Devroede, Michael Park, Neil Conway</p>
+<p>Abhishek Dasgupta,Alex Clemmer,Alex Naparu,Alexander Rojas,Alexander Rukletsov,Anand Mazumdar,Avinash sridharan,Benjamin Bannier,Benjamin Mahler,Bernd Mathiske,Cong Wang,Daniel Pravat,David Forsythe,Diana Arroyo,Disha  Singh,Gilbert Song,Greg Mann,Guangya Liu,Isabel Jimenez,James Peach,Jan Schlicht,Jie Yu,Joerg Schad,Jojy Varghese,Joris Van Remoortere,Joseph Wu,Kapil Arya,Kevin Devroede,Kevin Klues,Klaus Ma,M Lawindi,Michael Browning,Michael Lunøe,Michael Park,Neil Conway,Shuai Lin,Till Toenshoff,Timothy Chen,Vinod Kone,Yong Tang,Yongqiao Wang,Zhiwei Chen,haosdent huang,mlawindi</p>
 
 </div>
 </div>

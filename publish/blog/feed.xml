@@ -4,7 +4,92 @@
   <id>http://mesos.apache.org/blog</id>
   <link href="http://mesos.apache.org/blog" />
   <link href="http://mesos.apache.org/blog/feed.xml" rel="self"/>
-  <updated>2016-03-07T00:00:00Z</updated>
+  <updated>2016-03-17T00:00:00Z</updated>
+  
+  <entry>
+    <id>http://mesos.apache.org/blog/mesos-0-28-0-released/</id>
+    <link href="/blog/mesos-0-28-0-released/" />
+    <title>
+      Apache Mesos 0.28.0 Released
+    </title>
+    <updated>2016-03-17T00:00:00Z</updated>
+    <author>
+      <name>Vinod Kone</name>
+    </author>
+    <content type="html">
+      &lt;p&gt;The latest Mesos release, 0.28.0, is now available for &lt;a href=&quot;http://mesos.apache.org/downloads&quot;&gt;download&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;This release includes the following features and improvements:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;[MESOS-4343] - A new cgroups isolator for enabling the net_cls subsystem in
+Linux. The cgroups/net_cls isolator allows operators to provide network
+performance isolation and network segmentation for containers within a Mesos
+cluster. To enable the cgroups/net_cls isolator, append &lt;code&gt;cgroups/net_cls&lt;/code&gt; to
+the &lt;code&gt;--isolation&lt;/code&gt; flag when starting the slave. Please refer to
+docs/mesos-containerizer.md for more details.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;[MESOS-4687] - The implementation of scalar resource values (e.g., &amp;ldquo;2.5
+CPUs&amp;rdquo;) has changed. Mesos now reliably supports resources with up to three
+decimal digits of precision (e.g., &amp;ldquo;2.501 CPUs&amp;rdquo;); resources with more than
+three decimal digits of precision will be rounded. Internally, resource math
+is now done using a fixed-point format that supports three decimal digits of
+precision, and then converted to/from floating point for input and output,
+respectively. Frameworks that do their own resource math and manipulate
+fractional resources may observe differences in roundoff error and numerical
+precision.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;[MESOS-4479] - Reserved resources can now optionally include &amp;ldquo;labels&amp;rdquo;.
+Labels are a set of key-value pairs that can be used to associate metadata
+with a reserved resource. For example, frameworks can use this feature to
+distinguish between two reservations for the same role at the same agent
+that are intended for different purposes.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;[MESOS-2840] - &lt;strong&gt;Experimental&lt;/strong&gt; support for container images in Mesos
+containerizer (a.k.a. Unified Containerizer). This allows frameworks to
+launch Docker/Appc containers using Mesos containerizer without relying on
+docker daemon (engine) or rkt. The isolation of the containers is done using
+isolators. Please refer to docs/container-image.md for currently supported
+features and limitations.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;[MESOS-4793] - &lt;strong&gt;Experimental&lt;/strong&gt; support for v1 Executor HTTP API. This
+allows executors to send HTTP requests to the /api/v1/executor agent
+endpoint without the need for an executor driver. Please refer to
+docs/executor-http-api.md for more details.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;[MESOS-4370] Added support for service discovery of Docker containers that
+use Docker Remote API v1.21.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;Additional API Changes:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;[MESOS-4066] - Agent should not return partial state when a request is made to /state endpoint during recovery.&lt;/li&gt;
+&lt;li&gt;[MESOS-4547] - Introduce TASK_KILLING state.&lt;/li&gt;
+&lt;li&gt;[MESOS-4712] - Remove &amp;lsquo;force&amp;rsquo; field from the Subscribe Call in v1 Scheduler API.&lt;/li&gt;
+&lt;li&gt;[MESOS-4591] - Change the object of ReserveResources and CreateVolume ACLs to &lt;code&gt;roles&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;[MESOS-3583] - Add stream IDs for HTTP schedulers.&lt;/li&gt;
+&lt;li&gt;[MESOS-4427] - Ensure ip_address in state.json (from NetworkInfo) is valid&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;Furthermore, several bugfixes and improvements made it into this release.
+For full release notes with all features and bug fixes, please refer to the &lt;a href=&quot;https://git-wip-us.apache.org/repos/asf?p=mesos.git;a=blob_plain;f=CHANGELOG;hb=0.28.0&quot;&gt;CHANGELOG&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3&gt;Upgrades&lt;/h3&gt;
+
+&lt;p&gt;Rolling upgrades from a Mesos 0.27.0 cluster to Mesos 0.28.0 are straightforward. There are just some minor, backwards compatible deprecations.
+Please refer to the &lt;a href=&quot;http://mesos.apache.org/documentation/latest/upgrades/&quot;&gt;upgrade guide&lt;/a&gt; for detailed information on upgrading to Mesos 0.28.0.&lt;/p&gt;
+
+&lt;h3&gt;Try it out&lt;/h3&gt;
+
+&lt;p&gt;We encourage you to try out this release and let us know what you think.
+If you run into any issues, please let us know on the &lt;a href=&quot;https://mesos.apache.org/community&quot;&gt;user mailing list and IRC&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3&gt;Thanks!&lt;/h3&gt;
+
+&lt;p&gt;Thanks to the 44 contributors who made 0.28.0 possible:&lt;/p&gt;
+
+&lt;p&gt;Abhishek Dasgupta,Alex Clemmer,Alex Naparu,Alexander Rojas,Alexander Rukletsov,Anand Mazumdar,Avinash sridharan,Benjamin Bannier,Benjamin Mahler,Bernd Mathiske,Cong Wang,Daniel Pravat,David Forsythe,Diana Arroyo,Disha  Singh,Gilbert Song,Greg Mann,Guangya Liu,Isabel Jimenez,James Peach,Jan Schlicht,Jie Yu,Joerg Schad,Jojy Varghese,Joris Van Remoortere,Joseph Wu,Kapil Arya,Kevin Devroede,Kevin Klues,Klaus Ma,M Lawindi,Michael Browning,Michael Lunøe,Michael Park,Neil Conway,Shuai Lin,Till Toenshoff,Timothy Chen,Vinod Kone,Yong Tang,Yongqiao Wang,Zhiwei Chen,haosdent huang,mlawindi&lt;/p&gt;
+
+	</content>
+  </entry>
   
   <entry>
     <id>http://mesos.apache.org/blog/mesos-0-27-2-released/</id>

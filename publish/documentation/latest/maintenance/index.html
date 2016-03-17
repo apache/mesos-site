@@ -216,15 +216,19 @@ what the agent announces to the master.  If there is any ambiguity in a
 machine&rsquo;s configuration, the operator should use the <code>--hostname</code> and <code>--ip</code>
 options when starting agents.</p>
 
-<p>The master checks that a maintenance schedule has the following properties:
-* Each maintenance window in the schedule must have at least one machine
-  and a specified unavailability interval.
-* Each machine must only appear in the schedule once.
-* Each machine must have at least a hostname or IP included.
-  The hostname is not case-sensitive.
-* All machines that are in Down mode must be present in the schedule.
-  This is required because this endpoint does not handle the transition
-  from Down mode to Up mode.</p>
+<p>The master checks that a maintenance schedule has the following properties:</p>
+
+<ul>
+<li>Each maintenance window in the schedule must have at least one machine
+and a specified unavailability interval.</li>
+<li>Each machine must only appear in the schedule once.</li>
+<li>Each machine must have at least a hostname or IP included.
+The hostname is not case-sensitive.</li>
+<li>All machines that are in Down mode must be present in the schedule.
+This is required because this endpoint does not handle the transition
+from Down mode to Up mode.</li>
+</ul>
+
 
 <p>If any of these properties are not met, the maintenance schedule is rejected
 with a corresponding error message and the master&rsquo;s state does not change.</p>

@@ -2,13 +2,13 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Apache Mesos - HTTP Endpoints - /maintenance/status</title>
+        <title></title>
 		    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 		    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
 		    <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
 		    
-		    <link href="../../../../../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+		    <link href="../../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
 				
 		    
 			
@@ -81,26 +81,68 @@
 		<p>See our <a href="/community/">community</a> page for more details.</p>
 	</div>
 	<div class="col-md-8">
-		<!--- This is an automatically generated file. DO NOT EDIT! --->
+		<h1>Weights</h1>
 
+<p>In Mesos, <strong>weights</strong> can be used to control the relative share of cluster
+resources that is offered to different <a href="/documentation/latest/./roles/">roles</a>.</p>
 
-<h3>USAGE</h3>
+<p>In Mesos 0.28 and earlier, weights can only be configured by specifying
+the <code>--weights</code> command-line flag when starting the Mesos master. If a
+role does not have a weight specified in the <code>--weights</code> flag, then the default
+value (1.0) will be used. Weights cannot be changed without updating the flag
+and restarting all Mesos masters.</p>
 
-<blockquote><pre><code>   /maintenance/status
-   /master/maintenance/status
-</code></pre></blockquote>
+<p>Mesos 0.29 contains a <a href="/documentation/latest/./endpoints/master/weights/">/weights</a> operator endpoint
+that allows weights to be changed at runtime. The <code>--weights</code> command-line flag
+is deprecated.</p>
 
-<h3>TL;DR;</h3>
+<h1>Operator HTTP Endpoint</h1>
 
-<p>Retrieves the maintenance status of the cluster.</p>
+<p>The master <code>/weights</code> HTTP endpoint enables operators to update weights. The
+endpoint currently offers a REST-like interface and only supports update
+requests using PUT.</p>
 
-<h3>DESCRIPTION</h3>
+<p>The endpoint can optionally use authentication and authorization. See the
+<a href="/documentation/latest/./authentication/">authentication guide</a> for details.</p>
 
-<p>Returns an object with one list of machines per machine mode.
-For draining machines, this list includes the frameworks' responses
-to inverse offers.  NOTE: Inverse offer responses are cleared if
-the master fails over.  However, new inverse offers will be sent
-once the master recovers.</p>
+<p>An example request to the <code>/weights</code> endpoint could look like this (using the
+JSON definitions below):</p>
+
+<pre><code>$ curl -d jsonMessageBody -X PUT http://&lt;master-ip&gt;:&lt;port&gt;/weights
+</code></pre>
+
+<p>For example, to set a weight of <code>2.0</code> for <code>role1</code> and set a weight of <code>3.5</code>
+for <code>role2</code>, the operator can use the following <code>jsonMessageBody</code>:</p>
+
+<pre><code>    [
+      {
+        "role": "role1",
+        "weight": 2.0
+      },
+      {
+        "role": "role2",
+        "weight": 3.5
+      }
+    ]
+</code></pre>
+
+<p>If the master is configured with an explicit <a href="/documentation/latest/./roles/">role whitelist</a>, the
+request is only valid if all specified roles exist in the role whitelist.</p>
+
+<p>Weights are now persisted in the registry on cluster bootstrap and after any
+updates.  Once the weights are persisted in the registry, any Mesos master that
+subsequently starts with <code>--weights</code> still specified will emit a warning and use
+the registry value instead.</p>
+
+<p>The operator will receive one of the following HTTP response codes:</p>
+
+<ul>
+<li><code>200 OK</code>: Success (the update request was successful).</li>
+<li><code>400 BadRequest</code>: Invalid arguments (e.g., invalid JSON, non-positive weights).</li>
+<li><code>401 Unauthorized</code>: Unauthenticated request.</li>
+<li><code>403 Forbidden</code>: Unauthorized request.</li>
+</ul>
+
 
 	</div>
 </div>
