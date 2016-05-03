@@ -3,76 +3,76 @@
     <head>
         <meta charset="utf-8">
         <title>Apache Mesos - Docker Containerizer</title>
-		    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-		    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
-		    <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
-		    
-		    <link href="../../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
-				
-		    
-			
-			<!-- Google Analytics Magic -->
-			<script type="text/javascript">
-			  var _gaq = _gaq || [];
-			  _gaq.push(['_setAccount', 'UA-20226872-1']);
-			  _gaq.push(['_setDomainName', 'apache.org']);
-			  _gaq.push(['_trackPageview']);
+        <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
+        
+        <link href="../../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
 
-			  (function() {
-			    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-			    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-			  })();
-			</script>
+        
+
+      <!-- Google Analytics Magic -->
+      <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-20226872-1']);
+        _gaq.push(['_setDomainName', 'apache.org']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+          var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+          ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+      </script>
     </head>
     <body>
-			<!-- magical breadcrumbs -->
-			<div class="topnav">
-			<ul class="breadcrumb">
-			  <li>
-					<div class="dropdown">
-					  <a data-toggle="dropdown" href="#">Apache Software Foundation <span class="caret"></span></a>
-					  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-							<li><a href="http://www.apache.org">Apache Homepage</a></li>
-							<li><a href="http://www.apache.org/licenses/">License</a></li>
-					  	<li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>  
-					  	<li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
-							<li><a href="http://www.apache.org/security/">Security</a></li>
-					  </ul>
-					</div>
-				</li>
-				<li><a href="http://mesos.apache.org">Apache Mesos</a></li>
-				
-				
-					<li><a href="/documentation
+      <!-- magical breadcrumbs -->
+      <div class="topnav">
+      <ul class="breadcrumb">
+        <li>
+          <div class="dropdown">
+            <a data-toggle="dropdown" href="#">Apache Software Foundation <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+              <li><a href="http://www.apache.org">Apache Homepage</a></li>
+              <li><a href="http://www.apache.org/licenses/">License</a></li>
+              <li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>
+              <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+              <li><a href="http://www.apache.org/security/">Security</a></li>
+            </ul>
+          </div>
+        </li>
+        <li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+        
+        
+          <li><a href="/documentation
 /">Documentation
 </a></li>
-				
-				
-			</ul><!-- /breadcrumb -->
-			</div>
-			
-			<!-- navbar excitement -->
-	    <div class="navbar navbar-static-top" role="navigation">
-	      <div class="navbar-inner">
-	        <div class="container">
-						<a href="/" class="logo"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo" /></a>
-					<div class="nav-collapse">
-						<ul class="nav nav-pills navbar-right">
-						  <li><a href="/gettingstarted/">Getting Started</a></li>
-						  <li><a href="/documentation/latest/">Documentation</a></li>
-						  <li><a href="/downloads/">Downloads</a></li>
-						  <li><a href="/community/">Community</a></li>
-						</ul>
-					</div>
-	        </div>
-	      </div>
-	    </div><!-- /.navbar -->
+        
+        
+      </ul><!-- /breadcrumb -->
+      </div>
+
+      <!-- navbar excitement -->
+      <div class="navbar navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          <div class="container">
+            <a href="/" class="logo"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo" /></a>
+          <div class="nav-collapse">
+            <ul class="nav nav-pills navbar-right">
+              <li><a href="/gettingstarted/">Getting Started</a></li>
+              <li><a href="/documentation/latest/">Documentation</a></li>
+              <li><a href="/downloads/">Downloads</a></li>
+              <li><a href="/community/">Community</a></li>
+            </ul>
+          </div>
+          </div>
+        </div>
+      </div><!-- /.navbar -->
 
       <div class="container">
 
-			<div class="row-fluid">
+      <div class="row-fluid">
 	<div class="col-md-4">
 		<h4>If you're new to Mesos</h4>
 		<p>See the <a href="/gettingstarted/">getting started</a> page for more information about downloading, building, and deploying Mesos.</p>
@@ -83,96 +83,165 @@
 	<div class="col-md-8">
 		<h1>Docker Containerizer</h1>
 
-<p>Mesos 0.20.0 adds the support for launching tasks that contains Docker images, with also a subset of Docker options supported while we plan on adding more in the future.</p>
+<p>Mesos 0.20.0 adds the support for launching tasks that contains Docker
+images, with also a subset of Docker options supported while we plan
+on adding more in the future.</p>
 
 <p>Users can either launch a Docker image as a Task, or as an Executor.</p>
 
-<p>The following sections will describe the API changes along with Docker support, and also how to setup Docker.</p>
+<p>The following sections will describe the API changes along with Docker
+support, and also how to setup Docker.</p>
 
 <h2>Setup</h2>
 
-<p>To run the slave to enable the Docker Containerizer, you must launch the slave with &ldquo;docker&rdquo; as one of the containerizers option.</p>
+<p>To run the slave to enable the Docker Containerizer, you must launch
+the slave with &ldquo;docker&rdquo; as one of the containerizers option.</p>
 
 <p>Example: <code>mesos-slave --containerizers=docker,mesos</code></p>
 
-<p>Each slave that has the Docker containerizer should have Docker CLI client installed (version >= 1.0.0).</p>
+<p>Each slave that has the Docker containerizer should have Docker CLI
+client installed (version >= 1.0.0).</p>
 
-<p>If you enable iptables on slave, make sure the iptables allow all traffic from docker bridge interface through add below rule:
-<code>
-iptables -A INPUT -s 172.17.0.0/16 -i docker0 -p tcp -j ACCEPT
-</code></p>
+<p>If you enable iptables on slave, make sure the iptables allow all
+traffic from docker bridge interface through add below rule:</p>
+
+<pre><code>iptables -A INPUT -s 172.17.0.0/16 -i docker0 -p tcp -j ACCEPT
+</code></pre>
 
 <h2>How do I use the Docker Containerizer?</h2>
 
-<p>TaskInfo before 0.20.0 used to only support either setting a CommandInfo that launches a task running the bash command, or an ExecutorInfo that launches a custom Executor
-that will launches the task.</p>
+<p>TaskInfo before 0.20.0 used to only support either setting a
+CommandInfo that launches a task running the bash command, or an
+ExecutorInfo that launches a custom Executor that will launches the
+task.</p>
 
-<p>With 0.20.0 we added a ContainerInfo field to TaskInfo and ExecutorInfo that allows a Containerizer such as Docker to be configured to run the task or executor.</p>
+<p>With 0.20.0 we added a ContainerInfo field to TaskInfo and
+ExecutorInfo that allows a Containerizer such as Docker to be
+configured to run the task or executor.</p>
 
-<p>To run a Docker image as a task, in TaskInfo one must set both the command and the container field as the Docker Containerizer will use the accompanied command to launch the docker image.
-The ContainerInfo should have type Docker and a DockerInfo that has the desired docker image.</p>
+<p>To run a Docker image as a task, in TaskInfo one must set both the
+command and the container field as the Docker Containerizer will use
+the accompanied command to launch the docker image.  The ContainerInfo
+should have type Docker and a DockerInfo that has the desired docker
+image.</p>
 
-<p>To run a Docker image as an executor, in TaskInfo one must set the ExecutorInfo that contains a ContainerInfo with type docker and the CommandInfo that will be used to launch the executor.
-Note that the Docker image is expected to launch up as a Mesos executor that will register with the slave once it launches.</p>
+<p>To run a Docker image as an executor, in TaskInfo one must set the
+ExecutorInfo that contains a ContainerInfo with type docker and the
+CommandInfo that will be used to launch the executor.  Note that the
+Docker image is expected to launch up as a Mesos executor that will
+register with the slave once it launches.</p>
 
 <h2>What does the Docker Containerizer do?</h2>
 
-<p>The Docker Containerizer is translating Task/Executor <code>Launch</code> and <code>Destroy</code> calls to Docker CLI commands.</p>
+<p>The Docker Containerizer is translating Task/Executor <code>Launch</code> and
+<code>Destroy</code> calls to Docker CLI commands.</p>
 
-<p>Currently the Docker Containerizer when launching as task will do the following:</p>
+<p>Currently the Docker Containerizer when launching as task will do the
+following:</p>
 
 <ol>
 <li><p>Fetch all the files specified in the CommandInfo into the sandbox.</p></li>
 <li><p>Pull the docker image from the remote repository.</p></li>
-<li><p>Run the docker image with the Docker executor, and map the sandbox directory into the Docker container and set the directory mapping to the MESOS_SANDBOX environment variable. The executor will also stream the container logs into stdout/stderr files in the sandbox.</p></li>
-<li><p>On container exit or containerizer destroy, stop and remove the docker container.</p></li>
+<li><p>Run the docker image with the Docker executor, and map the sandbox
+directory into the Docker container and set the directory mapping to
+the MESOS_SANDBOX environment variable. The executor will also stream
+the container logs into stdout/stderr files in the sandbox.</p></li>
+<li><p>On container exit or containerizer destroy, stop and remove the
+docker container.</p></li>
 </ol>
 
 
-<p>The Docker Containerizer launches all containers with the <code>mesos-</code> prefix plus the slave id (ie: <code>mesos-slave1-abcdefghji</code>), and also assumes all containers with the <code>mesos-</code> prefix is managed by the slave and is free to stop or kill the containers.</p>
+<p>The Docker Containerizer launches all containers with the <code>mesos-</code>
+prefix plus the slave id (ie: <code>mesos-slave1-abcdefghji</code>), and also
+assumes all containers with the <code>mesos-</code> prefix is managed by the
+slave and is free to stop or kill the containers.</p>
 
-<p>When launching the docker image as an Executor, the only difference is that it skips launching a command executor but just reaps on the docker container executor pid.</p>
+<p>When launching the docker image as an Executor, the only difference is
+that it skips launching a command executor but just reaps on the
+docker container executor pid.</p>
 
-<p>Note that we currently default to host networking when running a docker image, to easier support running a docker image as an Executor.</p>
+<p>Note that we currently default to host networking when running a
+docker image, to easier support running a docker image as an Executor.</p>
 
-<p>The containerizer also supports optional force pulling of the image. It is set disabled as default, so the docker image will only be updated again if it&rsquo;s not available on the host. To enable force pulling an image, <code>force_pull_image</code> has to be set as true.</p>
+<p>The containerizer also supports optional force pulling of the image.
+It is set disabled as default, so the docker image will only be
+updated again if it&rsquo;s not available on the host. To enable force
+pulling an image, <code>force_pull_image</code> has to be set as true.</p>
 
 <h2>Private Docker repository</h2>
 
-<p>To run an image from a private repository, one can include the uri pointing to a <code>.dockercfg</code> that contains login information. The <code>.dockercfg</code> file will be pulled into the sandbox the Docker Containerizer
-set the HOME environment variable pointing to the sandbox so docker cli will automatically pick up the config file.</p>
+<p>To run an image from a private repository, one can include the uri
+pointing to a <code>.dockercfg</code> that contains login information.  The
+<code>.dockercfg</code> file will be pulled into the sandbox the Docker
+Containerizer set the HOME environment variable pointing to the
+sandbox so docker cli will automatically pick up the config file.</p>
+
+<p>Starting from 0.29, we provide an alternative way to specify docker
+config file for pulling images from private registries. We allow
+operators to specify a shared docker config file using an agent flag.
+This docker config file will be used to pull images from private
+registries for all containers. See <a href="/documentation/latest/./configuration/">configuration
+documentation</a> for detail. Operators can either use
+a local docker config file (need to manually configure
+.docker/config.json or .dockercfg on each slave), or specify the flag
+as a JSON-formatted string. For example:</p>
+
+<pre><code>--docker_config=file:///home/vagrant/.docker/config.json
+</code></pre>
+
+<p>or as a JSON object,</p>
+
+<pre><code>--docker_config="{ \
+  \"auths\": { \
+    \"https://index.docker.io/v1/\": { \
+      \"auth\": \"xXxXxXxXxXx=\", \
+      \"email\": \"username@example.com\" \
+    } \
+  } \
+}"
+</code></pre>
 
 <h2>CommandInfo to run Docker images</h2>
 
-<p>A docker image currently supports having an entrypoint and/or a default command.</p>
+<p>A docker image currently supports having an entrypoint and/or a
+default command.</p>
 
-<p>To run a docker image with the default command (ie: <code>docker run image</code>), the CommandInfo&rsquo;s value must not be set. If the value is set then it will override the default command.</p>
+<p>To run a docker image with the default command (ie: <code>docker run
+image</code>), the CommandInfo&rsquo;s value must not be set. If the value is set
+then it will override the default command.</p>
 
-<p>To run a docker image with an entrypoint defined, the CommandInfo&rsquo;s shell option must be set to false.
-If shell option is set to true the Docker Containerizer will run the user&rsquo;s command wrapped with <code>/bin/sh -c</code> which will also become parameters to the image entrypoint.</p>
+<p>To run a docker image with an entrypoint defined, the CommandInfo&rsquo;s
+shell option must be set to false.  If shell option is set to true the
+Docker Containerizer will run the user&rsquo;s command wrapped with <code>/bin/sh
+-c</code> which will also become parameters to the image entrypoint.</p>
 
 <h2>Recover Docker containers on slave recovery</h2>
 
-<p>The Docker containerizer supports recovering Docker containers when the slave restarts, which supports both when the slave is running in a Docker container or not.</p>
+<p>The Docker containerizer supports recovering Docker containers when
+the slave restarts, which supports both when the slave is running in a
+Docker container or not.</p>
 
-<p>With the <code>--docker_mesos_image</code> flag enabled, the Docker containerizer assumes the containerizer is running in a container itself and modifies the mechanism it recovers and launches docker containers accordingly.</p>
+<p>With the <code>--docker_mesos_image</code> flag enabled, the Docker containerizer
+assumes the containerizer is running in a container itself and
+modifies the mechanism it recovers and launches docker containers
+accordingly.</p>
 
 	</div>
 </div>
 
-			
-	      <hr>
 
-				<!-- footer -->
-	      <div class="footer">
-	        <p>&copy; 2012-2015 <a href="http://apache.org">The Apache Software Foundation</a>.
-	        Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.<p>
-	      </div><!-- /footer -->
+        <hr>
 
-	    </div> <!-- /container -->
+        <!-- footer -->
+        <div class="footer">
+          <p>&copy; 2012-2016 <a href="http://apache.org">The Apache Software Foundation</a>.
+          Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.<p>
+        </div><!-- /footer -->
 
-	    <!-- JS -->
-	    <script src="//code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
-			<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="text/javascript"></script>
+      </div> <!-- /container -->
+
+      <!-- JS -->
+      <script src="//code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+      <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="text/javascript"></script>
     </body>
 </html>

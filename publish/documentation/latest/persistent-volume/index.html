@@ -3,76 +3,76 @@
     <head>
         <meta charset="utf-8">
         <title>Apache Mesos - Persistent Volumes</title>
-		    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-		    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
-		    <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
-		    
-		    <link href="../../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
-				
-		    
-			
-			<!-- Google Analytics Magic -->
-			<script type="text/javascript">
-			  var _gaq = _gaq || [];
-			  _gaq.push(['_setAccount', 'UA-20226872-1']);
-			  _gaq.push(['_setDomainName', 'apache.org']);
-			  _gaq.push(['_trackPageview']);
+        <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
+        
+        <link href="../../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
 
-			  (function() {
-			    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-			    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-			  })();
-			</script>
+        
+
+      <!-- Google Analytics Magic -->
+      <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-20226872-1']);
+        _gaq.push(['_setDomainName', 'apache.org']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+          var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+          ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+      </script>
     </head>
     <body>
-			<!-- magical breadcrumbs -->
-			<div class="topnav">
-			<ul class="breadcrumb">
-			  <li>
-					<div class="dropdown">
-					  <a data-toggle="dropdown" href="#">Apache Software Foundation <span class="caret"></span></a>
-					  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-							<li><a href="http://www.apache.org">Apache Homepage</a></li>
-							<li><a href="http://www.apache.org/licenses/">License</a></li>
-					  	<li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>  
-					  	<li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
-							<li><a href="http://www.apache.org/security/">Security</a></li>
-					  </ul>
-					</div>
-				</li>
-				<li><a href="http://mesos.apache.org">Apache Mesos</a></li>
-				
-				
-					<li><a href="/documentation
+      <!-- magical breadcrumbs -->
+      <div class="topnav">
+      <ul class="breadcrumb">
+        <li>
+          <div class="dropdown">
+            <a data-toggle="dropdown" href="#">Apache Software Foundation <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+              <li><a href="http://www.apache.org">Apache Homepage</a></li>
+              <li><a href="http://www.apache.org/licenses/">License</a></li>
+              <li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>
+              <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+              <li><a href="http://www.apache.org/security/">Security</a></li>
+            </ul>
+          </div>
+        </li>
+        <li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+        
+        
+          <li><a href="/documentation
 /">Documentation
 </a></li>
-				
-				
-			</ul><!-- /breadcrumb -->
-			</div>
-			
-			<!-- navbar excitement -->
-	    <div class="navbar navbar-static-top" role="navigation">
-	      <div class="navbar-inner">
-	        <div class="container">
-						<a href="/" class="logo"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo" /></a>
-					<div class="nav-collapse">
-						<ul class="nav nav-pills navbar-right">
-						  <li><a href="/gettingstarted/">Getting Started</a></li>
-						  <li><a href="/documentation/latest/">Documentation</a></li>
-						  <li><a href="/downloads/">Downloads</a></li>
-						  <li><a href="/community/">Community</a></li>
-						</ul>
-					</div>
-	        </div>
-	      </div>
-	    </div><!-- /.navbar -->
+        
+        
+      </ul><!-- /breadcrumb -->
+      </div>
+
+      <!-- navbar excitement -->
+      <div class="navbar navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          <div class="container">
+            <a href="/" class="logo"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo" /></a>
+          <div class="nav-collapse">
+            <ul class="nav nav-pills navbar-right">
+              <li><a href="/gettingstarted/">Getting Started</a></li>
+              <li><a href="/documentation/latest/">Documentation</a></li>
+              <li><a href="/downloads/">Downloads</a></li>
+              <li><a href="/community/">Community</a></li>
+            </ul>
+          </div>
+          </div>
+        </div>
+      </div><!-- /.navbar -->
 
       <div class="container">
 
-			<div class="row-fluid">
+      <div class="row-fluid">
 	<div class="col-md-4">
 		<h4>If you're new to Mesos</h4>
 		<p>See the <a href="/gettingstarted/">getting started</a> page for more information about downloading, building, and deploying Mesos.</p>
@@ -94,12 +94,15 @@ such as HDFS and Cassandra to store their data within Mesos rather than having
 to resort to workarounds (e.g., writing task state to a distributed filesystem
 that is mounted at a well-known location outside the task&rsquo;s sandbox).</p>
 
+<h2>Usage</h2>
+
 <p>Persistent volumes can only be created from <strong>reserved</strong> disk resources, whether
 it be statically reserved or dynamically reserved. A dynamically reserved
 persistent volume also cannot be unreserved without first explicitly destroying
 the volume. These rules exist to limit accidental mistakes, such as a persistent
 volume containing sensitive data being offered to other frameworks in the
-cluster.</p>
+cluster. Similarly, a persistent volume cannot be destroyed if there is an
+active task that is still using the volume.</p>
 
 <p>Please refer to the <a href="/documentation/latest/./reservation/">Reservation</a> documentation for details
 regarding reservation mechanisms available in Mesos.</p>
@@ -108,8 +111,8 @@ regarding reservation mechanisms available in Mesos.</p>
 reserving <a href="/documentation/latest/./multiple-disk/">multiple disk resources</a>.</p>
 
 <p>Persistent volumes can be created by <strong>operators</strong> and authorized
-<strong>frameworks</strong>. By default, frameworks and operators can create volumes for any
-role and destroy any persistent volumes. <a href="/documentation/latest/./authorization/">Authorization</a>
+<strong>frameworks</strong>. By default, frameworks and operators can create volumes for <em>any</em>
+role and destroy <em>any</em> persistent volume. <a href="/documentation/latest/./authorization/">Authorization</a>
 allows this behavior to be limited so that volumes can only be created for
 particular roles and only particular volumes can be destroyed. For these
 operations to be authorized, the framework or operator should provide a
@@ -127,12 +130,17 @@ response to a resource offer.</li>
 </ul>
 
 
+<p>When a persistent volume is destroyed, all the data on that volume is removed
+from the slave&rsquo;s filesystem. Note that for persistent volumes created on <code>Mount</code>
+disks, the root directory is not removed, because it is typically the mount
+point used for a separate storage device.</p>
+
 <p>In the following sections, we will walk through examples of each of the
 interfaces described above.</p>
 
-<h3>Framework Scheduler API</h3>
+<h2>Framework Scheduler API</h2>
 
-<h4><code>Offer::Operation::Create</code></h4>
+<h3><code>Offer::Operation::Create</code></h3>
 
 <p>A framework can create volumes through the resource offer cycle.  Suppose we
 receive a resource offer with 2048 MB of dynamically reserved disk.</p>
@@ -226,13 +234,13 @@ persistent volume:</p>
 }
 </code></pre>
 
-<h4><code>Offer::Operation::Destroy</code></h4>
+<h3><code>Offer::Operation::Destroy</code></h3>
 
 <p>A framework can destroy persistent volumes through the resource offer cycle. In
 <a href="#offeroperationcreate">Offer::Operation::Create</a>, we created a persistent
-volume from 2048 MB of disk resources. Mesos will not garbage-collect this
-volume until we explicitly destroy it. Suppose we would like to destroy the
-volume we created. First, we receive a resource offer (copy/pasted from above):</p>
+volume from 2048 MB of disk resources. The volume will continue to exist until
+it is explicitly destroyed. Suppose we would like to destroy the volume we
+created. First, we receive a resource offer (copy/pasted from above):</p>
 
 <pre><code>{
   "id" : &lt;offer_id&gt;,
@@ -262,7 +270,7 @@ volume we created. First, we receive a resource offer (copy/pasted from above):<
 }
 </code></pre>
 
-<p>We destroy the persistent volume by sending the <code>Offer::Operation</code> message via
+<p>We can destroy the persistent volume by sending a <code>Offer::Operation</code> message via
 the <code>acceptOffers</code> API. <code>Offer::Operation::Destroy</code> has a <code>volumes</code> field which
 specifies the persistent volumes to be destroyed.</p>
 
@@ -293,8 +301,9 @@ specifies the persistent volumes to be destroyed.</p>
 }
 </code></pre>
 
-<p>If this request succeeds, the persistent volume will be destroyed but the disk
-resources will still be reserved. As such, a subsequent resource offer will
+<p>If this request succeeds, the persistent volume will be destroyed, and all the
+files and directories associated with the volume will be deleted. However, the
+disk resources will still be reserved. As such, a subsequent resource offer will
 contain the following reserved disk resources:</p>
 
 <pre><code>{
@@ -319,12 +328,7 @@ contain the following reserved disk resources:</p>
 <p>Those reserved resources can then be used as normal: e.g., they can be used to
 create another persistent volume or can be unreserved.</p>
 
-<p>Garbage collection for persistent volumes is planned but has not been
-implemented yet &ndash; <a href="https://issues.apache.org/jira/browse/MESOS-2408">MESOS-2408</a>.
-In the mean time, even after you destroy a persistent volume, its content will
-remain on disk.</p>
-
-<h3>Operator HTTP Endpoints</h3>
+<h2>Operator HTTP Endpoints</h2>
 
 <p>As described above, persistent volumes can be created by a framework scheduler
 as part of the resource offer cycle. Persistent volumes can also be created and
@@ -332,7 +336,7 @@ destroyed by sending HTTP requests to the <code>/create-volumes</code> and
 <code>/destroy-volumes</code> endpoints, respectively. This capability is intended for use
 by operators and administrative tools.</p>
 
-<h4><code>/create-volumes</code></h4>
+<h3><code>/create-volumes</code></h3>
 
 <p>To use this endpoint, the operator should first ensure that a reservation for
 the necessary resources has been made on the appropriate slave (e.g., by using
@@ -372,7 +376,7 @@ disk resource, we can send an HTTP POST request to the master&rsquo;s
 <p>The user receives one of the following HTTP responses:</p>
 
 <ul>
-<li><code>200 OK</code>: Request accepted (see below).</li>
+<li><code>202 Accepted</code>: Request accepted (see below).</li>
 <li><code>400 BadRequest</code>: Invalid arguments (e.g., missing parameters).</li>
 <li><code>401 Unauthorized</code>: Unauthenticated request.</li>
 <li><code>403 Forbidden</code>: Unauthorized request.</li>
@@ -383,17 +387,16 @@ disk resource, we can send an HTTP POST request to the master&rsquo;s
 <p>A single <code>/create-volumes</code> request can create multiple persistent volumes, but
 all of the volumes must be on the same slave.</p>
 
-<p>Note that when <code>200 OK</code> is returned by this endpoint, it does <strong>not</strong> mean that
-the persistent volumes have been created successfully. Instead, this return code
-indicates that the create operation has been validated successfully by the
-master. The request is then forwarded asynchronously to the Mesos slave where
-the reserved resources are located. That asynchronous message may not be
-delivered or creating the volumes at the slave might fail, in which case no
-volumes will be created. To determine if a create operation has succeeded, the
-user can examine the state of the appropriate Mesos slave (e.g., via the slave&rsquo;s
+<p>This endpoint returns the 202 ACCEPTED HTTP status code, which indicates that
+the create operation has been validated successfully by the master. The request
+is then forwarded asynchronously to the Mesos slave where the reserved
+resources are located. That asynchronous message may not be delivered or
+creating the volumes at the slave might fail, in which case no volumes will be
+created. To determine if a create operation has succeeded, the user can examine
+the state of the appropriate Mesos slave (e.g., via the slave&rsquo;s
 <a href="/documentation/latest/./endpoints/slave/state/">/state</a> HTTP endpoint).</p>
 
-<h4><code>/destroy-volumes</code></h4>
+<h3><code>/destroy-volumes</code></h3>
 
 <p>To destroy the volume created above, we can send an HTTP POST to the master&rsquo;s
 <a href="/documentation/latest/./endpoints/master/destroy-volumes/">/destroy-volumes</a> endpoint like so:</p>
@@ -427,7 +430,7 @@ user can examine the state of the appropriate Mesos slave (e.g., via the slave&r
 <p>The user receives one of the following HTTP responses:</p>
 
 <ul>
-<li><code>200 OK</code>: Request accepted (see below).</li>
+<li><code>202 Accepted</code>: Request accepted (see below).</li>
 <li><code>400 BadRequest</code>: Invalid arguments (e.g., missing parameters).</li>
 <li><code>401 Unauthorized</code>: Unauthenticated request.</li>
 <li><code>403 Forbidden</code>: Unauthorized request.</li>
@@ -438,23 +441,22 @@ user can examine the state of the appropriate Mesos slave (e.g., via the slave&r
 <p>A single <code>/destroy-volumes</code> request can destroy multiple persistent volumes, but
 all of the volumes must be on the same slave.</p>
 
-<p>Note that when <code>200 OK</code> is returned by this endpoint, it does <strong>not</strong> mean that
-the persistent volumes have been destroyed successfully. Instead, this return
-code indicates that the destroy operation has been validated successfully by the
-master. The request is then forwarded asynchronously to the Mesos slave where
-the persistent volumes are located. That asynchronous message may not be
-delivered or destroying the volumes at the slave might fail, in which case no
-volumes will be destroyed. To determine if a destroy operation has succeeded,
-the user can examine the state of the appropriate Mesos slave (e.g., via the
-slave&rsquo;s <a href="/documentation/latest/./endpoints/slave/state/">/state</a> HTTP endpoint).</p>
+<p>This endpoint returns the 202 ACCEPTED HTTP status code, which indicates that
+the destroy operation has been validated successfully by the master. The
+request is then forwarded asynchronously to the Mesos slave where the reserved
+resources are located. That asynchronous message may not be delivered or
+destroying the volumes at the slave might fail, in which case no volumes will
+be destroyed. To determine if a destroy operation has succeeded, the user can
+examine the state of the appropriate Mesos slave (e.g., via the slave&rsquo;s
+<a href="/documentation/latest/./endpoints/slave/state/">/state</a> HTTP endpoint).</p>
 
-<h3>Listing Persistent Volumes</h3>
+<h2>Listing Persistent Volumes</h2>
 
 <p>Information about the persistent volumes at each slave in the cluster can be
 found by querying the <a href="/documentation/latest/./endpoints/master/slaves/">/slaves</a> master endpoint
 (under the <code>reserved_resources_full</code> key).</p>
 
-<h3>Programming with Persistent Volumes</h3>
+<h2>Programming with Persistent Volumes</h2>
 
 <p>Some suggestions to keep in mind when building applications that use persistent
 volumes:</p>
@@ -470,7 +472,7 @@ Applications should be prepared to detect failures and correct for them (e.g.,
 by retrying the operation).</p></li>
 <li><p>When using HTTP endpoints to reserve resources or create persistent volumes,
 <em>some</em> failures can be detected by examining the HTTP response code returned
-to the client. However, it is still possible for a <code>200</code> response code to be
+to the client. However, it is still possible for a <code>202</code> response code to be
 returned to the client but for the associated operation to fail&mdash;see
 discussion above.</p></li>
 <li><p>When using the scheduler API, detecting that a dynamic reservation has failed
@@ -503,8 +505,8 @@ assuming that a reservation request should be retried.</p></li>
 might submit more reservation requests than intended (e.g., a timeout fires
 and an application makes another reservation request; meanwhile, the original
 reservation request is also processed). Recall that two reservations for the
-same role at the same agent are &ldquo;merged&rdquo;: for example, role <code>foo</code> makes two
-requests to reserve 2 CPUs at a single agent and both reservation requests
+same role at the same slave are &ldquo;merged&rdquo;: for example, role <code>foo</code> makes two
+requests to reserve 2 CPUs at a single slave and both reservation requests
 succeed, the result will be a single reservation of 4 CPUs. To handle this
 situation, applications should be prepared for resource offers that contain
 more resources than expected. Some applications may also want to detect this
@@ -537,22 +539,32 @@ role-specific resources. For more information, see the discussion of
 </ul>
 
 
+<h2>Version History</h2>
+
+<p>Persistent volumes were introduced in Mesos 0.23. Mesos 0.27 introduced HTTP
+endpoints for creating and destroying volumes. Mesos 0.28 introduced support for
+<a href="/documentation/latest/./multiple-disk/">multiple disk resources</a>, and also enhanced the <code>/slaves</code>
+master endpoint to include detailed information about persistent volumes and
+dynamic reservations. Mesos 0.29 changed the semantics of destroying a volume:
+in previous releases, destroying a volume would remove the Mesos-level metadata,
+but would not remove the volume&rsquo;s data from the slave&rsquo;s filesystem.</p>
+
 	</div>
 </div>
 
-			
-	      <hr>
 
-				<!-- footer -->
-	      <div class="footer">
-	        <p>&copy; 2012-2015 <a href="http://apache.org">The Apache Software Foundation</a>.
-	        Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.<p>
-	      </div><!-- /footer -->
+        <hr>
 
-	    </div> <!-- /container -->
+        <!-- footer -->
+        <div class="footer">
+          <p>&copy; 2012-2016 <a href="http://apache.org">The Apache Software Foundation</a>.
+          Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.<p>
+        </div><!-- /footer -->
 
-	    <!-- JS -->
-	    <script src="//code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
-			<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="text/javascript"></script>
+      </div> <!-- /container -->
+
+      <!-- JS -->
+      <script src="//code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+      <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="text/javascript"></script>
     </body>
 </html>

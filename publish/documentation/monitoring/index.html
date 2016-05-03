@@ -3,76 +3,76 @@
     <head>
         <meta charset="utf-8">
         <title>Apache Mesos - Observability Metrics</title>
-		    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-		    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
-		    <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
-		    
-		    <link href="../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
-				
-		    
-			
-			<!-- Google Analytics Magic -->
-			<script type="text/javascript">
-			  var _gaq = _gaq || [];
-			  _gaq.push(['_setAccount', 'UA-20226872-1']);
-			  _gaq.push(['_setDomainName', 'apache.org']);
-			  _gaq.push(['_trackPageview']);
+        <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
+        
+        <link href="../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
 
-			  (function() {
-			    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-			    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-			  })();
-			</script>
+        
+
+      <!-- Google Analytics Magic -->
+      <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-20226872-1']);
+        _gaq.push(['_setDomainName', 'apache.org']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+          var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+          ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+      </script>
     </head>
     <body>
-			<!-- magical breadcrumbs -->
-			<div class="topnav">
-			<ul class="breadcrumb">
-			  <li>
-					<div class="dropdown">
-					  <a data-toggle="dropdown" href="#">Apache Software Foundation <span class="caret"></span></a>
-					  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-							<li><a href="http://www.apache.org">Apache Homepage</a></li>
-							<li><a href="http://www.apache.org/licenses/">License</a></li>
-					  	<li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>  
-					  	<li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
-							<li><a href="http://www.apache.org/security/">Security</a></li>
-					  </ul>
-					</div>
-				</li>
-				<li><a href="http://mesos.apache.org">Apache Mesos</a></li>
-				
-				
-					<li><a href="/documentation
+      <!-- magical breadcrumbs -->
+      <div class="topnav">
+      <ul class="breadcrumb">
+        <li>
+          <div class="dropdown">
+            <a data-toggle="dropdown" href="#">Apache Software Foundation <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+              <li><a href="http://www.apache.org">Apache Homepage</a></li>
+              <li><a href="http://www.apache.org/licenses/">License</a></li>
+              <li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>
+              <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+              <li><a href="http://www.apache.org/security/">Security</a></li>
+            </ul>
+          </div>
+        </li>
+        <li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+        
+        
+          <li><a href="/documentation
 /">Documentation
 </a></li>
-				
-				
-			</ul><!-- /breadcrumb -->
-			</div>
-			
-			<!-- navbar excitement -->
-	    <div class="navbar navbar-static-top" role="navigation">
-	      <div class="navbar-inner">
-	        <div class="container">
-						<a href="/" class="logo"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo" /></a>
-					<div class="nav-collapse">
-						<ul class="nav nav-pills navbar-right">
-						  <li><a href="/gettingstarted/">Getting Started</a></li>
-						  <li><a href="/documentation/latest/">Documentation</a></li>
-						  <li><a href="/downloads/">Downloads</a></li>
-						  <li><a href="/community/">Community</a></li>
-						</ul>
-					</div>
-	        </div>
-	      </div>
-	    </div><!-- /.navbar -->
+        
+        
+      </ul><!-- /breadcrumb -->
+      </div>
+
+      <!-- navbar excitement -->
+      <div class="navbar navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          <div class="container">
+            <a href="/" class="logo"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo" /></a>
+          <div class="nav-collapse">
+            <ul class="nav nav-pills navbar-right">
+              <li><a href="/gettingstarted/">Getting Started</a></li>
+              <li><a href="/documentation/latest/">Documentation</a></li>
+              <li><a href="/downloads/">Downloads</a></li>
+              <li><a href="/community/">Community</a></li>
+            </ul>
+          </div>
+          </div>
+        </div>
+      </div><!-- /.navbar -->
 
       <div class="container">
 
-			<div class="row-fluid">
+      <div class="row-fluid">
 	<div class="col-md-4">
 		<h4>If you're new to Mesos</h4>
 		<p>See the <a href="/gettingstarted/">getting started</a> page for more information about downloading, building, and deploying Mesos.</p>
@@ -220,6 +220,48 @@ framework is misbehaving.</p>
   <code>master/disk_revocable_used</code>
   </td>
   <td>Allocated revocable disk space in MB</td>
+  <td>Gauge</td>
+</tr>
+<tr>
+  <td>
+  <code>master/gpus_percent</code>
+  </td>
+  <td>Percentage of allocated GPUs</td>
+  <td>Gauge</td>
+</tr>
+<tr>
+  <td>
+  <code>master/gpus_used</code>
+  </td>
+  <td>Number of allocated GPUs</td>
+  <td>Gauge</td>
+</tr>
+<tr>
+  <td>
+  <code>master/gpus_total</code>
+  </td>
+  <td>Number of GPUs</td>
+  <td>Gauge</td>
+</tr>
+<tr>
+  <td>
+  <code>master/gpus_revocable_percent</code>
+  </td>
+  <td>Percentage of allocated revocable GPUs</td>
+  <td>Gauge</td>
+</tr>
+<tr>
+  <td>
+  <code>master/gpus_revocable_total</code>
+  </td>
+  <td>Number of revocable GPUs</td>
+  <td>Gauge</td>
+</tr>
+<tr>
+  <td>
+  <code>master/gpus_revocable_used</code>
+  </td>
+  <td>Number of allocated revocable GPUs</td>
   <td>Gauge</td>
 </tr>
 <tr>
@@ -798,28 +840,28 @@ messages may indicate that there is a problem with the network.</p>
   <td>
   <code>master/task_lost/source_master/reason_invalid_offers</code>
   </td>
-  <td>Number of tasks lost due to invalid offers</code>
+  <td>Number of tasks lost due to invalid offers</td>
   <td>Counter</td>
 </tr>
 <tr>
   <td>
   <code>master/task_lost/source_master/reason_slave_removed</code>
   </td>
-  <td>Number of tasks lost due to slave removal</code>
+  <td>Number of tasks lost due to slave removal</td>
   <td>Counter</td>
 </tr>
 <tr>
   <td>
   <code>master/task_lost/source_slave/reason_executor_terminated</code>
   </td>
-  <td>Number of tasks lost due to executor termination</code>
+  <td>Number of tasks lost due to executor termination</td>
   <td>Counter</td>
 </tr>
 <tr>
   <td>
   <code>master/valid_executor_to_framework_messages</code>
   </td>
-  <td>Number of valid executor to framework messages</code>
+  <td>Number of valid executor to framework messages</td>
   <td>Counter</td>
 </tr>
 </table>
@@ -935,6 +977,173 @@ slave registrar.</p>
   <code>registrar/state_store_ms/p9999</code>
   </td>
   <td>99.99th percentile registry write latency in ms</td>
+  <td>Gauge</td>
+</tr>
+</table>
+
+
+<h4>Allocator</h4>
+
+<p>The following metrics provide information about performance
+and resource allocations in the allocator.</p>
+
+<table class="table table-stripped">
+<thead>
+<tr><th>Metric</th><th>Description</th><th>Type</th>
+</thead>
+<tr>
+  <td>
+  <code>allocator/mesos/allocation_run_ms</code>
+  </td>
+  <td>Allocation algorithm latency in ms</td>
+  <td>Gauge</td>
+</tr>
+<tr>
+  <td>
+  <code>allocator/mesos/allocation_run_ms/count</code>
+  </td>
+  <td>Number of allocation algorithm latency measurements in the window</td>
+  <td>Gauge</td>
+</tr>
+<tr>
+  <td>
+  <code>allocator/mesos/allocation_run_ms/max</code>
+  </td>
+  <td>Maximum allocation algorithm latency in ms</td>
+  <td>Gauge</td>
+</tr>
+<tr>
+  <td>
+  <code>allocator/mesos/allocation_run_ms/min</code>
+  </td>
+  <td>Minimum allocation algorithm latency in ms</td>
+  <td>Gauge</td>
+</tr>
+<tr>
+  <td>
+  <code>allocator/mesos/allocation_run_ms/p50</code>
+  </td>
+  <td>Median allocation algorithm latency in ms</td>
+  <td>Gauge</td>
+</tr>
+<tr>
+  <td>
+  <code>allocator/mesos/allocation_run_ms/p90</code>
+  </td>
+  <td>90th percentile allocation algorithm latency in ms</td>
+  <td>Gauge</td>
+</tr>
+<tr>
+  <td>
+  <code>allocator/mesos/allocation_run_ms/p95</code>
+  </td>
+  <td>95th percentile allocation algorithm latency in ms</td>
+  <td>Gauge</td>
+</tr>
+<tr>
+  <td>
+  <code>allocator/mesos/allocation_run_ms/p99</code>
+  </td>
+  <td>99th percentile allocation algorithm latency in ms</td>
+  <td>Gauge</td>
+</tr>
+<tr>
+  <td>
+  <code>allocator/mesos/allocation_run_ms/p999</code>
+  </td>
+  <td>99.9th percentile allocation algorithm latency in ms</td>
+  <td>Gauge</td>
+</tr>
+<tr>
+  <td>
+  <code>allocator/mesos/allocation_run_ms/p9999</code>
+  </td>
+  <td>99.99th percentile allocation algorithm latency in ms</td>
+  <td>Gauge</td>
+</tr>
+<tr>
+  <td>
+  <code>allocator/mesos/allocation_runs</code>
+  </td>
+  <td>Number of times the allocation algorithm has run</td>
+  <td>Counter</td>
+</tr>
+<tr>
+  <td>
+  <code>allocator/mesos/roles/&lt;role&gt;/shares/dominant</code>
+  </td>
+  <td>Dominant resource share for the role, exposed as a percentage (0.0-1.0)</td>
+  <td>Gauge</td>
+</tr>
+<tr>
+  <td>
+  <code>allocator/mesos/event_queue_dispatches</code>
+  </td>
+  <td>Number of dispatch events in the event queue</td>
+  <td>Gauge</td>
+</tr>
+<tr>
+  <td>
+  <code>allocator/mesos/offer_filters/roles/&lt;role&gt;/active</code>
+  </td>
+  <td>Number of active offer filters for all frameworks within the role</td>
+  <td>Gauge</td>
+</tr>
+<tr>
+  <td>
+  <code>allocator/mesos/quota/roles/&lt;role&gt;/resources/&lt;resource&gt;/offered_or_allocated</code>
+  </td>
+  <td>Amount of resources considered offered or allocated towards
+      a role's quota guarantee</td>
+  <td>Gauge</td>
+</tr>
+<tr>
+  <td>
+  <code>allocator/mesos/quota/roles/&lt;role&gt;/resources/&lt;resource&gt;/guarantee</code>
+  </td>
+  <td>Amount of resources guaranteed for a role via quota</td>
+  <td>Gauge</td>
+</tr>
+<tr>
+  <td>
+  <code>allocator/mesos/resources/cpus/offered_or_allocated</code>
+  </td>
+  <td>Number of CPUs offered or allocated</td>
+  <td>Gauge</td>
+</tr>
+<tr>
+  <td>
+  <code>allocator/mesos/resources/cpus/total</code>
+  </td>
+  <td>Number of CPUs</td>
+  <td>Gauge</td>
+</tr>
+<tr>
+  <td>
+  <code>allocator/mesos/resources/disk/offered_or_allocated</code>
+  </td>
+  <td>Allocated or offered disk space in MB</td>
+  <td>Gauge</td>
+</tr>
+<tr>
+  <td>
+  <code>allocator/mesos/resources/disk/total</code>
+  </td>
+  <td>Total disk space in MB</td>
+  <td>Gauge</td>
+</tr>
+<tr>
+  <td>
+  <code>allocator/mesos/resources/mem/offered_or_allocated</code>
+  </td>
+  <td>Allocated or offered memory in MB</td>
+  <td>Gauge</td>
+</tr>
+<tr>
+  <td>
+  <code>allocator/mesos/resources/mem/total</code>
+  </td>
+  <td>Total memory in MB</td>
   <td>Gauge</td>
 </tr>
 </table>
@@ -1059,6 +1268,48 @@ the slave and their current usage.</p>
   <code>slave/disk_total</code>
   </td>
   <td>Disk space in MB</td>
+  <td>Gauge</td>
+</tr>
+<tr>
+  <td>
+  <code>slave/gpus_percent</code>
+  </td>
+  <td>Percentage of allocated GPUs</td>
+  <td>Gauge</td>
+</tr>
+<tr>
+  <td>
+  <code>slave/gpus_used</code>
+  </td>
+  <td>Number of allocated GPUs</td>
+  <td>Gauge</td>
+</tr>
+<tr>
+  <td>
+  <code>slave/gpus_total</code>
+  </td>
+  <td>Number of GPUs</td>
+  <td>Gauge</td>
+</tr>
+<tr>
+  <td>
+  <code>slave/gpus_revocable_percent</code>
+  </td>
+  <td>Percentage of allocated revocable GPUs</td>
+  <td>Gauge</td>
+</tr>
+<tr>
+  <td>
+  <code>slave/gpus_revocable_total</code>
+  </td>
+  <td>Number of revocable GPUs</td>
+  <td>Gauge</td>
+</tr>
+<tr>
+  <td>
+  <code>slave/gpus_revocable_used</code>
+  </td>
+  <td>Number of allocated revocable GPUs</td>
   <td>Gauge</td>
 </tr>
 <tr>
@@ -1391,19 +1642,19 @@ the master it is registered with.</p>
 	</div>
 </div>
 
-			
-	      <hr>
 
-				<!-- footer -->
-	      <div class="footer">
-	        <p>&copy; 2012-2015 <a href="http://apache.org">The Apache Software Foundation</a>.
-	        Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.<p>
-	      </div><!-- /footer -->
+        <hr>
 
-	    </div> <!-- /container -->
+        <!-- footer -->
+        <div class="footer">
+          <p>&copy; 2012-2016 <a href="http://apache.org">The Apache Software Foundation</a>.
+          Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.<p>
+        </div><!-- /footer -->
 
-	    <!-- JS -->
-	    <script src="//code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
-			<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="text/javascript"></script>
+      </div> <!-- /container -->
+
+      <!-- JS -->
+      <script src="//code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+      <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="text/javascript"></script>
     </body>
 </html>
