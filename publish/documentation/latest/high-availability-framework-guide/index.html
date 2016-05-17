@@ -269,7 +269,7 @@ fetched&mdash;for example, using the <a href="/documentation/latest/./fetcher/">
 custom executors. It can be used to describe the fact that a custom executor
 has learned about the task (and maybe started fetching its dependencies) but has
 not yet started to run it.</p></li>
-<li><p>A task transitions to the <code>TASK_RUNNING</code> state after it starts running
+<li><p>A task transitions to the <code>TASK_RUNNING</code> state after it has begun running
 successfully (if the task fails to start, it transitions to one of the
 terminal states listed below).</p>
 
@@ -301,14 +301,21 @@ framework has the <code>TASK_KILLING_STATE</code> framework capability.</p></li>
 <li><code>TASK_FAILED</code> indicates that a task aborted with an error.</li>
 <li><code>TASK_KILLED</code> indicates that a task was killed by the executor.</li>
 <li><code>TASK_LOST</code> indicates that the task was running on an agent that has lost
-contact with the current master (typically due to a network partition or the
-agent host crashing). This case is described further below.</li>
+contact with the current master (typically due to a network partition or an
+agent host failure). This case is described further below.</li>
 <li><code>TASK_ERROR</code> indicates that a task launch attempt failed because of an error
 in the task specification.</li>
 </ul>
 </li>
 </ul>
 
+
+<p>Note that the same task status can be used in several different (but usually
+related) situations. For example, <code>TASK_ERROR</code> is used when the framework&rsquo;s
+principal is not authorized to launch tasks as a certain user, and also when the
+task description is syntactically malformed (e.g., the task ID contains an
+invalid character). The <code>reason</code> field of the <code>TaskStatus</code> message can be used
+to disambiguate between such situations.</p>
 
 <h2>Dealing with Partitioned or Failed Agents</h2>
 
@@ -362,18 +369,18 @@ network partitions may not be true in some environments.</li>
 </ul>
 </li>
 <li><p>If the agent fails health checks, it is scheduled for removal. The removals can
-be rate limited by the master (see <code>---slave_removal_rate_limit</code> master flag)
+be rate limited by the master (see <code>--slave_removal_rate_limit</code> master flag)
 to avoid removing a slew of slaves at once (e.g., during a network partition).</p></li>
-<li><p>When it is time to remove an agent, the master marks the agent as &ldquo;removed&rdquo; in
-the master&rsquo;s <a href="/documentation/latest/./replicated-log-internals/">durable state</a> (this will survive
-master failover). The master sends a <code>slaveLost</code> callback to every registered
-scheduler driver; it also sends <code>TASK_LOST</code> status updates for every task that
-was running on the removed agent.</p>
+<li><p>When it is time to remove an agent, the master removes the agent from the list
+of registered slaves in the master&rsquo;s <a href="/documentation/latest/./replicated-log-internals/">durable state</a>
+(this will survive master failover). The master sends a <code>slaveLost</code> callback
+to every registered scheduler driver; it also sends <code>TASK_LOST</code> status updates
+for every task that was running on the removed agent.</p>
 
-<blockquote><p>NOTE: Neither the callback nor the status updates are delivered reliably by
-  the master. For example, if the master or scheduler fails over or there is a
-  network connectivity issue during the delivery of these messages, they will
-  not be resent.</p></blockquote></li>
+<blockquote><p>NOTE: Neither the callback nor the task status updates are delivered
+  reliably by the master. For example, if the master or scheduler fails over
+  or there is a network connectivity issue during the delivery of these
+  messages, they will not be resent.</p></blockquote></li>
 <li><p>Meanwhile, any tasks at the removed agent will continue to run and the agent
 will repeatedly attempt to reconnect to the master. Once a removed agent is
 able to reconnect to the master (e.g., because the network partition has
@@ -383,13 +390,13 @@ executors.  Persistent volumes and dynamic reservations on the removed agent
 will be preserved.</p>
 
 <ul>
-<li>A removed agent can rejoin the cluster by starting a new copy of the
-<code>mesos-slave</code> process. When a removed agent is shutdown by the master, Mesos
-ensures that the next time <code>mesos-slave</code> is started (using the same work
-directory at the same host), the agent will receive a new agent ID; in
-effect, the agent will be treated as a newly joined agent. The agent will
-retain any previously created persistent volumes and dynamic reservations,
-although the agent ID associated with these resources will have changed.</li>
+<li>A removed agent can rejoin the cluster by restarting the <code>mesos-slave</code>
+process. When a removed agent is shutdown by the master, Mesos ensures that
+the next time <code>mesos-slave</code> is started (using the same work directory at the
+same host), the agent will receive a new agent ID; in effect, the agent will
+be treated as a newly joined agent. The agent will retain any previously
+created persistent volumes and dynamic reservations, although the agent ID
+associated with these resources will have changed.</li>
 </ul>
 </li>
 </ul>

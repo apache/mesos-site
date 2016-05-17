@@ -94,7 +94,7 @@
 
 <p>Note that we refer to this endpoint with its suffix &ldquo;/scheduler&rdquo; in the rest of this document. This endpoint accepts HTTP POST requests with data encoded as JSON (Content-Type: application/json) or binary Protobuf (Content-Type: application/x-protobuf). The first request that a scheduler sends to &ldquo;/scheduler&rdquo; endpoint is called SUBSCRIBE and results in a streaming response (&ldquo;200 OK&rdquo; status code with Transfer-Encoding: chunked). <strong>Schedulers are expected to keep the subscription connection open as long as possible (barring errors in network, software, hardware etc.) and incrementally process the response</strong> (NOTE: HTTP client libraries that can only parse the response after the connection is closed cannot be used). For the encoding used, please refer to <strong>Events</strong> section below.</p>
 
-<p>All the subsequent (non subscribe) requests to &ldquo;/scheduler&rdquo; endpoint (see details below in <strong>Calls</strong> section) must be sent using a different connection(s) than the one being used for subscription. Master responds to these HTTP POST requests with &ldquo;202 Accepted&rdquo; status codes (or, for unsuccessful requests, with 4xx or 5xx status codes; details in later sections). The &ldquo;202 Accepted&rdquo; response means that a request has been accepted for processing, not that the processing of the request has been completed. The request might or might not be acted upon by Mesos (e.g., master fails during the processing of the request). Any asynchronous responses from these requests will be streamed on the long-lived subscription connection.</p>
+<p>All the subsequent (non-<code>SUBSCRIBE</code>) requests to &ldquo;/scheduler&rdquo; endpoint (see details below in <strong>Calls</strong> section) must be sent using a different connection(s) than the one being used for subscription. Master responds to these HTTP POST requests with &ldquo;202 Accepted&rdquo; status codes (or, for unsuccessful requests, with 4xx or 5xx status codes; details in later sections). The &ldquo;202 Accepted&rdquo; response means that a request has been accepted for processing, not that the processing of the request has been completed. The request might or might not be acted upon by Mesos (e.g., master fails during the processing of the request). Any asynchronous responses from these requests will be streamed on the long-lived subscription connection.</p>
 
 <h2>Calls</h2>
 
@@ -160,7 +160,6 @@ Connection: close
 
 {
    "type"       : "SUBSCRIBE",
-
    "subscribe"  : {
       "framework_info"  : {
         "user" :  "foo",
@@ -200,7 +199,7 @@ with a <code>SUBSCRIBED</code> event. For further details, see the <strong>Disco
 
 <h3>TEARDOWN</h3>
 
-<p>Sent by the scheduler when it wants to tear itself down. When Mesos receives this request it will shut down all executors (and consequently kill tasks) and remove persistent volumes (if requested). It then removes the framework and closes all open connections from this scheduler to the Master.</p>
+<p>Sent by the scheduler when it wants to tear itself down. When Mesos receives this request it will shut down all executors (and consequently kill tasks). It then removes the framework and closes all open connections from this scheduler to the Master.</p>
 
 <pre><code>TEARDOWN Request (JSON):
 POST /api/v1/scheduler  HTTP/1.1
@@ -211,7 +210,7 @@ Mesos-Stream-Id: 130ae4e3-6b13-4ef4-baa9-9f2e85c3e9af
 
 {
   "framework_id"    : {"value" : "12220-3440-12532-2345"},
-  "type"            : "TEARDOWN",
+  "type"            : "TEARDOWN"
 }
 
 TEARDOWN Response:
@@ -286,7 +285,7 @@ Mesos-Stream-Id: 130ae4e3-6b13-4ef4-baa9-9f2e85c3e9af
 
 {
   "framework_id"    : {"value" : "12220-3440-12532-2345"},
-  "type"            : "REVIVE",
+  "type"            : "REVIVE"
 }
 
 REVIVE Response:
@@ -295,7 +294,7 @@ HTTP/1.1 202 Accepted
 
 <h3>KILL</h3>
 
-<p>Sent by the scheduler to kill a specific task. If the scheduler has a custom executor, the kill is forwarded to the executor and it is up to the executor to kill the task and send a <code>TASK_KILLED</code> (or <code>TASK_FAILED</code>) update. Mesos releases the resources for a task once it receives a terminal update for the task. If the task is unknown to the master, a <code>TASK_LOST</code> will be generated.</p>
+<p>Sent by the scheduler to kill a specific task. If the scheduler has a custom executor, the kill is forwarded to the executor; it is up to the executor to kill the task and send a <code>TASK_KILLED</code> (or <code>TASK_FAILED</code>) update. Mesos releases the resources for a task once it receives a terminal update for the task. If the task is unknown to the master, a <code>TASK_LOST</code> will be generated.</p>
 
 <pre><code>KILL Request (JSON):
 POST /api/v1/scheduler  HTTP/1.1
@@ -436,7 +435,7 @@ Mesos-Stream-Id: 130ae4e3-6b13-4ef4-baa9-9f2e85c3e9af
       {
          "agent_id"       : {"value" : "12220-3440-12532-S1233"},
          "resources"      : {}
-      },
+      }
   ]
 }
 
@@ -506,7 +505,6 @@ HTTP/1.1 202 Accepted
         "source"    : "SOURCE_EXECUTOR",
         "uuid"      : "adfadfadbhgvjayd23r2uahj",
         "bytes"     : "uhdjfhuagdj63d7hadkf"
-
       }
   }
 }
@@ -514,7 +512,7 @@ HTTP/1.1 202 Accepted
 
 <h3>MESSAGE</h3>
 
-<p>A custom message generated by the executor that is forwarded to the scheduler by the master. Note that this message is not interpreted by Mesos and is only forwarded (without reliability guarantees) to the scheduler. It is up to the executor to retry if the message is dropped  for any reason. Note that <code>data</code> is raw bytes encoded as Base64.</p>
+<p>A custom message generated by the executor that is forwarded to the scheduler by the master. This message is not interpreted by Mesos and is only forwarded (without reliability guarantees) to the scheduler. It is up to the executor to retry if the message is dropped for any reason. Note that <code>data</code> is raw bytes encoded as Base64.</p>
 
 <pre><code>MESSAGE Event (JSON)
 
@@ -531,7 +529,7 @@ HTTP/1.1 202 Accepted
 
 <h3>FAILURE</h3>
 
-<p>Sent by the master when an agent is removed from the cluster (e.g., failed health checks) or when an executor is terminated. Note that, this event coincides with receipt of terminal <code>UPDATE</code> events for any active tasks belonging to the agent or executor and receipt of <code>RESCIND</code> events for any outstanding offers belonging to the agent. Note that there is no guaranteed order between the <code>FAILURE</code>, <code>UPDATE</code> and <code>RESCIND</code> events.</p>
+<p>Sent by the master when an agent is removed from the cluster (e.g., failed health checks) or when an executor is terminated. This event coincides with receipt of terminal <code>UPDATE</code> events for any active tasks belonging to the agent or executor and receipt of <code>RESCIND</code> events for any outstanding offers belonging to the agent. Note that there is no guaranteed order between the <code>FAILURE</code>, <code>UPDATE</code>, and <code>RESCIND</code> events.</p>
 
 <pre><code>FAILURE Event (JSON)
 
@@ -567,7 +565,7 @@ HTTP/1.1 202 Accepted
 
 &lt;event-length&gt;
 {
-  "type"    : "HEARTBEAT",
+  "type"    : "HEARTBEAT"
 }
 </code></pre>
 
@@ -578,14 +576,14 @@ HTTP/1.1 202 Accepted
 
 <p>If master realizes that the subscription connection is broken, it marks the scheduler as &ldquo;disconnected&rdquo; and starts a failover timeout (failover timeout is part of FrameworkInfo). It also drops any pending events in its queue. Additionally, it rejects subsequent non-subscribe HTTP requests to &ldquo;/scheduler&rdquo; with &ldquo;403 Forbidden&rdquo;, until the scheduler subscribes again with &ldquo;/scheduler&rdquo;. If the scheduler <em>does not</em> re-subscribe within the failover timeout, the master considers the scheduler gone forever and shuts down all its executors, thus killing all its tasks. Therefore, all production schedulers are recommended to use a high value (e.g., 4 weeks) for the failover timeout.</p>
 
-<p>NOTE: To force shutdown a framework before the framework timeout elapses (e.g., during framework development and testing), either the framework can send <code>TEARDOWN</code> call (part of Scheduler API) or an operator can use the &ldquo;/master/teardown&rdquo; endpoint (part of Operator API).</p>
+<p>NOTE: To force shutdown of a framework before the failover timeout elapses (e.g., during framework development and testing), either the framework can send the <code>TEARDOWN</code> call (part of the Scheduler API) or an operator can use the &ldquo;/master/teardown&rdquo; endpoint (part of the Operator API).</p>
 
-<p>If the scheduler realizes that its subscription connection to &ldquo;/scheduler&rdquo; is broken or the master has changed (e.g., via ZooKeeper) it should resubscribe (using a backoff strategy). This is done by sending a <code>SUBSCRIBE</code> request (with framework ID set) on a <strong>new</strong> persistent connection to the &ldquo;/scheduler&rdquo; endpoint on the (possibly new) master. It should not send new non-subscribe HTTP requests to &ldquo;/scheduler&rdquo; unless it receives a <code>SUBSCRIBED</code> event; such requests will result in &ldquo;403 Forbidden&rdquo;.</p>
+<p>If the scheduler realizes that its subscription connection to &ldquo;/scheduler&rdquo; is broken or the master has changed (e.g., via ZooKeeper), it should resubscribe (using a backoff strategy). This is done by sending a <code>SUBSCRIBE</code> request (with framework ID set) on a <strong>new</strong> persistent connection to the &ldquo;/scheduler&rdquo; endpoint on the (possibly new) master. It should not send new non-subscribe HTTP requests to &ldquo;/scheduler&rdquo; unless it receives a <code>SUBSCRIBED</code> event; such requests will result in &ldquo;403 Forbidden&rdquo;.</p>
 
-<p>If the master does not realize that the subscription connection is broken, but the scheduler realizes it, the scheduler might open a new persistent connection to
+<p>If the master does not realize that the subscription connection is broken but the scheduler realizes it, the scheduler might open a new persistent connection to
 &ldquo;/scheduler&rdquo; via <code>SUBSCRIBE</code>. In this case, the master closes the existing subscription connection and allows subscription on the new connection. The invariant here is that only one persistent subscription connection for a given framework ID is allowed on the master.</p>
 
-<p>The master uses the <code>Mesos-Stream-Id</code> header to distinguish scheduler instances from one another. In the case of highly-available schedulers with multiple instances, this can prevent unwanted behavior in certain failure scenarios. Each unique <code>Mesos-Stream-Id</code> is valid only for the life of a single subscription connection. Each response to a <code>SUBSCRIBE</code> request contains a <code>Mesos-Stream-Id</code>, and this ID must be included with all subsequent non-subscribe calls sent over that subscription connection. Whenever a new subscription connection is established, a new stream ID is generated and should be used for the life of that connection.</p>
+<p>The master uses the <code>Mesos-Stream-Id</code> header to distinguish scheduler instances from one another. In the case of highly available schedulers with multiple instances, this can prevent unwanted behavior in certain failure scenarios. Each unique <code>Mesos-Stream-Id</code> is valid only for the life of a single subscription connection. Each response to a <code>SUBSCRIBE</code> request contains a <code>Mesos-Stream-Id</code>, and this ID must be included with all subsequent non-subscribe calls sent over that subscription connection. Whenever a new subscription connection is established, a new stream ID is generated and should be used for the life of that connection.</p>
 
 <h3>Network partitions</h3>
 
@@ -637,7 +635,7 @@ Connection: keep-alive
 }
 </code></pre>
 
-<p>If the scheduler knows the list of master&rsquo;s hostnames for a cluster, it could use this mechanism to find the leading master to subscribe with. Alternatively, the scheduler could use a pure language library that detects the leading master given a ZooKeeper (or etcd) URL. For a <code>C++</code> library that does ZooKeeper based master detection please look at <code>src/scheduler/scheduler.cpp</code>.</p>
+<p>If the scheduler knows the list of master&rsquo;s hostnames for a cluster, it could use this mechanism to find the leading master to subscribe with. Alternatively, the scheduler could use a library that detects the leading master given a ZooKeeper (or etcd) URL. For a C++ library that does ZooKeeper based master detection please look at <code>src/scheduler/scheduler.cpp</code>.</p>
 
 	</div>
 </div>

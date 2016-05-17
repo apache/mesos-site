@@ -94,7 +94,7 @@
 
 <p>Note that we refer to this endpoint with its suffix &ldquo;/executor&rdquo; in the rest of this document. This endpoint accepts HTTP POST requests with data encoded as JSON (Content-Type: application/json) or binary Protobuf (Content-Type: application/x-protobuf). The first request that the executor sends to &ldquo;/executor&rdquo; endpoint is called SUBSCRIBE and results in a streaming response (&ldquo;200 OK&rdquo; status code with Transfer-Encoding: chunked). <strong>Executors are expected to keep the subscription connection open as long as possible (barring errors in network, agent process restarts, software bugs etc.) and incrementally process the response</strong> (NOTE: HTTP client libraries that can only parse the response after the connection is closed cannot be used). For the encoding used, please refer to <strong>Events</strong> section below.</p>
 
-<p>All the subsequent (non subscribe) requests to &ldquo;/executor&rdquo; endpoint (see details below in <strong>Calls</strong> section) must be sent using a different connection(s) than the one being used for subscription. Agent responds to these HTTP POST requests with &ldquo;202 Accepted&rdquo; status codes (or, for unsuccessful requests, with 4xx or 5xx status codes; details in later sections). The &ldquo;202 Accepted&rdquo; response means that a request has been accepted for processing, not that the processing of the request has been completed. The request might or might not be acted upon by Mesos (e.g., agent fails during the processing of the request). Any asynchronous responses from these requests will be streamed on the long-lived subscription connection.</p>
+<p>All the subsequent (non-<code>SUBSCRIBE</code>) requests to the &ldquo;/executor&rdquo; endpoint (see details below in <strong>Calls</strong> section) must be sent using a different connection(s) than the one being used for subscription. The agent responds to these HTTP POST requests with &ldquo;202 Accepted&rdquo; status codes (or, for unsuccessful requests, with 4xx or 5xx status codes; details in later sections). The &ldquo;202 Accepted&rdquo; response means that a request has been accepted for processing, not that the processing of the request has been completed. The request might or might not be acted upon by Mesos (e.g., agent fails during the processing of the request). Any asynchronous responses from these requests will be streamed on the long-lived subscription connection.</p>
 
 <h2>Calls</h2>
 
@@ -110,7 +110,7 @@
 
 <ul>
 <li><strong>Unacknowledged Status Updates</strong>: The executor is expected to maintain a list of status updates not acknowledged by the agent via the <code>ACKNOWLEDGE</code> events.</li>
-<li><strong>Unacknowledged Tasks</strong>: The executor is expected to maintain a list of tasks that have not been acknowledged by the agent. A task is considered acknowledged if atleast one of the status updates for this task is acknowledged by the slave.</li>
+<li><strong>Unacknowledged Tasks</strong>: The executor is expected to maintain a list of tasks that have not been acknowledged by the agent. A task is considered acknowledged if at least one of the status updates for this task is acknowledged by the agent.</li>
 </ul>
 
 
@@ -399,7 +399,7 @@ HTTP/1.1 202 Accepted
 <li><code>MESOS_DIRECTORY</code>: Path to the working directory for the executor.</li>
 <li><code>MESOS_AGENT_ENDPOINT</code>: Agent endpoint i.e. ip:port to be used by the executor to connect to the agent.</li>
 <li><code>MESOS_CHECKPOINT</code>: If set to true, denotes that framework has checkpointing enabled.</li>
-<li><code>MESOS_EXECUTOR_SHUTDOWN_GRACE_PERIOD</code>: Amount of time the agent would wait for an executor to shut down (e.g., 60 secs, 3mins etc.) after sending a <code>SHUTDOWN</code> event.</li>
+<li><code>MESOS_EXECUTOR_SHUTDOWN_GRACE_PERIOD</code>: Amount of time the agent would wait for an executor to shut down (e.g., 60secs, 3mins etc.) after sending a <code>SHUTDOWN</code> event.</li>
 </ul>
 
 
@@ -431,7 +431,7 @@ HTTP/1.1 202 Accepted
 
 <ul>
 <li><strong>reconnect</strong> (default): This mode allows the agent to reconnect with any of it’s old live executors provided the framework has enabled checkpointing. The recovery of the agent is only marked complete once all the disconnected executors have connected and hung executors have been destroyed. Hence, it is mandatory that every executor retries at least once within the interval (<code>MESOS_SUBSCRIPTION_BACKOFF_MAX</code>) to ensure it is not shutdown by the agent due to being hung/unresponsive.</li>
-<li><strong>cleanup</strong> : This mode kills any old live executors and then exits the agent. This is usually done by operators when making a non-compatible slave/executor upgrade. Upon receiving a <code>SUBSCRIBE</code> request from the executor of a framework with checkpointing enabled, the agent would send it a <code>SHUTDOWN</code> event as soon as it reconnects. For hung executors, the agent would wait for a duration of <code>--executor_shutdown_grace_period</code> (configurable at agent startup) and then forcefully kill the container where the executor is running in.</li>
+<li><strong>cleanup</strong> : This mode kills any old live executors and then exits the agent. This is usually done by operators when making a non-compatible agent/executor upgrade. Upon receiving a <code>SUBSCRIBE</code> request from the executor of a framework with checkpointing enabled, the agent would send it a <code>SHUTDOWN</code> event as soon as it reconnects. For hung executors, the agent would wait for a duration of <code>--executor_shutdown_grace_period</code> (configurable at agent startup) and then forcefully kill the container where the executor is running in.</li>
 </ul>
 
 
