@@ -1,335 +1,540 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>Apache Mesos - Authorization</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="utf-8">
+    <title>Apache Mesos - Authorization</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
-        
-        <link href="../../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
+    <link href="../../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
 
-        
+    
 
-      <!-- Google Analytics Magic -->
-      <script type="text/javascript">
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-20226872-1']);
-        _gaq.push(['_setDomainName', 'apache.org']);
-        _gaq.push(['_trackPageview']);
+    <!-- Google Analytics Magic -->
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-20226872-1']);
+    _gaq.push(['_setDomainName', 'apache.org']);
+    _gaq.push(['_trackPageview']);
 
-        (function() {
-          var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-          ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-        })();
-      </script>
-    </head>
-    <body>
-      <!-- magical breadcrumbs -->
-      <div class="topnav">
-      <ul class="breadcrumb">
-        <li>
-          <div class="dropdown">
-            <a data-toggle="dropdown" href="#">Apache Software Foundation <span class="caret"></span></a>
-            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-              <li><a href="http://www.apache.org">Apache Homepage</a></li>
-              <li><a href="http://www.apache.org/licenses/">License</a></li>
-              <li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>
-              <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
-              <li><a href="http://www.apache.org/security/">Security</a></li>
-            </ul>
-          </div>
-        </li>
-        <li><a href="http://mesos.apache.org">Apache Mesos</a></li>
-        
-        
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+  </head>
+  <body>
+    <!-- magical breadcrumbs -->
+    <div class="topnav">
+      <div class="container">
+        <ul class="breadcrumb">
+          <li>
+            <div class="dropdown">
+              <a data-toggle="dropdown" href="#">Apache Software Foundation <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                <li><a href="http://www.apache.org">Apache Homepage</a></li>
+                <li><a href="http://www.apache.org/licenses/">License</a></li>
+                <li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>
+                <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                <li><a href="http://www.apache.org/security/">Security</a></li>
+              </ul>
+            </div>
+          </li>
+
+          <li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+          
+          
           <li><a href="/documentation
 /">Documentation
 </a></li>
-        
-        
-      </ul><!-- /breadcrumb -->
-      </div>
+          
+          
+        </ul><!-- /.breadcrumb -->
+      </div><!-- /.container -->
+    </div><!-- /.topnav -->
 
-      <!-- navbar excitement -->
-      <div class="navbar navbar-static-top" role="navigation">
-        <div class="navbar-inner">
-          <div class="container">
-            <a href="/" class="logo"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo" /></a>
-          <div class="nav-collapse">
-            <ul class="nav nav-pills navbar-right">
-              <li><a href="/gettingstarted/">Getting Started</a></li>
-              <li><a href="/documentation/latest/">Documentation</a></li>
-              <li><a href="/downloads/">Downloads</a></li>
-              <li><a href="/community/">Community</a></li>
-            </ul>
-          </div>
-          </div>
-        </div>
-      </div><!-- /.navbar -->
+    <!-- navbar excitement -->
+<div class="navbar navbar-default navbar-static-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#mesos-menu" aria-expanded="false">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo"/></a>
+    </div><!-- /.navbar-header -->
 
-      <div class="container">
+    <div class="navbar-collapse collapse" id="mesos-menu">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/gettingstarted/">Getting Started</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/documentation/latest/">Documentation</a></li>
+        <li><a href="/downloads/">Downloads</a></li>
+        <li><a href="/community/">Community</a></li>
+      </ul>
+    </div><!-- /#mesos-menu -->
+  </div><!-- /.container -->
+</div><!-- /.navbar -->
 
-      <div class="row-fluid">
-	<div class="col-md-4">
-		<h4>If you're new to Mesos</h4>
-		<p>See the <a href="/gettingstarted/">getting started</a> page for more information about downloading, building, and deploying Mesos.</p>
-		
-		<h4>If you'd like to get involved or you're looking for support</h4>
-		<p>See our <a href="/community/">community</a> page for more details.</p>
-	</div>
-	<div class="col-md-8">
-		<h1>Authorization</h1>
+<div class="content">
+  <div class="container">
+    <div class="row-fluid">
+  <div class="col-md-4">
+    <h4>If you're new to Mesos</h4>
+    <p>See the <a href="/gettingstarted/">getting started</a> page for more
+       information about downloading, building, and deploying Mesos.</p>
 
-<p>Authorization currently allows</p>
+    <h4>If you'd like to get involved or you're looking for support</h4>
+    <p>See our <a href="/community/">community</a> page for more details.</p>
+  </div>
+  <div class="col-md-8">
+    <h1>Authorization</h1>
 
-<ol>
-<li>Frameworks to (re-)register with authorized <em>roles</em>.</li>
-<li>Frameworks to launch tasks/executors as authorized <em>users</em>.</li>
-<li>Authorized <em>principals</em> to teardown frameworks through the &ldquo;/teardown&rdquo; HTTP endpoint.</li>
-<li>Authorized <em>principals</em> to set and remove quotas through the &ldquo;/quota&rdquo; HTTP endpoint.</li>
-<li>Authorized <em>principals</em> to reserve and unreserve resources through the &ldquo;/reserve&rdquo; and &ldquo;/unreserve&rdquo; HTTP endpoints, as well as with the <code>RESERVE</code> and <code>UNRESERVE</code> offer operations.</li>
-<li>Authorized <em>principals</em> to create and destroy persistent volumes through the &ldquo;/create-volumes&rdquo; and &ldquo;/destroy-volumes&rdquo; HTTP endpoints, as well as with the <code>CREATE</code> and <code>DESTROY</code> offer operations.</li>
-<li>Authorized <em>principals</em> to update weights through the &ldquo;/weights&rdquo; HTTP endpoint.</li>
-</ol>
+<p>In Mesos, the authorization subsystem allows the operator to configure the
+actions that certain principals are allowed to perform. For example, the
+operator can use authorization to ensure that principal <code>foo</code> can only register
+frameworks in role <code>bar</code>, and no other principals can register frameworks in
+any role.</p>
 
+<p>A reference implementation <em>local authorizer</em> provides basic security for most
+use cases. This authorizer is configured using Access Control Lists (ACLs).
+Alternative implementations could express their authorization rules in
+different ways. The local authorizer is used if the
+<a href="/documentation/latest/./configuration/"><code>--authorizers</code></a> flag is not specified (or manually set to
+the default value <code>local</code>) and ACLs are specified via the
+<a href="/documentation/latest/./configuration/"><code>--acls</code></a> flag.</p>
 
-<h2>ACLs</h2>
+<p>This document is divided into two main sections. The first section explores the
+concepts necessary to successfully configure the local authorizer. The second
+briefly discusses how to implement a custom authorizer; this section is not
+directed at operators but at engineers who wish to build their own authorizer
+back end.</p>
 
-<p>Authorization is implemented via Access Control Lists (ACLs). For each of the above cases, ACLs can be used to restrict access. Operators can setup ACLs in JSON format when starting the master (see <a href="#aclsConfiguration">Configuring Authorization</a> for details).</p>
+<h2>Local Authorizer</h2>
 
-<p>Each ACL specifies a set of <code>Subjects</code> that can perform an <code>Action</code> on a set of <code>Objects</code>.</p>
+<h3>Role vs. Principal</h3>
 
-<p>The currently supported <code>Actions</code> are:</p>
+<p>A principal identifies an entity (i.e., a framework or an operator) that
+interacts with Mesos. A role, on the other hand, is used to associate resources
+with frameworks in various ways. A useful analogy can be made with user
+management in the Unix world: principals correspond to usernames, while roles
+approximately correspond to groups. For more information about roles, see the
+<a href="/documentation/latest/./roles/">roles documentation</a>.</p>
 
-<ol>
-<li>&ldquo;register_frameworks&rdquo;: Register frameworks</li>
-<li>&ldquo;run_tasks&rdquo;: Run tasks/executors</li>
-<li>&ldquo;teardown_frameworks&rdquo;: Teardown frameworks</li>
-<li>&ldquo;set_quotas&rdquo;: Set quotas</li>
-<li>&ldquo;remove_quotas&rdquo;: Remove quotas</li>
-<li>&ldquo;reserve_resources&rdquo;: Reserve resources</li>
-<li>&ldquo;unreserve_resources&rdquo;: Unreserve resources</li>
-<li>&ldquo;create_volumes&rdquo;: Create persistent volumes</li>
-<li>&ldquo;destroy_volumes&rdquo;: Destroy persistent volumes</li>
-<li>&ldquo;update_weights&rdquo;: Update weights</li>
-</ol>
-
-
-<p>The currently supported <code>Subjects</code> are:</p>
-
-<ol>
-<li>&ldquo;principals&rdquo;
-
-<ul>
-<li>Framework principals (used by &ldquo;register_frameworks&rdquo;, &ldquo;run_tasks&rdquo;, &ldquo;reserve&rdquo;, &ldquo;unreserve&rdquo;, &ldquo;create_volumes&rdquo;, and &ldquo;destroy_volumes&rdquo; actions)</li>
-<li>Operator usernames (used by &ldquo;teardown_frameworks&rdquo;, &ldquo;set_quotas&rdquo;, &ldquo;remove_quotas&rdquo;, &ldquo;reserve&rdquo;, &ldquo;unreserve&rdquo;, &ldquo;create_volumes&rdquo;, &ldquo;destroy_volumes&rdquo;, and &ldquo;update_weights&rdquo; actions)</li>
-</ul>
-</li>
-</ol>
-
-
-<p>The currently supported <code>Objects</code> are:</p>
-
-<ol>
-<li>&ldquo;roles&rdquo;: Resource <a href="/documentation/latest/./roles/">roles</a> that frameworks can register with, <a href="/documentation/latest/./reservation/">reserve resources</a> for, or create <a href="/documentation/latest/./persistent-volume/">persistent volumes</a> for (used by &ldquo;register_frameworks&rdquo;, &ldquo;set_quotas&rdquo;, &ldquo;reserve_resources&rdquo;, and &ldquo;create_volumes&rdquo; actions).</li>
-<li>&ldquo;users&rdquo;: Unix user to launch the task/executor as (used by &ldquo;run_tasks&rdquo; actions).</li>
-<li>&ldquo;framework_principals&rdquo;: Framework principals that can be torn down by HTTP POST (used by &ldquo;teardown_frameworks&rdquo; actions).</li>
-<li>&ldquo;reserver_principals&rdquo;: Framework principals whose reserved resources can be unreserved (used by &ldquo;unreserves&rdquo; action).</li>
-<li>&ldquo;creator_principals&rdquo;: Principals whose persistent volumes can be destroyed (used by &ldquo;destroy_volumes&rdquo; action).</li>
-<li>&ldquo;quota_principals&rdquo;: Principals that set the quota to be removed (used by &ldquo;remove_quotas&rdquo; action).</li>
-</ol>
-
-
-<blockquote><p>NOTE: Both <code>Subjects</code> and <code>Objects</code> can be either an array of strings or one of the special values <code>ANY</code> or <code>NONE</code>.</p></blockquote>
-
-<h2>How does it work?</h2>
-
-<p>The Mesos master checks the ACLs to verify whether a request is authorized or not.</p>
-
-<p>For example, when a framework (re-)registers with the master, &ldquo;register_frameworks&rdquo; ACLs are checked to see if the framework (<code>FrameworkInfo.principal</code>) is authorized to receive offers for the given resource role (<code>FrameworkInfo.role</code>). If not authorized, the framework is not allowed to (re-)register and gets an <code>Error</code> message back (which aborts the scheduler driver).</p>
-
-<p>Similarly, when a framework launches a task, &ldquo;run_tasks&rdquo; ACLs are checked to see if the framework (<code>FrameworkInfo.principal</code>) is authorized to run the task/executor as the given user. If not authorized, the launch is rejected and the framework gets a <code>TASK_LOST</code>.</p>
-
-<p>In the same vein, when a user/principal attempts to teardown a framework using the &ldquo;/teardown&rdquo; HTTP endpoint on the master, &ldquo;teardown_frameworks&rdquo; ACLs are checked to see if the principal is authorized to teardown the given framework. If not authorized, the teardown is rejected and the user receives a <code>Forbidden</code> HTTP response.</p>
-
-<p>If no user/principal is provided in a request to an HTTP endpoint and authentication is disabled, the <code>ANY</code> subject is used in the authorization.</p>
-
-<p>There are couple of important things to note:</p>
-
-<ol>
-<li><p>ACLs are matched in the order that they are specified. In other words, the first matching ACL determines whether a request is authorized or not.</p></li>
-<li><p>If no ACLs match a request, whether the request is authorized or not is determined by the <code>ACLs.permissive</code> field. This is &ldquo;true&rdquo; by default &ndash; i.e., non-matching requests are authorized.</p></li>
-</ol>
-
-
-<h2>Role vs. Principal</h2>
-
-<p>A principal identifies an entity (i.e., a framework or an operator) that interacts with Mesos. A role, on the other hand, is used to associate resources with frameworks in various ways. A useful, if not entirely precise, analogy can be made with user management in the Unix world: principals correspond to usernames, while roles approximately correspond to groups. For more information about roles, see the <a href="/documentation/latest/./roles/">role documentation</a>.</p>
-
-<p>In a real-world organization, principals and roles might be used to represent various individuals or groups; for example, principals could correspond to people responsible for particular frameworks, while roles could correspond to departments within the organization which run frameworks on the cluster. To illustrate this point, consider a company that wants to allocate datacenter resources amongst multiple departments, one of which is the accounting department. Here is a possible scenario in which the accounting department launches a Mesos framework and then attempts to destroy a persistent volume:</p>
+<p>In a real-world organization, principals and roles might be used to represent
+various individuals or groups; for example, principals could correspond to
+people responsible for particular frameworks, while roles could correspond to
+departments within the organization which run frameworks on the cluster. To
+illustrate this point, consider a company that wants to allocate datacenter
+resources amongst multiple departments, one of which is the accounting
+department. Here is a possible scenario in which the accounting department
+launches a Mesos framework and then attempts to destroy a persistent volume:</p>
 
 <ul>
-<li>An accountant launches their framework, which authenticates with the Mesos master using its <code>principal</code> and <code>secret</code>. Here, let the framework principal be <code>payroll-framework</code>; this principal represents the trusted identity of the framework.</li>
-<li>The framework now sends a registration message to the master. This message includes a <code>FrameworkInfo</code> object containing a <code>principal</code> and a <code>role</code>; in this case, it will use the role <code>accounting</code>. The principal in this message must be <code>payroll-framework</code>, to match the one used by the framework for authentication.</li>
-<li>The master looks through its ACLs to see if it has a <code>RegisterFramework</code> ACL which authorizes the principal <code>payroll-framework</code> to register with the <code>accounting</code> role. It does find such an ACL, so the framework registers successfully. Now that the framework belongs to the <code>accounting</code> role, any <a href="/documentation/latest/./roles/">weights</a>, <a href="/documentation/latest/./reservation/">reservations</a>, <a href="/documentation/latest/./persistent-volume/">persistent volumes</a>, or <a href="/documentation/latest/./quota/">quota</a> associated with the accounting department&rsquo;s role will apply. This allows operators to control the resource consumption of this department.</li>
-<li>Suppose the framework has created a persistent volume on a slave which it now wishes to destroy. The framework sends an <code>ACCEPT</code> call containing an offer operation which will <code>DESTROY</code> the persistent volume.</li>
-<li>However, datacenter operators have decided that they don&rsquo;t want the accounting frameworks to delete volumes. Rather, the operators will manually remove the accounting department&rsquo;s persistent volumes to ensure that no important financial data is deleted accidentally. To accomplish this, they have set a <code>DestroyVolume</code> ACL which asserts that the principal <code>payroll-framework</code> can destroy volumes created by a <code>creator_principal</code> of <code>NONE</code>; in other words, this framework cannot destroy persistent volumes, so the operation will be refused.</li>
+<li>An accountant launches their framework, which authenticates with the Mesos
+master using its <code>principal</code> and <code>secret</code>. Here, let the framework principal
+be <code>payroll-framework</code>; this principal represents the trusted identity of the
+framework.</li>
+<li>The framework now sends a registration message to the master. This message
+includes a <code>FrameworkInfo</code> object containing a <code>principal</code> and a <code>role</code>; in
+this case, it will use the role <code>accounting</code>. The principal in this message
+must be <code>payroll-framework</code>, to match the one used by the framework for
+authentication.</li>
+<li>The master consults the local authorizer, which in turn looks through its ACLs
+to see if it has a <code>RegisterFramework</code> ACL which authorizes the principal
+<code>payroll-framework</code> to register with the <code>accounting</code> role. It does find such
+an ACL, the framework registers successfully. Now that the framework belongs
+to the <code>accounting</code> role, any <a href="/documentation/latest/./roles/">weights</a>,
+<a href="/documentation/latest/./reservation/">reservations</a>, <a href="/documentation/latest/./persistent-volume/">persistent volumes</a>,
+or <a href="/documentation/latest/./quota/">quota</a> associated with the accounting department&rsquo;s role will
+apply. This allows operators to control the resource consumption of this
+department.</li>
+<li>Suppose the framework has created a persistent volume on an agent which it
+now wishes to destroy. The framework sends an <code>ACCEPT</code> call containing an
+offer operation which will <code>DESTROY</code> the persistent volume.</li>
+<li>However, datacenter operators have decided that they don&rsquo;t want the accounting
+frameworks to delete volumes. Rather, the operators will manually remove the
+accounting department&rsquo;s persistent volumes to ensure that no important
+financial data is deleted accidentally. To accomplish this, they have set a
+<code>DestroyVolume</code> ACL which asserts that the principal <code>payroll-framework</code> can
+destroy volumes created by a <code>creator_principal</code> of <code>NONE</code>; in other words,
+this framework cannot destroy persistent volumes, so the operation will be
+refused.</li>
 </ul>
 
 
-<h2>Examples</h2>
+<h3>ACLs</h3>
 
-<ol>
-<li><p>Principals <code>foo</code> and <code>bar</code> can run tasks as the agent operating system user <code>alice</code> and no other user. No other principals can run tasks.</p>
+<p>When authorizing an action, the local authorizer proceeds through a list of
+relevant rules until it finds one that can either grant or deny permission to
+the subject making the request. These rules are configured with Access Control
+Lists (ACLs) in the case of the local authorizer. The ACLs are defined with a
+JSON-based language via the <a href="/documentation/latest/./configuration/"><code>--acls</code></a> flag.</p>
 
-<pre><code> {
-   "permissive": false,
-   "run_tasks": [
-                  {
-                    "principals": { "values": ["foo", "bar"] },
-                    "users": { "values": ["alice"] }
-                  }
-                ]
- }
-</code></pre></li>
-<li><p>Principal <code>foo</code> can run tasks only as the agent operating system user <code>guest</code> and no other user. Any other principal (or framework without a principal) can run tasks as any user.</p>
+<p>Each ACL consist of an array of JSON objects. Each of these objects has two
+entries. The first, <code>principals</code>, is common to all actions and describes the
+subjects which wish to perform the given action. The second entry varies among
+actions and describes the object on which the action will be executed. Both
+entries are specified with the same type of JSON object, known as <code>Entity</code>. The
+local authorizer works by comparing <code>Entity</code> objects, so understanding them is
+key to writing good ACLs.</p>
 
-<pre><code> {
-   "run_tasks": [
-                  {
-                    "principals": { "values": ["foo"] },
-                    "users": { "values": ["guest"] }
-                  },
-                  {
-                    "principals": { "values": ["foo"] },
-                    "users": { "type": "NONE" }
-                  }
-                ]
- }
-</code></pre></li>
-<li><p>Any principal can run tasks as the agent operating system user <code>guest</code>. Tasks cannot be run as any other user.</p>
+<p>An <code>Entity</code> is essentially a container which can either hold a particular value
+or specify the special types <code>ANY</code> or <code>NONE</code>.</p>
 
-<pre><code> {
-   "permissive": false,
-   "run_tasks": [
-                  {
-                    "principals": { "type": "ANY" },
-                    "users": { "values": ["guest"] }
-                  }
-                ]
- }
-</code></pre></li>
-<li><p>No principal can run tasks as the agent operating system user <code>root</code>. Any principal (or framework without a principal) can run tasks as any other user.</p>
+<p>A global field which affects all ACLs can be set. This field is called
+<code>permissive</code> and it defines the behavior when no ACL applies to the request
+made. If set to <code>true</code> it will allow by default all non matching requests, if
+set to <code>false</code> it will reject all non matching requests.</p>
 
-<pre><code> {
-   "run_tasks": [
-                  {
-                    "principals": { "type": "NONE" },
-                    "users": { "values": ["root"] }
-                  }
-                ]
- }
-</code></pre></li>
-<li><p>Principal <code>foo</code> can register frameworks with the <code>analytics</code> and <code>ads</code> roles and no other role. Any other principal (or framework without a principal) can register frameworks with any role.</p>
+<p>More information about the structure of the ACLs can be found in
+<a href="https://github.com/apache/mesos/blob/master/include/mesos/authorizer/acls.proto">their definition</a>
+inside the Mesos source code.</p>
 
-<pre><code> {
-   "register_frameworks": [
-                            {
-                              "principals": {
-                                "values": ["foo"]
-                              },
-                              "roles": {
-                                "values": ["analytics", "ads"]
-                              }
-                            },
-                            {
-                              "principals": {
-                                "values": ["foo"]
-                              },
-                              "roles": {
-                                "type": "NONE"
-                              }
-                            }
-                          ]
- }
-</code></pre></li>
-<li><p>Only principal <code>foo</code> and no one else can register frameworks with the <code>analytics</code> role. Any other principal (or framework without a principal) can register frameworks with any other role.</p>
+<p>Note that ACLs are compared in the order that they are specified. In other
+words, if an ACL allows some action and a later ACL forbids it, the action is
+allowed; likewise, if the ACL forbidding the action appears earlier than the
+one allowing the action, the action is forbidden. If no ACLs match a request,
+the request is authorized if the ACLs are permissive (which is the default
+behavior). If <code>permissive</code> is explicitly set to false, all non-matching requests
+are declined.</p>
 
-<pre><code> {
-   "register_frameworks": [
-                            {
-                              "principals": {
-                                "values": ["foo"]
-                              },
-                              "roles": {
-                                "values": ["analytics"]
-                              }
-                            },
-                            {
-                              "principals": {
-                                "type": "NONE"
-                              },
-                              "roles": {
-                                "values": ["analytics"]
-                              }
-                            }
-                          ]
- }
-</code></pre></li>
-<li><p>Principal <code>foo</code> can register frameworks with the <code>analytics</code> role and no other role. No other principal can register frameworks with any role, including <code>*</code>.</p>
+<h3>Authorizable Actions</h3>
 
-<pre><code> {
-   "permissive": false,
-   "register_frameworks": [
-                            {
-                              "principals": {
-                                "values": ["foo"]
-                              },
-                              "roles": {
-                                "values": ["analytics"]
-                              }
-                            }
-                          ]
- }
-</code></pre></li>
-<li><p>The <code>ops</code> principal can teardown any framework using the &ldquo;/teardown&rdquo; HTTP endpoint. No other principal can teardown any frameworks.</p>
+<p>Currently the local authorizer configuration format supports the following
+entries, each representing an authorizable action:</p>
 
-<pre><code> {
-   "permissive": false,
-   "teardown_frameworks": [
-                            {
-                              "principals": {
-                                "values": ["ops"]
-                              },
-                              "framework_principals": {
-                                "type": "ANY"
-                              }
-                            }
-                          ]
- }
-</code></pre></li>
-<li><p>The principal <code>foo</code> can reserve resources for any role, and no other principal can reserve resources.</p>
+<table>
+<thead>
+<tr>
+<th>Action Name</th>
+<th>Subject</th>
+<th>Object</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>register_frameworks</code></td>
+<td>Framework principal.</td>
+<td>Resource <a href="/documentation/latest/./roles/">roles</a> of the framework.</td>
+<td>(Re-)registering of frameworks.</td>
+</tr>
+<tr>
+<td><code>run_tasks</code></td>
+<td>Framework principal.</td>
+<td>UNIX user to launch the task as.</td>
+<td>Launching tasks/executors by a framework.</td>
+</tr>
+<tr>
+<td><code>teardown_frameworks</code></td>
+<td>Operator username.</td>
+<td>Principals whose frameworks can be shutdown by the operator.</td>
+<td>Tearing down frameworks.</td>
+</tr>
+<tr>
+<td><code>reserve_resources</code></td>
+<td>Framework principal or Operator username.</td>
+<td>Resource role of the reservation.</td>
+<td><a href="/documentation/latest/./reservation/">Reserving</a> resources.</td>
+</tr>
+<tr>
+<td><code>unreserve_resources</code></td>
+<td>Framework principal or Operator username.</td>
+<td>Principals whose resources can be unreserved by the operator.</td>
+<td><a href="/documentation/latest/./reservation/">Unreserving</a> resources.</td>
+</tr>
+<tr>
+<td><code>create_volumes</code></td>
+<td>Framework principal or Operator username.</td>
+<td>Resource role of the volume.</td>
+<td>Creating <a href="/documentation/latest/./persistent-volumes/">volumes</a>.</td>
+</tr>
+<tr>
+<td><code>destroy_volumes</code></td>
+<td>Framework principal or Operator username.</td>
+<td>Principals whose volumes can be destroyed by the operator.</td>
+<td>Destroying <a href="/documentation/latest/./persistent-volumes/">volumes</a>.</td>
+</tr>
+<tr>
+<td><code>get_quotas</code></td>
+<td>Operator username.</td>
+<td>Resource role whose quota status will be queried.</td>
+<td>Querying <a href="/documentation/latest/./quota/">quota</a> status for roles.</td>
+</tr>
+<tr>
+<td><code>update_quotas</code></td>
+<td>Operator username.</td>
+<td>Resource role whose quota will be updated.</td>
+<td>Modifying <a href="/documentation/latest/./quota/">quotas</a> for roles.</td>
+</tr>
+<tr>
+<td><code>update_weights</code></td>
+<td>Operator username.</td>
+<td>Resource roles whose weights can be updated by the operator.</td>
+<td>Updating weights.</td>
+</tr>
+<tr>
+<td><code>view_framework</code></td>
+<td>UNIX user of whom executors can be viewed.</td>
+<td><code>Framework_Info</code> which can be viewed.</td>
+<td>Filtering http endpoints.</td>
+</tr>
+<tr>
+<td><code>view_executor</code></td>
+<td>UNIX user of whom executors can be viewed.</td>
+<td><code>Executor_Info</code> and <code>Framework_Info</code> which can be viewed.</td>
+<td>Filtering http endpoints.</td>
+</tr>
+<tr>
+<td><code>view_task</code></td>
+<td>UNIX user of whom tasks can be viewed.</td>
+<td>(<code>Task</code> or <code>Task_Info</code>) and <code>Framework_Info</code> which can be viewed.</td>
+<td>Filtering http endpoints.</td>
+</tr>
+</tbody>
+</table>
 
-<pre><code> {
-   "permissive": false,
-   "reserve_resources": [
-                          {
-                            "principals": {
-                              "values": ["foo"]
-                            },
-                            "roles": {
-                              "type": "ANY"
-                            }
-                          }
-                        ]
- }
-</code></pre></li>
-<li><p>The principal <code>foo</code> cannot reserve resources, and any other principal (or framework without a principal) can reserve resources for any role.</p>
 
-<pre><code>{
+<h3>Examples</h3>
+
+<p>Consider for example the following ACL: Only principal <code>foo</code> can register
+frameworks within the <code>analytics</code> role. All principals can register to any
+other role (including the principal <code>foo</code> since permissive is the default
+behavior).</p>
+
+<pre><code class="json">{
+  "register_frameworks": [
+                           {
+                             "principals": {
+                               "values": ["foo"]
+                             },
+                             "roles": {
+                               "values": ["analytics"]
+                             }
+                           },
+                           {
+                             "principals": {
+                               "type": "NONE"
+                             },
+                             "roles": {
+                               "values": ["analytics"]
+                             }
+                           }
+                         ]
+}
+</code></pre>
+
+<p>Principal <code>foo</code> can register frameworks with the <code>analytics</code> and <code>ads</code> roles
+and no other role. Any other principal (or framework without a principal) can
+register frameworks with any role.</p>
+
+<pre><code class="json">{
+  "register_frameworks": [
+                           {
+                             "principals": {
+                               "values": ["foo"]
+                             },
+                             "roles": {
+                               "values": ["analytics", "ads"]
+                             }
+                           },
+                           {
+                             "principals": {
+                               "values": ["foo"]
+                             },
+                             "roles": {
+                               "type": "NONE"
+                             }
+                           }
+                         ]
+}
+</code></pre>
+
+<p>Only principal <code>foo</code> and no one else can register frameworks with the
+<code>analytics</code> role. Any other principal (or framework without a principal) can
+register frameworks with any other role.</p>
+
+<pre><code class="json">{
+  "register_frameworks": [
+                           {
+                             "principals": {
+                               "values": ["foo"]
+                             },
+                             "roles": {
+                               "values": ["analytics"]
+                             }
+                           },
+                           {
+                             "principals": {
+                               "type": "NONE"
+                             },
+                             "roles": {
+                               "values": ["analytics"]
+                             }
+                           }
+                         ]
+}
+</code></pre>
+
+<p>Principal <code>foo</code> can register frameworks with the <code>analytics</code> role and no other
+role. No other principal can register frameworks with any role, including <code>*</code>.</p>
+
+<pre><code class="json">{
+  "permissive": false,
+  "register_frameworks": [
+                           {
+                             "principals": {
+                               "values": ["foo"]
+                             },
+                             "roles": {
+                               "values": ["analytics"]
+                             }
+                           }
+                         ]
+}
+</code></pre>
+
+<p>In the following example <code>permissive</code> is set to <code>false</code>; hence, principals can
+only run tasks as operating system users <code>guest</code> or <code>bar</code>, but not as any other
+user.</p>
+
+<pre><code class="json">{
+  "permissive": false,
+  "run_tasks": [
+                 {
+                   "principals": { "type": "ANY" },
+                   "users": { "values": ["guest", "bar"] }
+                 }
+               ]
+}
+</code></pre>
+
+<p>Principals <code>foo</code> and <code>bar</code> can run tasks as the agent operating system user
+<code>alice</code> and no other user. No other principal can run tasks.</p>
+
+<pre><code class="json">{
+  "permissive": false,
+  "run_tasks": [
+                 {
+                   "principals": { "values": ["foo", "bar"] },
+                   "users": { "values": ["alice"] }
+                 }
+               ]
+}
+</code></pre>
+
+<p>Principal <code>foo</code> can run tasks only as the agent operating system user <code>guest</code>
+and no other user. Any other principal (or framework without a principal) can
+run tasks as any user.</p>
+
+<pre><code class="json">{
+  "run_tasks": [
+                 {
+                   "principals": { "values": ["foo"] },
+                   "users": { "values": ["guest"] }
+                 },
+                 {
+                   "principals": { "values": ["foo"] },
+                   "users": { "type": "NONE" }
+                 }
+               ]
+}
+</code></pre>
+
+<p>No principal can run tasks as the agent operating system user <code>root</code>. Any
+principal (or framework without a principal) can run tasks as any other user.</p>
+
+<pre><code class="json">{
+  "run_tasks": [
+                 {
+                   "principals": { "type": "NONE" },
+                   "users": { "values": ["root"] }
+                 }
+               ]
+}
+</code></pre>
+
+<p>The order in which the rules are defined is important. In the following
+example, the ACLs effectively forbid anyone from tearing down frameworks even
+though the intention clearly is to allow only <code>admin</code> to shut them down:</p>
+
+<pre><code class="json">{
+  "permissive": false,
+  "teardown_frameworks": [
+                           {
+                             "principals": { "type": "NONE" },
+                             "framework_principals": { "type": "ANY" }
+                           },
+                           {
+                             "principals": { "type": "admin" },
+                             "framework_principals": { "type": "ANY" }
+                           }
+                         ]
+}
+</code></pre>
+
+<p>The previous ACL can be fixed as follows:</p>
+
+<pre><code class="json">{
+  "permissive": false,
+  "teardown_frameworks": [
+                           {
+                             "principals": { "type": "admin" },
+                             "framework_principals": { "type": "ANY" }
+                           },
+                           {
+                             "principals": { "type": "NONE" },
+                             "framework_principals": { "type": "ANY" }
+                           }
+                         ]
+}
+</code></pre>
+
+<p>The <code>ops</code> principal can teardown any framework using the &ldquo;/teardown&rdquo; HTTP
+endpoint. No other principal can teardown any frameworks.</p>
+
+<pre><code class="json">{
+  "permissive": false,
+  "teardown_frameworks": [
+                           {
+                             "principals": {
+                               "values": ["ops"]
+                             },
+                             "framework_principals": {
+                               "type": "ANY"
+                             }
+                           }
+                         ]
+}
+</code></pre>
+
+<p>The principal <code>foo</code> can reserve resources for any role, and no other principal
+can reserve resources.</p>
+
+<pre><code class="json">{
+  "permissive": false,
+  "reserve_resources": [
+                         {
+                           "principals": {
+                             "values": ["foo"]
+                           },
+                           "roles": {
+                             "type": "ANY"
+                           }
+                         }
+                       ]
+}
+</code></pre>
+
+<p>The principal <code>foo</code> cannot reserve resources, and any other principal (or
+framework without a principal) can reserve resources for any role.</p>
+
+<pre><code class="json">{
   "reserve_resources": [
                          {
                            "principals": {
@@ -341,10 +546,13 @@
                          }
                        ]
 }
-</code></pre></li>
-<li><p>The principal <code>foo</code> can reserve resources only for roles <code>prod</code> and <code>dev</code>, and no other principal (or framework without a principal) can reserve resources for any role.</p>
+</code></pre>
 
-<pre><code>{
+<p>The principal <code>foo</code> can reserve resources only for roles <code>prod</code> and <code>dev</code>, and
+no other principal (or framework without a principal) can reserve resources for
+any role.</p>
+
+<pre><code class="json">{
   "permissive": false,
   "reserve_resources": [
                          {
@@ -357,10 +565,13 @@
                          }
                        ]
 }
-</code></pre></li>
-<li><p>The principal <code>foo</code> can unreserve resources reserved by itself and by the principal <code>bar</code>. The principal <code>bar</code>, however, can only unreserve its own resources. No other principals can unreserve resources.</p>
+</code></pre>
 
-<pre><code>{
+<p>The principal <code>foo</code> can unreserve resources reserved by itself and by the
+principal <code>bar</code>. The principal <code>bar</code>, however, can only unreserve its own
+resources. No other principal can unreserve resources.</p>
+
+<pre><code class="json">{
   "permissive": false,
   "unreserve_resources": [
                            {
@@ -381,10 +592,12 @@
                            }
                          ]
 }
-</code></pre></li>
-<li><p>The principal <code>foo</code> can create persistent volumes for any role, and no other principal can create persistent volumes.</p>
+</code></pre>
 
-<pre><code>{
+<p>The principal <code>foo</code> can create persistent volumes for any role, and no other
+principal can create persistent volumes.</p>
+
+<pre><code class="json">{
   "permissive": false,
   "create_volumes": [
                       {
@@ -397,10 +610,12 @@
                       }
                     ]
 }
-</code></pre></li>
-<li><p>The principal <code>foo</code> cannot create persistent volumes for any role, and any other principal can create persistent volumes for any role.</p>
+</code></pre>
 
-<pre><code>{
+<p>The principal <code>foo</code> cannot create persistent volumes for any role, and any
+other principal can create persistent volumes for any role.</p>
+
+<pre><code class="json">{
   "create_volumes": [
                       {
                         "principals": {
@@ -412,10 +627,12 @@
                       }
                     ]
 }
-</code></pre></li>
-<li><p>The principal <code>foo</code> can create persistent volumes only for roles <code>prod</code> and <code>dev</code>, and no other principal can create persistent volumes for any role.</p>
+</code></pre>
 
-<pre><code>{
+<p>The principal <code>foo</code> can create persistent volumes only for roles <code>prod</code> and
+<code>dev</code>, and no other principal can create persistent volumes for any role.</p>
+
+<pre><code class="json">{
   "permissive": false,
   "create_volumes": [
                       {
@@ -428,10 +645,13 @@
                       }
                     ]
 }
-</code></pre></li>
-<li><p>The principal <code>foo</code> can destroy volumes created by itself and by the principal <code>bar</code>. The principal <code>bar</code>, however, can only destroy its own volumes. No other principals can destroy volumes.</p>
+</code></pre>
 
-<pre><code>{
+<p>The principal <code>foo</code> can destroy volumes created by itself and by the principal
+<code>bar</code>. The principal <code>bar</code>, however, can only destroy its own volumes. No other
+principal can destroy volumes.</p>
+
+<pre><code class="json">{
   "permissive": false,
   "destroy_volumes": [
                        {
@@ -452,12 +672,15 @@
                        }
                      ]
 }
-</code></pre></li>
-<li><p>The principal <code>ops</code> can set quota for any role. The principal <code>foo</code>, however, can only set quota for <code>foo-role</code>. No other principals can set quota.</p>
+</code></pre>
 
-<pre><code>{
+<p>The principal <code>ops</code> can query quota status for any role. The principal <code>foo</code>,
+however, can only query quota status for <code>foo-role</code>. No other principal can
+query quota status.</p>
+
+<pre><code class="json">{
   "permissive": false,
-  "set_quotas": [
+  "get_quotas": [
                   {
                     "principals": {
                       "values": ["ops"]
@@ -476,17 +699,20 @@
                   }
                 ]
 }
-</code></pre></li>
-<li><p>The principal <code>ops</code> can remove quota which was set by any principal. The principal <code>foo</code>, however, can only remove quota which was set by itself. No other principals can remove quota.</p>
+</code></pre>
 
-<pre><code>{
+<p>The principal <code>ops</code> can update quota information (set or remove) for any role.
+The principal <code>foo</code>, however, can only update quota for <code>foo-role</code>. No other
+principal can update quota.</p>
+
+<pre><code class="json">{
   "permissive": false,
-  "remove_quotas": [
+  "update_quotas": [
                      {
                        "principals": {
                          "values": ["ops"]
                        },
-                       "quota_principals": {
+                       "roles": {
                          "type": "ANY"
                        }
                      },
@@ -494,50 +720,123 @@
                        "principals": {
                          "values": ["foo"]
                        },
-                       "quota_principals": {
-                         "values": ["foo"]
+                       "roles": {
+                         "values": ["foo-role"]
                        }
                      }
                    ]
 }
-</code></pre></li>
-</ol>
+</code></pre>
 
+<h2>Implementing an Authorizer</h2>
 
-<p><a name="aclsConfiguration"></a></p>
+<p>In case you plan to implement your own authorizer <a href="/documentation/latest/./modules/">module</a>, the
+authorization interface consists of three parts:</p>
 
-<h2>Configuring Authorization</h2>
+<p>First, the <code>authorization::Request</code> protobuf message represents a request to be
+authorized. It follows the
+<em><a href="https://en.wikipedia.org/wiki/Subject%E2%80%93verb%E2%80%93object">Subject-Verb-Object</a></em>
+pattern, where a <em>subject</em> — commonly a principal — attempts to perform an
+<em>action</em> on a given <em>object</em>.</p>
 
-<p>Authorization is configured by specifying the <code>--acls</code> flag when starting the master:</p>
+<p>Second, the
+<code>Future&lt;bool&gt; mesos::Authorizer::authorized(const mesos::authorization::Request&amp; request)</code>
+interface defines the entry point for authorizer modules (and the local
+authorizer). A call to <code>authorized()</code> returns a future that indicates the result
+of the (asynchronous) authorization operation. If the future is set to true, the
+request was authorized successfully; if it was set to false, the request was
+rejected. A failed future indicates that the request could not be processed at
+the moment and it can be retried later.</p>
 
-<ul>
-<li><code>acls</code>:  The value could be a JSON-formatted string of ACLs
-         or a file path containing the JSON-formatted ACLs used
-         for authorization. Path could be of the form &lsquo;file:///path/to/file&rsquo;
-         or &lsquo;/path/to/file&rsquo;.
-         See the ACLs protobuf in <a href="https://github.com/apache/mesos/blob/master/include/mesos/authorizer/authorizer.proto">authorizer.proto</a> for the expected format.</li>
-</ul>
+<p>The <code>authorization::Request</code> message is defined in authorizer.proto:</p>
 
+<pre><code class="protoc">message Request {
+  required Subject subject = 1;
+  optional Action  action  = 2;
+  required Object  object  = 3;
+}
 
-<p>For more information on master command-line flags, see the
-<a href="/documentation/latest/./configuration/">configuration</a> page.</p>
+message Subject {
+  optional string value = 1;
+}
 
-	</div>
+message Object {
+  optional string value = 1;
+  optional FrameworkInfo framework_info = 2;
+  optional Task task = 3;
+  optional TaskInfo task_info = 4;
+  optional ExecutorInfo executor_info = 5;
+}
+</code></pre>
+
+<p><code>Object</code> has several optional fields of which also several can be set (e.g., the <code>view_executors</code> action expects the <code>executor_info</code> and <code>framework_info</code> to be set).
+The <code>value</code> field for both <code>Subject</code> and <code>Object</code> is optional; if it isn&rsquo;t set,
+then the <code>Subject</code> or <code>Object</code> will only match an ACL with ANY or NONE in the
+corresponding location (for actions expecting <code>value</code> to be set). This allows users to construct the following requests:
+<em>Can everybody perform action <strong>A</strong> on object <strong>O</strong>?</em>, or <em>Can principal <strong>Z</strong>
+execute action <strong>X</strong> on all objects?</em>.</p>
+
+<p>The <code>action</code> field of the <code>Request</code> message is an enum. It is kept optional —
+even though a valid action is necessary for every request — to allow for
+backwards compatibility when adding new fields (see
+<a href="https://issues.apache.org/jira/browse/MESOS-4997">MESOS-4997</a> for details).</p>
+
+<p>Third, the <code>ObjectApprover</code> interface. In order to support efficient authorization of large objects and multiple objects a user can request an <code>ObjectApprover</code> via <code>Future&lt;Owned&lt;ObjectApprover&gt;&gt; getObjectApprover(const authorization::Subject&amp; subject, const authorization::Action&amp; action)</code>.
+The resulting <code>ObjectApprover</code> provides <code>Try&lt;bool&gt; approved(const ObjectApprover::Object&amp; object)</code> to synchronously check whether objects are
+authorized. The <code>ObjectApprover::Object</code> follows the structure of the <code>Request::Object</code> above.</p>
+
+<pre><code class="cpp">struct Object
+{
+  const std::string* value;
+  const FrameworkInfo* framework_info;
+  const Task* task;
+  const TaskInfo* task_info;
+  const ExecutorInfo* executor_info;
+};
+</code></pre>
+
+<p>As the fields take pointer to each entity the <code>ObjectApprover::Object</code> does not require the entity to be copied.</p>
+
+<p>NOTE: As the <code>ObjectApprover</code> is run synchronously in a different actor process
+<code>ObjectApprover.approved()</code> call must not block!</p>
+
+  </div>
 </div>
 
+  </div><!-- /.container -->
+</div><!-- /.content -->
 
-        <hr>
+<hr>
 
-        <!-- footer -->
-        <div class="footer">
+
+
+    <!-- footer -->
+    <div class="footer">
+      <div class="container">
+        <div class="col-md-4 social-blk">
+          <span class="social">
+            <a href="https://twitter.com/ApacheMesos"
+              class="twitter-follow-button"
+              data-show-count="false" data-size="large">Follow @ApacheMesos</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+            <a href="https://twitter.com/intent/tweet?button_hashtag=mesos"
+              class="twitter-hashtag-button"
+              data-size="large"
+              data-related="ApacheMesos">Tweet #mesos</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+          </span>
+        </div>
+
+        <div class="col-md-8 trademark">
           <p>&copy; 2012-2016 <a href="http://apache.org">The Apache Software Foundation</a>.
-          Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.<p>
-        </div><!-- /footer -->
+            Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.
+          <p>
+        </div>
+      </div><!-- /.container -->
+    </div><!-- /.footer -->
 
-      </div> <!-- /container -->
-
-      <!-- JS -->
-      <script src="//code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
-      <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="text/javascript"></script>
-    </body>
+    <!-- JS -->
+    <script src="//code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="text/javascript"></script>
+  </body>
 </html>
