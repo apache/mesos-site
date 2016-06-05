@@ -2,12 +2,12 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Apache Mesos - HTTP Endpoints - /files/read.json</title>
+    <title>Apache Mesos - HTTP Endpoints - /api/v1</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
-    <link href="../../../../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="../../../../../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
 
     
 
@@ -97,39 +97,26 @@
 
 <h3>USAGE</h3>
 
-<blockquote><pre><code>   /files/read.json
+<blockquote><pre><code>   /api/v1
+   /master/api/v1
 </code></pre></blockquote>
 
 <h3>TL;DR;</h3>
 
-<p>Reads data from a file.</p>
+<p>Endpoint for API calls against the master.</p>
 
 <h3>DESCRIPTION</h3>
 
-<p>This endpoint reads data from a file at a given offset and for
-a given length.
-Query parameters:</p>
-
-<blockquote><pre><code>   path=VALUE          The path of directory to browse.
-   offset=VALUE        Value added to base address to obtain a second address
-   length=VALUE        Length of file to read.
-</code></pre></blockquote>
+<p>Returns 200 OK when the request was processed sucessfully.
+Returns 307 TEMPORARY_REDIRECT redirect to the leading master when
+current master is not the leader.
+Returns 503 SERVICE_UNAVAILABLE if the leading master cannot be
+found.</p>
 
 <h3>AUTHENTICATION</h3>
 
 <p>This endpoint requires authentication iff HTTP authentication is
 enabled.</p>
-
-<h3>AUTHORIZATION</h3>
-
-<p>Reading files requires that the request principal is
-authorized to do so for the target virtual file path.</p>
-
-<p>Authorizers may categorize different virtual paths into
-different ACLs, e.g. logs in one and task sandboxes in
-another.</p>
-
-<p>See authorization documentation for details.</p>
 
   </div>
 </div>

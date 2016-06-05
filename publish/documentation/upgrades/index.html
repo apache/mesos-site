@@ -247,28 +247,22 @@ R Removed feature/behavior
 </table>
 
 
-<h2>Upgrading from 0.28.x to 0.29.x</h2>
-
-<p><a name="0-29-x-allocator-metrics"></a></p>
+<h2>Upgrading from 0.28.x to 1.0.x</h2>
 
 <ul>
-<li>The allocator metric named <code>allocator/event_queue_dispatches</code> is now deprecated and will be removed with 0.30. The new name is <code>allocator/mesos/event_queue_dispatches</code> to better support metrics for alternative allocator implementations.</li>
+<li><p>The allocator metric named <code>allocator/event_queue_dispatches</code> is now deprecated. The new name is <code>allocator/mesos/event_queue_dispatches</code> to better support metrics for alternative allocator implementations.</p></li>
+<li><p>Mesos 1.0 deprecates the use of plain text credential files in favor of JSON-formatted credential files.</p></li>
+<li><p>Mesos 1.0 deprecates <code>SET_QUOTA_WITH_ROLE</code> and <code>DESTROY_QUOTA_WITH_PRINCIPAL</code> actions with <code>UPDATE_QUOTA_WITH_ROLE</code>, as well as the <code>SetQuota</code> and <code>RemoveQuota</code> ACLs with <code>UpdateQuota</code> ACL, to control which principal(s) is authorized to set, remove and (in future releases) update quota for role(s). A new <code>GET_QUOTA_WITH_ROLE</code> action and <code>get_quotas</code> ACL are introduced to control which principal(s) can query quota status for given role(s). This affects <code>--acls</code> flag for local authorizer in the following way:</p>
+
+<ul>
+<li>It is not allowed to specify <code>update_quotas</code> and any of <code>set_quotas</code> or <code>remove_quotas</code> at the same time. Local authorizor will error out in such case;</li>
+<li>If <code>set_quotas</code> or <code>remove_quotas</code> were set previously, operator should upgrade binary first, after which the deprecated ACLs are still reinforced;</li>
+<li>After upgrade is verified, operator should replace deprecated values for <code>set_quotas</code> and <code>remove_quotas</code> with compatible values for <code>update_quotas</code>;</li>
+<li>If desired, operator can use <code>get_quotas</code> after upgrade to control which principal(s) is allowed to query quota status for given role(s).</li>
 </ul>
-
-
-<p><a name="0-29-x-credentials"></a>
-* Mesos 0.29 deprecates the use of plain text credential files in favor of JSON-formatted credential files.</p>
-
-<p><a name="0-29-x-quota-authorization"></a>
-* Mesos 0.29 deprecates <code>SET_QUOTA_WITH_ROLE</code> and <code>DESTROY_QUOTA_WITH_PRINCIPAL</code> actions with <code>UPDATE_QUOTA_WITH_ROLE</code>, as well as the <code>SetQuota</code> and <code>RemoveQuota</code> ACLs with <code>UpdateQuota</code> ACL, to control which principal(s) is authorized to set, remove and (in future releases) update quota for role(s). A new <code>GET_QUOTA_WITH_ROLE</code> action and <code>get_quotas</code> ACL are introduced to control which principal(s) can query quota status for given role(s). This affects <code>--acls</code> flag for local authorizer in the following way:
-  * It is not allowed to specify <code>update_quotas</code> and any of <code>set_quotas</code> or <code>remove_quotas</code> at the same time. Local authorizor will error out in such case;
-  * If <code>set_quotas</code> or <code>remove_quotas</code> were set previously, operator should upgrade binary first, after which the deprecated ACLs are still reinforced;
-  * After upgrade is verified, operator should replace deprecated values for <code>set_quotas</code> and <code>remove_quotas</code> with compatible values for <code>update_quotas</code>;
-  * If desired, operator can use <code>get_quotas</code> after upgrade to control which principal(s) is allowed to query quota status for given role(s).</p>
-
-<ul>
+</li>
 <li><p>When a persistent volume is destroyed, Mesos will now remove any data that was stored on the volume from the filesystem of the appropriate slave. In prior versions of Mesos, destroying a volume would not delete data (this was a known missing feature that has now been implemented).</p></li>
-<li><p>Mesos 0.29 changes the HTTP status code of the following endpoints from <code>200 OK</code> to <code>202 Accepted</code>:</p>
+<li><p>Mesos 1.0 changes the HTTP status code of the following endpoints from <code>200 OK</code> to <code>202 Accepted</code>:</p>
 
 <ul>
 <li><code>/reserve</code></li>
@@ -278,6 +272,18 @@ R Removed feature/behavior
 </ul>
 </li>
 </ul>
+
+
+<p>In order to upgrade a running cluster:</p>
+
+<ol>
+<li>Rebuild and install any modules so that upgraded masters/agents can use them.</li>
+<li>Install the new master binaries and restart the masters.</li>
+<li>Install the new agent binaries and restart the agents.</li>
+<li>Upgrade the schedulers by linking the latest native library / jar / egg (if necessary).</li>
+<li>Restart the schedulers.</li>
+<li>Upgrade the executors by linking the latest native library / jar / egg (if necessary).</li>
+</ol>
 
 
 <h2>Upgrading from 0.27.x to 0.28.x</h2>

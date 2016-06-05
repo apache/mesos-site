@@ -2,12 +2,12 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Apache Mesos - HTTP Endpoints - /files/read.json</title>
+    <title>Apache Mesos - Agent Recovery</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
-    <link href="../../../../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
 
     
 
@@ -92,44 +92,92 @@
     <p>See our <a href="/community/">community</a> page for more details.</p>
   </div>
   <div class="col-md-8">
-    <!--- This is an automatically generated file. DO NOT EDIT! --->
+    <h1>Agent Recovery</h1>
+
+<p>If the <code>mesos-agent</code> process on a host exits (perhaps due to a Mesos bug or
+because the operator kills the process while <a href="/documentation/latest/./upgrades/">upgrading Mesos</a>),
+any executors/tasks that were being managed by the <code>mesos-agent</code> process will
+continue to run. When <code>mesos-agent</code> is restarted, the operator can control how
+those old executors/tasks are handled:</p>
+
+<ol>
+<li>By default, all the executors/tasks that were being managed by the old
+<code>mesos-agent</code> process are killed.</li>
+<li>If a framework enabled <em>checkpointing</em> when it registered with the master,
+any executors belonging to that framework can reconnect to the new
+<code>mesos-agent</code> process and continue running uninterrupted.</li>
+</ol>
 
 
-<h3>USAGE</h3>
+<p>Hence, enabling framework checkpointing enables tasks to tolerate Mesos agent
+upgrades and unexpected <code>mesos-agent</code> crashes without experiencing any
+downtime.</p>
 
-<blockquote><pre><code>   /files/read.json
-</code></pre></blockquote>
+<p>Agent recovery works by having the agent <em>checkpoint</em> information (e.g., Task
+Info, Executor Info, Status Updates) about the tasks and executors it is
+managing to local disk. If a framework enables checkpointing, any subsequent
+agent restarts will recover the checkpointed information and reconnect with any
+executors that are still running.</p>
 
-<h3>TL;DR;</h3>
+<p>Note that if the operating system on the agent is rebooted, all executors and
+tasks running on the host are killed and are not automatically restarted when
+the host comes back up.</p>
 
-<p>Reads data from a file.</p>
+<h2>Framework Configuration</h2>
 
-<h3>DESCRIPTION</h3>
+<p>A framework can control whether its executors will be recovered by setting the <code>checkpoint</code> flag in its <code>FrameworkInfo</code> when registering with the master. Enabling this feature results in increased I/O overhead at each agent that runs tasks launched by the framework. By default, frameworks do <strong>not</strong> checkpoint their state.</p>
 
-<p>This endpoint reads data from a file at a given offset and for
-a given length.
-Query parameters:</p>
+<h2>Agent Configuration</h2>
 
-<blockquote><pre><code>   path=VALUE          The path of directory to browse.
-   offset=VALUE        Value added to base address to obtain a second address
-   length=VALUE        Length of file to read.
-</code></pre></blockquote>
+<p>Three <a href="/documentation/latest/./configuration/">configuration flags</a> control the recovery behavior of a Mesos agent:</p>
 
-<h3>AUTHENTICATION</h3>
+<ul>
+<li><p><code>strict</code>: Whether to do agent recovery in strict mode [Default: true].</p>
 
-<p>This endpoint requires authentication iff HTTP authentication is
-enabled.</p>
+<ul>
+<li>If strict=true, all recovery errors are considered fatal.</li>
+<li>If strict=false, any errors (e.g., corruption in checkpointed data) during recovery are
+ignored and as much state as possible is recovered.</li>
+</ul>
+</li>
+<li><p><code>recover</code>: Whether to recover status updates and reconnect with old executors [Default: reconnect].</p>
 
-<h3>AUTHORIZATION</h3>
+<ul>
+<li>If recover=reconnect, reconnect with any old live executors, provided the executor&rsquo;s framework enabled checkpointing.</li>
+<li>If recover=cleanup, kill any old live executors and exit. Use this option when doing an incompatible agent or executor upgrade!
 
-<p>Reading files requires that the request principal is
-authorized to do so for the target virtual file path.</p>
+<blockquote><p>NOTE: If no checkpointing information exists, no recovery is performed
+and the agent registers with the master as a new agent.</p></blockquote></li>
+</ul>
+</li>
+<li><p><code>recovery_timeout</code>: Amount of time allotted for the agent to recover [Default: 15 mins].</p>
 
-<p>Authorizers may categorize different virtual paths into
-different ACLs, e.g. logs in one and task sandboxes in
-another.</p>
+<ul>
+<li>If the agent takes longer than <code>recovery_timeout</code> to recover, any executors that are waiting to
+reconnect to the agent will self-terminate.</li>
+</ul>
+</li>
+</ul>
 
-<p>See authorization documentation for details.</p>
+
+<blockquote><p>NOTE: If none of the frameworks have enabled checkpointing,
+the executors and tasks running at a agent die when the agent dies
+and are not recovered.</p></blockquote>
+
+<p>A restarted agent should re-register with master within a timeout (75 seconds by default: see the <code>--max_agent_ping_timeouts</code> and <code>--agent_ping_timeout</code> <a href="/documentation/latest/./configuration/">configuration flags</a>). If the agent takes longer than this timeout to re-register, the master shuts down the agent, which in turn will shutdown any live executors/tasks.  Therefore, it is highly recommended to automate the process of restarting a agent (e.g., using a process supervisor such as <a href="http://mmonit.com/monit/">monit</a> or <code>systemd</code>).</p>
+
+<h2>Known issues with <code>systemd</code> and POSIX isolation</h2>
+
+<p>There is a known issue when using <code>systemd</code> to launch the <code>mesos-agent</code> while also using only <code>posix</code> isolation mechanisms that prevents tasks from recovering. The problem is that the default <a href="http://www.freedesktop.org/software/systemd/man/systemd.kill.html">KillMode</a> for systemd processes is <code>cgroup</code> and hence all child processes are killed when the agent stops. Explicitly setting <code>KillMode</code> to <code>process</code> allows the executors to survive and reconnect.</p>
+
+<p>The following excerpt of a <code>systemd</code> unit configuration file shows how to set the flag:</p>
+
+<pre><code>[Service]
+ExecStart=/usr/bin/mesos-agent
+KillMode=process
+</code></pre>
+
+<blockquote><p>NOTE: There are also known issues with using <code>systemd</code> and raw <code>cgroups</code> based isolation, for now the suggested non-Posix isolation mechanism is to use Docker containerization.</p></blockquote>
 
   </div>
 </div>

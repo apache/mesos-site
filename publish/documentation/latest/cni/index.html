@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
+    <link href="../../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+
+    
+
+    <!-- Google Analytics Magic -->
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-20226872-1']);
+    _gaq.push(['_setDomainName', 'apache.org']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+  </head>
+  <body>
+    <!-- magical breadcrumbs -->
+    <div class="topnav">
+      <div class="container">
+        <ul class="breadcrumb">
+          <li>
+            <div class="dropdown">
+              <a data-toggle="dropdown" href="#">Apache Software Foundation <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                <li><a href="http://www.apache.org">Apache Homepage</a></li>
+                <li><a href="http://www.apache.org/licenses/">License</a></li>
+                <li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>
+                <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                <li><a href="http://www.apache.org/security/">Security</a></li>
+              </ul>
+            </div>
+          </li>
+
+          <li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+          
+          
+          <li><a href="/documentation
+/">Documentation
+</a></li>
+          
+          
+        </ul><!-- /.breadcrumb -->
+      </div><!-- /.container -->
+    </div><!-- /.topnav -->
+
+    <!-- navbar excitement -->
+<div class="navbar navbar-default navbar-static-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#mesos-menu" aria-expanded="false">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo"/></a>
+    </div><!-- /.navbar-header -->
+
+    <div class="navbar-collapse collapse" id="mesos-menu">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/gettingstarted/">Getting Started</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/documentation/latest/">Documentation</a></li>
+        <li><a href="/downloads/">Downloads</a></li>
+        <li><a href="/community/">Community</a></li>
+      </ul>
+    </div><!-- /#mesos-menu -->
+  </div><!-- /.container -->
+</div><!-- /.navbar -->
+
+<div class="content">
+  <div class="container">
+    <div class="row-fluid">
+  <div class="col-md-4">
+    <h4>If you're new to Mesos</h4>
+    <p>See the <a href="/gettingstarted/">getting started</a> page for more
+       information about downloading, building, and deploying Mesos.</p>
+
+    <h4>If you'd like to get involved or you're looking for support</h4>
+    <p>See our <a href="/community/">community</a> page for more details.</p>
+  </div>
+  <div class="col-md-8">
+    <h2>Container Network Interface (CNI) for Mesos Containers</h2>
+
+<p>  This document describes the <code>network/cni</code> isolator, a network
+  isolator for the <a href="/documentation/latest/./mesos-containerizer/">MesosContainerizer</a> that implements the
+  <a href="https://github.com/containernetworking/cni">Container Network Interface
+  (CNI)</a> specification for
+  enabling networking support for Mesos containers.  The <code>network/cni</code>
+  isolator allows containers launched using the <code>MesosContainerizer</code>
+  to be attached to several different types of IP networks.  The
+  network technologies on which containers can possibly be launched,
+  using the <code>network/cni</code> isolator, range from traditional layer
+  3/layer 2 networks such as VLAN, ipvlan, macvlan, to the new class
+  of networks designed for container orchestration such as
+  <a href="https://www.projectcalico.org/">Calico</a>, <a href="https://weave.in/">Weave</a>
+  and <a href="https://coreos.com/flannel/docs/latest/">Flannel</a>.  The
+  <code>MesosContainerizer</code> has the <code>network/cni</code> isolator enabled by
+  default.</p>
+
+<h3>Table of Contents</h3>
+
+<ul>
+<li><a href="#motivation">Motivation</a></li>
+<li><a href="#usage">Usage</a>
+
+<ul>
+<li><a href="#configuring-cni-networks">Configuring CNI networks</a></li>
+<li><a href="#attaching-containers-to-cni-networks">Attaching containers to CNI networks</a></li>
+<li><a href="#accessing-container-network-namespace">Accessing container network namespace</a></li>
+</ul>
+</li>
+<li><a href="#networking-recipes">Networking Recipes</a>
+
+<ul>
+<li><a href="#a-bridge-network">A bridge network</a></li>
+</ul>
+</li>
+<li><a href="#limitations">Limitations</a></li>
+</ul>
+
+
+<h3><a name="motivation"></a>Motivation</h3>
+
+<p>The idea of having a separate network namespace for
+each container is attractive for orchestration engines such as Mesos,
+since it provides network isolation to containers and allows users to
+operate on containers as if they were operating on an end-host.
+Without network isolation users have to deal with managing
+network resources such as TCP/UDP ports on an end host, complicating
+the design of their application.</p>
+
+<p>The challenge in allocating each container with its own network
+namespace is in implementing the ability in the orchestration engine
+to communicate with the underlying network in order to configure IP
+connectivity to the container.  This problem arises due  the diversity
+in terms of the choices of IPAM (IP address management system) and
+networking technologies available for enabling IP connectivity. To
+solve this problem we would need to adopt a driver based network
+orchestration model, where the <code>MesosContainerizer</code> can offload the
+business intelligence of configuring IP connectivity to a container,
+to network specific drivers.</p>
+
+<p>The <strong><a href="https://github.com/containernetworking/cni">Container Network Interface
+(CNI)</a></strong> is a
+specification proposed by CoreOS that provides such a driver based
+model. The specification defines a JSON schema that defines the inputs
+and outputs expected of a CNI plugin (network driver). The
+specification also provides a clear separation of concerns for the
+container run time and the CNI plugin. As per the specification the
+container run time is expected to configure the namespace for the
+container, a unique identifier for the container (container ID),
+and a JSON formatted input to the plugin that defines the
+configuration parameters for a given network. The responsibility of
+the plugin is to create a <em>veth</em> pair and attach one of the <em>veth</em>
+pair to the network namespace of the container, and the other end to a
+network understood by the plugin.  The CNI specification also allows
+for multiple networks to exist simultaneously, with each network
+represented by a canonical name, and associated with a unique CNI
+configuration. There are already CNI plugins for a variety of networks
+such as bridge, ipvlan, macvlan, Calico, Weave and Flannel.</p>
+
+<p>Thus, introducing support for CNI in Mesos through the <code>network/cni</code>
+isolator provides Mesos with tremendous flexibility to orchestrate
+containers on a wide variety of network technologies.</p>
+
+<h3><a name="usage"></a>Usage</h3>
+
+<p>The <code>network/cni</code> isolator is enabled by default.
+However, to use the isolator there are certain actions required by the
+operator and the frameworks. In this section we specify the steps
+required by the operator to configure CNI networks on Mesos and the
+steps required by frameworks to attach containers to a CNI network.</p>
+
+<h4><a name="configuring-cni-networks"></a>Configuring CNI networks</h4>
+
+<p>In order to configure the <code>network/cni</code> isolator the operator
+specifies two flags at Agent startup as follows:</p>
+
+<pre><code class="{.console}">sudo mesos-slave --master=&lt;master IP&gt; --ip=&lt;Agent IP&gt;
+--work_dir=/var/lib/mesos
+--network_cni_config_dir=&lt;location of CNI configs&gt;
+--network_cni_plugins_dir=&lt;location of CNI plugsin&gt;
+</code></pre>
+
+<p>Note that the <code>network/cni</code> isolator learns all the available
+networks by looking at the CNI configuration in the
+<code>--network_cni_config_dir</code> at startup. This implies that if a new CNI
+network needs to be added after Agent startup, the Agent needs to be
+restarted. The <code>network/cni</code> isolator has been designed with <code>recover</code>
+capabilities and hence restarting the Agent (and therefore the
+<code>network/cni</code> isolator) will not affect container orchestration.</p>
+
+<h4><a name="attaching-containers-to-cni-networks"></a>Attaching containers to CNI networks</h4>
+
+<p>Frameworks can specify the CNI network to which they want their
+containers to be attached by setting the <code>name</code> field in the
+<code>NetworkInfo</code> protobuf. The <code>name</code> field was introduced in the
+<code>NetworkInfo</code> protobuf as part of
+<a href="https://issues.apache.org/jira/browse/MESOS-4758">MESOS-4758</a>.  Also,
+by specifying multiple instances of the <code>NetworkInfo</code> protobuf with
+different <code>name</code> in each of the protobuf, the <code>MesosContainerizer</code>
+will attach the container to all the different CNI networks specified.</p>
+
+<p>The <strong>default behavior</strong> for containers is to join the <code>host
+network</code>, i.e., if the framework <em>does not</em> specify a <code>name</code> in the
+<code>NetworkInfo</code> protobuf, the <code>network/cni</code> isolator will be a no-op for
+that container and will not associate a new network namespace with the
+container. This would effectively make the container use the host
+network namespace, <code>attaching</code> it to the host network.</p>
+
+<pre><code>**NOTE**: While specifying multiple `NetworkInfo` protobuf allows a
+container to be attached to different CNI networks, if one of the
+`NetworkInfo` protobuf is without the `name` field the `network/cni`
+isolator simply "skips" the protobuf, attaching the container to all
+the specified CNI networks except the `host network`.  To attach a
+container to the host network as well as other CNI networks you
+will need to attach the container to a CNI network (such as
+bridge/macvlan) that, in turn, is attached to the host network.
+</code></pre>
+
+<h4><a name="accessing-container-network-namespace"></a>Accessing container network namespace</h4>
+
+<p>The <code>network/cni</code> isolator allocates a network namespace to a
+container when it needs to attach the container to a CNI network. The
+network namespace is checkpointed on the host file system and can be
+useful to debug network connectivity to the network namespace. For a
+given container the <code>network/cni</code> isolator checkpoints its network
+namespace at:</p>
+
+<pre><code class="{.console}">/var/run/mesos/isolators/network/cni/&lt;container ID&gt;/ns
+</code></pre>
+
+<p>The network namespace can be used with the <code>ip</code> command from the
+<a href="http://man7.org/linux/man-pages/man8/ip-netns.8.html">iproute2</a>
+package by creating a symbolic link to the network namespace. Assuming
+the container ID is <code>5baff64c-d028-47ba-864e-a5ee679fc069</code> you can
+create the symlink as follows:</p>
+
+<pre><code class="{.console}">ln -s /var/run/mesos/isolators/network/cni/5baff64c-d028-47ba-8ff64c64e-a5ee679fc069/ns /var/run/netns/5baff64c
+</code></pre>
+
+<p>Now we can use the network namespace identifier <code>5baff64c</code> to run
+commands in the new network name space using the
+<a href="http://man7.org/linux/man-pages/man8/ip-netns.8.html">iproute2</a> package.
+E.g. you can view all the links in the container network namespace by
+running the command:</p>
+
+<pre><code class="{.console}">ip netns exec 5baff64c ip link
+</code></pre>
+
+<p>Similarly you can view the container&rsquo;s route table by running:</p>
+
+<pre><code class="{.console}">ip netns exec 5baff64c ip route show
+</code></pre>
+
+<p><em>NOTE</em>: Once
+<a href="https://issues.apache.org/jira/browse/MESOS-5278">MESOS-5278</a> is
+completed, executing commands within the container network namespace
+would be simplified and we will no longer have a dependency on the
+<code>iproute2</code> package to debug Mesos container networking.</p>
+
+<h3><a name="networking-recipes"></a>Networking Recipes</h3>
+
+<p>This section presents examples for launching containers on different
+CNI networks. For each of the examples the assumption is that the CNI
+configurations are present at <code>/var/lib/mesos/cni/config</code>, and the
+plugins are present at <code>/var/lib/mesos/cni/plugins</code>. The Agents
+therefore need to be started with the following command:</p>
+
+<pre><code class="{.console}">sudo mesos-slave --master=&lt;master IP&gt; --ip=&lt;Agent IP&gt;
+--work_dir=/var/lib/mesos
+--network_cni_config_dir=/var/lib/mesos/cni/config
+--network_cni_plugins_dir=/var/lib/mesos/cni/plugins
+--isolation=filesystem/linux,docker/runtime
+--image_providers=docker
+</code></pre>
+
+<p>Apart from the CNI configuration parameters, we are also starting the
+Agent with the ability to launch docker images on
+<code>MesosContainerizer</code>. We enable this ability in the
+<code>MesosContainerizer</code> by enabling the <code>filesystem/linux</code> and
+<code>docker/runtime</code> isolator and setting the image provider to
+<code>docker</code>.</p>
+
+<p>To present an example of a framework launching containers on a
+specific CNI network, the <code>mesos-execute</code> CLI framework has been
+modified to take a <code>--networks</code> flag which will allow this example
+framework to launch containers on the specified network. You can find
+the <code>mesos-execute</code> framework in your Mesos installation directory at
+<code>&lt;mesos installation&gt;/bin/mesos-execute</code>.</p>
+
+<h4><a name="a-bridge-network"></a>A bridge network</h4>
+
+<p>The
+<a href="/documentation/latest/./https://github.com/containernetworking/cni/blob/master/Documentation/bridge/">bridge</a>
+plugin attaches containers to a Linux bridge. Linux bridges could be
+configured to attach to VLANs and VxLAN allowing containers to be
+plugged into existing layer 2 networks. We present an example below,
+where the CNI configuration instructs the <code>MesosContainerizer</code> to
+invoke a bridge plugin to connect a container to a Linux bridge. The
+configuration also instructs the bridge plugin to assign an IP address
+to the container by invoking a
+<a href="/documentation/latest/./https://github.com/containernetworking/cni/blob/master/Documentation/host-local/">host-local</a>
+IPAM.</p>
+
+<pre><code class="{.json}">{
+"name": "cni-test",
+"type": "bridge",
+"bridge": "mesos-cni0",
+"isGateway": true,
+"ipMasq": true,
+"ipam": {
+    "type": "host-local",
+    "subnet": "192.168.0.0/16",
+    "routes": [
+    { "dst":
+      "0.0.0.0/0" }
+    ]
+  }
+}
+</code></pre>
+
+<p>The CNI configuration tells the bridge plugin to attach the
+container to a bridge called <code>mesos-cni0</code>. If the bridge does not
+exist the bridge plugin will create one.</p>
+
+<p>It is important to note the <code>routes</code> section in the <code>ipam</code> dictionary.
+For Mesos, the <code>executors</code> launched as containers need to register
+with the Agent in order for a task to be successfully launched.
+Hence, it is imperative that the Agent IP is reachable from the
+container IP and vice versa. In this specific instance we specified a
+default route for the container, allowing containers to reach any
+network that will be routeable by the gateway, which for this CNI
+configuration is the bridge itself.</p>
+
+<p>Another interesting attribute in the CNI configuration is the <code>ipMasq</code>
+option. Setting this to true will install an <code>iptable</code> rule in the
+host network namespace that would SNAT all traffic originating from
+the container and egressing the Agent. This allows containers to talk
+to the outside world even when they are in an address space that is
+not routeable from outside the agent.</p>
+
+<p>Below we give an example of launching a <code>Ubuntu</code> container and
+attaching it to the <code>mesos-cni0</code> bridge. You can launch the <code>Ubuntu</code>
+container using the <code>mesos-execute</code> framework as follows:</p>
+
+<pre><code class="{.console}">sudo mesos-execute --command=/bin/bash
+--docker_image=ubuntu:latest --master=&lt;master IP&gt;:5050 --name=ubuntu
+--networks=cni-test --no-shell
+</code></pre>
+
+<p>The above command would pull the <code>Ubuntu</code> image from the docker hub
+and launch it using the <code>MesosContainerizer</code> and attach it to the
+<code>mesos-cni0</code> bridge.</p>
+
+<p>You can verify the network settings of the <code>Ubuntu</code> container by
+creating a symlink to the network namespace and running the <code>ip</code>
+command as describe in the section &ldquo;<a href="#accessing-container-network-namespace">Accessing container network
+namespace</a>&rdquo;.</p>
+
+<p>Assuming we created a reference for the network namespace in
+<code>/var/run/netns/5baff64c</code> . The output of the IP address and route table
+in the container network namespace would be as follows:</p>
+
+<pre><code class="{.console}">$ sudo ip netns exec 5baff64c ip addr show
+1: lo: &lt;LOOPBACK&gt; mtu 65536 qdisc noop state DOWN group default
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+3: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default
+    link/ether 8a:2c:f9:41:0a:54 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.0.2/16 scope global eth0
+       valid_lft forever preferred_lft forever
+    inet6 fe80::882c:f9ff:fe41:a54/64 scope link
+       valid_lft forever preferred_lft forever
+
+$ sudo ip netns exec 5baff64c ip route show
+default via 192.168.0.1 dev eth0
+192.168.0.0/16 dev eth0  proto kernel  scope link  src 192.168.0.2
+</code></pre>
+
+<h3><a name="limitations"></a>Limitations</h3>
+
+<p>Although the CNI specification caters to a broad set of network technologies
+the specification still has the following open questions:</p>
+
+<ul>
+<li>If the IP address of the container is not routeable from outside the
+host, how do users (frameworks) expose TCP/UDP ports for services
+running on their container?</li>
+<li>What should be the behavior of containers when the CNI configuration
+of the network, on which the containers were launched, is modified or
+deleted?</li>
+</ul>
+
+
+<p>Given the unspecified nature of these answers, in the current release
+we not aiming to address these questions. Accordingly there are two
+limitations to the <code>network/cni</code> isolator:</p>
+
+<ul>
+<li>Currently the <code>network/cni</code> isolator does not provide any
+port mapping capabilities. Therefore if operators are running services
+on networks that are not addressable from outside the Agent host, the
+operators will need to run proxies/gateways for the services on the
+host network to direct traffic to their services.</li>
+<li>Currently, if the CNI configuration that was used to launch a
+container is deleted or modified, while the container is still
+operational, while it will not hamper the operation of the container,
+the user might encounter errors when the container is deleted, which
+could potentially lead to leakage of resources (IP addresses).</li>
+</ul>
+
+
+<p>In future releases we plan to address both these limitations.
+<a href="https://issues.apache.org/jira/browse/MESOS-4823">MESOS-4823</a> is
+tracking the development of port-mapping functionality for the
+<code>network/cni</code> isolator and
+<a href="https://issues.apache.org/jira/browse/MESOS-5310">MESOS-5310</a> is
+tracking the progress of adding the ability to modify and delete CNI
+configuration without affecting container orchestration.</p>
+
+  </div>
+</div>
+
+  </div><!-- /.container -->
+</div><!-- /.content -->
+
+<hr>
+
+
+
+    <!-- footer -->
+    <div class="footer">
+      <div class="container">
+        <div class="col-md-4 social-blk">
+          <span class="social">
+            <a href="https://twitter.com/ApacheMesos"
+              class="twitter-follow-button"
+              data-show-count="false" data-size="large">Follow @ApacheMesos</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+            <a href="https://twitter.com/intent/tweet?button_hashtag=mesos"
+              class="twitter-hashtag-button"
+              data-size="large"
+              data-related="ApacheMesos">Tweet #mesos</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+          </span>
+        </div>
+
+        <div class="col-md-8 trademark">
+          <p>&copy; 2012-2016 <a href="http://apache.org">The Apache Software Foundation</a>.
+            Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.
+          <p>
+        </div>
+      </div><!-- /.container -->
+    </div><!-- /.footer -->
+
+    <!-- JS -->
+    <script src="//code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="text/javascript"></script>
+  </body>
+</html>
