@@ -2,12 +2,12 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Apache Mesos - HTTP Endpoints - /state.json</title>
+    <title>Apache Mesos 0.28.2 Released</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
-    <link href="../../../../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
 
     
 
@@ -46,8 +46,8 @@
           <li><a href="http://mesos.apache.org">Apache Mesos</a></li>
           
           
-          <li><a href="/documentation
-/">Documentation
+          <li><a href="/blog
+/">Blog
 </a></li>
           
           
@@ -82,112 +82,76 @@
 
 <div class="content">
   <div class="container">
-    <div class="row-fluid">
-  <div class="col-md-4">
-    <h4>If you're new to Mesos</h4>
-    <p>See the <a href="/gettingstarted/">getting started</a> page for more
-       information about downloading, building, and deploying Mesos.</p>
+    <div class="row">
 
-    <h4>If you'd like to get involved or you're looking for support</h4>
-    <p>See our <a href="/community/">community</a> page for more details.</p>
+  <div class="col-md-3">
+    <div class="meta">
+      <span class="author">
+        
+        <span class="author_contact">
+          <p><strong>Jie Yu</strong></p>
+          <p><a href="http://twitter.com/jie_yu">@jie_yu</a></p>
+        </span>
+      </span>
+      <p><em>Posted June 13, 2016</em></p>
+    </div>
+
+    <div class="share">
+      <span class="social-share-button"><a href="https://twitter.com/share" class="twitter-share-button" data-via="apachemesos">Tweet</a></span>
+
+      <span><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></span>
+
+      <span><div class="g-plusone" data-size="medium"></div></span>
+
+      <!-- Place this tag after the last +1 button tag. -->
+      <script type="text/javascript">
+        (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'https://apis.google.com/js/plusone.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+        })();
+      </script>
+
+      <script src="//platform.linkedin.com/in.js" type="text/javascript">
+       lang: en_US
+      </script>
+      <script type="IN/Share" data-counter="right"></script>
+    </div>
   </div>
-  <div class="col-md-8">
-    <!--- This is an automatically generated file. DO NOT EDIT! --->
+
+  <div class="post col-md-9">
+    <h1>Apache Mesos 0.28.2 Released</h1>
+
+    <p>The latest Mesos release, 0.28.2, is now available for <a href="http://mesos.apache.org/downloads">download</a>. This release includes some important bug fixes and improvements on top of 0.28.1. It is highly recommended that users use this version if you are considering using Mesos 0.28. More specifically, this release includes the following fixes and improvements:</p>
+
+<ul>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-4705">MESOS-4705</a> - Linux &lsquo;perf&rsquo; parsing logic may fail when OS distribution has perf backports.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-5239">MESOS-5239</a> - Persistent volume DockerContainerizer support assumes proper mount propagation setup on the host.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-5253">MESOS-5253</a> - Isolator cleanup should not be invoked if they are not prepared yet.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-5282">MESOS-5282</a> - Destroy container while provisioning volume images may lead to a race.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-5312">MESOS-5312</a> - Env <code>MESOS_SANDBOX</code> is not set properly for command tasks that changes rootfs.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-4885">MESOS-4885</a> - Unzip should force overwrite.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-5449">MESOS-5449</a> - Memory leak in SchedulerProcess.declineOffer.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-5380">MESOS-5380</a> - Killing a queued task can cause the corresponding command executor to never terminate.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-5307">MESOS-5307</a> - Sandbox mounts should not be in the host mount namespace.</li>
+</ul>
 
 
-<h3>USAGE</h3>
+<p>Full release notes are available in the release <a href="https://git-wip-us.apache.org/repos/asf?p=mesos.git;a=blob_plain;f=CHANGELOG;hb=0.28.2">CHANGELOG</a></p>
 
-<blockquote><pre><code>   /state.json
-   /master/state.json
-</code></pre></blockquote>
+<h3>Upgrades</h3>
 
-<h3>TL;DR;</h3>
+<p>Rolling upgrades from a Mesos 0.28.1 cluster to Mesos 0.28.2 are straightforward. Please refer to the <a href="http://mesos.apache.org/documentation/latest/upgrades/">upgrade guide</a> for detailed information on upgrading to Mesos 0.28.2.</p>
 
-<p>Information about state of master.</p>
+<h3>Try it out</h3>
 
-<h3>DESCRIPTION</h3>
+<p>We encourage you to try out this release and let us know what you think. If you run into any issues, please let us know on the <a href="https://mesos.apache.org/community">user mailing list and IRC</a>.</p>
 
-<p>Returns 200 OK when the state of the master was queried successfully.
-Returns 307 TEMPORARY_REDIRECT redirect to the leading master when
-current master is not the leader.
-Returns 503 SERVICE_UNAVAILABLE if the leading master cannot be
-found.
-This endpoint shows information about the frameworks, tasks,
-executors and agents running in the cluster as a JSON object.</p>
+<h3>Thanks!</h3>
 
-<p>Example (<strong>Note</strong>: this is not exhaustive):</p>
+<p>Thanks to the 10 contributors who made 0.28.2 possible:</p>
 
-<pre><code>{
-    "version" : "0.28.0",
-    "git_sha" : "9d5889b5a265849886a533965f4aefefd1fbd103",
-    "git_branch" : "refs/heads/master",
-    "git_tag" : "0.28.0",
-    "build_date" : "2016-02-15 10:00:28",
-    "build_time" : 1455559228,
-    "build_user" : "mesos-user",
-    "start_time" : 1455643643.42422,
-    "elected_time" : 1455643643.43457,
-    "id" : "b5eac2c5-609b-4ca1-a352-61941702fc9e",
-    "pid" : "master@127.0.0.1:5050",
-    "hostname" : "localhost",
-    "activated_slaves" : 0,
-    "deactivated_slaves" : 0,
-    "cluster" : "test-cluster",
-    "leader" : "master@127.0.0.1:5050",
-    "log_dir" : "/var/log",
-    "external_log_file" : "mesos.log",
-    "flags" : {
-         "framework_sorter" : "drf",
-         "authenticate" : "false",
-         "logbufsecs" : "0",
-         "initialize_driver_logging" : "true",
-         "work_dir" : "/var/lib/mesos",
-         "http_authenticators" : "basic",
-         "authorizers" : "local",
-         "agent_reregister_timeout" : "10mins",
-         "logging_level" : "INFO",
-         "help" : "false",
-         "root_submissions" : "true",
-         "ip" : "127.0.0.1",
-         "user_sorter" : "drf",
-         "version" : "false",
-         "max_agent_ping_timeouts" : "5",
-         "agent_ping_timeout" : "15secs",
-         "registry_store_timeout" : "20secs",
-         "max_completed_frameworks" : "50",
-         "quiet" : "false",
-         "allocator" : "HierarchicalDRF",
-         "hostname_lookup" : "true",
-         "authenticators" : "crammd5",
-         "max_completed_tasks_per_framework" : "1000",
-         "registry" : "replicated_log",
-         "registry_strict" : "false",
-         "log_auto_initialize" : "true",
-         "authenticate_agents" : "false",
-         "registry_fetch_timeout" : "1mins",
-         "allocation_interval" : "1secs",
-         "authenticate_http" : "false",
-         "port" : "5050",
-         "zk_session_timeout" : "10secs",
-         "recovery_agent_removal_limit" : "100%",
-         "webui_dir" : "/path/to/mesos/build/../src/webui",
-         "cluster" : "mycluster",
-         "leader" : "master@127.0.0.1:5050",
-         "log_dir" : "/var/log",
-         "external_log_file" : "mesos.log"
-    },
-    "slaves" : [],
-    "frameworks" : [],
-    "completed_frameworks" : [],
-    "orphan_tasks" : [],
-    "unregistered_frameworks" : []
-}
-</code></pre>
-
-<h3>AUTHENTICATION</h3>
-
-<p>This endpoint requires authentication iff HTTP authentication is
-enabled.</p>
+<p>Fan Du, Tomasz Janiszewski, Vinod Kone, Shuai Lin, Ben Mahler, Dario Rexin, Silas Snider, Gilbert Song, Yongqiao Wang, Jie Yu</p>
 
   </div>
 </div>

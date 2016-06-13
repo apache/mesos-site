@@ -151,6 +151,8 @@ interfaces described above.</p>
 
 <h2>Framework Scheduler API</h2>
 
+<p><a name="offer-operation-create"></a></p>
+
 <h3><code>Offer::Operation::Create</code></h3>
 
 <p>A framework can create volumes through the resource offer cycle.  Suppose we
@@ -256,7 +258,7 @@ persistent volume:</p>
 <h3><code>Offer::Operation::Destroy</code></h3>
 
 <p>A framework can destroy persistent volumes through the resource offer cycle. In
-<a href="#offeroperationcreate">Offer::Operation::Create</a>, we created a persistent
+<a href="#offer-operation-create">Offer::Operation::Create</a>, we created a persistent
 volume from 2048 MB of disk resources. The volume will continue to exist until
 it is explicitly destroyed. Suppose we would like to destroy the volume we
 created. First, we receive a resource offer (copy/pasted from above):</p>
@@ -493,6 +495,15 @@ volumes:</p>
 <li><p>A single <code>acceptOffers</code> call can be used to both create a new dynamic
 reservation (via <code>Offer::Operation::Reserve</code>) and create a new persistent
 volume on those newly reserved resources (via <code>Offer::Operation::Create</code>).</p></li>
+<li><p>Volume IDs must be unique per role on each agent. However, it is strongly
+recommended that frameworks use globally unique volume IDs, to avoid potential
+confusion between volumes on different agents that use the same volume
+ID. Note also that the agent ID where a volume resides might change over
+time. For example, suppose a volume is created on an agent and then the
+agent&rsquo;s host machine is rebooted. When the agent registers with Mesos after
+the reboot, it will be assigned a new AgentID&mdash;but it will retain the same
+volume it had previouly. Hence, frameworks should not assume that using the
+pair &lt;AgentID, VolumeID> is a stable way to identify a volume in a cluster.</p></li>
 <li><p>Attempts to dynamically reserve resources or create persistent volumes might
 fail&mdash;for example, because the network message containing the operation did
 not reach the master or because the master rejected the operation.

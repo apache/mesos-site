@@ -104,6 +104,8 @@
 </ul>
 
 
+<p><a name="writing-a-custom-allocator"></a></p>
+
 <h2>Writing a custom allocator</h2>
 
 <p>Allocator modules are implemented in C++, the same language in which Mesos is written. They must subclass the <code>Allocator</code> interface defined in <code>mesos/master/allocator.hpp</code>. However, your implementation can be a C++ proxy, which delegates calls to an actual allocator written in a language of your choice.</p>
@@ -113,6 +115,8 @@
 <p>Additionally, the built-in hierarchical allocator can be extended without the need to reimplement the entirety of the allocation logic. This is possible through the use of the <code>Sorter</code> abstraction. Sorters define the order in which hierarchy layers (e.g. roles or frameworks) should be offered resources by taking &ldquo;client&rdquo; objects and some information about those clients and returning an ordered list of clients.</p>
 
 <p>Sorters are implemented in C++ and inherit the <code>Sorter</code> class defined in <code>$MESOS_HOME/src/master/allocator/sorter/sorter.hpp</code>. The default sorter is <code>DRFSorter</code>, which implements fair sharing and can be found in <code>$MESOS_HOME/src/master/allocator/sorter/drf/sorter.hpp</code>. This sorter is capable of expressing priorities by specifying weights in <code>Sorter::add()</code>. Each client&rsquo;s share is divided by its weight. For example, a role that has a weight of 2 will be offered twice as many resources as a role with weight 1.</p>
+
+<p><a name="wiring-up-a-custom-allocator"></a></p>
 
 <h2>Wiring up a custom allocator</h2>
 
@@ -140,7 +144,7 @@ static Allocator* createExternalAllocator(const Parameters&amp; parameters)
 {
   Try&lt;Allocator*&gt; allocator = ExternalAllocator::create();
   if (allocator.isError()) {
-    return NULL;
+    return nullptr;
   }
 
   return allocator.get();
@@ -153,7 +157,7 @@ mesos::modules::Module&lt;Allocator&gt; ExternalAllocatorModule(
     "Mesos Contributor",
     "engineer@example.com",
     "External Allocator module.",
-    NULL,
+    nullptr,
     createExternalAllocator);
 </code></pre>
 

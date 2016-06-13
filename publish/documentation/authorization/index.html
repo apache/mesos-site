@@ -252,13 +252,13 @@ entries, each representing an authorizable action:</p>
 <td><code>create_volumes</code></td>
 <td>Framework principal or Operator username.</td>
 <td>Resource role of the volume.</td>
-<td>Creating <a href="/documentation/latest/./persistent-volumes/">volumes</a>.</td>
+<td>Creating <a href="/documentation/latest/./persistent-volume/">volumes</a>.</td>
 </tr>
 <tr>
 <td><code>destroy_volumes</code></td>
 <td>Framework principal or Operator username.</td>
 <td>Principals whose volumes can be destroyed by the operator.</td>
-<td>Destroying <a href="/documentation/latest/./persistent-volumes/">volumes</a>.</td>
+<td>Destroying <a href="/documentation/latest/./persistent-volume/">volumes</a>.</td>
 </tr>
 <tr>
 <td><code>get_quotas</code></td>
@@ -507,8 +507,9 @@ though the intention clearly is to allow only <code>admin</code> to shut them do
 }
 </code></pre>
 
-<p>The <code>ops</code> principal can teardown any framework using the &ldquo;/teardown&rdquo; HTTP
-endpoint. No other principal can teardown any frameworks.</p>
+<p>The <code>ops</code> principal can teardown any framework using the
+<a href="/documentation/latest/./endpoints/master/teardown/">/teardown</a> HTTP endpoint. No other principal can
+teardown any frameworks.</p>
 
 <pre><code class="json">{
   "permissive": false,
@@ -763,9 +764,9 @@ the moment and it can be retried later.</p>
 <p>The <code>authorization::Request</code> message is defined in authorizer.proto:</p>
 
 <pre><code class="protoc">message Request {
-  required Subject subject = 1;
+  optional Subject subject = 1;
   optional Action  action  = 2;
-  required Object  object  = 3;
+  optional Object  object  = 3;
 }
 
 message Subject {
@@ -781,12 +782,15 @@ message Object {
 }
 </code></pre>
 
-<p><code>Object</code> has several optional fields of which also several can be set (e.g., the <code>view_executors</code> action expects the <code>executor_info</code> and <code>framework_info</code> to be set).
-The <code>value</code> field for both <code>Subject</code> and <code>Object</code> is optional; if it isn&rsquo;t set,
-then the <code>Subject</code> or <code>Object</code> will only match an ACL with ANY or NONE in the
-corresponding location (for actions expecting <code>value</code> to be set). This allows users to construct the following requests:
+<p><code>Subject</code> or <code>Object</code> are optional fiels; if they are not set they
+will only match an ACL with ANY or NONE in the
+corresponding location. This allows users to construct the following requests:
 <em>Can everybody perform action <strong>A</strong> on object <strong>O</strong>?</em>, or <em>Can principal <strong>Z</strong>
 execute action <strong>X</strong> on all objects?</em>.</p>
+
+<p><code>Object</code> has several optional fields of which, depending on the action,
+one or more fields must be set
+(e.g., the <code>view_executors</code> action expects the <code>executor_info</code> and <code>framework_info</code> to be set).</p>
 
 <p>The <code>action</code> field of the <code>Request</code> message is an enum. It is kept optional —
 even though a valid action is necessary for every request — to allow for

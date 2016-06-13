@@ -102,6 +102,8 @@ and authorized <strong>frameworks</strong> to dynamically reserve resources in t
 
 <p>In both types of reservations, resources are reserved for a <a href="/documentation/latest/./roles/"><strong>role</strong></a>.</p>
 
+<p><a name="static-reservation"></a></p>
+
 <h2>Static Reservation</h2>
 
 <p>An operator can configure a slave with resources reserved for a role.
@@ -128,7 +130,7 @@ We start the slave like so:</p>
 
 <h2>Dynamic Reservation</h2>
 
-<p>As mentioned in <a href="#static-reservation-since-0140">Static Reservation</a>, specifying
+<p>As mentioned in <a href="#static-reservation">Static Reservation</a>, specifying
 the reserved resources via the <code>--resources</code> flag makes the reservation static.
 That is, statically reserved resources cannot be reserved for another role nor
 be unreserved. Dynamic reservation enables operators and authorized frameworks
@@ -180,6 +182,8 @@ combined together into a single reservation, even if the reservations are at the
 same slave and use the same role.</p>
 
 <h3>Framework Scheduler API</h3>
+
+<p><a name="offer-operation-reserve"></a></p>
 
 <h4><code>Offer::Operation::Reserve</code></h4>
 
@@ -281,7 +285,7 @@ following reserved resources:</p>
 <h4><code>Offer::Operation::Unreserve</code></h4>
 
 <p>A framework can unreserve resources through the resource offer cycle.
-In <a href="#offeroperationreserve">Offer::Operation::Reserve</a>, we reserved 8 CPUs
+In <a href="#offer-operation-reserve">Offer::Operation::Reserve</a>, we reserved 8 CPUs
 and 4096 MB of RAM on a particular slave for our <code>role</code>. The master will
 continue to only offer these resources to our <code>role</code>. Suppose we would like to
 unreserve these resources. First, we receive a resource offer (copy/pasted

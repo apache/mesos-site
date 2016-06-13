@@ -133,24 +133,37 @@ R Removed feature/behavior
   </thead>
 <tr>
   <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Version-->
-  0.29.x
+  1.0.x
   </td>
   <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Mesos Core-->
     <ul style="padding-left:10px;">
-      <li>CD <a href="#0-29-x-allocator-metrics">Allocator Metrics</a></li>
-      <li>D <a href="#0-29-x-credentials">--credential(s) (plain text format)</a></li>
+      <li>CD <a href="#1-0-x-allocator-metrics">Allocator Metrics</a></li>
+      <li>C <a href="#1-0-x-persistent-volume">Destruction of persistent volumes</a></li>
+      <li>C <a href="#1-0-x-slave">Slave to Agent rename</a></li>
+      <li>C <a href="#1-0-x-quota-acls">Quota ACLs</a></li>
     </ul>
   </td>
   <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Flags-->
     <ul style="padding-left:10px;">
-      <li>CD <a href="#0-29-x-quota-authorization">Quota Authorization</a></li>
+      <li>D <a href="#1-0-x-docker-timeout-flag">docker_stop_timeout</a></li>
+      <li>D <a href="#1-0-x-credentials-file">credential(s) (plain text format)</a></li>
+      <li>C <a href="#1-0-x-slave">Slave to Agent rename</a></li>
+      <li>R <a href="#1-0-x-workdir">work_dir default value</a></li>
     </ul>
   </td>
   <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Framework API-->
+      <li>DC <a href="#1-0-x-executorinfo">ExecutorInfo.source</a></li>
+      <li>N <a href="#1-0-x-v1-commandinfo">CommandInfo.URI output_file</a></li>
+      <li>C <a href="#1-0-x-scheduler-proto">scheduler.proto optional fields</a></li>
+      <li>C <a href="#1-0-x-executor-proto">executor.proto optional fields</a></li>
   </td>
   <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Module API-->
+    <li>C <a href="#1-0-x-authorizer">Authorizer</a></li>
   </td>
   <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Endpoints-->
+    <li>C <a href="#1-0-x-status-code">HTTP return codes</a></li>
+    <li>R <a href="#1-0-x-status-code">/observe</a></li>
+    <li>C <a href="#1-0-x-endpoint-authorization">Added authorization</a></li>
   </td>
 </tr>
 <tr>
@@ -249,20 +262,56 @@ R Removed feature/behavior
 
 <h2>Upgrading from 0.28.x to 1.0.x</h2>
 
-<ul>
-<li><p>The allocator metric named <code>allocator/event_queue_dispatches</code> is now deprecated. The new name is <code>allocator/mesos/event_queue_dispatches</code> to better support metrics for alternative allocator implementations.</p></li>
-<li><p>Mesos 1.0 deprecates the use of plain text credential files in favor of JSON-formatted credential files.</p></li>
-<li><p>Mesos 1.0 deprecates <code>SET_QUOTA_WITH_ROLE</code> and <code>DESTROY_QUOTA_WITH_PRINCIPAL</code> actions with <code>UPDATE_QUOTA_WITH_ROLE</code>, as well as the <code>SetQuota</code> and <code>RemoveQuota</code> ACLs with <code>UpdateQuota</code> ACL, to control which principal(s) is authorized to set, remove and (in future releases) update quota for role(s). A new <code>GET_QUOTA_WITH_ROLE</code> action and <code>get_quotas</code> ACL are introduced to control which principal(s) can query quota status for given role(s). This affects <code>--acls</code> flag for local authorizer in the following way:</p>
+<p><a name="1-0-x-allocator-metrics"></a></p>
 
 <ul>
-<li>It is not allowed to specify <code>update_quotas</code> and any of <code>set_quotas</code> or <code>remove_quotas</code> at the same time. Local authorizor will error out in such case;</li>
-<li>If <code>set_quotas</code> or <code>remove_quotas</code> were set previously, operator should upgrade binary first, after which the deprecated ACLs are still reinforced;</li>
-<li>After upgrade is verified, operator should replace deprecated values for <code>set_quotas</code> and <code>remove_quotas</code> with compatible values for <code>update_quotas</code>;</li>
-<li>If desired, operator can use <code>get_quotas</code> after upgrade to control which principal(s) is allowed to query quota status for given role(s).</li>
+<li>The allocator metric named <code>allocator/event_queue_dispatches</code> is now deprecated. The new name is <code>allocator/mesos/event_queue_dispatches</code> to better support metrics for alternative allocator implementations.</li>
 </ul>
-</li>
-<li><p>When a persistent volume is destroyed, Mesos will now remove any data that was stored on the volume from the filesystem of the appropriate slave. In prior versions of Mesos, destroying a volume would not delete data (this was a known missing feature that has now been implemented).</p></li>
-<li><p>Mesos 1.0 changes the HTTP status code of the following endpoints from <code>200 OK</code> to <code>202 Accepted</code>:</p>
+
+
+<p><a name="1-0-x-docker-timeout-flag"></a></p>
+
+<ul>
+<li>The &ndash;docker_stop_timeout agent flag is deprecated.</li>
+</ul>
+
+
+<p><a name="1-0-x-executorinfo"></a></p>
+
+<ul>
+<li>The ExecutorInfo.source field is deprecated in favor of ExecutorInfo.labels.</li>
+</ul>
+
+
+<p><a name="1-0-x-slave"></a></p>
+
+<p>Mesos 1.0 deprecates the &lsquo;slave&rsquo; keyword in favor of &lsquo;agent&rsquo; at number of places
+  * Deprecated flags with keyword &lsquo;slave&rsquo; in favor of &lsquo;agent&rsquo;.
+  * Deprecated sandbox links with &lsquo;slave&rsquo; keyword in the WebUI.
+  * Deprecated <code>slave</code> subcommand for mesos-cli.</p>
+
+<p><a name="1-0-x-workdir"></a></p>
+
+<p>Mesos 1.0 removes the default value for the agent <code>work_dir</code>. This flag is now required, and the agent will exit immediately if it is not provided.</p>
+
+<p><a name="1-0-x-credentials-file"></a></p>
+
+<ul>
+<li>Mesos 1.0 deprecates the use of plain text credential files in favor of JSON-formatted credential files.</li>
+</ul>
+
+
+<p><a name="1-0-x-persistent-volume"></a></p>
+
+<ul>
+<li>When a persistent volume is destroyed, Mesos will now remove any data that was stored on the volume from the filesystem of the appropriate slave. In prior versions of Mesos, destroying a volume would not delete data (this was a known missing feature that has now been implemented).</li>
+</ul>
+
+
+<p><a name="1-0-x-status-code"></a></p>
+
+<ul>
+<li>Mesos 1.0 changes the HTTP status code of the following endpoints from <code>200 OK</code> to <code>202 Accepted</code>:
 
 <ul>
 <li><code>/reserve</code></li>
@@ -271,6 +320,77 @@ R Removed feature/behavior
 <li><code>/destroy-volumes</code></li>
 </ul>
 </li>
+</ul>
+
+
+<p><a name="1-0-x-v1-commandinfo"></a></p>
+
+<ul>
+<li>Added &lsquo;output_file&rsquo; field to CommandInfo.URI in Scheduler API and v1 Scheduler HTTP API.</li>
+</ul>
+
+
+<p><a name="1-0-x-scheduler-proto"></a></p>
+
+<ul>
+<li>Changed Call and Event Type enums in scheduler.proto from required to optional for the purpose of backwards compatibility.</li>
+</ul>
+
+
+<p><a name="1-0-x-executor-proto"></a></p>
+
+<ul>
+<li>Changed Call and Event Type enums in executor.proto from required to optional for the purpose of backwards compatibility.</li>
+</ul>
+
+
+<p><a name="1-0-x-nonterminal"></a></p>
+
+<ul>
+<li>Added non-terminal task metadata to the container resource usage information.</li>
+</ul>
+
+
+<p><a name="1-0-x-observe-endpoint"></a></p>
+
+<ul>
+<li>Deleted the /observe HTTP endpoint.</li>
+</ul>
+
+
+<p><a name="1-0-x-quota-acls"></a></p>
+
+<ul>
+<li>Mesos 1.0 deprecates <code>SET_QUOTA_WITH_ROLE</code> and <code>DESTROY_QUOTA_WITH_PRINCIPAL</code> actions with <code>UPDATE_QUOTA_WITH_ROLE</code>, as well as the <code>SetQuota</code> and <code>RemoveQuota</code> ACLs with <code>UpdateQuota</code> ACL, to control which principal(s) is authorized to set, remove and (in future releases) update quota for role(s). A new <code>GET_QUOTA_WITH_ROLE</code> action and <code>get_quotas</code> ACL are introduced to control which principal(s) can query quota status for given role(s). This affects <code>--acls</code> flag for local authorizer in the following way:
+
+<ul>
+<li>It is not allowed to specify <code>update_quotas</code> and any of <code>set_quotas</code> or <code>remove_quotas</code> at the same time. Local authorizor will error out in such case;</li>
+<li>If <code>set_quotas</code> or <code>remove_quotas</code> were set previously, operator should upgrade binary first, after which the deprecated ACLs are still reinforced;</li>
+<li>After upgrade is verified, operator should replace deprecated values for <code>set_quotas</code> and <code>remove_quotas</code> with compatible values for <code>update_quotas</code>;</li>
+<li>If desired, operator can use <code>get_quotas</code> after upgrade to control which principal(s) is allowed to query quota status for given role(s).</li>
+</ul>
+</li>
+</ul>
+
+
+<p><a name="1-0-x-authorizer"></a></p>
+
+<ul>
+<li>Mesos 1.0 contains a number of authorizer changes especially effecting authorizer modules:
+
+<ul>
+<li>The authorizer interface has been refactored in order to decouple the ACLs definition language from the interface. It additionally includes the option of retrieving <code>ObjectApprover</code>. An <code>ObjectApprover</code> can be used to synchronously check authorizations for a given object and is hence useful when authorizing a large number of objects and/or large objects (which need to be copied using request based authorization). NOTE: This is a <strong>breaking change</strong> for authorizer modules.</li>
+<li>Authorization based HTTP endpoint filtering enables operators to restrict what part of the cluster state a user is authorized to see. Consider for example the <code>/state</code> master endpoint: an operator can now authorize users to only see a subset of the running frameworks, tasks, or executors.</li>
+<li>Fields (i.e, <code>subject</code> and <code>object</code>) in authorization::Request protobuf are changed to optional. If these fields are not set, the request should be allowed only for ACLs with <code>ANY</code> semantics. NOTE: This is a semantic change for authorizer modules.</li>
+</ul>
+</li>
+</ul>
+
+
+<p><a name="1-0-x-endpoint-authorization"></a></p>
+
+<ul>
+<li>Mesos provides authorization a number of HTTP endpoints. Note that the some of these endpoints are used by the web UI, and thus using the web UI in a cluster with authorization enabled will require that ACLs be set appropriately. Please refer to the <a href="/documentation/latest/./authorization/">authorization documentation</a> for details.</li>
 </ul>
 
 
