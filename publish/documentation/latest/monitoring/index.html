@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>Apache Mesos - Observability Metrics</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:image" content="/assets/img/mesos_logo_fb_preview.png">
 
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
@@ -984,6 +985,29 @@ agent registrar.</p>
   <code>registrar/state_store_ms/p9999</code>
   </td>
   <td>99.99th percentile registry write latency in ms</td>
+  <td>Gauge</td>
+</tr>
+</table>
+
+
+<h4>Replicated log</h4>
+
+<p>The following metrics provide information about the replicated log underneath
+the registrar, which is the persistent store for masters.</p>
+
+<table class="table table-striped">
+<thead>
+<tr><th>Metric</th><th>Description</th><th>Type</th>
+</thead>
+<tr>
+  <td>
+  <code>registrar/log/recovered</code>
+  </td>
+  <td>
+    Whether the replicated log for the registrar has caught up with the other
+    masters in the cluster. A cluster is operational as long as a quorum of
+    "recovered" masters is available in the cluster.
+  </td>
   <td>Gauge</td>
 </tr>
 </table>

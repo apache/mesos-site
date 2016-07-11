@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>Apache Mesos - Reconciliation</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:image" content="/assets/img/mesos_logo_fb_preview.png">
 
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
@@ -92,98 +93,97 @@
     <p>See our <a href="/community/">community</a> page for more details.</p>
   </div>
   <div class="col-md-8">
-    <h1>Reconciliation</h1>
+    <h1>Task Reconciliation</h1>
 
-<p>There&rsquo;s no getting around it, <strong>frameworks on Mesos are distributed systems</strong>.</p>
-
-<p><strong>Distributed systems must deal with failures</strong> and partitions (the two are
-indistinguishable from a system&rsquo;s perspective).</p>
-
-<p>Concretely, what does this mean for frameworks? Mesos uses an actor-like
-<strong>message passing</strong> programming model, in which messages are delivered
-<strong>at-most-once</strong>. (Exceptions to this include task status updates, most of
-which are delivered at-least-once through the use of acknowledgements).
-<strong>The messages passed between the master and the framework are therefore
-susceptible to be dropped, in the presence of failures</strong>.</p>
-
-<p>When these unreliable messages are dropped, inconsistent state can arise
-between the framework and Mesos.</p>
-
-<p>As a simple example, consider a launch task request sent by a framework.
-There are many ways that failures can lead to the loss of the task, for
-example:</p>
+<p>Messages between framework schedulers and the Mesos master may be dropped due to
+failures and network partitions. This may cause a framework scheduler and the
+master to have different views of the current state of the cluster. For example,
+consider a launch task request sent by a framework.  There are many ways that
+failures can prevent the task launch operation from succeeding, such as:</p>
 
 <ul>
 <li>Framework fails after persisting its intent to launch the task, but
 before the launch task message was sent.</li>
 <li>Master fails before receiving the message.</li>
-<li>Master fails after receiving the message, but before sending it to the
+<li>Master fails after receiving the message but before sending it to the
 agent.</li>
 </ul>
 
 
-<p>In these cases, the framework believes the task to be staging, but the
-task is unknown to Mesos. To cope with such situations, <strong>task state must be
-reconciled between the framework and Mesos whenever a failure is detected</strong>.</p>
+<p>In these cases, the framework believes the task to be staging but the task is
+unknown to the master. To cope with such situations, Mesos frameworks should use
+<em>reconciliation</em> to ask the master for the current state of their tasks.</p>
 
-<h2>Detecting Failures</h2>
+<h2>How To Reconcile</h2>
 
-<p>It is the responsibility of Mesos (scheduler driver / Master) to ensure
-that the framework is notified when a disconnection, and subsequent
-(re-)registration occurs. At this point, the scheduler should perform
-task state reconciliation.</p>
+<p>Frameworks can use the scheduler driver&rsquo;s <code>reconcileTasks</code> method to send a
+reconciliation request to the master:</p>
 
-<h2>Task Reconciliation</h2>
-
-<p>Mesos provides two forms of reconciliation:</p>
-
-<ul>
-<li>&ldquo;Explicit&rdquo; reconciliation: the scheduler sends some of its non-terminal
-tasks and the master responds with the latest state for each task, if
-possible.</li>
-<li>&ldquo;Implicit&rdquo; reconciliation: the scheduler sends an empty list of tasks
-and the master responds with the latest state for all currently known
-non-terminal tasks.</li>
-</ul>
-
-
-<p><strong>Tasks must be reconciled explicitly by the framework after a failure.</strong></p>
-
-<p>This is because the scheduler driver does not persist any task information.
-In the future, the scheduler driver (or a pure-language mesos library) could
-perform task reconciliation seamlessly under the covers on behalf of the
-framework.</p>
-
-<p>So, for now, let&rsquo;s look at how one needs to implement task state
-reconciliation in a framework scheduler.</p>
-
-<h3>API</h3>
-
-<p>Frameworks send a list of <code>TaskStatus</code> messages to the master:</p>
-
-<pre><code>// Allows the framework to query the status for non-terminal tasks.
+<pre><code class="{.cpp}">// Allows the framework to query the status for non-terminal tasks.
 // This causes the master to send back the latest task status for
 // each task in 'statuses', if possible. Tasks that are no longer
 // known will result in a TASK_LOST update. If statuses is empty,
 // then the master will send the latest status for each task
 // currently known.
-message Reconcile {
-  repeated TaskStatus statuses = 1; // Should be non-terminal only.
-}
+virtual Status reconcileTasks(const std::vector&lt;TaskStatus&gt;&amp; statuses);
 </code></pre>
 
 <p>Currently, the master will only examine two fields in <code>TaskStatus</code>:</p>
 
 <ul>
 <li><code>TaskID</code>: This is required.</li>
-<li><code>SlaveID</code>: Optional, leads to faster reconciliation in the presence of
-agents that are transitioning between states.</li>
+<li><code>SlaveID</code>: Optional but recommended. This leads to faster reconciliation in
+the presence of agents that are transitioning between states.</li>
 </ul>
 
 
-<h3>Algorithm</h3>
+<p>Mesos provides two forms of reconciliation:</p>
 
-<p>This technique for explicit reconciliation reconciles all non-terminal tasks,
+<ul>
+<li>&ldquo;Explicit&rdquo; reconciliation: the scheduler sends a list of non-terminal task IDs
+and the master responds with the latest state for each task, if possible.</li>
+<li>&ldquo;Implicit&rdquo; reconciliation: the scheduler sends an empty list of tasks
+and the master responds with the latest state for all currently known
+non-terminal tasks.</li>
+</ul>
+
+
+<p>Reconciliation results are returned as task status updates (e.g., via the
+scheduler driver&rsquo;s <code>statusUpdate</code> callback). Status updates that result from
+reconciliation requests will their <code>reason</code> field set to
+<code>REASON_RECONCILIATION</code>. Note that most of the other fields in the returned
+<code>TaskStatus</code> message will not be set: for example, reconciliation cannot be used
+to retrieve the <code>labels</code> or <code>data</code> fields associated with a running task.</p>
+
+<h2>When To Reconcile</h2>
+
+<p>Framework schedulers should periodically reconcile <em>all</em> of their tasks (for
+example, every fifteen minutes). This serves two purposes:</p>
+
+<ol>
+<li> It is necessary to account for dropped messages between the framework and
+ the master; for example, see the task launch scenario described above.</li>
+<li> It is a defensive programming technique to catch bugs in both the framework
+ and the Mesos master.</li>
+</ol>
+
+
+<p>As an optimization, framework schedulers should reconcile <em>more frequently</em> when
+they have reason to suspect that their local state differs from that of the
+master. For example, after a framework launches a task, it should expect to
+receive a <code>TASK_RUNNING</code> status update for the new task fairly promptly. If no
+such update is received, the framework should perform explicit reconciliation
+more quickly than usual.</p>
+
+<p>Similarly, frameworks should initiate reconciliation after both framework
+failovers and master failovers. Note that the scheduler driver notifies
+frameworks when master failover has occurred (via the <code>reregistered()</code>
+callback). For more information, see the
+<a href="/documentation/latest/./high-availability-framework-guide/">guide to designing highly available frameworks</a>.</p>
+
+<h2>Algorithm</h2>
+
+<p>This technique for explicit reconciliation reconciles all non-terminal tasks
 until an update is received for each task, using exponential backoff to retry
 tasks that remain unreconciled. Retries are needed because the master temporarily
 may not be able to reply for a particular task. For example, during master
@@ -225,7 +225,7 @@ then the previous reconciliation algorithm should stop running.</li>
 </ul>
 
 
-<h2>Offer Reconciliation</h2>
+<h1>Offer Reconciliation</h1>
 
 <p>Offers are reconciled automatically after a failure:</p>
 

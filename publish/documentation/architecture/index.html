@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>Apache Mesos - Architecture</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:image" content="/assets/img/mesos_logo_fb_preview.png">
 
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
@@ -104,7 +105,7 @@ of &lt;agent ID, resource1: amount1, resource2: amount2, &hellip;&gt; (NOTE: as
 keyword &lsquo;slave&rsquo; is deprecated in favor of &lsquo;agent&rsquo;, driver-based frameworks will
 still receive offers with slave ID, whereas frameworks using the v1 HTTP API receive offers with agent ID). The master decides <em>how many</em> resources to offer to each framework according to a given organizational policy, such as fair sharing or strict priority. To support a diverse set of policies, the master employs a modular architecture that makes it easy to add new allocation modules via a plugin mechanism.</p>
 
-<p>A framework running on top of Mesos consists of two components: a <em>scheduler</em> that registers with the master to be offered resources, and an <em>executor</em> process that is launched on agent nodes to run the framework&rsquo;s tasks (see the <a href="/documentation/latest/./app-framework-development-guide/">App/Framework development guide</a> for more details about framework schedulers and executors). While the master determines <strong>how many</strong> resources are offered to each framework, the frameworks' schedulers select <strong>which</strong> of the offered resources to use. When a frameworks accepts offered resources, it passes to Mesos a description of the tasks it wants to run on them. In turn, Mesos launches the tasks on the corresponding agents.</p>
+<p>A framework running on top of Mesos consists of two components: a <em>scheduler</em> that registers with the master to be offered resources, and an <em>executor</em> process that is launched on agent nodes to run the framework&rsquo;s tasks (see the <a href="/documentation/latest/./app-framework-development-guide/">App/Framework development guide</a> for more details about framework schedulers and executors). While the master determines <strong>how many</strong> resources are offered to each framework, the frameworks' schedulers select <strong>which</strong> of the offered resources to use. When a framework accepts offered resources, it passes to Mesos a description of the tasks it wants to run on them. In turn, Mesos launches the tasks on the corresponding agents.</p>
 
 <h2>Example of resource offer</h2>
 

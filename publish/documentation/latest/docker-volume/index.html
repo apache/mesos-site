@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Apache Mesos - Docker Volume Support in Mesos Containerizer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:image" content="/assets/img/mesos_logo_fb_preview.png">
+
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
+    <link href="../../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+
+    
+
+    <!-- Google Analytics Magic -->
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-20226872-1']);
+    _gaq.push(['_setDomainName', 'apache.org']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+  </head>
+  <body>
+    <!-- magical breadcrumbs -->
+    <div class="topnav">
+      <div class="container">
+        <ul class="breadcrumb">
+          <li>
+            <div class="dropdown">
+              <a data-toggle="dropdown" href="#">Apache Software Foundation <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                <li><a href="http://www.apache.org">Apache Homepage</a></li>
+                <li><a href="http://www.apache.org/licenses/">License</a></li>
+                <li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>
+                <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                <li><a href="http://www.apache.org/security/">Security</a></li>
+              </ul>
+            </div>
+          </li>
+
+          <li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+          
+          
+          <li><a href="/documentation
+/">Documentation
+</a></li>
+          
+          
+        </ul><!-- /.breadcrumb -->
+      </div><!-- /.container -->
+    </div><!-- /.topnav -->
+
+    <!-- navbar excitement -->
+<div class="navbar navbar-default navbar-static-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#mesos-menu" aria-expanded="false">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo"/></a>
+    </div><!-- /.navbar-header -->
+
+    <div class="navbar-collapse collapse" id="mesos-menu">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/gettingstarted/">Getting Started</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/documentation/latest/">Documentation</a></li>
+        <li><a href="/downloads/">Downloads</a></li>
+        <li><a href="/community/">Community</a></li>
+      </ul>
+    </div><!-- /#mesos-menu -->
+  </div><!-- /.container -->
+</div><!-- /.navbar -->
+
+<div class="content">
+  <div class="container">
+    <div class="row-fluid">
+  <div class="col-md-4">
+    <h4>If you're new to Mesos</h4>
+    <p>See the <a href="/gettingstarted/">getting started</a> page for more
+       information about downloading, building, and deploying Mesos.</p>
+
+    <h4>If you'd like to get involved or you're looking for support</h4>
+    <p>See our <a href="/community/">community</a> page for more details.</p>
+  </div>
+  <div class="col-md-8">
+    <h1>Docker Volume Support in Mesos Containerizer</h1>
+
+<p>Mesos 1.0 adds Docker volume support to the
+<a href="/documentation/latest/./mesos-containerizer/">MesosContainerizer</a> (a.k.a., the unified containerizer)
+by introducing the new <code>docker/volume</code> isolator.</p>
+
+<p>This document describes the motivation, overall architecture, configuration
+steps for enabling Docker volume isolator, and required framework changes.</p>
+
+<h2>Table of Contents</h2>
+
+<ul>
+<li><a href="#motivation">Motivation</a></li>
+<li><a href="#how-does-it-work">How does it work?</a></li>
+<li><a href="#configuration">Configuration</a>
+
+<ul>
+<li><a href="#pre-conditions">Pre-conditions</a></li>
+<li><a href="#configure-Docker-volume-isolator">Configuring Docker Volume Isolator</a></li>
+<li><a href="#enable-frameworks">Enabling frameworks to use Docker volumes</a>
+
+<ul>
+<li><a href="#volume-protobuf">Volume Protobuf</a></li>
+<li><a href="#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#limitations">Limitations</a></li>
+<li><a href="#test-it-out">Test it out!</a></li>
+</ul>
+
+
+<h2><a name="motivation"></a>Motivation</h2>
+
+<p>The integration of external storage in Mesos is an attractive feature.  The
+Mesos <a href="/documentation/latest/./persistent-volume/">persistent volume</a> primitives allow stateful
+services to persist data on an agent&rsquo;s local storage. However, the amount of
+storage capacity that can be directly attached to a single agent is
+limited&mdash;certain applications (e.g., databases) would like to access more data
+than can easily be attached to a single node. Using external storage can
+also simplify data migration between agents/containers, and can make backups and
+disaster recovery easier.</p>
+
+<p>The <a href="/documentation/latest/./https://github.com/Docker/Docker/blob/master/docs/extend/plugins_volume/">Docker Volume Driver
+API</a>
+defines an interface between the container runtime and external storage systems.
+It has been widely adopted. There are Docker volume plugins for a variety of
+storage drivers, such as <a href="https://github.com/rancher/convoy">Convoy</a>,
+<a href="https://docs.clusterhq.com/en/latest/Docker-integration/">Flocker</a>,
+<a href="https://github.com/calavera/Docker-volume-glusterfs">GlusterFS</a>, and
+<a href="https://github.com/emccode/rexray">REX-Ray</a>. Each plugin typically supports a
+variety of external storage systems, such as Amazon EBS, OpenStack Cinder, etc.</p>
+
+<p>Therefore, introducing support for external storage in Mesos through the
+<code>docker/volume</code> isolator provides Mesos with tremendous flexibility to
+orchestrate containers on a wide variety of external storage technologies.</p>
+
+<h2><a name="how-does-it-work"></a>How does it work?</h2>
+
+<p><img src="/assets/img/documentation/docker-volume-isolator.png" alt="Docker Volume Isolator Architecture" /></p>
+
+<p>The <code>docker/volume</code> isolator interacts with Docker volume plugins using
+<a href="https://github.com/emccode/dvdcli">dvdcli</a>, an open-source command line tool
+from EMC.</p>
+
+<p>When a new task with Docker volumes is launched, the <code>docker/volume</code> isolator
+will invoke <a href="https://github.com/emccode/dvdcli">dvdcli</a> to mount the
+corresponding Docker volume onto the host and then onto the container.</p>
+
+<p>When the task finishes or is killed, the <code>docker/volume</code> isolator will invoke
+<a href="https://github.com/emccode/dvdcli">dvdcli</a> to unmount the corresponding Docker
+volume.</p>
+
+<p>The detailed workflow for the <code>docker/volume</code> isolator is as follows:</p>
+
+<ol>
+<li><p>A framework specifies external volumes in <code>ContainerInfo</code> when launching a
+task.</p></li>
+<li><p>The master sends the launch task message to the agent.</p></li>
+<li><p>The agent receives the message and asks all isolators (including the
+<code>docker/volume</code> isolator) to prepare for the container with the
+<code>ContainerInfo</code>.</p></li>
+<li><p>The isolator invokes <a href="https://github.com/emccode/dvdcli">dvdcli</a> to mount the
+corresponding external volume to a mount point on the host.</p></li>
+<li><p>The agent launches the container and bind-mounts the volume into the
+container.</p></li>
+<li><p>The bind-mounted volume inside the container will be unmounted from the
+container automatically when the container finishes, as the container is in
+its own mount namespace.</p></li>
+<li><p>The agent invokes isolator cleanup which invokes
+<a href="https://github.com/emccode/dvdcli">dvdcli</a> to unmount all mount points for
+the container.</p></li>
+</ol>
+
+
+<h2><a name="configuration"></a>Configuration</h2>
+
+<p>To use the <code>docker/volume</code> isolator, there are certain actions required by
+operators and framework developers. In this section we list the steps required
+by the operator to configure <code>docker/volume</code> isolator and the steps required by
+framework developers to specify the Docker volumes.</p>
+
+<h3><a name="pre-conditions"></a>Pre-conditions</h3>
+
+<ul>
+<li><p>Install <code>dvdcli</code> version
+<a href="https://github.com/emccode/dvdcli/releases/tag/v0.1.0">0.1.0</a> on each agent.</p></li>
+<li><p>Install the <a href="/documentation/latest/./https://github.com/Docker/Docker/blob/master/docs/extend/plugins/#volume-plugins">Docker volume
+plugin</a>
+on each agent.</p></li>
+<li><p>Explicitly create the Docker volumes that are going to be accessed by Mesos
+tasks. If this is not done, volumes will be implicitly created by
+<a href="https://github.com/emccode/dvdcli">dvdcli</a> but the volumes may not fit into
+framework resource requirement well.</p></li>
+</ul>
+
+
+<h3><a name="configure-Docker-volume-isolator"></a>Configuring Docker Volume Isolator</h3>
+
+<p>In order to configure the <code>docker/volume</code> isolator, the operator needs to
+configure two flags at agent startup as follows:</p>
+
+<pre><code class="{.console}">  sudo mesos-agent \
+    --master=&lt;master IP&gt; \
+    --ip=&lt;agent IP&gt; \
+    --work_dir=/var/lib/mesos \
+    --isolation=filesystem/linux,docker/volume \
+    --docker_volume_checkpoint_dir=&lt;mount info checkpoint path&gt;
+</code></pre>
+
+<p>The <code>docker/volume</code> isolator must be specified in the <code>--isolation</code> flag at
+agent startup; the <code>docker/volume</code> isolator has a dependency on the
+<code>filesystem/linux</code> isolator.</p>
+
+<p>The <code>--docker_volume_checkpoint_dir</code> is an optional flag with a default value of
+<code>/var/run/mesos/isolators/docker/volume</code>. The <code>docker/volume</code> isolator will
+checkpoint all Docker volume mount point information under
+<code>--docker_volume_checkpoint_dir</code> for recovery. The checkpoint information under
+the default <code>--docker_volume_checkpoint_dir</code> will be cleaned up after agent
+restart. Therefore, it is recommended to set <code>--docker_volume_checkpoint_dir</code> to
+a directory which will survive agent restart.</p>
+
+<h3><a name="enable-frameworks"></a>Enabling frameworks to use Docker volumes</h3>
+
+<h4><a name="volume-protobuf"></a>Volume Protobuf</h4>
+
+<p>The <code>Volume</code> protobuf message has been updated to support Docker volumes.</p>
+
+<pre><code class="{.proto}">message Volume {
+  ...
+
+  required string container_path = 1;
+
+  message Source {
+    enum Type {
+      UNKNOWN = 0;
+      DOCKER_VOLUME = 1;
+    }
+
+    message DockerVolume {
+      optional string driver = 1;
+      required string name = 2;
+      optional Parameters driver_options = 3;
+    }
+
+    optional Type type = 1;
+    optional DockerVolume docker_volume = 2;
+  }
+
+  optional Source source = 5;
+}
+</code></pre>
+
+<p>When requesting a Docker volume for a container, the framework developer needs to
+set <code>Volume</code> for the container, which includes <code>mode</code>, <code>container_path</code> and
+<code>source</code>.</p>
+
+<p>The <code>source</code> field specifies where the volume comes from. Framework developers need to
+specify the <code>type</code>, Docker volume <code>driver</code>, <code>name</code> and <code>options</code>. At present,
+only the <code>DOCKER_VOLUME</code> type is supported; we plan to add support for more
+types of volumes in the future.</p>
+
+<p>How to specify <code>container_path</code>:</p>
+
+<ol>
+<li><p>If you are launching a Mesos container <code>without rootfs</code>. If <code>container_path</code>
+is an absolute path, you need to make sure the absolute path exists on your
+host root file system as the container shares the host root file system;
+otherwise, the task will fail.</p></li>
+<li><p>For other cases like launching a Mesos container <code>without rootfs</code> and
+<code>container_path</code> is a relative path, or launching a task <code>with rootfs</code> and
+<code>container_path</code> is an absolute path, or launching a task <code>with rootfs</code> and
+<code>container_path</code> as a relative path, the isolator will help create the
+<code>container_path</code> as the mount point.</p></li>
+</ol>
+
+
+<p>The following table summarizes the above rules for <code>container_path</code>:</p>
+
+<table class="table table-striped">
+  <tr>
+    <th></th>
+    <th>Container with rootfs</th>
+    <th>Container without rootfs</th>
+  </tr>
+  <tr>
+    <td>Absolute container_path</td>
+    <td>No need to exist</td>
+    <td>Must exist</td>
+  </tr>
+  <tr>
+    <td>Relative container_path</td>
+    <td>No need to exist</td>
+    <td>No need to exist</td>
+  </tr>
+</table>
+
+
+<h4><a name="examples"></a>Examples</h4>
+
+<ol>
+<li><p>Launch a task with one Docker volume using the default command executor.</p>
+
+<pre><code class="{.json}">TaskInfo {
+  ...
+  "command" : ...,
+  "container" : {
+    "volumes" : [
+      {
+        "container_path" : "/mnt/volume",
+        "mode" : "RW",
+        "source" : {
+          "type" : "DOCKER_VOLUME",
+          "docker_volume" : {
+            "driver" : "rexray",
+            "name" : "myvolume"
+          }
+        }
+      }
+    ]
+  }
+}
+</code></pre></li>
+<li><p>Launch a task with two Docker volumes using the default command executor.</p>
+
+<pre><code class="{.json}">TaskInfo {
+  ...
+  "command" : ...,
+  "container" : {
+    "volumes" : [
+      {
+        "container_path" : "volume1",
+        "mode" : "RW",
+        "source" : {
+          "type" : "DOCKER_VOLUME",
+          "docker_volume" : {
+            "driver" : "rexray",
+            "name" : "volume1"
+          }
+        }
+      },
+      {
+        "container_path" : "volume2",
+        "mode" : "RW",
+        "source" : {
+          "type" : "DOCKER_VOLUME",
+          "docker_volume" : {
+            "driver" : "rexray",
+            "name" : "volume2",
+            "driver_options" : {
+              "parameter" : [{
+                "key" : &lt;key&gt;,
+                "value" : &lt;value&gt;
+              }, {
+                "key" : &lt;key&gt;,
+                "value" : &lt;value&gt;
+              }]
+            }
+          }
+        }
+      }
+    ]
+  }
+}
+</code></pre></li>
+</ol>
+
+
+<p><strong>NOTE</strong>: The task launch will be failed if one container uses multiple Docker
+volumes with the same <code>driver</code> and <code>name</code>.</p>
+
+<h2><a name="limitations"></a>Limitations</h2>
+
+<p>Using the same Docker volume in both the
+<a href="/documentation/latest/./docker-containerizer/">DockerContainerizer</a> and the MesosContainerizer
+simultaneously is <strong>strongly discouraged</strong>, because the MesosContainerizer has its
+own reference counting to decide when to unmount a Docker volume. Otherwise, it
+would be problematic if a Docker volume is unmounted by MesosContainerizer but
+the DockerContainerizer is still using it.</p>
+
+<h2><a name="test-it-out"></a>Test it out!</h2>
+
+<p>This section presents examples for launching containers with Docker volumes.
+The following example is using <a href="https://github.com/rancher/convoy/">convoy</a>
+as the Docker volume driver.</p>
+
+<p>Start the Mesos master.</p>
+
+<pre><code class="{.console}">  $ sudo mesos-master --work_dir=/tmp/mesos/master
+</code></pre>
+
+<p>Start the Mesos agent.</p>
+
+<pre><code class="{.console}">  $ sudo mesos-agent \
+    --master=&lt;MASTER_IP&gt;:5050 \
+    --isolation=docker/volume,docker/runtime,filesystem/linux \
+    --work_dir=/tmp/mesos/agent \
+    --image_providers=docker \
+    --executor_environment_variables="{}"
+</code></pre>
+
+<p>Create a volume named as <code>myvolume</code> with
+<a href="https://github.com/rancher/convoy/">convoy</a>.</p>
+
+<pre><code class="{.console}">  $ convoy create myvolume
+</code></pre>
+
+<p>Prepare a volume json file named as <code>myvolume.json</code> with following content.</p>
+
+<pre><code>  [{
+    "container_path":"\/tmp\/myvolume",
+    "mode":"RW",
+    "source":
+    {
+      "docker_volume":
+        {
+          "driver":"convoy",
+          "name":"myvolume"
+        },
+        "type":"DOCKER_VOLUME"
+    }
+  }]
+</code></pre>
+
+<p>Now, use Mesos CLI (i.e., mesos-execute) to launch a Docker container with
+<code>--volumes=&lt;path&gt;/myvolume.json</code> option.</p>
+
+<pre><code class="{.console}">  $ sudo mesos-execute \
+    --master=&lt;MASTER_IP&gt;:5050 \
+    --name=test \
+    --docker_image=ubuntu:14.04 \
+    --command="touch /tmp/myvolume/myfile" \
+    --volumes=&lt;path&gt;/myvolume.json
+</code></pre>
+
+<p>Create another task to verify the file <code>myfile</code> was created successfully.</p>
+
+<pre><code class="{.console}">  $ sudo mesos-execute \
+    --master=&lt;MASTER_IP&gt;:5050 \
+    --name=test \
+    --docker_image=ubuntu:14.04 \
+    --command="ls /tmp/myvolume" \
+    --volumes=&lt;path&gt;/myvolume.json
+</code></pre>
+
+<p>Check the <a href="/documentation/latest/./https://github.com/apache/mesos/blob/master/docs/sandbox/#where-is-the-sandbox">sandbox
+</a>
+for the second task to check the file <code>myfile</code> was created successfully.</p>
+
+<pre><code class="{.console}">  $ cat stdout
+    Received SUBSCRIBED event
+    Subscribed executor on mesos002
+    Received LAUNCH event
+    Starting task test
+    Forked command at 27288
+    sh -c 'ls /tmp/myvolume/'
+    lost+found
+    myfile
+    Command exited with status 0 (pid: 27288)
+</code></pre>
+
+  </div>
+</div>
+
+  </div><!-- /.container -->
+</div><!-- /.content -->
+
+<hr>
+
+
+
+    <!-- footer -->
+    <div class="footer">
+      <div class="container">
+        <div class="col-md-4 social-blk">
+          <span class="social">
+            <a href="https://twitter.com/ApacheMesos"
+              class="twitter-follow-button"
+              data-show-count="false" data-size="large">Follow @ApacheMesos</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+            <a href="https://twitter.com/intent/tweet?button_hashtag=mesos"
+              class="twitter-hashtag-button"
+              data-size="large"
+              data-related="ApacheMesos">Tweet #mesos</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+          </span>
+        </div>
+
+        <div class="col-md-8 trademark">
+          <p>&copy; 2012-2016 <a href="http://apache.org">The Apache Software Foundation</a>.
+            Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.
+          <p>
+        </div>
+      </div><!-- /.container -->
+    </div><!-- /.footer -->
+
+    <!-- JS -->
+    <script src="//code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="text/javascript"></script>
+  </body>
+</html>

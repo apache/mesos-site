@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:image" content="/assets/img/mesos_logo_fb_preview.png">
 
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
@@ -103,7 +104,7 @@ role does not have a weight specified in the <code>--weights</code> flag, then t
 value (1.0) will be used. Weights cannot be changed without updating the flag
 and restarting all Mesos masters.</p>
 
-<p>Mesos 0.29 contains a <a href="/documentation/latest/./endpoints/master/weights/">/weights</a> operator endpoint
+<p>Mesos 1.0 contains a <a href="/documentation/latest/./endpoints/master/weights/">/weights</a> operator endpoint
 that allows weights to be changed at runtime. The <code>--weights</code> command-line flag
 is deprecated.</p>
 
@@ -129,13 +130,13 @@ endpoint currently offers a REST-like interface and supports the following opera
 endpoint.</p>
 
 <p>An example request to the <code>/weights</code> endpoint could look like this (using the
-JSON definitions below):</p>
+JSON file below):</p>
 
-<pre><code>$ curl -d jsonMessageBody -X PUT http://&lt;master-ip&gt;:&lt;port&gt;/weights
+<pre><code>$ curl -d @weights.json -X PUT http://&lt;master-ip&gt;:&lt;port&gt;/weights
 </code></pre>
 
 <p>For example, to set a weight of <code>2.0</code> for <code>role1</code> and set a weight of <code>3.5</code>
-for <code>role2</code>, the operator can use the following <code>jsonMessageBody</code>:</p>
+for <code>role2</code>, the operator can use the following <code>weights.json</code>:</p>
 
 <pre><code>    [
       {

@@ -88,10 +88,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8ffd9f3bdfab2ed84eb38728e307edd1"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classTry.html">Try</a>&lt; <a class="el" href="structNothing.html">Nothing</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprocess_1_1network_1_1LibeventSSLSocketImpl.html#a8ffd9f3bdfab2ed84eb38728e307edd1">listen</a> (int backlog)</td></tr>
 <tr class="separator:a8ffd9f3bdfab2ed84eb38728e307edd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d9f8680822b5b76fe21a564321c7d3f"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classprocess_1_1Future.html">Future</a>&lt; <a class="el" href="classprocess_1_1network_1_1Socket.html">Socket</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprocess_1_1network_1_1LibeventSSLSocketImpl.html#a0d9f8680822b5b76fe21a564321c7d3f">accept</a> ()</td></tr>
+<tr class="memdesc:a0d9f8680822b5b76fe21a564321c7d3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a socket corresponding to the next pending connection for the listening socket.  <a href="#a0d9f8680822b5b76fe21a564321c7d3f">More...</a><br/></td></tr>
 <tr class="separator:a0d9f8680822b5b76fe21a564321c7d3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5daec0074190774365d46b5587901cce"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classprocess_1_1network_1_1Socket.html#a14321f03f412b2e389f3deb5f15d6c94">Socket::Kind</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprocess_1_1network_1_1LibeventSSLSocketImpl.html#a5daec0074190774365d46b5587901cce">kind</a> () const </td></tr>
 <tr class="separator:a5daec0074190774365d46b5587901cce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e8e9cce294363d497b0400257523a76"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classTry.html">Try</a>&lt; <a class="el" href="structNothing.html">Nothing</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprocess_1_1network_1_1LibeventSSLSocketImpl.html#a7e8e9cce294363d497b0400257523a76">shutdown</a> ()</td></tr>
+<tr class="memdesc:a7e8e9cce294363d497b0400257523a76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shutdown the receive-side of the socket.  <a href="#a7e8e9cce294363d497b0400257523a76">More...</a><br/></td></tr>
 <tr class="separator:a7e8e9cce294363d497b0400257523a76"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a72edaaa04ffece65618e82ded9e9d82a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprocess_1_1network_1_1LibeventSSLSocketImpl.html#a72edaaa04ffece65618e82ded9e9d82a">initialize</a> ()</td></tr>
 <tr class="separator:a72edaaa04ffece65618e82ded9e9d82a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -208,6 +210,10 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Returns a socket corresponding to the next pending connection for the listening socket. </p>
+<p>All implementations will set the NONBLOCK and CLOEXEC options on the returned socket.</p>
+<p>TODO(josephw): MESOS-5729: Consider making the CLOEXEC option configurable by the caller of the interface. </p>
 
 <p>Implements <a class="el" href="classprocess_1_1network_1_1Socket_1_1Impl.html#ab99a6d7abac8c66c6321300f15072136">process::network::Socket::Impl</a>.</p>
 
@@ -463,6 +469,9 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Shutdown the receive-side of the socket. </p>
+<p>No further data can be received from the socket. </p>
 
 <p>Reimplemented from <a class="el" href="classprocess_1_1network_1_1Socket_1_1Impl.html#a8280ec8942ee8060708274dc2eeb78eb">process::network::Socket::Impl</a>.</p>
 

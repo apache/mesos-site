@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>Apache Mesos - Documentation Home</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:image" content="/assets/img/mesos_logo_fb_preview.png">
 
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
@@ -113,7 +114,13 @@
 
 <ul>
 <li><a href="/documentation/latest/./containerizer-internals/">Containerizer Internals</a> for implementation details of containerizers.</li>
-<li><a href="/documentation/latest/./mesos-containerizer/">Mesos Containerizer</a> default containerizer, supports both Linux and POSIX systems.</li>
+<li><a href="/documentation/latest/./mesos-containerizer/">Mesos Containerizer</a> default containerizer, supports both Linux and POSIX systems.
+
+<ul>
+<li><a href="/documentation/latest/./docker-volume/">Docker Volume Support</a></li>
+<li><a href="/documentation/latest/./cni/">CNI support</a></li>
+</ul>
+</li>
 <li><a href="/documentation/latest/./docker-containerizer/">Docker Containerizer</a> for launching a Docker image as a Task, or as an Executor.</li>
 <li><a href="/documentation/latest/./external-containerizer/">External Containerizer</a> for custom containerization implementations (deprecated).</li>
 </ul>
@@ -127,7 +134,6 @@
 <li><a href="/documentation/latest/./high-availability/">High Availability</a> for running multiple masters simultaneously.</li>
 <li><a href="/documentation/latest/./operational-guide/">Operational Guide</a></li>
 <li><a href="/documentation/latest/./monitoring/">Monitoring</a></li>
-<li><a href="/documentation/latest/./network-monitoring/">Network Monitoring and Isolation</a></li>
 <li><a href="/documentation/latest/./agent-recovery/">Agent Recovery</a> for doing seamless agent upgrades and allowing executors to survive <code>mesos-agent</code> crashes.</li>
 <li><a href="/documentation/latest/./maintenance/">Maintenance</a> for performing maintenance on a Mesos cluster.</li>
 <li><a href="/documentation/latest/./tools/">Tools</a> for setting up and running a Mesos cluster.</li>
@@ -141,13 +147,32 @@
 <ul>
 <li><a href="/documentation/latest/./attributes-resources/">Attributes and Resources</a> for how to describe the agents that comprise a cluster.</li>
 <li><a href="/documentation/latest/./fetcher/">Fetcher Cache</a> for how to configure the Mesos fetcher cache.</li>
-<li><a href="/documentation/latest/./networking-for-mesos-managed-containers/">Networking for Mesos-managed Containers</a></li>
+<li><a href="/documentation/latest/./networking/">Networking</a>
+
+<ul>
+<li><a href="/documentation/latest/./cni/">Container Network Interface (CNI)</a></li>
+<li><a href="/documentation/latest/./port-mapping-isolator/">Port Mapping Isolator</a></li>
+</ul>
+</li>
 <li><a href="/documentation/latest/./oversubscription/">Oversubscription</a> for how to configure Mesos to take advantage of unused resources to launch &ldquo;best-effort&rdquo; tasks.</li>
 <li><a href="/documentation/latest/./persistent-volume/">Persistent Volume</a> for how to allow tasks to access persistent storage resources.</li>
 <li><a href="/documentation/latest/./multiple-disk/">Multiple Disks</a> for how to to allow tasks to use multiple isolated disk resources.</li>
 <li><a href="/documentation/latest/./quota/">Quota</a> for how to configure Mesos to provide guaranteed resource allocations for use by a role.</li>
 <li><a href="/documentation/latest/./reservation/">Reservation</a> for how operators and frameworks can reserve resources on individual agents for use by a role.</li>
 <li><a href="/documentation/latest/./replicated-log-internals/">Replicated Log</a> for information on the Mesos replicated log.</li>
+</ul>
+
+
+<h2>APIs</h2>
+
+<ul>
+<li><a href="/documentation/latest/./scheduler-http-api/">Scheduler HTTP API</a> describes the new HTTP API for communication between schedulers and the Mesos master.</li>
+<li><a href="/documentation/latest/./executor-http-api/">Executor HTTP API</a> describes the new HTTP API for communication between executors and the Mesos agent.</li>
+<li><a href="/documentation/latest/./operator-http-api/">Operator HTTP API</a> describes the new HTTP API for communication between operators and Mesos master/agent.</li>
+<li><a href="/documentation/latest/./api-client-libraries/">API Client Libraries</a> lists client libraries for the HTTP APIs.</li>
+<li><a href="/documentation/latest/./versioning/">Versioning</a> describes HTTP API and release versioning.</li>
+<li><a href="/api/latest/java/">Javadoc</a> documents the old Java API.</li>
+<li><a href="/api/latest/c++/namespacemesos.html">Doxygen</a> documents the C++ API.</li>
 </ul>
 
 
@@ -165,12 +190,7 @@
 <li><a href="/documentation/latest/./app-framework-development-guide/">Framework Development Guide</a> describes how to build applications on top of Mesos.</li>
 <li><a href="/documentation/latest/./high-availability-framework-guide/">Designing Highly Available Mesos Frameworks</a></li>
 <li><a href="/documentation/latest/./reconciliation/">Reconciliation</a> for ensuring a framework&rsquo;s state remains eventually consistent in the face of failures.</li>
-<li><a href="/documentation/latest/./scheduler-http-api/">Scheduler HTTP API</a> describes the new HTTP API for communication between schedulers and the Mesos master.</li>
-<li><a href="/documentation/latest/./executor-http-api/">Executor HTTP API</a> describes the new HTTP API for communication between executors and the Mesos agent.</li>
-<li><a href="/api/latest/java/">Javadoc</a> documents the Mesos Java API.</li>
-<li><a href="/api/latest/c++/namespacemesos.html">Doxygen</a> documents the Mesos C++ API.</li>
 <li><a href="/documentation/latest/./tools/">Developer Tools</a> for hacking on Mesos or writing frameworks.</li>
-<li><a href="/documentation/latest/./versioning/">Versioning</a> describes how Mesos does API and release versioning.</li>
 </ul>
 
 
@@ -187,11 +207,13 @@
 <ul>
 <li><a href="/documentation/latest/./reporting-a-bug/">Reporting an Issue, Improvement, or Feature</a> for getting started with JIRA.</li>
 <li><a href="/documentation/latest/./submitting-a-patch/">Submitting a Patch</a> for getting started with ReviewBoard and our tooling around it.</li>
+<li><a href="/documentation/latest/./reopening-reviews/">Reopening a Review</a> for our policy around reviving reviews on ReviewBoard.</li>
 <li><a href="/documentation/latest/./testing-patterns/">Testing Patterns</a> for tips and tricks used in Mesos tests.</li>
 <li><a href="/documentation/latest/./effective-code-reviewing/">Effective Code Reviewing</a> guidelines, tips, and learnings for how to do effective code reviews.</li>
 <li><a href="/documentation/latest/./engineering-principles-and-practices/">Engineering Principles and Practices</a> to serve as a shared set of project-level values for the community.</li>
 <li><a href="/documentation/latest/./committing/">Committing</a> guidelines for committing changes.</li>
 <li><a href="/documentation/latest/./committers/">Committers and Maintainers</a> a listing of project committers and component maintainers; useful when seeking feedback.</li>
+<li><a href="/documentation/latest/./working-groups/">Working groups</a> a listing of groups working on different components.</li>
 <li><a href="/api/latest/c++/">Doxygen</a> documents the internal Mesos APIs.</li>
 <li><a href="/documentation/latest/./documentation-guide/">Documentation Guide</a>
 

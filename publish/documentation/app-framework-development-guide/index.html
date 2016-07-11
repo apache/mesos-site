@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>Apache Mesos - Framework Development Guide</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:image" content="/assets/img/mesos_logo_fb_preview.png">
 
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
@@ -393,6 +394,10 @@ optional <code>CommandInfo</code> member of the <code>TaskInfo</code> protobuf m
 
 <p>The Mesos slave will fill in the rest of the <code>ExecutorInfo</code> for you when tasks
 are specified this way.</p>
+
+<p>Note that the agent will derive an <code>ExecutorInfo</code> from the <code>TaskInfo</code> and
+additionally copy fields (e.g., <code>Labels</code>) from <code>TaskInfo</code> into the new
+<code>ExecutorInfo</code>. This <code>ExecutorInfo</code> is only visible on the agent.</p>
 
 <h3>Creating a custom Framework Executor</h3>
 

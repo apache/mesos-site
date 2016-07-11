@@ -250,10 +250,10 @@
 <div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;      absolute_path.c_str(),</div>
 <div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;      GENERIC_READ,     <span class="comment">// Open the file for reading only.</span></div>
 <div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;      FILE_SHARE_READ,  <span class="comment">// Just reading this file, allow others to do the same.</span></div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;      NULL,             <span class="comment">// Ignored.</span></div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;      <span class="keyword">nullptr</span>,          <span class="comment">// Ignored.</span></div>
 <div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;      OPEN_EXISTING,    <span class="comment">// Open existing symlink.</span></div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;      access_flags,      <span class="comment">// Open symlink, not the file it points to.</span></div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;      NULL);            <span class="comment">// Ignored.</span></div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;      access_flags,     <span class="comment">// Open symlink, not the file it points to.</span></div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;      <span class="keyword">nullptr</span>);         <span class="comment">// Ignored.</span></div>
 <div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;</div>
 <div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;  <span class="keywordflow">if</span> (handle == INVALID_HANDLE_VALUE) {</div>
 <div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classWindowsError.html">WindowsError</a>(</div>
@@ -300,12 +300,12 @@
 <div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;  <span class="keyword">const</span> BOOL reparse_data_obtained = ::DeviceIoControl(</div>
 <div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;      handle,                   <span class="comment">// Handle to file or directory.</span></div>
 <div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;      FSCTL_GET_REPARSE_POINT,  <span class="comment">// Gets reparse point data for file/folder.</span></div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;      NULL,                     <span class="comment">// Ignored.</span></div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;      <span class="keyword">nullptr</span>,                  <span class="comment">// Ignored.</span></div>
 <div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;      0,                        <span class="comment">// Ignored.</span></div>
 <div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;      reparse_point_data,</div>
 <div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;      reparse_point_data_size,</div>
 <div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;      &amp;ignored,                 <span class="comment">// Ignored.</span></div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;      NULL);                    <span class="comment">// Ignored.</span></div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;      <span class="keyword">nullptr</span>);                 <span class="comment">// Ignored.</span></div>
 <div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;</div>
 <div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;  <span class="keywordflow">if</span> (!reparse_data_obtained) {</div>
 <div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classWindowsError.html">WindowsError</a>(</div>

@@ -111,7 +111,7 @@
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor"></span>  <span class="comment">// On OS X, sendfile does not need to have SIGPIPE suppressed.</span></div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  off_t _length = <span class="keyword">static_cast&lt;</span>off_t<span class="keyword">&gt;</span>(length);</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="keywordflow">if</span> (::<a class="code" href="namespaceos.html#a460546abacf88239fd801e9e3f0263dd">sendfile</a>(fd, s, offset, &amp;_length, NULL, 0) &lt; 0) {</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="keywordflow">if</span> (::<a class="code" href="namespaceos.html#a460546abacf88239fd801e9e3f0263dd">sendfile</a>(fd, s, offset, &amp;_length, <span class="keyword">nullptr</span>, 0) &lt; 0) {</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordflow">if</span> (errno == EAGAIN &amp;&amp; _length &gt; 0) {</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;      <span class="keywordflow">return</span> _length;</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    }</div>
@@ -123,7 +123,7 @@
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor"></span>  off_t _length = 0;</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <a class="code" href="signals_8hpp.html#a46ae7b627b3369e0ebb89b83a1341d67">SUPPRESS</a> (<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a57e9c8c5fa13bf86bc779a9f6f408b7c">SIGPIPE</a>) {</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;      <span class="keywordflow">if</span> (::<a class="code" href="namespaceos.html#a460546abacf88239fd801e9e3f0263dd">sendfile</a>(fd, s, offset, length, NULL, &amp;_length, 0) &lt; 0) {</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;      <span class="keywordflow">if</span> (::<a class="code" href="namespaceos.html#a460546abacf88239fd801e9e3f0263dd">sendfile</a>(fd, s, offset, length, <span class="keyword">nullptr</span>, &amp;_length, 0) &lt; 0) {</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <span class="keywordflow">if</span> (errno == EAGAIN &amp;&amp; length &gt; 0) {</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;          <span class="keywordflow">return</span> _length;</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        }</div>

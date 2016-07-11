@@ -132,7 +132,7 @@
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
 <div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="classprocess_1_1Shared.html#abb6c5ab0f711bdee4455201e4a812d47">   79</a></span>&#160;<a class="code" href="classprocess_1_1Shared.html#aadaef640c97e060e83bf285bf9eac401">Shared&lt;T&gt;::Shared</a>(T* t)</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;{</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="keywordflow">if</span> (t != NULL) {</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="keywordflow">if</span> (t != <span class="keyword">nullptr</span>) {</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    data.reset(<span class="keyword">new</span> Data(t));</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  }</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;}</div>
@@ -169,8 +169,8 @@
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
 <div class="line"><a name="l00116"></a><span class="lineno"><a class="line" href="classprocess_1_1Shared.html#a1826ec84528910fcec813d35993a1fd4">  116</a></span>&#160;<span class="keyword">const</span> T* <a class="code" href="classprocess_1_1Shared.html#a1826ec84528910fcec813d35993a1fd4">Shared&lt;T&gt;::get</a>()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  <span class="keywordflow">if</span> (data.get() == NULL) {</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    <span class="keywordflow">return</span> NULL;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  <span class="keywordflow">if</span> (data.get() == <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;  } <span class="keywordflow">else</span> {</div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    <span class="keywordflow">return</span> data-&gt;t;</div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;  }</div>
@@ -194,7 +194,7 @@
 <div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
 <div class="line"><a name="l00141"></a><span class="lineno"><a class="line" href="classprocess_1_1Shared.html#aa5eeda331799e0c747c0ccb1fed90bc5">  141</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classprocess_1_1Shared.html#adb2203cf8bb3a39b42096e3cef47e906">Shared&lt;T&gt;::reset</a>(T* t)</div>
 <div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;{</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;  <span class="keywordflow">if</span> (t == NULL) {</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;  <span class="keywordflow">if</span> (t == <span class="keyword">nullptr</span>) {</div>
 <div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    data.reset();</div>
 <div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;  } <span class="keywordflow">else</span> {</div>
 <div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    data.reset(<span class="keyword">new</span> Data(t));</div>
@@ -216,8 +216,8 @@
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;  <span class="comment">// of them is a write, the behavior is undefined. This is similar to</span></div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;  <span class="comment">// boost::shared_ptr. For more details, please refer to the boost</span></div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;  <span class="comment">// shared_ptr document (section &quot;Thread Safety&quot;).</span></div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;  <span class="keywordflow">if</span> (data.get() == NULL) {</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classprocess_1_1Owned.html">Owned&lt;T&gt;</a>(NULL);</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;  <span class="keywordflow">if</span> (data.get() == <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classprocess_1_1Owned.html">Owned&lt;T&gt;</a>(<span class="keyword">nullptr</span>);</div>
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;  }</div>
 <div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;</div>
 <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;  <span class="keywordtype">bool</span> false_value = <span class="keyword">false</span>;</div>

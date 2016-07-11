@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>Apache Mesos - Quota</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:image" content="/assets/img/mesos_logo_fb_preview.png">
 
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
@@ -103,12 +104,27 @@ lay away resources for future consumption in an entire cluster. Even though
 to dynamically reserve resources on particular Mesos agents, it does not solve
 the above problem because any individual agents might fail.</p>
 
-<p>Since version 0.27.0 Mesos provides a mechanism to reserve a certain amount of
-resources in an entire cluster, i.e. not tied to a particular agent. <em>Quota</em>
-allows operators to lay away resources for a given <a href="/documentation/latest/./roles/">role</a>. These
-resources cannot be hijacked by other roles and are guaranteed to be available
-for the role if there are enough resources in the cluster. Quota can be viewed
-as a cluster-wide dynamic reservation available for operators only.</p>
+<p>Mesos 0.27 introduced support for <em>quotas</em>, which are a mechanism for
+guaranteeing that a <a href="/documentation/latest/./roles/">role</a> will receive a certain minimum amount of
+resources. A quota specifies a <em>minimum</em> amount of resources that the role is
+guaranteed to receive (unless the total resources in the cluster are less than
+the configured quota resources, which often indicates a misconfiguration). Of
+course, the role might receive offers for more resources than its configured
+quota, as dictated by the default Mesos DRF allocation scheme.</p>
+
+<p>Quotas are somewhat similar to <a href="/documentation/latest/./reservation/">reserved resources</a>, but they
+have several differences. Most importantly, quota resources are not tied to a
+particular agent&mdash;that is, a quota ensures that a role will receive a certain
+amount of resources somewhere in the cluster, whereas reservations can be used
+to assign specific resources at a particular agent to a given role. Quotas can
+only be configured by operators, via the HTTP endpoint described below; dynamic
+reservations can be made by frameworks, provided the framework&rsquo;s principal is
+<a href="/documentation/latest/./authorization/">authorized</a> to make reservations.</p>
+
+<p>Note that reserved resources are considered to satisfy a role&rsquo;s quota. For
+example, if a role has been assigned a quota of 4 CPUs and also has 2 reserved
+resources at a particular agent, the role has a minimum guarantee of 4 CPUs, not
+6.</p>
 
 <h1>Terminology</h1>
 
@@ -124,13 +140,13 @@ that manages the Mesos cluster.</p>
 </ul>
 
 
-<p>In Mesos we understand quota as a <strong>guaranteed</strong> resource allocation that a role
-may rely on; in other words, a minimum share a role is entitled to receive.</p>
+<p>In Mesos, a quota is a <strong>guaranteed</strong> resource allocation that a role may rely
+on; in other words, a minimum share a role is entitled to receive.</p>
 
 <h1>Motivation and Limitations</h1>
 
-<p>Consider the following scenarios in a Mesos cluster to better understand what
-use-cases are supported by quota (and what are not).</p>
+<p>Consider the following scenarios in a Mesos cluster to better understand which
+use-cases are supported by quota, and which are not.</p>
 
 <h2>Scenario 1: Greedy Framework</h2>
 
@@ -182,13 +198,13 @@ existing quota and then set a new one.</p>
 endpoint.</p>
 
 <p>An example request to the quota endpoint could look like this (using the JSON
-definitions below):</p>
+file below):</p>
 
-<pre><code>$ curl -d jsonMessageBody -X POST http://&lt;master-ip&gt;:&lt;port&gt;/quota
+<pre><code>$ curl -d @quota.json -X POST http://&lt;master-ip&gt;:&lt;port&gt;/quota
 </code></pre>
 
 <p>For example to set a quota of 12 CPUs and 6144 MB of RAM for <code>role1</code> the operator
-can use the following <code>jsonMessageBody</code>:</p>
+can use the following <code>quota.json</code>:</p>
 
 <pre><code>    {
       "role": "role1",
@@ -209,7 +225,7 @@ can use the following <code>jsonMessageBody</code>:</p>
 
 <p>A set request is only valid for roles for which no quota is currently set.
 However if the master is configured without an explicit
-<a href="/documentation/latest/./roles/">role whitelist</a> a set request can introduce new roles.</p>
+<a href="/documentation/latest/./roles/">role whitelist</a>, a set request can introduce new roles.</p>
 
 <p>In order to bypass the <a href="#capacityHeuristic">capacity heuristic</a> check the
 operator should set an optional <code>force</code> field:</p>

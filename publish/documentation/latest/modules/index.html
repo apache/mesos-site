@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>Apache Mesos - Modules</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:image" content="/assets/img/mesos_logo_fb_preview.png">
 
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
@@ -307,7 +308,7 @@ object</td>
 </table>
 
 
-<p>To load a hook into Mesos, you need to</p>
+<p>To load a hook into Mesos, you need to:</p>
 
 <ul>
 <li><p>introduce it to Mesos by listing it in the <code>--modules</code> configuration,</p></li>
@@ -326,6 +327,33 @@ object</td>
 <p>Isolator modules enable experimenting with specialized isolation and monitoring
 capabilities. Examples of these could be 3rdparty resource isolation mechanisms
 for GPGPU hardware, networking, etc.</p>
+
+<h3>Master Contender and Detector</h3>
+
+<p>Contender and Detector modules enable developers to implement custom leader
+election and master detection mechanisms, other than relying on Zookeeper by
+default.</p>
+
+<p>An example for such modules could be to use distributed Key-Value storage such
+as <a href="https://coreos.com/etcd/">etcd</a> and <a href="https://www.consul.io/">consul</a>.</p>
+
+<p>To load custom contender and detector module, you need to:</p>
+
+<ul>
+<li><p>Supply <code>--modules</code> when running Mesos master,</p></li>
+<li><p>Specify selected contender and detector modules with <code>--master_contender</code> and
+<code>--master_detector</code> flags on Mesos Master and <code>--master_detector</code> on Mesos Slave.</p></li>
+</ul>
+
+
+<p>For example, the following command runs Mesos master with
+<code>org_apache_mesos_TestMasterContender</code> and <code>org_apache_mesos_TestMasterDetector</code>:</p>
+
+<p><code>./bin/mesos-master.sh --modules="file://&lt;path-to-modules-config&gt;.json" --master_contender=org_apache_mesos_TestMasterContender --master_detector=org_apache_mesos_TestMasterDetector</code></p>
+
+<p>And this one runs Mesos slave with <code>org_apache_mesos_TestMasterDetector</code>:</p>
+
+<p><code>./bin/mesos-slave.sh --modules="file://&lt;path-to-modules-config&gt;.json" --master_detector=org_apache_mesos_TestMasterDetector</code></p>
 
 <h2>Writing Mesos modules</h2>
 
@@ -466,23 +494,23 @@ must exist between the various versions:</p>
 </tr>
 
 <tr>
-<td>0.29.0 </td> <td> 0.18.0 </td> <td> 0.18.0  </td> <td> yes </td> <td> </td>
+<td>1.0.0 </td> <td> 0.18.0 </td> <td> 0.18.0  </td> <td> yes </td> <td> </td>
 </tr>
 
 <tr>
-<td>0.29.0 </td> <td> 0.18.0 </td> <td> 0.21.0  </td> <td> yes </td> <td> </td>
+<td>1.0.0 </td> <td> 0.18.0 </td> <td> 0.21.0  </td> <td> yes </td> <td> </td>
 </tr>
 
 <tr>
-<td>0.18.0 </td> <td> 0.18.0 </td> <td> 0.29.0  </td> <td> NO </td> <td> Library compiled against a newer Mesos release.                </td>
+<td>0.18.0 </td> <td> 0.18.0 </td> <td> 1.0.0  </td> <td> NO </td> <td> Library compiled against a newer Mesos release.                </td>
 </tr>
 
 <tr>
-<td>0.29.0 </td> <td> 0.21.0 </td> <td> 0.18.0  </td> <td> NO </td> <td> Module/Library older than the kind version supported by Mesos. </td>
+<td>1.0.0 </td> <td> 0.21.0 </td> <td> 0.18.0  </td> <td> NO </td> <td> Module/Library older than the kind version supported by Mesos. </td>
 </tr>
 
 <tr>
-<td>0.29.0 </td> <td> 0.29.0 </td> <td> 0.18.0  </td> <td> NO </td> <td> Module/Library older than the kind version supported by Mesos. </td>
+<td>1.0.0 </td> <td> 1.0.0 </td> <td> 0.18.0  </td> <td> NO </td> <td> Module/Library older than the kind version supported by Mesos. </td>
 </tr>
 </table>
 

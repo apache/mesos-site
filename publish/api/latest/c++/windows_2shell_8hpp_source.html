@@ -100,14 +100,14 @@
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  FILE* <a class="code" href="namespacemesos_1_1uri.html#a0a3b30c1eb427c4053aaef120b1f453c">file</a>;</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  std::ostringstream stdoutstr;</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="keywordflow">if</span> ((file = _popen(command.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>().c_str(), <span class="stringliteral">&quot;r&quot;</span>)) == NULL) {</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="keywordflow">if</span> ((file = _popen(command.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>().c_str(), <span class="stringliteral">&quot;r&quot;</span>)) == <span class="keyword">nullptr</span>) {</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(<span class="stringliteral">&quot;Failed to run &#39;&quot;</span> + command.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>() + <span class="stringliteral">&quot;&#39;&quot;</span>);</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  }</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="keywordtype">char</span> line[1024];</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="comment">// NOTE(vinod): Ideally the if and while loops should be interchanged. But</span></div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="comment">// we get a broken pipe error if we don&#39;t read the output and simply close.</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="keywordflow">while</span> (fgets(line, <span class="keyword">sizeof</span>(line), file) != NULL) {</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="keywordflow">while</span> (fgets(line, <span class="keyword">sizeof</span>(line), file) != <span class="keyword">nullptr</span>) {</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    stdoutstr &lt;&lt; line;</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  }</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
@@ -131,7 +131,7 @@
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="keyword">inline</span> <span class="keywordtype">int</span> <a class="code" href="namespaceos.html#a3491ce5d4a57fcac5ca2e3ca40abe176">system</a>(<span class="keyword">const</span> std::string&amp; command)</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;{</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  return ::_spawnlp(</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;      _P_WAIT, <a class="code" href="namespaceos_1_1Shell.html#acfe16ef2b1146ad49a8651c0a457ce46">Shell::name</a>, <a class="code" href="namespaceos_1_1Shell.html#adeacb41dacfa03ad5ceebd9a53582997">Shell::arg0</a>, <a class="code" href="namespaceos_1_1Shell.html#a44f50f66f2a231de974b53c9f4384ba5">Shell::arg1</a>, command.c_str(), NULL);</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;      _P_WAIT, <a class="code" href="namespaceos_1_1Shell.html#acfe16ef2b1146ad49a8651c0a457ce46">Shell::name</a>, <a class="code" href="namespaceos_1_1Shell.html#adeacb41dacfa03ad5ceebd9a53582997">Shell::arg0</a>, <a class="code" href="namespaceos_1_1Shell.html#a44f50f66f2a231de974b53c9f4384ba5">Shell::arg1</a>, command.c_str(), <span class="keyword">nullptr</span>);</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;}</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
@@ -144,12 +144,12 @@
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="comment">// Concatenates multiple command-line arguments and escapes the values.</span></div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="comment">// If `arg` is not specified (or takes the value `0`), the function will</span></div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="comment">// scan `argv` until a `NULL` is encountered.</span></div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="comment">// scan `argv` until a `nullptr` is encountered.</span></div>
 <div class="line"><a name="l00117"></a><span class="lineno"><a class="line" href="namespaceos.html#a5f3b8d2bb5e2d79b40a9ec948e67a823">  117</a></span>&#160;<span class="keyword">inline</span> std::string <a class="code" href="namespaceos.html#a5f3b8d2bb5e2d79b40a9ec948e67a823">stringify_args</a>(<span class="keywordtype">char</span>** argv, <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> argc = 0)</div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;{</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;  std::string arg_line = <span class="stringliteral">&quot;&quot;</span>;</div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <a class="code" href="namespacerouting_1_1link.html#a26486cdba01ef1c80706b1e07e8a6d3f">index</a> = 0;</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;  <span class="keywordflow">while</span> ((argc == 0 || index &lt; argc) &amp;&amp; argv[index] != NULL) {</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;  <span class="keywordflow">while</span> ((argc == 0 || index &lt; argc) &amp;&amp; argv[index] != <span class="keyword">nullptr</span>) {</div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    <span class="comment">// TODO(dpravat): (MESOS-5522) Format these args for all cases.</span></div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    <span class="comment">// Specifically, we need to:</span></div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <span class="comment">//   (1) Add double quotes around arguments that contain special</span></div>

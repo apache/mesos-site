@@ -122,7 +122,7 @@
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
 <div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="structprocess_1_1Event.html#a5e2a796c20db188a91540378ac6c6ab5">   69</a></span>&#160;  <span class="keyword">const</span> T&amp; <a class="code" href="structprocess_1_1Event.html#a5e2a796c20db188a91540378ac6c6ab5">as</a>()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="keyword">  </span>{</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keyword">const</span> T* result = NULL;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keyword">const</span> T* result = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keyword">struct </span>AsVisitor : <a class="code" href="structprocess_1_1EventVisitor.html">EventVisitor</a></div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    {</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;      <span class="keyword">explicit</span> AsVisitor(<span class="keyword">const</span> T** _result) : result(_result) {}</div>
@@ -130,7 +130,7 @@
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;      <span class="keyword">const</span> T** result;</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    } visitor(&amp;result);</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <a class="code" href="structprocess_1_1Event.html#a8756ddd411b61f8f1710e13d82e71037">visit</a>(&amp;visitor);</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordflow">if</span> (result == NULL) {</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordflow">if</span> (result == <span class="keyword">nullptr</span>) {</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;      <a class="code" href="abort_8hpp.html#a4d84a74fe6e4f84bc3d2f901b9e89f93">ABORT</a>(<span class="stringliteral">&quot;Attempting to \&quot;cast\&quot; event incorrectly!&quot;</span>);</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    }</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keywordflow">return</span> *result;</div>
@@ -144,7 +144,7 @@
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    : <a class="code" href="structprocess_1_1MessageEvent.html#a9e06fab52d29cf012016e54995eaa7d9">message</a>(_message) {}</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
 <div class="line"><a name="l00092"></a><span class="lineno"><a class="line" href="structprocess_1_1MessageEvent.html#a0c356ed7250b5854fbac66e34c88f569">   92</a></span>&#160;  <a class="code" href="structprocess_1_1MessageEvent.html#a0c356ed7250b5854fbac66e34c88f569">MessageEvent</a>(<span class="keyword">const</span> <a class="code" href="structprocess_1_1MessageEvent.html">MessageEvent</a>&amp; that)</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    : <a class="code" href="structprocess_1_1MessageEvent.html#a9e06fab52d29cf012016e54995eaa7d9">message</a>(that.<a class="code" href="structprocess_1_1MessageEvent.html#a9e06fab52d29cf012016e54995eaa7d9">message</a> == NULL ? NULL : new <a class="code" href="structprocess_1_1Message.html">Message</a>(*that.<a class="code" href="structprocess_1_1MessageEvent.html#a9e06fab52d29cf012016e54995eaa7d9">message</a>)) {}</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    : <a class="code" href="structprocess_1_1MessageEvent.html#a9e06fab52d29cf012016e54995eaa7d9">message</a>(that.<a class="code" href="structprocess_1_1MessageEvent.html#a9e06fab52d29cf012016e54995eaa7d9">message</a> == nullptr ? nullptr : new <a class="code" href="structprocess_1_1Message.html">Message</a>(*that.<a class="code" href="structprocess_1_1MessageEvent.html#a9e06fab52d29cf012016e54995eaa7d9">message</a>)) {}</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
 <div class="line"><a name="l00095"></a><span class="lineno"><a class="line" href="structprocess_1_1MessageEvent.html#aa96ab2f009f1eca3a48c602fa1ea36b3">   95</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="structprocess_1_1MessageEvent.html#aa96ab2f009f1eca3a48c602fa1ea36b3">~MessageEvent</a>()</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  {</div>
@@ -280,7 +280,7 @@
 <div class="ttc" id="structprocess_1_1HttpEvent_html"><div class="ttname"><a href="structprocess_1_1HttpEvent.html">process::HttpEvent</a></div><div class="ttdef"><b>Definition:</b> event.hpp:116</div></div>
 <div class="ttc" id="structprocess_1_1Message_html"><div class="ttname"><a href="structprocess_1_1Message.html">process::Message</a></div><div class="ttdef"><b>Definition:</b> message.hpp:22</div></div>
 <div class="ttc" id="structprocess_1_1DispatchEvent_html"><div class="ttname"><a href="structprocess_1_1DispatchEvent.html">process::DispatchEvent</a></div><div class="ttdef"><b>Definition:</b> event.hpp:148</div></div>
-<div class="ttc" id="classprocess_1_1ProcessBase_html"><div class="ttname"><a href="classprocess_1_1ProcessBase.html">process::ProcessBase</a></div><div class="ttdef"><b>Definition:</b> process.hpp:67</div></div>
+<div class="ttc" id="classprocess_1_1ProcessBase_html"><div class="ttname"><a href="classprocess_1_1ProcessBase.html">process::ProcessBase</a></div><div class="ttdef"><b>Definition:</b> process.hpp:68</div></div>
 <div class="ttc" id="structprocess_1_1HttpEvent_html_abf37239662ef06eb96bc2079e4241bbc"><div class="ttname"><a href="structprocess_1_1HttpEvent.html#abf37239662ef06eb96bc2079e4241bbc">process::HttpEvent::response</a></div><div class="ttdeci">Promise&lt; http::Response &gt; * response</div><div class="ttdef"><b>Definition:</b> event.hpp:139</div></div>
 <div class="ttc" id="structprocess_1_1Event_html_ac2d1b2d710b1b3002da0116239787517"><div class="ttname"><a href="structprocess_1_1Event.html#ac2d1b2d710b1b3002da0116239787517">process::Event::is</a></div><div class="ttdeci">bool is() const </div><div class="ttdef"><b>Definition:</b> event.hpp:55</div></div>
 <div class="ttc" id="structprocess_1_1MessageEvent_html_a4864fc790510ab02098f37fe7989c924"><div class="ttname"><a href="structprocess_1_1MessageEvent.html#a4864fc790510ab02098f37fe7989c924">process::MessageEvent::MessageEvent</a></div><div class="ttdeci">MessageEvent(Message *_message)</div><div class="ttdef"><b>Definition:</b> event.hpp:89</div></div>

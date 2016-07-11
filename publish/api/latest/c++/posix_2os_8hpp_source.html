@@ -289,7 +289,7 @@
 <div class="line"><a name="l00235"></a><span class="lineno"><a class="line" href="namespaceos.html#a781ae694650dd3c6addab2a383a8c422">  235</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;std::list&lt;std::string&gt;</a>&gt; <a class="code" href="namespaceos.html#a781ae694650dd3c6addab2a383a8c422">glob</a>(<span class="keyword">const</span> std::string&amp; pattern)</div>
 <div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;{</div>
 <div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;  glob_t g;</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;  <span class="keywordtype">int</span> <a class="code" href="namespaceproc.html#a34396c6140a28f583dc13fee3c3c35d4">status</a> = <a class="code" href="namespaceos.html#a781ae694650dd3c6addab2a383a8c422">::glob</a>(pattern.c_str(), GLOB_NOSORT, NULL, &amp;g);</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;  <span class="keywordtype">int</span> <a class="code" href="namespaceproc.html#a34396c6140a28f583dc13fee3c3c35d4">status</a> = <a class="code" href="namespaceos.html#a781ae694650dd3c6addab2a383a8c422">::glob</a>(pattern.c_str(), GLOB_NOSORT, <span class="keyword">nullptr</span>, &amp;g);</div>
 <div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;</div>
 <div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;  std::list&lt;std::string&gt; result;</div>
 <div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;</div>
@@ -417,7 +417,7 @@
 <div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;{</div>
 <div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;  <span class="keywordtype">char</span>* value = <a class="code" href="namespaceos.html#add69634db977768c56f0367b4bb03cd5">::getenv</a>(key.c_str());</div>
 <div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;</div>
-<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;  <span class="keywordflow">if</span> (value == NULL) {</div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;  <span class="keywordflow">if</span> (value == <span class="keyword">nullptr</span>) {</div>
 <div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="structNone.html">None</a>();</div>
 <div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;  }</div>
 <div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;</div>
@@ -532,7 +532,7 @@
 <div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
 <div class="ttc" id="namespaceos_html_ab2b826c68a25af9e9ef47c570c36e137"><div class="ttname"><a href="namespaceos.html#ab2b826c68a25af9e9ef47c570c36e137">os::sleep</a></div><div class="ttdeci">Try&lt; Nothing &gt; sleep(const Duration &amp;duration)</div><div class="ttdef"><b>Definition:</b> os.hpp:215</div></div>
 <div class="ttc" id="structos_1_1Process_html_a41f9befab165fd224ba2d829e7c35ba6"><div class="ttname"><a href="structos_1_1Process.html#a41f9befab165fd224ba2d829e7c35ba6">os::Process::group</a></div><div class="ttdeci">const pid_t group</div><div class="ttdef"><b>Definition:</b> process.hpp:55</div></div>
-<div class="ttc" id="namespaceos_html_aa98ca8ac255e2b9c689979a1b40084d3"><div class="ttname"><a href="namespaceos.html#aa98ca8ac255e2b9c689979a1b40084d3">os::processes</a></div><div class="ttdeci">Try&lt; std::list&lt; Process &gt; &gt; processes()</div><div class="ttdef"><b>Definition:</b> os.hpp:166</div></div>
+<div class="ttc" id="namespaceos_html_aa98ca8ac255e2b9c689979a1b40084d3"><div class="ttname"><a href="namespaceos.html#aa98ca8ac255e2b9c689979a1b40084d3">os::processes</a></div><div class="ttdeci">Try&lt; std::list&lt; Process &gt; &gt; processes()</div><div class="ttdef"><b>Definition:</b> os.hpp:169</div></div>
 <div class="ttc" id="namespaceos_html_accb0757a8d9eca48dd31c4c433d17cfd"><div class="ttname"><a href="namespaceos.html#accb0757a8d9eca48dd31c4c433d17cfd">os::mknod</a></div><div class="ttdeci">Try&lt; Nothing &gt; mknod(const std::string &amp;path, mode_t mode, dev_t dev)</div><div class="ttdef"><b>Definition:</b> os.hpp:199</div></div>
 <div class="ttc" id="namespaceproc_html_a34396c6140a28f583dc13fee3c3c35d4"><div class="ttname"><a href="namespaceproc.html#a34396c6140a28f583dc13fee3c3c35d4">proc::status</a></div><div class="ttdeci">Result&lt; ProcessStatus &gt; status(pid_t pid)</div><div class="ttdef"><b>Definition:</b> proc.hpp:166</div></div>
 <div class="ttc" id="killtree_8hpp_html"><div class="ttname"><a href="killtree_8hpp.html">killtree.hpp</a></div></div>

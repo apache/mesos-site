@@ -79,6 +79,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aaf3dae2ee04bb8dda1fcf697bc1824c9"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classTry.html">Try</a>&lt; <a class="el" href="structNothing.html">Nothing</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprocess_1_1network_1_1PollSocketImpl.html#aaf3dae2ee04bb8dda1fcf697bc1824c9">listen</a> (int backlog)</td></tr>
 <tr class="separator:aaf3dae2ee04bb8dda1fcf697bc1824c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d54c2b12292652231692cb62abb84f6"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classprocess_1_1Future.html">Future</a>&lt; <a class="el" href="classprocess_1_1network_1_1Socket.html">Socket</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprocess_1_1network_1_1PollSocketImpl.html#a5d54c2b12292652231692cb62abb84f6">accept</a> ()</td></tr>
+<tr class="memdesc:a5d54c2b12292652231692cb62abb84f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a socket corresponding to the next pending connection for the listening socket.  <a href="#a5d54c2b12292652231692cb62abb84f6">More...</a><br/></td></tr>
 <tr class="separator:a5d54c2b12292652231692cb62abb84f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af839f501c34ebdc62727f874dcc3f0fa"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classprocess_1_1Future.html">Future</a>&lt; <a class="el" href="structNothing.html">Nothing</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprocess_1_1network_1_1PollSocketImpl.html#af839f501c34ebdc62727f874dcc3f0fa">connect</a> (const <a class="el" href="classprocess_1_1network_1_1Address.html">Address</a> &amp;<a class="el" href="classprocess_1_1network_1_1Socket_1_1Impl.html#a8fb1bcb499fb09c0a2833fd172c27de0">address</a>)</td></tr>
 <tr class="separator:af839f501c34ebdc62727f874dcc3f0fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -112,6 +113,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a3be9b0c0d25eab8423a11497cea8e2c9 inherit pub_methods_classprocess_1_1network_1_1Socket_1_1Impl"><td class="mdescLeft">&#160;</td><td class="mdescRight">An overload of <code>send</code>, which sends all of the specified data.  <a href="#a3be9b0c0d25eab8423a11497cea8e2c9">More...</a><br/></td></tr>
 <tr class="separator:a3be9b0c0d25eab8423a11497cea8e2c9 inherit pub_methods_classprocess_1_1network_1_1Socket_1_1Impl"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8280ec8942ee8060708274dc2eeb78eb inherit pub_methods_classprocess_1_1network_1_1Socket_1_1Impl"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classTry.html">Try</a>&lt; <a class="el" href="structNothing.html">Nothing</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprocess_1_1network_1_1Socket_1_1Impl.html#a8280ec8942ee8060708274dc2eeb78eb">shutdown</a> ()</td></tr>
+<tr class="memdesc:a8280ec8942ee8060708274dc2eeb78eb inherit pub_methods_classprocess_1_1network_1_1Socket_1_1Impl"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shutdown the receive-side of the socket.  <a href="#a8280ec8942ee8060708274dc2eeb78eb">More...</a><br/></td></tr>
 <tr class="separator:a8280ec8942ee8060708274dc2eeb78eb inherit pub_methods_classprocess_1_1network_1_1Socket_1_1Impl"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
@@ -213,6 +215,10 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Returns a socket corresponding to the next pending connection for the listening socket. </p>
+<p>All implementations will set the NONBLOCK and CLOEXEC options on the returned socket.</p>
+<p>TODO(josephw): MESOS-5729: Consider making the CLOEXEC option configurable by the caller of the interface. </p>
 
 <p>Implements <a class="el" href="classprocess_1_1network_1_1Socket_1_1Impl.html#ab99a6d7abac8c66c6321300f15072136">process::network::Socket::Impl</a>.</p>
 

@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>Apache Mesos - Allocation Modules</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:image" content="/assets/img/mesos_logo_fb_preview.png">
 
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
@@ -99,7 +100,7 @@
 <p>To use a custom allocator in Mesos, one must:</p>
 
 <ul>
-<li><p><a href="#writing-a-custom-allocator">Implement</a> the <code>Allocator</code> interface as defined in <code>mesos/master/allocator.hpp</code>,</p></li>
+<li><p><a href="#writing-a-custom-allocator">Implement</a> the <code>Allocator</code> interface as defined in <code>mesos/allocator/allocator.hpp</code>,</p></li>
 <li><p><a href="#wiring-up-a-custom-allocator">Wrap</a> the allocator implementation in a module and load it in the Mesos master.</p></li>
 </ul>
 
@@ -108,7 +109,7 @@
 
 <h2>Writing a custom allocator</h2>
 
-<p>Allocator modules are implemented in C++, the same language in which Mesos is written. They must subclass the <code>Allocator</code> interface defined in <code>mesos/master/allocator.hpp</code>. However, your implementation can be a C++ proxy, which delegates calls to an actual allocator written in a language of your choice.</p>
+<p>Allocator modules are implemented in C++, the same language in which Mesos is written. They must subclass the <code>Allocator</code> interface defined in <code>mesos/allocator/allocator.hpp</code>. However, your implementation can be a C++ proxy, which delegates calls to an actual allocator written in a language of your choice.</p>
 
 <p>The default allocator is <code>HierarchicalDRFAllocatorProcess</code>, which lives in <code>$MESOS_HOME/src/master/allocator/mesos/hierarchical.hpp</code>. Like most Mesos components, it is actor-based, which means all interface methods are non-blocking and return immediately after putting the corresponding action into the actor&rsquo;s queue. If you would like to design your custom allocator in a similar manner, subclass <code>MesosAllocatorProcess</code> from <code>$MESOS_HOME/src/master/allocator/mesos/allocator.hpp</code> and wrap your actor-based allocator in <code>MesosAllocator</code>. This dispatches calls to the underlying actor and controls its lifetime. You can refer to <code>HierarchicalDRFAllocatorProcess</code> as a starting place if you choose to write your own actor-based allocation module.</p>
 
@@ -130,14 +131,14 @@
 
 <p>An allocator module is a factory function and a module description, as defined in <code>mesos/module/allocator.hpp</code>. Assuming the allocation logic is implemented by the <code>ExternalAllocator</code> class declared in <code>external_allocator.hpp</code>, the following snippet describes the implementation of an allocator module named <code>ExternalAllocatorModule</code>:</p>
 
-<pre><code class="{.cpp}">#include &lt;mesos/master/allocator.hpp&gt;
+<pre><code class="{.cpp}">#include &lt;mesos/allocator/allocator.hpp&gt;
 #include &lt;mesos/module/allocator.hpp&gt;
 #include &lt;stout/try.hpp&gt;
 
 #include "external_allocator.hpp"
 
 using namespace mesos;
-using mesos::master::allocator::Allocator;
+using mesos::allocator::Allocator;
 using mesos::internal::master::allocator::HierarchicalDRFAllocator;
 
 static Allocator* createExternalAllocator(const Parameters&amp; parameters)

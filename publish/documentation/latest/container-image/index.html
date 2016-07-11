@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>Apache Mesos - Supporting Container Images in Mesos Containerizer</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:image" content="/assets/img/mesos_logo_fb_preview.png">
 
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
@@ -392,6 +393,22 @@ for more detail.</p>
 
 <p>For more information of overlayfs, please refer to
 <a href="https://www.kernel.org/doc/Documentation/filesystems/overlayfs.txt">here</a>.</p>
+
+<h3>AUFS</h3>
+
+<p>The reason AUFS is introduced is because overlayfs support hasn&rsquo;t been
+merged until kernel 3.18 and Docker&rsquo;s default storage backend for
+ubuntu 14.04 is AUFS.</p>
+
+<p>Like overlayfs, AUFS is also a unioned file system, which is very
+stable, has a lot of real-world deployments, and has strong community
+support.</p>
+
+<p>Some Linux distributions do not support AUFS. This is usually because
+AUFS is not included in the mainline (upstream) Linux kernel.</p>
+
+<p>For more information of AUFS, please refer to
+<a href="http://aufs.sourceforge.net/aufs2/man.html">here</a>.</p>
 
 <h2>Executor Dependencies in a Container Image</h2>
 

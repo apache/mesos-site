@@ -101,7 +101,7 @@
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <span class="keyword">friend</span> <a class="code" href="structprocess_1_1Deferred.html">Deferred&lt;Future&lt;R&gt;</a>()&gt;</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <a class="code" href="structprocess_1_1Deferred.html#aee12191d24dd6ff90f5b1c1fb10552c6">defer</a>(<span class="keyword">const</span> <a class="code" href="structprocess_1_1PID.html">PID&lt;T&gt;</a>&amp; pid, R (T::*method)());</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <span class="comment">/*implicit*/</span> <a class="code" href="structprocess_1_1Deferred.html">Deferred</a>(<span class="keyword">const</span> std::function&lt;F&gt;&amp; <a class="code" href="namespaceprocess.html#a03e9502d47e4c92f61e9bdcc40218941">f</a>) : std::function&lt;F&gt;(f) {}</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <span class="comment">/*implicit*/</span> <a class="code" href="structprocess_1_1Deferred.html">Deferred</a>(<span class="keyword">const</span> std::function&lt;F&gt;&amp; <a class="code" href="namespaceprocess.html#a62d5333e8ec1817c249cf83e15d568b4">f</a>) : std::function&lt;F&gt;(f) {}</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;};</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
@@ -138,7 +138,7 @@
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keywordflow">return</span> std::function&lt;void()&gt;(</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        [=]() {</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;          <a class="code" href="namespaceprocess.html#acfbc29404bc653268289691b0dd59e22">dispatch</a>(pid_.<a class="code" href="classOption.html#a21358442c0fac1cc978a67a9a9089a79">get</a>(), std::function&lt;void()&gt;(f_));</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;          <a class="code" href="namespaceprocess.html#acfbc29404bc653268289691b0dd59e22">dispatch</a>(pid_.<a class="code" href="classOption.html#a21358442c0fac1cc978a67a9a9089a79">get</a>(), f_);</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        });</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  }</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
@@ -153,7 +153,7 @@
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <span class="keywordflow">return</span> std::function&lt;void()&gt;(</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        [=]() {</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;          <a class="code" href="namespaceprocess.html#acfbc29404bc653268289691b0dd59e22">dispatch</a>(pid_.<a class="code" href="classOption.html#a21358442c0fac1cc978a67a9a9089a79">get</a>(), std::function&lt;void()&gt;(f_));</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;          <a class="code" href="namespaceprocess.html#acfbc29404bc653268289691b0dd59e22">dispatch</a>(pid_.<a class="code" href="classOption.html#a21358442c0fac1cc978a67a9a9089a79">get</a>(), f_);</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        });</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  }</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
@@ -169,7 +169,7 @@
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;</div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <span class="keywordflow">return</span> std::function&lt;R()&gt;(</div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        [=]() {</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;          <span class="keywordflow">return</span> <a class="code" href="namespaceprocess.html#acfbc29404bc653268289691b0dd59e22">dispatch</a>(pid_.<a class="code" href="classOption.html#a21358442c0fac1cc978a67a9a9089a79">get</a>(), std::function&lt;R()&gt;(f_));</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;          <span class="keywordflow">return</span> <a class="code" href="namespaceprocess.html#acfbc29404bc653268289691b0dd59e22">dispatch</a>(pid_.<a class="code" href="classOption.html#a21358442c0fac1cc978a67a9a9089a79">get</a>(), f_);</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        });</div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;  }</div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;</div>
@@ -185,7 +185,7 @@
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;</div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    <span class="keywordflow">return</span> std::function&lt;R()&gt;(</div>
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;        [=]() {</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;          <span class="keywordflow">return</span> <a class="code" href="namespaceprocess.html#acfbc29404bc653268289691b0dd59e22">dispatch</a>(pid_.<a class="code" href="classOption.html#a21358442c0fac1cc978a67a9a9089a79">get</a>(), std::function&lt;R()&gt;(f_));</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;          <span class="keywordflow">return</span> <a class="code" href="namespaceprocess.html#acfbc29404bc653268289691b0dd59e22">dispatch</a>(pid_.<a class="code" href="classOption.html#a21358442c0fac1cc978a67a9a9089a79">get</a>(), f_);</div>
 <div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;        });</div>
 <div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;  }</div>
 <div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;</div>
@@ -323,24 +323,24 @@
 <div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;  <a class="code" href="structprocess_1_1__Deferred.html#ad2750e91a3939e2d388dde0ab90936a7">REPEAT_FROM_TO</a>(1, 11, <a class="code" href="structprocess_1_1__Deferred.html#a57e5070a3c69cdeec3336ef384c96d69">TEMPLATE</a>, _) <span class="comment">// Args A0 -&gt; A9.</span></div>
 <div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;<span class="preprocessor">#undef TEMPLATE</span></div>
 <div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;  _Deferred(<span class="keyword">const</span> UPID&amp; pid, F <a class="code" href="namespaceprocess.html#a03e9502d47e4c92f61e9bdcc40218941">f</a>) : pid(pid), f(f) {}</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;  _Deferred(<span class="keyword">const</span> UPID&amp; pid, F <a class="code" href="namespaceprocess.html#a62d5333e8ec1817c249cf83e15d568b4">f</a>) : pid(pid), f(f) {}</div>
 <div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;  <span class="comment">/*implicit*/</span> _Deferred(F <a class="code" href="namespaceprocess.html#a03e9502d47e4c92f61e9bdcc40218941">f</a>) : f(f) {}</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;  <span class="comment">/*implicit*/</span> _Deferred(F <a class="code" href="namespaceprocess.html#a62d5333e8ec1817c249cf83e15d568b4">f</a>) : f(f) {}</div>
 <div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;</div>
 <div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;  <a class="code" href="classOption.html">Option&lt;UPID&gt;</a> pid;</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;  F <a class="code" href="namespaceprocess.html#a03e9502d47e4c92f61e9bdcc40218941">f</a>;</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;  F <a class="code" href="namespaceprocess.html#a62d5333e8ec1817c249cf83e15d568b4">f</a>;</div>
 <div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;};</div>
 <div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;</div>
 <div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;} <span class="comment">// namespace process {</span></div>
 <div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;</div>
 <div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;<span class="preprocessor">#endif // __PROCESS_DEFERRED_HPP__</span></div>
 <div class="ttc" id="structprocess_1_1__Deferred_html_a57e5070a3c69cdeec3336ef384c96d69"><div class="ttname"><a href="structprocess_1_1__Deferred.html#a57e5070a3c69cdeec3336ef384c96d69">process::_Deferred::TEMPLATE</a></div><div class="ttdeci">TEMPLATE</div><div class="ttdef"><b>Definition:</b> deferred.hpp:225</div></div>
-<div class="ttc" id="namespaceprocess_html_a03e9502d47e4c92f61e9bdcc40218941"><div class="ttname"><a href="namespaceprocess.html#a03e9502d47e4c92f61e9bdcc40218941">process::f</a></div><div class="ttdeci">F &amp;&amp; f</div><div class="ttdef"><b>Definition:</b> defer.hpp:239</div></div>
 <div class="ttc" id="classOption_html"><div class="ttname"><a href="classOption.html">Option</a></div><div class="ttdef"><b>Definition:</b> option.hpp:24</div></div>
 <div class="ttc" id="structprocess_1_1__Deferred_html_a06d91a9cc0bae33964a4d5b578704bec"><div class="ttname"><a href="structprocess_1_1__Deferred.html#a06d91a9cc0bae33964a4d5b578704bec">process::_Deferred::defer</a></div><div class="ttdeci">friend _Deferred&lt; G &gt; defer(const UPID &amp;pid, G &amp;&amp;g)</div></div>
+<div class="ttc" id="namespaceprocess_html_a62d5333e8ec1817c249cf83e15d568b4"><div class="ttname"><a href="namespaceprocess.html#a62d5333e8ec1817c249cf83e15d568b4">process::f</a></div><div class="ttdeci">F &amp;&amp; f</div><div class="ttdef"><b>Definition:</b> defer.hpp:239</div></div>
 <div class="ttc" id="dispatch_8hpp_html"><div class="ttname"><a href="dispatch_8hpp.html">dispatch.hpp</a></div></div>
 <div class="ttc" id="structprocess_1_1Deferred_html"><div class="ttname"><a href="structprocess_1_1Deferred.html">process::Deferred</a></div><div class="ttdef"><b>Definition:</b> deferred.hpp:29</div></div>
-<div class="ttc" id="namespaceprocess_html_acfbc29404bc653268289691b0dd59e22"><div class="ttname"><a href="namespaceprocess.html#acfbc29404bc653268289691b0dd59e22">process::dispatch</a></div><div class="ttdeci">void dispatch(const PID&lt; T &gt; &amp;pid, void(T::*method)())</div><div class="ttdef"><b>Definition:</b> dispatch.hpp:80</div></div>
+<div class="ttc" id="namespaceprocess_html_acfbc29404bc653268289691b0dd59e22"><div class="ttname"><a href="namespaceprocess.html#acfbc29404bc653268289691b0dd59e22">process::dispatch</a></div><div class="ttdeci">void dispatch(const PID&lt; T &gt; &amp;pid, void(T::*method)())</div><div class="ttdef"><b>Definition:</b> dispatch.hpp:157</div></div>
 <div class="ttc" id="structprocess_1_1UPID_html"><div class="ttname"><a href="structprocess_1_1UPID.html">process::UPID</a></div><div class="ttdoc">An &amp;quot;untyped&amp;quot; PID, used to encapsulate the process ID for lower-layer abstractions (eg...</div><div class="ttdef"><b>Definition:</b> pid.hpp:39</div></div>
 <div class="ttc" id="structprocess_1_1__Deferred_html"><div class="ttname"><a href="structprocess_1_1__Deferred.html">process::_Deferred</a></div><div class="ttdef"><b>Definition:</b> deferred.hpp:64</div></div>
 <div class="ttc" id="3rdparty_2libprocess_2include_2process_2pid_8hpp_html"><div class="ttname"><a href="3rdparty_2libprocess_2include_2process_2pid_8hpp.html">pid.hpp</a></div></div>

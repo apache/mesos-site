@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>Apache Mesos - SSL in Mesos</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:image" content="/assets/img/mesos_logo_fb_preview.png">
 
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
@@ -146,6 +147,10 @@ openssl req -new -x509 -passin pass:some_password -days 365 -key key.pem -out ce
 <h4>SSL_VERIFY_DEPTH=(N) [default=4]</h4>
 
 <p>The maximum depth used to verify certificates. The default is 4. See the OpenSSL documentation or contact your system administrator to learn why you may want to change this.</p>
+
+<h4>SSL_VERIFY_IPADD=(false|0,true|1) [default=false|0]</h4>
+
+<p>Enable IP address verification in the certificate subject alternative name extension. When set to <code>true</code> the peer certificate verification will additionally use the IP address of a peer connection. When a hostname of the peer as well as its IP address are available, the validation will succeed when either the hostname or the IP match.</p>
 
 <h4>SSL_CA_DIR=(path to CA directory)</h4>
 

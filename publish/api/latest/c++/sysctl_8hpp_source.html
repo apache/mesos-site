@@ -243,14 +243,14 @@
 <div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;<span class="keyword"></span>{</div>
 <div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;  <span class="comment">// First determine the size of the string.</span></div>
 <div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;  <span class="keywordtype">size_t</span> <a class="code" href="namespaceos_1_1stat.html#aac17a91dd3f91341b8c4021025e89b04">size</a> = 0;</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;  <span class="keywordflow">if</span> (::<a class="code" href="structos_1_1sysctl.html#a670413ae2850bb31a74f552672accf40">sysctl</a>(name, levels, NULL, &amp;size, NULL, 0) == -1) {</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;  <span class="keywordflow">if</span> (::<a class="code" href="structos_1_1sysctl.html#a670413ae2850bb31a74f552672accf40">sysctl</a>(name, levels, <span class="keyword">nullptr</span>, &amp;size, <span class="keyword">nullptr</span>, 0) == -1) {</div>
 <div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classErrnoError.html">ErrnoError</a>();</div>
 <div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;  }</div>
 <div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;</div>
 <div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;  <span class="comment">// Now read it.</span></div>
 <div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;  <span class="keywordtype">size_t</span> length = size / <span class="keyword">sizeof</span>(char);</div>
 <div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;  <span class="keywordtype">char</span>* <a class="code" href="namespaceos.html#aa3debc8caa054e7a0a3bfe4aa42aae07">temp</a> = <span class="keyword">new</span> <span class="keywordtype">char</span>[length];</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;  <span class="keywordflow">if</span> (::<a class="code" href="structos_1_1sysctl.html#a670413ae2850bb31a74f552672accf40">sysctl</a>(name, levels, temp, &amp;size, NULL, 0) == -1) {</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;  <span class="keywordflow">if</span> (::<a class="code" href="structos_1_1sysctl.html#a670413ae2850bb31a74f552672accf40">sysctl</a>(name, levels, temp, &amp;size, <span class="keyword">nullptr</span>, 0) == -1) {</div>
 <div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    <a class="code" href="classError.html">Error</a> error = <a class="code" href="classErrnoError.html">ErrnoError</a>();</div>
 <div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    <span class="keyword">delete</span>[] <a class="code" href="namespaceos.html#aa3debc8caa054e7a0a3bfe4aa42aae07">temp</a>;</div>
 <div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    <span class="keywordflow">return</span> error;</div>
@@ -273,7 +273,7 @@
 <div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;<span class="keyword"></span>{</div>
 <div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;  timeval result;</div>
 <div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;  <span class="keywordtype">size_t</span> <a class="code" href="namespaceos_1_1stat.html#aac17a91dd3f91341b8c4021025e89b04">size</a> = <span class="keyword">sizeof</span>(result);</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;  <span class="keywordflow">if</span> (::<a class="code" href="structos_1_1sysctl.html#a670413ae2850bb31a74f552672accf40">sysctl</a>(name, levels, &amp;result, &amp;size, NULL, 0) == -1) {</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;  <span class="keywordflow">if</span> (::<a class="code" href="structos_1_1sysctl.html#a670413ae2850bb31a74f552672accf40">sysctl</a>(name, levels, &amp;result, &amp;size, <span class="keyword">nullptr</span>, 0) == -1) {</div>
 <div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classErrnoError.html">ErrnoError</a>();</div>
 <div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;  }</div>
 <div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;  <span class="keywordflow">return</span> result;</div>
@@ -299,7 +299,7 @@
 <div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;{</div>
 <div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;  T i;</div>
 <div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;  <span class="keywordtype">size_t</span> <a class="code" href="namespaceos_1_1stat.html#aac17a91dd3f91341b8c4021025e89b04">size</a> = <span class="keyword">sizeof</span>(i);</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;  <span class="keywordflow">if</span> (::sysctl(<a class="code" href="namespaceos_1_1Shell.html#acfe16ef2b1146ad49a8651c0a457ce46">name</a>, levels, &amp;i, &amp;size, NULL, 0) == -1) {</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;  <span class="keywordflow">if</span> (::sysctl(<a class="code" href="namespaceos_1_1Shell.html#acfe16ef2b1146ad49a8651c0a457ce46">name</a>, levels, &amp;i, &amp;size, <span class="keyword">nullptr</span>, 0) == -1) {</div>
 <div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classErrnoError.html">ErrnoError</a>();</div>
 <div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;  }</div>
 <div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;  <span class="keywordflow">return</span> i;</div>
@@ -321,7 +321,7 @@
 <div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;{</div>
 <div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;  <span class="keywordtype">size_t</span> size = 0;</div>
 <div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;  <span class="keywordflow">if</span> (length.isNone()) {</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;    <span class="keywordflow">if</span> (::<a class="code" href="structos_1_1sysctl.html">sysctl</a>(<a class="code" href="namespaceos_1_1Shell.html#acfe16ef2b1146ad49a8651c0a457ce46">name</a>, levels, NULL, &amp;size, NULL, 0) == -1) {</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;    <span class="keywordflow">if</span> (::<a class="code" href="structos_1_1sysctl.html">sysctl</a>(<a class="code" href="namespaceos_1_1Shell.html#acfe16ef2b1146ad49a8651c0a457ce46">name</a>, levels, <span class="keyword">nullptr</span>, &amp;size, <span class="keyword">nullptr</span>, 0) == -1) {</div>
 <div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="classErrnoError.html">ErrnoError</a>();</div>
 <div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;    }</div>
 <div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    <span class="keywordflow">if</span> (size % <span class="keyword">sizeof</span>(T) != 0) {</div>
@@ -334,7 +334,7 @@
 <div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;</div>
 <div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;  T* ts = <span class="keyword">new</span> T[length.get()];</div>
 <div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;  size = length.get() * <span class="keyword">sizeof</span>(T);</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;  <span class="keywordflow">if</span> (::<a class="code" href="structos_1_1sysctl.html">sysctl</a>(<a class="code" href="namespaceos_1_1Shell.html#acfe16ef2b1146ad49a8651c0a457ce46">name</a>, levels, ts, &amp;size, NULL, 0) == -1) {</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;  <span class="keywordflow">if</span> (::<a class="code" href="structos_1_1sysctl.html">sysctl</a>(<a class="code" href="namespaceos_1_1Shell.html#acfe16ef2b1146ad49a8651c0a457ce46">name</a>, levels, ts, &amp;size, <span class="keyword">nullptr</span>, 0) == -1) {</div>
 <div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;    <a class="code" href="classError.html">Error</a> error = <a class="code" href="classErrnoError.html">ErrnoError</a>();</div>
 <div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;    <span class="keyword">delete</span>[] ts;</div>
 <div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;    <span class="keywordflow">return</span> error;</div>

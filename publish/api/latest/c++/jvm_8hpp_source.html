@@ -298,33 +298,33 @@
 <div class="line"><a name="l00244"></a><span class="lineno"><a class="line" href="classJvm_1_1Object.html">  244</a></span>&#160;  <span class="keyword">class </span><a class="code" href="classJvm_1_1Object.html">Object</a></div>
 <div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;  {</div>
 <div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00247"></a><span class="lineno"><a class="line" href="classJvm_1_1Object.html#ace2b910d3838c7ad2ed5f67d872d9bd9">  247</a></span>&#160;    <a class="code" href="classJvm_1_1Object.html#ace2b910d3838c7ad2ed5f67d872d9bd9">Object</a>() : <a class="code" href="classJvm_1_1Object.html#a3c338f2867b29b7868472a714014ca76">object</a>(NULL) {}</div>
+<div class="line"><a name="l00247"></a><span class="lineno"><a class="line" href="classJvm_1_1Object.html#ace2b910d3838c7ad2ed5f67d872d9bd9">  247</a></span>&#160;    <a class="code" href="classJvm_1_1Object.html#ace2b910d3838c7ad2ed5f67d872d9bd9">Object</a>() : <a class="code" href="classJvm_1_1Object.html#a3c338f2867b29b7868472a714014ca76">object</a>(nullptr) {}</div>
 <div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;</div>
 <div class="line"><a name="l00249"></a><span class="lineno"><a class="line" href="classJvm_1_1Object.html#afc8f75899d24394237456fbf1aab92b9">  249</a></span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classJvm_1_1Object.html#afc8f75899d24394237456fbf1aab92b9">Object</a>(jobject _object)</div>
 <div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;      : <a class="code" href="classJvm_1_1Object.html#a3c338f2867b29b7868472a714014ca76">object</a>(<a class="code" href="classJvm.html">Jvm</a>::<a class="code" href="classJvm.html#afc36307adbab8858b9aebbc0907c29bd">get</a>()-&gt;newGlobalRef(_object)) {}</div>
 <div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;</div>
 <div class="line"><a name="l00252"></a><span class="lineno"><a class="line" href="classJvm_1_1Object.html#abe0b95c285e9206375dfeb80517a2a69">  252</a></span>&#160;    <a class="code" href="classJvm_1_1Object.html#abe0b95c285e9206375dfeb80517a2a69">Object</a>(<span class="keyword">const</span> <a class="code" href="classJvm_1_1Object.html">Object</a>&amp; that)</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;      : <a class="code" href="classJvm_1_1Object.html#a3c338f2867b29b7868472a714014ca76">object</a>(NULL)</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;      : <a class="code" href="classJvm_1_1Object.html#a3c338f2867b29b7868472a714014ca76">object</a>(nullptr)</div>
 <div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;    {</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;      <span class="keywordflow">if</span> (that.<a class="code" href="classJvm_1_1Object.html#a3c338f2867b29b7868472a714014ca76">object</a> != NULL) {</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;      <span class="keywordflow">if</span> (that.<a class="code" href="classJvm_1_1Object.html#a3c338f2867b29b7868472a714014ca76">object</a> != <span class="keyword">nullptr</span>) {</div>
 <div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;        <span class="keywordtype">object</span> = <a class="code" href="classJvm.html#afc36307adbab8858b9aebbc0907c29bd">Jvm::get</a>()-&gt;newGlobalRef(that.<a class="code" href="classJvm_1_1Object.html#a3c338f2867b29b7868472a714014ca76">object</a>);</div>
 <div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;      }</div>
 <div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;    }</div>
 <div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;</div>
 <div class="line"><a name="l00260"></a><span class="lineno"><a class="line" href="classJvm_1_1Object.html#a1a5694b40e2d4f114e39623aca6bbbf1">  260</a></span>&#160;    <a class="code" href="classJvm_1_1Object.html#a1a5694b40e2d4f114e39623aca6bbbf1">~Object</a>()</div>
 <div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;    {</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;      <span class="keywordflow">if</span> (<span class="keywordtype">object</span> != NULL) {</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;      <span class="keywordflow">if</span> (<span class="keywordtype">object</span> != <span class="keyword">nullptr</span>) {</div>
 <div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;        <a class="code" href="classJvm.html#afc36307adbab8858b9aebbc0907c29bd">Jvm::get</a>()-&gt;deleteGlobalRef(<span class="keywordtype">object</span>);</div>
 <div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;      }</div>
 <div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;    }</div>
 <div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;</div>
 <div class="line"><a name="l00267"></a><span class="lineno"><a class="line" href="classJvm_1_1Object.html#ab6c5a893c5492b2f6e8ef828ddbdac65">  267</a></span>&#160;    <a class="code" href="classJvm_1_1Object.html">Object</a>&amp; <a class="code" href="classJvm_1_1Object.html#ab6c5a893c5492b2f6e8ef828ddbdac65">operator=</a>(<span class="keyword">const</span> <a class="code" href="classJvm_1_1Object.html">Object</a>&amp; that)</div>
 <div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;    {</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;      <span class="keywordflow">if</span> (<span class="keywordtype">object</span> != NULL) {</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;      <span class="keywordflow">if</span> (<span class="keywordtype">object</span> != <span class="keyword">nullptr</span>) {</div>
 <div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;        <a class="code" href="classJvm.html#afc36307adbab8858b9aebbc0907c29bd">Jvm::get</a>()-&gt;deleteGlobalRef(<span class="keywordtype">object</span>);</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;        <span class="keywordtype">object</span> = NULL;</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;        <span class="keywordtype">object</span> = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;      }</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;      <span class="keywordflow">if</span> (that.<a class="code" href="classJvm_1_1Object.html#a3c338f2867b29b7868472a714014ca76">object</a> != NULL) {</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;      <span class="keywordflow">if</span> (that.<a class="code" href="classJvm_1_1Object.html#a3c338f2867b29b7868472a714014ca76">object</a> != <span class="keyword">nullptr</span>) {</div>
 <div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;        <span class="keywordtype">object</span> = <a class="code" href="classJvm.html#afc36307adbab8858b9aebbc0907c29bd">Jvm::get</a>()-&gt;newGlobalRef(that.<a class="code" href="classJvm_1_1Object.html#a3c338f2867b29b7868472a714014ca76">object</a>);</div>
 <div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;      }</div>
 <div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;      <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
@@ -353,14 +353,14 @@
 <div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;      : clazz(_clazz)</div>
 <div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;    {</div>
 <div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;      <span class="comment">// Check that T extends Object.</span></div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;      { T* t = NULL; <a class="code" href="classJvm_1_1Object.html">Object</a>* o = t; (void) o; }</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;      { T* t = <span class="keyword">nullptr</span>; <a class="code" href="classJvm_1_1Object.html">Object</a>* o = t; (void) o; }</div>
 <div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;    }</div>
 <div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;</div>
 <div class="line"><a name="l00305"></a><span class="lineno"><a class="line" href="classJvm_1_1Variable.html#acebe0a7136cbdaffbe3c8d8ccf7fa372">  305</a></span>&#160;    <a class="code" href="classJvm_1_1Variable.html#acebe0a7136cbdaffbe3c8d8ccf7fa372">Variable</a>(<span class="keyword">const</span> <a class="code" href="classJvm_1_1Class.html">Class</a>&amp; _clazz, <span class="keyword">const</span> <a class="code" href="classJvm_1_1Object.html">Object</a>&amp; _object)</div>
 <div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;      : clazz(_clazz), object(_object)</div>
 <div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;    {</div>
 <div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;      <span class="comment">// Check that T extends Object.</span></div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;      { T* t = NULL; <a class="code" href="classJvm_1_1Object.html">Object</a>* o = t; (void) o; }</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;      { T* t = <span class="keyword">nullptr</span>; <a class="code" href="classJvm_1_1Object.html">Object</a>* o = t; (void) o; }</div>
 <div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;    }</div>
 <div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;</div>
 <div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;    <span class="comment">// TODO(benh): Implement cast operator (like in StaticVariable).</span></div>
@@ -371,7 +371,7 @@
 <div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;    {</div>
 <div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;      <span class="comment">// Check that U extends Object (but not necessarily T since U</span></div>
 <div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;      <span class="comment">// might be &#39;Null&#39;).</span></div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;      { U* u = NULL; <a class="code" href="classJvm_1_1Object.html">Object</a>* o = u; (void) o; }</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;      { U* u = <span class="keyword">nullptr</span>; <a class="code" href="classJvm_1_1Object.html">Object</a>* o = u; (void) o; }</div>
 <div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;</div>
 <div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;      <span class="comment">// Note that we actually look up the field lazily (upon first</span></div>
 <div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;      <span class="comment">// assignment operator) so that we don&#39;t possibly create the JVM</span></div>
@@ -405,7 +405,7 @@
 <div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;      : clazz(_clazz)</div>
 <div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;    {</div>
 <div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;      <span class="comment">// Check that T extends Object.</span></div>
-<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;      { T* t = NULL; <a class="code" href="classJvm_1_1Object.html">Object</a>* o = t; (void) o; }</div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;      { T* t = <span class="keyword">nullptr</span>; <a class="code" href="classJvm_1_1Object.html">Object</a>* o = t; (void) o; }</div>
 <div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;    }</div>
 <div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;</div>
 <div class="line"><a name="l00357"></a><span class="lineno"><a class="line" href="classJvm_1_1StaticVariable.html#af8a783d2fd8df3276e3cb345528bb654">  357</a></span>&#160;    <span class="keyword">operator</span> T()<span class="keyword"> const</span></div>

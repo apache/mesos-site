@@ -93,68 +93,71 @@
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
 <div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="classprocess_1_1Logging.html#af746e42f1e6f322b6902a2e5ffb84be8">   40</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Logging.html#af746e42f1e6f322b6902a2e5ffb84be8">~Logging</a>() {}</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="classprocess_1_1Logging.html#aadc2611836b2e3e9f6ea667e06da4fa5">   43</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classprocess_1_1Logging.html#aadc2611836b2e3e9f6ea667e06da4fa5">initialize</a>()</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  {</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keywordflow">if</span> (authenticationRealm.<a class="code" href="classOption.html#a4e3bf8416d95246f43c91f1b5c309323">isSome</a>()) {</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;      <a class="code" href="classprocess_1_1ProcessBase.html#ae26c8fc57779e5da4bb13a1c83c8e9f4">route</a>(<span class="stringliteral">&quot;/toggle&quot;</span>, authenticationRealm.<a class="code" href="classOption.html#a21358442c0fac1cc978a67a9a9089a79">get</a>(), TOGGLE_HELP(), &amp;This::toggle);</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;      <a class="code" href="classprocess_1_1ProcessBase.html#ae26c8fc57779e5da4bb13a1c83c8e9f4">route</a>(<span class="stringliteral">&quot;/toggle&quot;</span>,</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            TOGGLE_HELP(),</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            [<span class="keyword">this</span>](<span class="keyword">const</span> <a class="code" href="structprocess_1_1http_1_1Request.html">http::Request</a>&amp; <a class="code" href="namespaceprocess_1_1http.html#ad8f400b5e54038df7e5662ec35da05fa">request</a>) {</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;              <span class="keywordflow">return</span> This::toggle(request, <a class="code" href="structNone.html">None</a>());</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            });</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    }</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  }</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <a class="code" href="classprocess_1_1Future.html">Future&lt;http::Response&gt;</a> toggle(</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;      <span class="keyword">const</span> <a class="code" href="structprocess_1_1http_1_1Request.html">http::Request</a>&amp; <a class="code" href="namespaceprocess_1_1http.html#ad8f400b5e54038df7e5662ec35da05fa">request</a>,</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;      <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;std::string&gt;</a>&amp; <span class="comment">/* principal */</span>);</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="keywordtype">void</span> set(<span class="keywordtype">int</span> v)</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  {</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordflow">if</span> (FLAGS_v != v) {</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;      VLOG(FLAGS_v) &lt;&lt; <span class="stringliteral">&quot;Setting verbose logging level to &quot;</span> &lt;&lt; v;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;      FLAGS_v = v;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;      <span class="comment">// Ensure &#39;FLAGS_v&#39; visible in other threads.</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor">#ifdef __WINDOWS__</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor"></span>      MemoryBarrier();</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor"></span>      __sync_synchronize();</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor">#endif // __WINDOWS__</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="preprocessor"></span>    }</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  }</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="keywordtype">void</span> revert()</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  {</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keywordflow">if</span> (timeout.<a class="code" href="classprocess_1_1Timeout.html#a154543bc53bace270ac54a12b52a1833">remaining</a>() == <a class="code" href="classSeconds.html">Seconds</a>(0)) {</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;      set(original);</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    }</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  }</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="keyword">static</span> <span class="keyword">const</span> std::string TOGGLE_HELP();</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  <a class="code" href="classprocess_1_1Future.html">Future&lt;Nothing&gt;</a> <a class="code" href="classprocess_1_1Logging.html#a1ac031b63eb2a359579e55fc49c2c577">set_level</a>(<span class="keywordtype">int</span> level, <span class="keyword">const</span> <a class="code" href="classDuration.html">Duration</a>&amp; duration);</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="classprocess_1_1Logging.html#aadc2611836b2e3e9f6ea667e06da4fa5">   45</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classprocess_1_1Logging.html#aadc2611836b2e3e9f6ea667e06da4fa5">initialize</a>()</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  {</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordflow">if</span> (authenticationRealm.<a class="code" href="classOption.html#a4e3bf8416d95246f43c91f1b5c309323">isSome</a>()) {</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;      <a class="code" href="classprocess_1_1ProcessBase.html#ae26c8fc57779e5da4bb13a1c83c8e9f4">route</a>(<span class="stringliteral">&quot;/toggle&quot;</span>, authenticationRealm.<a class="code" href="classOption.html#a21358442c0fac1cc978a67a9a9089a79">get</a>(), TOGGLE_HELP(), &amp;This::toggle);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;      <a class="code" href="classprocess_1_1ProcessBase.html#ae26c8fc57779e5da4bb13a1c83c8e9f4">route</a>(<span class="stringliteral">&quot;/toggle&quot;</span>,</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            TOGGLE_HELP(),</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            [<span class="keyword">this</span>](<span class="keyword">const</span> <a class="code" href="structprocess_1_1http_1_1Request.html">http::Request</a>&amp; <a class="code" href="namespaceprocess_1_1http.html#ad8f400b5e54038df7e5662ec35da05fa">request</a>) {</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;              <span class="keywordflow">return</span> This::toggle(request, <a class="code" href="structNone.html">None</a>());</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            });</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    }</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  }</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <a class="code" href="classprocess_1_1Future.html">Future&lt;http::Response&gt;</a> toggle(</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;      <span class="keyword">const</span> <a class="code" href="structprocess_1_1http_1_1Request.html">http::Request</a>&amp; <a class="code" href="namespaceprocess_1_1http.html#ad8f400b5e54038df7e5662ec35da05fa">request</a>,</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;      <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;std::string&gt;</a>&amp; <span class="comment">/* principal */</span>);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <span class="keywordtype">void</span> set(<span class="keywordtype">int</span> v)</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  {</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keywordflow">if</span> (FLAGS_v != v) {</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;      VLOG(FLAGS_v) &lt;&lt; <span class="stringliteral">&quot;Setting verbose logging level to &quot;</span> &lt;&lt; v;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;      FLAGS_v = v;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;      <span class="comment">// Ensure &#39;FLAGS_v&#39; visible in other threads.</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor">#ifdef __WINDOWS__</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor"></span>      MemoryBarrier();</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="preprocessor"></span>      __sync_synchronize();</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="preprocessor">#endif // __WINDOWS__</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="preprocessor"></span>    }</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  }</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="keywordtype">void</span> revert()</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  {</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordflow">if</span> (timeout.<a class="code" href="classprocess_1_1Timeout.html#a154543bc53bace270ac54a12b52a1833">remaining</a>() == <a class="code" href="classSeconds.html">Seconds</a>(0)) {</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;      set(original);</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    }</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  }</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  Timeout timeout;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  <span class="keyword">static</span> <span class="keyword">const</span> std::string TOGGLE_HELP();</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <span class="keyword">const</span> int32_t original; <span class="comment">// Original value of FLAGS_v.</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  Timeout timeout;</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <span class="comment">// The authentication realm that the `/logging/toggle` endpoint will be</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  <span class="comment">// installed into.</span></div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;std::string&gt;</a> authenticationRealm;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;};</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;} <span class="comment">// namespace process {</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <span class="keyword">const</span> int32_t original; <span class="comment">// Original value of FLAGS_v.</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  <span class="comment">// The authentication realm that the `/logging/toggle` endpoint will be</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  <span class="comment">// installed into.</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;std::string&gt;</a> authenticationRealm;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;};</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="preprocessor">#endif // __PROCESS_LOGGING_HPP__</span></div>
-<div class="ttc" id="classprocess_1_1Logging_html_aadc2611836b2e3e9f6ea667e06da4fa5"><div class="ttname"><a href="classprocess_1_1Logging.html#aadc2611836b2e3e9f6ea667e06da4fa5">process::Logging::initialize</a></div><div class="ttdeci">virtual void initialize()</div><div class="ttdoc">Invoked when a process gets spawned. </div><div class="ttdef"><b>Definition:</b> logging.hpp:43</div></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;} <span class="comment">// namespace process {</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="preprocessor">#endif // __PROCESS_LOGGING_HPP__</span></div>
+<div class="ttc" id="classprocess_1_1Logging_html_aadc2611836b2e3e9f6ea667e06da4fa5"><div class="ttname"><a href="classprocess_1_1Logging.html#aadc2611836b2e3e9f6ea667e06da4fa5">process::Logging::initialize</a></div><div class="ttdeci">virtual void initialize()</div><div class="ttdoc">Invoked when a process gets spawned. </div><div class="ttdef"><b>Definition:</b> logging.hpp:45</div></div>
 <div class="ttc" id="classOption_html"><div class="ttname"><a href="classOption.html">Option&lt; std::string &gt;</a></div></div>
 <div class="ttc" id="namespaceprocess_1_1http_html_ad8f400b5e54038df7e5662ec35da05fa"><div class="ttname"><a href="namespaceprocess_1_1http.html#ad8f400b5e54038df7e5662ec35da05fa">process::http::request</a></div><div class="ttdeci">Future&lt; Response &gt; request(const Request &amp;request, bool streamedResponse=false)</div><div class="ttdoc">Asynchronously sends an HTTP request to the process and returns the HTTP response once the entire res...</div></div>
 <div class="ttc" id="classprocess_1_1ProcessBase_html_ae26c8fc57779e5da4bb13a1c83c8e9f4"><div class="ttname"><a href="classprocess_1_1ProcessBase.html#ae26c8fc57779e5da4bb13a1c83c8e9f4">process::ProcessBase::route</a></div><div class="ttdeci">void route(const std::string &amp;name, const Option&lt; std::string &gt; &amp;help, const HttpRequestHandler &amp;handler)</div><div class="ttdoc">Sets up a handler for HTTP requests with the specified name. </div></div>
 <div class="ttc" id="timeout_8hpp_html"><div class="ttname"><a href="timeout_8hpp.html">timeout.hpp</a></div></div>
 <div class="ttc" id="classprocess_1_1Logging_html_a33d14fbf25fd137a1482d43b9d81369c"><div class="ttname"><a href="classprocess_1_1Logging.html#a33d14fbf25fd137a1482d43b9d81369c">process::Logging::Logging</a></div><div class="ttdeci">Logging(Option&lt; std::string &gt; _authenticationRealm)</div><div class="ttdef"><b>Definition:</b> logging.hpp:28</div></div>
-<div class="ttc" id="classprocess_1_1ProcessBase_html"><div class="ttname"><a href="classprocess_1_1ProcessBase.html">process::ProcessBase</a></div><div class="ttdef"><b>Definition:</b> process.hpp:67</div></div>
+<div class="ttc" id="classprocess_1_1ProcessBase_html"><div class="ttname"><a href="classprocess_1_1ProcessBase.html">process::ProcessBase</a></div><div class="ttdef"><b>Definition:</b> process.hpp:68</div></div>
+<div class="ttc" id="classDuration_html"><div class="ttname"><a href="classDuration.html">Duration</a></div><div class="ttdef"><b>Definition:</b> duration.hpp:32</div></div>
 <div class="ttc" id="classOption_html_a4e3bf8416d95246f43c91f1b5c309323"><div class="ttname"><a href="classOption.html#a4e3bf8416d95246f43c91f1b5c309323">Option::isSome</a></div><div class="ttdeci">bool isSome() const </div><div class="ttdef"><b>Definition:</b> option.hpp:108</div></div>
 <div class="ttc" id="structprocess_1_1http_1_1Request_html"><div class="ttname"><a href="structprocess_1_1http_1_1Request.html">process::http::Request</a></div><div class="ttdef"><b>Definition:</b> http.hpp:254</div></div>
 <div class="ttc" id="classprocess_1_1Logging_html"><div class="ttname"><a href="classprocess_1_1Logging.html">process::Logging</a></div><div class="ttdef"><b>Definition:</b> logging.hpp:25</div></div>
@@ -163,12 +166,13 @@
 <div class="ttc" id="future_8hpp_html"><div class="ttname"><a href="future_8hpp.html">future.hpp</a></div></div>
 <div class="ttc" id="namespaceos_html_ae19e4161a51b86a1f330f3bf1dc75389"><div class="ttname"><a href="namespaceos.html#ae19e4161a51b86a1f330f3bf1dc75389">os::process</a></div><div class="ttdeci">Result&lt; Process &gt; process(pid_t pid)</div><div class="ttdef"><b>Definition:</b> freebsd.hpp:30</div></div>
 <div class="ttc" id="structNone_html"><div class="ttname"><a href="structNone.html">None</a></div><div class="ttdef"><b>Definition:</b> none.hpp:27</div></div>
+<div class="ttc" id="classprocess_1_1Logging_html_a1ac031b63eb2a359579e55fc49c2c577"><div class="ttname"><a href="classprocess_1_1Logging.html#a1ac031b63eb2a359579e55fc49c2c577">process::Logging::set_level</a></div><div class="ttdeci">Future&lt; Nothing &gt; set_level(int level, const Duration &amp;duration)</div></div>
 <div class="ttc" id="3rdparty_2libprocess_2include_2process_2http_8hpp_html"><div class="ttname"><a href="3rdparty_2libprocess_2include_2process_2http_8hpp.html">http.hpp</a></div></div>
-<div class="ttc" id="classprocess_1_1Process_html"><div class="ttname"><a href="classprocess_1_1Process.html">process::Process</a></div><div class="ttdef"><b>Definition:</b> process.hpp:431</div></div>
+<div class="ttc" id="classprocess_1_1Process_html"><div class="ttname"><a href="classprocess_1_1Process.html">process::Process</a></div><div class="ttdef"><b>Definition:</b> process.hpp:461</div></div>
 <div class="ttc" id="libprocess_2include_2process_2process_8hpp_html"><div class="ttname"><a href="libprocess_2include_2process_2process_8hpp.html">process.hpp</a></div></div>
 <div class="ttc" id="classprocess_1_1Logging_html_af746e42f1e6f322b6902a2e5ffb84be8"><div class="ttname"><a href="classprocess_1_1Logging.html#af746e42f1e6f322b6902a2e5ffb84be8">process::Logging::~Logging</a></div><div class="ttdeci">virtual ~Logging()</div><div class="ttdef"><b>Definition:</b> logging.hpp:40</div></div>
 <div class="ttc" id="classprocess_1_1Timeout_html_a154543bc53bace270ac54a12b52a1833"><div class="ttname"><a href="classprocess_1_1Timeout.html#a154543bc53bace270ac54a12b52a1833">process::Timeout::remaining</a></div><div class="ttdeci">Duration remaining() const </div><div class="ttdef"><b>Definition:</b> timeout.hpp:77</div></div>
-<div class="ttc" id="classprocess_1_1Future_html"><div class="ttname"><a href="classprocess_1_1Future.html">process::Future&lt; http::Response &gt;</a></div></div>
+<div class="ttc" id="classprocess_1_1Future_html"><div class="ttname"><a href="classprocess_1_1Future.html">process::Future&lt; Nothing &gt;</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
