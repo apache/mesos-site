@@ -25,6 +25,7 @@
       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
     })();
     </script>
+    
   </head>
   <body>
     <!-- magical breadcrumbs -->
@@ -129,7 +130,7 @@ attribute : text ":" ( scalar | range | text )
 
 <h2>Resources</h2>
 
-<p>Mesos can manage three different <em>types</em> of resources: scalars, ranges, and sets.  These are used to represent the different resources that a Mesos agent has to offer.  For example, a scalar resource type could be used to represent the amount of memory on a agent. Scalar resources are represented using floating point numbers to allow fractional values to be specified (e.g., &ldquo;1.5 CPUs&rdquo;). Mesos only supports three decimal digits of precision for scalar resources (e.g., reserving &ldquo;1.5123 CPUs&rdquo; is considered equivalent to reserving &ldquo;1.512 CPUs&rdquo;). For GPUs, Mesos only supports whole number values.</p>
+<p>Mesos can manage three different <em>types</em> of resources: scalars, ranges, and sets.  These are used to represent the different resources that a Mesos agent has to offer.  For example, a scalar resource type could be used to represent the amount of memory on an agent. Scalar resources are represented using floating point numbers to allow fractional values to be specified (e.g., &ldquo;1.5 CPUs&rdquo;). Mesos only supports three decimal digits of precision for scalar resources (e.g., reserving &ldquo;1.5123 CPUs&rdquo; is considered equivalent to reserving &ldquo;1.512 CPUs&rdquo;). For GPUs, Mesos only supports whole number values.</p>
 
 <p>Resources can be specified either with a JSON array or a semicolon-delimited string of key-value pairs.  If, after examining the examples below, you have questions about the format of the JSON, inspect the <code>Resource</code> protobuf message definition in <code>include/mesos/mesos.proto</code>.</p>
 
@@ -199,11 +200,11 @@ resourceRole : text | "*"
 
 <p>Note that <code>disk</code> and <code>mem</code> resources are specified in megabytes. The master&rsquo;s user interface will convert resource values into a more human-readable format: for example, the value <code>15000</code> will be displayed as <code>14.65GB</code>.</p>
 
-<p>A agent without <code>cpus</code> and <code>mem</code> resources will not have its resources advertised to any frameworks.</p>
+<p>An agent without <code>cpus</code> and <code>mem</code> resources will not have its resources advertised to any frameworks.</p>
 
 <h2>Examples</h2>
 
-<p>By default, Mesos will try to autodetect the resources available at the local machine when <code>mesos-agent</code> starts up. Alternatively, you can explicitly configure which resources a agent should make available.</p>
+<p>By default, Mesos will try to autodetect the resources available at the local machine when <code>mesos-agent</code> starts up. Alternatively, you can explicitly configure which resources an agent should make available.</p>
 
 <p>Here are some examples of how to configure the resources at a Mesos agent:</p>
 

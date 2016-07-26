@@ -25,6 +25,7 @@
       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
     })();
     </script>
+    
   </head>
   <body>
     <!-- magical breadcrumbs -->
@@ -131,7 +132,7 @@
 <p>When a network partition disconnects a component (master, agent, or scheduler driver) from ZooKeeper, the component&rsquo;s Master Detector induces a timeout event. This notifies the component that it has no leading master. Depending on the component, the following happens. (Note that while a component is disconnected from ZooKeeper, a master may still be in communication with agents or schedulers and vice versa.)</p>
 
 <ul>
-<li><p>Agents disconnected from ZooKeeper no longer know which master is the leader. They ignore messages from masters to ensure they don&rsquo;t act on a non-leader&rsquo;s decisions. When a agent reconnects to ZooKeeper, ZooKeeper informs it of the current leader and the agent stops ignoring messages from the leader.</p></li>
+<li><p>Agents disconnected from ZooKeeper no longer know which master is the leader. They ignore messages from masters to ensure they don&rsquo;t act on a non-leader&rsquo;s decisions. When an agent reconnects to ZooKeeper, ZooKeeper informs it of the current leader and the agent stops ignoring messages from the leader.</p></li>
 <li><p>Masters enter leaderless state irrespective of whether they are a leader or not before the disconnection.</p>
 
 <ul>
@@ -148,7 +149,7 @@
 </ul>
 
 
-<p>When a network partition disconnects a agent from the leader:</p>
+<p>When a network partition disconnects an agent from the leader:</p>
 
 <ul>
 <li><p>The agent fails health checks from the leader.</p></li>

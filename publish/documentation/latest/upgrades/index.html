@@ -25,6 +25,7 @@
       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
     })();
     </script>
+    
   </head>
   <body>
     <!-- magical breadcrumbs -->
@@ -145,6 +146,7 @@ R Removed feature/behavior
       <li>R <a href="#1-0-x-executor-environment-variables">Executor environment variables inheritance</a></li>
       <li>R <a href="#1-0-x-deprecated-fields-in-container-config">Deprecated fields in ContainerConfig</a></li>
       <li>C <a href="#1-0-x-persistent-volume-ownership">Persistent volume ownership</a></li>
+      <li>C <a href="#1-0-x-fetcher-user">Fetcher assumes same user as task</a></li>
     </ul>
   </td>
   <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Flags-->
@@ -153,6 +155,9 @@ R Removed feature/behavior
       <li>D <a href="#1-0-x-credentials-file">credential(s) (plain text format)</a></li>
       <li>C <a href="#1-0-x-slave">Slave to Agent rename</a></li>
       <li>R <a href="#1-0-x-workdir">work_dir default value</a></li>
+      <li>D <a href="#1-0-x-deprecated-ssl-env-variables">SSL environment variables</a></li>
+      <li>ACD <a href="#1-0-x-http-authentication-flags">HTTP authentication</a></li>
+      <li>R <a href="#1-0-x-registry-strict">registry_strict</a></li>
     </ul>
   </td>
   <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Framework API-->
@@ -267,6 +272,13 @@ R Removed feature/behavior
 
 <h2>Upgrading from 0.28.x to 1.0.x</h2>
 
+<p><a name="1-0-x-deprecated-ssl-env-variables"</a></p>
+
+<ul>
+<li>Prior to Mesos 1.0, environment variables prefixed by <code>SSL_</code> are used to control libprocess SSL support. However, it was found that those environment variables may collide with some libraries or programs (e.g., openssl, curl). From Mesos 1.0, <code>SSL_*</code> environment variables are deprecated in favor of the corresponding <code>LIBPROCESS_SSL_*</code> variables.</li>
+</ul>
+
+
 <p><a name="1-0-x-persistent-volume-ownership"</a></p>
 
 <ul>
@@ -333,6 +345,13 @@ R Removed feature/behavior
 
 <ul>
 <li>Mesos 1.0 removes the default value for the agent&rsquo;s <code>work_dir</code> command-line flag. This flag is now required; the agent will exit immediately if it is not provided.</li>
+</ul>
+
+
+<p><a name="1-0-x-registry-strict"></a></p>
+
+<ul>
+<li>Mesos 1.0 disables support for the master&rsquo;s <code>registry_strict</code> command-line flag. If this flag is specified, the master will exit immediately. Note that this flag was previously marked as experimental and not recommended for production use.</li>
 </ul>
 
 
@@ -432,6 +451,20 @@ R Removed feature/behavior
 
 <ul>
 <li>Namespace and header file of <code>Allocator</code> has been moved to be consistent with other packages.</li>
+</ul>
+
+
+<p><a name="1-0-x-fetcher-user"></a></p>
+
+<ul>
+<li>When a task is run as a particular user, the fetcher now fetches files as that user also. Note, this means that filesystem permissions for that user will be enforced when fetching local files.</li>
+</ul>
+
+
+<p><a name="1-0-x-http-authentication-flags"></a></p>
+
+<ul>
+<li>The <code>--authenticate_http</code> flag has been deprecated in favor of <code>--authenticate_http_readwrite</code>. Setting <code>--authenticate_http_readwrite</code> will now enable authentication for all endpoints which previously had authentication support. These happen to be the endpoints which allow modifiication of the cluster state, or &ldquo;read-write&rdquo; endpoints. Note that <code>/logging/toggle</code>, <code>/profiler/start</code>, <code>/profiler/stop</code>, <code>/maintenance/schedule</code>, <code>/machine/up</code>, and <code>/machine/down</code> previously did not have authentication support, but in 1.0 if either <code>--authenticate_http</code> or <code>--authenticate_http_readwrite</code> is set, those endpoints will now require authentication. A new flag has also been introduced, <code>--authenticate_http_readonly</code>, which enables authentication for endpoints which support authentication and do not allow modification of the state of the cluster, like <code>/state</code> or <code>/flags</code>.</li>
 </ul>
 
 

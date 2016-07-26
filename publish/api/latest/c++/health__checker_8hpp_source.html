@@ -85,271 +85,275 @@
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="delay_8hpp.html">process/delay.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="future_8hpp.html">process/future.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="3rdparty_2libprocess_2include_2process_2pid_8hpp.html">process/pid.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="libprocess_2include_2process_2process_8hpp.html">process/process.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="3rdparty_2libprocess_2include_2process_2protobuf_8hpp.html">process/protobuf.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="subprocess_8hpp.html">process/subprocess.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="duration_8hpp.html">stout/duration.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="3rdparty_2stout_2include_2stout_2flags_8hpp.html">stout/flags.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="json_8hpp.html">stout/json.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="option_8hpp.html">stout/option.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="os_8hpp.html">stout/os.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="3rdparty_2stout_2include_2stout_2protobuf_8hpp.html">stout/protobuf.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="strings_8hpp.html">stout/strings.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="killtree_8hpp.html">stout/os/killtree.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="status__utils_8hpp.html">common/status_utils.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="messages_8hpp.html">messages/messages.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keyword">using</span> std::cout;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="keyword">using</span> std::cerr;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keyword">using</span> std::endl;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keyword">using</span> std::map;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="keyword">using</span> std::string;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keyword">using</span> <a class="code" href="structprocess_1_1UPID.html">process::UPID</a>;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="keyword">namespace </span>mesos {</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keyword">namespace </span>internal {</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="comment">// Forward declarations.</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="keyword">class </span>HealthCheckerProcess;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
-<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1HealthChecker.html">   67</a></span>&#160;<span class="keyword">class </span><a class="code" href="classmesos_1_1internal_1_1HealthChecker.html">HealthChecker</a></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;{</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="keyword">static</span> <a class="code" href="classTry.html">Try&lt;process::Owned&lt;HealthChecker&gt;</a>&gt; <a class="code" href="classmesos_1_1internal_1_1HealthChecker.html#aec0f3b50ffc3c69b1fbf510921ee8cb2">create</a>(</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;      <span class="keyword">const</span> HealthCheck&amp; <a class="code" href="namespacerouting.html#a22848f0fc9ff46d29ce5df25acd1be2e">check</a>,</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;      <span class="keyword">const</span> <a class="code" href="structprocess_1_1UPID.html">UPID</a>&amp; executor,</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;      <span class="keyword">const</span> TaskID&amp; taskID);</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <a class="code" href="classmesos_1_1internal_1_1HealthChecker.html#aefbbad4e27aaeba414dad81c49512db2">~HealthChecker</a>();</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <a class="code" href="classprocess_1_1Future.html">process::Future&lt;Nothing&gt;</a> <a class="code" href="classmesos_1_1internal_1_1HealthChecker.html#a3539fdacf7707bd0250a3e99f3195bf1">healthCheck</a>();</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="classmesos_1_1internal_1_1HealthChecker.html">HealthChecker</a>(<a class="code" href="classprocess_1_1Owned.html">process::Owned&lt;HealthCheckerProcess&gt;</a> process);</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <a class="code" href="classprocess_1_1Owned.html">process::Owned&lt;HealthCheckerProcess&gt;</a> process;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;};</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="id_8hpp.html">process/id.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="3rdparty_2libprocess_2include_2process_2pid_8hpp.html">process/pid.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="libprocess_2include_2process_2process_8hpp.html">process/process.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="3rdparty_2libprocess_2include_2process_2protobuf_8hpp.html">process/protobuf.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="subprocess_8hpp.html">process/subprocess.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="duration_8hpp.html">stout/duration.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="3rdparty_2stout_2include_2stout_2flags_8hpp.html">stout/flags.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="json_8hpp.html">stout/json.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="option_8hpp.html">stout/option.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="os_8hpp.html">stout/os.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="3rdparty_2stout_2include_2stout_2protobuf_8hpp.html">stout/protobuf.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="strings_8hpp.html">stout/strings.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="killtree_8hpp.html">stout/os/killtree.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="status__utils_8hpp.html">common/status_utils.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="messages_8hpp.html">messages/messages.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="keyword">using</span> std::cout;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keyword">using</span> std::cerr;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keyword">using</span> std::endl;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="keyword">using</span> std::map;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keyword">using</span> std::string;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keyword">using</span> <a class="code" href="structprocess_1_1UPID.html">process::UPID</a>;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keyword">namespace </span>mesos {</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="keyword">namespace </span>internal {</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment">// Forward declarations.</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="keyword">class </span>HealthCheckerProcess;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1HealthChecker.html">   68</a></span>&#160;<span class="keyword">class </span><a class="code" href="classmesos_1_1internal_1_1HealthChecker.html">HealthChecker</a></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;{</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="keyword">static</span> <a class="code" href="classTry.html">Try&lt;process::Owned&lt;HealthChecker&gt;</a>&gt; <a class="code" href="classmesos_1_1internal_1_1HealthChecker.html#aec0f3b50ffc3c69b1fbf510921ee8cb2">create</a>(</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;      <span class="keyword">const</span> HealthCheck&amp; <a class="code" href="namespacerouting.html#a22848f0fc9ff46d29ce5df25acd1be2e">check</a>,</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;      <span class="keyword">const</span> <a class="code" href="structprocess_1_1UPID.html">UPID</a>&amp; executor,</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;      <span class="keyword">const</span> TaskID&amp; taskID);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <a class="code" href="classmesos_1_1internal_1_1HealthChecker.html#aefbbad4e27aaeba414dad81c49512db2">~HealthChecker</a>();</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <a class="code" href="classprocess_1_1Future.html">process::Future&lt;Nothing&gt;</a> <a class="code" href="classmesos_1_1internal_1_1HealthChecker.html#a3539fdacf7707bd0250a3e99f3195bf1">healthCheck</a>();</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="classmesos_1_1internal_1_1HealthChecker.html">HealthChecker</a>(<a class="code" href="classprocess_1_1Owned.html">process::Owned&lt;HealthCheckerProcess&gt;</a> process);</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <a class="code" href="classprocess_1_1Owned.html">process::Owned&lt;HealthCheckerProcess&gt;</a> process;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;};</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
-<div class="line"><a name="l00086"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1HealthCheckerProcess.html">   86</a></span>&#160;<span class="keyword">class </span><a class="code" href="classmesos_1_1internal_1_1HealthCheckerProcess.html">HealthCheckerProcess</a> : <span class="keyword">public</span> <a class="code" href="classProtobufProcess.html">ProtobufProcess</a>&lt;HealthCheckerProcess&gt;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;{</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00089"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1HealthCheckerProcess.html#a1af0eac3599a02e5bfc2c6952e142480">   89</a></span>&#160;  <a class="code" href="classmesos_1_1internal_1_1HealthCheckerProcess.html#a1af0eac3599a02e5bfc2c6952e142480">HealthCheckerProcess</a>(</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keyword">const</span> HealthCheck&amp; _check,</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="keyword">const</span> <a class="code" href="structprocess_1_1UPID.html">UPID</a>&amp; _executor,</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="keyword">const</span> TaskID&amp; _taskID)</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    : check(_check),</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;      initializing(true),</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;      executor(_executor),</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;      taskID(_taskID),</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;      consecutiveFailures(0) {}</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
-<div class="line"><a name="l00099"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1HealthCheckerProcess.html#ab8f073f39909c27eaaf0f14a24137602">   99</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classmesos_1_1internal_1_1HealthCheckerProcess.html#ab8f073f39909c27eaaf0f14a24137602">~HealthCheckerProcess</a>() {}</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
+<div class="line"><a name="l00087"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1HealthCheckerProcess.html">   87</a></span>&#160;<span class="keyword">class </span><a class="code" href="classmesos_1_1internal_1_1HealthCheckerProcess.html">HealthCheckerProcess</a> : <span class="keyword">public</span> <a class="code" href="classProtobufProcess.html">ProtobufProcess</a>&lt;HealthCheckerProcess&gt;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;{</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00090"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1HealthCheckerProcess.html#a1af0eac3599a02e5bfc2c6952e142480">   90</a></span>&#160;  <a class="code" href="classmesos_1_1internal_1_1HealthCheckerProcess.html#a1af0eac3599a02e5bfc2c6952e142480">HealthCheckerProcess</a>(</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;      <span class="keyword">const</span> HealthCheck&amp; _check,</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;      <span class="keyword">const</span> <a class="code" href="structprocess_1_1UPID.html">UPID</a>&amp; _executor,</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;      <span class="keyword">const</span> TaskID&amp; _taskID)</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    : <a class="code" href="classprocess_1_1ProcessBase.html#a318038bacd95e4260864533f7cfe12fd">ProcessBase</a>(<a class="code" href="namespaceos.html#ae19e4161a51b86a1f330f3bf1dc75389">process</a>::ID::<a class="code" href="namespaceprocess_1_1ID.html#aeb11a48c9def1da169d8455a30d0ee39">generate</a>(<span class="stringliteral">&quot;health-checker&quot;</span>)),</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;      check(_check),</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;      initializing(true),</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;      executor(_executor),</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;      taskID(_taskID),</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;      consecutiveFailures(0) {}</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
-<div class="line"><a name="l00101"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1HealthCheckerProcess.html#a275d4bb027c78efcbb32ec1f7bd09ff4">  101</a></span>&#160;  <a class="code" href="classprocess_1_1Future.html">process::Future&lt;Nothing&gt;</a> <a class="code" href="classmesos_1_1internal_1_1HealthCheckerProcess.html#a275d4bb027c78efcbb32ec1f7bd09ff4">healthCheck</a>()</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  {</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    VLOG(2) &lt;&lt; <span class="stringliteral">&quot;Health checks starting in &quot;</span></div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;      &lt;&lt; <a class="code" href="classSeconds.html">Seconds</a>(check.delay_seconds()) &lt;&lt; <span class="stringliteral">&quot;, grace period &quot;</span></div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;      &lt;&lt; <a class="code" href="classSeconds.html">Seconds</a>(check.grace_period_seconds());</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    startTime = <a class="code" href="classprocess_1_1Clock.html#a24ed3f746bb6b3ddb1c52dce5e0ecd38">process::Clock::now</a>();</div>
+<div class="line"><a name="l00101"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1HealthCheckerProcess.html#ab8f073f39909c27eaaf0f14a24137602">  101</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classmesos_1_1internal_1_1HealthCheckerProcess.html#ab8f073f39909c27eaaf0f14a24137602">~HealthCheckerProcess</a>() {}</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
+<div class="line"><a name="l00103"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1HealthCheckerProcess.html#a275d4bb027c78efcbb32ec1f7bd09ff4">  103</a></span>&#160;  <a class="code" href="classprocess_1_1Future.html">process::Future&lt;Nothing&gt;</a> <a class="code" href="classmesos_1_1internal_1_1HealthCheckerProcess.html#a275d4bb027c78efcbb32ec1f7bd09ff4">healthCheck</a>()</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  {</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    VLOG(2) &lt;&lt; <span class="stringliteral">&quot;Health checks starting in &quot;</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;      &lt;&lt; <a class="code" href="classSeconds.html">Seconds</a>(check.delay_seconds()) &lt;&lt; <span class="stringliteral">&quot;, grace period &quot;</span></div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;      &lt;&lt; <a class="code" href="classSeconds.html">Seconds</a>(check.grace_period_seconds());</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    <a class="code" href="namespaceprocess.html#ad46335bec9fe626e60003c33e8f13023">delay</a>(<a class="code" href="classSeconds.html">Seconds</a>(check.delay_seconds()), <span class="keyword">self</span>(), &amp;Self::_healthCheck);</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <span class="keywordflow">return</span> promise.<a class="code" href="classprocess_1_1Promise.html#a8aef752d6c90cb11e58e3166b7592ef1">future</a>();</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  }</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;  <span class="keywordtype">void</span> failure(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; <a class="code" href="classprocess_1_1ProcessBase.html#a025e342d8f2be6c42fe34031edda54a3">message</a>)</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;  {</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <span class="keywordflow">if</span> (check.grace_period_seconds() &gt; 0 &amp;&amp;</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        (<a class="code" href="classprocess_1_1Clock.html#a24ed3f746bb6b3ddb1c52dce5e0ecd38">process::Clock::now</a>() - startTime).secs() &lt;=</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;          check.grace_period_seconds()) {</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;      LOG(INFO) &lt;&lt; <span class="stringliteral">&quot;Ignoring failure as health check still in grace period&quot;</span>;</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;      reschedule();</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;      <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    }</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    consecutiveFailures++;</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    VLOG(1) &lt;&lt; <span class="stringliteral">&quot;#&quot;</span> &lt;&lt; consecutiveFailures &lt;&lt; <span class="stringliteral">&quot; check failed: &quot;</span> &lt;&lt; <a class="code" href="classprocess_1_1ProcessBase.html#a025e342d8f2be6c42fe34031edda54a3">message</a>;</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    <span class="keywordtype">bool</span> killTask = consecutiveFailures &gt;= check.consecutive_failures();</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    startTime = <a class="code" href="classprocess_1_1Clock.html#a24ed3f746bb6b3ddb1c52dce5e0ecd38">process::Clock::now</a>();</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    <a class="code" href="namespaceprocess.html#ad46335bec9fe626e60003c33e8f13023">delay</a>(<a class="code" href="classSeconds.html">Seconds</a>(check.delay_seconds()), <span class="keyword">self</span>(), &amp;Self::_healthCheck);</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="keywordflow">return</span> promise.<a class="code" href="classprocess_1_1Promise.html#a8aef752d6c90cb11e58e3166b7592ef1">future</a>();</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;  }</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;  <span class="keywordtype">void</span> failure(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; <a class="code" href="classprocess_1_1ProcessBase.html#a025e342d8f2be6c42fe34031edda54a3">message</a>)</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;  {</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    <span class="keywordflow">if</span> (check.grace_period_seconds() &gt; 0 &amp;&amp;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        (<a class="code" href="classprocess_1_1Clock.html#a24ed3f746bb6b3ddb1c52dce5e0ecd38">process::Clock::now</a>() - startTime).secs() &lt;=</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;          check.grace_period_seconds()) {</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;      LOG(INFO) &lt;&lt; <span class="stringliteral">&quot;Ignoring failure as health check still in grace period&quot;</span>;</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;      reschedule();</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;      <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    }</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    consecutiveFailures++;</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    VLOG(1) &lt;&lt; <span class="stringliteral">&quot;#&quot;</span> &lt;&lt; consecutiveFailures &lt;&lt; <span class="stringliteral">&quot; check failed: &quot;</span> &lt;&lt; <a class="code" href="classprocess_1_1ProcessBase.html#a025e342d8f2be6c42fe34031edda54a3">message</a>;</div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    TaskHealthStatus taskHealthStatus;</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    taskHealthStatus.set_healthy(<span class="keyword">false</span>);</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    taskHealthStatus.set_consecutive_failures(consecutiveFailures);</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    taskHealthStatus.set_kill_task(killTask);</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    taskHealthStatus.mutable_task_id()-&gt;CopyFrom(taskID);</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    <a class="code" href="classProtobufProcess.html#a6c404fdc490a7199a0d2ad881d588e5c">send</a>(executor, taskHealthStatus);</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    <span class="keywordflow">if</span> (killTask) {</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;      <span class="comment">// This is a hack to ensure the message is sent to the</span></div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;      <span class="comment">// executor before we exit the process. Without this,</span></div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;      <span class="comment">// we may exit before libprocess has sent the data over</span></div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;      <span class="comment">// the socket. See MESOS-4111.</span></div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;      <a class="code" href="namespaceos.html#ab2b826c68a25af9e9ef47c570c36e137">os::sleep</a>(<a class="code" href="classSeconds.html">Seconds</a>(1));</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;      promise.<a class="code" href="classprocess_1_1Promise.html#a2fc569c8bf99acb3e53a68ff3b266667">fail</a>(message);</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;      reschedule();</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    }</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;  }</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;  <span class="keywordtype">void</span> success()</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;  {</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    VLOG(1) &lt;&lt; <span class="stringliteral">&quot;Check passed&quot;</span>;</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    <span class="comment">// Send a healthy status update on the first success,</span></div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    <span class="comment">// and on the first success following failure(s).</span></div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <span class="keywordflow">if</span> (initializing || consecutiveFailures &gt; 0) {</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;      TaskHealthStatus taskHealthStatus;</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;      taskHealthStatus.set_healthy(<span class="keyword">true</span>);</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;      taskHealthStatus.mutable_task_id()-&gt;CopyFrom(taskID);</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;      <a class="code" href="classProtobufProcess.html#a6c404fdc490a7199a0d2ad881d588e5c">send</a>(executor, taskHealthStatus);</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;      initializing = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    }</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    consecutiveFailures = 0;</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    reschedule();</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;  }</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;  <span class="keywordtype">void</span> _healthCheck()</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;  {</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    <span class="keywordflow">if</span> (check.has_http()) {</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;      promise.<a class="code" href="classprocess_1_1Promise.html#a2fc569c8bf99acb3e53a68ff3b266667">fail</a>(<span class="stringliteral">&quot;HTTP health check is not supported&quot;</span>);</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;      <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    }</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    <span class="keywordflow">if</span> (!check.has_command()) {</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;      promise.<a class="code" href="classprocess_1_1Promise.html#a2fc569c8bf99acb3e53a68ff3b266667">fail</a>(<span class="stringliteral">&quot;No check found in health check&quot;</span>);</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;      <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    }</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    <span class="keyword">const</span> CommandInfo&amp; command = check.command();</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    <span class="keywordtype">bool</span> killTask = consecutiveFailures &gt;= check.consecutive_failures();</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    TaskHealthStatus taskHealthStatus;</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    taskHealthStatus.set_healthy(<span class="keyword">false</span>);</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    taskHealthStatus.set_consecutive_failures(consecutiveFailures);</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    taskHealthStatus.set_kill_task(killTask);</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    taskHealthStatus.mutable_task_id()-&gt;CopyFrom(taskID);</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    <a class="code" href="classProtobufProcess.html#a6c404fdc490a7199a0d2ad881d588e5c">send</a>(executor, taskHealthStatus);</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    <span class="keywordflow">if</span> (killTask) {</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;      <span class="comment">// This is a hack to ensure the message is sent to the</span></div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;      <span class="comment">// executor before we exit the process. Without this,</span></div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;      <span class="comment">// we may exit before libprocess has sent the data over</span></div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;      <span class="comment">// the socket. See MESOS-4111.</span></div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;      <a class="code" href="namespaceos.html#ab2b826c68a25af9e9ef47c570c36e137">os::sleep</a>(<a class="code" href="classSeconds.html">Seconds</a>(1));</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;      promise.<a class="code" href="classprocess_1_1Promise.html#a2fc569c8bf99acb3e53a68ff3b266667">fail</a>(message);</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;      reschedule();</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    }</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;  }</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;  <span class="keywordtype">void</span> success()</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;  {</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    VLOG(1) &lt;&lt; <span class="stringliteral">&quot;Check passed&quot;</span>;</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <span class="comment">// Send a healthy status update on the first success,</span></div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <span class="comment">// and on the first success following failure(s).</span></div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    <span class="keywordflow">if</span> (initializing || consecutiveFailures &gt; 0) {</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;      TaskHealthStatus taskHealthStatus;</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;      taskHealthStatus.set_healthy(<span class="keyword">true</span>);</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;      taskHealthStatus.mutable_task_id()-&gt;CopyFrom(taskID);</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;      <a class="code" href="classProtobufProcess.html#a6c404fdc490a7199a0d2ad881d588e5c">send</a>(executor, taskHealthStatus);</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;      initializing = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    }</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    consecutiveFailures = 0;</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    reschedule();</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;  }</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;  <span class="keywordtype">void</span> _healthCheck()</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;  {</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    <span class="keywordflow">if</span> (check.has_http()) {</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;      promise.<a class="code" href="classprocess_1_1Promise.html#a2fc569c8bf99acb3e53a68ff3b266667">fail</a>(<span class="stringliteral">&quot;HTTP health check is not supported&quot;</span>);</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;      <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    }</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    <span class="keywordflow">if</span> (!check.has_command()) {</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;      promise.<a class="code" href="classprocess_1_1Promise.html#a2fc569c8bf99acb3e53a68ff3b266667">fail</a>(<span class="stringliteral">&quot;No check found in health check&quot;</span>);</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;      <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    }</div>
 <div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    map&lt;string, string&gt; <a class="code" href="namespacemesos_1_1internal_1_1tests.html#a1396c5e3b0a179220de2792d74770ec2">environment</a> = <a class="code" href="namespaceos.html#a8e590ef8437361cefbd72c01b3474bae">os::environment</a>();</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    <span class="keyword">const</span> CommandInfo&amp; command = check.command();</div>
 <div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    <span class="keywordflow">foreach</span> (<span class="keyword">const</span> Environment::Variable&amp; variable,</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;             command.environment().variables()) {</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;      environment[variable.name()] = variable.value();</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    }</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    <span class="comment">// Launch the subprocess.</span></div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    <a class="code" href="classOption.html">Option&lt;Try&lt;process::Subprocess&gt;</a>&gt; external = <a class="code" href="structNone.html">None</a>();</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    <span class="keywordflow">if</span> (command.shell()) {</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;      <span class="comment">// Use the shell variant.</span></div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;      <span class="keywordflow">if</span> (!command.has_value()) {</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;        promise.<a class="code" href="classprocess_1_1Promise.html#a2fc569c8bf99acb3e53a68ff3b266667">fail</a>(<span class="stringliteral">&quot;Shell command is not specified&quot;</span>);</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;        <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;      }</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;      VLOG(2) &lt;&lt; <span class="stringliteral">&quot;Launching health command &#39;&quot;</span> &lt;&lt; command.value() &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span>;</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    map&lt;string, string&gt; <a class="code" href="namespacemesos_1_1internal_1_1tests.html#a1396c5e3b0a179220de2792d74770ec2">environment</a> = <a class="code" href="namespaceos.html#a8e590ef8437361cefbd72c01b3474bae">os::environment</a>();</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    <span class="keywordflow">foreach</span> (<span class="keyword">const</span> Environment::Variable&amp; variable,</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;             command.environment().variables()) {</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;      environment[variable.name()] = variable.value();</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    }</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    <span class="comment">// Launch the subprocess.</span></div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    <a class="code" href="classOption.html">Option&lt;Try&lt;process::Subprocess&gt;</a>&gt; external = <a class="code" href="structNone.html">None</a>();</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    <span class="keywordflow">if</span> (command.shell()) {</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;      <span class="comment">// Use the shell variant.</span></div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;      <span class="keywordflow">if</span> (!command.has_value()) {</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;        promise.<a class="code" href="classprocess_1_1Promise.html#a2fc569c8bf99acb3e53a68ff3b266667">fail</a>(<span class="stringliteral">&quot;Shell command is not specified&quot;</span>);</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;        <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;      }</div>
 <div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;      external = <a class="code" href="namespaceprocess.html#aa083bd379ef56d82a3dac261566b25ba">process::subprocess</a>(</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;          command.value(),</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;          <a class="code" href="classprocess_1_1Subprocess.html#a54793e9c516257d68776f63f0872c3c7">process::Subprocess::PATH</a>(<span class="stringliteral">&quot;/dev/null&quot;</span>),</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;          <a class="code" href="classprocess_1_1Subprocess.html#ae0f4475b802f34c282921a3383c598c5">process::Subprocess::FD</a>(<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ae2fe1725bb5e9823d089c46b9ed5266e">STDERR_FILENO</a>),</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;          <a class="code" href="classprocess_1_1Subprocess.html#ae0f4475b802f34c282921a3383c598c5">process::Subprocess::FD</a>(<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ae2fe1725bb5e9823d089c46b9ed5266e">STDERR_FILENO</a>),</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;          <a class="code" href="namespaceprocess.html#aaa7788e1f64db3a83c3ecfd9f8071493aa8933c1267a5fc22047af39de82f0295">process::NO_SETSID</a>,</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;          <a class="code" href="namespacemesos_1_1internal_1_1tests.html#a1396c5e3b0a179220de2792d74770ec2">environment</a>);</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;      <span class="comment">// Use the exec variant.</span></div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;      <span class="keywordflow">if</span> (!command.has_value()) {</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;        promise.<a class="code" href="classprocess_1_1Promise.html#a2fc569c8bf99acb3e53a68ff3b266667">fail</a>(<span class="stringliteral">&quot;Executable path is not specified&quot;</span>);</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;      }</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;      vector&lt;string&gt; argv;</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;      <span class="keywordflow">foreach</span> (<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; arg, command.arguments()) {</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;        argv.push_back(arg);</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;      }</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;      VLOG(2) &lt;&lt; <span class="stringliteral">&quot;Launching health command [&quot;</span> &lt;&lt; command.value() &lt;&lt; <span class="stringliteral">&quot;, &quot;</span></div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;              &lt;&lt; <a class="code" href="namespacestrings.html#ac315a6174f56cba0d8295f84da265416">strings::join</a>(<span class="stringliteral">&quot;, &quot;</span>, argv) &lt;&lt; <span class="stringliteral">&quot;]&quot;</span>;</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;      external = <a class="code" href="namespaceprocess.html#aa083bd379ef56d82a3dac261566b25ba">process::subprocess</a>(</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;          command.value(),</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;          argv,</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;          <a class="code" href="classprocess_1_1Subprocess.html#a54793e9c516257d68776f63f0872c3c7">process::Subprocess::PATH</a>(<span class="stringliteral">&quot;/dev/null&quot;</span>),</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;          <a class="code" href="classprocess_1_1Subprocess.html#ae0f4475b802f34c282921a3383c598c5">process::Subprocess::FD</a>(<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ae2fe1725bb5e9823d089c46b9ed5266e">STDERR_FILENO</a>),</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;          <a class="code" href="classprocess_1_1Subprocess.html#ae0f4475b802f34c282921a3383c598c5">process::Subprocess::FD</a>(<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ae2fe1725bb5e9823d089c46b9ed5266e">STDERR_FILENO</a>),</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;          <a class="code" href="namespaceprocess.html#aaa7788e1f64db3a83c3ecfd9f8071493aa8933c1267a5fc22047af39de82f0295">process::NO_SETSID</a>,</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;          <a class="code" href="structNone.html">None</a>(),</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;          <a class="code" href="namespacemesos_1_1internal_1_1tests.html#a1396c5e3b0a179220de2792d74770ec2">environment</a>);</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;    }</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;    <a class="code" href="stout_2include_2stout_2check_8hpp.html#aee320e7c6e107071f4b85d4cc135a265">CHECK_SOME</a>(external);</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;      VLOG(2) &lt;&lt; <span class="stringliteral">&quot;Launching health command &#39;&quot;</span> &lt;&lt; command.value() &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span>;</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;      external = <a class="code" href="namespaceprocess.html#aa083bd379ef56d82a3dac261566b25ba">process::subprocess</a>(</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;          command.value(),</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;          <a class="code" href="classprocess_1_1Subprocess.html#a54793e9c516257d68776f63f0872c3c7">process::Subprocess::PATH</a>(<span class="stringliteral">&quot;/dev/null&quot;</span>),</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;          <a class="code" href="classprocess_1_1Subprocess.html#ae0f4475b802f34c282921a3383c598c5">process::Subprocess::FD</a>(<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ae2fe1725bb5e9823d089c46b9ed5266e">STDERR_FILENO</a>),</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;          <a class="code" href="classprocess_1_1Subprocess.html#ae0f4475b802f34c282921a3383c598c5">process::Subprocess::FD</a>(<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ae2fe1725bb5e9823d089c46b9ed5266e">STDERR_FILENO</a>),</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;          <a class="code" href="namespaceprocess.html#aaa7788e1f64db3a83c3ecfd9f8071493aa8933c1267a5fc22047af39de82f0295">process::NO_SETSID</a>,</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;          <a class="code" href="namespacemesos_1_1internal_1_1tests.html#a1396c5e3b0a179220de2792d74770ec2">environment</a>);</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;      <span class="comment">// Use the exec variant.</span></div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;      <span class="keywordflow">if</span> (!command.has_value()) {</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;        promise.<a class="code" href="classprocess_1_1Promise.html#a2fc569c8bf99acb3e53a68ff3b266667">fail</a>(<span class="stringliteral">&quot;Executable path is not specified&quot;</span>);</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;        <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;      }</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;      vector&lt;string&gt; argv;</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;      <span class="keywordflow">foreach</span> (<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; arg, command.arguments()) {</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;        argv.push_back(arg);</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;      }</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;      VLOG(2) &lt;&lt; <span class="stringliteral">&quot;Launching health command [&quot;</span> &lt;&lt; command.value() &lt;&lt; <span class="stringliteral">&quot;, &quot;</span></div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;              &lt;&lt; <a class="code" href="namespacestrings.html#ac315a6174f56cba0d8295f84da265416">strings::join</a>(<span class="stringliteral">&quot;, &quot;</span>, argv) &lt;&lt; <span class="stringliteral">&quot;]&quot;</span>;</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;      external = <a class="code" href="namespaceprocess.html#aa083bd379ef56d82a3dac261566b25ba">process::subprocess</a>(</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;          command.value(),</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;          argv,</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;          <a class="code" href="classprocess_1_1Subprocess.html#a54793e9c516257d68776f63f0872c3c7">process::Subprocess::PATH</a>(<span class="stringliteral">&quot;/dev/null&quot;</span>),</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;          <a class="code" href="classprocess_1_1Subprocess.html#ae0f4475b802f34c282921a3383c598c5">process::Subprocess::FD</a>(<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ae2fe1725bb5e9823d089c46b9ed5266e">STDERR_FILENO</a>),</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;          <a class="code" href="classprocess_1_1Subprocess.html#ae0f4475b802f34c282921a3383c598c5">process::Subprocess::FD</a>(<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ae2fe1725bb5e9823d089c46b9ed5266e">STDERR_FILENO</a>),</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;          <a class="code" href="namespaceprocess.html#aaa7788e1f64db3a83c3ecfd9f8071493aa8933c1267a5fc22047af39de82f0295">process::NO_SETSID</a>,</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;          <a class="code" href="structNone.html">None</a>(),</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;          <a class="code" href="namespacemesos_1_1internal_1_1tests.html#a1396c5e3b0a179220de2792d74770ec2">environment</a>);</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;    }</div>
 <div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    <span class="keywordflow">if</span> (external.<a class="code" href="classOption.html#a21358442c0fac1cc978a67a9a9089a79">get</a>().isError()) {</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;      failure(<span class="stringliteral">&quot;Error creating subprocess for healthcheck: &quot;</span> +</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;              external.<a class="code" href="classOption.html#a21358442c0fac1cc978a67a9a9089a79">get</a>().error());</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;      <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    }</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;    <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ab03ced250ed239bc3b50b669493997f9">pid_t</a> commandPid = external.<a class="code" href="classOption.html#a21358442c0fac1cc978a67a9a9089a79">get</a>().get().pid();</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    <a class="code" href="stout_2include_2stout_2check_8hpp.html#aee320e7c6e107071f4b85d4cc135a265">CHECK_SOME</a>(external);</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;    <span class="keywordflow">if</span> (external.<a class="code" href="classOption.html#a21358442c0fac1cc978a67a9a9089a79">get</a>().isError()) {</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;      failure(<span class="stringliteral">&quot;Error creating subprocess for healthcheck: &quot;</span> +</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;              external.<a class="code" href="classOption.html#a21358442c0fac1cc978a67a9a9089a79">get</a>().error());</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;      <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;    }</div>
 <div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;    <a class="code" href="classprocess_1_1Future.html">process::Future&lt;Option&lt;int&gt;</a>&gt; <a class="code" href="namespaceproc.html#a34396c6140a28f583dc13fee3c3c35d4">status</a> = external.<a class="code" href="classOption.html#a21358442c0fac1cc978a67a9a9089a79">get</a>().get().status();</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;    status.<a class="code" href="classprocess_1_1Future.html#a49b738b9755c0623a57e575ae2fb6431">await</a>(<a class="code" href="classSeconds.html">Seconds</a>(check.timeout_seconds()));</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    <span class="keywordflow">if</span> (!status.<a class="code" href="classprocess_1_1Future.html#a68f241961e700d0cecf982d9cc0043d7">isReady</a>()) {</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;      <span class="keywordtype">string</span> msg = <span class="stringliteral">&quot;Command check failed with reason: &quot;</span>;</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;      <span class="keywordflow">if</span> (status.<a class="code" href="classprocess_1_1Future.html#a493227e57f8848e37777b89c0f81e2ec">isFailed</a>()) {</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;        msg += <span class="stringliteral">&quot;failed with error: &quot;</span> + status.<a class="code" href="classprocess_1_1Future.html#ae649c56b07f44c05e4b7aa3620133ff9">failure</a>();</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;      } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (status.<a class="code" href="classprocess_1_1Future.html#abc89036db733a417b7b383b091efaf3c">isDiscarded</a>()) {</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;        msg += <span class="stringliteral">&quot;status future discarded&quot;</span>;</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;      } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;        msg += <span class="stringliteral">&quot;status still pending after timeout &quot;</span> +</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;               <a class="code" href="namespacens.html#a28116b46e6543597a11733424cd1aa20">stringify</a>(<a class="code" href="classSeconds.html">Seconds</a>(check.timeout_seconds()));</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;      }</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;      <span class="keywordflow">if</span> (commandPid != -1) {</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;        <span class="comment">// Cleanup the external command process.</span></div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;        <a class="code" href="namespaceos.html#ae7bf571af786eae39cb025d516566168">os::killtree</a>(commandPid, <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a1c2b5693161bbc9d516ef5d16c7b54f5">SIGKILL</a>);</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;        VLOG(1) &lt;&lt; <span class="stringliteral">&quot;Kill health check command &quot;</span> &lt;&lt; commandPid;</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;      }</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;      failure(msg);</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;      <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;    }</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;    <span class="keywordtype">int</span> statusCode = status.<a class="code" href="classprocess_1_1Future.html#aa78977d3b585a5f5ccd682c1e9e2ddc4">get</a>().get();</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    <span class="keywordflow">if</span> (statusCode != 0) {</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;      <span class="keywordtype">string</span> message = <span class="stringliteral">&quot;Health command check &quot;</span> + <a class="code" href="status__utils_8hpp.html#aec7297ea295ff53f48cc0f25ce4a63f9">WSTRINGIFY</a>(statusCode);</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;      failure(message);</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;      success();</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;    }</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;  }</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;  <span class="keywordtype">void</span> reschedule()</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;  {</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;    VLOG(1) &lt;&lt; <span class="stringliteral">&quot;Rescheduling health check in &quot;</span></div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;      &lt;&lt; <a class="code" href="classSeconds.html">Seconds</a>(check.interval_seconds());</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;    <a class="code" href="namespaceprocess.html#ad46335bec9fe626e60003c33e8f13023">delay</a>(<a class="code" href="classSeconds.html">Seconds</a>(check.interval_seconds()), <span class="keyword">self</span>(), &amp;Self::_healthCheck);</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;  }</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;  <a class="code" href="classprocess_1_1Promise.html">process::Promise&lt;Nothing&gt;</a> promise;</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;  HealthCheck check;</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;  <span class="keywordtype">bool</span> initializing;</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;  <a class="code" href="structprocess_1_1UPID.html">UPID</a> executor;</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;  TaskID taskID;</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;  uint32_t consecutiveFailures;</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;  <a class="code" href="classprocess_1_1Time.html">process::Time</a> startTime;</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;};</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;} <span class="comment">// namespace internal {</span></div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;} <span class="comment">// namespace mesos {</span></div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;<span class="preprocessor">#endif // __HEALTH_CHECKER_HPP__</span></div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;    <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ab03ced250ed239bc3b50b669493997f9">pid_t</a> commandPid = external.<a class="code" href="classOption.html#a21358442c0fac1cc978a67a9a9089a79">get</a>().get().pid();</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    <a class="code" href="classprocess_1_1Future.html">process::Future&lt;Option&lt;int&gt;</a>&gt; <a class="code" href="namespaceproc.html#a34396c6140a28f583dc13fee3c3c35d4">status</a> = external.<a class="code" href="classOption.html#a21358442c0fac1cc978a67a9a9089a79">get</a>().get().status();</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    status.<a class="code" href="classprocess_1_1Future.html#a49b738b9755c0623a57e575ae2fb6431">await</a>(<a class="code" href="classSeconds.html">Seconds</a>(check.timeout_seconds()));</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;    <span class="keywordflow">if</span> (!status.<a class="code" href="classprocess_1_1Future.html#a68f241961e700d0cecf982d9cc0043d7">isReady</a>()) {</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;      <span class="keywordtype">string</span> msg = <span class="stringliteral">&quot;Command check failed with reason: &quot;</span>;</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;      <span class="keywordflow">if</span> (status.<a class="code" href="classprocess_1_1Future.html#a493227e57f8848e37777b89c0f81e2ec">isFailed</a>()) {</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;        msg += <span class="stringliteral">&quot;failed with error: &quot;</span> + status.<a class="code" href="classprocess_1_1Future.html#ae649c56b07f44c05e4b7aa3620133ff9">failure</a>();</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;      } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (status.<a class="code" href="classprocess_1_1Future.html#abc89036db733a417b7b383b091efaf3c">isDiscarded</a>()) {</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;        msg += <span class="stringliteral">&quot;status future discarded&quot;</span>;</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;      } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;        msg += <span class="stringliteral">&quot;status still pending after timeout &quot;</span> +</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;               <a class="code" href="namespacens.html#a28116b46e6543597a11733424cd1aa20">stringify</a>(<a class="code" href="classSeconds.html">Seconds</a>(check.timeout_seconds()));</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;      }</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;      <span class="keywordflow">if</span> (commandPid != -1) {</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;        <span class="comment">// Cleanup the external command process.</span></div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;        <a class="code" href="namespaceos.html#ae7bf571af786eae39cb025d516566168">os::killtree</a>(commandPid, <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a1c2b5693161bbc9d516ef5d16c7b54f5">SIGKILL</a>);</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;        VLOG(1) &lt;&lt; <span class="stringliteral">&quot;Kill health check command &quot;</span> &lt;&lt; commandPid;</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;      }</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;      failure(msg);</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;      <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;    }</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;    <span class="keywordtype">int</span> statusCode = status.<a class="code" href="classprocess_1_1Future.html#aa78977d3b585a5f5ccd682c1e9e2ddc4">get</a>().get();</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;    <span class="keywordflow">if</span> (statusCode != 0) {</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;      <span class="keywordtype">string</span> message = <span class="stringliteral">&quot;Health command check &quot;</span> + <a class="code" href="status__utils_8hpp.html#aec7297ea295ff53f48cc0f25ce4a63f9">WSTRINGIFY</a>(statusCode);</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;      failure(message);</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;      success();</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    }</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;  }</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;  <span class="keywordtype">void</span> reschedule()</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;  {</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;    VLOG(1) &lt;&lt; <span class="stringliteral">&quot;Rescheduling health check in &quot;</span></div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;      &lt;&lt; <a class="code" href="classSeconds.html">Seconds</a>(check.interval_seconds());</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;    <a class="code" href="namespaceprocess.html#ad46335bec9fe626e60003c33e8f13023">delay</a>(<a class="code" href="classSeconds.html">Seconds</a>(check.interval_seconds()), <span class="keyword">self</span>(), &amp;Self::_healthCheck);</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;  }</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;  <a class="code" href="classprocess_1_1Promise.html">process::Promise&lt;Nothing&gt;</a> promise;</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;  HealthCheck check;</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;  <span class="keywordtype">bool</span> initializing;</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;  <a class="code" href="structprocess_1_1UPID.html">UPID</a> executor;</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;  TaskID taskID;</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;  uint32_t consecutiveFailures;</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;  <a class="code" href="classprocess_1_1Time.html">process::Time</a> startTime;</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;};</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;} <span class="comment">// namespace internal {</span></div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;} <span class="comment">// namespace mesos {</span></div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;<span class="preprocessor">#endif // __HEALTH_CHECKER_HPP__</span></div>
 <div class="ttc" id="classprocess_1_1Future_html_a68f241961e700d0cecf982d9cc0043d7"><div class="ttname"><a href="classprocess_1_1Future.html#a68f241961e700d0cecf982d9cc0043d7">process::Future::isReady</a></div><div class="ttdeci">bool isReady() const </div><div class="ttdef"><b>Definition:</b> future.hpp:1026</div></div>
+<div class="ttc" id="namespaceprocess_1_1ID_html_aeb11a48c9def1da169d8455a30d0ee39"><div class="ttname"><a href="namespaceprocess_1_1ID.html#aeb11a48c9def1da169d8455a30d0ee39">process::ID::generate</a></div><div class="ttdeci">std::string generate(const std::string &amp;prefix=&quot;&quot;)</div><div class="ttdoc">Returns &amp;#39;prefix(N)&amp;#39; where N represents the number of instances where the same prefix (wrt...</div></div>
 <div class="ttc" id="classOption_html"><div class="ttname"><a href="classOption.html">Option</a></div><div class="ttdef"><b>Definition:</b> option.hpp:24</div></div>
 <div class="ttc" id="classprocess_1_1Subprocess_html_ae0f4475b802f34c282921a3383c598c5"><div class="ttname"><a href="classprocess_1_1Subprocess.html#ae0f4475b802f34c282921a3383c598c5">process::Subprocess::FD</a></div><div class="ttdeci">static IO FD(int fd, IO::FDType type=IO::DUPLICATED)</div></div>
 <div class="ttc" id="delay_8hpp_html"><div class="ttname"><a href="delay_8hpp.html">delay.hpp</a></div></div>
+<div class="ttc" id="classprocess_1_1ProcessBase_html_a318038bacd95e4260864533f7cfe12fd"><div class="ttname"><a href="classprocess_1_1ProcessBase.html#a318038bacd95e4260864533f7cfe12fd">process::ProcessBase::ProcessBase</a></div><div class="ttdeci">ProcessBase(const std::string &amp;id=&quot;&quot;)</div></div>
 <div class="ttc" id="classprocess_1_1Future_html_aa78977d3b585a5f5ccd682c1e9e2ddc4"><div class="ttname"><a href="classprocess_1_1Future.html#aa78977d3b585a5f5ccd682c1e9e2ddc4">process::Future::get</a></div><div class="ttdeci">const T &amp; get() const </div><div class="ttdef"><b>Definition:</b> future.hpp:1098</div></div>
 <div class="ttc" id="namespacestrings_html_ac315a6174f56cba0d8295f84da265416"><div class="ttname"><a href="namespacestrings.html#ac315a6174f56cba0d8295f84da265416">strings::join</a></div><div class="ttdeci">std::stringstream &amp; join(std::stringstream &amp;stream, const std::string &amp;separator, T &amp;&amp;...args)</div><div class="ttdef"><b>Definition:</b> strings.hpp:294</div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_a1c2b5693161bbc9d516ef5d16c7b54f5"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a1c2b5693161bbc9d516ef5d16c7b54f5">SIGKILL</a></div><div class="ttdeci">const mode_t SIGKILL</div><div class="ttdef"><b>Definition:</b> windows.hpp:316</div></div>
@@ -368,7 +372,7 @@
 <div class="ttc" id="classprocess_1_1Future_html_a49b738b9755c0623a57e575ae2fb6431"><div class="ttname"><a href="classprocess_1_1Future.html#a49b738b9755c0623a57e575ae2fb6431">process::Future::await</a></div><div class="ttdeci">bool await(const Duration &amp;duration=Seconds(-1)) const </div><div class="ttdef"><b>Definition:</b> future.hpp:1064</div></div>
 <div class="ttc" id="json_8hpp_html"><div class="ttname"><a href="json_8hpp.html">json.hpp</a></div></div>
 <div class="ttc" id="status__utils_8hpp_html"><div class="ttname"><a href="status__utils_8hpp.html">status_utils.hpp</a></div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1HealthCheckerProcess_html_ab8f073f39909c27eaaf0f14a24137602"><div class="ttname"><a href="classmesos_1_1internal_1_1HealthCheckerProcess.html#ab8f073f39909c27eaaf0f14a24137602">mesos::internal::HealthCheckerProcess::~HealthCheckerProcess</a></div><div class="ttdeci">virtual ~HealthCheckerProcess()</div><div class="ttdef"><b>Definition:</b> health_checker.hpp:99</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1HealthCheckerProcess_html_ab8f073f39909c27eaaf0f14a24137602"><div class="ttname"><a href="classmesos_1_1internal_1_1HealthCheckerProcess.html#ab8f073f39909c27eaaf0f14a24137602">mesos::internal::HealthCheckerProcess::~HealthCheckerProcess</a></div><div class="ttdeci">virtual ~HealthCheckerProcess()</div><div class="ttdef"><b>Definition:</b> health_checker.hpp:101</div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_ae2fe1725bb5e9823d089c46b9ed5266e"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ae2fe1725bb5e9823d089c46b9ed5266e">STDERR_FILENO</a></div><div class="ttdeci">#define STDERR_FILENO</div><div class="ttdef"><b>Definition:</b> windows.hpp:127</div></div>
 <div class="ttc" id="classProtobufProcess_html_a6c404fdc490a7199a0d2ad881d588e5c"><div class="ttname"><a href="classProtobufProcess.html#a6c404fdc490a7199a0d2ad881d588e5c">ProtobufProcess&lt; HealthCheckerProcess &gt;::send</a></div><div class="ttdeci">void send(const process::UPID &amp;to, const google::protobuf::Message &amp;message)</div><div class="ttdef"><b>Definition:</b> protobuf.hpp:110</div></div>
 <div class="ttc" id="namespacemesos_1_1internal_1_1tests_html_a1396c5e3b0a179220de2792d74770ec2"><div class="ttname"><a href="namespacemesos_1_1internal_1_1tests.html#a1396c5e3b0a179220de2792d74770ec2">mesos::internal::tests::environment</a></div><div class="ttdeci">Environment * environment</div></div>
@@ -389,19 +393,21 @@
 <div class="ttc" id="classmesos_1_1internal_1_1HealthChecker_html_aec0f3b50ffc3c69b1fbf510921ee8cb2"><div class="ttname"><a href="classmesos_1_1internal_1_1HealthChecker.html#aec0f3b50ffc3c69b1fbf510921ee8cb2">mesos::internal::HealthChecker::create</a></div><div class="ttdeci">static Try&lt; process::Owned&lt; HealthChecker &gt; &gt; create(const HealthCheck &amp;check, const UPID &amp;executor, const TaskID &amp;taskID)</div></div>
 <div class="ttc" id="option_8hpp_html"><div class="ttname"><a href="option_8hpp.html">option.hpp</a></div></div>
 <div class="ttc" id="3rdparty_2libprocess_2include_2process_2protobuf_8hpp_html"><div class="ttname"><a href="3rdparty_2libprocess_2include_2process_2protobuf_8hpp.html">protobuf.hpp</a></div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1HealthChecker_html"><div class="ttname"><a href="classmesos_1_1internal_1_1HealthChecker.html">mesos::internal::HealthChecker</a></div><div class="ttdef"><b>Definition:</b> health_checker.hpp:67</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1HealthChecker_html"><div class="ttname"><a href="classmesos_1_1internal_1_1HealthChecker.html">mesos::internal::HealthChecker</a></div><div class="ttdef"><b>Definition:</b> health_checker.hpp:68</div></div>
 <div class="ttc" id="classprocess_1_1Time_html"><div class="ttname"><a href="classprocess_1_1Time.html">process::Time</a></div><div class="ttdef"><b>Definition:</b> time.hpp:23</div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1HealthCheckerProcess_html_a275d4bb027c78efcbb32ec1f7bd09ff4"><div class="ttname"><a href="classmesos_1_1internal_1_1HealthCheckerProcess.html#a275d4bb027c78efcbb32ec1f7bd09ff4">mesos::internal::HealthCheckerProcess::healthCheck</a></div><div class="ttdeci">process::Future&lt; Nothing &gt; healthCheck()</div><div class="ttdef"><b>Definition:</b> health_checker.hpp:101</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1HealthCheckerProcess_html_a275d4bb027c78efcbb32ec1f7bd09ff4"><div class="ttname"><a href="classmesos_1_1internal_1_1HealthCheckerProcess.html#a275d4bb027c78efcbb32ec1f7bd09ff4">mesos::internal::HealthCheckerProcess::healthCheck</a></div><div class="ttdeci">process::Future&lt; Nothing &gt; healthCheck()</div><div class="ttdef"><b>Definition:</b> health_checker.hpp:103</div></div>
 <div class="ttc" id="future_8hpp_html"><div class="ttname"><a href="future_8hpp.html">future.hpp</a></div></div>
+<div class="ttc" id="namespaceos_html_ae19e4161a51b86a1f330f3bf1dc75389"><div class="ttname"><a href="namespaceos.html#ae19e4161a51b86a1f330f3bf1dc75389">os::process</a></div><div class="ttdeci">Result&lt; Process &gt; process(pid_t pid)</div><div class="ttdef"><b>Definition:</b> freebsd.hpp:30</div></div>
 <div class="ttc" id="structNone_html"><div class="ttname"><a href="structNone.html">None</a></div><div class="ttdef"><b>Definition:</b> none.hpp:27</div></div>
 <div class="ttc" id="namespaceos_html_a8e590ef8437361cefbd72c01b3474bae"><div class="ttname"><a href="namespaceos.html#a8e590ef8437361cefbd72c01b3474bae">os::environment</a></div><div class="ttdeci">std::map&lt; std::string, std::string &gt; environment()</div><div class="ttdef"><b>Definition:</b> environment.hpp:24</div></div>
 <div class="ttc" id="classprocess_1_1Promise_html_a8aef752d6c90cb11e58e3166b7592ef1"><div class="ttname"><a href="classprocess_1_1Promise.html#a8aef752d6c90cb11e58e3166b7592ef1">process::Promise::future</a></div><div class="ttdeci">Future&lt; T &gt; future() const </div><div class="ttdef"><b>Definition:</b> future.hpp:749</div></div>
 <div class="ttc" id="classprocess_1_1Clock_html_a24ed3f746bb6b3ddb1c52dce5e0ecd38"><div class="ttname"><a href="classprocess_1_1Clock.html#a24ed3f746bb6b3ddb1c52dce5e0ecd38">process::Clock::now</a></div><div class="ttdeci">static Time now()</div><div class="ttdoc">The current clock time for either the current process that makes this call or the global clock time i...</div></div>
 <div class="ttc" id="status__utils_8hpp_html_aec7297ea295ff53f48cc0f25ce4a63f9"><div class="ttname"><a href="status__utils_8hpp.html#aec7297ea295ff53f48cc0f25ce4a63f9">WSTRINGIFY</a></div><div class="ttdeci">std::string WSTRINGIFY(int status)</div><div class="ttdef"><b>Definition:</b> status_utils.hpp:25</div></div>
 <div class="ttc" id="classprocess_1_1Future_html_ae649c56b07f44c05e4b7aa3620133ff9"><div class="ttname"><a href="classprocess_1_1Future.html#ae649c56b07f44c05e4b7aa3620133ff9">process::Future::failure</a></div><div class="ttdeci">const std::string &amp; failure() const </div><div class="ttdef"><b>Definition:</b> future.hpp:1124</div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1HealthCheckerProcess_html_a1af0eac3599a02e5bfc2c6952e142480"><div class="ttname"><a href="classmesos_1_1internal_1_1HealthCheckerProcess.html#a1af0eac3599a02e5bfc2c6952e142480">mesos::internal::HealthCheckerProcess::HealthCheckerProcess</a></div><div class="ttdeci">HealthCheckerProcess(const HealthCheck &amp;_check, const UPID &amp;_executor, const TaskID &amp;_taskID)</div><div class="ttdef"><b>Definition:</b> health_checker.hpp:89</div></div>
-<div class="ttc" id="namespacens_html_a28116b46e6543597a11733424cd1aa20"><div class="ttname"><a href="namespacens.html#a28116b46e6543597a11733424cd1aa20">ns::stringify</a></div><div class="ttdeci">std::string stringify(int flags)</div><div class="ttdef"><b>Definition:</b> ns.hpp:310</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1HealthCheckerProcess_html_a1af0eac3599a02e5bfc2c6952e142480"><div class="ttname"><a href="classmesos_1_1internal_1_1HealthCheckerProcess.html#a1af0eac3599a02e5bfc2c6952e142480">mesos::internal::HealthCheckerProcess::HealthCheckerProcess</a></div><div class="ttdeci">HealthCheckerProcess(const HealthCheck &amp;_check, const UPID &amp;_executor, const TaskID &amp;_taskID)</div><div class="ttdef"><b>Definition:</b> health_checker.hpp:90</div></div>
+<div class="ttc" id="namespacens_html_a28116b46e6543597a11733424cd1aa20"><div class="ttname"><a href="namespacens.html#a28116b46e6543597a11733424cd1aa20">ns::stringify</a></div><div class="ttdeci">std::string stringify(int flags)</div><div class="ttdef"><b>Definition:</b> ns.hpp:302</div></div>
 <div class="ttc" id="classprocess_1_1Owned_html"><div class="ttname"><a href="classprocess_1_1Owned.html">process::Owned</a></div><div class="ttdef"><b>Definition:</b> owned.hpp:35</div></div>
+<div class="ttc" id="id_8hpp_html"><div class="ttname"><a href="id_8hpp.html">id.hpp</a></div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1HealthChecker_html_a3539fdacf7707bd0250a3e99f3195bf1"><div class="ttname"><a href="classmesos_1_1internal_1_1HealthChecker.html#a3539fdacf7707bd0250a3e99f3195bf1">mesos::internal::HealthChecker::healthCheck</a></div><div class="ttdeci">process::Future&lt; Nothing &gt; healthCheck()</div></div>
 <div class="ttc" id="classprocess_1_1ProcessBase_html_a025e342d8f2be6c42fe34031edda54a3"><div class="ttname"><a href="classprocess_1_1ProcessBase.html#a025e342d8f2be6c42fe34031edda54a3">process::ProcessBase::message</a></div><div class="ttdeci">std::map&lt; std::string, MessageHandler &gt; message</div><div class="ttdef"><b>Definition:</b> process.hpp:430</div></div>
 <div class="ttc" id="libprocess_2include_2process_2process_8hpp_html"><div class="ttname"><a href="libprocess_2include_2process_2process_8hpp.html">process.hpp</a></div></div>
@@ -410,7 +416,7 @@
 <div class="ttc" id="classprocess_1_1Future_html_a493227e57f8848e37777b89c0f81e2ec"><div class="ttname"><a href="classprocess_1_1Future.html#a493227e57f8848e37777b89c0f81e2ec">process::Future::isFailed</a></div><div class="ttdeci">bool isFailed() const </div><div class="ttdef"><b>Definition:</b> future.hpp:1040</div></div>
 <div class="ttc" id="messages_8hpp_html"><div class="ttname"><a href="messages_8hpp.html">messages.hpp</a></div></div>
 <div class="ttc" id="classprocess_1_1Future_html"><div class="ttname"><a href="classprocess_1_1Future.html">process::Future&lt; Nothing &gt;</a></div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1HealthCheckerProcess_html"><div class="ttname"><a href="classmesos_1_1internal_1_1HealthCheckerProcess.html">mesos::internal::HealthCheckerProcess</a></div><div class="ttdef"><b>Definition:</b> health_checker.hpp:86</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1HealthCheckerProcess_html"><div class="ttname"><a href="classmesos_1_1internal_1_1HealthCheckerProcess.html">mesos::internal::HealthCheckerProcess</a></div><div class="ttdef"><b>Definition:</b> health_checker.hpp:87</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

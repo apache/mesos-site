@@ -69,11 +69,11 @@
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &lt;assert.h&gt;</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;sstream&gt;</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;boost/uuid/uuid.hpp&gt;</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;boost/uuid/uuid_generators.hpp&gt;</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;boost/uuid/random_generator.hpp&gt;</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;boost/uuid/string_generator.hpp&gt;</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;boost/uuid/uuid.hpp&gt;</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;boost/uuid/uuid_io.hpp&gt;</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="error_8hpp.html">stout/error.hpp</a>&gt;</span></div>
@@ -125,23 +125,23 @@
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
 <div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="structid_1_1UUID.html#a7480077e4c14028576038a59f514d274">   72</a></span>&#160;  <span class="keyword">static</span> <a class="code" href="structid_1_1UUID.html">UUID</a> <a class="code" href="structid_1_1UUID.html#a7480077e4c14028576038a59f514d274">fromString</a>(<span class="keyword">const</span> std::string&amp; s)</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  {</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    boost::uuids::uuid uuid;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    std::istringstream in(s);</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    in &gt;&gt; uuid;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="structid_1_1UUID.html">UUID</a>(uuid);</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  }</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
-<div class="line"><a name="l00080"></a><span class="lineno"><a class="line" href="structid_1_1UUID.html#a53db0f50b26782f7a2dd77ab00f002f9">   80</a></span>&#160;  std::string <a class="code" href="structid_1_1UUID.html#a53db0f50b26782f7a2dd77ab00f002f9">toBytes</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="keyword">  </span>{</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    assert(<span class="keyword">sizeof</span>(data) == <a class="code" href="namespaceos_1_1stat.html#aac17a91dd3f91341b8c4021025e89b04">size</a>());</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keywordflow">return</span> std::string(reinterpret_cast&lt;const char*&gt;(data), <span class="keyword">sizeof</span>(data));</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  }</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
-<div class="line"><a name="l00086"></a><span class="lineno"><a class="line" href="structid_1_1UUID.html#af024badbc379374ac635031eed57dc5f">   86</a></span>&#160;  std::string <a class="code" href="structid_1_1UUID.html#af024badbc379374ac635031eed57dc5f">toString</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="keyword">  </span>{</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    std::ostringstream out;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    out &lt;&lt; *<span class="keyword">this</span>;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keywordflow">return</span> out.str();</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="comment">// NOTE: We don&#39;t use THREAD_LOCAL for the `string_generator`</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="comment">// (unlike for the `random_generator` above), because it is cheap</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="comment">// to construct one each time.</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    boost::uuids::string_generator gen;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    boost::uuids::uuid uuid = gen(s);</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="structid_1_1UUID.html">UUID</a>(uuid);</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  }</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
+<div class="line"><a name="l00082"></a><span class="lineno"><a class="line" href="structid_1_1UUID.html#a53db0f50b26782f7a2dd77ab00f002f9">   82</a></span>&#160;  std::string <a class="code" href="structid_1_1UUID.html#a53db0f50b26782f7a2dd77ab00f002f9">toBytes</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="keyword">  </span>{</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    assert(<span class="keyword">sizeof</span>(data) == <a class="code" href="namespaceos_1_1stat.html#aac17a91dd3f91341b8c4021025e89b04">size</a>());</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keywordflow">return</span> std::string(reinterpret_cast&lt;const char*&gt;(data), <span class="keyword">sizeof</span>(data));</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  }</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
+<div class="line"><a name="l00088"></a><span class="lineno"><a class="line" href="structid_1_1UUID.html#af024badbc379374ac635031eed57dc5f">   88</a></span>&#160;  std::string <a class="code" href="structid_1_1UUID.html#af024badbc379374ac635031eed57dc5f">toString</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="keyword">  </span>{</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keywordflow">return</span> to_string(*<span class="keyword">this</span>);</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  }</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="keyword">private</span>:</div>
@@ -172,7 +172,7 @@
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;} <span class="comment">// namespace std {</span></div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;</div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="preprocessor">#endif // __STOUT_UUID_HPP__</span></div>
-<div class="ttc" id="structid_1_1UUID_html_a53db0f50b26782f7a2dd77ab00f002f9"><div class="ttname"><a href="structid_1_1UUID.html#a53db0f50b26782f7a2dd77ab00f002f9">id::UUID::toBytes</a></div><div class="ttdeci">std::string toBytes() const </div><div class="ttdef"><b>Definition:</b> uuid.hpp:80</div></div>
+<div class="ttc" id="structid_1_1UUID_html_a53db0f50b26782f7a2dd77ab00f002f9"><div class="ttname"><a href="structid_1_1UUID.html#a53db0f50b26782f7a2dd77ab00f002f9">id::UUID::toBytes</a></div><div class="ttdeci">std::string toBytes() const </div><div class="ttdef"><b>Definition:</b> uuid.hpp:82</div></div>
 <div class="ttc" id="classError_html"><div class="ttname"><a href="classError.html">Error</a></div><div class="ttdef"><b>Definition:</b> errorbase.hpp:35</div></div>
 <div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
 <div class="ttc" id="structid_1_1UUID_html_a7480077e4c14028576038a59f514d274"><div class="ttname"><a href="structid_1_1UUID.html#a7480077e4c14028576038a59f514d274">id::UUID::fromString</a></div><div class="ttdeci">static UUID fromString(const std::string &amp;s)</div><div class="ttdef"><b>Definition:</b> uuid.hpp:72</div></div>
@@ -187,7 +187,7 @@
 <div class="ttc" id="try_8hpp_html"><div class="ttname"><a href="try_8hpp.html">try.hpp</a></div></div>
 <div class="ttc" id="thread__local_8hpp_html_af8556c37f3acfa45992b8697930c501b"><div class="ttname"><a href="thread__local_8hpp.html#af8556c37f3acfa45992b8697930c501b">THREAD_LOCAL</a></div><div class="ttdeci">#define THREAD_LOCAL</div><div class="ttdef"><b>Definition:</b> thread_local.hpp:26</div></div>
 <div class="ttc" id="structstd_1_1hash_3_01UUID_01_4_html_a07f387761a18313b24327ccb8e7e9ae8"><div class="ttname"><a href="structstd_1_1hash_3_01UUID_01_4.html#a07f387761a18313b24327ccb8e7e9ae8">std::hash&lt; UUID &gt;::result_type</a></div><div class="ttdeci">size_t result_type</div><div class="ttdef"><b>Definition:</b> uuid.hpp:108</div></div>
-<div class="ttc" id="structid_1_1UUID_html_af024badbc379374ac635031eed57dc5f"><div class="ttname"><a href="structid_1_1UUID.html#af024badbc379374ac635031eed57dc5f">id::UUID::toString</a></div><div class="ttdeci">std::string toString() const </div><div class="ttdef"><b>Definition:</b> uuid.hpp:86</div></div>
+<div class="ttc" id="structid_1_1UUID_html_af024badbc379374ac635031eed57dc5f"><div class="ttname"><a href="structid_1_1UUID.html#af024badbc379374ac635031eed57dc5f">id::UUID::toString</a></div><div class="ttdeci">std::string toString() const </div><div class="ttdef"><b>Definition:</b> uuid.hpp:88</div></div>
 <div class="ttc" id="structstd_1_1hash_3_01UUID_01_4_html_a92c7c31d46eb2ae8ee55797eef75c1a4"><div class="ttname"><a href="structstd_1_1hash_3_01UUID_01_4.html#a92c7c31d46eb2ae8ee55797eef75c1a4">std::hash&lt; UUID &gt;::argument_type</a></div><div class="ttdeci">UUID argument_type</div><div class="ttdef"><b>Definition:</b> uuid.hpp:110</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

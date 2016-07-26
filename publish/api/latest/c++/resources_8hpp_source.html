@@ -394,70 +394,75 @@
 <div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;  <span class="comment">// returns Resources.</span></div>
 <div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;  <a class="code" href="classOption.html">Option&lt;Resources&gt;</a> <a class="code" href="classmesos_1_1Resources.html#a531f3b2cf4318aa421a2c9a9134992d1">find</a>(<span class="keyword">const</span> Resource&amp; target) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;</div>
-<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;  google::protobuf::RepeatedPtrField&lt;Resource&gt; resources;</div>
-<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;};</div>
-<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;</div>
-<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;</div>
-<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;std::ostream&amp; <a class="code" href="namespacemesos.html#a5dc9d475094af726a46d485950cde6cb">operator&lt;&lt;</a>(std::ostream&amp; stream, <span class="keyword">const</span> Resource&amp; resource);</div>
-<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;</div>
-<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;</div>
-<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;std::ostream&amp; <a class="code" href="namespacemesos.html#a5dc9d475094af726a46d485950cde6cb">operator&lt;&lt;</a>(std::ostream&amp; stream, <span class="keyword">const</span> Resources&amp; resources);</div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;  <span class="comment">// Validation-free versions of += and -= `Resource` operators.</span></div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;  <span class="comment">// These can be used when `r` is already validated.</span></div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;  <span class="keywordtype">void</span> add(<span class="keyword">const</span> Resource&amp; r);</div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;  <span class="keywordtype">void</span> subtract(<span class="keyword">const</span> Resource&amp; r);</div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;</div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;  google::protobuf::RepeatedPtrField&lt;Resource&gt; resources;</div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;};</div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;</div>
 <div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;</div>
-<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;</div>
-<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;std::ostream&amp; <a class="code" href="namespacemesos.html#a5dc9d475094af726a46d485950cde6cb">operator&lt;&lt;</a>(</div>
-<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;    std::ostream&amp; stream,</div>
-<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;    <span class="keyword">const</span> google::protobuf::RepeatedPtrField&lt;Resource&gt;&amp; resources);</div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;std::ostream&amp; <a class="code" href="namespacemesos.html#a5dc9d475094af726a46d485950cde6cb">operator&lt;&lt;</a>(std::ostream&amp; stream, <span class="keyword">const</span> Resource&amp; resource);</div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;</div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;</div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;std::ostream&amp; <a class="code" href="namespacemesos.html#a5dc9d475094af726a46d485950cde6cb">operator&lt;&lt;</a>(std::ostream&amp; stream, <span class="keyword">const</span> Resources&amp; resources);</div>
 <div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;</div>
 <div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;</div>
-<div class="line"><a name="l00414"></a><span class="lineno"><a class="line" href="namespacemesos.html#ab16e1a11cb91d02d756b2ce64834f3c8">  414</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classmesos_1_1Resources.html">Resources</a> <a class="code" href="namespacemesos.html#ab16e1a11cb91d02d756b2ce64834f3c8">operator+</a>(</div>
-<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;    <span class="keyword">const</span> google::protobuf::RepeatedPtrField&lt;Resource&gt;&amp; left,</div>
-<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;    <span class="keyword">const</span> <a class="code" href="classmesos_1_1Resources.html">Resources</a>&amp; right)</div>
-<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;{</div>
-<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="classmesos_1_1Resources.html">Resources</a>(left) + right;</div>
-<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;}</div>
-<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;</div>
-<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;</div>
-<div class="line"><a name="l00422"></a><span class="lineno"><a class="line" href="namespacemesos.html#ae80307fd2de55e858be4d47154b86f1a">  422</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classmesos_1_1Resources.html">Resources</a> <a class="code" href="namespacemesos.html#ae80307fd2de55e858be4d47154b86f1a">operator-</a>(</div>
-<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;    <span class="keyword">const</span> google::protobuf::RepeatedPtrField&lt;Resource&gt;&amp; left,</div>
-<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;    <span class="keyword">const</span> <a class="code" href="classmesos_1_1Resources.html">Resources</a>&amp; right)</div>
-<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;{</div>
-<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="classmesos_1_1Resources.html">Resources</a>(left) - right;</div>
-<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;}</div>
-<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;</div>
-<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;</div>
-<div class="line"><a name="l00430"></a><span class="lineno"><a class="line" href="namespacemesos.html#a25baf5dc50c84275f660a602705ac4fb">  430</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code" href="namespacemesos.html#a25baf5dc50c84275f660a602705ac4fb">operator==</a>(</div>
-<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;    <span class="keyword">const</span> google::protobuf::RepeatedPtrField&lt;Resource&gt;&amp; left,</div>
-<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;    <span class="keyword">const</span> <a class="code" href="classmesos_1_1Resources.html">Resources</a>&amp; right)</div>
-<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;{</div>
-<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="classmesos_1_1Resources.html">Resources</a>(left) == right;</div>
-<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;}</div>
-<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;</div>
-<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;</div>
-<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> Key&gt;</div>
-<div class="line"><a name="l00439"></a><span class="lineno"><a class="line" href="namespacemesos.html#a05acb02d51a29432792fb088b7ee5c1f">  439</a></span>&#160;<a class="code" href="classhashmap.html">hashmap&lt;Key, Resources&gt;</a>&amp; <a class="code" href="namespacemesos.html#a05acb02d51a29432792fb088b7ee5c1f">operator+=</a>(</div>
-<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;    <a class="code" href="classhashmap.html">hashmap&lt;Key, Resources&gt;</a>&amp; left,</div>
-<div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;    <span class="keyword">const</span> <a class="code" href="classhashmap.html">hashmap&lt;Key, Resources&gt;</a>&amp; right)</div>
-<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;{</div>
-<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;  <a class="code" href="foreach_8hpp.html#a66900b166526abe66464d6597536b111">foreachpair</a> (<span class="keyword">const</span> Key&amp; key, <span class="keyword">const</span> <a class="code" href="classmesos_1_1Resources.html">Resources</a>&amp; resources, right) {</div>
-<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;    left[key] += resources;</div>
-<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;  }</div>
-<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;  <span class="keywordflow">return</span> left;</div>
-<div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;}</div>
-<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;</div>
-<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;</div>
-<div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> Key&gt;</div>
-<div class="line"><a name="l00451"></a><span class="lineno"><a class="line" href="namespacemesos.html#a51ac11240eef25ec2059e3269a974c64">  451</a></span>&#160;<a class="code" href="classhashmap.html">hashmap&lt;Key, Resources&gt;</a> <a class="code" href="namespacemesos.html#ab16e1a11cb91d02d756b2ce64834f3c8">operator+</a>(</div>
-<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;    <span class="keyword">const</span> <a class="code" href="classhashmap.html">hashmap&lt;Key, Resources&gt;</a>&amp; left,</div>
-<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;    <span class="keyword">const</span> <a class="code" href="classhashmap.html">hashmap&lt;Key, Resources&gt;</a>&amp; right)</div>
-<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;{</div>
-<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;  <a class="code" href="classhashmap.html">hashmap&lt;Key, Resources&gt;</a> result = left;</div>
-<div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;  result += right;</div>
-<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;  <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;}</div>
-<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;</div>
-<div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;} <span class="comment">// namespace mesos {</span></div>
-<div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;</div>
-<div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;<span class="preprocessor">#endif // __RESOURCES_HPP__</span></div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;std::ostream&amp; <a class="code" href="namespacemesos.html#a5dc9d475094af726a46d485950cde6cb">operator&lt;&lt;</a>(</div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;    std::ostream&amp; stream,</div>
+<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;    <span class="keyword">const</span> google::protobuf::RepeatedPtrField&lt;Resource&gt;&amp; resources);</div>
+<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;</div>
+<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;</div>
+<div class="line"><a name="l00419"></a><span class="lineno"><a class="line" href="namespacemesos.html#ab16e1a11cb91d02d756b2ce64834f3c8">  419</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classmesos_1_1Resources.html">Resources</a> <a class="code" href="namespacemesos.html#ab16e1a11cb91d02d756b2ce64834f3c8">operator+</a>(</div>
+<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;    <span class="keyword">const</span> google::protobuf::RepeatedPtrField&lt;Resource&gt;&amp; left,</div>
+<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;    <span class="keyword">const</span> <a class="code" href="classmesos_1_1Resources.html">Resources</a>&amp; right)</div>
+<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;{</div>
+<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="classmesos_1_1Resources.html">Resources</a>(left) + right;</div>
+<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;}</div>
+<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;</div>
+<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;</div>
+<div class="line"><a name="l00427"></a><span class="lineno"><a class="line" href="namespacemesos.html#ae80307fd2de55e858be4d47154b86f1a">  427</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classmesos_1_1Resources.html">Resources</a> <a class="code" href="namespacemesos.html#ae80307fd2de55e858be4d47154b86f1a">operator-</a>(</div>
+<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;    <span class="keyword">const</span> google::protobuf::RepeatedPtrField&lt;Resource&gt;&amp; left,</div>
+<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;    <span class="keyword">const</span> <a class="code" href="classmesos_1_1Resources.html">Resources</a>&amp; right)</div>
+<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;{</div>
+<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="classmesos_1_1Resources.html">Resources</a>(left) - right;</div>
+<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;}</div>
+<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;</div>
+<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;</div>
+<div class="line"><a name="l00435"></a><span class="lineno"><a class="line" href="namespacemesos.html#a25baf5dc50c84275f660a602705ac4fb">  435</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code" href="namespacemesos.html#a25baf5dc50c84275f660a602705ac4fb">operator==</a>(</div>
+<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;    <span class="keyword">const</span> google::protobuf::RepeatedPtrField&lt;Resource&gt;&amp; left,</div>
+<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;    <span class="keyword">const</span> <a class="code" href="classmesos_1_1Resources.html">Resources</a>&amp; right)</div>
+<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;{</div>
+<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="classmesos_1_1Resources.html">Resources</a>(left) == right;</div>
+<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;}</div>
+<div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;</div>
+<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;</div>
+<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> Key&gt;</div>
+<div class="line"><a name="l00444"></a><span class="lineno"><a class="line" href="namespacemesos.html#a05acb02d51a29432792fb088b7ee5c1f">  444</a></span>&#160;<a class="code" href="classhashmap.html">hashmap&lt;Key, Resources&gt;</a>&amp; <a class="code" href="namespacemesos.html#a05acb02d51a29432792fb088b7ee5c1f">operator+=</a>(</div>
+<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;    <a class="code" href="classhashmap.html">hashmap&lt;Key, Resources&gt;</a>&amp; left,</div>
+<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;    <span class="keyword">const</span> <a class="code" href="classhashmap.html">hashmap&lt;Key, Resources&gt;</a>&amp; right)</div>
+<div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;{</div>
+<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;  <a class="code" href="foreach_8hpp.html#a66900b166526abe66464d6597536b111">foreachpair</a> (<span class="keyword">const</span> Key&amp; key, <span class="keyword">const</span> <a class="code" href="classmesos_1_1Resources.html">Resources</a>&amp; resources, right) {</div>
+<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;    left[key] += resources;</div>
+<div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;  }</div>
+<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;  <span class="keywordflow">return</span> left;</div>
+<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;}</div>
+<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;</div>
+<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;</div>
+<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> Key&gt;</div>
+<div class="line"><a name="l00456"></a><span class="lineno"><a class="line" href="namespacemesos.html#a51ac11240eef25ec2059e3269a974c64">  456</a></span>&#160;<a class="code" href="classhashmap.html">hashmap&lt;Key, Resources&gt;</a> <a class="code" href="namespacemesos.html#ab16e1a11cb91d02d756b2ce64834f3c8">operator+</a>(</div>
+<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;    <span class="keyword">const</span> <a class="code" href="classhashmap.html">hashmap&lt;Key, Resources&gt;</a>&amp; left,</div>
+<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;    <span class="keyword">const</span> <a class="code" href="classhashmap.html">hashmap&lt;Key, Resources&gt;</a>&amp; right)</div>
+<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;{</div>
+<div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;  <a class="code" href="classhashmap.html">hashmap&lt;Key, Resources&gt;</a> result = left;</div>
+<div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;  result += right;</div>
+<div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;  <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;}</div>
+<div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;</div>
+<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;} <span class="comment">// namespace mesos {</span></div>
+<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;</div>
+<div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;<span class="preprocessor">#endif // __RESOURCES_HPP__</span></div>
 <div class="ttc" id="namespacemesos_html_a5dc9d475094af726a46d485950cde6cb"><div class="ttname"><a href="namespacemesos.html#a5dc9d475094af726a46d485950cde6cb">mesos::operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;stream, const Attribute &amp;attribute)</div></div>
 <div class="ttc" id="classmesos_1_1Resources_html_af80276e0925e9e48dbf816aae62a2bb8"><div class="ttname"><a href="classmesos_1_1Resources.html#af80276e0925e9e48dbf816aae62a2bb8">mesos::Resources::isEmpty</a></div><div class="ttdeci">static bool isEmpty(const Resource &amp;resource)</div></div>
 <div class="ttc" id="classmesos_1_1Resources_html_a941fe78c62de3a6fa7c7cf977960694a"><div class="ttname"><a href="classmesos_1_1Resources.html#a941fe78c62de3a6fa7c7cf977960694a">mesos::Resources::size</a></div><div class="ttdeci">size_t size() const </div><div class="ttdef"><b>Definition:</b> resources.hpp:212</div></div>
@@ -482,7 +487,7 @@
 <div class="ttc" id="classmesos_1_1Resources_html_af9c888191c3f7408ab11bb064e881507"><div class="ttname"><a href="classmesos_1_1Resources.html#af9c888191c3f7408ab11bb064e881507">mesos::Resources::ports</a></div><div class="ttdeci">Option&lt; Value::Ranges &gt; ports() const </div></div>
 <div class="ttc" id="stout_2include_2stout_2check_8hpp_html"><div class="ttname"><a href="stout_2include_2stout_2check_8hpp.html">check.hpp</a></div></div>
 <div class="ttc" id="classmesos_1_1Resources_html_a9b82e9ffa22a2e8239019d881e0aa423"><div class="ttname"><a href="classmesos_1_1Resources.html#a9b82e9ffa22a2e8239019d881e0aa423">mesos::Resources::iterator</a></div><div class="ttdeci">google::protobuf::RepeatedPtrField&lt; Resource &gt;::const_iterator iterator</div><div class="ttdef"><b>Definition:</b> resources.hpp:342</div></div>
-<div class="ttc" id="namespacemesos_html_ae80307fd2de55e858be4d47154b86f1a"><div class="ttname"><a href="namespacemesos.html#ae80307fd2de55e858be4d47154b86f1a">mesos::operator-</a></div><div class="ttdeci">Resources operator-(const google::protobuf::RepeatedPtrField&lt; Resource &gt; &amp;left, const Resources &amp;right)</div><div class="ttdef"><b>Definition:</b> resources.hpp:422</div></div>
+<div class="ttc" id="namespacemesos_html_ae80307fd2de55e858be4d47154b86f1a"><div class="ttname"><a href="namespacemesos.html#ae80307fd2de55e858be4d47154b86f1a">mesos::operator-</a></div><div class="ttdeci">Resources operator-(const google::protobuf::RepeatedPtrField&lt; Resource &gt; &amp;left, const Resources &amp;right)</div><div class="ttdef"><b>Definition:</b> resources.hpp:427</div></div>
 <div class="ttc" id="classmesos_1_1Resources_html_ade04c622a0b1ef1cf9dc88ac4007d958"><div class="ttname"><a href="classmesos_1_1Resources.html#ade04c622a0b1ef1cf9dc88ac4007d958">mesos::Resources::reservations</a></div><div class="ttdeci">hashmap&lt; std::string, Resources &gt; reservations() const </div></div>
 <div class="ttc" id="lambda_8hpp_html"><div class="ttname"><a href="lambda_8hpp.html">lambda.hpp</a></div></div>
 <div class="ttc" id="classmesos_1_1Resources_html_a643e177ab27dd9448ec1f3e8cbbc5634"><div class="ttname"><a href="classmesos_1_1Resources.html#a643e177ab27dd9448ec1f3e8cbbc5634">mesos::Resources::unreserved</a></div><div class="ttdeci">Resources unreserved() const </div></div>
@@ -506,7 +511,7 @@
 <div class="ttc" id="classmesos_1_1Resources_html_a09242ab54ec91f74c67b67c7ab44036f"><div class="ttname"><a href="classmesos_1_1Resources.html#a09242ab54ec91f74c67b67c7ab44036f">mesos::Resources::end</a></div><div class="ttdeci">const_iterator end() const </div><div class="ttdef"><b>Definition:</b> resources.hpp:360</div></div>
 <div class="ttc" id="classmesos_1_1Resources_html_a19c38bf426688c0fb1fcc5552b29a729"><div class="ttname"><a href="classmesos_1_1Resources.html#a19c38bf426688c0fb1fcc5552b29a729">mesos::Resources::scalars</a></div><div class="ttdeci">Resources scalars() const </div></div>
 <div class="ttc" id="classmesos_1_1Resources_html_ab24fc44ad91b263500d2736a54a9aea3"><div class="ttname"><a href="classmesos_1_1Resources.html#ab24fc44ad91b263500d2736a54a9aea3">mesos::Resources::revocable</a></div><div class="ttdeci">Resources revocable() const </div></div>
-<div class="ttc" id="namespacemesos_html_ab16e1a11cb91d02d756b2ce64834f3c8"><div class="ttname"><a href="namespacemesos.html#ab16e1a11cb91d02d756b2ce64834f3c8">mesos::operator+</a></div><div class="ttdeci">Resources operator+(const google::protobuf::RepeatedPtrField&lt; Resource &gt; &amp;left, const Resources &amp;right)</div><div class="ttdef"><b>Definition:</b> resources.hpp:414</div></div>
+<div class="ttc" id="namespacemesos_html_ab16e1a11cb91d02d756b2ce64834f3c8"><div class="ttname"><a href="namespacemesos.html#ab16e1a11cb91d02d756b2ce64834f3c8">mesos::operator+</a></div><div class="ttdeci">Resources operator+(const google::protobuf::RepeatedPtrField&lt; Resource &gt; &amp;left, const Resources &amp;right)</div><div class="ttdef"><b>Definition:</b> resources.hpp:419</div></div>
 <div class="ttc" id="foreach_8hpp_html"><div class="ttname"><a href="foreach_8hpp.html">foreach.hpp</a></div></div>
 <div class="ttc" id="classmesos_1_1Resources_html_a1e0ae1441006e85f3f15ece5eb30d8dc"><div class="ttname"><a href="classmesos_1_1Resources.html#a1e0ae1441006e85f3f15ece5eb30d8dc">mesos::Resources::persistentVolumes</a></div><div class="ttdeci">Resources persistentVolumes() const </div></div>
 <div class="ttc" id="error_8hpp_html"><div class="ttname"><a href="error_8hpp.html">error.hpp</a></div></div>
@@ -519,7 +524,7 @@
 <div class="ttc" id="classmesos_1_1Resources_html_abb05dff78639303b244e9ffb0c765c14"><div class="ttname"><a href="classmesos_1_1Resources.html#abb05dff78639303b244e9ffb0c765c14">mesos::Resources::isRevocable</a></div><div class="ttdeci">static bool isRevocable(const Resource &amp;resource)</div></div>
 <div class="ttc" id="classmesos_1_1Resources_html_adca79e207e34acac374fa48035ebfb55"><div class="ttname"><a href="classmesos_1_1Resources.html#adca79e207e34acac374fa48035ebfb55">mesos::Resources::isReserved</a></div><div class="ttdeci">static bool isReserved(const Resource &amp;resource, const Option&lt; std::string &gt; &amp;role=None())</div></div>
 <div class="ttc" id="classmesos_1_1Resources_html_a5e73184e5fd1818ec189fe5f7d432b25"><div class="ttname"><a href="classmesos_1_1Resources.html#a5e73184e5fd1818ec189fe5f7d432b25">mesos::Resources::operator+=</a></div><div class="ttdeci">Resources &amp; operator+=(const Resource &amp;that)</div></div>
-<div class="ttc" id="namespacemesos_html_a25baf5dc50c84275f660a602705ac4fb"><div class="ttname"><a href="namespacemesos.html#a25baf5dc50c84275f660a602705ac4fb">mesos::operator==</a></div><div class="ttdeci">bool operator==(const google::protobuf::RepeatedPtrField&lt; Resource &gt; &amp;left, const Resources &amp;right)</div><div class="ttdef"><b>Definition:</b> resources.hpp:430</div></div>
+<div class="ttc" id="namespacemesos_html_a25baf5dc50c84275f660a602705ac4fb"><div class="ttname"><a href="namespacemesos.html#a25baf5dc50c84275f660a602705ac4fb">mesos::operator==</a></div><div class="ttdeci">bool operator==(const google::protobuf::RepeatedPtrField&lt; Resource &gt; &amp;left, const Resources &amp;right)</div><div class="ttdef"><b>Definition:</b> resources.hpp:435</div></div>
 <div class="ttc" id="classmesos_1_1Resources_html_a5deaa3422ebd3b42b012ace9e7802748"><div class="ttname"><a href="classmesos_1_1Resources.html#a5deaa3422ebd3b42b012ace9e7802748">mesos::Resources::reserved</a></div><div class="ttdeci">Resources reserved(const Option&lt; std::string &gt; &amp;role=None()) const </div></div>
 <div class="ttc" id="classmesos_1_1Resources_html_ae5cbdd78bfaf5de8ad74463b3a9bd5f5"><div class="ttname"><a href="classmesos_1_1Resources.html#ae5cbdd78bfaf5de8ad74463b3a9bd5f5">mesos::Resources::nonRevocable</a></div><div class="ttdeci">Resources nonRevocable() const </div></div>
 <div class="ttc" id="classmesos_1_1Resources_html_a531f3b2cf4318aa421a2c9a9134992d1"><div class="ttname"><a href="classmesos_1_1Resources.html#a531f3b2cf4318aa421a2c9a9134992d1">mesos::Resources::find</a></div><div class="ttdeci">Option&lt; Resources &gt; find(const Resources &amp;targets) const </div></div>
@@ -529,7 +534,7 @@
 <div class="ttc" id="classmesos_1_1Resources_html_a30fc4fe000da99818bfcee5bb780e5d4"><div class="ttname"><a href="classmesos_1_1Resources.html#a30fc4fe000da99818bfcee5bb780e5d4">mesos::Resources::contains</a></div><div class="ttdeci">bool contains(const Resources &amp;that) const </div></div>
 <div class="ttc" id="classmesos_1_1Resources_html_a342965af2e97bd1c5a78fbec5d9d65d8"><div class="ttname"><a href="classmesos_1_1Resources.html#a342965af2e97bd1c5a78fbec5d9d65d8">mesos::Resources::isUnreserved</a></div><div class="ttdeci">static bool isUnreserved(const Resource &amp;resource)</div></div>
 <div class="ttc" id="classmesos_1_1Resources_html_a25edbf9ca3dc21aec283b25e48308794"><div class="ttname"><a href="classmesos_1_1Resources.html#a25edbf9ca3dc21aec283b25e48308794">mesos::Resources::disk</a></div><div class="ttdeci">Option&lt; Bytes &gt; disk() const </div></div>
-<div class="ttc" id="namespacemesos_html_a05acb02d51a29432792fb088b7ee5c1f"><div class="ttname"><a href="namespacemesos.html#a05acb02d51a29432792fb088b7ee5c1f">mesos::operator+=</a></div><div class="ttdeci">hashmap&lt; Key, Resources &gt; &amp; operator+=(hashmap&lt; Key, Resources &gt; &amp;left, const hashmap&lt; Key, Resources &gt; &amp;right)</div><div class="ttdef"><b>Definition:</b> resources.hpp:439</div></div>
+<div class="ttc" id="namespacemesos_html_a05acb02d51a29432792fb088b7ee5c1f"><div class="ttname"><a href="namespacemesos.html#a05acb02d51a29432792fb088b7ee5c1f">mesos::operator+=</a></div><div class="ttdeci">hashmap&lt; Key, Resources &gt; &amp; operator+=(hashmap&lt; Key, Resources &gt; &amp;left, const hashmap&lt; Key, Resources &gt; &amp;right)</div><div class="ttdef"><b>Definition:</b> resources.hpp:444</div></div>
 <div class="ttc" id="classmesos_1_1Resources_html_a2233c5eae93c7bd8629495f19346575e"><div class="ttname"><a href="classmesos_1_1Resources.html#a2233c5eae93c7bd8629495f19346575e">mesos::Resources::operator-</a></div><div class="ttdeci">Resources operator-(const Resource &amp;that) const </div></div>
 <div class="ttc" id="classTry_html_a7be0768038e0628632492edf6cc1515a"><div class="ttname"><a href="classTry.html#a7be0768038e0628632492edf6cc1515a">Try::get</a></div><div class="ttdeci">const T &amp; get() const </div><div class="ttdef"><b>Definition:</b> try.hpp:70</div></div>
 <div class="ttc" id="namespaceos_1_1Shell_html_acfe16ef2b1146ad49a8651c0a457ce46"><div class="ttname"><a href="namespaceos_1_1Shell.html#acfe16ef2b1146ad49a8651c0a457ce46">os::Shell::name</a></div><div class="ttdeci">constexpr const char * name</div><div class="ttdef"><b>Definition:</b> shell.hpp:40</div></div>

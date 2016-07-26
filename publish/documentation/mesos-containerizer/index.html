@@ -25,6 +25,7 @@
       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
     })();
     </script>
+    
   </head>
   <body>
     <!-- magical breadcrumbs -->
@@ -226,21 +227,21 @@ not apply to the XFS Disk isolator.</p>
 configurations from the docker image (e.g., Entrypoint/Cmd, Env,
 etc.). This isolator is tied with <code>--image_providers=docker</code>. If
 <code>--image_providers</code> contains <code>docker</code>, this isolator must be used.
-Otherwise, agent will refuse to start.</p>
+Otherwise, the agent will refuse to start.</p>
 
 <p>To enable the Docker Runtime isolator, append <code>docker/runtime</code> to the
 <code>--isolation</code> flag when starting the agent.</p>
 
-<p>Currently, docker image default <code>Entrypoint</code>, <code>Cmd</code>, <code>Env</code> and
-<code>WorkingDir</code> are supported with docker runtime isolator. Users can
-specify <code>CommandInfo</code> to override the default <code>Entrypoint</code> and <code>Cmd</code>
-in the image (see below for details). The <code>CommandInfo</code> should be
-inside of either <code>TaskInfo</code> or <code>ExecutorInfo</code> (depending on running
-command task or custom executor respectively).</p>
+<p>Currently, docker image default <code>Entrypoint</code>, <code>Cmd</code>, <code>Env</code>, and <code>WorkingDir</code> are
+supported with docker runtime isolator. Users can specify <code>CommandInfo</code> to
+override the default <code>Entrypoint</code> and <code>Cmd</code> in the image (see below for
+details). The <code>CommandInfo</code> should be inside of either <code>TaskInfo</code> or
+<code>ExecutorInfo</code> (depending on whether the task is a command task or uses a custom
+executor, respectively).</p>
 
 <h4>Determine the Launch Command</h4>
 
-<p>If user specifies a command in <code>CommandInfo</code>, that will override the
+<p>If the user specifies a command in <code>CommandInfo</code>, that will override the
 default Entrypoint/Cmd in the docker image. Otherwise, we will use the
 default Entrypoint/Cmd and append arguments specified in <code>CommandInfo</code>
 accordingly. The details are explained in the following table.</p>
@@ -349,14 +350,14 @@ handle 0xBBBB. You can read more about the use cases for the primary
 and secondary handles in the <a href="https://www.kernel.org/doc/Documentation/cgroup-v1/net_cls.txt">Linux kernel documentation for
 net_cls</a>.</p>
 
-<p>By default the cgroups/net_cls isolator does not manage the net_cls
+<p>By default, the cgroups/net_cls isolator does not manage the net_cls
 handles, and assumes the operator is going to manage/assign these
 handles. To enable the management of net_cls handles by the
 cgroups/net_cls isolator you need to specify a 16-bit primary handle,
 of the form 0xAAAA, using the <code>--cgroups_net_cls_primary_handle</code> flag at
 agent startup.</p>
 
-<p>Once a primary handle has been specified for a agent, for each
+<p>Once a primary handle has been specified for an agent, for each
 container the cgroups/net_cls isolator allocates a 16-bit secondary
 handle. It then assigns the 32-bit combination of the primary and
 secondary handle to the net_cls cgroup associated with the container

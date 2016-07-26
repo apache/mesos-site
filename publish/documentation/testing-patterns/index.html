@@ -25,6 +25,7 @@
       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
     })();
     </script>
+    
   </head>
   <body>
     <!-- magical breadcrumbs -->
@@ -204,7 +205,7 @@ Clock::resume();
 AWAIT_READY(slaveReregisteredMessage);
 </code></pre>
 
-<p>However, this won&rsquo;t work if we want to intercept a message sent to an actor (technically a <code>UPID</code>) that lives in another OS process. For example, <code>CommandExecutor</code> spawned by a agent will live in a separate OS process, though master and agent instances live in the same OS process together with our test (see <code>mesos/src/tests/cluster.hpp</code>). The wait in this code will fail:</p>
+<p>However, this won&rsquo;t work if we want to intercept a message sent to an actor (technically a <code>UPID</code>) that lives in another OS process. For example, <code>CommandExecutor</code> spawned by an agent will live in a separate OS process, though master and agent instances live in the same OS process together with our test (see <code>mesos/src/tests/cluster.hpp</code>). The wait in this code will fail:</p>
 
 <pre><code class="{.cpp}">Future&lt;ExecutorRegisteredMessage&gt; executorRegisteredMessage =
   FUTURE_PROTOBUF(ExecutorRegisteredMessage(), _, _);

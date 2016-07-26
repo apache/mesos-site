@@ -80,45 +80,47 @@
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="duration_8hpp.html">stout/duration.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="hashmap_8hpp.html">stout/hashmap.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">// For PerfStatistics protobuf.</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="include_2mesos_2mesos_8hpp.html">mesos/mesos.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="namespaceperf.html">   33</a></span>&#160;<span class="keyword">namespace </span>perf {</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">// Sample the perf events for process(es) in the perf_event cgroups</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">// for duration. The returned hashmap is keyed by cgroup.</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">// NOTE: cgroups should be relative to the perf_event subsystem mount,</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">// e.g., mesos/test for /sys/fs/cgroup/perf_event/mesos/test.</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<a class="code" href="classprocess_1_1Future.html">process::Future&lt;hashmap&lt;std::string, mesos::PerfStatistics&gt;</a>&gt; <a class="code" href="namespaceperf.html#a1da325bd0688dc480ff4d5159d620310">sample</a>(</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keyword">const</span> std::set&lt;std::string&gt;&amp; events,</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keyword">const</span> std::set&lt;std::string&gt;&amp; cgroups,</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keyword">const</span> <a class="code" href="classDuration.html">Duration</a>&amp; duration);</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="3rdparty_2stout_2include_2stout_2version_8hpp.html">stout/version.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">// For PerfStatistics protobuf.</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="include_2mesos_2mesos_8hpp.html">mesos/mesos.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
+<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="namespaceperf.html">   34</a></span>&#160;<span class="keyword">namespace </span>perf {</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">// Sample the perf events for process(es) in the perf_event cgroups</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">// for duration. The returned hashmap is keyed by cgroup.</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">// NOTE: cgroups should be relative to the perf_event subsystem mount,</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">// e.g., mesos/test for /sys/fs/cgroup/perf_event/mesos/test.</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<a class="code" href="classprocess_1_1Future.html">process::Future&lt;hashmap&lt;std::string, mesos::PerfStatistics&gt;</a>&gt; <a class="code" href="namespaceperf.html#a1da325bd0688dc480ff4d5159d620310">sample</a>(</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keyword">const</span> std::set&lt;std::string&gt;&amp; events,</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keyword">const</span> std::set&lt;std::string&gt;&amp; cgroups,</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keyword">const</span> <a class="code" href="classDuration.html">Duration</a>&amp; duration);</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">// Validate a set of events are accepted by `perf stat`.</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keywordtype">bool</span> <a class="code" href="namespaceperf.html#ad4bda81f92db3821306ec856dfca9a77">valid</a>(<span class="keyword">const</span> std::set&lt;std::string&gt;&amp; events);</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="comment">// Validate a set of events are accepted by `perf stat`.</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keywordtype">bool</span> <a class="code" href="namespaceperf.html#ad4bda81f92db3821306ec856dfca9a77">valid</a>(<span class="keyword">const</span> std::set&lt;std::string&gt;&amp; events);</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">// Returns whether perf is supported on this host. Returns false if</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">// the kernel is too old (requires &gt;= 2.6.39).</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keywordtype">bool</span> <a class="code" href="namespaceperf.html#a305765234cd6747318f894ea1a5c0aef">supported</a>();</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">// Returns whether perf is supported on this host. Returns false if</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment">// the kernel is too old (requires &gt;= 2.6.39).</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keywordtype">bool</span> <a class="code" href="namespaceperf.html#a305765234cd6747318f894ea1a5c0aef">supported</a>();</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">// Note: The parse function is exposed to allow testing of the</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">// multiple supported perf stat output formats.</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<a class="code" href="classTry.html">Try&lt;hashmap&lt;std::string, mesos::PerfStatistics&gt;</a>&gt; <a class="code" href="namespaceperf.html#a38f6b8b99bfe38c10b9ceb1d5d3d2002">parse</a>(</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keyword">const</span> std::string&amp; output,</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keyword">const</span> <a class="code" href="structVersion.html">Version</a>&amp; <a class="code" href="namespacemesos_1_1internal.html#a4311a7bd3d79fd1225d08444f8ff758a">version</a>);</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;} <span class="comment">// namespace perf {</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="preprocessor">#endif // __PERF_HPP__</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">// Note: The parse function is exposed to allow testing of the</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment">// multiple supported perf stat output formats.</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<a class="code" href="classTry.html">Try&lt;hashmap&lt;std::string, mesos::PerfStatistics&gt;</a>&gt; <a class="code" href="namespaceperf.html#a38f6b8b99bfe38c10b9ceb1d5d3d2002">parse</a>(</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keyword">const</span> std::string&amp; output,</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keyword">const</span> <a class="code" href="structVersion.html">Version</a>&amp; <a class="code" href="namespacemesos_1_1internal.html#a4311a7bd3d79fd1225d08444f8ff758a">version</a>);</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;} <span class="comment">// namespace perf {</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor">#endif // __PERF_HPP__</span></div>
 <div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
 <div class="ttc" id="include_2mesos_2mesos_8hpp_html"><div class="ttname"><a href="include_2mesos_2mesos_8hpp.html">mesos.hpp</a></div></div>
 <div class="ttc" id="namespacemesos_1_1internal_html_a4311a7bd3d79fd1225d08444f8ff758a"><div class="ttname"><a href="namespacemesos_1_1internal.html#a4311a7bd3d79fd1225d08444f8ff758a">mesos::internal::version</a></div><div class="ttdeci">JSON::Object version()</div><div class="ttdef"><b>Definition:</b> version.hpp:32</div></div>
 <div class="ttc" id="classDuration_html"><div class="ttname"><a href="classDuration.html">Duration</a></div><div class="ttdef"><b>Definition:</b> duration.hpp:32</div></div>
 <div class="ttc" id="namespaceperf_html_ad4bda81f92db3821306ec856dfca9a77"><div class="ttname"><a href="namespaceperf.html#ad4bda81f92db3821306ec856dfca9a77">perf::valid</a></div><div class="ttdeci">bool valid(const std::set&lt; std::string &gt; &amp;events)</div></div>
+<div class="ttc" id="3rdparty_2stout_2include_2stout_2version_8hpp_html"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2version_8hpp.html">version.hpp</a></div></div>
 <div class="ttc" id="namespaceperf_html_a38f6b8b99bfe38c10b9ceb1d5d3d2002"><div class="ttname"><a href="namespaceperf.html#a38f6b8b99bfe38c10b9ceb1d5d3d2002">perf::parse</a></div><div class="ttdeci">Try&lt; hashmap&lt; std::string, mesos::PerfStatistics &gt; &gt; parse(const std::string &amp;output, const Version &amp;version)</div></div>
 <div class="ttc" id="duration_8hpp_html"><div class="ttname"><a href="duration_8hpp.html">duration.hpp</a></div></div>
 <div class="ttc" id="namespaceperf_html_a305765234cd6747318f894ea1a5c0aef"><div class="ttname"><a href="namespaceperf.html#a305765234cd6747318f894ea1a5c0aef">perf::supported</a></div><div class="ttdeci">bool supported()</div></div>

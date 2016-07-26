@@ -25,6 +25,7 @@
       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
     })();
     </script>
+    
   </head>
   <body>
     <!-- magical breadcrumbs -->
@@ -269,10 +270,15 @@ $ sudo yum install -y apache-maven python-devel java-1.8.0-openjdk-devel zlib-de
 
 <ol>
 <li>Install the latest version of <a href="https://www.visualstudio.com/post-download-vs?sku=community">Visual Studio Community 2015</a>.
+Make sure to select the Common Tools for Visual C++ and the Windows 10 SDK.
 Start Visual Studio Community to complete the setup and configuration.</li>
 <li>Install <a href="https://cmake.org/files/v3.5/cmake-3.5.2-win32-x86.msi">CMake 3.5.2 or later</a>.
 Do not run CMake before finishing the Visual Studio Community setup.</li>
 <li>Install <a href="http://downloads.sourceforge.net/project/gnuwin32/patch/2.5.9-7/patch-2.5.9-7-setup.exe">Gnu Patch 2.5.9-7 or later</a>.</li>
+<li>If building from git, make sure you have Windows-style line endings.
+i.e. <code>git config core.autocrlf true</code>.</li>
+<li>Make sure there are no spaces in your build directory.
+For example, <code>C:/Program Files (x86)/mesos</code> is an invalid build directory.</li>
 </ol>
 
 
@@ -324,13 +330,13 @@ $ cmake .. -G "Visual Studio 14 2015 Win64" -DENABLE_LIBEVENT=1
 # NOTE: `PreferredToolArchitecture` can be set system-wide via Control Panel.
 $ msbuild Mesos.sln /p:PreferredToolArchitecture=x64
 
-# mesos-agent.exe can be found in the &lt;repository&gt;\build\src\Debug folder.
-$ cd src\Debug
+# mesos-agent.exe can be found in the &lt;repository&gt;\build\src folder.
+$ cd src
 
 # The Windows agent exposes new isolators that must be used as with
 # the `--isolation` flag. To get started point the agent to a working
 # master, using eiher an IP address or zookeeper information.
-$ mesos-agent.exe --master=&lt;master&gt; --work_dir=&lt;work folder&gt; --isolation=windows/cpu,filesystem/windows --launcher_dir=&lt;repository&gt;\build\src\Debug
+$ mesos-agent.exe --master=&lt;master&gt; --work_dir=&lt;work folder&gt; --isolation=windows/cpu,filesystem/windows --launcher_dir=&lt;repository&gt;\build\src
 </code></pre>
 
 <h2>Examples</h2>

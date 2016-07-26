@@ -25,6 +25,7 @@
       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
     })();
     </script>
+    
   </head>
   <body>
     <!-- magical breadcrumbs -->
@@ -114,9 +115,7 @@ current master is not the leader.
 Returns 503 SERVICE_UNAVAILABLE if the leading master cannot be
 found.
 This endpoint shows information about the frameworks, tasks,
-executors and agents running in the cluster as a JSON object.
-The information shown might be filtered based on the user
-accessing the endpoint.</p>
+executors and agents running in the cluster as a JSON object.</p>
 
 <p>Example (<strong>Note</strong>: this is not exhaustive):</p>
 
@@ -147,7 +146,7 @@ accessing the endpoint.</p>
          "work_dir" : "/var/lib/mesos",
          "http_authenticators" : "basic",
          "authorizers" : "local",
-         "agent_reregister_timeout" : "10mins",
+         "slave_reregister_timeout" : "10mins",
          "logging_level" : "INFO",
          "help" : "false",
          "root_submissions" : "true",
@@ -172,7 +171,7 @@ accessing the endpoint.</p>
          "authenticate_http" : "false",
          "port" : "5050",
          "zk_session_timeout" : "10secs",
-         "recovery_agent_removal_limit" : "100%",
+         "recovery_slave_removal_limit" : "100%",
          "webui_dir" : "/path/to/mesos/build/../src/webui",
          "cluster" : "mycluster",
          "leader" : "master@127.0.0.1:5050",
@@ -191,13 +190,6 @@ accessing the endpoint.</p>
 
 <p>This endpoint requires authentication iff HTTP authentication is
 enabled.</p>
-
-<h3>AUTHORIZATION</h3>
-
-<p>This endpoint might be filtered based on the user accessing it.
-For example a user might only see the subset of frameworks,
-tasks, and executors they are allowed to view.
-See the authorization documentation for details.</p>
 
   </div>
 </div>

@@ -25,6 +25,7 @@
       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
     })();
     </script>
+    
   </head>
   <body>
     <!-- magical breadcrumbs -->
@@ -141,9 +142,16 @@ Mesos master and agent processes. For more information, refer to the
 <li><p><code>--[no-]authenticate</code> - If <code>true</code>, only authenticated frameworks are allowed
 to register. If <code>false</code> (the default), unauthenticated frameworks are also
 allowed to register.</p></li>
-<li><p><code>--[no-]authenticate_http</code> - If <code>true</code>, authentication is required to make
-HTTP requests to the HTTP endpoints that support authentication. If <code>false</code>
-(the default), all endpoints can be used without authentication.</p></li>
+<li><p><code>--[no-]authenticate_http_readonly</code> - If <code>true</code>, authentication is required to
+make HTTP requests to the read-only HTTP endpoints that support
+authentication. If <code>false</code> (the default), these endpoints can be used without
+authentication. Read-only endpoints are those which cannot be used to modify
+the state of the cluster.</p></li>
+<li><p><code>--[no-]authenticate_http_readwrite</code> - If <code>true</code>, authentication is required
+to make HTTP requests to the read-write HTTP endpoints that support
+authentication. If <code>false</code> (the default), these endpoints can be used without
+authentication. Read-write endpoints are those which can be used to modify the
+state of the cluster.</p></li>
 <li><p><code>--[no-]authenticate_agents</code> - If <code>true</code>, only authenticated agents are
 allowed to register. If <code>false</code> (the default), unauthenticated agents are also
 allowed to register.</p></li>
@@ -166,9 +174,16 @@ specify what module to use.  Defaults to <code>crammd5</code>.</p></li>
 <li><p><code>--credential</code> - Just like the master&rsquo;s <code>--credentials</code> option except that
 only one credential is allowed. This credential is used to identify the agent
 to the master.</p></li>
-<li><p><code>--[no-]authenticate_http</code> - If <code>true</code>, authentication is required to make
-HTTP requests to the HTTP endpoints that support authentication. If <code>false</code>
-(the default), all endpoints can be used without authentication.</p></li>
+<li><p><code>--[no-]authenticate_http_readonly</code> - If <code>true</code>, authentication is required to
+make HTTP requests to the read-only HTTP endpoints that support
+authentication. If <code>false</code> (the default), these endpoints can be used without
+authentication. Read-only endpoints are those which cannot be used to modify
+the state of the agent.</p></li>
+<li><p><code>--[no-]authenticate_http_readwrite</code> - If <code>true</code>, authentication is required
+to make HTTP requests to the read-write HTTP endpoints that support
+authentication. If <code>false</code> (the default), these endpoints can be used without
+authentication. Read-write endpoints are those which can be used to modify the
+state of the agent.</p></li>
 <li><p><code>--http_authenticators</code> - Specifies which HTTP authenticator module to use.
 The default is <code>basic</code>, but additional modules can be added using the
 <code>--modules</code> option.</p></li>

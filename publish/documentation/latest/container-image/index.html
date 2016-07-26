@@ -25,6 +25,7 @@
       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
     })();
     </script>
+    
   </head>
   <body>
     <!-- magical breadcrumbs -->
@@ -279,12 +280,41 @@ API</a> to fetch Docker
 images/layers. The fetching is based on <code>curl</code>, therefore SSL is
 automatically handled. For private registries, the operator needs to
 configure <code>curl</code> accordingly so that it knows where to find the
-additional certificate files. Fetching requiring authentication is
-currently not supported yet (coming soon).</p>
+additional certificate files.</p>
 
-<p>Private registry is supported through the <code>--docker_registry</code> agent
-flag. Specifying private registry for each container using
-<code>Image.Docker.name</code> is not supported yet (coming soon).</p>
+<p>Fetching requiring authentication is supported through the
+<code>--docker_config</code> agent flag. Starting from 1.0, operators can use
+this agent flag to specify a shared docker config file, which is
+used for pulling private repositories with authentication. Per
+container credential is not supported yet (coming soon).</p>
+
+<p>Operators can either specify the flag as an absolute path pointing to
+the docker config file (need to manually configure
+<code>.docker/config.json</code> or <code>.dockercfg</code> on each agent), or specify the
+flag as a JSON-formatted string. See <a href="/documentation/latest/./configuration/">configuration
+documentation</a> for detail. For example:</p>
+
+<pre><code>--docker_config=file:///home/vagrant/.docker/config.json
+</code></pre>
+
+<p>or as a JSON object,</p>
+
+<pre><code>--docker_config="{ \
+  \"auths\": { \
+    \"https://index.docker.io/v1/\": { \
+      \"auth\": \"xXxXxXxXxXx=\", \
+      \"email\": \"username@example.com\" \
+    } \
+  } \
+}"
+</code></pre>
+
+<p>Private registry is supported either through the <code>--docker_registry</code>
+agent flag, or specifying private registry for each container using
+image name <code>&lt;REGISTRY&gt;/&lt;REPOSITORY&gt;</code> (e.g.,
+<code>localhost:80/gilbert/inky:latest</code>). If <code>&lt;REGISTRY&gt;</code> is included as
+a prefix in the image name, the registry specified through the agent
+flag <code>--docker_registry</code> will be ignored.</p>
 
 <p>If the <code>--docker_registry</code> agent flag points to a local directory
 (e.g., <code>/tmp/mesos/images/docker</code>), the provisioner will pull Docker
@@ -319,6 +349,12 @@ could either be a Docker registry server URL (i.e:
 <p><code>--docker_store_dir</code>: Directory the Docker provisioner will store
 images in. All the Docker images are cached under this directory. The
 default value is <code>/tmp/mesos/store/docker</code>.</p>
+
+<p><code>--docker_config</code>: The default docker config file for agent. Can
+be provided either as an absolute path pointing to the agent local
+docker config file, or as a JSON-formatted string. The format of
+the docker config file should be identical to docker&rsquo;s default one
+(e.g., either <code>$HOME/.docker/config.json</code> or <code>$HOME/.dockercfg</code>).</p>
 
 <h2>Appc Support and Current Limitations</h2>
 
