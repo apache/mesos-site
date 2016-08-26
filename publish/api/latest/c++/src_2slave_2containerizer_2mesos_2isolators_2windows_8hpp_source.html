@@ -72,91 +72,97 @@
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define __WINDOWS_ISOLATOR_HPP__</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="future_8hpp.html">process/future.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="src_2slave_2flags_8hpp.html">slave/flags.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="src_2slave_2containerizer_2mesos_2isolator_8hpp.html">slave/containerizer/mesos/isolator.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="posix_8hpp.html">slave/containerizer/mesos/isolators/posix.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">namespace </span>mesos {</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">namespace </span>internal {</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">namespace </span>slave {</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">// A basic MesosIsolatorProcess that keeps track of the pid but</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">// doesn&#39;t do any resource isolation. Subclasses must implement</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">// usage() for their appropriate resource(s).</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">// TODO(hausdorff): (MESOS-5462) For now the Windows isolators are essentially</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">// direct copies of their POSIX counterparts. In the future, we expect to</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">// refactor the POSIX classes into platform-independent base class, with</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">// Windows and POSIX implementations. For now, we leave the Windows</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">// implementations as inheriting from the POSIX implementations.</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1slave_1_1WindowsIsolatorProcess.html">   40</a></span>&#160;<span class="keyword">class </span><a class="code" href="classmesos_1_1internal_1_1slave_1_1WindowsIsolatorProcess.html">WindowsIsolatorProcess</a> : <span class="keyword">public</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1PosixIsolatorProcess.html">PosixIsolatorProcess</a> {};</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="id_8hpp.html">process/id.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="src_2slave_2flags_8hpp.html">slave/flags.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="src_2slave_2containerizer_2mesos_2isolator_8hpp.html">slave/containerizer/mesos/isolator.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="posix_8hpp.html">slave/containerizer/mesos/isolators/posix.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">namespace </span>mesos {</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">namespace </span>internal {</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">namespace </span>slave {</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">// A basic MesosIsolatorProcess that keeps track of the pid but</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">// doesn&#39;t do any resource isolation. Subclasses must implement</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="comment">// usage() for their appropriate resource(s).</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">// TODO(hausdorff): (MESOS-5462) For now the Windows isolators are essentially</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">// direct copies of their POSIX counterparts. In the future, we expect to</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">// refactor the POSIX classes into platform-independent base class, with</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">// Windows and POSIX implementations. For now, we leave the Windows</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">// implementations as inheriting from the POSIX implementations.</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1slave_1_1WindowsIsolatorProcess.html">   41</a></span>&#160;<span class="keyword">class </span><a class="code" href="classmesos_1_1internal_1_1slave_1_1WindowsIsolatorProcess.html">WindowsIsolatorProcess</a> : <span class="keyword">public</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1PosixIsolatorProcess.html">PosixIsolatorProcess</a> {};</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">// TODO(hausdorff): (MESOS-5462) For now the Windows isolators are essentially</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">// direct copies of their POSIX counterparts. In the future, we expect to</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">// refactor the POSIX classes into platform-independent base class, with</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="comment">// Windows and POSIX implementations. For now, we leave the Windows</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment">// implementations as inheriting from the POSIX implementations.</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1slave_1_1WindowsCpuIsolatorProcess.html">   48</a></span>&#160;<span class="keyword">class </span><a class="code" href="classmesos_1_1internal_1_1slave_1_1WindowsCpuIsolatorProcess.html">WindowsCpuIsolatorProcess</a> : <span class="keyword">public</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1PosixCpuIsolatorProcess.html">PosixCpuIsolatorProcess</a></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;{</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1slave_1_1WindowsCpuIsolatorProcess.html#a79b38dece567246f6e44a9730561bdd2">   51</a></span>&#160;  <span class="keyword">static</span> <a class="code" href="classTry.html">Try&lt;mesos::slave::Isolator*&gt;</a> <a class="code" href="classmesos_1_1internal_1_1slave_1_1WindowsCpuIsolatorProcess.html#a79b38dece567246f6e44a9730561bdd2">create</a>(<span class="keyword">const</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Flags.html">Flags</a>&amp; <a class="code" href="namespacemesos_1_1internal_1_1tests.html#af8289f648a916c3f66923867452c7b1b">flags</a>)</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  {</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <a class="code" href="classprocess_1_1Owned.html">process::Owned&lt;MesosIsolatorProcess&gt;</a> <a class="code" href="namespaceos.html#ae19e4161a51b86a1f330f3bf1dc75389">process</a>(</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="keyword">new</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1WindowsCpuIsolatorProcess.html">WindowsCpuIsolatorProcess</a>());</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1MesosIsolator.html">MesosIsolator</a>(process);</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  }</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <a class="code" href="classmesos_1_1internal_1_1slave_1_1WindowsCpuIsolatorProcess.html">WindowsCpuIsolatorProcess</a>() {}</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;};</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="comment">// TODO(hausdorff): (MESOS-5462) For now the Windows isolators are essentially</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment">// direct copies of their POSIX counterparts. In the future, we expect to</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment">// refactor the POSIX classes into platform-independent base class, with</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="comment">// Windows and POSIX implementations. For now, we leave the Windows</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="comment">// implementations as inheriting from the POSIX implementations.</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1slave_1_1WindowsMemIsolatorProcess.html">   69</a></span>&#160;<span class="keyword">class </span><a class="code" href="classmesos_1_1internal_1_1slave_1_1WindowsMemIsolatorProcess.html">WindowsMemIsolatorProcess</a> : <span class="keyword">public</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1PosixMemIsolatorProcess.html">PosixMemIsolatorProcess</a></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;{</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1slave_1_1WindowsMemIsolatorProcess.html#af4112af9d941286feeffe3b71fb05435">   72</a></span>&#160;  <span class="keyword">static</span> <a class="code" href="classTry.html">Try&lt;mesos::slave::Isolator*&gt;</a> <a class="code" href="classmesos_1_1internal_1_1slave_1_1WindowsMemIsolatorProcess.html#af4112af9d941286feeffe3b71fb05435">create</a>(<span class="keyword">const</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Flags.html">Flags</a>&amp; <a class="code" href="namespacemesos_1_1internal_1_1tests.html#af8289f648a916c3f66923867452c7b1b">flags</a>)</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  {</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <a class="code" href="classprocess_1_1Owned.html">process::Owned&lt;MesosIsolatorProcess&gt;</a> <a class="code" href="namespaceos.html#ae19e4161a51b86a1f330f3bf1dc75389">process</a>(</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <span class="keyword">new</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1WindowsMemIsolatorProcess.html">WindowsMemIsolatorProcess</a>());</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1MesosIsolator.html">MesosIsolator</a>(process);</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  }</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <a class="code" href="classmesos_1_1internal_1_1slave_1_1WindowsMemIsolatorProcess.html">WindowsMemIsolatorProcess</a>() {}</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;};</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;} <span class="comment">// namespace slave {</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;} <span class="comment">// namespace internal {</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;} <span class="comment">// namespace mesos {</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="preprocessor">#endif // __WINDOWS_ISOLATOR_HPP__</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">// TODO(hausdorff): (MESOS-5462) For now the Windows isolators are essentially</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">// direct copies of their POSIX counterparts. In the future, we expect to</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="comment">// refactor the POSIX classes into platform-independent base class, with</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment">// Windows and POSIX implementations. For now, we leave the Windows</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">// implementations as inheriting from the POSIX implementations.</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1slave_1_1WindowsCpuIsolatorProcess.html">   49</a></span>&#160;<span class="keyword">class </span><a class="code" href="classmesos_1_1internal_1_1slave_1_1WindowsCpuIsolatorProcess.html">WindowsCpuIsolatorProcess</a> : <span class="keyword">public</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1PosixCpuIsolatorProcess.html">PosixCpuIsolatorProcess</a></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;{</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1slave_1_1WindowsCpuIsolatorProcess.html#a79b38dece567246f6e44a9730561bdd2">   52</a></span>&#160;  <span class="keyword">static</span> <a class="code" href="classTry.html">Try&lt;mesos::slave::Isolator*&gt;</a> <a class="code" href="classmesos_1_1internal_1_1slave_1_1WindowsCpuIsolatorProcess.html#a79b38dece567246f6e44a9730561bdd2">create</a>(<span class="keyword">const</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Flags.html">Flags</a>&amp; <a class="code" href="namespacemesos_1_1internal_1_1tests.html#af8289f648a916c3f66923867452c7b1b">flags</a>)</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  {</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <a class="code" href="classprocess_1_1Owned.html">process::Owned&lt;MesosIsolatorProcess&gt;</a> <a class="code" href="namespaceos.html#ae19e4161a51b86a1f330f3bf1dc75389">process</a>(</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        <span class="keyword">new</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1WindowsCpuIsolatorProcess.html">WindowsCpuIsolatorProcess</a>());</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1MesosIsolator.html">MesosIsolator</a>(process);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  }</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <a class="code" href="classmesos_1_1internal_1_1slave_1_1WindowsCpuIsolatorProcess.html">WindowsCpuIsolatorProcess</a>()</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    : <a class="code" href="classprocess_1_1ProcessBase.html">ProcessBase</a>(<a class="code" href="namespaceos.html#ae19e4161a51b86a1f330f3bf1dc75389">process</a>::ID::<a class="code" href="namespaceprocess_1_1ID.html#aeb11a48c9def1da169d8455a30d0ee39">generate</a>(<span class="stringliteral">&quot;windows-cpu-isolator&quot;</span>)) {}</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;};</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment">// TODO(hausdorff): (MESOS-5462) For now the Windows isolators are essentially</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="comment">// direct copies of their POSIX counterparts. In the future, we expect to</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="comment">// refactor the POSIX classes into platform-independent base class, with</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="comment">// Windows and POSIX implementations. For now, we leave the Windows</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="comment">// implementations as inheriting from the POSIX implementations.</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1slave_1_1WindowsMemIsolatorProcess.html">   71</a></span>&#160;<span class="keyword">class </span><a class="code" href="classmesos_1_1internal_1_1slave_1_1WindowsMemIsolatorProcess.html">WindowsMemIsolatorProcess</a> : <span class="keyword">public</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1PosixMemIsolatorProcess.html">PosixMemIsolatorProcess</a></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;{</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1slave_1_1WindowsMemIsolatorProcess.html#af4112af9d941286feeffe3b71fb05435">   74</a></span>&#160;  <span class="keyword">static</span> <a class="code" href="classTry.html">Try&lt;mesos::slave::Isolator*&gt;</a> <a class="code" href="classmesos_1_1internal_1_1slave_1_1WindowsMemIsolatorProcess.html#af4112af9d941286feeffe3b71fb05435">create</a>(<span class="keyword">const</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Flags.html">Flags</a>&amp; <a class="code" href="namespacemesos_1_1internal_1_1tests.html#af8289f648a916c3f66923867452c7b1b">flags</a>)</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  {</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <a class="code" href="classprocess_1_1Owned.html">process::Owned&lt;MesosIsolatorProcess&gt;</a> <a class="code" href="namespaceos.html#ae19e4161a51b86a1f330f3bf1dc75389">process</a>(</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <span class="keyword">new</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1WindowsMemIsolatorProcess.html">WindowsMemIsolatorProcess</a>());</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1MesosIsolator.html">MesosIsolator</a>(process);</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  }</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <a class="code" href="classmesos_1_1internal_1_1slave_1_1WindowsMemIsolatorProcess.html">WindowsMemIsolatorProcess</a>()</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    : <a class="code" href="classprocess_1_1ProcessBase.html">ProcessBase</a>(<a class="code" href="namespaceos.html#ae19e4161a51b86a1f330f3bf1dc75389">process</a>::ID::<a class="code" href="namespaceprocess_1_1ID.html#aeb11a48c9def1da169d8455a30d0ee39">generate</a>(<span class="stringliteral">&quot;windows-mem-isolator&quot;</span>)) {}</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;};</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;} <span class="comment">// namespace slave {</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;} <span class="comment">// namespace internal {</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;} <span class="comment">// namespace mesos {</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="preprocessor">#endif // __WINDOWS_ISOLATOR_HPP__</span></div>
+<div class="ttc" id="namespaceprocess_1_1ID_html_aeb11a48c9def1da169d8455a30d0ee39"><div class="ttname"><a href="namespaceprocess_1_1ID.html#aeb11a48c9def1da169d8455a30d0ee39">process::ID::generate</a></div><div class="ttdeci">std::string generate(const std::string &amp;prefix=&quot;&quot;)</div><div class="ttdoc">Returns &amp;#39;prefix(N)&amp;#39; where N represents the number of instances where the same prefix (wrt...</div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1slave_1_1MesosIsolator_html"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1MesosIsolator.html">mesos::internal::slave::MesosIsolator</a></div><div class="ttdef"><b>Definition:</b> isolator.hpp:38</div></div>
 <div class="ttc" id="posix_8hpp_html"><div class="ttname"><a href="posix_8hpp.html">posix.hpp</a></div></div>
 <div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1PosixMemIsolatorProcess_html"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1PosixMemIsolatorProcess.html">mesos::internal::slave::PosixMemIsolatorProcess</a></div><div class="ttdef"><b>Definition:</b> posix.hpp:171</div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1WindowsMemIsolatorProcess_html_af4112af9d941286feeffe3b71fb05435"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1WindowsMemIsolatorProcess.html#af4112af9d941286feeffe3b71fb05435">mesos::internal::slave::WindowsMemIsolatorProcess::create</a></div><div class="ttdeci">static Try&lt; mesos::slave::Isolator * &gt; create(const Flags &amp;flags)</div><div class="ttdef"><b>Definition:</b> windows.hpp:72</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1PosixMemIsolatorProcess_html"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1PosixMemIsolatorProcess.html">mesos::internal::slave::PosixMemIsolatorProcess</a></div><div class="ttdef"><b>Definition:</b> posix.hpp:173</div></div>
+<div class="ttc" id="classprocess_1_1ProcessBase_html"><div class="ttname"><a href="classprocess_1_1ProcessBase.html">process::ProcessBase</a></div><div class="ttdef"><b>Definition:</b> process.hpp:68</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1WindowsMemIsolatorProcess_html_af4112af9d941286feeffe3b71fb05435"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1WindowsMemIsolatorProcess.html#af4112af9d941286feeffe3b71fb05435">mesos::internal::slave::WindowsMemIsolatorProcess::create</a></div><div class="ttdeci">static Try&lt; mesos::slave::Isolator * &gt; create(const Flags &amp;flags)</div><div class="ttdef"><b>Definition:</b> windows.hpp:74</div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1slave_1_1Flags_html"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1Flags.html">mesos::internal::slave::Flags</a></div><div class="ttdef"><b>Definition:</b> flags.hpp:38</div></div>
 <div class="ttc" id="src_2slave_2containerizer_2mesos_2isolator_8hpp_html"><div class="ttname"><a href="src_2slave_2containerizer_2mesos_2isolator_8hpp.html">isolator.hpp</a></div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1WindowsCpuIsolatorProcess_html"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1WindowsCpuIsolatorProcess.html">mesos::internal::slave::WindowsCpuIsolatorProcess</a></div><div class="ttdef"><b>Definition:</b> windows.hpp:48</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1WindowsCpuIsolatorProcess_html"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1WindowsCpuIsolatorProcess.html">mesos::internal::slave::WindowsCpuIsolatorProcess</a></div><div class="ttdef"><b>Definition:</b> windows.hpp:49</div></div>
 <div class="ttc" id="future_8hpp_html"><div class="ttname"><a href="future_8hpp.html">future.hpp</a></div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1WindowsMemIsolatorProcess_html"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1WindowsMemIsolatorProcess.html">mesos::internal::slave::WindowsMemIsolatorProcess</a></div><div class="ttdef"><b>Definition:</b> windows.hpp:69</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1WindowsMemIsolatorProcess_html"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1WindowsMemIsolatorProcess.html">mesos::internal::slave::WindowsMemIsolatorProcess</a></div><div class="ttdef"><b>Definition:</b> windows.hpp:71</div></div>
 <div class="ttc" id="namespaceos_html_ae19e4161a51b86a1f330f3bf1dc75389"><div class="ttname"><a href="namespaceos.html#ae19e4161a51b86a1f330f3bf1dc75389">os::process</a></div><div class="ttdeci">Result&lt; Process &gt; process(pid_t pid)</div><div class="ttdef"><b>Definition:</b> freebsd.hpp:30</div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1PosixIsolatorProcess_html"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1PosixIsolatorProcess.html">mesos::internal::slave::PosixIsolatorProcess</a></div><div class="ttdef"><b>Definition:</b> posix.hpp:40</div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1WindowsIsolatorProcess_html"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1WindowsIsolatorProcess.html">mesos::internal::slave::WindowsIsolatorProcess</a></div><div class="ttdef"><b>Definition:</b> windows.hpp:40</div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1WindowsCpuIsolatorProcess_html_a79b38dece567246f6e44a9730561bdd2"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1WindowsCpuIsolatorProcess.html#a79b38dece567246f6e44a9730561bdd2">mesos::internal::slave::WindowsCpuIsolatorProcess::create</a></div><div class="ttdeci">static Try&lt; mesos::slave::Isolator * &gt; create(const Flags &amp;flags)</div><div class="ttdef"><b>Definition:</b> windows.hpp:51</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1PosixIsolatorProcess_html"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1PosixIsolatorProcess.html">mesos::internal::slave::PosixIsolatorProcess</a></div><div class="ttdef"><b>Definition:</b> posix.hpp:41</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1WindowsIsolatorProcess_html"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1WindowsIsolatorProcess.html">mesos::internal::slave::WindowsIsolatorProcess</a></div><div class="ttdef"><b>Definition:</b> windows.hpp:41</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1WindowsCpuIsolatorProcess_html_a79b38dece567246f6e44a9730561bdd2"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1WindowsCpuIsolatorProcess.html#a79b38dece567246f6e44a9730561bdd2">mesos::internal::slave::WindowsCpuIsolatorProcess::create</a></div><div class="ttdeci">static Try&lt; mesos::slave::Isolator * &gt; create(const Flags &amp;flags)</div><div class="ttdef"><b>Definition:</b> windows.hpp:52</div></div>
 <div class="ttc" id="src_2slave_2flags_8hpp_html"><div class="ttname"><a href="src_2slave_2flags_8hpp.html">flags.hpp</a></div></div>
 <div class="ttc" id="classprocess_1_1Owned_html"><div class="ttname"><a href="classprocess_1_1Owned.html">process::Owned</a></div><div class="ttdef"><b>Definition:</b> owned.hpp:35</div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1PosixCpuIsolatorProcess_html"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1PosixCpuIsolatorProcess.html">mesos::internal::slave::PosixCpuIsolatorProcess</a></div><div class="ttdef"><b>Definition:</b> posix.hpp:138</div></div>
+<div class="ttc" id="id_8hpp_html"><div class="ttname"><a href="id_8hpp.html">id.hpp</a></div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1PosixCpuIsolatorProcess_html"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1PosixCpuIsolatorProcess.html">mesos::internal::slave::PosixCpuIsolatorProcess</a></div><div class="ttdef"><b>Definition:</b> posix.hpp:139</div></div>
 <div class="ttc" id="namespacemesos_1_1internal_1_1tests_html_af8289f648a916c3f66923867452c7b1b"><div class="ttname"><a href="namespacemesos_1_1internal_1_1tests.html#af8289f648a916c3f66923867452c7b1b">mesos::internal::tests::flags</a></div><div class="ttdeci">Flags flags</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

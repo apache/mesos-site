@@ -69,96 +69,101 @@
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &lt;memory&gt;</span> <span class="comment">// TODO(benh): Replace shared_ptr with unique_ptr.</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="libprocess_2include_2process_2process_8hpp.html">process/process.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="lambda_8hpp.html">stout/lambda.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="preprocessor_8hpp.html">stout/preprocessor.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceos.html#ae19e4161a51b86a1f330f3bf1dc75389">process</a> {</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">namespace </span>internal {</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> R&gt;</div>
-<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="classprocess_1_1internal_1_1ThunkProcess.html">   28</a></span>&#160;<span class="keyword">class </span><a class="code" href="classprocess_1_1internal_1_1ThunkProcess.html">ThunkProcess</a> : <span class="keyword">public</span> <a class="code" href="classprocess_1_1Process.html">Process</a>&lt;ThunkProcess&lt;R&gt;&gt;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;{</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="classprocess_1_1internal_1_1ThunkProcess.html#a326bf8be1b72cce6709737ca2f46a6b2">   31</a></span>&#160;  <a class="code" href="classprocess_1_1internal_1_1ThunkProcess.html#a326bf8be1b72cce6709737ca2f46a6b2">ThunkProcess</a>(std::shared_ptr&lt;lambda::function&lt;R()&gt;&gt; _thunk,</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;               std::shared_ptr&lt;<a class="code" href="classprocess_1_1Promise.html">Promise&lt;R&gt;</a>&gt; _promise)</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    : thunk(_thunk),</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;      promise(_promise) {}</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
-<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="classprocess_1_1internal_1_1ThunkProcess.html#ad819ce8d372d35f5cefbb4f15d410041">   36</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1internal_1_1ThunkProcess.html#ad819ce8d372d35f5cefbb4f15d410041">~ThunkProcess</a>() {}</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="id_8hpp.html">process/id.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="libprocess_2include_2process_2process_8hpp.html">process/process.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="lambda_8hpp.html">stout/lambda.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="preprocessor_8hpp.html">stout/preprocessor.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceos.html#ae19e4161a51b86a1f330f3bf1dc75389">process</a> {</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">namespace </span>internal {</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> R&gt;</div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="classprocess_1_1internal_1_1ThunkProcess.html">   29</a></span>&#160;<span class="keyword">class </span><a class="code" href="classprocess_1_1internal_1_1ThunkProcess.html">ThunkProcess</a> : <span class="keyword">public</span> <a class="code" href="classprocess_1_1Process.html">Process</a>&lt;ThunkProcess&lt;R&gt;&gt;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;{</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="classprocess_1_1internal_1_1ThunkProcess.html#a326bf8be1b72cce6709737ca2f46a6b2">   32</a></span>&#160;  <a class="code" href="classprocess_1_1internal_1_1ThunkProcess.html#a326bf8be1b72cce6709737ca2f46a6b2">ThunkProcess</a>(std::shared_ptr&lt;lambda::function&lt;R()&gt;&gt; _thunk,</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;               std::shared_ptr&lt;<a class="code" href="classprocess_1_1Promise.html">Promise&lt;R&gt;</a>&gt; _promise)</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    : <a class="code" href="classprocess_1_1ProcessBase.html">ProcessBase</a>(ID::<a class="code" href="namespaceprocess_1_1ID.html#aeb11a48c9def1da169d8455a30d0ee39">generate</a>(<span class="stringliteral">&quot;__thunk__&quot;</span>)),</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;      thunk(_thunk),</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;      promise(_promise) {}</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="classprocess_1_1internal_1_1ThunkProcess.html#a97044a7116c1d0b5dd966908444a0419">   39</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classprocess_1_1internal_1_1ThunkProcess.html#a97044a7116c1d0b5dd966908444a0419">serve</a>(<span class="keyword">const</span> <a class="code" href="structprocess_1_1Event.html">Event</a>&amp; event)</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  {</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    promise-&gt;set((*thunk)());</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  }</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  std::shared_ptr&lt;lambda::function&lt;R()&gt;&gt; thunk;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  std::shared_ptr&lt;Promise&lt;R&gt;&gt; promise;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;};</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;} <span class="comment">// namespace internal {</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="classprocess_1_1internal_1_1ThunkProcess.html#ad819ce8d372d35f5cefbb4f15d410041">   38</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1internal_1_1ThunkProcess.html#ad819ce8d372d35f5cefbb4f15d410041">~ThunkProcess</a>() {}</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="classprocess_1_1internal_1_1ThunkProcess.html#a97044a7116c1d0b5dd966908444a0419">   41</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classprocess_1_1internal_1_1ThunkProcess.html#a97044a7116c1d0b5dd966908444a0419">serve</a>(<span class="keyword">const</span> <a class="code" href="structprocess_1_1Event.html">Event</a>&amp; event)</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  {</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    promise-&gt;set((*thunk)());</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  }</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  std::shared_ptr&lt;lambda::function&lt;R()&gt;&gt; thunk;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  std::shared_ptr&lt;Promise&lt;R&gt;&gt; promise;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;};</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> R&gt;</div>
-<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="namespaceprocess.html#a72c24f06ac3f91b9412de80c6252df25">   53</a></span>&#160;<a class="code" href="classprocess_1_1Future.html">Future&lt;R&gt;</a> <a class="code" href="namespaceprocess.html#a72c24f06ac3f91b9412de80c6252df25">run</a>(R (*method)())</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;{</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  std::shared_ptr&lt;lambda::function&lt;R()&gt;&gt; thunk(</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;      <span class="keyword">new</span> lambda::function&lt;R()&gt;(</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;          <a class="code" href="namespaceprocess_1_1network.html#a0a0e16bed4bf0122f2b3513a78399d70">lambda::bind</a>(method)));</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  std::shared_ptr&lt;Promise&lt;R&gt;&gt; <a class="code" href="namespacemesos_1_1internal_1_1log_1_1protocol.html#a3b1f8bd7b18c51af9d1f58842950b545">promise</a>(<span class="keyword">new</span> <a class="code" href="classprocess_1_1Promise.html">Promise&lt;R&gt;</a>());</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <a class="code" href="classprocess_1_1Future.html">Future&lt;R&gt;</a> future = promise-&gt;future();</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <a class="code" href="namespaceprocess.html#a20443908afa3212215166e26065349e5">terminate</a>(<a class="code" href="namespaceprocess.html#aff22904a83567125d3b4d0d88e5a2270">spawn</a>(<span class="keyword">new</span> <a class="code" href="classprocess_1_1internal_1_1ThunkProcess.html">internal::ThunkProcess&lt;R&gt;</a>(thunk, promise), <span class="keyword">true</span>));</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;} <span class="comment">// namespace internal {</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> R&gt;</div>
+<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="namespaceprocess.html#a72c24f06ac3f91b9412de80c6252df25">   55</a></span>&#160;<a class="code" href="classprocess_1_1Future.html">Future&lt;R&gt;</a> <a class="code" href="namespaceprocess.html#a72c24f06ac3f91b9412de80c6252df25">run</a>(R (*method)())</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;{</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  std::shared_ptr&lt;lambda::function&lt;R()&gt;&gt; thunk(</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;      <span class="keyword">new</span> lambda::function&lt;R()&gt;(</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;          <a class="code" href="namespaceprocess_1_1network.html#a0a0e16bed4bf0122f2b3513a78399d70">lambda::bind</a>(method)));</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  std::shared_ptr&lt;Promise&lt;R&gt;&gt; <a class="code" href="namespacemesos_1_1internal_1_1log_1_1protocol.html#a3b1f8bd7b18c51af9d1f58842950b545">promise</a>(<span class="keyword">new</span> <a class="code" href="classprocess_1_1Promise.html">Promise&lt;R&gt;</a>());</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <a class="code" href="classprocess_1_1Future.html">Future&lt;R&gt;</a> future = promise-&gt;future();</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keywordflow">return</span> future;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;}</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="run_8hpp.html#a659a0f3373b1b8ed3e348bc4332657e2">   68</a></span>&#160;<span class="preprocessor">#define TEMPLATE(Z, N, DATA)                                            \</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor">  template &lt;typename R,                                                 \</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor">            ENUM_PARAMS(N, typename P),                                 \</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">            ENUM_PARAMS(N, typename A)&gt;                                 \</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor">  Future&lt;R&gt; run(                                                        \</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="preprocessor">      R (*method)(ENUM_PARAMS(N, P)),                                   \</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="preprocessor">      ENUM_BINARY_PARAMS(N, A, a))                                      \</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="preprocessor">  {                                                                     \</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="preprocessor">    std::shared_ptr&lt;lambda::function&lt;R()&gt;&gt; thunk(                       \</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="preprocessor">        new lambda::function&lt;R()&gt;(                                      \</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="preprocessor">            lambda::bind(method, ENUM_PARAMS(N, a))));                  \</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="preprocessor">                                                                        \</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="preprocessor">    std::shared_ptr&lt;Promise&lt;R&gt;&gt; promise(new Promise&lt;R&gt;());              \</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="preprocessor">    Future&lt;R&gt; future = promise-&gt;future();                               \</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="preprocessor">                                                                        \</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="preprocessor">    terminate(spawn(new internal::ThunkProcess&lt;R&gt;(thunk, promise), true)); \</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <a class="code" href="namespaceprocess.html#a20443908afa3212215166e26065349e5">terminate</a>(<a class="code" href="namespaceprocess.html#aff22904a83567125d3b4d0d88e5a2270">spawn</a>(<span class="keyword">new</span> <a class="code" href="classprocess_1_1internal_1_1ThunkProcess.html">internal::ThunkProcess&lt;R&gt;</a>(thunk, promise), <span class="keyword">true</span>));</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <span class="keywordflow">return</span> future;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;}</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
+<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="run_8hpp.html#a659a0f3373b1b8ed3e348bc4332657e2">   70</a></span>&#160;<span class="preprocessor">#define TEMPLATE(Z, N, DATA)                                            \</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">  template &lt;typename R,                                                 \</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor">            ENUM_PARAMS(N, typename P),                                 \</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="preprocessor">            ENUM_PARAMS(N, typename A)&gt;                                 \</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="preprocessor">  Future&lt;R&gt; run(                                                        \</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="preprocessor">      R (*method)(ENUM_PARAMS(N, P)),                                   \</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="preprocessor">      ENUM_BINARY_PARAMS(N, A, a))                                      \</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="preprocessor">  {                                                                     \</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="preprocessor">    std::shared_ptr&lt;lambda::function&lt;R()&gt;&gt; thunk(                       \</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="preprocessor">        new lambda::function&lt;R()&gt;(                                      \</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="preprocessor">            lambda::bind(method, ENUM_PARAMS(N, a))));                  \</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="preprocessor">                                                                        \</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="preprocessor">    std::shared_ptr&lt;Promise&lt;R&gt;&gt; promise(new Promise&lt;R&gt;());              \</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="preprocessor">    Future&lt;R&gt; future = promise-&gt;future();                               \</span></div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="preprocessor">                                                                        \</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="preprocessor">    return future;                                                      \</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="preprocessor">  }</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  <a class="code" href="namespaceprocess.html#aeed40ccf8443f5e6ffce932f0d22caea">REPEAT_FROM_TO</a>(1, 11, <a class="code" href="run_8hpp.html#a659a0f3373b1b8ed3e348bc4332657e2">TEMPLATE</a>, _) <span class="comment">// Args A0 -&gt; A9.</span></div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="preprocessor">#undef TEMPLATE</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;} <span class="comment">// namespace process {</span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="preprocessor">#endif // __PROCESS_RUN_HPP__</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="preprocessor">    terminate(spawn(new internal::ThunkProcess&lt;R&gt;(thunk, promise), true)); \</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="preprocessor">                                                                        \</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="preprocessor">    return future;                                                      \</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="preprocessor">  }</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  <a class="code" href="namespaceprocess.html#aeed40ccf8443f5e6ffce932f0d22caea">REPEAT_FROM_TO</a>(1, 11, <a class="code" href="run_8hpp.html#a659a0f3373b1b8ed3e348bc4332657e2">TEMPLATE</a>, _) <span class="comment">// Args A0 -&gt; A9.</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="preprocessor">#undef TEMPLATE</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;} <span class="comment">// namespace process {</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="preprocessor">#endif // __PROCESS_RUN_HPP__</span></div>
+<div class="ttc" id="namespaceprocess_1_1ID_html_aeb11a48c9def1da169d8455a30d0ee39"><div class="ttname"><a href="namespaceprocess_1_1ID.html#aeb11a48c9def1da169d8455a30d0ee39">process::ID::generate</a></div><div class="ttdeci">std::string generate(const std::string &amp;prefix=&quot;&quot;)</div><div class="ttdoc">Returns &amp;#39;prefix(N)&amp;#39; where N represents the number of instances where the same prefix (wrt...</div></div>
 <div class="ttc" id="namespaceprocess_1_1network_html_a0a0e16bed4bf0122f2b3513a78399d70"><div class="ttname"><a href="namespaceprocess_1_1network.html#a0a0e16bed4bf0122f2b3513a78399d70">process::network::bind</a></div><div class="ttdeci">Try&lt; Nothing &gt; bind(int s, const Address &amp;address)</div><div class="ttdef"><b>Definition:</b> network.hpp:46</div></div>
-<div class="ttc" id="run_8hpp_html_a659a0f3373b1b8ed3e348bc4332657e2"><div class="ttname"><a href="run_8hpp.html#a659a0f3373b1b8ed3e348bc4332657e2">TEMPLATE</a></div><div class="ttdeci">#define TEMPLATE(Z, N, DATA)</div><div class="ttdef"><b>Definition:</b> run.hpp:68</div></div>
+<div class="ttc" id="classprocess_1_1ProcessBase_html"><div class="ttname"><a href="classprocess_1_1ProcessBase.html">process::ProcessBase</a></div><div class="ttdef"><b>Definition:</b> process.hpp:68</div></div>
+<div class="ttc" id="run_8hpp_html_a659a0f3373b1b8ed3e348bc4332657e2"><div class="ttname"><a href="run_8hpp.html#a659a0f3373b1b8ed3e348bc4332657e2">TEMPLATE</a></div><div class="ttdeci">#define TEMPLATE(Z, N, DATA)</div><div class="ttdef"><b>Definition:</b> run.hpp:70</div></div>
 <div class="ttc" id="namespaceprocess_html_aff22904a83567125d3b4d0d88e5a2270"><div class="ttname"><a href="namespaceprocess.html#aff22904a83567125d3b4d0d88e5a2270">process::spawn</a></div><div class="ttdeci">UPID spawn(ProcessBase *process, bool manage=false)</div><div class="ttdoc">Spawn a new process. </div></div>
 <div class="ttc" id="namespaceprocess_html_a20443908afa3212215166e26065349e5"><div class="ttname"><a href="namespaceprocess.html#a20443908afa3212215166e26065349e5">process::terminate</a></div><div class="ttdeci">void terminate(const UPID &amp;pid, bool inject=true)</div><div class="ttdoc">Sends a TerminateEvent to the given process. </div></div>
 <div class="ttc" id="lambda_8hpp_html"><div class="ttname"><a href="lambda_8hpp.html">lambda.hpp</a></div></div>
-<div class="ttc" id="classprocess_1_1internal_1_1ThunkProcess_html_ad819ce8d372d35f5cefbb4f15d410041"><div class="ttname"><a href="classprocess_1_1internal_1_1ThunkProcess.html#ad819ce8d372d35f5cefbb4f15d410041">process::internal::ThunkProcess::~ThunkProcess</a></div><div class="ttdeci">virtual ~ThunkProcess()</div><div class="ttdef"><b>Definition:</b> run.hpp:36</div></div>
+<div class="ttc" id="classprocess_1_1internal_1_1ThunkProcess_html_ad819ce8d372d35f5cefbb4f15d410041"><div class="ttname"><a href="classprocess_1_1internal_1_1ThunkProcess.html#ad819ce8d372d35f5cefbb4f15d410041">process::internal::ThunkProcess::~ThunkProcess</a></div><div class="ttdeci">virtual ~ThunkProcess()</div><div class="ttdef"><b>Definition:</b> run.hpp:38</div></div>
 <div class="ttc" id="classprocess_1_1Promise_html"><div class="ttname"><a href="classprocess_1_1Promise.html">process::Promise&lt; R &gt;</a></div></div>
-<div class="ttc" id="classprocess_1_1internal_1_1ThunkProcess_html"><div class="ttname"><a href="classprocess_1_1internal_1_1ThunkProcess.html">process::internal::ThunkProcess</a></div><div class="ttdef"><b>Definition:</b> run.hpp:28</div></div>
+<div class="ttc" id="classprocess_1_1internal_1_1ThunkProcess_html"><div class="ttname"><a href="classprocess_1_1internal_1_1ThunkProcess.html">process::internal::ThunkProcess</a></div><div class="ttdef"><b>Definition:</b> run.hpp:29</div></div>
 <div class="ttc" id="namespacemesos_1_1internal_1_1log_1_1protocol_html_a3b1f8bd7b18c51af9d1f58842950b545"><div class="ttname"><a href="namespacemesos_1_1internal_1_1log_1_1protocol.html#a3b1f8bd7b18c51af9d1f58842950b545">mesos::internal::log::protocol::promise</a></div><div class="ttdeci">Protocol&lt; PromiseRequest, PromiseResponse &gt; promise</div></div>
-<div class="ttc" id="classprocess_1_1internal_1_1ThunkProcess_html_a97044a7116c1d0b5dd966908444a0419"><div class="ttname"><a href="classprocess_1_1internal_1_1ThunkProcess.html#a97044a7116c1d0b5dd966908444a0419">process::internal::ThunkProcess::serve</a></div><div class="ttdeci">virtual void serve(const Event &amp;event)</div><div class="ttdoc">Invoked when an event is serviced. </div><div class="ttdef"><b>Definition:</b> run.hpp:39</div></div>
-<div class="ttc" id="namespaceprocess_html_a72c24f06ac3f91b9412de80c6252df25"><div class="ttname"><a href="namespaceprocess.html#a72c24f06ac3f91b9412de80c6252df25">process::run</a></div><div class="ttdeci">Future&lt; R &gt; run(R(*method)())</div><div class="ttdef"><b>Definition:</b> run.hpp:53</div></div>
+<div class="ttc" id="classprocess_1_1internal_1_1ThunkProcess_html_a97044a7116c1d0b5dd966908444a0419"><div class="ttname"><a href="classprocess_1_1internal_1_1ThunkProcess.html#a97044a7116c1d0b5dd966908444a0419">process::internal::ThunkProcess::serve</a></div><div class="ttdeci">virtual void serve(const Event &amp;event)</div><div class="ttdoc">Invoked when an event is serviced. </div><div class="ttdef"><b>Definition:</b> run.hpp:41</div></div>
+<div class="ttc" id="namespaceprocess_html_a72c24f06ac3f91b9412de80c6252df25"><div class="ttname"><a href="namespaceprocess.html#a72c24f06ac3f91b9412de80c6252df25">process::run</a></div><div class="ttdeci">Future&lt; R &gt; run(R(*method)())</div><div class="ttdef"><b>Definition:</b> run.hpp:55</div></div>
 <div class="ttc" id="namespaceprocess_html_aeed40ccf8443f5e6ffce932f0d22caea"><div class="ttname"><a href="namespaceprocess.html#aeed40ccf8443f5e6ffce932f0d22caea">process::REPEAT_FROM_TO</a></div><div class="ttdeci">REPEAT_FROM_TO(1, 11, TEMPLATE, _) class AsyncExecutorProcess</div><div class="ttdef"><b>Definition:</b> async.hpp:62</div></div>
 <div class="ttc" id="namespaceos_html_ae19e4161a51b86a1f330f3bf1dc75389"><div class="ttname"><a href="namespaceos.html#ae19e4161a51b86a1f330f3bf1dc75389">os::process</a></div><div class="ttdeci">Result&lt; Process &gt; process(pid_t pid)</div><div class="ttdef"><b>Definition:</b> freebsd.hpp:30</div></div>
-<div class="ttc" id="classprocess_1_1internal_1_1ThunkProcess_html_a326bf8be1b72cce6709737ca2f46a6b2"><div class="ttname"><a href="classprocess_1_1internal_1_1ThunkProcess.html#a326bf8be1b72cce6709737ca2f46a6b2">process::internal::ThunkProcess::ThunkProcess</a></div><div class="ttdeci">ThunkProcess(std::shared_ptr&lt; lambda::function&lt; R()&gt;&gt; _thunk, std::shared_ptr&lt; Promise&lt; R &gt;&gt; _promise)</div><div class="ttdef"><b>Definition:</b> run.hpp:31</div></div>
+<div class="ttc" id="id_8hpp_html"><div class="ttname"><a href="id_8hpp.html">id.hpp</a></div></div>
+<div class="ttc" id="classprocess_1_1internal_1_1ThunkProcess_html_a326bf8be1b72cce6709737ca2f46a6b2"><div class="ttname"><a href="classprocess_1_1internal_1_1ThunkProcess.html#a326bf8be1b72cce6709737ca2f46a6b2">process::internal::ThunkProcess::ThunkProcess</a></div><div class="ttdeci">ThunkProcess(std::shared_ptr&lt; lambda::function&lt; R()&gt;&gt; _thunk, std::shared_ptr&lt; Promise&lt; R &gt;&gt; _promise)</div><div class="ttdef"><b>Definition:</b> run.hpp:32</div></div>
 <div class="ttc" id="classprocess_1_1Process_html"><div class="ttname"><a href="classprocess_1_1Process.html">process::Process</a></div><div class="ttdef"><b>Definition:</b> process.hpp:461</div></div>
 <div class="ttc" id="structprocess_1_1Event_html"><div class="ttname"><a href="structprocess_1_1Event.html">process::Event</a></div><div class="ttdef"><b>Definition:</b> event.hpp:48</div></div>
 <div class="ttc" id="preprocessor_8hpp_html"><div class="ttname"><a href="preprocessor_8hpp.html">preprocessor.hpp</a></div></div>

@@ -345,11 +345,11 @@
 <div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;</div>
 <div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;</div>
 <div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;<span class="comment">// Reads from /proc and returns a list of all running processes.</span></div>
-<div class="line"><a name="l00294"></a><span class="lineno"><a class="line" href="namespaceproc.html#a810141e1502dd8b9a7a410da6caf7ed7">  294</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;std::set&lt;pid_t&gt;</a> &gt; <a class="code" href="namespaceproc.html#a810141e1502dd8b9a7a410da6caf7ed7">pids</a>()</div>
+<div class="line"><a name="l00294"></a><span class="lineno"><a class="line" href="namespaceproc.html#a810141e1502dd8b9a7a410da6caf7ed7">  294</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;std::set&lt;pid_t&gt;</a>&gt; <a class="code" href="namespaceproc.html#a810141e1502dd8b9a7a410da6caf7ed7">pids</a>()</div>
 <div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;{</div>
 <div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;  std::set&lt;pid_t&gt; <a class="code" href="namespaceproc.html#a810141e1502dd8b9a7a410da6caf7ed7">pids</a>;</div>
 <div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;</div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;  <a class="code" href="classTry.html">Try&lt;std::list&lt;std::string&gt;</a> &gt; entries = <a class="code" href="namespaceos.html#ae1a95c76dff4f12df27a580865904f46">os::ls</a>(<span class="stringliteral">&quot;/proc&quot;</span>);</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;  <a class="code" href="classTry.html">Try&lt;std::list&lt;std::string&gt;</a>&gt; entries = <a class="code" href="namespaceos.html#ae1a95c76dff4f12df27a580865904f46">os::ls</a>(<span class="stringliteral">&quot;/proc&quot;</span>);</div>
 <div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;  <span class="keywordflow">if</span> (entries.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
 <div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(<span class="stringliteral">&quot;Failed to list files in /proc: &quot;</span> + entries.<a class="code" href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">error</a>());</div>
 <div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;  }</div>
@@ -370,13 +370,13 @@
 <div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;</div>
 <div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;</div>
 <div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;<span class="comment">// Reads from /proc/&lt;pid&gt;/task/* and returns a list of threads ids for pid.</span></div>
-<div class="line"><a name="l00319"></a><span class="lineno"><a class="line" href="namespaceproc.html#a15bf23098084d86bb1f2ac75b863ec24">  319</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;std::set&lt;pid_t&gt;</a> &gt; <a class="code" href="namespaceproc.html#a15bf23098084d86bb1f2ac75b863ec24">threads</a>(<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ab03ced250ed239bc3b50b669493997f9">pid_t</a> pid)</div>
+<div class="line"><a name="l00319"></a><span class="lineno"><a class="line" href="namespaceproc.html#a15bf23098084d86bb1f2ac75b863ec24">  319</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;std::set&lt;pid_t&gt;</a>&gt; <a class="code" href="namespaceproc.html#a15bf23098084d86bb1f2ac75b863ec24">threads</a>(<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ab03ced250ed239bc3b50b669493997f9">pid_t</a> pid)</div>
 <div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;{</div>
 <div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;  <span class="keyword">const</span> std::string path = <a class="code" href="namespacepath.html#aa86b16a2171cec90bb3337930513ef0f">path::join</a>(<span class="stringliteral">&quot;/proc&quot;</span>, <a class="code" href="namespacens.html#a28116b46e6543597a11733424cd1aa20">stringify</a>(pid), <span class="stringliteral">&quot;task&quot;</span>);</div>
 <div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;</div>
 <div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;  std::set&lt;pid_t&gt; <a class="code" href="namespaceproc.html#a15bf23098084d86bb1f2ac75b863ec24">threads</a>;</div>
 <div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;  <a class="code" href="classTry.html">Try&lt;std::list&lt;std::string&gt;</a> &gt; entries = <a class="code" href="namespaceos.html#ae1a95c76dff4f12df27a580865904f46">os::ls</a>(path);</div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;  <a class="code" href="classTry.html">Try&lt;std::list&lt;std::string&gt;</a>&gt; entries = <a class="code" href="namespaceos.html#ae1a95c76dff4f12df27a580865904f46">os::ls</a>(path);</div>
 <div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;  <span class="keywordflow">if</span> (entries.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
 <div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(<span class="stringliteral">&quot;Failed to list files in &quot;</span> + path + <span class="stringliteral">&quot;: &quot;</span> + entries.<a class="code" href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">error</a>());</div>
 <div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;  }</div>
@@ -487,7 +487,7 @@
 <div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;</div>
 <div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;</div>
 <div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;<span class="comment">// Reads from /proc/cpuinfo and returns a list of CPUs.</span></div>
-<div class="line"><a name="l00436"></a><span class="lineno"><a class="line" href="namespaceproc.html#a3ee88b8c28ffc4c5092f2b728921dc24">  436</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;std::list&lt;CPU&gt;</a> &gt; <a class="code" href="namespaceproc.html#a3ee88b8c28ffc4c5092f2b728921dc24">cpus</a>()</div>
+<div class="line"><a name="l00436"></a><span class="lineno"><a class="line" href="namespaceproc.html#a3ee88b8c28ffc4c5092f2b728921dc24">  436</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;std::list&lt;CPU&gt;</a>&gt; <a class="code" href="namespaceproc.html#a3ee88b8c28ffc4c5092f2b728921dc24">cpus</a>()</div>
 <div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;{</div>
 <div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;  std::list&lt;CPU&gt; results;</div>
 <div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;</div>

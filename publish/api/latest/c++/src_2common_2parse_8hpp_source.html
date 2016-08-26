@@ -216,9 +216,21 @@
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;  <span class="keywordflow">return</span> result;</div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;}</div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;} <span class="comment">// namespace flags {</span></div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<span class="preprocessor">#endif // __COMMON_PARSE_HPP__</span></div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a name="l00167"></a><span class="lineno"><a class="line" href="namespaceflags.html#a286a74f154d7c08adb062bb29a953b37">  167</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;mesos::CapabilityInfo&gt;</a> <a class="code" href="namespaceflags.html#af30eac14fca1a6fd93863545a0666e0c">parse</a>(<span class="keyword">const</span> std::string&amp; value)</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;{</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;  <a class="code" href="classTry.html">Try&lt;JSON::Object&gt;</a> <a class="code" href="namespacemesos_1_1internal.html#a3752d85ef726065c6c1b946eef1ba87a">json</a> = parse&lt;JSON::Object&gt;(value);</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;  <span class="keywordflow">if</span> (json.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(json.<a class="code" href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">error</a>());</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;  }</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;  <span class="keywordflow">return</span> protobuf::parse&lt;mesos::CapabilityInfo&gt;(json.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>());</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;}</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;} <span class="comment">// namespace flags {</span></div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;<span class="preprocessor">#endif // __COMMON_PARSE_HPP__</span></div>
 <div class="ttc" id="structJSON_1_1Value_html_a32ddf233c0ec159c4d72252529219cf6"><div class="ttname"><a href="structJSON_1_1Value.html#a32ddf233c0ec159c4d72252529219cf6">JSON::Value::as</a></div><div class="ttdeci">const T &amp; as() const </div><div class="ttdef"><b>Definition:</b> json.hpp:332</div></div>
 <div class="ttc" id="classError_html"><div class="ttname"><a href="classError.html">Error</a></div><div class="ttdef"><b>Definition:</b> errorbase.hpp:35</div></div>
 <div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>

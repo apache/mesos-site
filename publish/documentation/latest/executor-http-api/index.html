@@ -96,7 +96,28 @@
   <div class="col-md-8">
     <h1>Executor HTTP API</h1>
 
-<p>Mesos 0.28.0 added <strong>experimental</strong> support for V1 Executor HTTP API.</p>
+<p>A Mesos executor can be built in two different ways:</p>
+
+<ol>
+<li><p>By using the <code>ExecutorDriver</code> C++ interface. The <code>ExecutorDriver</code> handles the
+details of communicating with the Mesos agent. Executor developers implement
+custom executor logic by registering callbacks with the <code>ExecutorDriver</code> for
+significant events, such as when a new task launch request is received. Because
+the <code>ExecutorDriver</code> interface is written in C++, this typically requires that
+executor developers either use C++ or use a C++ binding to their language of
+choice (e.g., JNI when using JVM-based languages).</p></li>
+<li><p>By using the new HTTP API. This allows Mesos executors to be developed
+without using C++ or a native client library; instead, a custom executor
+interacts with the Mesos agent via HTTP requests, as described below. Although
+it is theoretically possible to use the HTTP executor API &ldquo;directly&rdquo; (e.g., by
+using a generic HTTP library), most executor developers should use a library for
+their language of choice that manages the details of the HTTP API; see the
+document on <a href="/documentation/latest/./api-client-libraries/">HTTP API client libraries</a> for a list.</p></li>
+</ol>
+
+
+<p>The v1 Executor HTTP API was introduced in Mesos 0.28.0. As of Mesos 1.0, it is
+considered stable and is the recommended way to develop new Mesos executors.</p>
 
 <h2>Overview</h2>
 

@@ -140,11 +140,11 @@
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;}</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="comment">// Reads from /proc and returns a list of all running processes.</span></div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;std::set&lt;pid_t&gt;</a> &gt; <a class="code" href="namespaceos.html#a42af1cab63434cedf2b698cd6f49f073">pids</a>()</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;std::set&lt;pid_t&gt;</a>&gt; <a class="code" href="namespaceos.html#a42af1cab63434cedf2b698cd6f49f073">pids</a>()</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;{</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  std::set&lt;pid_t&gt; <a class="code" href="namespaceos.html#a42af1cab63434cedf2b698cd6f49f073">pids</a>;</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <a class="code" href="classTry.html">Try&lt;std::list&lt;std::string&gt;</a> &gt; entries = <a class="code" href="namespaceos.html#ae1a95c76dff4f12df27a580865904f46">os::ls</a>(<span class="stringliteral">&quot;/proc&quot;</span>);</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <a class="code" href="classTry.html">Try&lt;std::list&lt;std::string&gt;</a>&gt; entries = <a class="code" href="namespaceos.html#ae1a95c76dff4f12df27a580865904f46">os::ls</a>(<span class="stringliteral">&quot;/proc&quot;</span>);</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  <span class="keywordflow">if</span> (entries.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(<span class="stringliteral">&quot;Failed to list files in /proc: &quot;</span> + entries.<a class="code" href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">error</a>());</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  }</div>

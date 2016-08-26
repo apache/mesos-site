@@ -129,114 +129,171 @@
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;} <span class="comment">// namespace resource {</span></div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
-<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="namespacemesos_1_1internal_1_1master_1_1validation_1_1task.html">   78</a></span>&#160;<span class="keyword">namespace </span>task {</div>
+<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="namespacemesos_1_1internal_1_1master_1_1validation_1_1executor.html">   78</a></span>&#160;<span class="keyword">namespace </span>executor {</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="comment">// Validates a task that a framework attempts to launch within the</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="comment">// offered resources. Returns an optional error which will cause the</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="comment">// master to send a failed status update back to the framework.</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="comment">// NOTE: This function must be called sequentially for each task, and</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="comment">// each task needs to be launched before the next can be validated.</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<a class="code" href="classOption.html">Option&lt;Error&gt;</a> <a class="code" href="namespacemesos_1_1internal_1_1master_1_1validation_1_1task.html#addcf61e144d7714bbb56f6e7857c0b84">validate</a>(</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keyword">const</span> TaskInfo&amp; task,</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <a class="code" href="structmesos_1_1internal_1_1master_1_1Framework.html">Framework</a>* framework,</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <a class="code" href="structmesos_1_1internal_1_1master_1_1Slave.html">Slave</a>* slave,</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="keyword">const</span> <a class="code" href="classmesos_1_1Resources.html">Resources</a>&amp; offered);</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="comment">// Functions in this namespace are only exposed for testing.</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="namespacemesos_1_1internal_1_1master_1_1validation_1_1executor_1_1internal.html">   81</a></span>&#160;<span class="keyword">namespace </span>internal {</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="comment">// Validates that fields are properly set depending on the type of the executor.</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<a class="code" href="classOption.html">Option&lt;Error&gt;</a> <a class="code" href="namespacemesos_1_1internal_1_1master_1_1validation_1_1executor_1_1internal.html#a9ebe9897a79fc1c166d52668b86104b0">validateType</a>(<span class="keyword">const</span> ExecutorInfo&amp; executor);</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;} <span class="comment">// namespace internal {</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;} <span class="comment">// namespace executor {</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
+<div class="line"><a name="l00090"></a><span class="lineno"><a class="line" href="namespacemesos_1_1internal_1_1master_1_1validation_1_1task.html">   90</a></span>&#160;<span class="keyword">namespace </span>task {</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="comment">// Functions in this namespace are only exposed for testing.</span></div>
-<div class="line"><a name="l00093"></a><span class="lineno"><a class="line" href="namespacemesos_1_1internal_1_1master_1_1validation_1_1task_1_1internal.html">   93</a></span>&#160;<span class="keyword">namespace </span>internal {</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="comment">// Validates resources of the task and executor (if present).</span></div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<a class="code" href="classOption.html">Option&lt;Error&gt;</a> <a class="code" href="namespacemesos_1_1internal_1_1master_1_1validation_1_1task_1_1internal.html#a7c58bc6b710afb48231552ac3c684cef">validateResources</a>(<span class="keyword">const</span> TaskInfo&amp; task);</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="comment">// Validates the kill policy of the task.</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<a class="code" href="classOption.html">Option&lt;Error&gt;</a> <a class="code" href="namespacemesos_1_1internal_1_1master_1_1validation_1_1task_1_1internal.html#aea75ca826f924863c11796152c96ec33">validateKillPolicy</a>(<span class="keyword">const</span> TaskInfo&amp; task);</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;} <span class="comment">// namespace internal {</span></div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;} <span class="comment">// namespace task {</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="comment">// Validates a task that a framework attempts to launch within the</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="comment">// offered resources. Returns an optional error which will cause the</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="comment">// master to send a `TASK_ERROR` status update back to the framework.</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="comment">// NOTE: This function must be called sequentially for each task, and</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="comment">// each task needs to be launched before the next can be validated.</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<a class="code" href="classOption.html">Option&lt;Error&gt;</a> <a class="code" href="namespacemesos_1_1internal_1_1master_1_1validation_1_1task.html#addcf61e144d7714bbb56f6e7857c0b84">validate</a>(</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="keyword">const</span> TaskInfo&amp; task,</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <a class="code" href="structmesos_1_1internal_1_1master_1_1Framework.html">Framework</a>* framework,</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <a class="code" href="structmesos_1_1internal_1_1master_1_1Slave.html">Slave</a>* slave,</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keyword">const</span> <a class="code" href="classmesos_1_1Resources.html">Resources</a>&amp; offered);</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
-<div class="line"><a name="l00106"></a><span class="lineno"><a class="line" href="namespacemesos_1_1internal_1_1master_1_1validation_1_1offer.html">  106</a></span>&#160;<span class="keyword">namespace </span>offer {</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="comment">// Functions in this namespace are only exposed for testing.</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno"><a class="line" href="namespacemesos_1_1internal_1_1master_1_1validation_1_1task_1_1internal.html">  106</a></span>&#160;<span class="keyword">namespace </span>internal {</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="comment">// NOTE: These two functions are placed in the header file because we</span></div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="comment">// need to declare them as friends of Master.</span></div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;Offer* <a class="code" href="namespacemesos_1_1internal_1_1master_1_1validation_1_1offer.html#af3530446dfee7971eb4c64fef1470649">getOffer</a>(<a class="code" href="classmesos_1_1internal_1_1master_1_1Master.html">Master</a>* master, <span class="keyword">const</span> OfferID&amp; offerId);</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;InverseOffer* <a class="code" href="namespacemesos_1_1internal_1_1master_1_1validation_1_1offer.html#aa13ddcf17f737fd9f2d870fb993891f0">getInverseOffer</a>(<a class="code" href="classmesos_1_1internal_1_1master_1_1Master.html">Master</a>* master, <span class="keyword">const</span> OfferID&amp; offerId);</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<a class="code" href="structmesos_1_1internal_1_1master_1_1Slave.html">Slave</a>* <a class="code" href="namespacemesos_1_1internal_1_1master_1_1validation_1_1offer.html#a01770229af2006c051401e2d6bc4b608">getSlave</a>(<a class="code" href="classmesos_1_1internal_1_1master_1_1Master.html">Master</a>* master, <span class="keyword">const</span> SlaveID&amp; slaveId);</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="comment">// Validates resources of the task.</span></div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<a class="code" href="classOption.html">Option&lt;Error&gt;</a> <a class="code" href="namespacemesos_1_1internal_1_1master_1_1validation_1_1task_1_1internal.html#a7c58bc6b710afb48231552ac3c684cef">validateResources</a>(<span class="keyword">const</span> TaskInfo&amp; task);</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="comment">// Validates resources of the task and its executor.</span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<a class="code" href="classOption.html">Option&lt;Error&gt;</a> <a class="code" href="namespacemesos_1_1internal_1_1master_1_1validation_1_1task_1_1internal.html#a022c4b03c213982d97466c05a023a45c">validateTaskAndExecutorResources</a>(<span class="keyword">const</span> TaskInfo&amp; task);</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="comment">// Validates the given offers.</span></div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<a class="code" href="classOption.html">Option&lt;Error&gt;</a> <a class="code" href="namespacemesos_1_1internal_1_1master_1_1validation_1_1offer.html#a67e5dd84cfae3267bbe92a5a331ca575">validate</a>(</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    <span class="keyword">const</span> google::protobuf::RepeatedPtrField&lt;OfferID&gt;&amp; offerIds,</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    <a class="code" href="classmesos_1_1internal_1_1master_1_1Master.html">Master</a>* master,</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    <a class="code" href="structmesos_1_1internal_1_1master_1_1Framework.html">Framework</a>* framework);</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="comment">// Validates the kill policy of the task.</span></div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<a class="code" href="classOption.html">Option&lt;Error&gt;</a> <a class="code" href="namespacemesos_1_1internal_1_1master_1_1validation_1_1task_1_1internal.html#aea75ca826f924863c11796152c96ec33">validateKillPolicy</a>(<span class="keyword">const</span> TaskInfo&amp; task);</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="comment">// Validates the health check of the task.</span></div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<a class="code" href="classOption.html">Option&lt;Error&gt;</a> <a class="code" href="namespacemesos_1_1internal_1_1master_1_1validation_1_1task_1_1internal.html#af04d89fb9fd4909fc1c06a59ed4e5a5c">validateHealthCheck</a>(<span class="keyword">const</span> TaskInfo&amp; task);</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;} <span class="comment">// namespace internal {</span></div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="comment">// Validates the given inverse offers.</span></div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<a class="code" href="classOption.html">Option&lt;Error&gt;</a> <a class="code" href="namespacemesos_1_1internal_1_1master_1_1validation_1_1offer.html#ab206d1b54aebe586bd2ffd78704d0424">validateInverseOffers</a>(</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <span class="keyword">const</span> google::protobuf::RepeatedPtrField&lt;OfferID&gt;&amp; offerIds,</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    <a class="code" href="classmesos_1_1internal_1_1master_1_1Master.html">Master</a>* master,</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <a class="code" href="structmesos_1_1internal_1_1master_1_1Framework.html">Framework</a>* framework);</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;} <span class="comment">// namespace offer {</span></div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;</div>
-<div class="line"><a name="l00131"></a><span class="lineno"><a class="line" href="namespacemesos_1_1internal_1_1master_1_1validation_1_1operation.html">  131</a></span>&#160;<span class="keyword">namespace </span>operation {</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="comment">// Validates the RESERVE operation.</span></div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<a class="code" href="classOption.html">Option&lt;Error&gt;</a> <a class="code" href="namespacemesos_1_1internal_1_1master_1_1validation_1_1operation.html#a14cdc7eef2588257e3609d6e19b8677f">validate</a>(</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    <span class="keyword">const</span> Offer::Operation::Reserve&amp; reserve,</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;std::string&gt;</a>&amp; principal);</div>
+<div class="line"><a name="l00122"></a><span class="lineno"><a class="line" href="namespacemesos_1_1internal_1_1master_1_1validation_1_1task_1_1group.html">  122</a></span>&#160;<span class="keyword">namespace </span><a class="code" href="structgroup.html">group</a> {</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="comment">// Validates a task group that a framework attempts to launch within the</span></div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="comment">// offered resources. Returns an optional error which will cause the</span></div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="comment">// master to send a `TASK_ERROR` status updates for *all* the tasks in</span></div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;<span class="comment">// the task group back to the framework.</span></div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;<span class="comment">// NOTE: Validation error of *any* task will cause all the tasks in the task</span></div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;<span class="comment">// group to be rejected by the master.</span></div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;<a class="code" href="classOption.html">Option&lt;Error&gt;</a> <a class="code" href="namespacemesos_1_1internal_1_1master_1_1validation_1_1task_1_1group.html#a8e98b5bf56c232f4e87f646fe58d10d8">validate</a>(</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    <span class="keyword">const</span> TaskGroupInfo&amp; taskGroup,</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    <span class="keyword">const</span> ExecutorInfo&amp; executor,</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    <a class="code" href="structmesos_1_1internal_1_1master_1_1Framework.html">Framework</a>* framework,</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    <a class="code" href="structmesos_1_1internal_1_1master_1_1Slave.html">Slave</a>* slave,</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    <span class="keyword">const</span> <a class="code" href="classmesos_1_1Resources.html">Resources</a>&amp; offered);</div>
 <div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;</div>
 <div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;<span class="comment">// Validates the UNRESERVE operation.</span></div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;<a class="code" href="classOption.html">Option&lt;Error&gt;</a> <a class="code" href="namespacemesos_1_1internal_1_1master_1_1validation_1_1operation.html#a14cdc7eef2588257e3609d6e19b8677f">validate</a>(<span class="keyword">const</span> Offer::Operation::Unreserve&amp; unreserve);</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;<span class="comment">// Functions in this namespace are only exposed for testing.</span></div>
+<div class="line"><a name="l00140"></a><span class="lineno"><a class="line" href="namespacemesos_1_1internal_1_1master_1_1validation_1_1task_1_1group_1_1internal.html">  140</a></span>&#160;<span class="keyword">namespace </span>internal {</div>
 <div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;<span class="comment">// Validates the CREATE operation. We need slave&#39;s checkpointed resources so</span></div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;<span class="comment">// that we can validate persistence ID uniqueness, and we need the principal to</span></div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="comment">// verify that it&#39;s equal to the one in `DiskInfo.Persistence.principal`.</span></div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;<a class="code" href="classOption.html">Option&lt;Error&gt;</a> <a class="code" href="namespacemesos_1_1internal_1_1master_1_1validation_1_1operation.html#a14cdc7eef2588257e3609d6e19b8677f">validate</a>(</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    <span class="keyword">const</span> Offer::Operation::Create&amp; <a class="code" href="namespacecgroups.html#a2ecc89636706df947027a4c3c2100fbe">create</a>,</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    <span class="keyword">const</span> <a class="code" href="classmesos_1_1Resources.html">Resources</a>&amp; checkpointedResources,</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;std::string&gt;</a>&amp; principal);</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;<span class="comment">// Validates that the resources specified by</span></div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;<span class="comment">// the task group and its executor are valid.</span></div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="comment">// TODO(vinod): Consolidate this with `validateTaskAndExecutorResources()`.</span></div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;<a class="code" href="classOption.html">Option&lt;Error&gt;</a> <a class="code" href="namespacemesos_1_1internal_1_1master_1_1validation_1_1task_1_1group_1_1internal.html#a014ef5cbfd11ca273df7d3a5ff1501a0">validateTaskGroupAndExecutorResources</a>(</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    <span class="keyword">const</span> TaskGroupInfo&amp; taskGroup,</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    <span class="keyword">const</span> ExecutorInfo&amp; executor);</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;} <span class="comment">// namespace internal {</span></div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;<span class="comment">// Validates the DESTROY operation. We need slave&#39;s checkpointed</span></div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;<span class="comment">// resources to validate that the volumes to destroy actually exist.</span></div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;<a class="code" href="classOption.html">Option&lt;Error&gt;</a> <a class="code" href="namespacemesos_1_1internal_1_1master_1_1validation_1_1operation.html#a14cdc7eef2588257e3609d6e19b8677f">validate</a>(</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <span class="keyword">const</span> Offer::Operation::Destroy&amp; <a class="code" href="namespacecgroups.html#aff40863260825f6176d8195102a0a47f">destroy</a>,</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    <span class="keyword">const</span> <a class="code" href="classmesos_1_1Resources.html">Resources</a>&amp; checkpointedResources);</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;} <span class="comment">// namespace operation {</span></div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;} <span class="comment">// namespace validation {</span></div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;} <span class="comment">// namespace master {</span></div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;} <span class="comment">// namespace internal {</span></div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;} <span class="comment">// namespace mesos {</span></div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;} <span class="comment">// namespace group {</span></div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;} <span class="comment">// namespace task {</span></div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;</div>
+<div class="line"><a name="l00157"></a><span class="lineno"><a class="line" href="namespacemesos_1_1internal_1_1master_1_1validation_1_1offer.html">  157</a></span>&#160;<span class="keyword">namespace </span>offer {</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;<span class="comment">// NOTE: These two functions are placed in the header file because we</span></div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="comment">// need to declare them as friends of Master.</span></div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;Offer* <a class="code" href="namespacemesos_1_1internal_1_1master_1_1validation_1_1offer.html#af3530446dfee7971eb4c64fef1470649">getOffer</a>(<a class="code" href="classmesos_1_1internal_1_1master_1_1Master.html">Master</a>* master, <span class="keyword">const</span> OfferID&amp; offerId);</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;InverseOffer* <a class="code" href="namespacemesos_1_1internal_1_1master_1_1validation_1_1offer.html#aa13ddcf17f737fd9f2d870fb993891f0">getInverseOffer</a>(<a class="code" href="classmesos_1_1internal_1_1master_1_1Master.html">Master</a>* master, <span class="keyword">const</span> OfferID&amp; offerId);</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;<a class="code" href="structmesos_1_1internal_1_1master_1_1Slave.html">Slave</a>* <a class="code" href="namespacemesos_1_1internal_1_1master_1_1validation_1_1offer.html#a01770229af2006c051401e2d6bc4b608">getSlave</a>(<a class="code" href="classmesos_1_1internal_1_1master_1_1Master.html">Master</a>* master, <span class="keyword">const</span> SlaveID&amp; slaveId);</div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;<span class="preprocessor">#endif // __MASTER_VALIDATION_HPP__</span></div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="comment">// Validates the given offers.</span></div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<a class="code" href="classOption.html">Option&lt;Error&gt;</a> <a class="code" href="namespacemesos_1_1internal_1_1master_1_1validation_1_1offer.html#a67e5dd84cfae3267bbe92a5a331ca575">validate</a>(</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    <span class="keyword">const</span> google::protobuf::RepeatedPtrField&lt;OfferID&gt;&amp; offerIds,</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    <a class="code" href="classmesos_1_1internal_1_1master_1_1Master.html">Master</a>* master,</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    <a class="code" href="structmesos_1_1internal_1_1master_1_1Framework.html">Framework</a>* framework);</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;<span class="comment">// Validates the given inverse offers.</span></div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;<a class="code" href="classOption.html">Option&lt;Error&gt;</a> <a class="code" href="namespacemesos_1_1internal_1_1master_1_1validation_1_1offer.html#ab206d1b54aebe586bd2ffd78704d0424">validateInverseOffers</a>(</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    <span class="keyword">const</span> google::protobuf::RepeatedPtrField&lt;OfferID&gt;&amp; offerIds,</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    <a class="code" href="classmesos_1_1internal_1_1master_1_1Master.html">Master</a>* master,</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    <a class="code" href="structmesos_1_1internal_1_1master_1_1Framework.html">Framework</a>* framework);</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;} <span class="comment">// namespace offer {</span></div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;</div>
+<div class="line"><a name="l00182"></a><span class="lineno"><a class="line" href="namespacemesos_1_1internal_1_1master_1_1validation_1_1operation.html">  182</a></span>&#160;<span class="keyword">namespace </span>operation {</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;<span class="comment">// Validates the RESERVE operation.</span></div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;<a class="code" href="classOption.html">Option&lt;Error&gt;</a> <a class="code" href="namespacemesos_1_1internal_1_1master_1_1validation_1_1operation.html#a14cdc7eef2588257e3609d6e19b8677f">validate</a>(</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    <span class="keyword">const</span> Offer::Operation::Reserve&amp; reserve,</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;std::string&gt;</a>&amp; principal);</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;<span class="comment">// Validates the UNRESERVE operation.</span></div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;<a class="code" href="classOption.html">Option&lt;Error&gt;</a> <a class="code" href="namespacemesos_1_1internal_1_1master_1_1validation_1_1operation.html#a14cdc7eef2588257e3609d6e19b8677f">validate</a>(<span class="keyword">const</span> Offer::Operation::Unreserve&amp; unreserve);</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;<span class="comment">// Validates the CREATE operation. We need slave&#39;s checkpointed resources so</span></div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;<span class="comment">// that we can validate persistence ID uniqueness, and we need the principal to</span></div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;<span class="comment">// verify that it&#39;s equal to the one in `DiskInfo.Persistence.principal`.</span></div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;<a class="code" href="classOption.html">Option&lt;Error&gt;</a> <a class="code" href="namespacemesos_1_1internal_1_1master_1_1validation_1_1operation.html#a14cdc7eef2588257e3609d6e19b8677f">validate</a>(</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    <span class="keyword">const</span> Offer::Operation::Create&amp; <a class="code" href="namespacecgroups.html#a2ecc89636706df947027a4c3c2100fbe">create</a>,</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    <span class="keyword">const</span> <a class="code" href="classmesos_1_1Resources.html">Resources</a>&amp; checkpointedResources,</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;std::string&gt;</a>&amp; principal);</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;<span class="comment">// Validates the DESTROY operation. We need slave&#39;s checkpointed</span></div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;<span class="comment">// resources to validate that the volumes to destroy actually exist.</span></div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;<a class="code" href="classOption.html">Option&lt;Error&gt;</a> <a class="code" href="namespacemesos_1_1internal_1_1master_1_1validation_1_1operation.html#a14cdc7eef2588257e3609d6e19b8677f">validate</a>(</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    <span class="keyword">const</span> Offer::Operation::Destroy&amp; <a class="code" href="namespacecgroups.html#aff40863260825f6176d8195102a0a47f">destroy</a>,</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    <span class="keyword">const</span> <a class="code" href="classmesos_1_1Resources.html">Resources</a>&amp; checkpointedResources);</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;} <span class="comment">// namespace operation {</span></div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;} <span class="comment">// namespace validation {</span></div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;} <span class="comment">// namespace master {</span></div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;} <span class="comment">// namespace internal {</span></div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;} <span class="comment">// namespace mesos {</span></div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;<span class="preprocessor">#endif // __MASTER_VALIDATION_HPP__</span></div>
 <div class="ttc" id="resources_8hpp_html"><div class="ttname"><a href="resources_8hpp.html">resources.hpp</a></div></div>
 <div class="ttc" id="classOption_html"><div class="ttname"><a href="classOption.html">Option&lt; Error &gt;</a></div></div>
 <div class="ttc" id="namespacemesos_1_1internal_1_1master_1_1validation_1_1scheduler_1_1call_html_a0fe116b58f1d55208e6115684b015337"><div class="ttname"><a href="namespacemesos_1_1internal_1_1master_1_1validation_1_1scheduler_1_1call.html#a0fe116b58f1d55208e6115684b015337">mesos::internal::master::validation::scheduler::call::validate</a></div><div class="ttdeci">Option&lt; Error &gt; validate(const mesos::scheduler::Call &amp;call, const Option&lt; std::string &gt; &amp;principal=None())</div></div>
 <div class="ttc" id="namespacemesos_1_1internal_1_1master_1_1validation_1_1resource_html_a32226576728bfadc39fce340a7b6e4d9"><div class="ttname"><a href="namespacemesos_1_1internal_1_1master_1_1validation_1_1resource.html#a32226576728bfadc39fce340a7b6e4d9">mesos::internal::master::validation::resource::validate</a></div><div class="ttdeci">Option&lt; Error &gt; validate(const google::protobuf::RepeatedPtrField&lt; Resource &gt; &amp;resources)</div></div>
 <div class="ttc" id="include_2mesos_2mesos_8hpp_html"><div class="ttname"><a href="include_2mesos_2mesos_8hpp.html">mesos.hpp</a></div></div>
 <div class="ttc" id="namespacemesos_1_1internal_1_1master_1_1validation_1_1offer_html_aa13ddcf17f737fd9f2d870fb993891f0"><div class="ttname"><a href="namespacemesos_1_1internal_1_1master_1_1validation_1_1offer.html#aa13ddcf17f737fd9f2d870fb993891f0">mesos::internal::master::validation::offer::getInverseOffer</a></div><div class="ttdeci">InverseOffer * getInverseOffer(Master *master, const OfferID &amp;offerId)</div></div>
-<div class="ttc" id="classmesos_1_1Resources_html"><div class="ttname"><a href="classmesos_1_1Resources.html">mesos::Resources</a></div><div class="ttdef"><b>Definition:</b> resources.hpp:62</div></div>
+<div class="ttc" id="classmesos_1_1Resources_html"><div class="ttname"><a href="classmesos_1_1Resources.html">mesos::Resources</a></div><div class="ttdef"><b>Definition:</b> resources.hpp:73</div></div>
 <div class="ttc" id="namespacemesos_1_1internal_1_1master_1_1validation_1_1offer_html_a01770229af2006c051401e2d6bc4b608"><div class="ttname"><a href="namespacemesos_1_1internal_1_1master_1_1validation_1_1offer.html#a01770229af2006c051401e2d6bc4b608">mesos::internal::master::validation::offer::getSlave</a></div><div class="ttdeci">Slave * getSlave(Master *master, const SlaveID &amp;slaveId)</div></div>
 <div class="ttc" id="namespacemesos_1_1internal_1_1master_1_1validation_1_1task_1_1internal_html_a7c58bc6b710afb48231552ac3c684cef"><div class="ttname"><a href="namespacemesos_1_1internal_1_1master_1_1validation_1_1task_1_1internal.html#a7c58bc6b710afb48231552ac3c684cef">mesos::internal::master::validation::task::internal::validateResources</a></div><div class="ttdeci">Option&lt; Error &gt; validateResources(const TaskInfo &amp;task)</div></div>
 <div class="ttc" id="namespacemesos_1_1internal_1_1master_1_1validation_1_1offer_html_ab206d1b54aebe586bd2ffd78704d0424"><div class="ttname"><a href="namespacemesos_1_1internal_1_1master_1_1validation_1_1offer.html#ab206d1b54aebe586bd2ffd78704d0424">mesos::internal::master::validation::offer::validateInverseOffers</a></div><div class="ttdeci">Option&lt; Error &gt; validateInverseOffers(const google::protobuf::RepeatedPtrField&lt; OfferID &gt; &amp;offerIds, Master *master, Framework *framework)</div></div>
 <div class="ttc" id="include_2mesos_2master_2master_8hpp_html"><div class="ttname"><a href="include_2mesos_2master_2master_8hpp.html">master.hpp</a></div></div>
 <div class="ttc" id="scheduler_2scheduler_8hpp_html"><div class="ttname"><a href="scheduler_2scheduler_8hpp.html">scheduler.hpp</a></div></div>
 <div class="ttc" id="namespacemesos_1_1internal_1_1master_1_1validation_1_1task_1_1internal_html_aea75ca826f924863c11796152c96ec33"><div class="ttname"><a href="namespacemesos_1_1internal_1_1master_1_1validation_1_1task_1_1internal.html#aea75ca826f924863c11796152c96ec33">mesos::internal::master::validation::task::internal::validateKillPolicy</a></div><div class="ttdeci">Option&lt; Error &gt; validateKillPolicy(const TaskInfo &amp;task)</div></div>
+<div class="ttc" id="namespacemesos_1_1internal_1_1master_1_1validation_1_1executor_1_1internal_html_a9ebe9897a79fc1c166d52668b86104b0"><div class="ttname"><a href="namespacemesos_1_1internal_1_1master_1_1validation_1_1executor_1_1internal.html#a9ebe9897a79fc1c166d52668b86104b0">mesos::internal::master::validation::executor::internal::validateType</a></div><div class="ttdeci">Option&lt; Error &gt; validateType(const ExecutorInfo &amp;executor)</div></div>
 <div class="ttc" id="namespacecgroups_html_aff40863260825f6176d8195102a0a47f"><div class="ttname"><a href="namespacecgroups.html#aff40863260825f6176d8195102a0a47f">cgroups::destroy</a></div><div class="ttdeci">process::Future&lt; Nothing &gt; destroy(const std::string &amp;hierarchy, const std::string &amp;cgroup=&quot;/&quot;)</div></div>
 <div class="ttc" id="option_8hpp_html"><div class="ttname"><a href="option_8hpp.html">option.hpp</a></div></div>
+<div class="ttc" id="namespacemesos_1_1internal_1_1master_1_1validation_1_1task_1_1group_html_a8e98b5bf56c232f4e87f646fe58d10d8"><div class="ttname"><a href="namespacemesos_1_1internal_1_1master_1_1validation_1_1task_1_1group.html#a8e98b5bf56c232f4e87f646fe58d10d8">mesos::internal::master::validation::task::group::validate</a></div><div class="ttdeci">Option&lt; Error &gt; validate(const TaskGroupInfo &amp;taskGroup, const ExecutorInfo &amp;executor, Framework *framework, Slave *slave, const Resources &amp;offered)</div></div>
+<div class="ttc" id="namespacemesos_1_1internal_1_1master_1_1validation_1_1task_1_1group_1_1internal_html_a014ef5cbfd11ca273df7d3a5ff1501a0"><div class="ttname"><a href="namespacemesos_1_1internal_1_1master_1_1validation_1_1task_1_1group_1_1internal.html#a014ef5cbfd11ca273df7d3a5ff1501a0">mesos::internal::master::validation::task::group::internal::validateTaskGroupAndExecutorResources</a></div><div class="ttdeci">Option&lt; Error &gt; validateTaskGroupAndExecutorResources(const TaskGroupInfo &amp;taskGroup, const ExecutorInfo &amp;executor)</div></div>
 <div class="ttc" id="namespacemesos_1_1internal_1_1master_1_1validation_1_1offer_html_a67e5dd84cfae3267bbe92a5a331ca575"><div class="ttname"><a href="namespacemesos_1_1internal_1_1master_1_1validation_1_1offer.html#a67e5dd84cfae3267bbe92a5a331ca575">mesos::internal::master::validation::offer::validate</a></div><div class="ttdeci">Option&lt; Error &gt; validate(const google::protobuf::RepeatedPtrField&lt; OfferID &gt; &amp;offerIds, Master *master, Framework *framework)</div></div>
 <div class="ttc" id="namespacemesos_1_1internal_1_1master_1_1validation_1_1operation_html_a14cdc7eef2588257e3609d6e19b8677f"><div class="ttname"><a href="namespacemesos_1_1internal_1_1master_1_1validation_1_1operation.html#a14cdc7eef2588257e3609d6e19b8677f">mesos::internal::master::validation::operation::validate</a></div><div class="ttdeci">Option&lt; Error &gt; validate(const Offer::Operation::Reserve &amp;reserve, const Option&lt; std::string &gt; &amp;principal)</div></div>
+<div class="ttc" id="structgroup_html"><div class="ttname"><a href="structgroup.html">group</a></div><div class="ttdef"><b>Definition:</b> grp.hpp:26</div></div>
 <div class="ttc" id="error_8hpp_html"><div class="ttname"><a href="error_8hpp.html">error.hpp</a></div></div>
 <div class="ttc" id="structNone_html"><div class="ttname"><a href="structNone.html">None</a></div><div class="ttdef"><b>Definition:</b> none.hpp:27</div></div>
+<div class="ttc" id="namespacemesos_1_1internal_1_1master_1_1validation_1_1task_1_1internal_html_af04d89fb9fd4909fc1c06a59ed4e5a5c"><div class="ttname"><a href="namespacemesos_1_1internal_1_1master_1_1validation_1_1task_1_1internal.html#af04d89fb9fd4909fc1c06a59ed4e5a5c">mesos::internal::master::validation::task::internal::validateHealthCheck</a></div><div class="ttdeci">Option&lt; Error &gt; validateHealthCheck(const TaskInfo &amp;task)</div></div>
 <div class="ttc" id="structmesos_1_1internal_1_1master_1_1Slave_html"><div class="ttname"><a href="structmesos_1_1internal_1_1master_1_1Slave.html">mesos::internal::master::Slave</a></div><div class="ttdef"><b>Definition:</b> master.hpp:110</div></div>
+<div class="ttc" id="namespacemesos_1_1internal_1_1master_1_1validation_1_1task_1_1internal_html_a022c4b03c213982d97466c05a023a45c"><div class="ttname"><a href="namespacemesos_1_1internal_1_1master_1_1validation_1_1task_1_1internal.html#a022c4b03c213982d97466c05a023a45c">mesos::internal::master::validation::task::internal::validateTaskAndExecutorResources</a></div><div class="ttdeci">Option&lt; Error &gt; validateTaskAndExecutorResources(const TaskInfo &amp;task)</div></div>
 <div class="ttc" id="namespacemesos_1_1internal_1_1master_1_1validation_1_1offer_html_af3530446dfee7971eb4c64fef1470649"><div class="ttname"><a href="namespacemesos_1_1internal_1_1master_1_1validation_1_1offer.html#af3530446dfee7971eb4c64fef1470649">mesos::internal::master::validation::offer::getOffer</a></div><div class="ttdeci">Offer * getOffer(Master *master, const OfferID &amp;offerId)</div></div>
 <div class="ttc" id="namespacecgroups_html_a2ecc89636706df947027a4c3c2100fbe"><div class="ttname"><a href="namespacecgroups.html#a2ecc89636706df947027a4c3c2100fbe">cgroups::create</a></div><div class="ttdeci">Try&lt; Nothing &gt; create(const std::string &amp;hierarchy, const std::string &amp;cgroup, bool recursive=false)</div></div>
 <div class="ttc" id="structmesos_1_1internal_1_1master_1_1Framework_html"><div class="ttname"><a href="structmesos_1_1internal_1_1master_1_1Framework.html">mesos::internal::master::Framework</a></div><div class="ttdef"><b>Definition:</b> master.hpp:2048</div></div>

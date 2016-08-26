@@ -362,115 +362,113 @@
 <div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;</div>
 <div class="line"><a name="l00309"></a><span class="lineno"><a class="line" href="duration_8hpp.html#aae42b4c6bc1b2a3b493f1c306afe7522">  309</a></span>&#160;<span class="keyword">inline</span> std::ostream&amp; <a class="code" href="namespacemesos_1_1agent.html#a3b1bc144376bfefe215d6bba57e67c36">operator&lt;&lt;</a>(std::ostream&amp; stream, <span class="keyword">const</span> <a class="code" href="classDuration.html">Duration</a>&amp; duration_)</div>
 <div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;{</div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;  <span class="keywordtype">long</span> precision = stream.precision();</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;</div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;  <span class="comment">// Output the duration in full double precision.</span></div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;  stream.precision(std::numeric_limits&lt;double&gt;::digits10);</div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;</div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;  <span class="comment">// Parse the duration as the sign and the absolute value.</span></div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;  <a class="code" href="classDuration.html">Duration</a> duration = duration_;</div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;  <span class="keywordflow">if</span> (duration_ &lt; <a class="code" href="classDuration.html#a3c45d1cc69ecf64cd63180ea2b1eddae">Duration::zero</a>()) {</div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;    stream &lt;&lt; <span class="stringliteral">&quot;-&quot;</span>;</div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;</div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;    <span class="comment">// Duration::min() may not be representable as a positive Duration.</span></div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;    <span class="keywordflow">if</span> (duration_ == <a class="code" href="classDuration.html#ac6f442d33ee5e10cd97a259b7ac8e558">Duration::min</a>()) {</div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;      duration = <a class="code" href="classDuration.html#ad25211d061e6002a5093eab4514fc1f5">Duration::max</a>();</div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;      duration = duration_ * -1;</div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;    }</div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;  }</div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;  <span class="comment">// First determine which bucket of time unit the duration falls into</span></div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;  <span class="comment">// then check whether the duration can be represented as a whole</span></div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;  <span class="comment">// number with this time unit or a smaller one.</span></div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;  <span class="comment">// e.g. 1.42857142857143weeks falls into the &#39;Weeks&#39; bucket but</span></div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;  <span class="comment">// reads better with a smaller unit: &#39;10days&#39;. So we use &#39;days&#39;</span></div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;  <span class="comment">// instead of &#39;weeks&#39; to output the duration.</span></div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;  int64_t nanoseconds = duration.<a class="code" href="classDuration.html#aa3703196ba3797f7833a8348ccb5449a">ns</a>();</div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;  <span class="keywordflow">if</span> (duration &lt; <a class="code" href="classMicroseconds.html">Microseconds</a>(1)) {</div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;    stream &lt;&lt; duration.<a class="code" href="classDuration.html#aa3703196ba3797f7833a8348ccb5449a">ns</a>() &lt;&lt; <a class="code" href="classNanoseconds.html#ad72de5352d805622f255e5ad07a67356">Nanoseconds::units</a>();</div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;  } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (duration &lt; <a class="code" href="classMilliseconds.html">Milliseconds</a>(1)) {</div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;    <span class="keywordflow">if</span> (nanoseconds % <a class="code" href="classDuration.html#ad2877fca0bfcc4909706cf128273b3aa">Duration::MICROSECONDS</a> != 0) {</div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;      <span class="comment">// We can&#39;t get a whole number using this unit but we can at</span></div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;      <span class="comment">// one level down.</span></div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;      stream &lt;&lt; duration.<a class="code" href="classDuration.html#aa3703196ba3797f7833a8348ccb5449a">ns</a>() &lt;&lt; <a class="code" href="classNanoseconds.html#ad72de5352d805622f255e5ad07a67356">Nanoseconds::units</a>();</div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;      stream &lt;&lt; duration.<a class="code" href="classDuration.html#ab4bc8981d3ac26e3880e57e19f7f7f92">us</a>() &lt;&lt; <a class="code" href="classMicroseconds.html#abe8aa0a5b2cf4ed2740baac28d723a87">Microseconds::units</a>();</div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;    }</div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;  } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (duration &lt; <a class="code" href="classSeconds.html">Seconds</a>(1)) {</div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;    <span class="keywordflow">if</span> (nanoseconds % <a class="code" href="classDuration.html#ab69ccbc15f17ef66c8804b2a1da83da6">Duration::MILLISECONDS</a> != 0 &amp;&amp;</div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;        nanoseconds % <a class="code" href="classDuration.html#ad2877fca0bfcc4909706cf128273b3aa">Duration::MICROSECONDS</a> == 0) {</div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;      stream &lt;&lt; duration.<a class="code" href="classDuration.html#ab4bc8981d3ac26e3880e57e19f7f7f92">us</a>() &lt;&lt; <a class="code" href="classMicroseconds.html#abe8aa0a5b2cf4ed2740baac28d723a87">Microseconds::units</a>();</div>
-<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;      stream &lt;&lt; duration.<a class="code" href="classDuration.html#a05ddd6a9f21b82dba6313f81418f53d2">ms</a>() &lt;&lt; <a class="code" href="classMilliseconds.html#ad8651c5072800ec3e83b58cb46278f1a">Milliseconds::units</a>();</div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;    }</div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;  } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (duration &lt; <a class="code" href="classMinutes.html">Minutes</a>(1)) {</div>
-<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;    <span class="keywordflow">if</span> (nanoseconds % <a class="code" href="classDuration.html#a57e78540c14e753b9149591ef63c9a5e">Duration::SECONDS</a> != 0 &amp;&amp;</div>
-<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;        nanoseconds % <a class="code" href="classDuration.html#ab69ccbc15f17ef66c8804b2a1da83da6">Duration::MILLISECONDS</a> == 0) {</div>
-<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;      stream &lt;&lt; duration.<a class="code" href="classDuration.html#a05ddd6a9f21b82dba6313f81418f53d2">ms</a>() &lt;&lt; <a class="code" href="classMilliseconds.html#ad8651c5072800ec3e83b58cb46278f1a">Milliseconds::units</a>();</div>
-<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;      stream &lt;&lt; duration.<a class="code" href="classDuration.html#a31ebb8d92dc93914cb830d70753d802b">secs</a>() &lt;&lt; <a class="code" href="classSeconds.html#a7f333813ed6c0697f69aa27df45110f5">Seconds::units</a>();</div>
-<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;    }</div>
-<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;  } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (duration &lt; <a class="code" href="classHours.html">Hours</a>(1)) {</div>
-<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;    <span class="keywordflow">if</span> (nanoseconds % <a class="code" href="classDuration.html#a4a838d16d12606f69af3b9c60417c860">Duration::MINUTES</a> != 0 &amp;&amp;</div>
-<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;        nanoseconds % <a class="code" href="classDuration.html#a57e78540c14e753b9149591ef63c9a5e">Duration::SECONDS</a> == 0) {</div>
-<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;      stream &lt;&lt; duration.<a class="code" href="classDuration.html#a31ebb8d92dc93914cb830d70753d802b">secs</a>() &lt;&lt; <a class="code" href="classSeconds.html#a7f333813ed6c0697f69aa27df45110f5">Seconds::units</a>();</div>
-<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;      stream &lt;&lt; duration.<a class="code" href="classDuration.html#a83df74b2977f3eac2fbe2fa4595a6620">mins</a>() &lt;&lt; <a class="code" href="classMinutes.html#a908aad4e6a868e043f95d3fcbf3d5986">Minutes::units</a>();</div>
-<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;    }</div>
-<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;  } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (duration &lt; <a class="code" href="classDays.html">Days</a>(1)) {</div>
-<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;    <span class="keywordflow">if</span> (nanoseconds % <a class="code" href="classDuration.html#a0564918aa36599b575e155644f4513a3">Duration::HOURS</a> != 0 &amp;&amp;</div>
-<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;        nanoseconds % <a class="code" href="classDuration.html#a4a838d16d12606f69af3b9c60417c860">Duration::MINUTES</a> == 0) {</div>
-<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;      stream &lt;&lt; duration.<a class="code" href="classDuration.html#a83df74b2977f3eac2fbe2fa4595a6620">mins</a>() &lt;&lt; <a class="code" href="classMinutes.html#a908aad4e6a868e043f95d3fcbf3d5986">Minutes::units</a>();</div>
-<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;      stream &lt;&lt; duration.<a class="code" href="classDuration.html#a66d69bb283add7d88e97e8fe61ec1a85">hrs</a>() &lt;&lt; <a class="code" href="classHours.html#a01a1c3cf790be36e3e3791822098e220">Hours::units</a>();</div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;    }</div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;  } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (duration &lt; <a class="code" href="classWeeks.html">Weeks</a>(1)) {</div>
-<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;    <span class="keywordflow">if</span> (nanoseconds % <a class="code" href="classDuration.html#ab3041d011ff7fe9136074ba7076cbc04">Duration::DAYS</a> != 0 &amp;&amp;</div>
-<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;        nanoseconds % <a class="code" href="classDuration.html#a0564918aa36599b575e155644f4513a3">Duration::HOURS</a> == 0) {</div>
-<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;      stream &lt;&lt; duration.<a class="code" href="classDuration.html#a66d69bb283add7d88e97e8fe61ec1a85">hrs</a>() &lt;&lt; <a class="code" href="classHours.html#a01a1c3cf790be36e3e3791822098e220">Hours::units</a>();</div>
-<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;      stream &lt;&lt; duration.<a class="code" href="classDuration.html#a5fe95c3820f362aca1ff3442929ea656">days</a>() &lt;&lt; <a class="code" href="classDays.html#a589226d06fa74863c8f7a3c7b5c17a4c">Days::units</a>();</div>
-<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;    }</div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;  } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;    <span class="keywordflow">if</span> (nanoseconds % <a class="code" href="classDuration.html#aadcf23b757330ae23ee70117aec0656e">Duration::WEEKS</a> != 0 &amp;&amp;</div>
-<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;        nanoseconds % <a class="code" href="classDuration.html#ab3041d011ff7fe9136074ba7076cbc04">Duration::DAYS</a> == 0) {</div>
-<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;      stream &lt;&lt; duration.<a class="code" href="classDuration.html#a5fe95c3820f362aca1ff3442929ea656">days</a>() &lt;&lt; <a class="code" href="classDays.html#a589226d06fa74863c8f7a3c7b5c17a4c">Days::units</a>();</div>
-<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;      stream &lt;&lt; duration.<a class="code" href="classDuration.html#ae98a411bf78d0ab537c021bf3dbd01b0">weeks</a>() &lt;&lt; <a class="code" href="classWeeks.html#a7d1f2cc4ff0b617564e447dfbbcf0373">Weeks::units</a>();</div>
-<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;    }</div>
-<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;  }</div>
-<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;</div>
-<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;  <span class="comment">// Return the stream to original formatting state.</span></div>
-<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;  stream.precision(precision);</div>
-<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;</div>
-<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;  <span class="keywordflow">return</span> stream;</div>
-<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;}</div>
-<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;</div>
-<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;</div>
-<div class="line"><a name="l00397"></a><span class="lineno"><a class="line" href="classDuration.html#a70f3ccdaba8dd6d0a1c2eddde1d1327a">  397</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;Duration&gt;</a> <a class="code" href="classDuration.html#a70f3ccdaba8dd6d0a1c2eddde1d1327a">Duration::create</a>(<span class="keywordtype">double</span> seconds)</div>
-<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;{</div>
-<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;  <span class="keywordflow">if</span> (seconds * <a class="code" href="classDuration.html#a57e78540c14e753b9149591ef63c9a5e">SECONDS</a> &gt; <a class="code" href="option_8hpp.html#ac4b53d77033a5d2405ef12ceb3dc6498">std::numeric_limits&lt;int64_t&gt;::max</a>() ||</div>
-<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;      seconds * <a class="code" href="classDuration.html#a57e78540c14e753b9149591ef63c9a5e">SECONDS</a> &lt; <a class="code" href="option_8hpp.html#a78407a45187058b9b4ef2042accb9bc4">std::numeric_limits&lt;int64_t&gt;::min</a>()) {</div>
-<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(<span class="stringliteral">&quot;Argument out of the range that a Duration can represent due &quot;</span></div>
-<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;                 <span class="stringliteral">&quot;to int64_t&#39;s size limit&quot;</span>);</div>
-<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;  }</div>
-<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;</div>
-<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="classNanoseconds.html">Nanoseconds</a>(static_cast&lt;int64_t&gt;(seconds * <a class="code" href="classDuration.html#a57e78540c14e753b9149591ef63c9a5e">SECONDS</a>));</div>
-<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;}</div>
-<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;</div>
-<div class="line"><a name="l00408"></a><span class="lineno"><a class="line" href="classDuration.html#ad25211d061e6002a5093eab4514fc1f5">  408</a></span>&#160;<span class="keyword">inline</span> constexpr <a class="code" href="classDuration.html">Duration</a> <a class="code" href="classDuration.html#ad25211d061e6002a5093eab4514fc1f5">Duration::max</a>()</div>
-<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;{</div>
-<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="classNanoseconds.html">Nanoseconds</a>(<a class="code" href="option_8hpp.html#ac4b53d77033a5d2405ef12ceb3dc6498">std::numeric_limits&lt;int64_t&gt;::max</a>());</div>
-<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;}</div>
-<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;</div>
-<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;</div>
-<div class="line"><a name="l00414"></a><span class="lineno"><a class="line" href="classDuration.html#ac6f442d33ee5e10cd97a259b7ac8e558">  414</a></span>&#160;<span class="keyword">inline</span> constexpr <a class="code" href="classDuration.html">Duration</a> <a class="code" href="classDuration.html#ac6f442d33ee5e10cd97a259b7ac8e558">Duration::min</a>()</div>
-<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;{</div>
-<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="classNanoseconds.html">Nanoseconds</a>(<a class="code" href="option_8hpp.html#a78407a45187058b9b4ef2042accb9bc4">std::numeric_limits&lt;int64_t&gt;::min</a>());</div>
-<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;}</div>
-<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;</div>
-<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;<span class="preprocessor">#endif // __STOUT_DURATION_HPP__</span></div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;  <span class="comment">// Output the duration in full double precision and save the old precision.</span></div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;  <span class="keywordtype">long</span> precision = stream.precision(std::numeric_limits&lt;double&gt;::digits10);</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;  <span class="comment">// Parse the duration as the sign and the absolute value.</span></div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;  <a class="code" href="classDuration.html">Duration</a> duration = duration_;</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;  <span class="keywordflow">if</span> (duration_ &lt; <a class="code" href="classDuration.html#a3c45d1cc69ecf64cd63180ea2b1eddae">Duration::zero</a>()) {</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;    stream &lt;&lt; <span class="stringliteral">&quot;-&quot;</span>;</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;    <span class="comment">// Duration::min() may not be representable as a positive Duration.</span></div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;    <span class="keywordflow">if</span> (duration_ == <a class="code" href="classDuration.html#ac6f442d33ee5e10cd97a259b7ac8e558">Duration::min</a>()) {</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;      duration = <a class="code" href="classDuration.html#ad25211d061e6002a5093eab4514fc1f5">Duration::max</a>();</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;      duration = duration_ * -1;</div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;    }</div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;  }</div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;</div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;  <span class="comment">// First determine which bucket of time unit the duration falls into</span></div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;  <span class="comment">// then check whether the duration can be represented as a whole</span></div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;  <span class="comment">// number with this time unit or a smaller one.</span></div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;  <span class="comment">// e.g. 1.42857142857143weeks falls into the &#39;Weeks&#39; bucket but</span></div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;  <span class="comment">// reads better with a smaller unit: &#39;10days&#39;. So we use &#39;days&#39;</span></div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;  <span class="comment">// instead of &#39;weeks&#39; to output the duration.</span></div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;  int64_t nanoseconds = duration.<a class="code" href="classDuration.html#aa3703196ba3797f7833a8348ccb5449a">ns</a>();</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;  <span class="keywordflow">if</span> (duration &lt; <a class="code" href="classMicroseconds.html">Microseconds</a>(1)) {</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;    stream &lt;&lt; duration.<a class="code" href="classDuration.html#aa3703196ba3797f7833a8348ccb5449a">ns</a>() &lt;&lt; <a class="code" href="classNanoseconds.html#ad72de5352d805622f255e5ad07a67356">Nanoseconds::units</a>();</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;  } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (duration &lt; <a class="code" href="classMilliseconds.html">Milliseconds</a>(1)) {</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;    <span class="keywordflow">if</span> (nanoseconds % <a class="code" href="classDuration.html#ad2877fca0bfcc4909706cf128273b3aa">Duration::MICROSECONDS</a> != 0) {</div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;      <span class="comment">// We can&#39;t get a whole number using this unit but we can at</span></div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;      <span class="comment">// one level down.</span></div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;      stream &lt;&lt; duration.<a class="code" href="classDuration.html#aa3703196ba3797f7833a8348ccb5449a">ns</a>() &lt;&lt; <a class="code" href="classNanoseconds.html#ad72de5352d805622f255e5ad07a67356">Nanoseconds::units</a>();</div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;      stream &lt;&lt; duration.<a class="code" href="classDuration.html#ab4bc8981d3ac26e3880e57e19f7f7f92">us</a>() &lt;&lt; <a class="code" href="classMicroseconds.html#abe8aa0a5b2cf4ed2740baac28d723a87">Microseconds::units</a>();</div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;    }</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;  } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (duration &lt; <a class="code" href="classSeconds.html">Seconds</a>(1)) {</div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;    <span class="keywordflow">if</span> (nanoseconds % <a class="code" href="classDuration.html#ab69ccbc15f17ef66c8804b2a1da83da6">Duration::MILLISECONDS</a> != 0 &amp;&amp;</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;        nanoseconds % <a class="code" href="classDuration.html#ad2877fca0bfcc4909706cf128273b3aa">Duration::MICROSECONDS</a> == 0) {</div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;      stream &lt;&lt; duration.<a class="code" href="classDuration.html#ab4bc8981d3ac26e3880e57e19f7f7f92">us</a>() &lt;&lt; <a class="code" href="classMicroseconds.html#abe8aa0a5b2cf4ed2740baac28d723a87">Microseconds::units</a>();</div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;      stream &lt;&lt; duration.<a class="code" href="classDuration.html#a05ddd6a9f21b82dba6313f81418f53d2">ms</a>() &lt;&lt; <a class="code" href="classMilliseconds.html#ad8651c5072800ec3e83b58cb46278f1a">Milliseconds::units</a>();</div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;    }</div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;  } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (duration &lt; <a class="code" href="classMinutes.html">Minutes</a>(1)) {</div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;    <span class="keywordflow">if</span> (nanoseconds % <a class="code" href="classDuration.html#a57e78540c14e753b9149591ef63c9a5e">Duration::SECONDS</a> != 0 &amp;&amp;</div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;        nanoseconds % <a class="code" href="classDuration.html#ab69ccbc15f17ef66c8804b2a1da83da6">Duration::MILLISECONDS</a> == 0) {</div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;      stream &lt;&lt; duration.<a class="code" href="classDuration.html#a05ddd6a9f21b82dba6313f81418f53d2">ms</a>() &lt;&lt; <a class="code" href="classMilliseconds.html#ad8651c5072800ec3e83b58cb46278f1a">Milliseconds::units</a>();</div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;      stream &lt;&lt; duration.<a class="code" href="classDuration.html#a31ebb8d92dc93914cb830d70753d802b">secs</a>() &lt;&lt; <a class="code" href="classSeconds.html#a7f333813ed6c0697f69aa27df45110f5">Seconds::units</a>();</div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;    }</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;  } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (duration &lt; <a class="code" href="classHours.html">Hours</a>(1)) {</div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;    <span class="keywordflow">if</span> (nanoseconds % <a class="code" href="classDuration.html#a4a838d16d12606f69af3b9c60417c860">Duration::MINUTES</a> != 0 &amp;&amp;</div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;        nanoseconds % <a class="code" href="classDuration.html#a57e78540c14e753b9149591ef63c9a5e">Duration::SECONDS</a> == 0) {</div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;      stream &lt;&lt; duration.<a class="code" href="classDuration.html#a31ebb8d92dc93914cb830d70753d802b">secs</a>() &lt;&lt; <a class="code" href="classSeconds.html#a7f333813ed6c0697f69aa27df45110f5">Seconds::units</a>();</div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;      stream &lt;&lt; duration.<a class="code" href="classDuration.html#a83df74b2977f3eac2fbe2fa4595a6620">mins</a>() &lt;&lt; <a class="code" href="classMinutes.html#a908aad4e6a868e043f95d3fcbf3d5986">Minutes::units</a>();</div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;    }</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;  } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (duration &lt; <a class="code" href="classDays.html">Days</a>(1)) {</div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;    <span class="keywordflow">if</span> (nanoseconds % <a class="code" href="classDuration.html#a0564918aa36599b575e155644f4513a3">Duration::HOURS</a> != 0 &amp;&amp;</div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;        nanoseconds % <a class="code" href="classDuration.html#a4a838d16d12606f69af3b9c60417c860">Duration::MINUTES</a> == 0) {</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;      stream &lt;&lt; duration.<a class="code" href="classDuration.html#a83df74b2977f3eac2fbe2fa4595a6620">mins</a>() &lt;&lt; <a class="code" href="classMinutes.html#a908aad4e6a868e043f95d3fcbf3d5986">Minutes::units</a>();</div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;      stream &lt;&lt; duration.<a class="code" href="classDuration.html#a66d69bb283add7d88e97e8fe61ec1a85">hrs</a>() &lt;&lt; <a class="code" href="classHours.html#a01a1c3cf790be36e3e3791822098e220">Hours::units</a>();</div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;    }</div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;  } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (duration &lt; <a class="code" href="classWeeks.html">Weeks</a>(1)) {</div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;    <span class="keywordflow">if</span> (nanoseconds % <a class="code" href="classDuration.html#ab3041d011ff7fe9136074ba7076cbc04">Duration::DAYS</a> != 0 &amp;&amp;</div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;        nanoseconds % <a class="code" href="classDuration.html#a0564918aa36599b575e155644f4513a3">Duration::HOURS</a> == 0) {</div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;      stream &lt;&lt; duration.<a class="code" href="classDuration.html#a66d69bb283add7d88e97e8fe61ec1a85">hrs</a>() &lt;&lt; <a class="code" href="classHours.html#a01a1c3cf790be36e3e3791822098e220">Hours::units</a>();</div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;      stream &lt;&lt; duration.<a class="code" href="classDuration.html#a5fe95c3820f362aca1ff3442929ea656">days</a>() &lt;&lt; <a class="code" href="classDays.html#a589226d06fa74863c8f7a3c7b5c17a4c">Days::units</a>();</div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;    }</div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;  } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;    <span class="keywordflow">if</span> (nanoseconds % <a class="code" href="classDuration.html#aadcf23b757330ae23ee70117aec0656e">Duration::WEEKS</a> != 0 &amp;&amp;</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;        nanoseconds % <a class="code" href="classDuration.html#ab3041d011ff7fe9136074ba7076cbc04">Duration::DAYS</a> == 0) {</div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;      stream &lt;&lt; duration.<a class="code" href="classDuration.html#a5fe95c3820f362aca1ff3442929ea656">days</a>() &lt;&lt; <a class="code" href="classDays.html#a589226d06fa74863c8f7a3c7b5c17a4c">Days::units</a>();</div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;      stream &lt;&lt; duration.<a class="code" href="classDuration.html#ae98a411bf78d0ab537c021bf3dbd01b0">weeks</a>() &lt;&lt; <a class="code" href="classWeeks.html#a7d1f2cc4ff0b617564e447dfbbcf0373">Weeks::units</a>();</div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;    }</div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;  }</div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;</div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;  <span class="comment">// Return the stream to original formatting state.</span></div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;  stream.precision(precision);</div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;</div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;  <span class="keywordflow">return</span> stream;</div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;}</div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;</div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;</div>
+<div class="line"><a name="l00395"></a><span class="lineno"><a class="line" href="classDuration.html#a70f3ccdaba8dd6d0a1c2eddde1d1327a">  395</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;Duration&gt;</a> <a class="code" href="classDuration.html#a70f3ccdaba8dd6d0a1c2eddde1d1327a">Duration::create</a>(<span class="keywordtype">double</span> seconds)</div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;{</div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;  <span class="keywordflow">if</span> (seconds * <a class="code" href="classDuration.html#a57e78540c14e753b9149591ef63c9a5e">SECONDS</a> &gt; <a class="code" href="option_8hpp.html#ac4b53d77033a5d2405ef12ceb3dc6498">std::numeric_limits&lt;int64_t&gt;::max</a>() ||</div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;      seconds * <a class="code" href="classDuration.html#a57e78540c14e753b9149591ef63c9a5e">SECONDS</a> &lt; <a class="code" href="option_8hpp.html#a78407a45187058b9b4ef2042accb9bc4">std::numeric_limits&lt;int64_t&gt;::min</a>()) {</div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(<span class="stringliteral">&quot;Argument out of the range that a Duration can represent due &quot;</span></div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;                 <span class="stringliteral">&quot;to int64_t&#39;s size limit&quot;</span>);</div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;  }</div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;</div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="classNanoseconds.html">Nanoseconds</a>(static_cast&lt;int64_t&gt;(seconds * <a class="code" href="classDuration.html#a57e78540c14e753b9149591ef63c9a5e">SECONDS</a>));</div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;}</div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;</div>
+<div class="line"><a name="l00406"></a><span class="lineno"><a class="line" href="classDuration.html#ad25211d061e6002a5093eab4514fc1f5">  406</a></span>&#160;<span class="keyword">inline</span> constexpr <a class="code" href="classDuration.html">Duration</a> <a class="code" href="classDuration.html#ad25211d061e6002a5093eab4514fc1f5">Duration::max</a>()</div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;{</div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="classNanoseconds.html">Nanoseconds</a>(<a class="code" href="option_8hpp.html#ac4b53d77033a5d2405ef12ceb3dc6498">std::numeric_limits&lt;int64_t&gt;::max</a>());</div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;}</div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;</div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;</div>
+<div class="line"><a name="l00412"></a><span class="lineno"><a class="line" href="classDuration.html#ac6f442d33ee5e10cd97a259b7ac8e558">  412</a></span>&#160;<span class="keyword">inline</span> constexpr <a class="code" href="classDuration.html">Duration</a> <a class="code" href="classDuration.html#ac6f442d33ee5e10cd97a259b7ac8e558">Duration::min</a>()</div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;{</div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="classNanoseconds.html">Nanoseconds</a>(<a class="code" href="option_8hpp.html#a78407a45187058b9b4ef2042accb9bc4">std::numeric_limits&lt;int64_t&gt;::min</a>());</div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;}</div>
+<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;</div>
+<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;<span class="preprocessor">#endif // __STOUT_DURATION_HPP__</span></div>
 <div class="ttc" id="classDays_html_a6e27fbca8c740946cc47bb6e87a2da92"><div class="ttname"><a href="classDays.html#a6e27fbca8c740946cc47bb6e87a2da92">Days::value</a></div><div class="ttdeci">double value() const </div><div class="ttdef"><b>Definition:</b> duration.hpp:290</div></div>
 <div class="ttc" id="classDuration_html_ae98a411bf78d0ab537c021bf3dbd01b0"><div class="ttname"><a href="classDuration.html#ae98a411bf78d0ab537c021bf3dbd01b0">Duration::weeks</a></div><div class="ttdeci">double weeks() const </div><div class="ttdef"><b>Definition:</b> duration.hpp:94</div></div>
 <div class="ttc" id="namespacesvn_html_af97eefc14cbcf6f81e217c6a9215cea9"><div class="ttname"><a href="namespacesvn.html#af97eefc14cbcf6f81e217c6a9215cea9">svn::diff</a></div><div class="ttdeci">Try&lt; Diff &gt; diff(const std::string &amp;from, const std::string &amp;to)</div><div class="ttdef"><b>Definition:</b> svn.hpp:72</div></div>
@@ -497,7 +495,7 @@
 <div class="ttc" id="classDuration_html_a57e78540c14e753b9149591ef63c9a5e"><div class="ttname"><a href="classDuration.html#a57e78540c14e753b9149591ef63c9a5e">Duration::SECONDS</a></div><div class="ttdeci">static constexpr int64_t SECONDS</div><div class="ttdef"><b>Definition:</b> duration.hpp:175</div></div>
 <div class="ttc" id="numify_8hpp_html"><div class="ttname"><a href="numify_8hpp.html">numify.hpp</a></div></div>
 <div class="ttc" id="classMicroseconds_html_aadb9acb8c86cf4da107dade49ea3b2a5"><div class="ttname"><a href="classMicroseconds.html#aadb9acb8c86cf4da107dade49ea3b2a5">Microseconds::Microseconds</a></div><div class="ttdeci">constexpr Microseconds(const Duration &amp;d)</div><div class="ttdef"><b>Definition:</b> duration.hpp:218</div></div>
-<div class="ttc" id="classDuration_html_a70f3ccdaba8dd6d0a1c2eddde1d1327a"><div class="ttname"><a href="classDuration.html#a70f3ccdaba8dd6d0a1c2eddde1d1327a">Duration::create</a></div><div class="ttdeci">static Try&lt; Duration &gt; create(double seconds)</div><div class="ttdef"><b>Definition:</b> duration.hpp:397</div></div>
+<div class="ttc" id="classDuration_html_a70f3ccdaba8dd6d0a1c2eddde1d1327a"><div class="ttname"><a href="classDuration.html#a70f3ccdaba8dd6d0a1c2eddde1d1327a">Duration::create</a></div><div class="ttdeci">static Try&lt; Duration &gt; create(double seconds)</div><div class="ttdef"><b>Definition:</b> duration.hpp:395</div></div>
 <div class="ttc" id="classDuration_html_a05ddd6a9f21b82dba6313f81418f53d2"><div class="ttname"><a href="classDuration.html#a05ddd6a9f21b82dba6313f81418f53d2">Duration::ms</a></div><div class="ttdeci">double ms() const </div><div class="ttdef"><b>Definition:</b> duration.hpp:89</div></div>
 <div class="ttc" id="classWeeks_html_a2606052f27e4baecbf6eb75bd695a034"><div class="ttname"><a href="classWeeks.html#a2606052f27e4baecbf6eb75bd695a034">Weeks::Weeks</a></div><div class="ttdeci">constexpr Weeks(int64_t value)</div><div class="ttdef"><b>Definition:</b> duration.hpp:299</div></div>
 <div class="ttc" id="classDuration_html_a754a0109e91ee4506d4cbd5b51750997"><div class="ttname"><a href="classDuration.html#a754a0109e91ee4506d4cbd5b51750997">Duration::operator==</a></div><div class="ttdeci">bool operator==(const Duration &amp;d) const </div><div class="ttdef"><b>Definition:</b> duration.hpp:108</div></div>
@@ -557,10 +555,10 @@
 <div class="ttc" id="classDuration_html_aef0d672430019fd5ded022bba35717b8"><div class="ttname"><a href="classDuration.html#aef0d672430019fd5ded022bba35717b8">Duration::parse</a></div><div class="ttdeci">static Try&lt; Duration &gt; parse(const std::string &amp;s)</div><div class="ttdef"><b>Definition:</b> duration.hpp:35</div></div>
 <div class="ttc" id="classWeeks_html"><div class="ttname"><a href="classWeeks.html">Weeks</a></div><div class="ttdef"><b>Definition:</b> duration.hpp:296</div></div>
 <div class="ttc" id="classTry_html_a7be0768038e0628632492edf6cc1515a"><div class="ttname"><a href="classTry.html#a7be0768038e0628632492edf6cc1515a">Try::get</a></div><div class="ttdeci">const T &amp; get() const </div><div class="ttdef"><b>Definition:</b> try.hpp:70</div></div>
-<div class="ttc" id="classDuration_html_ac6f442d33ee5e10cd97a259b7ac8e558"><div class="ttname"><a href="classDuration.html#ac6f442d33ee5e10cd97a259b7ac8e558">Duration::min</a></div><div class="ttdeci">static constexpr Duration min()</div><div class="ttdef"><b>Definition:</b> duration.hpp:414</div></div>
+<div class="ttc" id="classDuration_html_ac6f442d33ee5e10cd97a259b7ac8e558"><div class="ttname"><a href="classDuration.html#ac6f442d33ee5e10cd97a259b7ac8e558">Duration::min</a></div><div class="ttdeci">static constexpr Duration min()</div><div class="ttdef"><b>Definition:</b> duration.hpp:412</div></div>
 <div class="ttc" id="classNanoseconds_html_ad72de5352d805622f255e5ad07a67356"><div class="ttname"><a href="classNanoseconds.html#ad72de5352d805622f255e5ad07a67356">Nanoseconds::units</a></div><div class="ttdeci">static std::string units()</div><div class="ttdef"><b>Definition:</b> duration.hpp:208</div></div>
 <div class="ttc" id="classDuration_html_a5dc54363ab21c211ff26c7bb24695a50"><div class="ttname"><a href="classDuration.html#a5dc54363ab21c211ff26c7bb24695a50">Duration::operator/</a></div><div class="ttdeci">Duration operator/(double divisor) const </div><div class="ttdef"><b>Definition:</b> duration.hpp:156</div></div>
-<div class="ttc" id="classDuration_html_ad25211d061e6002a5093eab4514fc1f5"><div class="ttname"><a href="classDuration.html#ad25211d061e6002a5093eab4514fc1f5">Duration::max</a></div><div class="ttdeci">static constexpr Duration max()</div><div class="ttdef"><b>Definition:</b> duration.hpp:408</div></div>
+<div class="ttc" id="classDuration_html_ad25211d061e6002a5093eab4514fc1f5"><div class="ttname"><a href="classDuration.html#ad25211d061e6002a5093eab4514fc1f5">Duration::max</a></div><div class="ttdeci">static constexpr Duration max()</div><div class="ttdef"><b>Definition:</b> duration.hpp:406</div></div>
 <div class="ttc" id="classMilliseconds_html_ad8651c5072800ec3e83b58cb46278f1a"><div class="ttname"><a href="classMilliseconds.html#ad8651c5072800ec3e83b58cb46278f1a">Milliseconds::units</a></div><div class="ttdeci">static std::string units()</div><div class="ttdef"><b>Definition:</b> duration.hpp:236</div></div>
 <div class="ttc" id="classSeconds_html_ae2c27f6b4f5d5d1b0983b82257004aa4"><div class="ttname"><a href="classSeconds.html#ae2c27f6b4f5d5d1b0983b82257004aa4">Seconds::Seconds</a></div><div class="ttdeci">constexpr Seconds(int64_t seconds)</div><div class="ttdef"><b>Definition:</b> duration.hpp:243</div></div>
 <div class="ttc" id="classMicroseconds_html_acf44bc9c3fd32497f04c6254e65ef115"><div class="ttname"><a href="classMicroseconds.html#acf44bc9c3fd32497f04c6254e65ef115">Microseconds::Microseconds</a></div><div class="ttdeci">constexpr Microseconds(int64_t microseconds)</div><div class="ttdef"><b>Definition:</b> duration.hpp:215</div></div>

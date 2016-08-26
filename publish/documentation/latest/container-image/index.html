@@ -130,8 +130,8 @@ images which will then be passed to the corresponding isolators for
 proper isolation.</p>
 
 <p>There are a few container image specifications, notably
-<a href="/documentation/latest/./https://github.com/docker/docker/blob/master/image/spec/v1/">Docker</a>,
-<a href="/documentation/latest/./https://github.com/appc/spec/blob/master/SPEC/">Appc</a>, and
+<a href="https://github.com/docker/docker/blob/master/image/spec/v1.md">Docker</a>,
+<a href="https://github.com/appc/spec/blob/master/SPEC.md">Appc</a>, and
 <a href="https://github.com/opencontainers/specs">OCI</a> (future). Currently, we
 support Docker and Appc images. More details about what features are
 supported or not can be found in the following sections.</p>
@@ -184,7 +184,7 @@ now: <code>APPC</code> and <code>DOCKER</code>, representing Appc and Docker ima
 respectively.</p>
 
 <p>For Appc images, the <code>name</code> and <code>labels</code> are what described in the
-<a href="/documentation/latest/./https://github.com/appc/spec/blob/master/spec/aci/#image-manifest-schema">spec</a>.</p>
+<a href="https://github.com/appc/spec/blob/master/spec/aci.md#image-manifest-schema">spec</a>.</p>
 
 <p>For Docker images, the <code>name</code> is the Docker image reference in the
 following form (the same format expected by <code>docker pull</code>):
@@ -408,10 +408,10 @@ share the source. Select writable areas can be achieved by mounting
 read-write volumes to places like <code>/tmp</code>, <code>/var/tmp</code>, <code>/home</code>, etc.
 using the <code>ContainerInfo</code>. These can be relative to the executor work
 directory. Since the filesystem is read-only, <code>--sandbox_directory</code>
-must already exist within the filesystem because the filesystem
-isolator is unable to create it (e.g., either the image writer needs
-to create the mount point in the image, or the operator needs to set
-agent flag <code>--sandbox_directory</code> properly).</p></li>
+and <code>/tmp</code> must already exist within the filesystem because the
+filesystem isolator is unable to create it (e.g., either the image
+writer needs to create the mount point in the image, or the operator
+needs to set agent flag <code>--sandbox_directory</code> properly).</p></li>
 </ol>
 
 

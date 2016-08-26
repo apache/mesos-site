@@ -93,41 +93,45 @@
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">//    mounting read-write volumes to places like /tmp, /var/tmp,</span></div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">//    /home, etc. using the ContainerInfo. These can be relative to</span></div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">//    the executor work directory.</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">//    N.B. Since the filesystem is read-only, &#39;--sandbox_directory&#39; must</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">//    already exist within the filesystem because the filesystem isolator</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">//    is unable to create it!</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">// 3) It&#39;s fast because the bind mount requires (nearly) zero IO.</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1slave_1_1BindBackend.html">   46</a></span>&#160;<span class="keyword">class </span><a class="code" href="classmesos_1_1internal_1_1slave_1_1BindBackend.html">BindBackend</a> : <span class="keyword">public</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Backend.html">Backend</a></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;{</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1BindBackend.html#a8882f2786d4113cd1ec713e1f9da89b4">~BindBackend</a>();</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <span class="comment">// BindBackend doesn&#39;t use any flag.</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <span class="keyword">static</span> <a class="code" href="classTry.html">Try&lt;process::Owned&lt;Backend&gt;</a>&gt; <a class="code" href="classmesos_1_1internal_1_1slave_1_1BindBackend.html#adbdd753e01959bc93d459580e5dd25c8">create</a>(<span class="keyword">const</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Flags.html">Flags</a>&amp;);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;Nothing&gt;</a> <a class="code" href="classmesos_1_1internal_1_1slave_1_1BindBackend.html#a2dd8bcf080e7dfcf4e2787b4f32a7476">provision</a>(</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;      <span class="keyword">const</span> std::vector&lt;std::string&gt;&amp; layers,</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;      <span class="keyword">const</span> std::string&amp; rootfs,</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;      <span class="keyword">const</span> std::string&amp; backendDir);</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;bool&gt;</a> <a class="code" href="classmesos_1_1internal_1_1slave_1_1BindBackend.html#a5e8a1e17888424f7b56e34dbe2961c69">destroy</a>(<span class="keyword">const</span> std::string&amp; rootfs);</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1BindBackend.html">BindBackend</a>(<a class="code" href="classprocess_1_1Owned.html">process::Owned&lt;BindBackendProcess&gt;</a> process);</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <a class="code" href="classmesos_1_1internal_1_1slave_1_1BindBackend.html">BindBackend</a>(<span class="keyword">const</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1BindBackend.html">BindBackend</a>&amp;); <span class="comment">// Not copyable.</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <a class="code" href="classmesos_1_1internal_1_1slave_1_1BindBackend.html">BindBackend</a>&amp; operator=(<span class="keyword">const</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1BindBackend.html">BindBackend</a>&amp;); <span class="comment">// Not assignable.</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <a class="code" href="classprocess_1_1Owned.html">process::Owned&lt;BindBackendProcess&gt;</a> process;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;};</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;} <span class="comment">// namespace slave {</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;} <span class="comment">// namespace internal {</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;} <span class="comment">// namespace mesos {</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">//    N.B. Since the filesystem is read-only:</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">//    i.  The &#39;--sandbox_directory&#39; must already exist within the</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">//        filesystem because the filesystem isolator is unable to</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">//        create it!</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="comment">//    ii. The &#39;tmpfs&#39; moint point &#39;/tmp&#39; must already exist within</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment">//        the filesystem, because &#39;pivot_root&#39; needs a mount point</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">//        for the old root.</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">// 3) It&#39;s fast because the bind mount requires (nearly) zero IO.</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1slave_1_1BindBackend.html">   50</a></span>&#160;<span class="keyword">class </span><a class="code" href="classmesos_1_1internal_1_1slave_1_1BindBackend.html">BindBackend</a> : <span class="keyword">public</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Backend.html">Backend</a></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;{</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1BindBackend.html#a8882f2786d4113cd1ec713e1f9da89b4">~BindBackend</a>();</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <span class="comment">// BindBackend doesn&#39;t use any flag.</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="keyword">static</span> <a class="code" href="classTry.html">Try&lt;process::Owned&lt;Backend&gt;</a>&gt; <a class="code" href="classmesos_1_1internal_1_1slave_1_1BindBackend.html#adbdd753e01959bc93d459580e5dd25c8">create</a>(<span class="keyword">const</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Flags.html">Flags</a>&amp;);</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;Nothing&gt;</a> <a class="code" href="classmesos_1_1internal_1_1slave_1_1BindBackend.html#a2dd8bcf080e7dfcf4e2787b4f32a7476">provision</a>(</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;      <span class="keyword">const</span> std::vector&lt;std::string&gt;&amp; layers,</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;      <span class="keyword">const</span> std::string&amp; rootfs,</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;      <span class="keyword">const</span> std::string&amp; backendDir);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;bool&gt;</a> <a class="code" href="classmesos_1_1internal_1_1slave_1_1BindBackend.html#a5e8a1e17888424f7b56e34dbe2961c69">destroy</a>(<span class="keyword">const</span> std::string&amp; rootfs);</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1BindBackend.html">BindBackend</a>(<a class="code" href="classprocess_1_1Owned.html">process::Owned&lt;BindBackendProcess&gt;</a> process);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <a class="code" href="classmesos_1_1internal_1_1slave_1_1BindBackend.html">BindBackend</a>(<span class="keyword">const</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1BindBackend.html">BindBackend</a>&amp;); <span class="comment">// Not copyable.</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <a class="code" href="classmesos_1_1internal_1_1slave_1_1BindBackend.html">BindBackend</a>&amp; operator=(<span class="keyword">const</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1BindBackend.html">BindBackend</a>&amp;); <span class="comment">// Not assignable.</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <a class="code" href="classprocess_1_1Owned.html">process::Owned&lt;BindBackendProcess&gt;</a> process;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;};</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="preprocessor">#endif // __PROVISIONER_BACKENDS_BIND_HPP__</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;} <span class="comment">// namespace slave {</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;} <span class="comment">// namespace internal {</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;} <span class="comment">// namespace mesos {</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="preprocessor">#endif // __PROVISIONER_BACKENDS_BIND_HPP__</span></div>
 <div class="ttc" id="classmesos_1_1internal_1_1slave_1_1BindBackend_html_a2dd8bcf080e7dfcf4e2787b4f32a7476"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1BindBackend.html#a2dd8bcf080e7dfcf4e2787b4f32a7476">mesos::internal::slave::BindBackend::provision</a></div><div class="ttdeci">virtual process::Future&lt; Nothing &gt; provision(const std::vector&lt; std::string &gt; &amp;layers, const std::string &amp;rootfs, const std::string &amp;backendDir)</div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1BindBackend_html"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1BindBackend.html">mesos::internal::slave::BindBackend</a></div><div class="ttdef"><b>Definition:</b> bind.hpp:46</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1BindBackend_html"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1BindBackend.html">mesos::internal::slave::BindBackend</a></div><div class="ttdef"><b>Definition:</b> bind.hpp:50</div></div>
 <div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1slave_1_1Flags_html"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1Flags.html">mesos::internal::slave::Flags</a></div><div class="ttdef"><b>Definition:</b> flags.hpp:38</div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1slave_1_1Backend_html"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1Backend.html">mesos::internal::slave::Backend</a></div><div class="ttdef"><b>Definition:</b> backend.hpp:36</div></div>

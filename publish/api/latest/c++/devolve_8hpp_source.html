@@ -116,29 +116,30 @@
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;scheduler::Event <a class="code" href="namespacemesos_1_1internal.html#aa138875b08587bec160408b02a84aa15">devolve</a>(<span class="keyword">const</span> v1::scheduler::Event&amp; event);</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;executor::Call <a class="code" href="namespacemesos_1_1internal.html#aa138875b08587bec160408b02a84aa15">devolve</a>(<span class="keyword">const</span> v1::executor::Call&amp; call);</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;mesos::agent::Call <a class="code" href="namespacemesos_1_1internal.html#aa138875b08587bec160408b02a84aa15">devolve</a>(<span class="keyword">const</span> v1::agent::Call&amp; call);</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;mesos::master::Call <a class="code" href="namespacemesos_1_1internal.html#aa138875b08587bec160408b02a84aa15">devolve</a>(<span class="keyword">const</span> v1::master::Call&amp; call);</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="comment">// Helper for repeated field devolving to &#39;T1&#39; from &#39;T2&#39;.</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T1, <span class="keyword">typename</span> T2&gt;</div>
-<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="namespacemesos_1_1internal.html#a840d16142c39cb98e48a44012a91f9ab">   72</a></span>&#160;google::protobuf::RepeatedPtrField&lt;T1&gt; <a class="code" href="namespacemesos_1_1internal.html#aa138875b08587bec160408b02a84aa15">devolve</a>(</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    google::protobuf::RepeatedPtrField&lt;T2&gt; t2s)</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;{</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  google::protobuf::RepeatedPtrField&lt;T1&gt; t1s;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="keywordflow">foreach</span> (<span class="keyword">const</span> T2&amp; t2, t2s) {</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    t1s.Add()-&gt;CopyFrom(<a class="code" href="namespacemesos_1_1internal.html#aa138875b08587bec160408b02a84aa15">devolve</a>(t2));</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  }</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="keywordflow">return</span> t1s;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;}</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;} <span class="comment">// namespace internal {</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;} <span class="comment">// namespace mesos {</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="preprocessor">#endif // __INTERNAL_DEVOLVE_HPP__</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;executor::Event <a class="code" href="namespacemesos_1_1internal.html#aa138875b08587bec160408b02a84aa15">devolve</a>(<span class="keyword">const</span> v1::executor::Event&amp; event);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;mesos::agent::Call <a class="code" href="namespacemesos_1_1internal.html#aa138875b08587bec160408b02a84aa15">devolve</a>(<span class="keyword">const</span> v1::agent::Call&amp; call);</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;mesos::master::Call <a class="code" href="namespacemesos_1_1internal.html#aa138875b08587bec160408b02a84aa15">devolve</a>(<span class="keyword">const</span> v1::master::Call&amp; call);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="comment">// Helper for repeated field devolving to &#39;T1&#39; from &#39;T2&#39;.</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T1, <span class="keyword">typename</span> T2&gt;</div>
+<div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="namespacemesos_1_1internal.html#a840d16142c39cb98e48a44012a91f9ab">   73</a></span>&#160;google::protobuf::RepeatedPtrField&lt;T1&gt; <a class="code" href="namespacemesos_1_1internal.html#aa138875b08587bec160408b02a84aa15">devolve</a>(</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    google::protobuf::RepeatedPtrField&lt;T2&gt; t2s)</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;{</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  google::protobuf::RepeatedPtrField&lt;T1&gt; t1s;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="keywordflow">foreach</span> (<span class="keyword">const</span> T2&amp; t2, t2s) {</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    t1s.Add()-&gt;CopyFrom(<a class="code" href="namespacemesos_1_1internal.html#aa138875b08587bec160408b02a84aa15">devolve</a>(t2));</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  }</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <span class="keywordflow">return</span> t1s;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;}</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;} <span class="comment">// namespace internal {</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;} <span class="comment">// namespace mesos {</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="preprocessor">#endif // __INTERNAL_DEVOLVE_HPP__</span></div>
 <div class="ttc" id="include_2mesos_2v1_2master_2master_8hpp_html"><div class="ttname"><a href="include_2mesos_2v1_2master_2master_8hpp.html">master.hpp</a></div></div>
 <div class="ttc" id="namespacemesos_1_1internal_html_aa138875b08587bec160408b02a84aa15"><div class="ttname"><a href="namespacemesos_1_1internal.html#aa138875b08587bec160408b02a84aa15">mesos::internal::devolve</a></div><div class="ttdeci">SlaveID devolve(const v1::AgentID &amp;agentId)</div></div>
 <div class="ttc" id="include_2mesos_2mesos_8hpp_html"><div class="ttname"><a href="include_2mesos_2mesos_8hpp.html">mesos.hpp</a></div></div>

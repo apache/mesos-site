@@ -71,9 +71,13 @@ Inheritance diagram for mesos::internal::slave::Subsystem:</div>
  <div class="center">
   <img src="classmesos_1_1internal_1_1slave_1_1Subsystem.png" usemap="#mesos::internal::slave::Subsystem_map" alt=""/>
   <map id="mesos::internal::slave::Subsystem_map" name="mesos::internal::slave::Subsystem_map">
-<area href="classprocess_1_1Process.html" alt="process::Process&lt; Subsystem &gt;" shape="rect" coords="0,112,197,136"/>
-<area href="classprocess_1_1ProcessBase.html" alt="process::ProcessBase" shape="rect" coords="0,56,197,80"/>
-<area href="structprocess_1_1EventVisitor.html" alt="process::EventVisitor" shape="rect" coords="0,0,197,24"/>
+<area href="classprocess_1_1Process.html" alt="process::Process&lt; Subsystem &gt;" shape="rect" coords="381,112,625,136"/>
+<area href="classprocess_1_1ProcessBase.html" alt="process::ProcessBase" shape="rect" coords="381,56,625,80"/>
+<area href="structprocess_1_1EventVisitor.html" alt="process::EventVisitor" shape="rect" coords="381,0,625,24"/>
+<area href="classmesos_1_1internal_1_1slave_1_1CpuacctSubsystem.html" title="Represent cgroups cpuacct subsystem. " alt="mesos::internal::slave::CpuacctSubsystem" shape="rect" coords="0,224,244,248"/>
+<area href="classmesos_1_1internal_1_1slave_1_1CpuSubsystem.html" title="Represent cgroups cpu subsystem. " alt="mesos::internal::slave::CpuSubsystem" shape="rect" coords="254,224,498,248"/>
+<area href="classmesos_1_1internal_1_1slave_1_1DevicesSubsystem.html" title="Represent cgroups devices subsystem. " alt="mesos::internal::slave::DevicesSubsystem" shape="rect" coords="508,224,752,248"/>
+<area href="classmesos_1_1internal_1_1slave_1_1MemorySubsystem.html" title="Represent cgroups memory subsystem. " alt="mesos::internal::slave::MemorySubsystem" shape="rect" coords="762,224,1006,248"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -93,6 +97,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aeb1d6f3a257731add3e29b102c6c7d66"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt; <a class="el" href="structNothing.html">Nothing</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1slave_1_1Subsystem.html#aeb1d6f3a257731add3e29b102c6c7d66">isolate</a> (const ContainerID &amp;containerId, <a class="el" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ab03ced250ed239bc3b50b669493997f9">pid_t</a> pid)</td></tr>
 <tr class="memdesc:aeb1d6f3a257731add3e29b102c6c7d66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Isolate the associated container to cgroups subsystem.  <a href="#aeb1d6f3a257731add3e29b102c6c7d66">More...</a><br/></td></tr>
 <tr class="separator:aeb1d6f3a257731add3e29b102c6c7d66"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aafaede250e3febc4d512577344f606ed"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classprocess_1_1Future.html">process::Future</a><br class="typebreak"/>
+&lt; mesos::slave::ContainerLimitation &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1slave_1_1Subsystem.html#aafaede250e3febc4d512577344f606ed">watch</a> (const ContainerID &amp;containerId)</td></tr>
+<tr class="memdesc:aafaede250e3febc4d512577344f606ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Watch the container and report if any resource constraint impacts it.  <a href="#aafaede250e3febc4d512577344f606ed">More...</a><br/></td></tr>
+<tr class="separator:aafaede250e3febc4d512577344f606ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac2c8172cb2947478a9476d6c8a32c963"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt; <a class="el" href="structNothing.html">Nothing</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1slave_1_1Subsystem.html#ac2c8172cb2947478a9476d6c8a32c963">update</a> (const ContainerID &amp;containerId, const <a class="el" href="classmesos_1_1Resources.html">Resources</a> &amp;resources)</td></tr>
 <tr class="memdesc:ac2c8172cb2947478a9476d6c8a32c963"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update resources allocated to the associated container in this cgroups subsystem.  <a href="#ac2c8172cb2947478a9476d6c8a32c963">More...</a><br/></td></tr>
 <tr class="separator:ac2c8172cb2947478a9476d6c8a32c963"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -126,10 +134,10 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:ac33c37b65837eb8a507c901ad0e106d7"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classTry.html">Try</a>&lt; <a class="el" href="classprocess_1_1Owned.html">process::Owned</a><br class="typebreak"/>
-&lt; <a class="el" href="classmesos_1_1internal_1_1slave_1_1Subsystem.html">Subsystem</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1slave_1_1Subsystem.html#ac33c37b65837eb8a507c901ad0e106d7">create</a> (const <a class="el" href="classmesos_1_1internal_1_1slave_1_1Flags.html">Flags</a> &amp;_flags, const std::string &amp;_name, const std::string &amp;_hierarchy)</td></tr>
-<tr class="memdesc:ac33c37b65837eb8a507c901ad0e106d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attempts to create a specific <code><a class="el" href="classmesos_1_1internal_1_1slave_1_1Subsystem.html" title="An abstraction for cgroups subsystem. ">Subsystem</a></code> object that will contain specific information associated with container.  <a href="#ac33c37b65837eb8a507c901ad0e106d7">More...</a><br/></td></tr>
-<tr class="separator:ac33c37b65837eb8a507c901ad0e106d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4bdc809389566c9bf7686b88119bed7"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classTry.html">Try</a>&lt; <a class="el" href="classprocess_1_1Owned.html">process::Owned</a><br class="typebreak"/>
+&lt; <a class="el" href="classmesos_1_1internal_1_1slave_1_1Subsystem.html">Subsystem</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1slave_1_1Subsystem.html#ac4bdc809389566c9bf7686b88119bed7">create</a> (const <a class="el" href="classmesos_1_1internal_1_1slave_1_1Flags.html">Flags</a> &amp;<a class="el" href="classmesos_1_1internal_1_1slave_1_1Subsystem.html#a8664a93f45d3086122355139598f5ce2">flags</a>, const std::string &amp;<a class="el" href="classmesos_1_1internal_1_1slave_1_1Subsystem.html#a6c6a31c694952b9ed4d27c8726d8a5d5">name</a>, const std::string &amp;<a class="el" href="classmesos_1_1internal_1_1slave_1_1Subsystem.html#a8f9a6c398b905dcdac8c8efebde06fd5">hierarchy</a>)</td></tr>
+<tr class="memdesc:ac4bdc809389566c9bf7686b88119bed7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attempts to create a specific <code><a class="el" href="classmesos_1_1internal_1_1slave_1_1Subsystem.html" title="An abstraction for cgroups subsystem. ">Subsystem</a></code> object that will contain specific information associated with container.  <a href="#ac4bdc809389566c9bf7686b88119bed7">More...</a><br/></td></tr>
+<tr class="separator:ac4bdc809389566c9bf7686b88119bed7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -258,7 +266,7 @@ const <a class="el" href="structprocess_1_1http_1_1Request.html">http::Request</
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -323,7 +331,7 @@ const <a class="el" href="structprocess_1_1http_1_1Request.html">http::Request</
 </div><div class="memdoc">
 
 <p>Clean up the cgroups subsystem for the associated container. </p>
-<p>It will be called when destruction to ensure everyting be cleanup.</p>
+<p>It will be called when destruction to ensure everyting be cleanup. Similar to the isolator <code>cleanup</code>, it's likely that the <code>cleanup</code> for the subsystem is called for unknown containers (see MESOS-6059). We should ignore the cleanup request if the container is unknown to the subsystem.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">containerId</td><td>The target containerId. </td></tr>
@@ -332,9 +340,11 @@ const <a class="el" href="structprocess_1_1http_1_1Request.html">http::Request</
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structNothing.html">Nothing</a> or an error if <code>cleanup</code> fails. </dd></dl>
 
+<p>Reimplemented in <a class="el" href="classmesos_1_1internal_1_1slave_1_1MemorySubsystem.html#a05eca6c58b76ca09862a3be3d5ed2fcf">mesos::internal::slave::MemorySubsystem</a>, and <a class="el" href="classmesos_1_1internal_1_1slave_1_1DevicesSubsystem.html#a7c838bed1e53f0c0833765da21a2bdf4">mesos::internal::slave::DevicesSubsystem</a>.</p>
+
 </div>
 </div>
-<a class="anchor" id="ac33c37b65837eb8a507c901ad0e106d7"></a>
+<a class="anchor" id="ac4bdc809389566c9bf7686b88119bed7"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -345,19 +355,19 @@ const <a class="el" href="structprocess_1_1http_1_1Request.html">http::Request</
           <td class="memname">static <a class="el" href="classTry.html">Try</a>&lt;<a class="el" href="classprocess_1_1Owned.html">process::Owned</a>&lt;<a class="el" href="classmesos_1_1internal_1_1slave_1_1Subsystem.html">Subsystem</a>&gt; &gt; mesos::internal::slave::Subsystem::create </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classmesos_1_1internal_1_1slave_1_1Flags.html">Flags</a> &amp;&#160;</td>
-          <td class="paramname"><em>_flags</em>, </td>
+          <td class="paramname"><em>flags</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>_name</em>, </td>
+          <td class="paramname"><em>name</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>_hierarchy</em>&#160;</td>
+          <td class="paramname"><em>hierarchy</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -453,6 +463,8 @@ const <a class="el" href="structprocess_1_1http_1_1Request.html">http::Request</
 <p>The cgroups subsystem name of this <code><a class="el" href="classmesos_1_1internal_1_1slave_1_1Subsystem.html" title="An abstraction for cgroups subsystem. ">Subsystem</a></code> object. </p>
 <dl class="section return"><dt>Returns</dt><dd>The cgroups subsystem name. </dd></dl>
 
+<p>Implemented in <a class="el" href="classmesos_1_1internal_1_1slave_1_1MemorySubsystem.html#af87210586c269c8e3cd96dd041d1541f">mesos::internal::slave::MemorySubsystem</a>, <a class="el" href="classmesos_1_1internal_1_1slave_1_1DevicesSubsystem.html#a4cf3c7fa454892e8adae6342e164b034">mesos::internal::slave::DevicesSubsystem</a>, <a class="el" href="classmesos_1_1internal_1_1slave_1_1CpuSubsystem.html#a38763ffecd8835b6e3bef8c72e1f4aae">mesos::internal::slave::CpuSubsystem</a>, and <a class="el" href="classmesos_1_1internal_1_1slave_1_1CpuacctSubsystem.html#ac6eeb47aab7fb3f8d4e60d54c89f3e3d">mesos::internal::slave::CpuacctSubsystem</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="ae208a72ac226106e15b3b672c267c9b8"></a>
@@ -486,6 +498,8 @@ const <a class="el" href="structprocess_1_1http_1_1Request.html">http::Request</
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structNothing.html">Nothing</a> or an error if <code>prepare</code> fails. </dd></dl>
 
+<p>Reimplemented in <a class="el" href="classmesos_1_1internal_1_1slave_1_1MemorySubsystem.html#a951cd5fac39905a037abdfee29ffbe7f">mesos::internal::slave::MemorySubsystem</a>, and <a class="el" href="classmesos_1_1internal_1_1slave_1_1DevicesSubsystem.html#a266bc651532c17a827e29b0bda57490e">mesos::internal::slave::DevicesSubsystem</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a4304ffefaff7e368c3bf2477eb888bda"></a>
@@ -518,6 +532,8 @@ const <a class="el" href="structprocess_1_1http_1_1Request.html">http::Request</
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structNothing.html">Nothing</a> or an error if <code>recover</code> fails. </dd></dl>
+
+<p>Reimplemented in <a class="el" href="classmesos_1_1internal_1_1slave_1_1MemorySubsystem.html#a5a76fef0609410438622ffa6afb7672a">mesos::internal::slave::MemorySubsystem</a>, and <a class="el" href="classmesos_1_1internal_1_1slave_1_1DevicesSubsystem.html#a731718577b78ac3384a965f650c98724">mesos::internal::slave::DevicesSubsystem</a>.</p>
 
 </div>
 </div>
@@ -596,6 +612,8 @@ const <a class="el" href="structprocess_1_1http_1_1Request.html">http::Request</
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structNothing.html">Nothing</a> or an error if <code>update</code> fails. </dd></dl>
 
+<p>Reimplemented in <a class="el" href="classmesos_1_1internal_1_1slave_1_1MemorySubsystem.html#aefaf542546fc29815dc0ab8a3351ef12">mesos::internal::slave::MemorySubsystem</a>, and <a class="el" href="classmesos_1_1internal_1_1slave_1_1CpuSubsystem.html#a8e74c3e403355c44147d70601bde5de2">mesos::internal::slave::CpuSubsystem</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a14c4d8cb4e25abd582db46d493cbb380"></a>
@@ -628,6 +646,43 @@ const <a class="el" href="structprocess_1_1http_1_1Request.html">http::Request</
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The resource usage statistics or an error if gather statistics fails. </dd></dl>
+
+<p>Reimplemented in <a class="el" href="classmesos_1_1internal_1_1slave_1_1MemorySubsystem.html#a56f8093adfa9cb30a7be05533297a238">mesos::internal::slave::MemorySubsystem</a>, <a class="el" href="classmesos_1_1internal_1_1slave_1_1CpuSubsystem.html#ac9a2ed4c1f9f4ecb0caed2383ef787d9">mesos::internal::slave::CpuSubsystem</a>, and <a class="el" href="classmesos_1_1internal_1_1slave_1_1CpuacctSubsystem.html#a3d787a7876c24239160db9463af928bb">mesos::internal::slave::CpuacctSubsystem</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aafaede250e3febc4d512577344f606ed"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt;mesos::slave::ContainerLimitation&gt; mesos::internal::slave::Subsystem::watch </td>
+          <td>(</td>
+          <td class="paramtype">const ContainerID &amp;&#160;</td>
+          <td class="paramname"><em>containerId</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Watch the container and report if any resource constraint impacts it. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">containerId</td><td>The target containerId. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The resource limitation that impacts the container or an error if <code>watch</code> fails. </dd></dl>
+
+<p>Reimplemented in <a class="el" href="classmesos_1_1internal_1_1slave_1_1MemorySubsystem.html#a7b208f6be909778343582ca083a543b8">mesos::internal::slave::MemorySubsystem</a>.</p>
 
 </div>
 </div>
