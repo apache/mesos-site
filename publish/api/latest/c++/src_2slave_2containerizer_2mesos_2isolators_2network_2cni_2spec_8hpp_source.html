@@ -72,32 +72,81 @@
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define __ISOLATOR_CNI_SPEC_HPP__</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="try_8hpp.html">stout/try.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">// ONLY USEFUL AFTER RUNNING PROTOC.</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &quot;slave/containerizer/mesos/isolators/network/cni/spec.pb.h&quot;</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">namespace </span>mesos {</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">namespace </span>internal {</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">namespace </span>slave {</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">namespace </span>cni {</div>
-<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html">   29</a></span>&#160;<span class="keyword">namespace </span>spec {</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<a class="code" href="classTry.html">Try&lt;NetworkConfig&gt;</a> <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#a05bb31e8a52e4506dcb41e3c201186e9">parseNetworkConfig</a>(<span class="keyword">const</span> std::string&amp; s);</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="json_8hpp.html">stout/json.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">// ONLY USEFUL AFTER RUNNING PROTOC.</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &quot;slave/containerizer/mesos/isolators/network/cni/spec.pb.h&quot;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">namespace </span>mesos {</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">namespace </span>internal {</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">namespace </span>slave {</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">namespace </span>cni {</div>
+<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html">   30</a></span>&#160;<span class="keyword">namespace </span>spec {</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#ab1a247ae9ce372ba945b41a158ec5e76">   32</a></span>&#160;constexpr <span class="keywordtype">char</span> <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#ab1a247ae9ce372ba945b41a158ec5e76">CNI_VERSION</a>[] = <span class="stringliteral">&quot;0.3.0&quot;</span>;</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<a class="code" href="classTry.html">Try&lt;NetworkInfo&gt;</a> <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#a0d481372e320626d823686de000080cd">parseNetworkInfo</a>(<span class="keyword">const</span> std::string&amp; s);</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;} <span class="comment">// namespace spec {</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;} <span class="comment">// namespace cni {</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;} <span class="comment">// namespace slave {</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;} <span class="comment">// namespace internal {</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;} <span class="comment">// namespace mesos {</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#endif // __ISOLATOR_CNI_SPEC_HPP__</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">// CNI commands.</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#a58d7ac47d7f6becf66872a9d4ce6dc2d">   36</a></span>&#160;constexpr <span class="keywordtype">char</span> <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#a58d7ac47d7f6becf66872a9d4ce6dc2d">CNI_CMD_ADD</a>[] = <span class="stringliteral">&quot;ADD&quot;</span>;</div>
+<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#aeb9037c0bd42a6db4c89922a9ea8621c">   37</a></span>&#160;constexpr <span class="keywordtype">char</span> <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#aeb9037c0bd42a6db4c89922a9ea8621c">CNI_CMD_DEL</a>[] = <span class="stringliteral">&quot;DEL&quot;</span>;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">// Well-known CNI error codes:</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">// https://github.com/containernetworking/cni/blob/master/SPEC.md#well-known-error-codes</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#a27fb156954596c61d0b5f9f270ef4f27">   42</a></span>&#160;constexpr uint32_t <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#a27fb156954596c61d0b5f9f270ef4f27">CNI_ERROR_INCOMPATIBLE_VERSION</a> = 1;</div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#aa474e1006da2c2afabc528c85e853c66">   43</a></span>&#160;constexpr uint32_t <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#aa474e1006da2c2afabc528c85e853c66">CNI_ERROR_UNSUPPORTED_FIELD</a> = 2;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<a class="code" href="classTry.html">Try&lt;NetworkConfig&gt;</a> <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#a05bb31e8a52e4506dcb41e3c201186e9">parseNetworkConfig</a>(<span class="keyword">const</span> std::string&amp; s);</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<a class="code" href="classTry.html">Try&lt;NetworkInfo&gt;</a> <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#a0d481372e320626d823686de000080cd">parseNetworkInfo</a>(<span class="keyword">const</span> std::string&amp; s);</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">// Creates a `spec::Error` object, with the `msg` and `code`</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment">// specified. Returns a JSON string representation of the</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">// `spec::Error` object. See details in:</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment">// https://github.com/containernetworking/cni/blob/master/SPEC.md#result</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;std::string <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#ae58e703656ab4a1bd5d9870441236727">error</a>(<span class="keyword">const</span> std::string&amp; msg, uint32_t code);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment">// This class encapsulates a JSON formatted string of type</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">// `spec::Error`. It can be used by CNI plugins to return a CNI error</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">// in a `Try` object when a failure occurs.</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1slave_1_1cni_1_1spec_1_1PluginError.html">   60</a></span>&#160;<span class="keyword">class </span><a class="code" href="classmesos_1_1internal_1_1slave_1_1cni_1_1spec_1_1PluginError.html">PluginError</a> : <span class="keyword">public</span> <a class="code" href="classError.html">::Error</a></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;{</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1slave_1_1cni_1_1spec_1_1PluginError.html#ac0d92c5854587059ef4b8a45d5c560d9">   63</a></span>&#160;  <a class="code" href="classmesos_1_1internal_1_1slave_1_1cni_1_1spec_1_1PluginError.html#ac0d92c5854587059ef4b8a45d5c560d9">PluginError</a>(<span class="keyword">const</span> std::string&amp; msg, uint32_t code)</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    : ::<a class="code" href="classError.html">Error</a>(<a class="code" href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#ae58e703656ab4a1bd5d9870441236727">error</a>(msg, code)) {}</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;};</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#ac7535099ce3dc8acd4b7d41a247b8e78">   68</a></span>&#160;<span class="keyword">inline</span> std::ostream&amp; <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#ac7535099ce3dc8acd4b7d41a247b8e78">operator&lt;&lt;</a>(std::ostream&amp; stream, <span class="keyword">const</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1cni_1_1spec_1_1PluginError.html">PluginError</a>&amp; _error)</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;{</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="keywordflow">return</span> stream &lt;&lt; _error.<a class="code" href="classError.html#a2d13609e80acd2a2a473a26f273b1c4f">message</a>;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;}</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;} <span class="comment">// namespace spec {</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;} <span class="comment">// namespace cni {</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;} <span class="comment">// namespace slave {</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;} <span class="comment">// namespace internal {</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;} <span class="comment">// namespace mesos {</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="preprocessor">#endif // __ISOLATOR_CNI_SPEC_HPP__</span></div>
 <div class="ttc" id="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec_html_a05bb31e8a52e4506dcb41e3c201186e9"><div class="ttname"><a href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#a05bb31e8a52e4506dcb41e3c201186e9">mesos::internal::slave::cni::spec::parseNetworkConfig</a></div><div class="ttdeci">Try&lt; NetworkConfig &gt; parseNetworkConfig(const std::string &amp;s)</div></div>
+<div class="ttc" id="classError_html"><div class="ttname"><a href="classError.html">Error</a></div><div class="ttdef"><b>Definition:</b> errorbase.hpp:35</div></div>
 <div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1cni_1_1spec_1_1PluginError_html"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1cni_1_1spec_1_1PluginError.html">mesos::internal::slave::cni::spec::PluginError</a></div><div class="ttdef"><b>Definition:</b> spec.hpp:60</div></div>
+<div class="ttc" id="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec_html_aa474e1006da2c2afabc528c85e853c66"><div class="ttname"><a href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#aa474e1006da2c2afabc528c85e853c66">mesos::internal::slave::cni::spec::CNI_ERROR_UNSUPPORTED_FIELD</a></div><div class="ttdeci">constexpr uint32_t CNI_ERROR_UNSUPPORTED_FIELD</div><div class="ttdef"><b>Definition:</b> spec.hpp:43</div></div>
+<div class="ttc" id="json_8hpp_html"><div class="ttname"><a href="json_8hpp.html">json.hpp</a></div></div>
 <div class="ttc" id="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec_html_a0d481372e320626d823686de000080cd"><div class="ttname"><a href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#a0d481372e320626d823686de000080cd">mesos::internal::slave::cni::spec::parseNetworkInfo</a></div><div class="ttdeci">Try&lt; NetworkInfo &gt; parseNetworkInfo(const std::string &amp;s)</div></div>
+<div class="ttc" id="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec_html_a27fb156954596c61d0b5f9f270ef4f27"><div class="ttname"><a href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#a27fb156954596c61d0b5f9f270ef4f27">mesos::internal::slave::cni::spec::CNI_ERROR_INCOMPATIBLE_VERSION</a></div><div class="ttdeci">constexpr uint32_t CNI_ERROR_INCOMPATIBLE_VERSION</div><div class="ttdef"><b>Definition:</b> spec.hpp:42</div></div>
+<div class="ttc" id="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec_html_a58d7ac47d7f6becf66872a9d4ce6dc2d"><div class="ttname"><a href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#a58d7ac47d7f6becf66872a9d4ce6dc2d">mesos::internal::slave::cni::spec::CNI_CMD_ADD</a></div><div class="ttdeci">constexpr char CNI_CMD_ADD[]</div><div class="ttdef"><b>Definition:</b> spec.hpp:36</div></div>
+<div class="ttc" id="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec_html_aeb9037c0bd42a6db4c89922a9ea8621c"><div class="ttname"><a href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#aeb9037c0bd42a6db4c89922a9ea8621c">mesos::internal::slave::cni::spec::CNI_CMD_DEL</a></div><div class="ttdeci">constexpr char CNI_CMD_DEL[]</div><div class="ttdef"><b>Definition:</b> spec.hpp:37</div></div>
+<div class="ttc" id="classError_html_a2d13609e80acd2a2a473a26f273b1c4f"><div class="ttname"><a href="classError.html#a2d13609e80acd2a2a473a26f273b1c4f">Error::message</a></div><div class="ttdeci">const std::string message</div><div class="ttdef"><b>Definition:</b> errorbase.hpp:40</div></div>
+<div class="ttc" id="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec_html_ae58e703656ab4a1bd5d9870441236727"><div class="ttname"><a href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#ae58e703656ab4a1bd5d9870441236727">mesos::internal::slave::cni::spec::error</a></div><div class="ttdeci">std::string error(const std::string &amp;msg, uint32_t code)</div></div>
 <div class="ttc" id="try_8hpp_html"><div class="ttname"><a href="try_8hpp.html">try.hpp</a></div></div>
+<div class="ttc" id="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec_html_ac7535099ce3dc8acd4b7d41a247b8e78"><div class="ttname"><a href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#ac7535099ce3dc8acd4b7d41a247b8e78">mesos::internal::slave::cni::spec::operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;stream, const PluginError &amp;_error)</div><div class="ttdef"><b>Definition:</b> spec.hpp:68</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1cni_1_1spec_1_1PluginError_html_ac0d92c5854587059ef4b8a45d5c560d9"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1cni_1_1spec_1_1PluginError.html#ac0d92c5854587059ef4b8a45d5c560d9">mesos::internal::slave::cni::spec::PluginError::PluginError</a></div><div class="ttdeci">PluginError(const std::string &amp;msg, uint32_t code)</div><div class="ttdef"><b>Definition:</b> spec.hpp:63</div></div>
+<div class="ttc" id="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec_html_ab1a247ae9ce372ba945b41a158ec5e76"><div class="ttname"><a href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#ab1a247ae9ce372ba945b41a158ec5e76">mesos::internal::slave::cni::spec::CNI_VERSION</a></div><div class="ttdeci">constexpr char CNI_VERSION[]</div><div class="ttdef"><b>Definition:</b> spec.hpp:32</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

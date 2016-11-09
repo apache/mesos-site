@@ -290,7 +290,7 @@
 <div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;  <span class="keyword">struct </span>addrinfo hints = <a class="code" href="namespacenet.html#a18ecccbe86ad527085ce16740dfa3906">createAddrInfo</a>(SOCK_STREAM, AF_INET, AI_CANONNAME);</div>
 <div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;  <span class="keyword">struct </span>addrinfo* result = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;  <span class="keywordtype">int</span> error = getaddrinfo(host, <span class="keyword">nullptr</span>, &amp;hints, &amp;result);</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;  <span class="keywordtype">int</span> <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#ae58e703656ab4a1bd5d9870441236727">error</a> = getaddrinfo(host, <span class="keyword">nullptr</span>, &amp;hints, &amp;result);</div>
 <div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;</div>
 <div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;  <span class="keywordflow">if</span> (error != 0) {</div>
 <div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(gai_strerror(error));</div>
@@ -311,7 +311,7 @@
 <div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;  <span class="keyword">struct </span>sockaddr_storage storage = <a class="code" href="namespacenet.html#ab4d0ab0e84637f13642f87d0fc089c80">createSockaddrStorage</a>(ip, 0);</div>
 <div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;  <span class="keywordtype">char</span> <a class="code" href="namespacenet.html#a18b188d54e864e4cdd1f7cac6fb140e4">hostname</a>[<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#afd80ecbe3170ca4fc85b65cda8659f82">MAXHOSTNAMELEN</a>];</div>
 <div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;  <span class="keywordtype">int</span> error = getnameinfo(</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;  <span class="keywordtype">int</span> <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#ae58e703656ab4a1bd5d9870441236727">error</a> = getnameinfo(</div>
 <div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;      (<span class="keyword">struct</span> sockaddr*) &amp;storage,</div>
 <div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;#ifdef __FreeBSD__</div>
 <div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;      <span class="keyword">sizeof</span>(<span class="keyword">struct</span> sockaddr_in),</div>
@@ -363,7 +363,7 @@
 <div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;  <span class="keyword">struct </span>addrinfo hints = <a class="code" href="namespacenet.html#a18ecccbe86ad527085ce16740dfa3906">createAddrInfo</a>(SOCK_STREAM, family, 0);</div>
 <div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;  <span class="keyword">struct </span>addrinfo* result = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;  <span class="keywordtype">int</span> error = getaddrinfo(hostname.c_str(), <span class="keyword">nullptr</span>, &amp;hints, &amp;result);</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;  <span class="keywordtype">int</span> <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#ae58e703656ab4a1bd5d9870441236727">error</a> = getaddrinfo(hostname.c_str(), <span class="keyword">nullptr</span>, &amp;hints, &amp;result);</div>
 <div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;</div>
 <div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;  <span class="keywordflow">if</span> (error != 0) {</div>
 <div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(gai_strerror(error));</div>
@@ -389,7 +389,7 @@
 <div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;</div>
 <div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;<span class="preprocessor">#endif // __STOUT_NET_HPP__</span></div>
 <div class="ttc" id="classError_html"><div class="ttname"><a href="classError.html">Error</a></div><div class="ttdef"><b>Definition:</b> errorbase.hpp:35</div></div>
-<div class="ttc" id="abort_8hpp_html_a4d84a74fe6e4f84bc3d2f901b9e89f93"><div class="ttname"><a href="abort_8hpp.html#a4d84a74fe6e4f84bc3d2f901b9e89f93">ABORT</a></div><div class="ttdeci">#define ABORT(...)</div><div class="ttdef"><b>Definition:</b> abort.hpp:37</div></div>
+<div class="ttc" id="abort_8hpp_html_a4d84a74fe6e4f84bc3d2f901b9e89f93"><div class="ttname"><a href="abort_8hpp.html#a4d84a74fe6e4f84bc3d2f901b9e89f93">ABORT</a></div><div class="ttdeci">#define ABORT(...)</div><div class="ttdef"><b>Definition:</b> abort.hpp:40</div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_a55fad1c3746e1b8a6a00c10998e91d91"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a55fad1c3746e1b8a6a00c10998e91d91">S_IRGRP</a></div><div class="ttdeci">const mode_t S_IRGRP</div><div class="ttdef"><b>Definition:</b> windows.hpp:287</div></div>
 <div class="ttc" id="namespacenet_html_a0236310e7c9452a2030371c7793bd0d0"><div class="ttname"><a href="namespacenet.html#a0236310e7c9452a2030371c7793bd0d0">net::getHostname</a></div><div class="ttdeci">Try&lt; std::string &gt; getHostname(const IP &amp;ip)</div><div class="ttdef"><b>Definition:</b> net.hpp:255</div></div>
 <div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
@@ -418,6 +418,7 @@
 <div class="ttc" id="classTry_html_ac6304ce9dfd0042726f8b813ac64f06a"><div class="ttname"><a href="classTry.html#ac6304ce9dfd0042726f8b813ac64f06a">Try::some</a></div><div class="ttdeci">static Try some(const T &amp;t)</div><div class="ttdef"><b>Definition:</b> try.hpp:41</div></div>
 <div class="ttc" id="error_8hpp_html"><div class="ttname"><a href="error_8hpp.html">error.hpp</a></div></div>
 <div class="ttc" id="classTry_html_a0b98f95163b8a38daafd1651b043a276"><div class="ttname"><a href="classTry.html#a0b98f95163b8a38daafd1651b043a276">Try::isError</a></div><div class="ttdeci">bool isError() const </div><div class="ttdef"><b>Definition:</b> try.hpp:68</div></div>
+<div class="ttc" id="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec_html_ae58e703656ab4a1bd5d9870441236727"><div class="ttname"><a href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#ae58e703656ab4a1bd5d9870441236727">mesos::internal::slave::cni::spec::error</a></div><div class="ttdeci">std::string error(const std::string &amp;msg, uint32_t code)</div></div>
 <div class="ttc" id="stringify_8hpp_html"><div class="ttname"><a href="stringify_8hpp.html">stringify.hpp</a></div></div>
 <div class="ttc" id="try_8hpp_html"><div class="ttname"><a href="try_8hpp.html">try.hpp</a></div></div>
 <div class="ttc" id="namespacenet_html_a18ecccbe86ad527085ce16740dfa3906"><div class="ttname"><a href="namespacenet.html#a18ecccbe86ad527085ce16740dfa3906">net::createAddrInfo</a></div><div class="ttdeci">struct addrinfo createAddrInfo(int socktype, int family, int flags)</div><div class="ttdef"><b>Definition:</b> net.hpp:189</div></div>
@@ -425,7 +426,7 @@
 <div class="ttc" id="namespaceos_html_aee8ea4ec5578b58fd2b12430156ffefa"><div class="ttname"><a href="namespaceos.html#aee8ea4ec5578b58fd2b12430156ffefa">os::open</a></div><div class="ttdeci">Try&lt; int &gt; open(const std::string &amp;path, int oflag, mode_t mode=0)</div><div class="ttdef"><b>Definition:</b> open.hpp:61</div></div>
 <div class="ttc" id="namespacenet_html_aa3d8cac2c33d11239203ab0f06aa5a4f"><div class="ttname"><a href="namespacenet.html#aa3d8cac2c33d11239203ab0f06aa5a4f">net::contentLength</a></div><div class="ttdeci">Try&lt; Bytes &gt; contentLength(const std::string &amp;url)</div><div class="ttdef"><b>Definition:</b> net.hpp:100</div></div>
 <div class="ttc" id="classBytes_html"><div class="ttname"><a href="classBytes.html">Bytes</a></div><div class="ttdef"><b>Definition:</b> bytes.hpp:30</div></div>
-<div class="ttc" id="namespacens_html_a28116b46e6543597a11733424cd1aa20"><div class="ttname"><a href="namespacens.html#a28116b46e6543597a11733424cd1aa20">ns::stringify</a></div><div class="ttdeci">std::string stringify(int flags)</div><div class="ttdef"><b>Definition:</b> ns.hpp:302</div></div>
+<div class="ttc" id="namespacens_html_a28116b46e6543597a11733424cd1aa20"><div class="ttname"><a href="namespacens.html#a28116b46e6543597a11733424cd1aa20">ns::stringify</a></div><div class="ttdeci">std::string stringify(int flags)</div><div class="ttdef"><b>Definition:</b> ns.hpp:680</div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_a90d7514882640a8cd7b8da14138103b7"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a90d7514882640a8cd7b8da14138103b7">S_IROTH</a></div><div class="ttdeci">const mode_t S_IROTH</div><div class="ttdef"><b>Definition:</b> windows.hpp:295</div></div>
 <div class="ttc" id="classnet_1_1IP_html_ada206eb1ab14c032f071daf9b8c1b96c"><div class="ttname"><a href="classnet_1_1IP.html#ada206eb1ab14c032f071daf9b8c1b96c">net::IP::create</a></div><div class="ttdeci">static Try&lt; IP &gt; create(const struct sockaddr_storage &amp;_storage)</div><div class="ttdef"><b>Definition:</b> ip.hpp:212</div></div>
 <div class="ttc" id="classTry_html_a7be0768038e0628632492edf6cc1515a"><div class="ttname"><a href="classTry.html#a7be0768038e0628632492edf6cc1515a">Try::get</a></div><div class="ttdeci">const T &amp; get() const </div><div class="ttdef"><b>Definition:</b> try.hpp:70</div></div>

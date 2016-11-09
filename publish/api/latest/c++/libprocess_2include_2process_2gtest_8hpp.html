@@ -60,13 +60,16 @@
 <div class="contents">
 <div class="textblock"><code>#include &lt;gtest/gtest.h&gt;</code><br/>
 <code>#include &lt;string&gt;</code><br/>
+<code>#include &lt;<a class="el" href="libprocess_2include_2process_2check_8hpp_source.html">process/check.hpp</a>&gt;</code><br/>
 <code>#include &lt;<a class="el" href="clock_8hpp_source.html">process/clock.hpp</a>&gt;</code><br/>
 <code>#include &lt;<a class="el" href="future_8hpp_source.html">process/future.hpp</a>&gt;</code><br/>
 <code>#include &lt;<a class="el" href="3rdparty_2libprocess_2include_2process_2http_8hpp_source.html">process/http.hpp</a>&gt;</code><br/>
 <code>#include &lt;<a class="el" href="duration_8hpp_source.html">stout/duration.hpp</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="stout_2include_2stout_2gtest_8hpp_source.html">stout/gtest.hpp</a>&gt;</code><br/>
 <code>#include &lt;<a class="el" href="option_8hpp_source.html">stout/option.hpp</a>&gt;</code><br/>
 <code>#include &lt;<a class="el" href="os_8hpp_source.html">stout/os.hpp</a>&gt;</code><br/>
 <code>#include &lt;<a class="el" href="stopwatch_8hpp_source.html">stout/stopwatch.hpp</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="strings_8hpp_source.html">stout/strings.hpp</a>&gt;</code><br/>
 </div>
 <p><a href="libprocess_2include_2process_2gtest_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -184,6 +187,54 @@ Macros</h2></td></tr>
 <tr class="separator:a81b703052eac043a3d00761961d9851e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb8c3e9510f593dc2e0f8345fa3bfb23"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#afb8c3e9510f593dc2e0f8345fa3bfb23">AWAIT_EXPECT_RESPONSE_HEADER_EQ</a>(expected, key, actual)&#160;&#160;&#160;<a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#a81b703052eac043a3d00761961d9851e">AWAIT_EXPECT_RESPONSE_HEADER_EQ_FOR</a>(expected, key, actual, <a class="el" href="classSeconds.html">Seconds</a>(15))</td></tr>
 <tr class="separator:afb8c3e9510f593dc2e0f8345fa3bfb23"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72434507a7888054f791e067ced702bb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#a72434507a7888054f791e067ced702bb">AWAIT_ASSERT_EXITED_FOR</a>(expected, actual, duration)&#160;&#160;&#160;ASSERT_PRED_FORMAT3(<a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#ad7d94eaa58fc7d51e295e99c33351958">AwaitAssertExited</a>, expected, actual, duration)</td></tr>
+<tr class="separator:a72434507a7888054f791e067ced702bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af3674e48860716569d6b02a28e8323d7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#af3674e48860716569d6b02a28e8323d7">AWAIT_ASSERT_EXITED</a>(expected, actual)&#160;&#160;&#160;<a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#a72434507a7888054f791e067ced702bb">AWAIT_ASSERT_EXITED_FOR</a>(expected, actual, <a class="el" href="classSeconds.html">Seconds</a>(15))</td></tr>
+<tr class="separator:af3674e48860716569d6b02a28e8323d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ba805a9ac3fbcd4b520bbc3d4f63587"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#a1ba805a9ac3fbcd4b520bbc3d4f63587">AWAIT_EXPECT_EXITED_FOR</a>(expected, actual, duration)&#160;&#160;&#160;EXPECT_PRED_FORMAT3(<a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#ad7d94eaa58fc7d51e295e99c33351958">AwaitAssertExited</a>, expected, actual, duration)</td></tr>
+<tr class="separator:a1ba805a9ac3fbcd4b520bbc3d4f63587"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e3ddcf5d744381cac818faf2e1e72a1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#a1e3ddcf5d744381cac818faf2e1e72a1">AWAIT_EXPECT_EXITED</a>(expected, actual)&#160;&#160;&#160;<a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#a1ba805a9ac3fbcd4b520bbc3d4f63587">AWAIT_EXPECT_EXITED_FOR</a>(expected, actual, <a class="el" href="classSeconds.html">Seconds</a>(15))</td></tr>
+<tr class="separator:a1e3ddcf5d744381cac818faf2e1e72a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02f72173b0923ccb61c335270a2556a2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#a02f72173b0923ccb61c335270a2556a2">AWAIT_ASSERT_WEXITSTATUS_EQ_FOR</a>(expected, actual, duration)&#160;&#160;&#160;ASSERT_PRED_FORMAT3(<a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#a7e75ed139dab159f3926848f0a805178">AwaitAssertExitStatusEq</a>, expected, actual, duration)</td></tr>
+<tr class="separator:a02f72173b0923ccb61c335270a2556a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3edfe271f7a2568b82837ef71ef72d1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#ae3edfe271f7a2568b82837ef71ef72d1">AWAIT_ASSERT_WEXITSTATUS_EQ</a>(expected, actual)&#160;&#160;&#160;<a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#a02f72173b0923ccb61c335270a2556a2">AWAIT_ASSERT_WEXITSTATUS_EQ_FOR</a>(expected, actual, <a class="el" href="classSeconds.html">Seconds</a>(15))</td></tr>
+<tr class="separator:ae3edfe271f7a2568b82837ef71ef72d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac965d75bd88c8dca39a29e9a08bce955"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#ac965d75bd88c8dca39a29e9a08bce955">AWAIT_EXPECT_WEXITSTATUS_EQ_FOR</a>(expected, actual, duration)&#160;&#160;&#160;EXPECT_PRED_FORMAT3(<a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#a7e75ed139dab159f3926848f0a805178">AwaitAssertExitStatusEq</a>, expected, actual, duration)</td></tr>
+<tr class="separator:ac965d75bd88c8dca39a29e9a08bce955"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a222e5f770c87370e0f92d2a597b95b2d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#a222e5f770c87370e0f92d2a597b95b2d">AWAIT_EXPECT_WEXITSTATUS_EQ</a>(expected, actual)&#160;&#160;&#160;<a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#ac965d75bd88c8dca39a29e9a08bce955">AWAIT_EXPECT_WEXITSTATUS_EQ_FOR</a>(expected, actual, <a class="el" href="classSeconds.html">Seconds</a>(15))</td></tr>
+<tr class="separator:a222e5f770c87370e0f92d2a597b95b2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adac352e93119f19fb7463368f4735382"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#adac352e93119f19fb7463368f4735382">AWAIT_ASSERT_WEXITSTATUS_NE_FOR</a>(expected, actual, duration)&#160;&#160;&#160;ASSERT_PRED_FORMAT3(<a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#a064572a727a632a5dedd25197ea5469b">AwaitAssertExitStatusNe</a>, expected, actual, duration)</td></tr>
+<tr class="separator:adac352e93119f19fb7463368f4735382"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3963479216b95872b67d0eac0e68051"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#ae3963479216b95872b67d0eac0e68051">AWAIT_ASSERT_WEXITSTATUS_NE</a>(expected, actual)&#160;&#160;&#160;AWAIT_ASSERT_EXITSTATUS_NE_FOR(expected, actual, <a class="el" href="classSeconds.html">Seconds</a>(15))</td></tr>
+<tr class="separator:ae3963479216b95872b67d0eac0e68051"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5138fdb80edba43278c9504b3454ba6a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#a5138fdb80edba43278c9504b3454ba6a">AWAIT_EXPECT_WEXITSTATUS_NE_FOR</a>(expected, actual, duration)&#160;&#160;&#160;EXPECT_PRED_FORMAT3(<a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#a064572a727a632a5dedd25197ea5469b">AwaitAssertExitStatusNe</a>, expected, actual, duration)</td></tr>
+<tr class="separator:a5138fdb80edba43278c9504b3454ba6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4d00c37c2287bce910fff6885429cfb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#ae4d00c37c2287bce910fff6885429cfb">AWAIT_EXPECT_WEXITSTATUS_NE</a>(expected, actual)&#160;&#160;&#160;<a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#a5138fdb80edba43278c9504b3454ba6a">AWAIT_EXPECT_WEXITSTATUS_NE_FOR</a>(expected, actual, <a class="el" href="classSeconds.html">Seconds</a>(15))</td></tr>
+<tr class="separator:ae4d00c37c2287bce910fff6885429cfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48ee0e589360edf83f93f4483d454211"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#a48ee0e589360edf83f93f4483d454211">AWAIT_ASSERT_SIGNALED_FOR</a>(expected, actual, duration)&#160;&#160;&#160;ASSERT_PRED_FORMAT3(<a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#a8db0b1187c1add9f6c5af1cc845578e2">AwaitAssertSignaled</a>, expected, actual, duration)</td></tr>
+<tr class="separator:a48ee0e589360edf83f93f4483d454211"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac548d367a0eba55993fd0f069cfe88fe"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#ac548d367a0eba55993fd0f069cfe88fe">AWAIT_ASSERT_SIGNALED</a>(expected, actual)&#160;&#160;&#160;<a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#a48ee0e589360edf83f93f4483d454211">AWAIT_ASSERT_SIGNALED_FOR</a>(expected, actual, <a class="el" href="classSeconds.html">Seconds</a>(15))</td></tr>
+<tr class="separator:ac548d367a0eba55993fd0f069cfe88fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade5ade88fc75a1cda2c37969ce513d19"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#ade5ade88fc75a1cda2c37969ce513d19">AWAIT_EXPECT_SIGNALED_FOR</a>(expected, actual, duration)&#160;&#160;&#160;EXPECT_PRED_FORMAT3(<a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#a8db0b1187c1add9f6c5af1cc845578e2">AwaitAssertSignaled</a>, expected, actual, duration)</td></tr>
+<tr class="separator:ade5ade88fc75a1cda2c37969ce513d19"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7db91aee8534c29d1a1409787f1ba0a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#ad7db91aee8534c29d1a1409787f1ba0a">AWAIT_EXPECT_SIGNALED</a>(expected, actual)&#160;&#160;&#160;<a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#ade5ade88fc75a1cda2c37969ce513d19">AWAIT_EXPECT_SIGNALED_FOR</a>(expected, actual, <a class="el" href="classSeconds.html">Seconds</a>(15))</td></tr>
+<tr class="separator:ad7db91aee8534c29d1a1409787f1ba0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92326e20cea850f70b0c8f8d5c6fcc23"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#a92326e20cea850f70b0c8f8d5c6fcc23">AWAIT_ASSERT_WTERMSIG_EQ_FOR</a>(expected, actual, duration)&#160;&#160;&#160;ASSERT_PRED_FORMAT3(<a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#a94ca5d39f53b828cce40c52051ec5065">AwaitAssertTermSigEq</a>, expected, actual, duration)</td></tr>
+<tr class="separator:a92326e20cea850f70b0c8f8d5c6fcc23"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c88f78aaec602d30ac11dfade1048de"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#a9c88f78aaec602d30ac11dfade1048de">AWAIT_ASSERT_WTERMSIG_EQ</a>(expected, actual)&#160;&#160;&#160;<a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#a92326e20cea850f70b0c8f8d5c6fcc23">AWAIT_ASSERT_WTERMSIG_EQ_FOR</a>(expected, actual, <a class="el" href="classSeconds.html">Seconds</a>(15))</td></tr>
+<tr class="separator:a9c88f78aaec602d30ac11dfade1048de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad71f04a8cf6788ea907661c79ca2f795"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#ad71f04a8cf6788ea907661c79ca2f795">AWAIT_EXPECT_WTERMSIG_EQ_FOR</a>(expected, actual, duration)&#160;&#160;&#160;EXPECT_PRED_FORMAT3(<a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#a94ca5d39f53b828cce40c52051ec5065">AwaitAssertTermSigEq</a>, expected, actual, duration)</td></tr>
+<tr class="separator:ad71f04a8cf6788ea907661c79ca2f795"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ab1e561d075d86d66a10c1ca9d6ad01"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#a3ab1e561d075d86d66a10c1ca9d6ad01">AWAIT_EXPECT_WTERMSIG_EQ</a>(expected, actual)&#160;&#160;&#160;<a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#ad71f04a8cf6788ea907661c79ca2f795">AWAIT_EXPECT_WTERMSIG_EQ_FOR</a>(expected, actual, <a class="el" href="classSeconds.html">Seconds</a>(15))</td></tr>
+<tr class="separator:a3ab1e561d075d86d66a10c1ca9d6ad01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0491ed6c5a56cb33ff1d42f9e3fa0d95"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#a0491ed6c5a56cb33ff1d42f9e3fa0d95">AWAIT_ASSERT_WTERMSIG_NE_FOR</a>(expected, actual, duration)&#160;&#160;&#160;ASSERT_PRED_FORMAT3(<a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#ad5c297c3dee7d417b71b4d8675126420">AwaitAssertTermSigNe</a>, expected, actual, duration)</td></tr>
+<tr class="separator:a0491ed6c5a56cb33ff1d42f9e3fa0d95"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3850c9439df7c51d4f30ab78bf52e0e4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#a3850c9439df7c51d4f30ab78bf52e0e4">AWAIT_ASSERT_WTERMSIG_NE</a>(expected, actual)&#160;&#160;&#160;AWAIT_ASSERT_TERMSIG_NE_FOR(expected, actual, <a class="el" href="classSeconds.html">Seconds</a>(15))</td></tr>
+<tr class="separator:a3850c9439df7c51d4f30ab78bf52e0e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18e0951702b19794add0b7a307035b48"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#a18e0951702b19794add0b7a307035b48">AWAIT_EXPECT_TERMSIG_NE_FOR</a>(expected, actual, duration)&#160;&#160;&#160;EXPECT_PRED_FORMAT3(<a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#ad5c297c3dee7d417b71b4d8675126420">AwaitAssertTermSigNe</a>, expected, actual, duration)</td></tr>
+<tr class="separator:a18e0951702b19794add0b7a307035b48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4d50cef4ea4c371b20fb8c5082d9995"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#ac4d50cef4ea4c371b20fb8c5082d9995">AWAIT_EXPECT_WTERMSIG_NE</a>(expected, actual)&#160;&#160;&#160;AWAIT_EXPECT_WTERMSIG_NE_FOR(expected, actual, <a class="el" href="classSeconds.html">Seconds</a>(15))</td></tr>
+<tr class="separator:ac4d50cef4ea4c371b20fb8c5082d9995"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -211,6 +262,18 @@ Functions</h2></td></tr>
 <tr class="separator:ad87911bc1359b66cd739b1c0a53b8f34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af3cdf36439d5c86fab6be3bda22d8ccd"><td class="memItemLeft" align="right" valign="top">inline::testing::AssertionResult&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#af3cdf36439d5c86fab6be3bda22d8ccd">AwaitAssertResponseHeaderEq</a> (const char *expectedExpr, const char *keyExpr, const char *actualExpr, const char *durationExpr, const std::string &amp;expected, const std::string &amp;key, const <a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt; <a class="el" href="structprocess_1_1http_1_1Response.html">process::http::Response</a> &gt; &amp;actual, const <a class="el" href="classDuration.html">Duration</a> &amp;duration)</td></tr>
 <tr class="separator:af3cdf36439d5c86fab6be3bda22d8ccd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7d94eaa58fc7d51e295e99c33351958"><td class="memItemLeft" align="right" valign="top">inline::testing::AssertionResult&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#ad7d94eaa58fc7d51e295e99c33351958">AwaitAssertExited</a> (const char *actualExpr, const char *durationExpr, const <a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt; <a class="el" href="classOption.html">Option</a>&lt; int &gt;&gt; &amp;actual, const <a class="el" href="classDuration.html">Duration</a> &amp;duration)</td></tr>
+<tr class="separator:ad7d94eaa58fc7d51e295e99c33351958"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e75ed139dab159f3926848f0a805178"><td class="memItemLeft" align="right" valign="top">inline::testing::AssertionResult&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#a7e75ed139dab159f3926848f0a805178">AwaitAssertExitStatusEq</a> (const char *expectedExpr, const char *actualExpr, const char *durationExpr, const int expected, const <a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt; <a class="el" href="classOption.html">Option</a>&lt; int &gt;&gt; &amp;actual, const <a class="el" href="classDuration.html">Duration</a> &amp;duration)</td></tr>
+<tr class="separator:a7e75ed139dab159f3926848f0a805178"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a064572a727a632a5dedd25197ea5469b"><td class="memItemLeft" align="right" valign="top">inline::testing::AssertionResult&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#a064572a727a632a5dedd25197ea5469b">AwaitAssertExitStatusNe</a> (const char *expectedExpr, const char *actualExpr, const char *durationExpr, const int expected, const <a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt; <a class="el" href="classOption.html">Option</a>&lt; int &gt;&gt; &amp;actual, const <a class="el" href="classDuration.html">Duration</a> &amp;duration)</td></tr>
+<tr class="separator:a064572a727a632a5dedd25197ea5469b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8db0b1187c1add9f6c5af1cc845578e2"><td class="memItemLeft" align="right" valign="top">inline::testing::AssertionResult&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#a8db0b1187c1add9f6c5af1cc845578e2">AwaitAssertSignaled</a> (const char *actualExpr, const char *durationExpr, const <a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt; <a class="el" href="classOption.html">Option</a>&lt; int &gt;&gt; &amp;actual, const <a class="el" href="classDuration.html">Duration</a> &amp;duration)</td></tr>
+<tr class="separator:a8db0b1187c1add9f6c5af1cc845578e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a94ca5d39f53b828cce40c52051ec5065"><td class="memItemLeft" align="right" valign="top">inline::testing::AssertionResult&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#a94ca5d39f53b828cce40c52051ec5065">AwaitAssertTermSigEq</a> (const char *expectedExpr, const char *actualExpr, const char *durationExpr, const int expected, const <a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt; <a class="el" href="classOption.html">Option</a>&lt; int &gt;&gt; &amp;actual, const <a class="el" href="classDuration.html">Duration</a> &amp;duration)</td></tr>
+<tr class="separator:a94ca5d39f53b828cce40c52051ec5065"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5c297c3dee7d417b71b4d8675126420"><td class="memItemLeft" align="right" valign="top">inline::testing::AssertionResult&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#ad5c297c3dee7d417b71b4d8675126420">AwaitAssertTermSigNe</a> (const char *expectedExpr, const char *actualExpr, const char *durationExpr, const int expected, const <a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt; <a class="el" href="classOption.html">Option</a>&lt; int &gt;&gt; &amp;actual, const <a class="el" href="classDuration.html">Duration</a> &amp;duration)</td></tr>
+<tr class="separator:ad5c297c3dee7d417b71b4d8675126420"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -330,6 +393,64 @@ Variables</h2></td></tr>
           <td></td>
           <td>)</td>
           <td></td><td>&#160;&#160;&#160;ASSERT_PRED_FORMAT3(<a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#ab205b1878743f83a8a05550b5f3c5bf9">AwaitAssertEq</a>, expected, actual, duration)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="af3674e48860716569d6b02a28e8323d7"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define AWAIT_ASSERT_EXITED</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">expected, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">actual&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;<a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#a72434507a7888054f791e067ced702bb">AWAIT_ASSERT_EXITED_FOR</a>(expected, actual, <a class="el" href="classSeconds.html">Seconds</a>(15))</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a72434507a7888054f791e067ced702bb"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define AWAIT_ASSERT_EXITED_FOR</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">expected, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">actual, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">duration&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;ASSERT_PRED_FORMAT3(<a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#ad7d94eaa58fc7d51e295e99c33351958">AwaitAssertExited</a>, expected, actual, duration)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -648,6 +769,64 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="ac548d367a0eba55993fd0f069cfe88fe"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define AWAIT_ASSERT_SIGNALED</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">expected, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">actual&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;<a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#a48ee0e589360edf83f93f4483d454211">AWAIT_ASSERT_SIGNALED_FOR</a>(expected, actual, <a class="el" href="classSeconds.html">Seconds</a>(15))</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a48ee0e589360edf83f93f4483d454211"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define AWAIT_ASSERT_SIGNALED_FOR</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">expected, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">actual, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">duration&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;ASSERT_PRED_FORMAT3(<a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#a8db0b1187c1add9f6c5af1cc845578e2">AwaitAssertSignaled</a>, expected, actual, duration)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a4e2fc5d6dfcfaebf7b31235409a8e5c8"></a>
 <div class="memitem">
 <div class="memproto">
@@ -684,6 +863,238 @@ Variables</h2></td></tr>
           <td></td>
           <td>)</td>
           <td></td><td>&#160;&#160;&#160;<a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#acc0ab806464751ae455ab55c58a96123">AWAIT_ASSERT_EQ_FOR</a>(true, actual, duration)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ae3edfe271f7a2568b82837ef71ef72d1"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define AWAIT_ASSERT_WEXITSTATUS_EQ</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">expected, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">actual&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;<a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#a02f72173b0923ccb61c335270a2556a2">AWAIT_ASSERT_WEXITSTATUS_EQ_FOR</a>(expected, actual, <a class="el" href="classSeconds.html">Seconds</a>(15))</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a02f72173b0923ccb61c335270a2556a2"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define AWAIT_ASSERT_WEXITSTATUS_EQ_FOR</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">expected, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">actual, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">duration&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;ASSERT_PRED_FORMAT3(<a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#a7e75ed139dab159f3926848f0a805178">AwaitAssertExitStatusEq</a>, expected, actual, duration)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ae3963479216b95872b67d0eac0e68051"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define AWAIT_ASSERT_WEXITSTATUS_NE</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">expected, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">actual&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;AWAIT_ASSERT_EXITSTATUS_NE_FOR(expected, actual, <a class="el" href="classSeconds.html">Seconds</a>(15))</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="adac352e93119f19fb7463368f4735382"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define AWAIT_ASSERT_WEXITSTATUS_NE_FOR</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">expected, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">actual, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">duration&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;ASSERT_PRED_FORMAT3(<a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#a064572a727a632a5dedd25197ea5469b">AwaitAssertExitStatusNe</a>, expected, actual, duration)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a9c88f78aaec602d30ac11dfade1048de"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define AWAIT_ASSERT_WTERMSIG_EQ</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">expected, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">actual&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;<a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#a92326e20cea850f70b0c8f8d5c6fcc23">AWAIT_ASSERT_WTERMSIG_EQ_FOR</a>(expected, actual, <a class="el" href="classSeconds.html">Seconds</a>(15))</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a92326e20cea850f70b0c8f8d5c6fcc23"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define AWAIT_ASSERT_WTERMSIG_EQ_FOR</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">expected, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">actual, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">duration&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;ASSERT_PRED_FORMAT3(<a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#a94ca5d39f53b828cce40c52051ec5065">AwaitAssertTermSigEq</a>, expected, actual, duration)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a3850c9439df7c51d4f30ab78bf52e0e4"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define AWAIT_ASSERT_WTERMSIG_NE</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">expected, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">actual&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;AWAIT_ASSERT_TERMSIG_NE_FOR(expected, actual, <a class="el" href="classSeconds.html">Seconds</a>(15))</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a0491ed6c5a56cb33ff1d42f9e3fa0d95"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define AWAIT_ASSERT_WTERMSIG_NE_FOR</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">expected, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">actual, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">duration&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;ASSERT_PRED_FORMAT3(<a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#ad5c297c3dee7d417b71b4d8675126420">AwaitAssertTermSigNe</a>, expected, actual, duration)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -884,6 +1295,64 @@ Variables</h2></td></tr>
           <td></td>
           <td>)</td>
           <td></td><td>&#160;&#160;&#160;EXPECT_PRED_FORMAT3(<a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#ab205b1878743f83a8a05550b5f3c5bf9">AwaitAssertEq</a>, expected, actual, duration)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a1e3ddcf5d744381cac818faf2e1e72a1"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define AWAIT_EXPECT_EXITED</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">expected, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">actual&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;<a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#a1ba805a9ac3fbcd4b520bbc3d4f63587">AWAIT_EXPECT_EXITED_FOR</a>(expected, actual, <a class="el" href="classSeconds.html">Seconds</a>(15))</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a1ba805a9ac3fbcd4b520bbc3d4f63587"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define AWAIT_EXPECT_EXITED_FOR</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">expected, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">actual, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">duration&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;EXPECT_PRED_FORMAT3(<a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#ad7d94eaa58fc7d51e295e99c33351958">AwaitAssertExited</a>, expected, actual, duration)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1202,6 +1671,96 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="ad7db91aee8534c29d1a1409787f1ba0a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define AWAIT_EXPECT_SIGNALED</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">expected, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">actual&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;<a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#ade5ade88fc75a1cda2c37969ce513d19">AWAIT_EXPECT_SIGNALED_FOR</a>(expected, actual, <a class="el" href="classSeconds.html">Seconds</a>(15))</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ade5ade88fc75a1cda2c37969ce513d19"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define AWAIT_EXPECT_SIGNALED_FOR</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">expected, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">actual, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">duration&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;EXPECT_PRED_FORMAT3(<a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#a8db0b1187c1add9f6c5af1cc845578e2">AwaitAssertSignaled</a>, expected, actual, duration)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a18e0951702b19794add0b7a307035b48"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define AWAIT_EXPECT_TERMSIG_NE_FOR</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">expected, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">actual, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">duration&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;EXPECT_PRED_FORMAT3(<a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#ad5c297c3dee7d417b71b4d8675126420">AwaitAssertTermSigNe</a>, expected, actual, duration)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a673b77103d08c5fe3ef40355c14e32e0"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1238,6 +1797,206 @@ Variables</h2></td></tr>
           <td></td>
           <td>)</td>
           <td></td><td>&#160;&#160;&#160;<a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#abc01cb87bb25acc3a0de243bb38aa346">AWAIT_EXPECT_EQ_FOR</a>(true, actual, duration)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a222e5f770c87370e0f92d2a597b95b2d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define AWAIT_EXPECT_WEXITSTATUS_EQ</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">expected, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">actual&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;<a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#ac965d75bd88c8dca39a29e9a08bce955">AWAIT_EXPECT_WEXITSTATUS_EQ_FOR</a>(expected, actual, <a class="el" href="classSeconds.html">Seconds</a>(15))</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ac965d75bd88c8dca39a29e9a08bce955"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define AWAIT_EXPECT_WEXITSTATUS_EQ_FOR</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">expected, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">actual, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">duration&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;EXPECT_PRED_FORMAT3(<a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#a7e75ed139dab159f3926848f0a805178">AwaitAssertExitStatusEq</a>, expected, actual, duration)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ae4d00c37c2287bce910fff6885429cfb"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define AWAIT_EXPECT_WEXITSTATUS_NE</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">expected, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">actual&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;<a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#a5138fdb80edba43278c9504b3454ba6a">AWAIT_EXPECT_WEXITSTATUS_NE_FOR</a>(expected, actual, <a class="el" href="classSeconds.html">Seconds</a>(15))</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a5138fdb80edba43278c9504b3454ba6a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define AWAIT_EXPECT_WEXITSTATUS_NE_FOR</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">expected, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">actual, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">duration&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;EXPECT_PRED_FORMAT3(<a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#a064572a727a632a5dedd25197ea5469b">AwaitAssertExitStatusNe</a>, expected, actual, duration)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a3ab1e561d075d86d66a10c1ca9d6ad01"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define AWAIT_EXPECT_WTERMSIG_EQ</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">expected, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">actual&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;<a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#ad71f04a8cf6788ea907661c79ca2f795">AWAIT_EXPECT_WTERMSIG_EQ_FOR</a>(expected, actual, <a class="el" href="classSeconds.html">Seconds</a>(15))</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ad71f04a8cf6788ea907661c79ca2f795"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define AWAIT_EXPECT_WTERMSIG_EQ_FOR</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">expected, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">actual, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">duration&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;EXPECT_PRED_FORMAT3(<a class="el" href="libprocess_2include_2process_2gtest_8hpp.html#a94ca5d39f53b828cce40c52051ec5065">AwaitAssertTermSigEq</a>, expected, actual, duration)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ac4d50cef4ea4c371b20fb8c5082d9995"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define AWAIT_EXPECT_WTERMSIG_NE</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">expected, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">actual&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;AWAIT_EXPECT_WTERMSIG_NE_FOR(expected, actual, <a class="el" href="classSeconds.html">Seconds</a>(15))</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1571,6 +2330,144 @@ template&lt;typename T1 , typename T2 &gt; </div>
 
 </div>
 </div>
+<a class="anchor" id="ad7d94eaa58fc7d51e295e99c33351958"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">inline ::testing::AssertionResult AwaitAssertExited </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>actualExpr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>durationExpr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt; <a class="el" href="classOption.html">Option</a>&lt; int &gt;&gt; &amp;&#160;</td>
+          <td class="paramname"><em>actual</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classDuration.html">Duration</a> &amp;&#160;</td>
+          <td class="paramname"><em>duration</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a7e75ed139dab159f3926848f0a805178"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">inline ::testing::AssertionResult AwaitAssertExitStatusEq </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>expectedExpr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>actualExpr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>durationExpr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>expected</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt; <a class="el" href="classOption.html">Option</a>&lt; int &gt;&gt; &amp;&#160;</td>
+          <td class="paramname"><em>actual</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classDuration.html">Duration</a> &amp;&#160;</td>
+          <td class="paramname"><em>duration</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a064572a727a632a5dedd25197ea5469b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">inline ::testing::AssertionResult AwaitAssertExitStatusNe </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>expectedExpr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>actualExpr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>durationExpr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>expected</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt; <a class="el" href="classOption.html">Option</a>&lt; int &gt;&gt; &amp;&#160;</td>
+          <td class="paramname"><em>actual</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classDuration.html">Duration</a> &amp;&#160;</td>
+          <td class="paramname"><em>duration</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="abcc52054812ecbc8937d533a3a5e4b72"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1795,6 +2692,144 @@ template&lt;typename T &gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const <a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt; <a class="el" href="structprocess_1_1http_1_1Response.html">process::http::Response</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>actual</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classDuration.html">Duration</a> &amp;&#160;</td>
+          <td class="paramname"><em>duration</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a8db0b1187c1add9f6c5af1cc845578e2"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">inline ::testing::AssertionResult AwaitAssertSignaled </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>actualExpr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>durationExpr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt; <a class="el" href="classOption.html">Option</a>&lt; int &gt;&gt; &amp;&#160;</td>
+          <td class="paramname"><em>actual</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classDuration.html">Duration</a> &amp;&#160;</td>
+          <td class="paramname"><em>duration</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a94ca5d39f53b828cce40c52051ec5065"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">inline ::testing::AssertionResult AwaitAssertTermSigEq </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>expectedExpr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>actualExpr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>durationExpr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>expected</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt; <a class="el" href="classOption.html">Option</a>&lt; int &gt;&gt; &amp;&#160;</td>
+          <td class="paramname"><em>actual</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classDuration.html">Duration</a> &amp;&#160;</td>
+          <td class="paramname"><em>duration</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ad5c297c3dee7d417b71b4d8675126420"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">inline ::testing::AssertionResult AwaitAssertTermSigNe </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>expectedExpr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>actualExpr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>durationExpr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>expected</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt; <a class="el" href="classOption.html">Option</a>&lt; int &gt;&gt; &amp;&#160;</td>
           <td class="paramname"><em>actual</em>, </td>
         </tr>
         <tr>

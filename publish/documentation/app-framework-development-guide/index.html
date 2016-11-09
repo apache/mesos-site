@@ -4,7 +4,26 @@
     <meta charset="utf-8">
     <title>Apache Mesos - Framework Development Guide</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta property="og:image" content="/assets/img/mesos_logo_fb_preview.png">
+
+    <meta property="og:locale" content="en_US"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:title" content="Apache Mesos"/>
+    <meta property="og:site_name" content="Apache Mesos"/>
+    <meta property="og:url" content="http://mesos.apache.org/"/>
+    <meta property="og:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta property="og:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
+
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:site" content="@ApacheMesos"/>
+    <meta name="twitter:title" content="Apache Mesos"/>
+    <meta name="twitter:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta name="twitter:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
 
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
@@ -106,10 +125,13 @@ and Scala.</p>
 
 <h2>Create your Framework Scheduler</h2>
 
-<p>You can write a framework scheduler in C++, Java/Scala, or Python. Your
-framework scheduler should inherit from the <code>Scheduler</code> class (see API below).
-Your scheduler should create a SchedulerDriver (which will mediate communication
-between your scheduler and the Mesos master) and then call
+<p>If you are writing a scheduler against Mesos 1.0 or newer, it is recommended
+to use the new <a href="scheduler-http-api">HTTP API</a> to talk to Mesos.</p>
+
+<p>If your framework needs to talk to Mesos 0.28.0 or older, you can write the
+scheduler in C++, Java/Scala, or Python. Your framework scheduler should inherit
+from the <code>Scheduler</code> class (see API below). Your scheduler should create a SchedulerDriver
+(which will mediate communication between your scheduler and the Mesos master) and then call
 <code>SchedulerDriver.run()</code>.</p>
 
 <h3>Scheduler API</h3>
@@ -400,15 +422,55 @@ are specified this way.</p>
 additionally copy fields (e.g., <code>Labels</code>) from <code>TaskInfo</code> into the new
 <code>ExecutorInfo</code>. This <code>ExecutorInfo</code> is only visible on the agent.</p>
 
+<h3>Using the Mesos Default Executor</h3>
+
+<p>Since Mesos 1.1, a new built-in default executor (<strong>experimental</strong>) is available that
+can execute a group of tasks. Just like the command executor the tasks can be shell
+commands or Docker containers.</p>
+
+<p>The current semantics of the default executor are as folows:</p>
+
+<p>&ndash; Tasks are launched as nested containers underneath the executor container.</p>
+
+<p>&ndash; Task containers and executor container share resources like cpu, memory,
+   network and volumes.</p>
+
+<p>&ndash; There is no resource isolation between different tasks within an executor.
+   Tasks' resources are added to the executor container.</p>
+
+<p>&ndash; If any of the tasks exits with a non-zero exit code, all the tasks in the task group
+   are killed and the executor shuts down.</p>
+
+<p>&ndash; Multiple task groups are not supported.</p>
+
+<p>Once the default executor is considered <strong>stable</strong>, the command executor will be deprecated in favor of it.</p>
+
+<p>Any scheduler can make use of the Mesos default executor by setting <code>ExecutorInfo.type</code>
+to <code>DEFAULT</code> when launching a group of tasks using the <code>LAUNCH_GROUP</code> offer operation.
+If <code>DEFAULT</code> executor is explicitly specified when using <code>LAUNCH</code> offer operation, command
+executor is used instead of the default executor. This might change in the future when the default
+executor gets support for handling <code>LAUNCH</code> operation.</p>
+
+<pre><code class="{.proto}">message ExecutorInfo {
+  ...
+    optional Type type = 15;
+  ...
+}
+</code></pre>
+
 <h3>Creating a custom Framework Executor</h3>
 
 <p>If your framework has special requirements, you might want to provide your own
 Executor implementation. For example, you may not want a 1:1 relationship
 between tasks and processes.</p>
 
-<p>Your framework executor must inherit from the Executor class. It must override
-the launchTask() method. You can use the $MESOS_HOME environment variable inside
-of your executor to determine where Mesos is running from.</p>
+<p>If you are writing an executor against Mesos 1.0 or newer, it is recommended
+to use the new <a href="executor-http-api">HTTP API</a> to talk to Mesos.</p>
+
+<p>If writing against Mesos 0.28.0 or older, your framework executor must inherit
+from the Executor class. It must override the launchTask() method. You can use
+the $MESOS_HOME environment variable inside of your executor to determine where
+Mesos is running from.</p>
 
 <h4>Executor API</h4>
 
@@ -417,7 +479,7 @@ of your executor to determine where Mesos is running from.</p>
 <pre><code class="{.cpp}">/*
  * Invoked once the executor driver has been able to successfully
  * connect with Mesos. In particular, a scheduler can pass some
- * data to it's executors through the `FrameworkInfo.ExecutorInfo`'s
+ * data to its executors through the `FrameworkInfo.ExecutorInfo`'s
  * data field.
  */
 virtual void registered(
@@ -463,7 +525,7 @@ virtual void killTask(ExecutorDriver* driver, const TaskID&amp; taskId);
 virtual void frameworkMessage(ExecutorDriver* driver, const std::string&amp; data);
 
 /*
- * Invoked when the executor should terminate all of it's currently
+ * Invoked when the executor should terminate all of its currently
  * running tasks. Note that after a Mesos has determined that an
  * executor has terminated any tasks that the executor did not send
  * terminal status updates for (e.g., TASK_KILLED, TASK_FINISHED,

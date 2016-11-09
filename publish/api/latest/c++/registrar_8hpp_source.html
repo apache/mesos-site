@@ -106,111 +106,99 @@
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <span class="comment">// Aided by accumulator(s):</span></div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <span class="comment">//   slaveIDs - is the set of registered slaves.</span></div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="comment">//</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <span class="comment">// NOTE: the &quot;strict&quot; parameter only applies to operations that</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="comment">// affect slaves (i.e. registration).  See Flags::registry_strict</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="comment">// in master/flags.cpp for more information.</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="comment">//</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <span class="comment">// Returns whether the operation mutates &#39;registry&#39;, or an error if</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="comment">// the operation cannot be applied successfully.</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1master_1_1Operation.html#affd5d3a69fda8963bcdd1536971ee7fa">   61</a></span>&#160;  <a class="code" href="classTry.html">Try&lt;bool&gt;</a> <a class="code" href="classmesos_1_1internal_1_1master_1_1Operation.html#affd5d3a69fda8963bcdd1536971ee7fa">operator()</a>(</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;      Registry* registry,</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;      <a class="code" href="classhashset.html">hashset&lt;SlaveID&gt;</a>* slaveIDs,</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;      <span class="keywordtype">bool</span> strict)</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  {</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keyword">const</span> <a class="code" href="classTry.html">Try&lt;bool&gt;</a> result = <a class="code" href="classmesos_1_1internal_1_1master_1_1Operation.html#a3543f4f2dd85dd85d535ead27b8898b7">perform</a>(registry, slaveIDs, strict);</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    success = !result.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>();</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  }</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="comment">// Sets the promise based on whether the operation was successful.</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1master_1_1Operation.html#aa7325c01da3c8fff4d2bf6586a2e55df">   74</a></span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="classmesos_1_1internal_1_1master_1_1Operation.html#aa7325c01da3c8fff4d2bf6586a2e55df">set</a>() { <span class="keywordflow">return</span> <a class="code" href="classprocess_1_1Promise.html#a989b8dfa7eb2633de3f0f25ac2b87943">process::Promise&lt;bool&gt;::set</a>(success); }</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <span class="comment">// Returns whether the operation mutates &#39;registry&#39;, or an error if</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="comment">// the operation cannot be applied successfully.</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1master_1_1Operation.html#a579f54e98cc99bf30ed6d1c209fa17c3">   57</a></span>&#160;  <a class="code" href="classTry.html">Try&lt;bool&gt;</a> <a class="code" href="classmesos_1_1internal_1_1master_1_1Operation.html#a579f54e98cc99bf30ed6d1c209fa17c3">operator()</a>(Registry* registry, <a class="code" href="classhashset.html">hashset&lt;SlaveID&gt;</a>* slaveIDs)</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  {</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keyword">const</span> <a class="code" href="classTry.html">Try&lt;bool&gt;</a> result = <a class="code" href="classmesos_1_1internal_1_1master_1_1Operation.html#a2c77ce356a4e00b9ef0d8e3d04de7684">perform</a>(registry, slaveIDs);</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    success = !result.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>();</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  }</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <span class="comment">// Sets the promise based on whether the operation was successful.</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1master_1_1Operation.html#aa7325c01da3c8fff4d2bf6586a2e55df">   67</a></span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="classmesos_1_1internal_1_1master_1_1Operation.html#aa7325c01da3c8fff4d2bf6586a2e55df">set</a>() { <span class="keywordflow">return</span> <a class="code" href="classprocess_1_1Promise.html#a989b8dfa7eb2633de3f0f25ac2b87943">process::Promise&lt;bool&gt;::set</a>(success); }</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classTry.html">Try&lt;bool&gt;</a> <a class="code" href="classmesos_1_1internal_1_1master_1_1Operation.html#a2c77ce356a4e00b9ef0d8e3d04de7684">perform</a>(Registry* registry, <a class="code" href="classhashset.html">hashset&lt;SlaveID&gt;</a>* slaveIDs) = 0;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="keywordtype">bool</span> success;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;};</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classTry.html">Try&lt;bool&gt;</a> <a class="code" href="classmesos_1_1internal_1_1master_1_1Operation.html#a3543f4f2dd85dd85d535ead27b8898b7">perform</a>(</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;      Registry* registry,</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;      <a class="code" href="classhashset.html">hashset&lt;SlaveID&gt;</a>* slaveIDs,</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;      <span class="keywordtype">bool</span> strict) = 0;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="keywordtype">bool</span> success;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;};</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="comment">// TODO(xujyan): Add a generic abstraction for applying batches of</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="comment">// operations against State Variables. The Registrar and other</span></div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="comment">// components could leverage this. This abstraction would be</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="comment">// templatized to take the type, along with any accumulators:</span></div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="comment">// template &lt;typename T,</span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="comment">//           typename X = None,</span></div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="comment">//           typename Y = None,</span></div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="comment">//           typename Z = None&gt;</span></div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="comment">// T: the data type that the batch operations can be applied on.</span></div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="comment">// X, Y, Z: zero to 3 generic accumulators that facilitate the batch</span></div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="comment">// of operations.</span></div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="comment">// This allows us to reuse the idea of &quot;doing batches of operations&quot;</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="comment">// on other potential new state variables (i.e. repair state, offer</span></div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="comment">// reservations, etc).</span></div>
-<div class="line"><a name="l00101"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1master_1_1Registrar.html">  101</a></span>&#160;<span class="keyword">class </span><a class="code" href="classmesos_1_1internal_1_1master_1_1Registrar.html">Registrar</a></div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;{</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  <span class="comment">// If flags.registry_strict is true, all operations will be</span></div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  <span class="comment">// permitted.</span></div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  <a class="code" href="classmesos_1_1internal_1_1master_1_1Registrar.html#a94b221fe5fa6ab7562b8abf300c93a5a">Registrar</a>(<span class="keyword">const</span> <a class="code" href="classmesos_1_1internal_1_1master_1_1Flags.html">Flags</a>&amp; <a class="code" href="namespacemesos_1_1internal_1_1tests.html#af8289f648a916c3f66923867452c7b1b">flags</a>,</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;            <a class="code" href="classmesos_1_1state_1_1protobuf_1_1State.html">mesos::state::protobuf::State</a>* state,</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;            <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;std::string&gt;</a>&amp; authenticationRealm = <a class="code" href="structNone.html">None</a>());</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  <a class="code" href="classmesos_1_1internal_1_1master_1_1Registrar.html#a17420569cc5538ff7b71eef1760c6959">~Registrar</a>();</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  <span class="comment">// Recovers the Registry, persisting the new Master information.</span></div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;  <span class="comment">// The Registrar must be recovered to allow other operations to</span></div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;  <span class="comment">// proceed.</span></div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;  <span class="comment">// TODO(bmahler): Consider a &quot;factory&quot; for constructing the</span></div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;  <span class="comment">// Registrar, to eliminate the need for passing &#39;MasterInfo&#39;.</span></div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;  <span class="comment">// This is required as the Registrar is injected into the Master,</span></div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;  <span class="comment">// and therefore MasterInfo is unknown during construction.</span></div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  <a class="code" href="classprocess_1_1Future.html">process::Future&lt;Registry&gt;</a> <a class="code" href="classmesos_1_1internal_1_1master_1_1Registrar.html#a1c37cadf0171c77ef14569ef014ff0d8">recover</a>(<span class="keyword">const</span> MasterInfo&amp; info);</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="comment">// TODO(xujyan): Add a generic abstraction for applying batches of</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="comment">// operations against State Variables. The Registrar and other</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="comment">// components could leverage this. This abstraction would be</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="comment">// templatized to take the type, along with any accumulators:</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="comment">// template &lt;typename T,</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="comment">//           typename X = None,</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="comment">//           typename Y = None,</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="comment">//           typename Z = None&gt;</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="comment">// T: the data type that the batch operations can be applied on.</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="comment">// X, Y, Z: zero to 3 generic accumulators that facilitate the batch</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="comment">// of operations.</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="comment">// This allows us to reuse the idea of &quot;doing batches of operations&quot;</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="comment">// on other potential new state variables (i.e. repair state, offer</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="comment">// reservations, etc).</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1master_1_1Registrar.html">   91</a></span>&#160;<span class="keyword">class </span><a class="code" href="classmesos_1_1internal_1_1master_1_1Registrar.html">Registrar</a></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;{</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  <a class="code" href="classmesos_1_1internal_1_1master_1_1Registrar.html#a94b221fe5fa6ab7562b8abf300c93a5a">Registrar</a>(<span class="keyword">const</span> <a class="code" href="classmesos_1_1internal_1_1master_1_1Flags.html">Flags</a>&amp; <a class="code" href="namespacemesos_1_1internal_1_1tests.html#af8289f648a916c3f66923867452c7b1b">flags</a>,</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            <a class="code" href="classmesos_1_1state_1_1protobuf_1_1State.html">mesos::state::protobuf::State</a>* state,</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;std::string&gt;</a>&amp; authenticationRealm = <a class="code" href="structNone.html">None</a>());</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classmesos_1_1internal_1_1master_1_1Registrar.html#a9561bce055d5e3bbc8a6a98ebad4d24a">~Registrar</a>();</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  <span class="comment">// Recovers the Registry, persisting the new Master information.</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  <span class="comment">// The Registrar must be recovered to allow other operations to</span></div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  <span class="comment">// proceed.</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  <span class="comment">// TODO(bmahler): Consider a &quot;factory&quot; for constructing the</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  <span class="comment">// Registrar, to eliminate the need for passing &#39;MasterInfo&#39;.</span></div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  <span class="comment">// This is required as the Registrar is injected into the Master,</span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  <span class="comment">// and therefore MasterInfo is unknown during construction.</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  <a class="code" href="classprocess_1_1Future.html">process::Future&lt;Registry&gt;</a> <a class="code" href="classmesos_1_1internal_1_1master_1_1Registrar.html#a1c37cadf0171c77ef14569ef014ff0d8">recover</a>(<span class="keyword">const</span> MasterInfo&amp; info);</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  <span class="comment">// Applies an operation on the Registry.</span></div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  <span class="comment">// Returns:</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  <span class="comment">//   true if the operation is permitted.</span></div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  <span class="comment">//   false if the operation is not permitted.</span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;  <span class="comment">//   Failure if the operation fails (possibly lost log leadership),</span></div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;  <span class="comment">//     or recovery failed.</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;bool&gt;</a> <a class="code" href="classmesos_1_1internal_1_1master_1_1Registrar.html#a252e813e721c6848a48759f1b838675f">apply</a>(<a class="code" href="classprocess_1_1Owned.html">process::Owned&lt;Operation&gt;</a> operation);</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;  <span class="comment">// Gets the pid of the underlying process.</span></div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;  <span class="comment">// Used in tests.</span></div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  <a class="code" href="structprocess_1_1PID.html">process::PID&lt;RegistrarProcess&gt;</a> <a class="code" href="classmesos_1_1internal_1_1master_1_1Registrar.html#a5462adfb393217f4a55c47c441ebb349">pid</a>() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;  <span class="comment">// Applies an operation on the Registry.</span></div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;  <span class="comment">// Returns:</span></div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;  <span class="comment">//   true if the operation is permitted.</span></div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;  <span class="comment">//   false if the operation is not permitted.</span></div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;  <span class="comment">//   Failure if the operation fails (possibly lost log leadership),</span></div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;  <span class="comment">//     or recovery failed.</span></div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;  <a class="code" href="classprocess_1_1Future.html">process::Future&lt;bool&gt;</a> <a class="code" href="classmesos_1_1internal_1_1master_1_1Registrar.html#a8e37058cc2911be3313ddb5fcb83a164">apply</a>(<a class="code" href="classprocess_1_1Owned.html">process::Owned&lt;Operation&gt;</a> operation);</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;  RegistrarProcess* process;</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;};</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;} <span class="comment">// namespace master {</span></div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;} <span class="comment">// namespace internal {</span></div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;} <span class="comment">// namespace mesos {</span></div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;  <span class="comment">// Gets the pid of the underlying process.</span></div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;  <span class="comment">// Used in tests.</span></div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;  <a class="code" href="structprocess_1_1PID.html">process::PID&lt;RegistrarProcess&gt;</a> <a class="code" href="classmesos_1_1internal_1_1master_1_1Registrar.html#a5462adfb393217f4a55c47c441ebb349">pid</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;  RegistrarProcess* process;</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;};</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;} <span class="comment">// namespace master {</span></div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;} <span class="comment">// namespace internal {</span></div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;} <span class="comment">// namespace mesos {</span></div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;<span class="preprocessor">#endif // __MASTER_REGISTRAR_HPP__</span></div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="preprocessor">#endif // __MASTER_REGISTRAR_HPP__</span></div>
 <div class="ttc" id="classOption_html"><div class="ttname"><a href="classOption.html">Option&lt; std::string &gt;</a></div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1master_1_1Registrar_html_a9561bce055d5e3bbc8a6a98ebad4d24a"><div class="ttname"><a href="classmesos_1_1internal_1_1master_1_1Registrar.html#a9561bce055d5e3bbc8a6a98ebad4d24a">mesos::internal::master::Registrar::~Registrar</a></div><div class="ttdeci">virtual ~Registrar()</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1master_1_1Registrar_html_a252e813e721c6848a48759f1b838675f"><div class="ttname"><a href="classmesos_1_1internal_1_1master_1_1Registrar.html#a252e813e721c6848a48759f1b838675f">mesos::internal::master::Registrar::apply</a></div><div class="ttdeci">virtual process::Future&lt; bool &gt; apply(process::Owned&lt; Operation &gt; operation)</div></div>
 <div class="ttc" id="classprocess_1_1Promise_html_a989b8dfa7eb2633de3f0f25ac2b87943"><div class="ttname"><a href="classprocess_1_1Promise.html#a989b8dfa7eb2633de3f0f25ac2b87943">process::Promise::set</a></div><div class="ttdeci">bool set(const T &amp;_t)</div><div class="ttdef"><b>Definition:</b> future.hpp:664</div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1master_1_1Operation_html_a3543f4f2dd85dd85d535ead27b8898b7"><div class="ttname"><a href="classmesos_1_1internal_1_1master_1_1Operation.html#a3543f4f2dd85dd85d535ead27b8898b7">mesos::internal::master::Operation::perform</a></div><div class="ttdeci">virtual Try&lt; bool &gt; perform(Registry *registry, hashset&lt; SlaveID &gt; *slaveIDs, bool strict)=0</div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1master_1_1Operation_html_affd5d3a69fda8963bcdd1536971ee7fa"><div class="ttname"><a href="classmesos_1_1internal_1_1master_1_1Operation.html#affd5d3a69fda8963bcdd1536971ee7fa">mesos::internal::master::Operation::operator()</a></div><div class="ttdeci">Try&lt; bool &gt; operator()(Registry *registry, hashset&lt; SlaveID &gt; *slaveIDs, bool strict)</div><div class="ttdef"><b>Definition:</b> registrar.hpp:61</div></div>
 <div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
 <div class="ttc" id="classhashset_html"><div class="ttname"><a href="classhashset.html">hashset&lt; SlaveID &gt;</a></div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1master_1_1Operation_html_a579f54e98cc99bf30ed6d1c209fa17c3"><div class="ttname"><a href="classmesos_1_1internal_1_1master_1_1Operation.html#a579f54e98cc99bf30ed6d1c209fa17c3">mesos::internal::master::Operation::operator()</a></div><div class="ttdeci">Try&lt; bool &gt; operator()(Registry *registry, hashset&lt; SlaveID &gt; *slaveIDs)</div><div class="ttdef"><b>Definition:</b> registrar.hpp:57</div></div>
 <div class="ttc" id="include_2mesos_2mesos_8hpp_html"><div class="ttname"><a href="include_2mesos_2mesos_8hpp.html">mesos.hpp</a></div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1master_1_1Operation_html_ab3d421fa8e9d8849fb37ddaef1965b3a"><div class="ttname"><a href="classmesos_1_1internal_1_1master_1_1Operation.html#ab3d421fa8e9d8849fb37ddaef1965b3a">mesos::internal::master::Operation::Operation</a></div><div class="ttdeci">Operation()</div><div class="ttdef"><b>Definition:</b> registrar.hpp:48</div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1master_1_1Registrar_html_a5462adfb393217f4a55c47c441ebb349"><div class="ttname"><a href="classmesos_1_1internal_1_1master_1_1Registrar.html#a5462adfb393217f4a55c47c441ebb349">mesos::internal::master::Registrar::pid</a></div><div class="ttdeci">process::PID&lt; RegistrarProcess &gt; pid() const </div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1master_1_1Registrar_html_a17420569cc5538ff7b71eef1760c6959"><div class="ttname"><a href="classmesos_1_1internal_1_1master_1_1Registrar.html#a17420569cc5538ff7b71eef1760c6959">mesos::internal::master::Registrar::~Registrar</a></div><div class="ttdeci">~Registrar()</div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1master_1_1Flags_html"><div class="ttname"><a href="classmesos_1_1internal_1_1master_1_1Flags.html">mesos::internal::master::Flags</a></div><div class="ttdef"><b>Definition:</b> flags.hpp:40</div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1master_1_1Registrar_html"><div class="ttname"><a href="classmesos_1_1internal_1_1master_1_1Registrar.html">mesos::internal::master::Registrar</a></div><div class="ttdef"><b>Definition:</b> registrar.hpp:101</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1master_1_1Registrar_html"><div class="ttname"><a href="classmesos_1_1internal_1_1master_1_1Registrar.html">mesos::internal::master::Registrar</a></div><div class="ttdef"><b>Definition:</b> registrar.hpp:91</div></div>
 <div class="ttc" id="src_2master_2flags_8hpp_html"><div class="ttname"><a href="src_2master_2flags_8hpp.html">flags.hpp</a></div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1master_1_1Operation_html_a51ff2884db36db785c55f0e269a8134d"><div class="ttname"><a href="classmesos_1_1internal_1_1master_1_1Operation.html#a51ff2884db36db785c55f0e269a8134d">mesos::internal::master::Operation::~Operation</a></div><div class="ttdeci">virtual ~Operation()</div><div class="ttdef"><b>Definition:</b> registrar.hpp:49</div></div>
 <div class="ttc" id="classmesos_1_1state_1_1protobuf_1_1State_html"><div class="ttname"><a href="classmesos_1_1state_1_1protobuf_1_1State.html">mesos::state::protobuf::State</a></div><div class="ttdef"><b>Definition:</b> protobuf.hpp:69</div></div>
 <div class="ttc" id="include_2mesos_2state_2protobuf_8hpp_html"><div class="ttname"><a href="include_2mesos_2state_2protobuf_8hpp.html">protobuf.hpp</a></div></div>
 <div class="ttc" id="classprocess_1_1Promise_html"><div class="ttname"><a href="classprocess_1_1Promise.html">process::Promise</a></div><div class="ttdef"><b>Definition:</b> future.hpp:70</div></div>
 <div class="ttc" id="3rdparty_2libprocess_2include_2process_2pid_8hpp_html"><div class="ttname"><a href="3rdparty_2libprocess_2include_2process_2pid_8hpp.html">pid.hpp</a></div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1master_1_1Operation_html_aa7325c01da3c8fff4d2bf6586a2e55df"><div class="ttname"><a href="classmesos_1_1internal_1_1master_1_1Operation.html#aa7325c01da3c8fff4d2bf6586a2e55df">mesos::internal::master::Operation::set</a></div><div class="ttdeci">bool set()</div><div class="ttdef"><b>Definition:</b> registrar.hpp:74</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1master_1_1Operation_html_aa7325c01da3c8fff4d2bf6586a2e55df"><div class="ttname"><a href="classmesos_1_1internal_1_1master_1_1Operation.html#aa7325c01da3c8fff4d2bf6586a2e55df">mesos::internal::master::Operation::set</a></div><div class="ttdeci">bool set()</div><div class="ttdef"><b>Definition:</b> registrar.hpp:67</div></div>
 <div class="ttc" id="future_8hpp_html"><div class="ttname"><a href="future_8hpp.html">future.hpp</a></div></div>
 <div class="ttc" id="structprocess_1_1PID_html"><div class="ttname"><a href="structprocess_1_1PID.html">process::PID</a></div><div class="ttdoc">A &amp;quot;process identifier&amp;quot; used to uniquely identify a process when dispatching messages. </div><div class="ttdef"><b>Definition:</b> pid.hpp:126</div></div>
 <div class="ttc" id="structNone_html"><div class="ttname"><a href="structNone.html">None</a></div><div class="ttdef"><b>Definition:</b> none.hpp:27</div></div>
@@ -220,9 +208,9 @@
 <div class="ttc" id="classmesos_1_1internal_1_1master_1_1Operation_html"><div class="ttname"><a href="classmesos_1_1internal_1_1master_1_1Operation.html">mesos::internal::master::Operation</a></div><div class="ttdef"><b>Definition:</b> registrar.hpp:45</div></div>
 <div class="ttc" id="classprocess_1_1Owned_html"><div class="ttname"><a href="classprocess_1_1Owned.html">process::Owned</a></div><div class="ttdef"><b>Definition:</b> owned.hpp:35</div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1master_1_1Registrar_html_a1c37cadf0171c77ef14569ef014ff0d8"><div class="ttname"><a href="classmesos_1_1internal_1_1master_1_1Registrar.html#a1c37cadf0171c77ef14569ef014ff0d8">mesos::internal::master::Registrar::recover</a></div><div class="ttdeci">process::Future&lt; Registry &gt; recover(const MasterInfo &amp;info)</div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1master_1_1Registrar_html_a8e37058cc2911be3313ddb5fcb83a164"><div class="ttname"><a href="classmesos_1_1internal_1_1master_1_1Registrar.html#a8e37058cc2911be3313ddb5fcb83a164">mesos::internal::master::Registrar::apply</a></div><div class="ttdeci">process::Future&lt; bool &gt; apply(process::Owned&lt; Operation &gt; operation)</div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1master_1_1Registrar_html_a94b221fe5fa6ab7562b8abf300c93a5a"><div class="ttname"><a href="classmesos_1_1internal_1_1master_1_1Registrar.html#a94b221fe5fa6ab7562b8abf300c93a5a">mesos::internal::master::Registrar::Registrar</a></div><div class="ttdeci">Registrar(const Flags &amp;flags, mesos::state::protobuf::State *state, const Option&lt; std::string &gt; &amp;authenticationRealm=None())</div></div>
 <div class="ttc" id="registry_8hpp_html"><div class="ttname"><a href="registry_8hpp.html">registry.hpp</a></div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1master_1_1Operation_html_a2c77ce356a4e00b9ef0d8e3d04de7684"><div class="ttname"><a href="classmesos_1_1internal_1_1master_1_1Operation.html#a2c77ce356a4e00b9ef0d8e3d04de7684">mesos::internal::master::Operation::perform</a></div><div class="ttdeci">virtual Try&lt; bool &gt; perform(Registry *registry, hashset&lt; SlaveID &gt; *slaveIDs)=0</div></div>
 <div class="ttc" id="namespacemesos_1_1internal_1_1tests_html_af8289f648a916c3f66923867452c7b1b"><div class="ttname"><a href="namespacemesos_1_1internal_1_1tests.html#af8289f648a916c3f66923867452c7b1b">mesos::internal::tests::flags</a></div><div class="ttdeci">Flags flags</div></div>
 <div class="ttc" id="classprocess_1_1Future_html"><div class="ttname"><a href="classprocess_1_1Future.html">process::Future</a></div><div class="ttdef"><b>Definition:</b> future.hpp:54</div></div>
 </div><!-- fragment --></div><!-- contents -->

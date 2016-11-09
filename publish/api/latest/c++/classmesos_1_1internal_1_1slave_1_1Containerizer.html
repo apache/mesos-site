@@ -69,7 +69,8 @@ Inheritance diagram for mesos::internal::slave::Containerizer:</div>
 <area href="classmesos_1_1internal_1_1slave_1_1ComposingContainerizer.html" alt="mesos::internal::slave::ComposingContainerizer" shape="rect" coords="0,56,280,80"/>
 <area href="classmesos_1_1internal_1_1slave_1_1DockerContainerizer.html" alt="mesos::internal::slave::DockerContainerizer" shape="rect" coords="290,56,570,80"/>
 <area href="classmesos_1_1internal_1_1slave_1_1MesosContainerizer.html" alt="mesos::internal::slave::MesosContainerizer" shape="rect" coords="580,56,860,80"/>
-<area href="classmesos_1_1internal_1_1tests_1_1TestContainerizer.html" alt="mesos::internal::tests::TestContainerizer" shape="rect" coords="870,56,1150,80"/>
+<area href="classmesos_1_1internal_1_1tests_1_1MockContainerizer.html" alt="mesos::internal::tests::MockContainerizer" shape="rect" coords="870,56,1150,80"/>
+<area href="classmesos_1_1internal_1_1tests_1_1TestContainerizer.html" alt="mesos::internal::tests::TestContainerizer" shape="rect" coords="1160,56,1440,80"/>
 <area href="classmesos_1_1internal_1_1tests_1_1MockDockerContainerizer.html" alt="mesos::internal::tests::MockDockerContainerizer" shape="rect" coords="290,112,570,136"/>
 </map>
  </div></div>
@@ -82,8 +83,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:afb384accdd6d431e1882cd861de3212d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f9a918e704fbace67bdeb9047ac24a6"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a4f9a918e704fbace67bdeb9047ac24a6">launch</a> (const ContainerID &amp;containerId, const <a class="el" href="classOption.html">Option</a>&lt; TaskInfo &gt; &amp;taskInfo, const ExecutorInfo &amp;executorInfo, const std::string &amp;directory, const <a class="el" href="classOption.html">Option</a>&lt; std::string &gt; &amp;user, const SlaveID &amp;slaveId, const std::map&lt; std::string, std::string &gt; &amp;environment, bool checkpoint)=0</td></tr>
 <tr class="separator:a4f9a918e704fbace67bdeb9047ac24a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a324e9e596c72890eb6c24670bfc07c28"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt; <a class="el" href="structNothing.html">Nothing</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a324e9e596c72890eb6c24670bfc07c28">launch</a> (const ContainerID &amp;containerId, const CommandInfo &amp;commandInfo, const <a class="el" href="classOption.html">Option</a>&lt; ContainerInfo &gt; &amp;containerInfo, const <a class="el" href="classmesos_1_1Resources.html">Resources</a> &amp;<a class="el" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#acde902a94e389c2ef64b4fe78bb039a3">resources</a>)</td></tr>
-<tr class="separator:a324e9e596c72890eb6c24670bfc07c28"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab91f95a589fa53ed53d35992ef78ea89"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#ab91f95a589fa53ed53d35992ef78ea89">launch</a> (const ContainerID &amp;containerId, const CommandInfo &amp;commandInfo, const <a class="el" href="classOption.html">Option</a>&lt; ContainerInfo &gt; &amp;containerInfo, const <a class="el" href="classOption.html">Option</a>&lt; std::string &gt; &amp;user, const SlaveID &amp;slaveId)</td></tr>
+<tr class="separator:ab91f95a589fa53ed53d35992ef78ea89"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a11ed2cb6c50a4d26c40eaf4e203ce728"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt; <a class="el" href="structNothing.html">Nothing</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a11ed2cb6c50a4d26c40eaf4e203ce728">update</a> (const ContainerID &amp;containerId, const <a class="el" href="classmesos_1_1Resources.html">Resources</a> &amp;<a class="el" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#acde902a94e389c2ef64b4fe78bb039a3">resources</a>)=0</td></tr>
 <tr class="separator:a11ed2cb6c50a4d26c40eaf4e203ce728"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a16acaf5e8129bb470694c842cf5d79bd"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classprocess_1_1Future.html">process::Future</a><br class="typebreak"/>
@@ -92,11 +93,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a41ab321c7dd4a940fce865953621881f"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classprocess_1_1Future.html">process::Future</a><br class="typebreak"/>
 &lt; ContainerStatus &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a41ab321c7dd4a940fce865953621881f">status</a> (const ContainerID &amp;containerId)</td></tr>
 <tr class="separator:a41ab321c7dd4a940fce865953621881f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6806173d5dba8962b430fa1c68dbefbb"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classprocess_1_1Future.html">process::Future</a><br class="typebreak"/>
-&lt; mesos::slave::ContainerTermination &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a6806173d5dba8962b430fa1c68dbefbb">wait</a> (const ContainerID &amp;containerId)=0</td></tr>
-<tr class="separator:a6806173d5dba8962b430fa1c68dbefbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa16ce0f361aaee16452b287182714c80"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#aa16ce0f361aaee16452b287182714c80">destroy</a> (const ContainerID &amp;containerId)=0</td></tr>
-<tr class="separator:aa16ce0f361aaee16452b287182714c80"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a688a58965f318010cd3d1e01230b955c"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classprocess_1_1Future.html">process::Future</a><br class="typebreak"/>
+&lt; <a class="el" href="classOption.html">Option</a><br class="typebreak"/>
+&lt; mesos::slave::ContainerTermination &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a688a58965f318010cd3d1e01230b955c">wait</a> (const ContainerID &amp;containerId)=0</td></tr>
+<tr class="separator:a688a58965f318010cd3d1e01230b955c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3167c607a5e95b4619ebcc8361174712"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a3167c607a5e95b4619ebcc8361174712">destroy</a> (const ContainerID &amp;containerId)=0</td></tr>
+<tr class="separator:a3167c607a5e95b4619ebcc8361174712"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af0da001473e339d2e35d40f5ee1a32d4"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classprocess_1_1Future.html">process::Future</a><br class="typebreak"/>
 &lt; <a class="el" href="classhashset.html">hashset</a>&lt; ContainerID &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#af0da001473e339d2e35d40f5ee1a32d4">containers</a> ()=0</td></tr>
 <tr class="separator:af0da001473e339d2e35d40f5ee1a32d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -198,7 +200,7 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="aa16ce0f361aaee16452b287182714c80"></a>
+<a class="anchor" id="a3167c607a5e95b4619ebcc8361174712"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -206,7 +208,7 @@ Static Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void mesos::internal::slave::Containerizer::destroy </td>
+          <td class="memname">virtual <a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt;bool&gt; mesos::internal::slave::Containerizer::destroy </td>
           <td>(</td>
           <td class="paramtype">const ContainerID &amp;&#160;</td>
           <td class="paramname"><em>containerId</em></td><td>)</td>
@@ -220,7 +222,7 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="classmesos_1_1internal_1_1slave_1_1MesosContainerizer.html#a3c4e14c561e296b8c98ce4583d234d35">mesos::internal::slave::MesosContainerizer</a>, <a class="el" href="classmesos_1_1internal_1_1slave_1_1DockerContainerizer.html#aeefa1705a8486f27ea97e291c797c491">mesos::internal::slave::DockerContainerizer</a>, and <a class="el" href="classmesos_1_1internal_1_1slave_1_1ComposingContainerizer.html#aa5f3c957a905d5cfdcc19e1948644a1d">mesos::internal::slave::ComposingContainerizer</a>.</p>
+<p>Implemented in <a class="el" href="classmesos_1_1internal_1_1slave_1_1MesosContainerizer.html#a360067ea563b1392969ef198c5e80994">mesos::internal::slave::MesosContainerizer</a>, <a class="el" href="classmesos_1_1internal_1_1slave_1_1DockerContainerizer.html#a12baedbd1571a99c91a1b30031146a7c">mesos::internal::slave::DockerContainerizer</a>, and <a class="el" href="classmesos_1_1internal_1_1slave_1_1ComposingContainerizer.html#a48ce384f1e63ddcc6f775c1ee8e4e1ce">mesos::internal::slave::ComposingContainerizer</a>.</p>
 
 </div>
 </div>
@@ -296,7 +298,7 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a324e9e596c72890eb6c24670bfc07c28"></a>
+<a class="anchor" id="ab91f95a589fa53ed53d35992ef78ea89"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -304,7 +306,7 @@ Static Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt;<a class="el" href="structNothing.html">Nothing</a>&gt; mesos::internal::slave::Containerizer::launch </td>
+          <td class="memname">virtual <a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt;bool&gt; mesos::internal::slave::Containerizer::launch </td>
           <td>(</td>
           <td class="paramtype">const ContainerID &amp;&#160;</td>
           <td class="paramname"><em>containerId</em>, </td>
@@ -324,8 +326,14 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classmesos_1_1Resources.html">Resources</a> &amp;&#160;</td>
-          <td class="paramname"><em>resources</em>&#160;</td>
+          <td class="paramtype">const <a class="el" href="classOption.html">Option</a>&lt; std::string &gt; &amp;&#160;</td>
+          <td class="paramname"><em>user</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const SlaveID &amp;&#160;</td>
+          <td class="paramname"><em>slaveId</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -340,7 +348,7 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="classmesos_1_1internal_1_1slave_1_1MesosContainerizer.html#a07f44b20a49b81b46cab4454caeb9747">mesos::internal::slave::MesosContainerizer</a>.</p>
+<p>Reimplemented in <a class="el" href="classmesos_1_1internal_1_1slave_1_1MesosContainerizer.html#a0938d92e5652016cccc9e6fc84b8468c">mesos::internal::slave::MesosContainerizer</a>, and <a class="el" href="classmesos_1_1internal_1_1slave_1_1ComposingContainerizer.html#acf7218acd60c2622a9c2e5539da69ae6">mesos::internal::slave::ComposingContainerizer</a>.</p>
 
 </div>
 </div>
@@ -452,7 +460,7 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="classmesos_1_1internal_1_1slave_1_1MesosContainerizer.html#a53984581c243206c1bd38f74c9f094c9">mesos::internal::slave::MesosContainerizer</a>, <a class="el" href="classmesos_1_1internal_1_1slave_1_1DockerContainerizer.html#a2ca322cbd1737f4f03c5b96ee882e5a6">mesos::internal::slave::DockerContainerizer</a>, and <a class="el" href="classmesos_1_1internal_1_1slave_1_1ComposingContainerizer.html#acb8d56caefb3868d14d38a6784dadcc8">mesos::internal::slave::ComposingContainerizer</a>.</p>
+<p>Implemented in <a class="el" href="classmesos_1_1internal_1_1slave_1_1DockerContainerizer.html#a2ca322cbd1737f4f03c5b96ee882e5a6">mesos::internal::slave::DockerContainerizer</a>, <a class="el" href="classmesos_1_1internal_1_1slave_1_1MesosContainerizer.html#a53984581c243206c1bd38f74c9f094c9">mesos::internal::slave::MesosContainerizer</a>, and <a class="el" href="classmesos_1_1internal_1_1slave_1_1ComposingContainerizer.html#acb8d56caefb3868d14d38a6784dadcc8">mesos::internal::slave::ComposingContainerizer</a>.</p>
 
 </div>
 </div>
@@ -478,11 +486,11 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="classmesos_1_1internal_1_1slave_1_1MesosContainerizer.html#a777216dd99e0a655f636a61f18798204">mesos::internal::slave::MesosContainerizer</a>, <a class="el" href="classmesos_1_1internal_1_1slave_1_1DockerContainerizer.html#a6c73fbdbf7a29d098e66913b210b2f9b">mesos::internal::slave::DockerContainerizer</a>, and <a class="el" href="classmesos_1_1internal_1_1slave_1_1ComposingContainerizer.html#a6b5b7c8cc2d45e519be36b0cc60ca328">mesos::internal::slave::ComposingContainerizer</a>.</p>
+<p>Implemented in <a class="el" href="classmesos_1_1internal_1_1slave_1_1DockerContainerizer.html#a6c73fbdbf7a29d098e66913b210b2f9b">mesos::internal::slave::DockerContainerizer</a>, <a class="el" href="classmesos_1_1internal_1_1slave_1_1MesosContainerizer.html#a777216dd99e0a655f636a61f18798204">mesos::internal::slave::MesosContainerizer</a>, and <a class="el" href="classmesos_1_1internal_1_1slave_1_1ComposingContainerizer.html#a6b5b7c8cc2d45e519be36b0cc60ca328">mesos::internal::slave::ComposingContainerizer</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a6806173d5dba8962b430fa1c68dbefbb"></a>
+<a class="anchor" id="a688a58965f318010cd3d1e01230b955c"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -490,7 +498,7 @@ Static Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt;mesos::slave::ContainerTermination&gt; mesos::internal::slave::Containerizer::wait </td>
+          <td class="memname">virtual <a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt;<a class="el" href="classOption.html">Option</a>&lt;mesos::slave::ContainerTermination&gt; &gt; mesos::internal::slave::Containerizer::wait </td>
           <td>(</td>
           <td class="paramtype">const ContainerID &amp;&#160;</td>
           <td class="paramname"><em>containerId</em></td><td>)</td>
@@ -504,7 +512,7 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="classmesos_1_1internal_1_1slave_1_1MesosContainerizer.html#a151d8ca9ed0110d8c24cec5d29620a6c">mesos::internal::slave::MesosContainerizer</a>, <a class="el" href="classmesos_1_1internal_1_1slave_1_1DockerContainerizer.html#ab8f03bf8138c0d5a4a420d534b0df896">mesos::internal::slave::DockerContainerizer</a>, and <a class="el" href="classmesos_1_1internal_1_1slave_1_1ComposingContainerizer.html#aa695cc6f97b7f1b39e1801a277128c19">mesos::internal::slave::ComposingContainerizer</a>.</p>
+<p>Implemented in <a class="el" href="classmesos_1_1internal_1_1slave_1_1MesosContainerizer.html#a6f2114367f2ced7f2c19621acc04dc11">mesos::internal::slave::MesosContainerizer</a>, <a class="el" href="classmesos_1_1internal_1_1slave_1_1DockerContainerizer.html#a4189f8aaa987a4121036d66a780fad5d">mesos::internal::slave::DockerContainerizer</a>, and <a class="el" href="classmesos_1_1internal_1_1slave_1_1ComposingContainerizer.html#a2777117044c420bf9fa499916706c32d">mesos::internal::slave::ComposingContainerizer</a>.</p>
 
 </div>
 </div>

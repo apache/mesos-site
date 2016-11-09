@@ -123,7 +123,7 @@
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <span class="stringliteral">&quot;Error invoking &#39;GetDiskFreeSpaceEx&#39; on &#39;&quot;</span> + path + <span class="stringliteral">&quot;&#39;&quot;</span>);</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  }</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="keywordtype">double</span> used = total_bytes.QuadPart - free_bytes.QuadPart;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="keywordtype">double</span> used = <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(total_bytes.QuadPart - free_bytes.QuadPart);</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="keywordflow">return</span> used / total_bytes.QuadPart;</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;}</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
@@ -149,7 +149,7 @@
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  <span class="keywordflow">if</span> (search_handle == INVALID_HANDLE_VALUE) {</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="comment">// For compliance with the POSIX implementation (which uses `::glob`),</span></div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="comment">// return an empty list instead of an error when the path does not exist.</span></div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <span class="keywordtype">int</span> error = ::GetLastError();</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <span class="keywordtype">int</span> <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#ae58e703656ab4a1bd5d9870441236727">error</a> = ::GetLastError();</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="keywordflow">if</span> (error == ERROR_FILE_NOT_FOUND || error == ERROR_PATH_NOT_FOUND) {</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;      <span class="keywordflow">return</span> found_files;</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    }</div>
@@ -199,6 +199,7 @@
 <div class="ttc" id="namespacefs_html_ab5ede09379c4793ba4477c7e4573670a"><div class="ttname"><a href="namespacefs.html#ab5ede09379c4793ba4477c7e4573670a">fs::usage</a></div><div class="ttdeci">Try&lt; double &gt; usage(const std::string &amp;path=&quot;/&quot;)</div><div class="ttdef"><b>Definition:</b> fs.hpp:44</div></div>
 <div class="ttc" id="classResult_html_aedf79f3b14dcda5791b84a64ada4d412"><div class="ttname"><a href="classResult.html#aedf79f3b14dcda5791b84a64ada4d412">Result::get</a></div><div class="ttdeci">const T &amp; get() const </div><div class="ttdef"><b>Definition:</b> result.hpp:112</div></div>
 <div class="ttc" id="error_8hpp_html"><div class="ttname"><a href="error_8hpp.html">error.hpp</a></div></div>
+<div class="ttc" id="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec_html_ae58e703656ab4a1bd5d9870441236727"><div class="ttname"><a href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#ae58e703656ab4a1bd5d9870441236727">mesos::internal::slave::cni::spec::error</a></div><div class="ttdeci">std::string error(const std::string &amp;msg, uint32_t code)</div></div>
 <div class="ttc" id="symlink_8hpp_html"><div class="ttname"><a href="symlink_8hpp.html">symlink.hpp</a></div></div>
 <div class="ttc" id="try_8hpp_html"><div class="ttname"><a href="try_8hpp.html">try.hpp</a></div></div>
 <div class="ttc" id="classResult_html_a85eaa52037223d71092e65701c166562"><div class="ttname"><a href="classResult.html#a85eaa52037223d71092e65701c166562">Result::isSome</a></div><div class="ttdeci">bool isSome() const </div><div class="ttdef"><b>Definition:</b> result.hpp:108</div></div>

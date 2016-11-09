@@ -4,7 +4,26 @@
     <meta charset="utf-8">
     <title>Apache Mesos - Configuration</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta property="og:image" content="/assets/img/mesos_logo_fb_preview.png">
+
+    <meta property="og:locale" content="en_US"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:title" content="Apache Mesos"/>
+    <meta property="og:site_name" content="Apache Mesos"/>
+    <meta property="og:url" content="http://mesos.apache.org/"/>
+    <meta property="og:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta property="og:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
+
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:site" content="@ApacheMesos"/>
+    <meta name="twitter:title" content="Apache Mesos"/>
+    <meta name="twitter:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta name="twitter:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
 
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
@@ -1094,6 +1113,22 @@ cgroup.
 </tr>
 <tr>
   <td>
+    --allowed_capabilities=VALUE
+  </td>
+  <td>
+The value needs to be a JSON-formatted string of Linux capabilities
+that the agent should allow. Note that if no Linux capabilities
+isolation is enabled (<code>linux/capabilities</code> is not present
+in the arguments to <code>--isolation</code>), this flags is ignored.
+<p/>
+Example:
+<pre><code>{
+"capabilities": [NET_RAW, MKNOD]
+}</code></pre>
+  </td>
+</tr>
+<tr>
+  <td>
     --appc_simple_discovery_uri_prefix=VALUE
   </td>
   <td>
@@ -1465,6 +1500,15 @@ Example:
 Amount of time to wait for an executor
 to register with the agent before considering it hung and
 shutting it down (e.g., 60secs, 3mins, etc) (default: 1mins)
+  </td>
+</tr>
+<tr>
+  <td>
+    --max_completed_executors_per_framework
+  </td>
+  <td>
+Maximum number of completed executors per framework to store
+in memory. (default: 150)
   </td>
 </tr>
 <tr>

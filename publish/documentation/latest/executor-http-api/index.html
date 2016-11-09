@@ -4,7 +4,26 @@
     <meta charset="utf-8">
     <title>Apache Mesos - Executor HTTP API</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta property="og:image" content="/assets/img/mesos_logo_fb_preview.png">
+
+    <meta property="og:locale" content="en_US"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:title" content="Apache Mesos"/>
+    <meta property="og:site_name" content="Apache Mesos"/>
+    <meta property="og:url" content="http://mesos.apache.org/"/>
+    <meta property="og:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta property="og:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
+
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:site" content="@ApacheMesos"/>
+    <meta name="twitter:title" content="Apache Mesos"/>
+    <meta name="twitter:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta name="twitter:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
 
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
@@ -346,6 +365,43 @@ HTTP/1.1 202 Accepted
           "100"
         ]
       }
+    }
+  }
+}
+</code></pre>
+
+<h3>LAUNCH_GROUP</h3>
+
+<p>This <strong>experimental</strong> event was added in 1.1.0.</p>
+
+<p>Sent by the agent whenever it needs to assign a new task group to the executor. The executor is required to send <code>UPDATE</code> messages back to the agent indicating the success or failure of each of the tasks in the group.</p>
+
+<p>The executor must maintain a list of unacknowledged tasks (see <code>LAUNCH</code> section above).</p>
+
+<pre><code>LAUNCH_GROUP Event (JSON)
+
+&lt;event-length&gt;
+{
+  "type": "LAUNCH_GROUP",
+  "launch_group": {
+    "task_group" : {
+      "tasks" : [
+        "task": {
+          "name": "dummy-task",
+          "task_id": {
+            "value": "d40f3f3e-bbe3-44af-a230-4cb1eae72f67"
+          },
+          "agent_id": {
+            "value": "f1c9cdc5-195e-41a7-a0d7-adaa9af07f81"
+          },
+          "command": {
+            "value": "sleep",
+            "arguments": [
+              "100"
+            ]
+          }
+        }
+      ]
     }
   }
 }

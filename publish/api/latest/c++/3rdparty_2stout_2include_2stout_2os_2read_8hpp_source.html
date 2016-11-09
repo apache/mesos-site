@@ -108,7 +108,7 @@
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a894c4d58faeee7675b9e7e8244de1386">ssize_t</a> length = <a class="code" href="namespaceos.html#a48e0eb3bcc4df5f972abe5ee5434f8be">os::read</a>(fd, buffer + offset, size - offset);</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="preprocessor">#ifdef __WINDOWS__</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor"></span>      <span class="keywordtype">int</span> error = WSAGetLastError();</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor"></span>      <span class="keywordtype">int</span> <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#ae58e703656ab4a1bd5d9870441236727">error</a> = WSAGetLastError();</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="preprocessor">#else</span></div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="preprocessor"></span>      <span class="keywordtype">int</span> error = errno;</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="preprocessor">#endif // __WINDOWS__</span></div>
@@ -118,9 +118,9 @@
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;      <span class="keywordflow">if</span> (<a class="code" href="namespacenet.html#a190d273d305decda6696ed04b3adbd59">net::is_restartable_error</a>(error)) {</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <span class="keywordflow">continue</span>;</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;      }</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;      <a class="code" href="classErrnoError.html">ErrnoError</a> error; <span class="comment">// Constructed before &#39;delete&#39; to capture errno.</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;      <a class="code" href="classErrnoError.html">ErrnoError</a> <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#ae58e703656ab4a1bd5d9870441236727">error</a>; <span class="comment">// Constructed before &#39;delete&#39; to capture errno.</span></div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;      <span class="keyword">delete</span>[] buffer;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;      <span class="keywordflow">return</span> error;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#ae58e703656ab4a1bd5d9870441236727">error</a>;</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (length == 0) {</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;      <span class="comment">// Reached EOF before expected! Only return as much data as</span></div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;      <span class="comment">// available or None if we haven&#39;t read anything yet.</span></div>
@@ -178,10 +178,10 @@
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <span class="keywordflow">if</span> (::ferror(file)) {</div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;      <span class="comment">// NOTE: ferror() will not modify errno if the stream</span></div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;      <span class="comment">// is valid, which is the case here since it is open.</span></div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;      <a class="code" href="classErrnoError.html">ErrnoError</a> error;</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;      <a class="code" href="classErrnoError.html">ErrnoError</a> <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#ae58e703656ab4a1bd5d9870441236727">error</a>;</div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;      <span class="keyword">delete</span>[] buffer;</div>
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;      ::fclose(file);</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;      <span class="keywordflow">return</span> error;</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#ae58e703656ab4a1bd5d9870441236727">error</a>;</div>
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    }</div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;</div>
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    result.append(buffer, read);</div>
@@ -209,13 +209,14 @@
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html">windows.hpp</a></div></div>
 <div class="ttc" id="classResult_html"><div class="ttname"><a href="classResult.html">Result</a></div><div class="ttdef"><b>Definition:</b> result.hpp:40</div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2os_2posix_2read_8hpp_html"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2os_2posix_2read_8hpp.html">read.hpp</a></div></div>
-<div class="ttc" id="namespacenet_html_a190d273d305decda6696ed04b3adbd59"><div class="ttname"><a href="namespacenet.html#a190d273d305decda6696ed04b3adbd59">net::is_restartable_error</a></div><div class="ttdeci">bool is_restartable_error(int error)</div><div class="ttdef"><b>Definition:</b> socket.hpp:25</div></div>
+<div class="ttc" id="namespacenet_html_a190d273d305decda6696ed04b3adbd59"><div class="ttname"><a href="namespacenet.html#a190d273d305decda6696ed04b3adbd59">net::is_restartable_error</a></div><div class="ttdeci">bool is_restartable_error(int error)</div><div class="ttdef"><b>Definition:</b> socket.hpp:31</div></div>
 <div class="ttc" id="namespacemesos_1_1uri_html_a0a3b30c1eb427c4053aaef120b1f453c"><div class="ttname"><a href="namespacemesos_1_1uri.html#a0a3b30c1eb427c4053aaef120b1f453c">mesos::uri::file</a></div><div class="ttdeci">URI file(const std::string &amp;path)</div><div class="ttdoc">Creates a file URI with the given path on the local host. </div><div class="ttdef"><b>Definition:</b> file.hpp:33</div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2os_2windows_2read_8hpp_html"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2os_2windows_2read_8hpp.html">read.hpp</a></div></div>
 <div class="ttc" id="namespaceos_html_a48e0eb3bcc4df5f972abe5ee5434f8be"><div class="ttname"><a href="namespaceos.html#a48e0eb3bcc4df5f972abe5ee5434f8be">os::read</a></div><div class="ttdeci">Result&lt; std::string &gt; read(int fd, size_t size)</div><div class="ttdef"><b>Definition:</b> read.hpp:48</div></div>
 <div class="ttc" id="namespaceos_1_1stat_html_aac17a91dd3f91341b8c4021025e89b04"><div class="ttname"><a href="namespaceos_1_1stat.html#aac17a91dd3f91341b8c4021025e89b04">os::stat::size</a></div><div class="ttdeci">Try&lt; Bytes &gt; size(const std::string &amp;path, const FollowSymlink follow=FOLLOW_SYMLINK)</div><div class="ttdef"><b>Definition:</b> stat.hpp:79</div></div>
 <div class="ttc" id="error_8hpp_html"><div class="ttname"><a href="error_8hpp.html">error.hpp</a></div></div>
 <div class="ttc" id="structNone_html"><div class="ttname"><a href="structNone.html">None</a></div><div class="ttdef"><b>Definition:</b> none.hpp:27</div></div>
+<div class="ttc" id="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec_html_ae58e703656ab4a1bd5d9870441236727"><div class="ttname"><a href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#ae58e703656ab4a1bd5d9870441236727">mesos::internal::slave::cni::spec::error</a></div><div class="ttdeci">std::string error(const std::string &amp;msg, uint32_t code)</div></div>
 <div class="ttc" id="try_8hpp_html"><div class="ttname"><a href="try_8hpp.html">try.hpp</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

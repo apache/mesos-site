@@ -4,7 +4,26 @@
     <meta charset="utf-8">
     <title>Apache Mesos - HTTP Endpoints - /state</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta property="og:image" content="/assets/img/mesos_logo_fb_preview.png">
+
+    <meta property="og:locale" content="en_US"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:title" content="Apache Mesos"/>
+    <meta property="og:site_name" content="Apache Mesos"/>
+    <meta property="og:url" content="http://mesos.apache.org/"/>
+    <meta property="og:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta property="og:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
+
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:site" content="@ApacheMesos"/>
+    <meta name="twitter:title" content="Apache Mesos"/>
+    <meta name="twitter:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta name="twitter:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
 
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
@@ -115,7 +134,9 @@ current master is not the leader.
 Returns 503 SERVICE_UNAVAILABLE if the leading master cannot be
 found.
 This endpoint shows information about the frameworks, tasks,
-executors and agents running in the cluster as a JSON object.</p>
+executors and agents running in the cluster as a JSON object.
+The information shown might be filtered based on the user
+accessing the endpoint.</p>
 
 <p>Example (<strong>Note</strong>: this is not exhaustive):</p>
 
@@ -146,7 +167,7 @@ executors and agents running in the cluster as a JSON object.</p>
          "work_dir" : "/var/lib/mesos",
          "http_authenticators" : "basic",
          "authorizers" : "local",
-         "slave_reregister_timeout" : "10mins",
+         "agent_reregister_timeout" : "10mins",
          "logging_level" : "INFO",
          "help" : "false",
          "root_submissions" : "true",
@@ -171,7 +192,7 @@ executors and agents running in the cluster as a JSON object.</p>
          "authenticate_http" : "false",
          "port" : "5050",
          "zk_session_timeout" : "10secs",
-         "recovery_slave_removal_limit" : "100%",
+         "recovery_agent_removal_limit" : "100%",
          "webui_dir" : "/path/to/mesos/build/../src/webui",
          "cluster" : "mycluster",
          "leader" : "master@127.0.0.1:5050",
@@ -190,6 +211,13 @@ executors and agents running in the cluster as a JSON object.</p>
 
 <p>This endpoint requires authentication iff HTTP authentication is
 enabled.</p>
+
+<h3>AUTHORIZATION</h3>
+
+<p>This endpoint might be filtered based on the user accessing it.
+For example a user might only see the subset of frameworks,
+tasks, and executors they are allowed to view.
+See the authorization documentation for details.</p>
 
   </div>
 </div>

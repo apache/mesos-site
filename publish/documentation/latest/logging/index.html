@@ -4,7 +4,26 @@
     <meta charset="utf-8">
     <title>Apache Mesos - Logging</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta property="og:image" content="/assets/img/mesos_logo_fb_preview.png">
+
+    <meta property="og:locale" content="en_US"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:title" content="Apache Mesos"/>
+    <meta property="og:site_name" content="Apache Mesos"/>
+    <meta property="og:url" content="http://mesos.apache.org/"/>
+    <meta property="og:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta property="og:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
+
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:site" content="@ApacheMesos"/>
+    <meta name="twitter:title" content="Apache Mesos"/>
+    <meta name="twitter:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta name="twitter:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
 
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
@@ -224,6 +243,29 @@ setting the <code>--container_logger</code> Agent flag to
   size [max_stdout_size]
 }</pre>
       NOTE: The <code>size</code> option will be overriden by this module.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      <code>environment_variable_prefix</code>
+    </td>
+    <td>
+      Prefix for environment variables meant to modify the behavior of
+      the logrotate logger for the specific executor being launched.
+      The logger will look for four prefixed environment variables in the
+      <code>ExecutorInfo</code>'s <code>CommandInfo</code>'s
+      <code>Environment</code>:
+      <ul>
+        <li><code>MAX_STDOUT_SIZE</code></li>
+        <li><code>LOGROTATE_STDOUT_OPTIONS</code></li>
+        <li><code>MAX_STDERR_SIZE</code></li>
+        <li><code>LOGROTATE_STDERR_OPTIONS</code></li>
+      </ul>
+      If present, these variables will overwrite the global values set
+      via module parameters.
+
+      Defaults to <code>CONTAINER_LOGGER_</code>.
     </td>
   </tr>
 

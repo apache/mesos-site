@@ -122,9 +122,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6d1124aace866719ed1e9ed45a068412"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1allocator_1_1Allocator.html#a6d1124aace866719ed1e9ed45a068412">requestResources</a> (const FrameworkID &amp;frameworkId, const std::vector&lt; Request &gt; &amp;requests)=0</td></tr>
 <tr class="memdesc:a6d1124aace866719ed1e9ed45a068412"><td class="mdescLeft">&#160;</td><td class="mdescRight">Requests resources for a framework.  <a href="#a6d1124aace866719ed1e9ed45a068412">More...</a><br/></td></tr>
 <tr class="separator:a6d1124aace866719ed1e9ed45a068412"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a86a589fb218ff9f93d044a943c167278"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1allocator_1_1Allocator.html#a86a589fb218ff9f93d044a943c167278">updateAllocation</a> (const FrameworkID &amp;frameworkId, const SlaveID &amp;slaveId, const std::vector&lt; Offer::Operation &gt; &amp;operations)=0</td></tr>
-<tr class="memdesc:a86a589fb218ff9f93d044a943c167278"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates allocation by applying offer operations.  <a href="#a86a589fb218ff9f93d044a943c167278">More...</a><br/></td></tr>
-<tr class="separator:a86a589fb218ff9f93d044a943c167278"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a42f405bd54c1c1782a388cb28ca58b42"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1allocator_1_1Allocator.html#a42f405bd54c1c1782a388cb28ca58b42">updateAllocation</a> (const FrameworkID &amp;frameworkId, const SlaveID &amp;slaveId, const <a class="el" href="classmesos_1_1Resources.html">Resources</a> &amp;offeredResources, const std::vector&lt; Offer::Operation &gt; &amp;operations)=0</td></tr>
+<tr class="memdesc:a42f405bd54c1c1782a388cb28ca58b42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates allocation by applying offer operations.  <a href="#a42f405bd54c1c1782a388cb28ca58b42">More...</a><br/></td></tr>
+<tr class="separator:a42f405bd54c1c1782a388cb28ca58b42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a997ec43933a7659b683d83c164bdd6db"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt; <a class="el" href="structNothing.html">Nothing</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1allocator_1_1Allocator.html#a997ec43933a7659b683d83c164bdd6db">updateAvailable</a> (const SlaveID &amp;slaveId, const std::vector&lt; Offer::Operation &gt; &amp;operations)=0</td></tr>
 <tr class="memdesc:a997ec43933a7659b683d83c164bdd6db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates available resources on an agent based on a sequence of offer operations.  <a href="#a997ec43933a7659b683d83c164bdd6db">More...</a><br/></td></tr>
 <tr class="separator:a997ec43933a7659b683d83c164bdd6db"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -317,7 +317,7 @@ Static Public Member Functions</h2></td></tr>
 <p>The allocator is invoked when a new framework joins the Mesos cluster and is entitled to participate in resource sharing.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">used</td><td><a class="el" href="classmesos_1_1Resources.html">Resources</a> used by this framework. The allocator should account for these resources when updating the allocation of this framework. </td></tr>
+    <tr><td class="paramname">used</td><td><a class="el" href="classmesos_1_1Resources.html">Resources</a> used by this framework. The allocator should account for these resources when updating the allocation of this framework. The allocator should avoid double accounting when yet unknown agents are added later in <code><a class="el" href="classmesos_1_1allocator_1_1Allocator.html#ae3e2e9c041223ee49c4760b5a47c04dd" title="Adds or re-adds an agent to the Mesos cluster. ">addSlave()</a></code>. </td></tr>
   </table>
   </dd>
 </dl>
@@ -383,7 +383,7 @@ Static Public Member Functions</h2></td></tr>
     <tr><td class="paramname">slaveId</td><td>ID of the agent to be added or re-added. </td></tr>
     <tr><td class="paramname">slaveInfo</td><td>Detailed info of the agent. The slaveInfo resources correspond directly to the static &ndash;resources flag value on the agent. </td></tr>
     <tr><td class="paramname">total</td><td>The <code>total</code> resources are passed explicitly because it includes resources that are dynamically "checkpointed" on the agent (e.g. persistent volumes, dynamic reservations, etc). </td></tr>
-    <tr><td class="paramname">used</td><td><a class="el" href="classmesos_1_1Resources.html">Resources</a> that are allocated on the current agent. </td></tr>
+    <tr><td class="paramname">used</td><td><a class="el" href="classmesos_1_1Resources.html">Resources</a> that are allocated on the current agent. The allocator should avoid double accounting when yet unknown frameworks are added later in <code><a class="el" href="classmesos_1_1allocator_1_1Allocator.html#a4e19e2d44c9e66dc8159cb7ee17f438f" title="Adds a framework to the Mesos cluster. ">addFramework()</a></code>. </td></tr>
   </table>
   </dd>
 </dl>
@@ -899,7 +899,7 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a86a589fb218ff9f93d044a943c167278"></a>
+<a class="anchor" id="a42f405bd54c1c1782a388cb28ca58b42"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -921,6 +921,12 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const <a class="el" href="classmesos_1_1Resources.html">Resources</a> &amp;&#160;</td>
+          <td class="paramname"><em>offeredResources</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">const std::vector&lt; Offer::Operation &gt; &amp;&#160;</td>
           <td class="paramname"><em>operations</em>&#160;</td>
         </tr>
@@ -938,7 +944,7 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Updates allocation by applying offer operations. </p>
-<p>This call is mainly intended to support persistence-related features (dynamic reservation and persistent volumes). The allocator may react differently for certain offer operations. The allocator should use this call to update bookkeeping information related to the framework. </p>
+<p>This call is mainly intended to support persistence-related features (dynamic reservation and persistent volumes). The allocator may react differently for certain offer operations. The allocator should use this call to update bookkeeping information related to the framework. The <code>offeredResources</code> are the resources that the operations are applied to. </p>
 
 </div>
 </div>

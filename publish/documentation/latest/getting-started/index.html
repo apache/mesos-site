@@ -4,7 +4,26 @@
     <meta charset="utf-8">
     <title>Apache Mesos - Getting Started</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta property="og:image" content="/assets/img/mesos_logo_fb_preview.png">
+
+    <meta property="og:locale" content="en_US"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:title" content="Apache Mesos"/>
+    <meta property="og:site_name" content="Apache Mesos"/>
+    <meta property="og:url" content="http://mesos.apache.org/"/>
+    <meta property="og:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta property="og:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
+
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:site" content="@ApacheMesos"/>
+    <meta name="twitter:title" content="Apache Mesos"/>
+    <meta name="twitter:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta name="twitter:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
 
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
@@ -102,8 +121,8 @@
 
 <p>1. Download the latest stable release from <a href="http://mesos.apache.org/downloads/">Apache</a> (<strong><em>Recommended</em></strong>)</p>
 
-<pre><code>$ wget http://www.apache.org/dist/mesos/0.28.2/mesos-0.28.2.tar.gz
-$ tar -zxf mesos-0.28.2.tar.gz
+<pre><code>$ wget http://www.apache.org/dist/mesos/1.0.1/mesos-1.0.1.tar.gz
+$ tar -zxf mesos-1.0.1.tar.gz
 </code></pre>
 
 <p>2. Clone the Mesos git <a href="https://git-wip-us.apache.org/repos/asf/mesos.git">repository</a> (<strong><em>Advanced Users Only</em></strong>)</p>
@@ -119,7 +138,7 @@ $ tar -zxf mesos-0.28.2.tar.gz
 
 <p>For full support of process isolation under Linux a recent kernel >=3.10 is required.</p>
 
-<p>Mesos agent also run on Windows. To build Mesos agent from source, Visual Studio 2015 is required.</p>
+<p>The Mesos agent also runs on Windows. To build Mesos from source, follow the instructions in the <a href="/documentation/latest/./windows/">Windows</a> section.</p>
 
 <p>Make sure your hostname is resolvable via DNS or via <code>/etc/hosts</code> to allow full support of Docker&rsquo;s host-networking capabilities, needed for some of the Mesos tests. When in doubt, please validate that <code>/etc/hosts</code> contains your hostname.</p>
 
@@ -141,6 +160,26 @@ $ sudo apt-get install -y autoconf libtool
 
 # Install other Mesos dependencies.
 $ sudo apt-get -y install build-essential python-dev libcurl4-nss-dev libsasl2-dev libsasl2-modules maven libapr1-dev libsvn-dev
+</code></pre>
+
+<h3>Ubuntu 16.04</h3>
+
+<p>Following are the instructions for stock Ubuntu 16.04. If you are using a different OS, please install the packages accordingly.</p>
+
+<pre><code># Update the packages.
+$ sudo apt-get update
+
+# Install a few utility tools.
+$ sudo apt-get install -y tar wget git
+
+# Install the latest OpenJDK.
+$ sudo apt-get install -y openjdk-8-jdk
+
+# Install autotools (Only necessary if building from git repository).
+$ sudo apt-get install -y autoconf libtool
+
+# Install other Mesos dependencies.
+$ sudo apt-get -y install build-essential python-dev libcurl4-nss-dev libsasl2-dev libsasl2-modules maven libapr1-dev libsvn-dev zlib1g-dev
 </code></pre>
 
 <h3>Mac OS X Yosemite &amp; El Capitan</h3>
@@ -266,21 +305,7 @@ $ sudo yum install -y apache-maven python-devel java-1.8.0-openjdk-devel zlib-de
 
 <h3>Windows</h3>
 
-<p>Following are the instructions for stock Windows 10 and Windows Server 2012 or newer.</p>
-
-<ol>
-<li>Install the latest version of <a href="https://www.visualstudio.com/post-download-vs?sku=community">Visual Studio Community 2015</a>.
-Make sure to select the Common Tools for Visual C++ and the Windows 10 SDK.
-Start Visual Studio Community to complete the setup and configuration.</li>
-<li>Install <a href="https://cmake.org/files/v3.5/cmake-3.5.2-win32-x86.msi">CMake 3.5.2 or later</a>.
-Do not run CMake before finishing the Visual Studio Community setup.</li>
-<li>Install <a href="http://downloads.sourceforge.net/project/gnuwin32/patch/2.5.9-7/patch-2.5.9-7-setup.exe">Gnu Patch 2.5.9-7 or later</a>.</li>
-<li>If building from git, make sure you have Windows-style line endings.
-i.e. <code>git config core.autocrlf true</code>.</li>
-<li>Make sure there are no spaces in your build directory.
-For example, <code>C:/Program Files (x86)/mesos</code> is an invalid build directory.</li>
-</ol>
-
+<p>Follow the instructions in the <a href="/documentation/latest/./windows/">Windows</a> section.</p>
 
 <h2>Building Mesos (Posix)</h2>
 
@@ -304,39 +329,6 @@ $ make check
 
 # Install (Optional).
 $ make install
-</code></pre>
-
-<h2>Building Mesos (Windows)</h2>
-
-<pre><code># Start a VS2015 x64 Native Tool command prompt.
-# This can be found by opening VS2015 and looking under the "tools"
-# menu for "Visual Studio Command Prompt".
-
-# Change working directory.
-$ cd mesos
-
-# If you are developing on Windows, we recommend running the bootstrap.
-# This requires administrator privileges.
-$ .\bootstrap.bat
-
-# Generate the solution and build.
-$ mkdir build
-$ cd build
-$ cmake .. -G "Visual Studio 14 2015 Win64" -DENABLE_LIBEVENT=1
-
-# After generating the Visual Studio solution you can use the IDE to open
-# the project and skip the next step. In this case it is recommended to set
-# `PreferredToolArchitecture` environment variable to `x64`.
-# NOTE: `PreferredToolArchitecture` can be set system-wide via Control Panel.
-$ msbuild Mesos.sln /p:PreferredToolArchitecture=x64
-
-# mesos-agent.exe can be found in the &lt;repository&gt;\build\src folder.
-$ cd src
-
-# The Windows agent exposes new isolators that must be used as with
-# the `--isolation` flag. To get started point the agent to a working
-# master, using eiher an IP address or zookeeper information.
-$ mesos-agent.exe --master=&lt;master&gt; --work_dir=&lt;work folder&gt; --isolation=windows/cpu,filesystem/windows --launcher_dir=&lt;repository&gt;\build\src
 </code></pre>
 
 <h2>Examples</h2>

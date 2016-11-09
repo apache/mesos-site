@@ -4,7 +4,26 @@
     <meta charset="utf-8">
     <title>Apache Mesos - Upgrading Mesos</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta property="og:image" content="/assets/img/mesos_logo_fb_preview.png">
+
+    <meta property="og:locale" content="en_US"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:title" content="Apache Mesos"/>
+    <meta property="og:site_name" content="Apache Mesos"/>
+    <meta property="og:url" content="http://mesos.apache.org/"/>
+    <meta property="og:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta property="og:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
+
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:site" content="@ApacheMesos"/>
+    <meta name="twitter:title" content="Apache Mesos"/>
+    <meta name="twitter:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta name="twitter:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
 
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
@@ -135,6 +154,27 @@ R Removed feature/behavior
   </thead>
 <tr>
   <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Version-->
+  1.1.x
+  </td>
+  <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Mesos Core-->
+  </td>
+  <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Flags-->
+  </td>
+  <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Framework API-->
+  </td>
+  <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Module API-->
+    <ul style="padding-left:10px;">
+      <li>R <a href="#1-1-x-container-logger-interface">Container Logger recovery method</a></li>
+    </ul>
+    <ul style="padding-left:10px;">
+      <li>C <a href="#1-1-x-allocator-updateallocation">Allocator updateAllocation method</a></li>
+    </ul>
+  </td>
+  <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Endpoints-->
+  </td>
+</tr>
+<tr>
+  <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Version-->
   1.0.x
   </td>
   <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Mesos Core-->
@@ -161,19 +201,25 @@ R Removed feature/behavior
     </ul>
   </td>
   <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Framework API-->
+    <ul style="padding-left:10px;">
       <li>DC <a href="#1-0-x-executorinfo">ExecutorInfo.source</a></li>
       <li>N <a href="#1-0-x-v1-commandinfo">CommandInfo.URI output_file</a></li>
       <li>C <a href="#1-0-x-scheduler-proto">scheduler.proto optional fields</a></li>
       <li>C <a href="#1-0-x-executor-proto">executor.proto optional fields</a></li>
+    </ul>
   </td>
   <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Module API-->
-    <li>C <a href="#1-0-x-authorizer">Authorizer</a></li>
-    <li>C <a href="#1-0-x-allocator">Allocator</a></li>
+    <ul style="padding-left:10px;">
+      <li>C <a href="#1-0-x-authorizer">Authorizer</a></li>
+      <li>C <a href="#1-0-x-allocator">Allocator</a></li>
+    </ul>
   </td>
   <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Endpoints-->
-    <li>C <a href="#1-0-x-status-code">HTTP return codes</a></li>
-    <li>R <a href="#1-0-x-status-code">/observe</a></li>
-    <li>C <a href="#1-0-x-endpoint-authorization">Added authorization</a></li>
+    <ul style="padding-left:10px;">
+      <li>C <a href="#1-0-x-status-code">HTTP return codes</a></li>
+      <li>R <a href="#1-0-x-status-code">/observe</a></li>
+      <li>C <a href="#1-0-x-endpoint-authorization">Added authorization</a></li>
+    </ul>
   </td>
 </tr>
 <tr>
@@ -268,6 +314,22 @@ R Removed feature/behavior
   </td>
 </tr>
 </table>
+
+
+<h2>Upgrading from 1.0.x to 1.1.x</h2>
+
+<p><a name="1-1-x-container-logger-interface"></a></p>
+
+<ul>
+<li>Mesos 1.1 removes the <code>ContainerLogger</code>&rsquo;s <code>recover()</code> method.  The <code>ContainerLogger</code> had an incomplete interface for a stateful implementation.  This removes the incomplete parts to avoid adding tech debt in the containerizer.  Please see <a href="https://issues.apache.org/jira/browse/MESOS-6371">MESOS-6371</a> for more information.</li>
+</ul>
+
+
+<p><a name="1-1-x-allocator-updateallocation"></a></p>
+
+<ul>
+<li>Mesos 1.1 adds an <code>offeredResources</code> argument to the <code>Allocator::updateAllocation()</code> method. It is used to indicate the resources that the operations passed to <code>updateAllocation()</code> are applied to. <a href="https://issues.apache.org/jira/browse/MESOS-4431">MESOS-4431</a> (paticularly <a href="https://reviews.apache.org/r/45961/">/r/45961/</a>) has more details on the motivation.</li>
+</ul>
 
 
 <h2>Upgrading from 0.28.x to 1.0.x</h2>

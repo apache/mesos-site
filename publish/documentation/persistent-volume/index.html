@@ -4,7 +4,26 @@
     <meta charset="utf-8">
     <title>Apache Mesos - Persistent Volumes</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta property="og:image" content="/assets/img/mesos_logo_fb_preview.png">
+
+    <meta property="og:locale" content="en_US"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:title" content="Apache Mesos"/>
+    <meta property="og:site_name" content="Apache Mesos"/>
+    <meta property="og:url" content="http://mesos.apache.org/"/>
+    <meta property="og:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta property="og:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
+
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:site" content="@ApacheMesos"/>
+    <meta name="twitter:title" content="Apache Mesos"/>
+    <meta name="twitter:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta name="twitter:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
 
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
@@ -122,6 +141,14 @@ regarding reservation mechanisms available in Mesos.</p>
 
 <p>Persistent volumes can also be created on isolated and auxiliary disks by
 reserving <a href="/documentation/latest/./multiple-disk/">multiple disk resources</a>.</p>
+
+<p>By default, a persistent volume cannot be shared between tasks running
+being managed by different executors: that is, once a task is launched
+using a persistent volume, that volume will not appear in any resource
+offers until the task has finished running. <em>Shared</em> volumes are a type
+of persistent volumes that can be accessed by multiple tasks at the same
+agent simultaneously; see the documentation on
+<a href="/documentation/latest/./shared-resources/">shared volumes</a> for more information.</p>
 
 <p>Persistent volumes can be created by <strong>operators</strong> and authorized
 <strong>frameworks</strong>. By default, frameworks and operators can create volumes for <em>any</em>
@@ -488,6 +515,12 @@ examine the state of the appropriate Mesos agent (e.g., via the agent&rsquo;s
 found by querying the <a href="/documentation/latest/./endpoints/master/slaves/">/slaves</a> master endpoint
 (under the <code>reserved_resources_full</code> key).</p>
 
+<p>The same information can also be found in the <a href="/documentation/latest/./endpoints/slave/state/">/state</a>
+endpoint on the agent (under the <code>reserved_resources_full</code> key). The agent
+endpoint is useful to confirm if changes to persistent volumes have been
+propagated to the agent (which can fail in the event of network partition or
+master/agent restarts).</p>
+
 <h2>Programming with Persistent Volumes</h2>
 
 <p>Some suggestions to keep in mind when building applications that use persistent
@@ -588,7 +621,8 @@ endpoints for creating and destroying volumes. Mesos 0.28 introduced support for
 master endpoint to include detailed information about persistent volumes and
 dynamic reservations. Mesos 1.0 changed the semantics of destroying a volume:
 in previous releases, destroying a volume would remove the Mesos-level metadata,
-but would not remove the volume&rsquo;s data from the agent&rsquo;s filesystem.</p>
+but would not remove the volume&rsquo;s data from the agent&rsquo;s filesystem. Mesos 1.1
+introduced support for <a href="/documentation/latest/./shared-resources/">shared persistent volumes</a>.</p>
 
   </div>
 </div>

@@ -4,7 +4,26 @@
     <meta charset="utf-8">
     <title></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta property="og:image" content="/assets/img/mesos_logo_fb_preview.png">
+
+    <meta property="og:locale" content="en_US"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:title" content="Apache Mesos"/>
+    <meta property="og:site_name" content="Apache Mesos"/>
+    <meta property="og:url" content="http://mesos.apache.org/"/>
+    <meta property="og:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta property="og:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
+
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:site" content="@ApacheMesos"/>
+    <meta name="twitter:title" content="Apache Mesos"/>
+    <meta name="twitter:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta name="twitter:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
 
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
@@ -122,7 +141,7 @@ default.</p>
 <li><a href="#configuring-cni-networks">Configuring CNI networks</a></li>
 <li><a href="#attaching-containers-to-cni-networks">Attaching containers to CNI networks</a></li>
 <li><a href="#accessing-container-network-namespace">Accessing container network namespace</a></li>
-<li><a href="#mesos-meta-data-to-cni-plugins">Mesos meta-data to CNI plugins</a></li>
+<li><a href="#mesos-meta-data-to-cni-plugins">Passing network labels and port-mapping information to CNI plugins</a></li>
 <li><a href="#adding-modifying-deleting">Adding/Deleting/Modifying CNI networks</a></li>
 </ul>
 </li>
@@ -130,11 +149,11 @@ default.</p>
 
 <ul>
 <li><a href="#a-bridge-network">A bridge network</a></li>
+<li><a href="#a-port-mapper-plugin">A port-mapper plugin for CNI networks</a></li>
 <li><a href="#a-calico-network">A Calico network</a></li>
 <li><a href="#a-weave-network">A Weave network</a></li>
 </ul>
 </li>
-<li><a href="#limitations">Limitations</a></li>
 </ul>
 
 
@@ -196,7 +215,7 @@ specifies two flags at Agent startup as follows:</p>
 <pre><code class="{.console}">sudo mesos-slave --master=&lt;master IP&gt; --ip=&lt;Agent IP&gt;
   --work_dir=/var/lib/mesos
   --network_cni_config_dir=&lt;location of CNI configs&gt;
-  --network_cni_plugins_dir=&lt;location of CNI plugsin&gt;
+  --network_cni_plugins_dir=&lt;search path for CNI plugins&gt;
 </code></pre>
 
 <p>Note that the <code>network/cni</code> isolator learns all the available networks
@@ -235,7 +254,7 @@ will need to attach the container to a CNI network (such as
 bridge/macvlan) that, in turn, is attached to the host network.
 </code></pre>
 
-<h4><a name="mesos-meta-data-to-cni-plugins"></a>Mesos meta-data to CNI plugins</h4>
+<h4><a name="network-labels-and-port-mapping">Passing network labels and port-mapping information to CNI plugins</a></h4>
 
 <p>When invoking CNI plugins (e.g., with command ADD), the isolator will
 pass on some Mesos meta-data to the plugins by specifying the <code>args</code>
@@ -258,19 +277,24 @@ instance:</p>
             { "key" : "app", "value" : "myapp" },
             { "key" : "env", "value" : "prod" }
           ]
-        }
+        },
+        "port_mappings" : [
+          { "host_port" : 8080, "container_port" : 80 },
+          { "host_port" : 8081, "container_port" : 443 }
+        ]
       }
     }
   }
 }
 </code></pre>
 
-<p>It is important to note that <code>labels</code> within the <code>NetworkInfo</code> is set
-by frameworks launching the container, and the isolator passses on
-this information to the CNI plugins. As per the spec, it is the
-prerogative of the CNI plugins to use this meta-data information to
-enforce domain specific policies while attaching containers to a CNI
-network.</p>
+<p>It is important to note that <code>labels</code> or <code>port_mappings</code> within the
+<code>NetworkInfo</code> is set by frameworks launching the container, and the
+isolator passses on this information to the CNI plugins. As per the
+spec, it is the prerogative of the CNI plugins to use this meta-data
+information as they see fit while attaching/detaching containers to a CNI
+network. E.g., CNI plugins could use <code>labels</code> to enforce domain
+specific policies, or <code>port_mappings</code> to implement NAT rules.</p>
 
 <h4><a name="accessing-container-network-namespace"></a>Accessing container network namespace</h4>
 
@@ -470,6 +494,97 @@ default via 192.168.0.1 dev eth0
 192.168.0.0/16 dev eth0  proto kernel  scope link  src 192.168.0.2
 </code></pre>
 
+<h4><a name="a-port-mapper-plugin">A port-mapper plugin for CNI networks</a></h4>
+
+<p>For private, isolated, networks such as a bridge network where the IP
+address of a container is not routeable from outside the host it
+becomes imperative to provide containers with DNAT capabilities so
+that services running on the container can be exposed outside the host
+on which the container is running.</p>
+
+<p>Unfortunately, there is no CNI plugin available in the
+<a href="https://github.com/containernetwork/cni">containernetworking/cni</a>
+repository that provides port-mapping functionality.
+Hence, we have developed a port-mapper CNI plugin that resides
+within the Mesos code base called the <code>mesos-cni-port-mapper</code>. The
+<code>mesos-cni-port-mapper</code> is designed to work with any other CNI plugin
+that requires DNAT capabilities. One of the most obvious being the
+<code>bridge</code> CNI plugin.</p>
+
+<p>We explain the operational semantics of the <code>mesos-cni-port-mapper</code>
+plugin by taking an example CNI configuration that allows the
+<code>mesos-cni-port-mapper</code> to provide DNAT functionality to the <code>bridge</code>
+plugin.</p>
+
+<pre><code>{
+  "name" : "port-mapper-test",
+  "type" : "mesos-cni-port-mapper",
+  "excludeDevices" : ["mesos-cni0"],
+  "chain": "MESOS-TEST-PORT-MAPPER",
+  "delegate": {
+      "type": "bridge",
+      "bridge": "mesos-cni0",
+      "isGateway": true,
+      "ipMasq": true,
+      "ipam": {
+        "type": "host-local",
+        "subnet": "192.168.0.0/16",
+        "routes": [
+        { "dst":
+          "0.0.0.0/0" }
+        ]
+      }
+  }
+}
+</code></pre>
+
+<p>For the CNI configuration above, apart from the parameters that the
+<code>mesos-cni-port-mapper</code> plugin accepts, the important point to note in
+the CNI configuration of the plugin is the &ldquo;delegate&rdquo; field. The
+&ldquo;delegate&rdquo; field allows the <code>mesos-cni-port-mapper</code> to wrap the CNI
+configuration of any other CNI plugin, and allows the plugin to
+provide DNAT capabilities to any CNI network. In this specific case
+the <code>mesos-cni-port-mapper</code> is providing DNAT capabilities to
+containers running on the bridge network <code>mesos-cni0</code>. The parameters
+that the <code>mesos-cni-port-mapper</code> accepts are listed below:</p>
+
+<ul>
+<li><strong><em>name</em></strong> : Name of the CNI network.</li>
+<li><strong><em>type</em></strong> : Name of the port-mapper CNI plugin.</li>
+<li><strong><em>chain</em></strong> : The chain in which the iptables DNAT rule
+will be added in the NAT table. This allows the operator to group
+DNAT rules for a given CNI network under its own chain, allowing for
+better management of the iptables rules.</li>
+<li><strong><em>excludeDevices</em></strong>: These are a list of ingress devices on which the
+DNAT rule should not be applied.</li>
+<li><strong><em>delegate</em></strong> : This is a JSON dict that holds the CNI JSON configuration
+of a CNI plugin that the port-mapper plugin is expected to invoke.</li>
+</ul>
+
+
+<p>The <code>mesos-cni-port-mapper</code> relies heavily on <code>iptables</code> to provide
+the DNAT capabilities to a CNI network. In order for the port-mapper
+plugin to function properly we have certain minimum
+<strong>requirements for iptables</strong> as listed below:</p>
+
+<ul>
+<li><strong><em>iptables 1.4.20 or higher</em></strong>: This because we need to use the -w option
+of iptables in order to allow atomic writes to iptables.</li>
+<li><strong><em>Require the xt_comments module of iptables</em></strong>: We use the comments
+module to tag iptables rules belonging to a container. These tags are used as a
+key while deleting iptables rules when the specific container is deleted.</li>
+</ul>
+
+
+<p>Finally, while the CNI configuration of the port-mapper plugin tells
+the plugin as to how and where to install the <code>iptables</code> rules, and which
+CNI plugin to &ldquo;delegate&rdquo; the attachment/detachment of the container, the
+port-mapping information itself is learned by looking at the
+<code>NetworkInfo</code> set in the <code>args</code> field of the CNI configuration passed
+by Mesos to the port-mapper plugin. Please refer to the &ldquo;<a href="#mesos-meta-data-to-cni-plugins">Passing
+network labels and port-mapping information to CNI
+plugins</a>&rdquo; section for more details.</p>
+
 <h4><a name="a-calico-network">A Calico network</a></h4>
 
 <p><a href="https://projectcalico.org/">Calico</a> provides 3rd-party CNI plugin
@@ -504,19 +619,6 @@ maintain, even when there are multiple hops.</p>
 <p>For more information on setting up and using Weave CNI, see <a href="https://www.weave.works/docs/net/latest/cni-plugin/">Weave&rsquo;s
 CNI
 documentation</a></p>
-
-<h3><a name="limitations"></a>Limitations</h3>
-
-<p>Currently the <code>network/cni</code> isolator does not provide any port mapping
-capabilities. Therefore if operators are running services on networks
-that are not addressable from outside the Agent host, the operators
-will need to run proxies/gateways for the services on the host network
-to direct traffic to their services. We plan to address this
-limitation by having a CNI plugin, within the Mesos repository, that
-provides port mapping functionality and can be used with any other CNI
-plugin, such as the CNI bridge plugin. We are tracking this effort
-through
-<a href="https://issues.apache.org/jira/browse/MESOS-6014">MESOS-6014</a>.</p>
 
   </div>
 </div>

@@ -226,13 +226,13 @@
 <div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;<span class="comment">// NOTE: This function is not thread safe. It is supposed to be used</span></div>
 <div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;<span class="comment">// only after fork (when there is only one thread). This function is</span></div>
 <div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;<span class="comment">// async signal safe.</span></div>
-<div class="line"><a name="l00175"></a><span class="lineno"><a class="line" href="namespaceos.html#a4cfd127336013491258ee10a8985e226">  175</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">int</span> <a class="code" href="namespaceos.html#a4cfd127336013491258ee10a8985e226">execvpe</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code" href="namespacemesos_1_1uri.html#a0a3b30c1eb427c4053aaef120b1f453c">file</a>, <span class="keywordtype">char</span>** argv, <span class="keywordtype">char</span>** envp)</div>
+<div class="line"><a name="l00175"></a><span class="lineno"><a class="line" href="namespaceos.html#a4cfd127336013491258ee10a8985e226">  175</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">int</span> <a class="code" href="namespaceos.html#a90f8c8f7fffde35678c3da227e6e3759">execvpe</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code" href="namespacemesos_1_1uri.html#a0a3b30c1eb427c4053aaef120b1f453c">file</a>, <span class="keywordtype">char</span>** argv, <span class="keywordtype">char</span>** envp)</div>
 <div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;{</div>
 <div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;  <span class="keywordtype">char</span>** saved = <a class="code" href="namespaceos_1_1raw.html#aad2bd3acb3ca09c75a1a1db58075f9f4">os::raw::environment</a>();</div>
 <div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;</div>
 <div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;  *<a class="code" href="namespaceos_1_1raw.html#a255f9fd6996adf47571d24586f9ba8fe">os::raw::environmentp</a>() = envp;</div>
 <div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;  <span class="keywordtype">int</span> result = execvp(file, argv);</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;  <span class="keywordtype">int</span> result = <a class="code" href="namespaceos.html#a0b80877b34088be8d5ba3eb9b0567ed7">execvp</a>(file, argv);</div>
 <div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;</div>
 <div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;  *<a class="code" href="namespaceos_1_1raw.html#a255f9fd6996adf47571d24586f9ba8fe">os::raw::environmentp</a>() = saved;</div>
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;</div>
@@ -469,57 +469,63 @@
 <div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;}</div>
 <div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;</div>
 <div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;</div>
-<div class="line"><a name="l00418"></a><span class="lineno"><a class="line" href="namespaceos.html#a3053112ddf8c0ef8d400a80c5842be44">  418</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classOption.html">Option&lt;std::string&gt;</a> <a class="code" href="namespaceos.html#a3053112ddf8c0ef8d400a80c5842be44">which</a>(<span class="keyword">const</span> std::string&amp; command)</div>
-<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;{</div>
-<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;  <a class="code" href="classOption.html">Option&lt;std::string&gt;</a> path = <a class="code" href="namespaceos.html#add69634db977768c56f0367b4bb03cd5">getenv</a>(<span class="stringliteral">&quot;PATH&quot;</span>);</div>
-<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;  <span class="keywordflow">if</span> (path.<a class="code" href="classOption.html#a06eab791122ebc1f8af4ad310e5e7d7e">isNone</a>()) {</div>
-<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="structNone.html">None</a>();</div>
-<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;  }</div>
-<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;</div>
-<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;  std::vector&lt;std::string&gt; tokens = <a class="code" href="namespacestrings.html#afffe11c8ecce961981653358520d6a04">strings::tokenize</a>(path.<a class="code" href="classOption.html#a21358442c0fac1cc978a67a9a9089a79">get</a>(), <span class="stringliteral">&quot;:&quot;</span>);</div>
-<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;  <span class="keywordflow">foreach</span> (<span class="keyword">const</span> std::string&amp; token, tokens) {</div>
-<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;    <span class="keyword">const</span> std::string commandPath = <a class="code" href="namespacepath.html#aa86b16a2171cec90bb3337930513ef0f">path::join</a>(token, command);</div>
-<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="namespaceos.html#a69b3969276ffa4cb698b9431ee43bd7c">os::exists</a>(commandPath)) {</div>
-<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;      <span class="keywordflow">continue</span>;</div>
-<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;    }</div>
+<div class="line"><a name="l00418"></a><span class="lineno"><a class="line" href="namespaceos.html#acdff0f297e3166c5a2ad4766f6ef9e9b">  418</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classOption.html">Option&lt;std::string&gt;</a> <a class="code" href="namespaceos.html#acdff0f297e3166c5a2ad4766f6ef9e9b">which</a>(</div>
+<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;    <span class="keyword">const</span> std::string&amp; command,</div>
+<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;    <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;std::string&gt;</a>&amp; _path = <a class="code" href="structNone.html">None</a>())</div>
+<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;{</div>
+<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;  <a class="code" href="classOption.html">Option&lt;std::string&gt;</a> path = _path;</div>
+<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;</div>
+<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;  <span class="keywordflow">if</span> (path.<a class="code" href="classOption.html#a06eab791122ebc1f8af4ad310e5e7d7e">isNone</a>()) {</div>
+<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;    path = <a class="code" href="namespaceos.html#add69634db977768c56f0367b4bb03cd5">getenv</a>(<span class="stringliteral">&quot;PATH&quot;</span>);</div>
+<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;</div>
+<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;    <span class="keywordflow">if</span> (path.<a class="code" href="classOption.html#a06eab791122ebc1f8af4ad310e5e7d7e">isNone</a>()) {</div>
+<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="structNone.html">None</a>();</div>
+<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;    }</div>
+<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;  }</div>
 <div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;</div>
-<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;    <a class="code" href="classTry.html">Try&lt;os::Permissions&gt;</a> <a class="code" href="namespaceos.html#a3fc3402e6d83c2e2f1dc680d77489a29">permissions</a> = <a class="code" href="namespaceos.html#a3fc3402e6d83c2e2f1dc680d77489a29">os::permissions</a>(commandPath);</div>
-<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;    <span class="keywordflow">if</span> (permissions.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
-<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;      <span class="keywordflow">continue</span>;</div>
-<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;    }</div>
-<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;</div>
-<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;    <span class="keywordflow">if</span> (!permissions.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>().<a class="code" href="structos_1_1Permissions.html#a4d3065be56fc1c51bf05441a576d6a45">owner</a>.<a class="code" href="structos_1_1Permissions.html#afe509a1398f95df7d2bda5fbfaa91a44">x</a> &amp;&amp;</div>
-<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;        !permissions.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>().<a class="code" href="structos_1_1Permissions.html#ab95dded74936ae5a39011d10abc6e28f">group</a>.<a class="code" href="structos_1_1Permissions.html#afe509a1398f95df7d2bda5fbfaa91a44">x</a> &amp;&amp;</div>
-<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;        !permissions.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>().<a class="code" href="structos_1_1Permissions.html#a87d4233477f8a791f38dbbc04d8c4d20">others</a>.<a class="code" href="structos_1_1Permissions.html#afe509a1398f95df7d2bda5fbfaa91a44">x</a>) {</div>
-<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;      <span class="keywordflow">continue</span>;</div>
-<div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;    }</div>
-<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;</div>
-<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;    <span class="keywordflow">return</span> commandPath;</div>
-<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;  }</div>
-<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;</div>
-<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="structNone.html">None</a>();</div>
-<div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;}</div>
-<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;</div>
+<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;  std::vector&lt;std::string&gt; tokens = <a class="code" href="namespacestrings.html#afffe11c8ecce961981653358520d6a04">strings::tokenize</a>(path.<a class="code" href="classOption.html#a21358442c0fac1cc978a67a9a9089a79">get</a>(), <span class="stringliteral">&quot;:&quot;</span>);</div>
+<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;  <span class="keywordflow">foreach</span> (<span class="keyword">const</span> std::string&amp; token, tokens) {</div>
+<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;    <span class="keyword">const</span> std::string commandPath = <a class="code" href="namespacepath.html#aa86b16a2171cec90bb3337930513ef0f">path::join</a>(token, command);</div>
+<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="namespaceos.html#a69b3969276ffa4cb698b9431ee43bd7c">os::exists</a>(commandPath)) {</div>
+<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;      <span class="keywordflow">continue</span>;</div>
+<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;    }</div>
+<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;</div>
+<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;    <a class="code" href="classTry.html">Try&lt;os::Permissions&gt;</a> <a class="code" href="namespaceos.html#a3fc3402e6d83c2e2f1dc680d77489a29">permissions</a> = <a class="code" href="namespaceos.html#a3fc3402e6d83c2e2f1dc680d77489a29">os::permissions</a>(commandPath);</div>
+<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;    <span class="keywordflow">if</span> (permissions.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
+<div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;      <span class="keywordflow">continue</span>;</div>
+<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;    }</div>
+<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;</div>
+<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;    <span class="keywordflow">if</span> (!permissions.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>().<a class="code" href="structos_1_1Permissions.html#a4d3065be56fc1c51bf05441a576d6a45">owner</a>.<a class="code" href="structos_1_1Permissions.html#afe509a1398f95df7d2bda5fbfaa91a44">x</a> &amp;&amp;</div>
+<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;        !permissions.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>().<a class="code" href="structos_1_1Permissions.html#ab95dded74936ae5a39011d10abc6e28f">group</a>.<a class="code" href="structos_1_1Permissions.html#afe509a1398f95df7d2bda5fbfaa91a44">x</a> &amp;&amp;</div>
+<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;        !permissions.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>().<a class="code" href="structos_1_1Permissions.html#a87d4233477f8a791f38dbbc04d8c4d20">others</a>.<a class="code" href="structos_1_1Permissions.html#afe509a1398f95df7d2bda5fbfaa91a44">x</a>) {</div>
+<div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;      <span class="keywordflow">continue</span>;</div>
+<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;    }</div>
 <div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;</div>
-<div class="line"><a name="l00450"></a><span class="lineno"><a class="line" href="namespaceos.html#aa3debc8caa054e7a0a3bfe4aa42aae07">  450</a></span>&#160;<span class="keyword">inline</span> std::string <a class="code" href="namespaceos.html#aa3debc8caa054e7a0a3bfe4aa42aae07">temp</a>()</div>
-<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;{</div>
-<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;  <span class="keywordflow">return</span> <span class="stringliteral">&quot;/tmp&quot;</span>;</div>
-<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;}</div>
-<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;</div>
+<div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;    <span class="keywordflow">return</span> commandPath;</div>
+<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;  }</div>
+<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;</div>
+<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="structNone.html">None</a>();</div>
+<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;}</div>
 <div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;</div>
-<div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;<span class="comment">// Create pipes for interprocess communication.</span></div>
-<div class="line"><a name="l00457"></a><span class="lineno"><a class="line" href="namespaceos.html#a99c1b60fa8766f99f42e3d61616c028c">  457</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;Nothing&gt;</a> <a class="code" href="namespaceos.html#a99c1b60fa8766f99f42e3d61616c028c">pipe</a>(<span class="keywordtype">int</span> pipe_fd[2])</div>
+<div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;</div>
+<div class="line"><a name="l00457"></a><span class="lineno"><a class="line" href="namespaceos.html#aa3debc8caa054e7a0a3bfe4aa42aae07">  457</a></span>&#160;<span class="keyword">inline</span> std::string <a class="code" href="namespaceos.html#aa3debc8caa054e7a0a3bfe4aa42aae07">temp</a>()</div>
 <div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;{</div>
-<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;  <span class="keywordflow">if</span> (::<a class="code" href="namespaceos.html#a99c1b60fa8766f99f42e3d61616c028c">pipe</a>(pipe_fd) == -1) {</div>
-<div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classErrnoError.html">ErrnoError</a>();</div>
-<div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;  }</div>
-<div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="structNothing.html">Nothing</a>();</div>
-<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;}</div>
-<div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;</div>
-<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;} <span class="comment">// namespace os {</span></div>
-<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;</div>
-<div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;<span class="preprocessor">#endif // __STOUT_POSIX_OS_HPP__</span></div>
-<div class="ttc" id="namespaceos_html_a3053112ddf8c0ef8d400a80c5842be44"><div class="ttname"><a href="namespaceos.html#a3053112ddf8c0ef8d400a80c5842be44">os::which</a></div><div class="ttdeci">Option&lt; std::string &gt; which(const std::string &amp;command)</div><div class="ttdef"><b>Definition:</b> os.hpp:418</div></div>
+<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;  <span class="keywordflow">return</span> <span class="stringliteral">&quot;/tmp&quot;</span>;</div>
+<div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;}</div>
+<div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;</div>
+<div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;</div>
+<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;<span class="comment">// Create pipes for interprocess communication.</span></div>
+<div class="line"><a name="l00464"></a><span class="lineno"><a class="line" href="namespaceos.html#a99c1b60fa8766f99f42e3d61616c028c">  464</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;Nothing&gt;</a> <a class="code" href="namespaceos.html#a99c1b60fa8766f99f42e3d61616c028c">pipe</a>(<span class="keywordtype">int</span> pipe_fd[2])</div>
+<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;{</div>
+<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;  <span class="keywordflow">if</span> (::<a class="code" href="namespaceos.html#a99c1b60fa8766f99f42e3d61616c028c">pipe</a>(pipe_fd) == -1) {</div>
+<div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classErrnoError.html">ErrnoError</a>();</div>
+<div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;  }</div>
+<div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="structNothing.html">Nothing</a>();</div>
+<div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160;}</div>
+<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;</div>
+<div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;} <span class="comment">// namespace os {</span></div>
+<div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;</div>
+<div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;<span class="preprocessor">#endif // __STOUT_POSIX_OS_HPP__</span></div>
 <div class="ttc" id="realpath_8hpp_html"><div class="ttname"><a href="realpath_8hpp.html">realpath.hpp</a></div></div>
 <div class="ttc" id="namespaceos_html_a69b3969276ffa4cb698b9431ee43bd7c"><div class="ttname"><a href="namespaceos.html#a69b3969276ffa4cb698b9431ee43bd7c">os::exists</a></div><div class="ttdeci">bool exists(const std::string &amp;path)</div><div class="ttdef"><b>Definition:</b> exists.hpp:26</div></div>
 <div class="ttc" id="rename_8hpp_html"><div class="ttname"><a href="rename_8hpp.html">rename.hpp</a></div></div>
@@ -532,10 +538,11 @@
 <div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
 <div class="ttc" id="namespaceos_html_ab2b826c68a25af9e9ef47c570c36e137"><div class="ttname"><a href="namespaceos.html#ab2b826c68a25af9e9ef47c570c36e137">os::sleep</a></div><div class="ttdeci">Try&lt; Nothing &gt; sleep(const Duration &amp;duration)</div><div class="ttdef"><b>Definition:</b> os.hpp:215</div></div>
 <div class="ttc" id="structos_1_1Process_html_a41f9befab165fd224ba2d829e7c35ba6"><div class="ttname"><a href="structos_1_1Process.html#a41f9befab165fd224ba2d829e7c35ba6">os::Process::group</a></div><div class="ttdeci">const pid_t group</div><div class="ttdef"><b>Definition:</b> process.hpp:55</div></div>
-<div class="ttc" id="namespaceos_html_aa98ca8ac255e2b9c689979a1b40084d3"><div class="ttname"><a href="namespaceos.html#aa98ca8ac255e2b9c689979a1b40084d3">os::processes</a></div><div class="ttdeci">Try&lt; std::list&lt; Process &gt; &gt; processes()</div><div class="ttdef"><b>Definition:</b> os.hpp:169</div></div>
+<div class="ttc" id="namespaceos_html_aa98ca8ac255e2b9c689979a1b40084d3"><div class="ttname"><a href="namespaceos.html#aa98ca8ac255e2b9c689979a1b40084d3">os::processes</a></div><div class="ttdeci">Try&lt; std::list&lt; Process &gt; &gt; processes()</div><div class="ttdef"><b>Definition:</b> os.hpp:171</div></div>
 <div class="ttc" id="namespaceos_html_accb0757a8d9eca48dd31c4c433d17cfd"><div class="ttname"><a href="namespaceos.html#accb0757a8d9eca48dd31c4c433d17cfd">os::mknod</a></div><div class="ttdeci">Try&lt; Nothing &gt; mknod(const std::string &amp;path, mode_t mode, dev_t dev)</div><div class="ttdef"><b>Definition:</b> os.hpp:199</div></div>
 <div class="ttc" id="namespaceproc_html_a34396c6140a28f583dc13fee3c3c35d4"><div class="ttname"><a href="namespaceproc.html#a34396c6140a28f583dc13fee3c3c35d4">proc::status</a></div><div class="ttdeci">Result&lt; ProcessStatus &gt; status(pid_t pid)</div><div class="ttdef"><b>Definition:</b> proc.hpp:166</div></div>
 <div class="ttc" id="killtree_8hpp_html"><div class="ttname"><a href="killtree_8hpp.html">killtree.hpp</a></div></div>
+<div class="ttc" id="namespaceos_html_a90f8c8f7fffde35678c3da227e6e3759"><div class="ttname"><a href="namespaceos.html#a90f8c8f7fffde35678c3da227e6e3759">os::execvpe</a></div><div class="ttdeci">int execvpe(const char *file, char *const argv[], char *const envp[])</div><div class="ttdef"><b>Definition:</b> shell.hpp:159</div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2os_2environment_8hpp_html"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2os_2environment_8hpp.html">environment.hpp</a></div></div>
 <div class="ttc" id="classErrnoError_html"><div class="ttname"><a href="classErrnoError.html">ErrnoError</a></div><div class="ttdef"><b>Definition:</b> errorbase.hpp:44</div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2os_2read_8hpp_html"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2os_2read_8hpp.html">read.hpp</a></div></div>
@@ -551,12 +558,13 @@
 <div class="ttc" id="classResult_html"><div class="ttname"><a href="classResult.html">Result</a></div><div class="ttdef"><b>Definition:</b> result.hpp:40</div></div>
 <div class="ttc" id="fork_8hpp_html"><div class="ttname"><a href="fork_8hpp.html">fork.hpp</a></div></div>
 <div class="ttc" id="close_8hpp_html"><div class="ttname"><a href="close_8hpp.html">close.hpp</a></div></div>
-<div class="ttc" id="namespaceos_1_1raw_html_a255f9fd6996adf47571d24586f9ba8fe"><div class="ttname"><a href="namespaceos_1_1raw.html#a255f9fd6996adf47571d24586f9ba8fe">os::raw::environmentp</a></div><div class="ttdeci">char *** environmentp()</div><div class="ttdef"><b>Definition:</b> environment.hpp:59</div></div>
+<div class="ttc" id="namespaceos_1_1raw_html_a255f9fd6996adf47571d24586f9ba8fe"><div class="ttname"><a href="namespaceos_1_1raw.html#a255f9fd6996adf47571d24586f9ba8fe">os::raw::environmentp</a></div><div class="ttdeci">char *** environmentp()</div><div class="ttdef"><b>Definition:</b> environment.hpp:67</div></div>
 <div class="ttc" id="classOption_html_a4e3bf8416d95246f43c91f1b5c309323"><div class="ttname"><a href="classOption.html#a4e3bf8416d95246f43c91f1b5c309323">Option::isSome</a></div><div class="ttdeci">bool isSome() const </div><div class="ttdef"><b>Definition:</b> option.hpp:108</div></div>
 <div class="ttc" id="structos_1_1UTSInfo_html_aea5e6121d79c970b5abe84d9e2736663"><div class="ttname"><a href="structos_1_1UTSInfo.html#aea5e6121d79c970b5abe84d9e2736663">os::UTSInfo::release</a></div><div class="ttdeci">std::string release</div><div class="ttdef"><b>Definition:</b> os.hpp:48</div></div>
 <div class="ttc" id="strerror_8hpp_html"><div class="ttname"><a href="strerror_8hpp.html">strerror.hpp</a></div></div>
 <div class="ttc" id="structos_1_1Load_html"><div class="ttname"><a href="structos_1_1Load.html">os::Load</a></div><div class="ttdef"><b>Definition:</b> os.hpp:25</div></div>
 <div class="ttc" id="chown_8hpp_html"><div class="ttname"><a href="chown_8hpp.html">chown.hpp</a></div></div>
+<div class="ttc" id="namespaceos_html_a0b80877b34088be8d5ba3eb9b0567ed7"><div class="ttname"><a href="namespaceos.html#a0b80877b34088be8d5ba3eb9b0567ed7">os::execvp</a></div><div class="ttdeci">int execvp(const char *file, char *const argv[])</div><div class="ttdef"><b>Definition:</b> shell.hpp:186</div></div>
 <div class="ttc" id="structos_1_1UTSInfo_html_a0abdea1c2c12389c3413c006a186b0a4"><div class="ttname"><a href="structos_1_1UTSInfo.html#a0abdea1c2c12389c3413c006a186b0a4">os::UTSInfo::version</a></div><div class="ttdeci">std::string version</div><div class="ttdef"><b>Definition:</b> os.hpp:49</div></div>
 <div class="ttc" id="open_8hpp_html"><div class="ttname"><a href="open_8hpp.html">open.hpp</a></div></div>
 <div class="ttc" id="namespaceos_html_ad932e3876b339c61b03abc575ad3943b"><div class="ttname"><a href="namespaceos.html#ad932e3876b339c61b03abc575ad3943b">os::loadavg</a></div><div class="ttdeci">Try&lt; Load &gt; loadavg()</div><div class="ttdef"><b>Definition:</b> os.hpp:276</div></div>
@@ -565,8 +573,8 @@
 <div class="ttc" id="structos_1_1Process_html"><div class="ttname"><a href="structos_1_1Process.html">os::Process</a></div><div class="ttdef"><b>Definition:</b> process.hpp:32</div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_a8a35dd1207a16dfa8b1d4163176d828c"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a8a35dd1207a16dfa8b1d4163176d828c">mode_t</a></div><div class="ttdeci">int mode_t</div><div class="ttdef"><b>Definition:</b> windows.hpp:159</div></div>
 <div class="ttc" id="namespaceos_1_1stat_html_a1fdbb2027dc11b0f9e84629383364ca4"><div class="ttname"><a href="namespaceos_1_1stat.html#a1fdbb2027dc11b0f9e84629383364ca4">os::stat::dev</a></div><div class="ttdeci">Try&lt; dev_t &gt; dev(const std::string &amp;path)</div><div class="ttdef"><b>Definition:</b> stat.hpp:132</div></div>
-<div class="ttc" id="namespaceos_html_a7bcc28525c621764283fbf5ef68d490a"><div class="ttname"><a href="namespaceos.html#a7bcc28525c621764283fbf5ef68d490a">os::hstrerror</a></div><div class="ttdeci">std::string hstrerror(int err)</div><div class="ttdef"><b>Definition:</b> os.hpp:334</div></div>
-<div class="ttc" id="namespaceos_html_a99c1b60fa8766f99f42e3d61616c028c"><div class="ttname"><a href="namespaceos.html#a99c1b60fa8766f99f42e3d61616c028c">os::pipe</a></div><div class="ttdeci">Try&lt; Nothing &gt; pipe(int pipe_fd[2])</div><div class="ttdef"><b>Definition:</b> os.hpp:457</div></div>
+<div class="ttc" id="namespaceos_html_a7bcc28525c621764283fbf5ef68d490a"><div class="ttname"><a href="namespaceos.html#a7bcc28525c621764283fbf5ef68d490a">os::hstrerror</a></div><div class="ttdeci">std::string hstrerror(int err)</div><div class="ttdef"><b>Definition:</b> os.hpp:339</div></div>
+<div class="ttc" id="namespaceos_html_a99c1b60fa8766f99f42e3d61616c028c"><div class="ttname"><a href="namespaceos.html#a99c1b60fa8766f99f42e3d61616c028c">os::pipe</a></div><div class="ttdeci">Try&lt; Nothing &gt; pipe(int pipe_fd[2])</div><div class="ttdef"><b>Definition:</b> os.hpp:464</div></div>
 <div class="ttc" id="structos_1_1Process_html_a8c68e0a8c8693f2acacf0f428ea0a493"><div class="ttname"><a href="structos_1_1Process.html#a8c68e0a8c8693f2acacf0f428ea0a493">os::Process::pid</a></div><div class="ttdeci">const pid_t pid</div><div class="ttdef"><b>Definition:</b> process.hpp:53</div></div>
 <div class="ttc" id="fcntl_8hpp_html"><div class="ttname"><a href="fcntl_8hpp.html">fcntl.hpp</a></div></div>
 <div class="ttc" id="namespacemesos_1_1uri_html_a0a3b30c1eb427c4053aaef120b1f453c"><div class="ttname"><a href="namespacemesos_1_1uri.html#a0a3b30c1eb427c4053aaef120b1f453c">mesos::uri::file</a></div><div class="ttdeci">URI file(const std::string &amp;path)</div><div class="ttdoc">Creates a file URI with the given path on the local host. </div><div class="ttdef"><b>Definition:</b> file.hpp:33</div></div>
@@ -579,7 +587,8 @@
 <div class="ttc" id="structos_1_1Permissions_html_a87d4233477f8a791f38dbbc04d8c4d20"><div class="ttname"><a href="structos_1_1Permissions.html#a87d4233477f8a791f38dbbc04d8c4d20">os::Permissions::others</a></div><div class="ttdeci">struct os::Permissions::@20 others</div></div>
 <div class="ttc" id="classOption_html_a21358442c0fac1cc978a67a9a9089a79"><div class="ttname"><a href="classOption.html#a21358442c0fac1cc978a67a9a9089a79">Option::get</a></div><div class="ttdeci">const T &amp; get() const &amp;</div><div class="ttdef"><b>Definition:</b> option.hpp:111</div></div>
 <div class="ttc" id="namespaceos_html_add69634db977768c56f0367b4bb03cd5"><div class="ttname"><a href="namespaceos.html#add69634db977768c56f0367b4bb03cd5">os::getenv</a></div><div class="ttdeci">Option&lt; std::string &gt; getenv(const std::string &amp;key)</div><div class="ttdef"><b>Definition:</b> os.hpp:362</div></div>
-<div class="ttc" id="namespaceos_html_aede9f61dcb4b7d1f276302a7bce37446"><div class="ttname"><a href="namespaceos.html#aede9f61dcb4b7d1f276302a7bce37446">os::random</a></div><div class="ttdeci">int random()</div><div class="ttdef"><b>Definition:</b> os.hpp:660</div></div>
+<div class="ttc" id="namespaceos_html_acdff0f297e3166c5a2ad4766f6ef9e9b"><div class="ttname"><a href="namespaceos.html#acdff0f297e3166c5a2ad4766f6ef9e9b">os::which</a></div><div class="ttdeci">Option&lt; std::string &gt; which(const std::string &amp;command, const Option&lt; std::string &gt; &amp;_path=None())</div><div class="ttdef"><b>Definition:</b> os.hpp:418</div></div>
+<div class="ttc" id="namespaceos_html_aede9f61dcb4b7d1f276302a7bce37446"><div class="ttname"><a href="namespaceos.html#aede9f61dcb4b7d1f276302a7bce37446">os::random</a></div><div class="ttdeci">int random()</div><div class="ttdef"><b>Definition:</b> os.hpp:659</div></div>
 <div class="ttc" id="namespaceos_html_a079aa1b108c567735620a14ea2a2e506"><div class="ttname"><a href="namespaceos.html#a079aa1b108c567735620a14ea2a2e506">os::release</a></div><div class="ttdeci">Try&lt; Version &gt; release()</div><div class="ttdef"><b>Definition:</b> os.hpp:389</div></div>
 <div class="ttc" id="classDuration_html_a31ebb8d92dc93914cb830d70753d802b"><div class="ttname"><a href="classDuration.html#a31ebb8d92dc93914cb830d70753d802b">Duration::secs</a></div><div class="ttdeci">double secs() const </div><div class="ttdef"><b>Definition:</b> duration.hpp:90</div></div>
 <div class="ttc" id="namespaceos_html_a48c86262928f59c5c54d0cb0012e2aba"><div class="ttname"><a href="namespaceos.html#a48c86262928f59c5c54d0cb0012e2aba">os::waitpid</a></div><div class="ttdeci">Result&lt; pid_t &gt; waitpid(pid_t pid, int *status, int options)</div><div class="ttdef"><b>Definition:</b> os.hpp:136</div></div>
@@ -590,7 +599,7 @@
 <div class="ttc" id="namespaceos_html_afc96a896b632cb0942b317a1f8543919"><div class="ttname"><a href="namespaceos.html#afc96a896b632cb0942b317a1f8543919">os::uname</a></div><div class="ttdeci">Try&lt; UTSInfo &gt; uname()</div><div class="ttdef"><b>Definition:</b> os.hpp:293</div></div>
 <div class="ttc" id="classTry_html_aec4a11ddd3c036e889d90b7eb6258ba7"><div class="ttname"><a href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">Try::error</a></div><div class="ttdeci">static Try error(const E &amp;e)</div><div class="ttdef"><b>Definition:</b> try.hpp:42</div></div>
 <div class="ttc" id="os_2os_8hpp_html"><div class="ttname"><a href="os_2os_8hpp.html">os.hpp</a></div></div>
-<div class="ttc" id="namespaceos_html_a0d86320d7799ea761599bc356c02a4fa"><div class="ttname"><a href="namespaceos.html#a0d86320d7799ea761599bc356c02a4fa">os::shell</a></div><div class="ttdeci">Try&lt; std::string &gt; shell(const std::string &amp;fmt, const T &amp;...t)</div><div class="ttdoc">Runs a shell command with optional arguments. </div><div class="ttdef"><b>Definition:</b> shell.hpp:70</div></div>
+<div class="ttc" id="namespaceos_html_a0d86320d7799ea761599bc356c02a4fa"><div class="ttname"><a href="namespaceos.html#a0d86320d7799ea761599bc356c02a4fa">os::shell</a></div><div class="ttdeci">Try&lt; std::string &gt; shell(const std::string &amp;fmt, const T &amp;...t)</div><div class="ttdoc">Runs a shell command with optional arguments. </div><div class="ttdef"><b>Definition:</b> shell.hpp:71</div></div>
 <div class="ttc" id="namespaceos_html_ae19e4161a51b86a1f330f3bf1dc75389"><div class="ttname"><a href="namespaceos.html#ae19e4161a51b86a1f330f3bf1dc75389">os::process</a></div><div class="ttdeci">Result&lt; Process &gt; process(pid_t pid)</div><div class="ttdef"><b>Definition:</b> freebsd.hpp:30</div></div>
 <div class="ttc" id="structgroup_html"><div class="ttname"><a href="structgroup.html">group</a></div><div class="ttdef"><b>Definition:</b> grp.hpp:26</div></div>
 <div class="ttc" id="structNone_html"><div class="ttname"><a href="structNone.html">None</a></div><div class="ttdef"><b>Definition:</b> none.hpp:27</div></div>
@@ -600,12 +609,11 @@
 <div class="ttc" id="structVersion_html"><div class="ttname"><a href="structVersion.html">Version</a></div><div class="ttdef"><b>Definition:</b> version.hpp:37</div></div>
 <div class="ttc" id="freebsd_8hpp_html"><div class="ttname"><a href="freebsd_8hpp.html">freebsd.hpp</a></div></div>
 <div class="ttc" id="structos_1_1Load_html_ac4a959c47204e8cd9e67930ac6b9bb63"><div class="ttname"><a href="structos_1_1Load.html#ac4a959c47204e8cd9e67930ac6b9bb63">os::Load::fifteen</a></div><div class="ttdeci">double fifteen</div><div class="ttdef"><b>Definition:</b> os.hpp:28</div></div>
-<div class="ttc" id="namespaceos_html_aa3debc8caa054e7a0a3bfe4aa42aae07"><div class="ttname"><a href="namespaceos.html#aa3debc8caa054e7a0a3bfe4aa42aae07">os::temp</a></div><div class="ttdeci">std::string temp()</div><div class="ttdef"><b>Definition:</b> os.hpp:450</div></div>
+<div class="ttc" id="namespaceos_html_aa3debc8caa054e7a0a3bfe4aa42aae07"><div class="ttname"><a href="namespaceos.html#aa3debc8caa054e7a0a3bfe4aa42aae07">os::temp</a></div><div class="ttdeci">std::string temp()</div><div class="ttdef"><b>Definition:</b> os.hpp:457</div></div>
 <div class="ttc" id="structos_1_1Permissions_html_a4d3065be56fc1c51bf05441a576d6a45"><div class="ttname"><a href="structos_1_1Permissions.html#a4d3065be56fc1c51bf05441a576d6a45">os::Permissions::owner</a></div><div class="ttdeci">struct os::Permissions::@20 owner</div></div>
 <div class="ttc" id="classOption_html_a06eab791122ebc1f8af4ad310e5e7d7e"><div class="ttname"><a href="classOption.html#a06eab791122ebc1f8af4ad310e5e7d7e">Option::isNone</a></div><div class="ttdeci">bool isNone() const </div><div class="ttdef"><b>Definition:</b> option.hpp:109</div></div>
 <div class="ttc" id="structos_1_1Permissions_html_ab95dded74936ae5a39011d10abc6e28f"><div class="ttname"><a href="structos_1_1Permissions.html#ab95dded74936ae5a39011d10abc6e28f">os::Permissions::group</a></div><div class="ttdeci">struct os::Permissions::@20 group</div></div>
 <div class="ttc" id="shell_8hpp_html"><div class="ttname"><a href="shell_8hpp.html">shell.hpp</a></div></div>
-<div class="ttc" id="namespaceos_html_a4cfd127336013491258ee10a8985e226"><div class="ttname"><a href="namespaceos.html#a4cfd127336013491258ee10a8985e226">os::execvpe</a></div><div class="ttdeci">int execvpe(const char *file, char **argv, char **envp)</div><div class="ttdef"><b>Definition:</b> os.hpp:175</div></div>
 <div class="ttc" id="namespaceos_html_a781ae694650dd3c6addab2a383a8c422"><div class="ttname"><a href="namespaceos.html#a781ae694650dd3c6addab2a383a8c422">os::glob</a></div><div class="ttdeci">Try&lt; std::list&lt; std::string &gt; &gt; glob(const std::string &amp;pattern)</div><div class="ttdef"><b>Definition:</b> os.hpp:235</div></div>
 <div class="ttc" id="structos_1_1Permissions_html_afe509a1398f95df7d2bda5fbfaa91a44"><div class="ttname"><a href="structos_1_1Permissions.html#afe509a1398f95df7d2bda5fbfaa91a44">os::Permissions::x</a></div><div class="ttdeci">bool x</div><div class="ttdef"><b>Definition:</b> permissions.hpp:48</div></div>
 <div class="ttc" id="namespaceos_html_a42af1cab63434cedf2b698cd6f49f073"><div class="ttname"><a href="namespaceos.html#a42af1cab63434cedf2b698cd6f49f073">os::pids</a></div><div class="ttdeci">Try&lt; std::set&lt; pid_t &gt; &gt; pids()</div><div class="ttdef"><b>Definition:</b> freebsd.hpp:61</div></div>
@@ -614,9 +622,9 @@
 <div class="ttc" id="structos_1_1UTSInfo_html_a493fadfa45429ab755d01d02d2f8be17"><div class="ttname"><a href="structos_1_1UTSInfo.html#a493fadfa45429ab755d01d02d2f8be17">os::UTSInfo::machine</a></div><div class="ttdeci">std::string machine</div><div class="ttdef"><b>Definition:</b> os.hpp:50</div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2os_2raw_2environment_8hpp_html"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2os_2raw_2environment_8hpp.html">environment.hpp</a></div></div>
 <div class="ttc" id="structos_1_1UTSInfo_html"><div class="ttname"><a href="structos_1_1UTSInfo.html">os::UTSInfo</a></div><div class="ttdef"><b>Definition:</b> os.hpp:44</div></div>
-<div class="ttc" id="namespaceos_html_a5e0295f0e3bae2bd29d86803f9293b5d"><div class="ttname"><a href="namespaceos.html#a5e0295f0e3bae2bd29d86803f9293b5d">os::gmtime_r</a></div><div class="ttdeci">tm * gmtime_r(const time_t *timep, tm *result)</div><div class="ttdef"><b>Definition:</b> os.hpp:519</div></div>
+<div class="ttc" id="namespaceos_html_a5e0295f0e3bae2bd29d86803f9293b5d"><div class="ttname"><a href="namespaceos.html#a5e0295f0e3bae2bd29d86803f9293b5d">os::gmtime_r</a></div><div class="ttdeci">tm * gmtime_r(const time_t *timep, tm *result)</div><div class="ttdef"><b>Definition:</b> os.hpp:518</div></div>
 <div class="ttc" id="structos_1_1Load_html_ac65d8819bbf8201cfa6975d853061e93"><div class="ttname"><a href="structos_1_1Load.html#ac65d8819bbf8201cfa6975d853061e93">os::Load::one</a></div><div class="ttdeci">double one</div><div class="ttdef"><b>Definition:</b> os.hpp:26</div></div>
-<div class="ttc" id="namespaceos_1_1raw_html_aad2bd3acb3ca09c75a1a1db58075f9f4"><div class="ttname"><a href="namespaceos_1_1raw.html#aad2bd3acb3ca09c75a1a1db58075f9f4">os::raw::environment</a></div><div class="ttdeci">char ** environment()</div><div class="ttdef"><b>Definition:</b> environment.hpp:40</div></div>
+<div class="ttc" id="namespaceos_1_1raw_html_aad2bd3acb3ca09c75a1a1db58075f9f4"><div class="ttname"><a href="namespaceos_1_1raw.html#aad2bd3acb3ca09c75a1a1db58075f9f4">os::raw::environment</a></div><div class="ttdeci">char ** environment()</div><div class="ttdef"><b>Definition:</b> environment.hpp:48</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

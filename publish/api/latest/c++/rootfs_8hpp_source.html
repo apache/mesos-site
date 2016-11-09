@@ -121,126 +121,134 @@
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="comment">// TODO(jieyu): Make sure &#39;path&#39; is not under &#39;root&#39;.</span></div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="namespaceos_1_1stat.html#a37d4d39a889b955ca3c40c9bd923afe0">os::stat::isdir</a>(path)) {</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;      <span class="keywordflow">if</span> (<a class="code" href="namespaceos.html#a3491ce5d4a57fcac5ca2e3ca40abe176">os::system</a>(<span class="stringliteral">&quot;cp -r &#39;&quot;</span> + path + <span class="stringliteral">&quot;&#39; &#39;&quot;</span> + target + <span class="stringliteral">&quot;&#39;&quot;</span>) != 0) {</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classErrnoError.html">ErrnoError</a>(<span class="stringliteral">&quot;Failed to copy &#39;&quot;</span> + path + <span class="stringliteral">&quot;&#39; to rootfs&quot;</span>);</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;      }</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;      <span class="keywordflow">if</span> (<a class="code" href="namespaceos.html#a3491ce5d4a57fcac5ca2e3ca40abe176">os::system</a>(<span class="stringliteral">&quot;cp &#39;&quot;</span> + path + <span class="stringliteral">&quot;&#39; &#39;&quot;</span> + target + <span class="stringliteral">&quot;&#39;&quot;</span>) != 0) {</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="comment">// Copy the files. We perserve all attributes so that e.g., `ping`</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="comment">// keeps its file-based capabilities.</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="namespaceos_1_1stat.html#a37d4d39a889b955ca3c40c9bd923afe0">os::stat::isdir</a>(path)) {</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;      <span class="keywordflow">if</span> (<a class="code" href="namespaceos.html#a3491ce5d4a57fcac5ca2e3ca40abe176">os::system</a>(<a class="code" href="namespacestrings.html#a7884a23bea2a6543b8a93ad48faabe0c">strings::format</a>(</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;              <span class="stringliteral">&quot;cp -r --preserve=all &#39;%s&#39; &#39;%s&#39;&quot;</span>,</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;              path, target).<span class="keyword">get</span>()) != 0) {</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classErrnoError.html">ErrnoError</a>(<span class="stringliteral">&quot;Failed to copy &#39;&quot;</span> + path + <span class="stringliteral">&quot;&#39; to rootfs&quot;</span>);</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;      }</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    }</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="structNothing.html">Nothing</a>();</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  }</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
-<div class="line"><a name="l00083"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1tests_1_1Rootfs.html#aa07e7055a7c4f66a8946c2207cc51804">   83</a></span>&#160;  <span class="keyword">const</span> std::string <a class="code" href="classmesos_1_1internal_1_1tests_1_1Rootfs.html#aa07e7055a7c4f66a8946c2207cc51804">root</a>;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00086"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1tests_1_1Rootfs.html#a0d1eefd3053932eceda17475fae5f95c">   86</a></span>&#160;  <a class="code" href="classmesos_1_1internal_1_1tests_1_1Rootfs.html#a0d1eefd3053932eceda17475fae5f95c">Rootfs</a>(<span class="keyword">const</span> std::string&amp; _root) : <a class="code" href="classmesos_1_1internal_1_1tests_1_1Rootfs.html#aa07e7055a7c4f66a8946c2207cc51804">root</a>(_root) {}</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;};</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;      <span class="keywordflow">if</span> (<a class="code" href="namespaceos.html#a3491ce5d4a57fcac5ca2e3ca40abe176">os::system</a>(<a class="code" href="namespacestrings.html#a7884a23bea2a6543b8a93ad48faabe0c">strings::format</a>(</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;              <span class="stringliteral">&quot;cp --preserve=all &#39;%s&#39; &#39;%s&#39;&quot;</span>,</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;              path, target).<span class="keyword">get</span>()) != 0) {</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classErrnoError.html">ErrnoError</a>(<span class="stringliteral">&quot;Failed to copy &#39;&quot;</span> + path + <span class="stringliteral">&quot;&#39; to rootfs&quot;</span>);</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;      }</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    }</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="structNothing.html">Nothing</a>();</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  }</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
-<div class="line"><a name="l00090"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1tests_1_1LinuxRootfs.html">   90</a></span>&#160;<span class="keyword">class </span><a class="code" href="classmesos_1_1internal_1_1tests_1_1LinuxRootfs.html">LinuxRootfs</a> : <span class="keyword">public</span> <a class="code" href="classmesos_1_1internal_1_1tests_1_1Rootfs.html">Rootfs</a></div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;{</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00093"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1tests_1_1LinuxRootfs.html#a989f2d98ba0035548be3fa43a0ae23c4">   93</a></span>&#160;  <span class="keyword">static</span> <a class="code" href="classTry.html">Try&lt;process::Owned&lt;Rootfs&gt;</a>&gt; <a class="code" href="classmesos_1_1internal_1_1tests_1_1LinuxRootfs.html#a989f2d98ba0035548be3fa43a0ae23c4">create</a>(<span class="keyword">const</span> std::string&amp; <a class="code" href="classmesos_1_1internal_1_1tests_1_1Rootfs.html#aa07e7055a7c4f66a8946c2207cc51804">root</a>)</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  {</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <a class="code" href="classprocess_1_1Owned.html">process::Owned&lt;Rootfs&gt;</a> rootfs(<span class="keyword">new</span> <a class="code" href="classmesos_1_1internal_1_1tests_1_1LinuxRootfs.html#a261429813b5e3dd7cf179fdd94109344">LinuxRootfs</a>(root));</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="namespaceos.html#a69b3969276ffa4cb698b9431ee43bd7c">os::exists</a>(root)) {</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;      <a class="code" href="classTry.html">Try&lt;Nothing&gt;</a> <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a7c14ffcd8b1139a0f616fd448c9a9876">mkdir</a> = <a class="code" href="namespaceos.html#ac93da0e90cdbecd6efea0e300b013328">os::mkdir</a>(root);</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;      <span class="keywordflow">if</span> (mkdir.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(<span class="stringliteral">&quot;Failed to create root directory: &quot;</span> + mkdir.<a class="code" href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">error</a>());</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;      }</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    }</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    std::vector&lt;std::string&gt; files = {</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;      <span class="stringliteral">&quot;/bin/echo&quot;</span>,</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;      <span class="stringliteral">&quot;/bin/ls&quot;</span>,</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;      <span class="stringliteral">&quot;/bin/sh&quot;</span>,</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;      <span class="stringliteral">&quot;/bin/sleep&quot;</span>,</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;      <span class="stringliteral">&quot;/usr/bin/sh&quot;</span>,</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;      <span class="stringliteral">&quot;/lib/x86_64-linux-gnu&quot;</span>,</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;      <span class="stringliteral">&quot;/lib64/ld-linux-x86-64.so.2&quot;</span>,</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;      <span class="stringliteral">&quot;/lib64/libc.so.6&quot;</span>,</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;      <span class="stringliteral">&quot;/lib64/libdl.so.2&quot;</span>,</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;      <span class="stringliteral">&quot;/lib64/libtinfo.so.5&quot;</span>,</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;      <span class="stringliteral">&quot;/lib64/libselinux.so.1&quot;</span>,</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;      <span class="stringliteral">&quot;/lib64/libpcre.so.1&quot;</span>,</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;      <span class="stringliteral">&quot;/lib64/liblzma.so.5&quot;</span>,</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;      <span class="stringliteral">&quot;/lib64/libpthread.so.0&quot;</span>,</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;      <span class="stringliteral">&quot;/lib64/libcap.so.2&quot;</span>,</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;      <span class="stringliteral">&quot;/lib64/libacl.so.1&quot;</span>,</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;      <span class="stringliteral">&quot;/lib64/libattr.so.1&quot;</span>,</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;      <span class="stringliteral">&quot;/lib64/librt.so.1&quot;</span>,</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;      <span class="stringliteral">&quot;/etc/passwd&quot;</span></div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    };</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="keywordflow">foreach</span> (<span class="keyword">const</span> std::string&amp; <a class="code" href="namespacemesos_1_1uri.html#a0a3b30c1eb427c4053aaef120b1f453c">file</a>, files) {</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;      <span class="comment">// Some linux distros are moving all binaries and libraries to</span></div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;      <span class="comment">// /usr, in which case /bin, /lib, and /lib64 will be symlinks</span></div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;      <span class="comment">// to their equivalent directories in /usr.</span></div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;      <a class="code" href="classResult.html">Result&lt;std::string&gt;</a> <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a0ed376d39d5461e0bd7216e8016c0912">realpath</a> = <a class="code" href="namespaceos.html#a7fd21154b15bc00e31e2b457cab83ff2">os::realpath</a>(file);</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;      <span class="keywordflow">if</span> (realpath.<a class="code" href="classResult.html#a85eaa52037223d71092e65701c166562">isSome</a>()) {</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;        <a class="code" href="classTry.html">Try&lt;Nothing&gt;</a> result = rootfs-&gt;add(realpath.<a class="code" href="classResult.html#aedf79f3b14dcda5791b84a64ada4d412">get</a>());</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;        <span class="keywordflow">if</span> (result.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;          <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(<span class="stringliteral">&quot;Failed to add &#39;&quot;</span> + realpath.<a class="code" href="classResult.html#aedf79f3b14dcda5791b84a64ada4d412">get</a>() +</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;                       <span class="stringliteral">&quot;&#39; to rootfs: &quot;</span> + result.<a class="code" href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">error</a>());</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;        }</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;        <span class="keywordflow">if</span> (file != realpath.<a class="code" href="classResult.html#aedf79f3b14dcda5791b84a64ada4d412">get</a>()) {</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;          result = rootfs-&gt;add(file);</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;          <span class="keywordflow">if</span> (result.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(<span class="stringliteral">&quot;Failed to add &#39;&quot;</span> + file + <span class="stringliteral">&quot;&#39; to rootfs: &quot;</span> +</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;                         result.<a class="code" href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">error</a>());</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;          }</div>
+<div class="line"><a name="l00089"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1tests_1_1Rootfs.html#aa07e7055a7c4f66a8946c2207cc51804">   89</a></span>&#160;  <span class="keyword">const</span> std::string <a class="code" href="classmesos_1_1internal_1_1tests_1_1Rootfs.html#aa07e7055a7c4f66a8946c2207cc51804">root</a>;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00092"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1tests_1_1Rootfs.html#a0d1eefd3053932eceda17475fae5f95c">   92</a></span>&#160;  <a class="code" href="classmesos_1_1internal_1_1tests_1_1Rootfs.html#a0d1eefd3053932eceda17475fae5f95c">Rootfs</a>(<span class="keyword">const</span> std::string&amp; _root) : <a class="code" href="classmesos_1_1internal_1_1tests_1_1Rootfs.html#aa07e7055a7c4f66a8946c2207cc51804">root</a>(_root) {}</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;};</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
+<div class="line"><a name="l00096"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1tests_1_1LinuxRootfs.html">   96</a></span>&#160;<span class="keyword">class </span><a class="code" href="classmesos_1_1internal_1_1tests_1_1LinuxRootfs.html">LinuxRootfs</a> : <span class="keyword">public</span> <a class="code" href="classmesos_1_1internal_1_1tests_1_1Rootfs.html">Rootfs</a></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;{</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00099"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1tests_1_1LinuxRootfs.html#a989f2d98ba0035548be3fa43a0ae23c4">   99</a></span>&#160;  <span class="keyword">static</span> <a class="code" href="classTry.html">Try&lt;process::Owned&lt;Rootfs&gt;</a>&gt; <a class="code" href="classmesos_1_1internal_1_1tests_1_1LinuxRootfs.html#a989f2d98ba0035548be3fa43a0ae23c4">create</a>(<span class="keyword">const</span> std::string&amp; <a class="code" href="classmesos_1_1internal_1_1tests_1_1Rootfs.html#aa07e7055a7c4f66a8946c2207cc51804">root</a>)</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  {</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <a class="code" href="classprocess_1_1Owned.html">process::Owned&lt;Rootfs&gt;</a> rootfs(<span class="keyword">new</span> <a class="code" href="classmesos_1_1internal_1_1tests_1_1LinuxRootfs.html#a261429813b5e3dd7cf179fdd94109344">LinuxRootfs</a>(root));</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="namespaceos.html#a69b3969276ffa4cb698b9431ee43bd7c">os::exists</a>(root)) {</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;      <a class="code" href="classTry.html">Try&lt;Nothing&gt;</a> <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a7c14ffcd8b1139a0f616fd448c9a9876">mkdir</a> = <a class="code" href="namespaceos.html#ac93da0e90cdbecd6efea0e300b013328">os::mkdir</a>(root);</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;      <span class="keywordflow">if</span> (mkdir.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(<span class="stringliteral">&quot;Failed to create root directory: &quot;</span> + mkdir.<a class="code" href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">error</a>());</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;      }</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    }</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    std::vector&lt;std::string&gt; files = {</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;      <span class="stringliteral">&quot;/bin/echo&quot;</span>,</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;      <span class="stringliteral">&quot;/bin/ls&quot;</span>,</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;      <span class="stringliteral">&quot;/bin/ping&quot;</span>,</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;      <span class="stringliteral">&quot;/bin/sh&quot;</span>,</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;      <span class="stringliteral">&quot;/bin/sleep&quot;</span>,</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;      <span class="stringliteral">&quot;/usr/bin/sh&quot;</span>,</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;      <span class="stringliteral">&quot;/lib/x86_64-linux-gnu&quot;</span>,</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;      <span class="stringliteral">&quot;/lib64/ld-linux-x86-64.so.2&quot;</span>,</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;      <span class="stringliteral">&quot;/lib64/libc.so.6&quot;</span>,</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;      <span class="stringliteral">&quot;/lib64/libdl.so.2&quot;</span>,</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;      <span class="stringliteral">&quot;/lib64/libidn.so.11&quot;</span>,</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;      <span class="stringliteral">&quot;/lib64/libtinfo.so.5&quot;</span>,</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;      <span class="stringliteral">&quot;/lib64/libselinux.so.1&quot;</span>,</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;      <span class="stringliteral">&quot;/lib64/libpcre.so.1&quot;</span>,</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;      <span class="stringliteral">&quot;/lib64/liblzma.so.5&quot;</span>,</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;      <span class="stringliteral">&quot;/lib64/libpthread.so.0&quot;</span>,</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;      <span class="stringliteral">&quot;/lib64/libcap.so.2&quot;</span>,</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;      <span class="stringliteral">&quot;/lib64/libacl.so.1&quot;</span>,</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;      <span class="stringliteral">&quot;/lib64/libattr.so.1&quot;</span>,</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;      <span class="stringliteral">&quot;/lib64/librt.so.1&quot;</span>,</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;      <span class="stringliteral">&quot;/etc/passwd&quot;</span></div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    };</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    <span class="keywordflow">foreach</span> (<span class="keyword">const</span> std::string&amp; <a class="code" href="namespacemesos_1_1uri.html#a0a3b30c1eb427c4053aaef120b1f453c">file</a>, files) {</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;      <span class="comment">// Some linux distros are moving all binaries and libraries to</span></div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;      <span class="comment">// /usr, in which case /bin, /lib, and /lib64 will be symlinks</span></div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;      <span class="comment">// to their equivalent directories in /usr.</span></div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;      <a class="code" href="classResult.html">Result&lt;std::string&gt;</a> <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a0ed376d39d5461e0bd7216e8016c0912">realpath</a> = <a class="code" href="namespaceos.html#a7fd21154b15bc00e31e2b457cab83ff2">os::realpath</a>(file);</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;      <span class="keywordflow">if</span> (realpath.<a class="code" href="classResult.html#a85eaa52037223d71092e65701c166562">isSome</a>()) {</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;        <a class="code" href="classTry.html">Try&lt;Nothing&gt;</a> result = rootfs-&gt;add(realpath.<a class="code" href="classResult.html#aedf79f3b14dcda5791b84a64ada4d412">get</a>());</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;        <span class="keywordflow">if</span> (result.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;          <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(<span class="stringliteral">&quot;Failed to add &#39;&quot;</span> + realpath.<a class="code" href="classResult.html#aedf79f3b14dcda5791b84a64ada4d412">get</a>() +</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;                       <span class="stringliteral">&quot;&#39; to rootfs: &quot;</span> + result.<a class="code" href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">error</a>());</div>
 <div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;        }</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;      }</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    }</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    std::vector&lt;std::string&gt; directories = {</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;      <span class="stringliteral">&quot;/proc&quot;</span>,</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;      <span class="stringliteral">&quot;/sys&quot;</span>,</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;      <span class="stringliteral">&quot;/dev&quot;</span>,</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;      <span class="stringliteral">&quot;/tmp&quot;</span></div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    };</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <span class="keywordflow">foreach</span> (<span class="keyword">const</span> std::string&amp; directory, directories) {</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;      <a class="code" href="classTry.html">Try&lt;Nothing&gt;</a> <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a7c14ffcd8b1139a0f616fd448c9a9876">mkdir</a> = <a class="code" href="namespaceos.html#ac93da0e90cdbecd6efea0e300b013328">os::mkdir</a>(<a class="code" href="namespacepath.html#aa86b16a2171cec90bb3337930513ef0f">path::join</a>(root, directory));</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;      <span class="keywordflow">if</span> (mkdir.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(<span class="stringliteral">&quot;Failed to create &#39;&quot;</span> + directory +</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;                     <span class="stringliteral">&quot;&#39; in rootfs: &quot;</span> + mkdir.<a class="code" href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">error</a>());</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;      }</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    }</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;        <span class="keywordflow">if</span> (file != realpath.<a class="code" href="classResult.html#aedf79f3b14dcda5791b84a64ada4d412">get</a>()) {</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;          result = rootfs-&gt;add(file);</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;          <span class="keywordflow">if</span> (result.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(<span class="stringliteral">&quot;Failed to add &#39;&quot;</span> + file + <span class="stringliteral">&quot;&#39; to rootfs: &quot;</span> +</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;                         result.<a class="code" href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">error</a>());</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;          }</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        }</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;      }</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    }</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    std::vector&lt;std::string&gt; directories = {</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;      <span class="stringliteral">&quot;/proc&quot;</span>,</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;      <span class="stringliteral">&quot;/sys&quot;</span>,</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;      <span class="stringliteral">&quot;/dev&quot;</span>,</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;      <span class="stringliteral">&quot;/tmp&quot;</span></div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    };</div>
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    <span class="keywordflow">return</span> rootfs;</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;  }</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00167"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1tests_1_1LinuxRootfs.html#a261429813b5e3dd7cf179fdd94109344">  167</a></span>&#160;  <a class="code" href="classmesos_1_1internal_1_1tests_1_1LinuxRootfs.html#a261429813b5e3dd7cf179fdd94109344">LinuxRootfs</a>(<span class="keyword">const</span> std::string&amp; <a class="code" href="classmesos_1_1internal_1_1tests_1_1Rootfs.html#aa07e7055a7c4f66a8946c2207cc51804">root</a>) : <a class="code" href="classmesos_1_1internal_1_1tests_1_1Rootfs.html">Rootfs</a>(root) {}</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;};</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;} <span class="comment">// namespace tests {</span></div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;} <span class="comment">// namespace internal {</span></div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;} <span class="comment">// namespace mesos {</span></div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    <span class="keywordflow">foreach</span> (<span class="keyword">const</span> std::string&amp; directory, directories) {</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;      <a class="code" href="classTry.html">Try&lt;Nothing&gt;</a> <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a7c14ffcd8b1139a0f616fd448c9a9876">mkdir</a> = <a class="code" href="namespaceos.html#ac93da0e90cdbecd6efea0e300b013328">os::mkdir</a>(<a class="code" href="namespacepath.html#aa86b16a2171cec90bb3337930513ef0f">path::join</a>(root, directory));</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;      <span class="keywordflow">if</span> (mkdir.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(<span class="stringliteral">&quot;Failed to create &#39;&quot;</span> + directory +</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;                     <span class="stringliteral">&quot;&#39; in rootfs: &quot;</span> + mkdir.<a class="code" href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">error</a>());</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;      }</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    }</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    <span class="keywordflow">return</span> rootfs;</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;  }</div>
 <div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;<span class="preprocessor">#endif // __TEST_ROOTFS_HPP__</span></div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00175"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1tests_1_1LinuxRootfs.html#a261429813b5e3dd7cf179fdd94109344">  175</a></span>&#160;  <a class="code" href="classmesos_1_1internal_1_1tests_1_1LinuxRootfs.html#a261429813b5e3dd7cf179fdd94109344">LinuxRootfs</a>(<span class="keyword">const</span> std::string&amp; <a class="code" href="classmesos_1_1internal_1_1tests_1_1Rootfs.html#aa07e7055a7c4f66a8946c2207cc51804">root</a>) : <a class="code" href="classmesos_1_1internal_1_1tests_1_1Rootfs.html">Rootfs</a>(root) {}</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;};</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;} <span class="comment">// namespace tests {</span></div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;} <span class="comment">// namespace internal {</span></div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;} <span class="comment">// namespace mesos {</span></div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;<span class="preprocessor">#endif // __TEST_ROOTFS_HPP__</span></div>
 <div class="ttc" id="classmesos_1_1internal_1_1tests_1_1Rootfs_html"><div class="ttname"><a href="classmesos_1_1internal_1_1tests_1_1Rootfs.html">mesos::internal::tests::Rootfs</a></div><div class="ttdef"><b>Definition:</b> rootfs.hpp:36</div></div>
 <div class="ttc" id="namespaceos_html_a84298b990ad52dfd353358427b04ff3f"><div class="ttname"><a href="namespaceos.html#a84298b990ad52dfd353358427b04ff3f">os::rmdir</a></div><div class="ttdeci">Try&lt; Nothing &gt; rmdir(const std::string &amp;directory, bool recursive=true, bool removeRoot=true, bool continueOnError=false)</div><div class="ttdef"><b>Definition:</b> rmdir.hpp:42</div></div>
 <div class="ttc" id="namespaceos_html_a69b3969276ffa4cb698b9431ee43bd7c"><div class="ttname"><a href="namespaceos.html#a69b3969276ffa4cb698b9431ee43bd7c">os::exists</a></div><div class="ttdeci">bool exists(const std::string &amp;path)</div><div class="ttdef"><b>Definition:</b> exists.hpp:26</div></div>
 <div class="ttc" id="structNothing_html"><div class="ttname"><a href="structNothing.html">Nothing</a></div><div class="ttdef"><b>Definition:</b> nothing.hpp:16</div></div>
 <div class="ttc" id="classError_html"><div class="ttname"><a href="classError.html">Error</a></div><div class="ttdef"><b>Definition:</b> errorbase.hpp:35</div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1tests_1_1LinuxRootfs_html"><div class="ttname"><a href="classmesos_1_1internal_1_1tests_1_1LinuxRootfs.html">mesos::internal::tests::LinuxRootfs</a></div><div class="ttdef"><b>Definition:</b> rootfs.hpp:90</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1tests_1_1LinuxRootfs_html"><div class="ttname"><a href="classmesos_1_1internal_1_1tests_1_1LinuxRootfs.html">mesos::internal::tests::LinuxRootfs</a></div><div class="ttdef"><b>Definition:</b> rootfs.hpp:96</div></div>
 <div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
 <div class="ttc" id="os_8hpp_html"><div class="ttname"><a href="os_8hpp.html">os.hpp</a></div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1tests_1_1Rootfs_html_a0d1eefd3053932eceda17475fae5f95c"><div class="ttname"><a href="classmesos_1_1internal_1_1tests_1_1Rootfs.html#a0d1eefd3053932eceda17475fae5f95c">mesos::internal::tests::Rootfs::Rootfs</a></div><div class="ttdeci">Rootfs(const std::string &amp;_root)</div><div class="ttdef"><b>Definition:</b> rootfs.hpp:86</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1tests_1_1Rootfs_html_a0d1eefd3053932eceda17475fae5f95c"><div class="ttname"><a href="classmesos_1_1internal_1_1tests_1_1Rootfs.html#a0d1eefd3053932eceda17475fae5f95c">mesos::internal::tests::Rootfs::Rootfs</a></div><div class="ttdeci">Rootfs(const std::string &amp;_root)</div><div class="ttdef"><b>Definition:</b> rootfs.hpp:92</div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_a0ed376d39d5461e0bd7216e8016c0912"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a0ed376d39d5461e0bd7216e8016c0912">realpath</a></div><div class="ttdeci">auto realpath(const char *path, char *resolved) -&gt;</div><div class="ttdef"><b>Definition:</b> windows.hpp:388</div></div>
 <div class="ttc" id="classErrnoError_html"><div class="ttname"><a href="classErrnoError.html">ErrnoError</a></div><div class="ttdef"><b>Definition:</b> errorbase.hpp:44</div></div>
 <div class="ttc" id="namespacepath_html_aa86b16a2171cec90bb3337930513ef0f"><div class="ttname"><a href="namespacepath.html#aa86b16a2171cec90bb3337930513ef0f">path::join</a></div><div class="ttdeci">std::string join(const std::string &amp;path1, const std::string &amp;path2, const char _separator=os::PATH_SEPARATOR)</div><div class="ttdef"><b>Definition:</b> path.hpp:29</div></div>
 <div class="ttc" id="classResult_html"><div class="ttname"><a href="classResult.html">Result</a></div><div class="ttdef"><b>Definition:</b> result.hpp:40</div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1tests_1_1Rootfs_html_a3847b61d99d7eed1ef24728bdc28663f"><div class="ttname"><a href="classmesos_1_1internal_1_1tests_1_1Rootfs.html#a3847b61d99d7eed1ef24728bdc28663f">mesos::internal::tests::Rootfs::add</a></div><div class="ttdeci">Try&lt; Nothing &gt; add(const std::string &amp;path)</div><div class="ttdef"><b>Definition:</b> rootfs.hpp:47</div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1tests_1_1LinuxRootfs_html_a261429813b5e3dd7cf179fdd94109344"><div class="ttname"><a href="classmesos_1_1internal_1_1tests_1_1LinuxRootfs.html#a261429813b5e3dd7cf179fdd94109344">mesos::internal::tests::LinuxRootfs::LinuxRootfs</a></div><div class="ttdeci">LinuxRootfs(const std::string &amp;root)</div><div class="ttdef"><b>Definition:</b> rootfs.hpp:167</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1tests_1_1LinuxRootfs_html_a261429813b5e3dd7cf179fdd94109344"><div class="ttname"><a href="classmesos_1_1internal_1_1tests_1_1LinuxRootfs.html#a261429813b5e3dd7cf179fdd94109344">mesos::internal::tests::LinuxRootfs::LinuxRootfs</a></div><div class="ttdeci">LinuxRootfs(const std::string &amp;root)</div><div class="ttdef"><b>Definition:</b> rootfs.hpp:175</div></div>
 <div class="ttc" id="namespacemesos_1_1uri_html_a0a3b30c1eb427c4053aaef120b1f453c"><div class="ttname"><a href="namespacemesos_1_1uri.html#a0a3b30c1eb427c4053aaef120b1f453c">mesos::uri::file</a></div><div class="ttdeci">URI file(const std::string &amp;path)</div><div class="ttdoc">Creates a file URI with the given path on the local host. </div><div class="ttdef"><b>Definition:</b> file.hpp:33</div></div>
 <div class="ttc" id="nothing_8hpp_html"><div class="ttname"><a href="nothing_8hpp.html">nothing.hpp</a></div></div>
 <div class="ttc" id="namespaceos_html_ac93da0e90cdbecd6efea0e300b013328"><div class="ttname"><a href="namespaceos.html#ac93da0e90cdbecd6efea0e300b013328">os::mkdir</a></div><div class="ttdeci">Try&lt; Nothing &gt; mkdir(const std::string &amp;directory, bool recursive=true)</div><div class="ttdef"><b>Definition:</b> mkdir.hpp:37</div></div>
@@ -253,16 +261,17 @@
 <div class="ttc" id="error_8hpp_html"><div class="ttname"><a href="error_8hpp.html">error.hpp</a></div></div>
 <div class="ttc" id="classTry_html_a0b98f95163b8a38daafd1651b043a276"><div class="ttname"><a href="classTry.html#a0b98f95163b8a38daafd1651b043a276">Try::isError</a></div><div class="ttdeci">bool isError() const </div><div class="ttdef"><b>Definition:</b> try.hpp:68</div></div>
 <div class="ttc" id="try_8hpp_html"><div class="ttname"><a href="try_8hpp.html">try.hpp</a></div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1tests_1_1Rootfs_html_aa07e7055a7c4f66a8946c2207cc51804"><div class="ttname"><a href="classmesos_1_1internal_1_1tests_1_1Rootfs.html#aa07e7055a7c4f66a8946c2207cc51804">mesos::internal::tests::Rootfs::root</a></div><div class="ttdeci">const std::string root</div><div class="ttdef"><b>Definition:</b> rootfs.hpp:83</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1tests_1_1Rootfs_html_aa07e7055a7c4f66a8946c2207cc51804"><div class="ttname"><a href="classmesos_1_1internal_1_1tests_1_1Rootfs.html#aa07e7055a7c4f66a8946c2207cc51804">mesos::internal::tests::Rootfs::root</a></div><div class="ttdeci">const std::string root</div><div class="ttdef"><b>Definition:</b> rootfs.hpp:89</div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_a7c14ffcd8b1139a0f616fd448c9a9876"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a7c14ffcd8b1139a0f616fd448c9a9876">mkdir</a></div><div class="ttdeci">auto mkdir(const char *path, mode_t mode) -&gt;</div><div class="ttdef"><b>Definition:</b> windows.hpp:354</div></div>
 <div class="ttc" id="classResult_html_a85eaa52037223d71092e65701c166562"><div class="ttname"><a href="classResult.html#a85eaa52037223d71092e65701c166562">Result::isSome</a></div><div class="ttdeci">bool isSome() const </div><div class="ttdef"><b>Definition:</b> result.hpp:108</div></div>
 <div class="ttc" id="owned_8hpp_html"><div class="ttname"><a href="owned_8hpp.html">owned.hpp</a></div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1tests_1_1LinuxRootfs_html_a989f2d98ba0035548be3fa43a0ae23c4"><div class="ttname"><a href="classmesos_1_1internal_1_1tests_1_1LinuxRootfs.html#a989f2d98ba0035548be3fa43a0ae23c4">mesos::internal::tests::LinuxRootfs::create</a></div><div class="ttdeci">static Try&lt; process::Owned&lt; Rootfs &gt; &gt; create(const std::string &amp;root)</div><div class="ttdef"><b>Definition:</b> rootfs.hpp:93</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1tests_1_1LinuxRootfs_html_a989f2d98ba0035548be3fa43a0ae23c4"><div class="ttname"><a href="classmesos_1_1internal_1_1tests_1_1LinuxRootfs.html#a989f2d98ba0035548be3fa43a0ae23c4">mesos::internal::tests::LinuxRootfs::create</a></div><div class="ttdeci">static Try&lt; process::Owned&lt; Rootfs &gt; &gt; create(const std::string &amp;root)</div><div class="ttdef"><b>Definition:</b> rootfs.hpp:99</div></div>
+<div class="ttc" id="namespacestrings_html_a7884a23bea2a6543b8a93ad48faabe0c"><div class="ttname"><a href="namespacestrings.html#a7884a23bea2a6543b8a93ad48faabe0c">strings::format</a></div><div class="ttdeci">Try&lt; std::string &gt; format(const std::string &amp;s, const T &amp;...t)</div><div class="ttdef"><b>Definition:</b> format.hpp:58</div></div>
 <div class="ttc" id="classprocess_1_1Owned_html"><div class="ttname"><a href="classprocess_1_1Owned.html">process::Owned</a></div><div class="ttdef"><b>Definition:</b> owned.hpp:35</div></div>
 <div class="ttc" id="namespacestrings_html_aa5513faacb213c7e097c0d43af43d9c7"><div class="ttname"><a href="namespacestrings.html#aa5513faacb213c7e097c0d43af43d9c7">strings::startsWith</a></div><div class="ttdeci">bool startsWith(const std::string &amp;s, const std::string &amp;prefix)</div><div class="ttdef"><b>Definition:</b> strings.hpp:368</div></div>
 <div class="ttc" id="strings_8hpp_html"><div class="ttname"><a href="strings_8hpp.html">strings.hpp</a></div></div>
 <div class="ttc" id="namespaceos_1_1stat_html_a37d4d39a889b955ca3c40c9bd923afe0"><div class="ttname"><a href="namespaceos_1_1stat.html#a37d4d39a889b955ca3c40c9bd923afe0">os::stat::isdir</a></div><div class="ttdeci">bool isdir(const std::string &amp;path)</div><div class="ttdef"><b>Definition:</b> stat.hpp:30</div></div>
-<div class="ttc" id="namespaceos_html_a3491ce5d4a57fcac5ca2e3ca40abe176"><div class="ttname"><a href="namespaceos.html#a3491ce5d4a57fcac5ca2e3ca40abe176">os::system</a></div><div class="ttdeci">int system(const std::string &amp;command)</div><div class="ttdef"><b>Definition:</b> shell.hpp:123</div></div>
+<div class="ttc" id="namespaceos_html_a3491ce5d4a57fcac5ca2e3ca40abe176"><div class="ttname"><a href="namespaceos.html#a3491ce5d4a57fcac5ca2e3ca40abe176">os::system</a></div><div class="ttdeci">int system(const std::string &amp;command)</div><div class="ttdef"><b>Definition:</b> shell.hpp:124</div></div>
 <div class="ttc" id="namespaceos_html_a7fd21154b15bc00e31e2b457cab83ff2"><div class="ttname"><a href="namespaceos.html#a7fd21154b15bc00e31e2b457cab83ff2">os::realpath</a></div><div class="ttdeci">Result&lt; std::string &gt; realpath(const std::string &amp;path)</div><div class="ttdef"><b>Definition:</b> realpath.hpp:26</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

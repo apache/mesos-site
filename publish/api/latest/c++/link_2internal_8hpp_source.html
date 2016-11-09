@@ -118,7 +118,7 @@
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="comment">// Dump all the netlink link objects from kernel. Note that the flag</span></div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="comment">// AF_UNSPEC means all available families.</span></div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <span class="keyword">struct </span>nl_cache* c = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <span class="keywordtype">int</span> error = rtnl_link_alloc_cache(socket.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>().get(), AF_UNSPEC, &amp;c);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <span class="keywordtype">int</span> <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#ae58e703656ab4a1bd5d9870441236727">error</a> = rtnl_link_alloc_cache(socket.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>().get(), AF_UNSPEC, &amp;c);</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keywordflow">if</span> (error != 0) {</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(nl_geterror(error));</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  }</div>
@@ -145,7 +145,7 @@
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  <span class="comment">// Dump all the netlink link objects from kernel. Note that the flag</span></div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  <span class="comment">// AF_UNSPEC means all available families.</span></div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <span class="keyword">struct </span>nl_cache* c = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  <span class="keywordtype">int</span> error = rtnl_link_alloc_cache(socket.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>().get(), AF_UNSPEC, &amp;c);</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  <span class="keywordtype">int</span> <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#ae58e703656ab4a1bd5d9870441236727">error</a> = rtnl_link_alloc_cache(socket.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>().get(), AF_UNSPEC, &amp;c);</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  <span class="keywordflow">if</span> (error != 0) {</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(nl_geterror(error));</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  }</div>
@@ -212,15 +212,16 @@
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    }</div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;  }</div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;}</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;} <span class="comment">// namespace internal {</span></div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;} <span class="comment">// namespace link {</span></div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;} <span class="comment">// namespace routing {</span></div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;<span class="preprocessor">#endif // __LINUX_ROUTING_LINK_INTERNAL_HPP__</span></div>
-<div class="ttc" id="namespaceos_html_aa9ac22b4028f187826a9861373006abf"><div class="ttname"><a href="namespaceos.html#aa9ac22b4028f187826a9861373006abf">os::strerror</a></div><div class="ttdeci">std::string strerror(int errno_)</div><div class="ttdoc">A thread-safe version of strerror. </div><div class="ttdef"><b>Definition:</b> strerror.hpp:29</div></div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;  <a class="code" href="namespaceos.html#a7b641801fde90b7b5d1e536969fd28c5">os::close</a>(fd);</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;}</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;} <span class="comment">// namespace internal {</span></div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;} <span class="comment">// namespace link {</span></div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;} <span class="comment">// namespace routing {</span></div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;<span class="preprocessor">#endif // __LINUX_ROUTING_LINK_INTERNAL_HPP__</span></div>
+<div class="ttc" id="namespaceos_html_aa9ac22b4028f187826a9861373006abf"><div class="ttname"><a href="namespaceos.html#aa9ac22b4028f187826a9861373006abf">os::strerror</a></div><div class="ttdeci">std::string strerror(int errno_)</div><div class="ttdoc">A thread-safe version of strerror. </div><div class="ttdef"><b>Definition:</b> strerror.hpp:30</div></div>
 <div class="ttc" id="classResult_html_ac2cdc0db9f9d29a5bb2f1cf19c29da49"><div class="ttname"><a href="classResult.html#ac2cdc0db9f9d29a5bb2f1cf19c29da49">Result::isNone</a></div><div class="ttdeci">bool isNone() const </div><div class="ttdef"><b>Definition:</b> result.hpp:109</div></div>
 <div class="ttc" id="classError_html"><div class="ttname"><a href="classError.html">Error</a></div><div class="ttdef"><b>Definition:</b> errorbase.hpp:35</div></div>
 <div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
@@ -241,6 +242,7 @@
 <div class="ttc" id="error_8hpp_html"><div class="ttname"><a href="error_8hpp.html">error.hpp</a></div></div>
 <div class="ttc" id="structNone_html"><div class="ttname"><a href="structNone.html">None</a></div><div class="ttdef"><b>Definition:</b> none.hpp:27</div></div>
 <div class="ttc" id="classTry_html_a0b98f95163b8a38daafd1651b043a276"><div class="ttname"><a href="classTry.html#a0b98f95163b8a38daafd1651b043a276">Try::isError</a></div><div class="ttdeci">bool isError() const </div><div class="ttdef"><b>Definition:</b> try.hpp:68</div></div>
+<div class="ttc" id="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec_html_ae58e703656ab4a1bd5d9870441236727"><div class="ttname"><a href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#ae58e703656ab4a1bd5d9870441236727">mesos::internal::slave::cni::spec::error</a></div><div class="ttdeci">std::string error(const std::string &amp;msg, uint32_t code)</div></div>
 <div class="ttc" id="try_8hpp_html"><div class="ttname"><a href="try_8hpp.html">try.hpp</a></div></div>
 <div class="ttc" id="classResult_html_aeca16ad17d299ad885c9b46c83b12a3d"><div class="ttname"><a href="classResult.html#aeca16ad17d299ad885c9b46c83b12a3d">Result::isError</a></div><div class="ttdeci">bool isError() const </div><div class="ttdef"><b>Definition:</b> result.hpp:110</div></div>
 <div class="ttc" id="namespacerouting_html_a728e253aba8e42f601752ddc771e9902"><div class="ttname"><a href="namespacerouting.html#a728e253aba8e42f601752ddc771e9902">routing::cleanup</a></div><div class="ttdeci">void cleanup(struct rtnl_cls *cls)</div><div class="ttdef"><b>Definition:</b> internal.hpp:64</div></div>

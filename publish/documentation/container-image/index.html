@@ -4,7 +4,26 @@
     <meta charset="utf-8">
     <title>Apache Mesos - Supporting Container Images in Mesos Containerizer</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta property="og:image" content="/assets/img/mesos_logo_fb_preview.png">
+
+    <meta property="og:locale" content="en_US"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:title" content="Apache Mesos"/>
+    <meta property="og:site_name" content="Apache Mesos"/>
+    <meta property="og:url" content="http://mesos.apache.org/"/>
+    <meta property="og:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta property="og:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
+
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:site" content="@ApacheMesos"/>
+    <meta name="twitter:title" content="Apache Mesos"/>
+    <meta name="twitter:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta name="twitter:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
 
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
@@ -116,8 +135,8 @@ the life cycle of a container.</p>
 
 <p>Therefore, we made an effort to unify containerizers in Mesos
 (<a href="https://issues.apache.org/jira/browse/MESOS-2840">MESOS-2840</a>,
-a.k.a. the Unified Containerizer). We improved Mesos containerizer so
-that it now supports launching containers that specify container
+a.k.a. the Universal Containerizer). We improved Mesos containerizer
+so that it now supports launching containers that specify container
 images (e.g., Docker/Appc images).</p>
 
 <h2>Getting Started</h2>
@@ -422,12 +441,9 @@ will waste IO and space while the bind backend can only deal with one
 layer. The overlay backend allows containizer to utilize the
 filesystem to merge multiple filesystems into one efficiently.</p>
 
-<p>As the overlay backend request multiple lower layers support, the
-version of linux kernel should be greater than 4.0, refer
-<a href="https://github.com/manjaro/manjaro-tools-iso-profiles/issues/40">here</a>
-for more detail.</p>
-
-<p>For more information of overlayfs, please refer to
+<p>The overlay backend depends on support for multiple lower layers,
+which requires Linux kernel version 4.0 or later. For more information
+of overlayfs, please refer to
 <a href="https://www.kernel.org/doc/Documentation/filesystems/overlayfs.txt">here</a>.</p>
 
 <h3>AUFS</h3>

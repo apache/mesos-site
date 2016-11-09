@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>Apache Mesos: src/slave/containerizer/mesos/isolators/cgroups/perf_event.hpp Source File</title>
+<title>Apache Mesos: src/slave/containerizer/mesos/isolators/cgroups/subsystems/perf_event.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -44,7 +44,7 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_80f0d4a0945c74dfa611dba2ec326a39.html">slave</a></li><li class="navelem"><a class="el" href="dir_fbb1f3397356a940a2dbc4baf07ee5bb.html">containerizer</a></li><li class="navelem"><a class="el" href="dir_06602996fd31a3e264808d1450975cb2.html">mesos</a></li><li class="navelem"><a class="el" href="dir_7c165478aec9e654f08f29fd2fd0a034.html">isolators</a></li><li class="navelem"><a class="el" href="dir_9815e8590b7cf88e7b4b76acf470ad28.html">cgroups</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_80f0d4a0945c74dfa611dba2ec326a39.html">slave</a></li><li class="navelem"><a class="el" href="dir_fbb1f3397356a940a2dbc4baf07ee5bb.html">containerizer</a></li><li class="navelem"><a class="el" href="dir_06602996fd31a3e264808d1450975cb2.html">mesos</a></li><li class="navelem"><a class="el" href="dir_7c165478aec9e654f08f29fd2fd0a034.html">isolators</a></li><li class="navelem"><a class="el" href="dir_9815e8590b7cf88e7b4b76acf470ad28.html">cgroups</a></li><li class="navelem"><a class="el" href="dir_a9640f8b73719a7f6cb29160b9b11498.html">subsystems</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -68,135 +68,133 @@
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">// See the License for the specific language governing permissions and</span></div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">// limitations under the License.</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#ifndef __PERF_EVENT_ISOLATOR_HPP__</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define __PERF_EVENT_ISOLATOR_HPP__</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#ifndef __CGROUPS_ISOLATOR_SUBSYSTEMS_PERF_EVENT_HPP__</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define __CGROUPS_ISOLATOR_SUBSYSTEMS_PERF_EVENT_HPP__</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;set&gt;</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="id_8hpp.html">process/id.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="time_8hpp.html">process/time.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="resources_8hpp.html">mesos/resources.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="hashmap_8hpp.html">stout/hashmap.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="nothing_8hpp.html">stout/nothing.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="src_2slave_2flags_8hpp.html">slave/flags.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="clock_8hpp.html">process/clock.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="future_8hpp.html">process/future.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="owned_8hpp.html">process/owned.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="time_8hpp.html">process/time.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="src_2slave_2containerizer_2mesos_2isolator_8hpp.html">slave/containerizer/mesos/isolator.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="hashmap_8hpp.html">stout/hashmap.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">namespace </span>mesos {</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">namespace </span>internal {</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">namespace </span>slave {</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
-<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1slave_1_1CgroupsPerfEventIsolatorProcess.html">   36</a></span>&#160;<span class="keyword">class </span><a class="code" href="classmesos_1_1internal_1_1slave_1_1CgroupsPerfEventIsolatorProcess.html">CgroupsPerfEventIsolatorProcess</a> : <span class="keyword">public</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1MesosIsolatorProcess.html">MesosIsolatorProcess</a></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;{</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <span class="keyword">static</span> <a class="code" href="classTry.html">Try&lt;mesos::slave::Isolator*&gt;</a> <a class="code" href="classmesos_1_1internal_1_1slave_1_1CgroupsPerfEventIsolatorProcess.html#a2ec0d7ddb009b912bf762b1df3db3c46">create</a>(<span class="keyword">const</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Flags.html">Flags</a>&amp; flags);</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="src_2slave_2flags_8hpp.html">slave/flags.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="src_2slave_2containerizer_2mesos_2isolators_2cgroups_2constants_8hpp.html">slave/containerizer/mesos/isolators/cgroups/constants.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="subsystem_8hpp.html">slave/containerizer/mesos/isolators/cgroups/subsystem.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">namespace </span>mesos {</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">namespace </span>internal {</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keyword">namespace </span>slave {</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1CgroupsPerfEventIsolatorProcess.html#a394f28cf40cdb91afd90d2eb611a2135">~CgroupsPerfEventIsolatorProcess</a>();</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;Nothing&gt;</a> <a class="code" href="classmesos_1_1internal_1_1slave_1_1CgroupsPerfEventIsolatorProcess.html#aaac35afba863161e8681e48753fdeb39">recover</a>(</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;      <span class="keyword">const</span> std::list&lt;mesos::slave::ContainerState&gt;&amp; states,</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;      <span class="keyword">const</span> <a class="code" href="classhashset.html">hashset&lt;ContainerID&gt;</a>&amp; orphans);</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;Option&lt;mesos::slave::ContainerLaunchInfo&gt;</a>&gt; <a class="code" href="classmesos_1_1internal_1_1slave_1_1CgroupsPerfEventIsolatorProcess.html#a731f17b4d84d4882d53a2daf1ac15dc6">prepare</a>(</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;      <span class="keyword">const</span> ContainerID&amp; containerId,</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;      <span class="keyword">const</span> mesos::slave::ContainerConfig&amp; containerConfig);</div>
+<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1slave_1_1PerfEventSubsystem.html">   44</a></span>&#160;<span class="keyword">class </span><a class="code" href="classmesos_1_1internal_1_1slave_1_1PerfEventSubsystem.html">PerfEventSubsystem</a>: <span class="keyword">public</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Subsystem.html">Subsystem</a></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;{</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <span class="keyword">static</span> <a class="code" href="classTry.html">Try&lt;process::Owned&lt;Subsystem&gt;</a>&gt; <a class="code" href="classmesos_1_1internal_1_1slave_1_1PerfEventSubsystem.html#ac9aa73117be6e85487a0e473b69366f5">create</a>(</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;      <span class="keyword">const</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Flags.html">Flags</a>&amp; <a class="code" href="classmesos_1_1internal_1_1slave_1_1Subsystem.html#a8664a93f45d3086122355139598f5ce2">flags</a>,</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;      <span class="keyword">const</span> std::string&amp; <a class="code" href="classmesos_1_1internal_1_1slave_1_1Subsystem.html#a8f9a6c398b905dcdac8c8efebde06fd5">hierarchy</a>);</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;Nothing&gt;</a> <a class="code" href="classmesos_1_1internal_1_1slave_1_1CgroupsPerfEventIsolatorProcess.html#ab753f557181c676fd9febf509c5d730d">isolate</a>(</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;      <span class="keyword">const</span> ContainerID&amp; containerId,</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;      <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ab03ced250ed239bc3b50b669493997f9">pid_t</a> pid);</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;ResourceStatistics&gt;</a> <a class="code" href="classmesos_1_1internal_1_1slave_1_1CgroupsPerfEventIsolatorProcess.html#a0ca884b11193de1ba7adb64a4f83fe8d">usage</a>(</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;      <span class="keyword">const</span> ContainerID&amp; containerId);</div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1slave_1_1PerfEventSubsystem.html#ac588c2306c20c940ecdd2e83f72cdcbb">   51</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1PerfEventSubsystem.html#ac588c2306c20c940ecdd2e83f72cdcbb">~PerfEventSubsystem</a>() {}</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1slave_1_1PerfEventSubsystem.html#ac9d1647fc3c30e70c6d7f0ccf27541ad">   53</a></span>&#160;  <span class="keyword">virtual</span> std::string <a class="code" href="classmesos_1_1internal_1_1slave_1_1PerfEventSubsystem.html#ac9d1647fc3c30e70c6d7f0ccf27541ad">name</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="keyword">  </span>{</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespacemesos_1_1internal_1_1slave.html#a8d4673a8c69636f9ceb0635ba4769d96">CGROUP_SUBSYSTEM_PERF_EVENT_NAME</a>;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  }</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;Nothing&gt;</a> <a class="code" href="classmesos_1_1internal_1_1slave_1_1CgroupsPerfEventIsolatorProcess.html#a58a03201ee510ea16e419f4c3035fa61">cleanup</a>(</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;      <span class="keyword">const</span> ContainerID&amp; containerId);</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1CgroupsPerfEventIsolatorProcess.html#a5d79ae6ff9c6bd39f98c762c02ab80d4">initialize</a>();</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <a class="code" href="classmesos_1_1internal_1_1slave_1_1CgroupsPerfEventIsolatorProcess.html">CgroupsPerfEventIsolatorProcess</a>(</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;      <span class="keyword">const</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Flags.html">Flags</a>&amp; _flags,</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;      <span class="keyword">const</span> std::string&amp; _hierarchy,</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;      <span class="keyword">const</span> std::set&lt;std::string&gt;&amp; _events)</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    : <a class="code" href="classprocess_1_1ProcessBase.html#a318038bacd95e4260864533f7cfe12fd">ProcessBase</a>(<a class="code" href="namespaceprocess_1_1ID.html#aeb11a48c9def1da169d8455a30d0ee39">process::ID::generate</a>(<span class="stringliteral">&quot;cgroups-perf-event-isolator&quot;</span>)),</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;      flags(_flags),</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;      hierarchy(_hierarchy),</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;      events(_events) {}</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;Nothing&gt;</a> <a class="code" href="classmesos_1_1internal_1_1slave_1_1PerfEventSubsystem.html#a285e4dc5900302bec9bb7caf0641675e">prepare</a>(</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;      <span class="keyword">const</span> ContainerID&amp; containerId,</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;      <span class="keyword">const</span> std::string&amp; <a class="code" href="namespacecgroups_1_1cpu.html#ac24be84e6df1750b4082bbb6512de76b">cgroup</a>);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;Nothing&gt;</a> <a class="code" href="classmesos_1_1internal_1_1slave_1_1PerfEventSubsystem.html#a192a995de2810d142e1a023db48aae32">recover</a>(</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;      <span class="keyword">const</span> ContainerID&amp; containerId,</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;      <span class="keyword">const</span> std::string&amp; <a class="code" href="namespacecgroups_1_1cpu.html#ac24be84e6df1750b4082bbb6512de76b">cgroup</a>);</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;ResourceStatistics&gt;</a> <a class="code" href="classmesos_1_1internal_1_1slave_1_1PerfEventSubsystem.html#a5a532b63e821e94c22a30465337b836e">usage</a>(</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;      <span class="keyword">const</span> ContainerID&amp; containerId,</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;      <span class="keyword">const</span> std::string&amp; <a class="code" href="namespacecgroups_1_1cpu.html#ac24be84e6df1750b4082bbb6512de76b">cgroup</a>);</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;Nothing&gt;</a> <a class="code" href="classmesos_1_1internal_1_1slave_1_1PerfEventSubsystem.html#a63fba3b02e939d9d07a714c9f51f5821">cleanup</a>(</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;      <span class="keyword">const</span> ContainerID&amp; containerId,</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;      <span class="keyword">const</span> std::string&amp; <a class="code" href="namespacecgroups_1_1cpu.html#ac24be84e6df1750b4082bbb6512de76b">cgroup</a>);</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="keywordtype">void</span> sample();</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="keywordtype">void</span> _sample(</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;      <span class="keyword">const</span> <a class="code" href="classprocess_1_1Time.html">process::Time</a>&amp; next,</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;      <span class="keyword">const</span> <a class="code" href="classprocess_1_1Future.html">process::Future</a>&lt;<a class="code" href="classhashmap.html">hashmap&lt;std::string, PerfStatistics&gt;</a>&gt;&amp; <a class="code" href="namespacerouting_1_1link.html#a8486fce953717fcb949bfdc17a2dd3e1">statistics</a>);</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;Nothing&gt;</a> _cleanup(<span class="keyword">const</span> ContainerID&amp; containerId);</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <span class="keyword">struct </span>Info</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  {</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    Info(<span class="keyword">const</span> ContainerID&amp; _containerId, <span class="keyword">const</span> std::string&amp; _cgroup)</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;      : containerId(_containerId), <a class="code" href="namespacecgroups_1_1cpu.html#ac24be84e6df1750b4082bbb6512de76b">cgroup</a>(_cgroup), destroying(<span class="keyword">false</span>)</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    {</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;      <span class="comment">// Ensure the initial statistics include the required fields.</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;      <span class="comment">// Note the duration is set to zero to indicate no sampling has</span></div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;      <span class="comment">// taken place. This empty sample will be returned from usage()</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;      <span class="comment">// until the first true sample is obtained.</span></div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;      <a class="code" href="namespacerouting_1_1link.html#a8486fce953717fcb949bfdc17a2dd3e1">statistics</a>.set_timestamp(<a class="code" href="classprocess_1_1Clock.html#a24ed3f746bb6b3ddb1c52dce5e0ecd38">process::Clock::now</a>().secs());</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;      <a class="code" href="namespacerouting_1_1link.html#a8486fce953717fcb949bfdc17a2dd3e1">statistics</a>.set_duration(<a class="code" href="classSeconds.html">Seconds</a>(0).secs());</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    }</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <span class="keyword">const</span> ContainerID containerId;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1PerfEventSubsystem.html#a624c2b34dabb1615433c70fa03a04a0f">initialize</a>();</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <a class="code" href="classmesos_1_1internal_1_1slave_1_1PerfEventSubsystem.html">PerfEventSubsystem</a>(</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;      <span class="keyword">const</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Flags.html">Flags</a>&amp; flags,</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;      <span class="keyword">const</span> std::string&amp; hierarchy,</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;      <span class="keyword">const</span> std::set&lt;std::string&gt;&amp; events);</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="keyword">struct </span>Info</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  {</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    Info(<span class="keyword">const</span> std::string&amp; _cgroup)</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;      : <a class="code" href="namespacecgroups_1_1cpu.html#ac24be84e6df1750b4082bbb6512de76b">cgroup</a>(_cgroup)</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    {</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;      <span class="comment">// Ensure the initial statistics include the required fields.</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;      <span class="comment">// Note the duration is set to zero to indicate no sampling has</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;      <span class="comment">// taken place. This empty sample will be returned from usage()</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;      <span class="comment">// until the first true sample is obtained.</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;      <a class="code" href="namespacerouting_1_1link.html#a8486fce953717fcb949bfdc17a2dd3e1">statistics</a>.set_timestamp(<a class="code" href="classprocess_1_1Clock.html#a24ed3f746bb6b3ddb1c52dce5e0ecd38">process::Clock::now</a>().secs());</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;      <a class="code" href="namespacerouting_1_1link.html#a8486fce953717fcb949bfdc17a2dd3e1">statistics</a>.set_duration(<a class="code" href="classSeconds.html">Seconds</a>(0).secs());</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    }</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keyword">const</span> std::string <a class="code" href="namespacecgroups_1_1cpu.html#ac24be84e6df1750b4082bbb6512de76b">cgroup</a>;</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    PerfStatistics <a class="code" href="namespacerouting_1_1link.html#a8486fce953717fcb949bfdc17a2dd3e1">statistics</a>;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <span class="comment">// Mark a container when we start destruction so we stop sampling it.</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="keywordtype">bool</span> destroying;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  };</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  };</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  <span class="keywordtype">void</span> sample();</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  <span class="keyword">const</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Flags.html">Flags</a> flags;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  <span class="comment">// The path to the cgroups subsystem hierarchy root.</span></div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  <span class="keyword">const</span> std::string hierarchy;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;  <span class="comment">// Set of events to sample.</span></div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  std::set&lt;std::string&gt; events;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  <span class="comment">// TODO(jieyu): Use Owned&lt;Info&gt;.</span></div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  <a class="code" href="classhashmap.html">hashmap&lt;ContainerID, Info*&gt;</a> infos;</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;};</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;} <span class="comment">// namespace slave {</span></div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;} <span class="comment">// namespace internal {</span></div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;} <span class="comment">// namespace mesos {</span></div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="preprocessor">#endif // __PERF_EVENT_ISOLATOR_HPP__</span></div>
-<div class="ttc" id="namespaceprocess_1_1ID_html_aeb11a48c9def1da169d8455a30d0ee39"><div class="ttname"><a href="namespaceprocess_1_1ID.html#aeb11a48c9def1da169d8455a30d0ee39">process::ID::generate</a></div><div class="ttdeci">std::string generate(const std::string &amp;prefix=&quot;&quot;)</div><div class="ttdoc">Returns &amp;#39;prefix(N)&amp;#39; where N represents the number of instances where the same prefix (wrt...</div></div>
-<div class="ttc" id="classprocess_1_1ProcessBase_html_a318038bacd95e4260864533f7cfe12fd"><div class="ttname"><a href="classprocess_1_1ProcessBase.html#a318038bacd95e4260864533f7cfe12fd">process::ProcessBase::ProcessBase</a></div><div class="ttdeci">ProcessBase(const std::string &amp;id=&quot;&quot;)</div></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  <span class="keywordtype">void</span> _sample(</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;      <span class="keyword">const</span> <a class="code" href="classprocess_1_1Time.html">process::Time</a>&amp; next,</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;      <span class="keyword">const</span> <a class="code" href="classprocess_1_1Future.html">process::Future</a>&lt;<a class="code" href="classhashmap.html">hashmap&lt;std::string, PerfStatistics&gt;</a>&gt;&amp; <a class="code" href="namespacerouting_1_1link.html#a8486fce953717fcb949bfdc17a2dd3e1">statistics</a>);</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  <span class="comment">// Set of events to sample.</span></div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;  std::set&lt;std::string&gt; events;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  <span class="comment">// Stores cgroups associated information for container.</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  <a class="code" href="classhashmap.html">hashmap&lt;ContainerID, process::Owned&lt;Info&gt;</a>&gt; infos;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;};</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;} <span class="comment">// namespace slave {</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;} <span class="comment">// namespace internal {</span></div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;} <span class="comment">// namespace mesos {</span></div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="preprocessor">#endif // __CGROUPS_ISOLATOR_SUBSYSTEMS_PERF_EVENT_HPP__</span></div>
+<div class="ttc" id="resources_8hpp_html"><div class="ttname"><a href="resources_8hpp.html">resources.hpp</a></div></div>
+<div class="ttc" id="src_2slave_2containerizer_2mesos_2isolators_2cgroups_2constants_8hpp_html"><div class="ttname"><a href="src_2slave_2containerizer_2mesos_2isolators_2cgroups_2constants_8hpp.html">constants.hpp</a></div></div>
+<div class="ttc" id="namespacemesos_1_1internal_1_1slave_html_a8d4673a8c69636f9ceb0635ba4769d96"><div class="ttname"><a href="namespacemesos_1_1internal_1_1slave.html#a8d4673a8c69636f9ceb0635ba4769d96">mesos::internal::slave::CGROUP_SUBSYSTEM_PERF_EVENT_NAME</a></div><div class="ttdeci">const std::string CGROUP_SUBSYSTEM_PERF_EVENT_NAME</div><div class="ttdef"><b>Definition:</b> constants.hpp:47</div></div>
 <div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
-<div class="ttc" id="classhashset_html"><div class="ttname"><a href="classhashset.html">hashset&lt; ContainerID &gt;</a></div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1CgroupsPerfEventIsolatorProcess_html"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1CgroupsPerfEventIsolatorProcess.html">mesos::internal::slave::CgroupsPerfEventIsolatorProcess</a></div><div class="ttdef"><b>Definition:</b> perf_event.hpp:36</div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1CgroupsPerfEventIsolatorProcess_html_ab753f557181c676fd9febf509c5d730d"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1CgroupsPerfEventIsolatorProcess.html#ab753f557181c676fd9febf509c5d730d">mesos::internal::slave::CgroupsPerfEventIsolatorProcess::isolate</a></div><div class="ttdeci">virtual process::Future&lt; Nothing &gt; isolate(const ContainerID &amp;containerId, pid_t pid)</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1PerfEventSubsystem_html_ac9aa73117be6e85487a0e473b69366f5"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1PerfEventSubsystem.html#ac9aa73117be6e85487a0e473b69366f5">mesos::internal::slave::PerfEventSubsystem::create</a></div><div class="ttdeci">static Try&lt; process::Owned&lt; Subsystem &gt; &gt; create(const Flags &amp;flags, const std::string &amp;hierarchy)</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1PerfEventSubsystem_html_ac9d1647fc3c30e70c6d7f0ccf27541ad"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1PerfEventSubsystem.html#ac9d1647fc3c30e70c6d7f0ccf27541ad">mesos::internal::slave::PerfEventSubsystem::name</a></div><div class="ttdeci">virtual std::string name() const </div><div class="ttdoc">The cgroups subsystem name of this Subsystem object. </div><div class="ttdef"><b>Definition:</b> perf_event.hpp:53</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1PerfEventSubsystem_html_a285e4dc5900302bec9bb7caf0641675e"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1PerfEventSubsystem.html#a285e4dc5900302bec9bb7caf0641675e">mesos::internal::slave::PerfEventSubsystem::prepare</a></div><div class="ttdeci">virtual process::Future&lt; Nothing &gt; prepare(const ContainerID &amp;containerId, const std::string &amp;cgroup)</div><div class="ttdoc">Prepare the cgroups subsystem for the associated container. </div></div>
 <div class="ttc" id="namespacerouting_1_1link_html_a8486fce953717fcb949bfdc17a2dd3e1"><div class="ttname"><a href="namespacerouting_1_1link.html#a8486fce953717fcb949bfdc17a2dd3e1">routing::link::statistics</a></div><div class="ttdeci">Result&lt; hashmap&lt; std::string, uint64_t &gt; &gt; statistics(const std::string &amp;link)</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1Subsystem_html_a8664a93f45d3086122355139598f5ce2"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1Subsystem.html#a8664a93f45d3086122355139598f5ce2">mesos::internal::slave::Subsystem::flags</a></div><div class="ttdeci">const Flags flags</div><div class="ttdoc">Flags used to launch the agent. </div><div class="ttdef"><b>Definition:</b> subsystem.hpp:176</div></div>
+<div class="ttc" id="subsystem_8hpp_html"><div class="ttname"><a href="subsystem_8hpp.html">subsystem.hpp</a></div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1slave_1_1Flags_html"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1Flags.html">mesos::internal::slave::Flags</a></div><div class="ttdef"><b>Definition:</b> flags.hpp:38</div></div>
-<div class="ttc" id="src_2slave_2containerizer_2mesos_2isolator_8hpp_html"><div class="ttname"><a href="src_2slave_2containerizer_2mesos_2isolator_8hpp.html">isolator.hpp</a></div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1PerfEventSubsystem_html_a624c2b34dabb1615433c70fa03a04a0f"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1PerfEventSubsystem.html#a624c2b34dabb1615433c70fa03a04a0f">mesos::internal::slave::PerfEventSubsystem::initialize</a></div><div class="ttdeci">virtual void initialize()</div><div class="ttdoc">Invoked when a process gets spawned. </div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1PerfEventSubsystem_html_ac588c2306c20c940ecdd2e83f72cdcbb"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1PerfEventSubsystem.html#ac588c2306c20c940ecdd2e83f72cdcbb">mesos::internal::slave::PerfEventSubsystem::~PerfEventSubsystem</a></div><div class="ttdeci">virtual ~PerfEventSubsystem()</div><div class="ttdef"><b>Definition:</b> perf_event.hpp:51</div></div>
 <div class="ttc" id="classhashmap_html"><div class="ttname"><a href="classhashmap.html">hashmap</a></div><div class="ttdef"><b>Definition:</b> hashmap.hpp:38</div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1CgroupsPerfEventIsolatorProcess_html_a2ec0d7ddb009b912bf762b1df3db3c46"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1CgroupsPerfEventIsolatorProcess.html#a2ec0d7ddb009b912bf762b1df3db3c46">mesos::internal::slave::CgroupsPerfEventIsolatorProcess::create</a></div><div class="ttdeci">static Try&lt; mesos::slave::Isolator * &gt; create(const Flags &amp;flags)</div></div>
-<div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_ab03ced250ed239bc3b50b669493997f9"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ab03ced250ed239bc3b50b669493997f9">pid_t</a></div><div class="ttdeci">DWORD pid_t</div><div class="ttdef"><b>Definition:</b> windows.hpp:163</div></div>
 <div class="ttc" id="time_8hpp_html"><div class="ttname"><a href="time_8hpp.html">time.hpp</a></div></div>
-<div class="ttc" id="nothing_8hpp_html"><div class="ttname"><a href="nothing_8hpp.html">nothing.hpp</a></div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1PerfEventSubsystem_html_a5a532b63e821e94c22a30465337b836e"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1PerfEventSubsystem.html#a5a532b63e821e94c22a30465337b836e">mesos::internal::slave::PerfEventSubsystem::usage</a></div><div class="ttdeci">virtual process::Future&lt; ResourceStatistics &gt; usage(const ContainerID &amp;containerId, const std::string &amp;cgroup)</div><div class="ttdoc">Gather resource usage statistics of the cgroups subsystem for the associated container. </div></div>
 <div class="ttc" id="classSeconds_html"><div class="ttname"><a href="classSeconds.html">Seconds</a></div><div class="ttdef"><b>Definition:</b> duration.hpp:240</div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1MesosIsolatorProcess_html"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1MesosIsolatorProcess.html">mesos::internal::slave::MesosIsolatorProcess</a></div><div class="ttdef"><b>Definition:</b> isolator.hpp:77</div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1CgroupsPerfEventIsolatorProcess_html_aaac35afba863161e8681e48753fdeb39"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1CgroupsPerfEventIsolatorProcess.html#aaac35afba863161e8681e48753fdeb39">mesos::internal::slave::CgroupsPerfEventIsolatorProcess::recover</a></div><div class="ttdeci">virtual process::Future&lt; Nothing &gt; recover(const std::list&lt; mesos::slave::ContainerState &gt; &amp;states, const hashset&lt; ContainerID &gt; &amp;orphans)</div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1CgroupsPerfEventIsolatorProcess_html_a0ca884b11193de1ba7adb64a4f83fe8d"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1CgroupsPerfEventIsolatorProcess.html#a0ca884b11193de1ba7adb64a4f83fe8d">mesos::internal::slave::CgroupsPerfEventIsolatorProcess::usage</a></div><div class="ttdeci">virtual process::Future&lt; ResourceStatistics &gt; usage(const ContainerID &amp;containerId)</div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1CgroupsPerfEventIsolatorProcess_html_a5d79ae6ff9c6bd39f98c762c02ab80d4"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1CgroupsPerfEventIsolatorProcess.html#a5d79ae6ff9c6bd39f98c762c02ab80d4">mesos::internal::slave::CgroupsPerfEventIsolatorProcess::initialize</a></div><div class="ttdeci">virtual void initialize()</div><div class="ttdoc">Invoked when a process gets spawned. </div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1PerfEventSubsystem_html"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1PerfEventSubsystem.html">mesos::internal::slave::PerfEventSubsystem</a></div><div class="ttdoc">Represent cgroups perf_event subsystem. </div><div class="ttdef"><b>Definition:</b> perf_event.hpp:44</div></div>
 <div class="ttc" id="classprocess_1_1Time_html"><div class="ttname"><a href="classprocess_1_1Time.html">process::Time</a></div><div class="ttdef"><b>Definition:</b> time.hpp:23</div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1CgroupsPerfEventIsolatorProcess_html_a394f28cf40cdb91afd90d2eb611a2135"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1CgroupsPerfEventIsolatorProcess.html#a394f28cf40cdb91afd90d2eb611a2135">mesos::internal::slave::CgroupsPerfEventIsolatorProcess::~CgroupsPerfEventIsolatorProcess</a></div><div class="ttdeci">virtual ~CgroupsPerfEventIsolatorProcess()</div></div>
+<div class="ttc" id="future_8hpp_html"><div class="ttname"><a href="future_8hpp.html">future.hpp</a></div></div>
 <div class="ttc" id="namespacecgroups_1_1cpu_html_ac24be84e6df1750b4082bbb6512de76b"><div class="ttname"><a href="namespacecgroups_1_1cpu.html#ac24be84e6df1750b4082bbb6512de76b">cgroups::cpu::cgroup</a></div><div class="ttdeci">Result&lt; std::string &gt; cgroup(pid_t pid)</div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1CgroupsPerfEventIsolatorProcess_html_a731f17b4d84d4882d53a2daf1ac15dc6"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1CgroupsPerfEventIsolatorProcess.html#a731f17b4d84d4882d53a2daf1ac15dc6">mesos::internal::slave::CgroupsPerfEventIsolatorProcess::prepare</a></div><div class="ttdeci">virtual process::Future&lt; Option&lt; mesos::slave::ContainerLaunchInfo &gt; &gt; prepare(const ContainerID &amp;containerId, const mesos::slave::ContainerConfig &amp;containerConfig)</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1Subsystem_html"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1Subsystem.html">mesos::internal::slave::Subsystem</a></div><div class="ttdoc">An abstraction for cgroups subsystem. </div><div class="ttdef"><b>Definition:</b> subsystem.hpp:42</div></div>
+<div class="ttc" id="clock_8hpp_html"><div class="ttname"><a href="clock_8hpp.html">clock.hpp</a></div></div>
 <div class="ttc" id="classprocess_1_1Clock_html_a24ed3f746bb6b3ddb1c52dce5e0ecd38"><div class="ttname"><a href="classprocess_1_1Clock.html#a24ed3f746bb6b3ddb1c52dce5e0ecd38">process::Clock::now</a></div><div class="ttdeci">static Time now()</div><div class="ttdoc">The current clock time for either the current process that makes this call or the global clock time i...</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1PerfEventSubsystem_html_a192a995de2810d142e1a023db48aae32"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1PerfEventSubsystem.html#a192a995de2810d142e1a023db48aae32">mesos::internal::slave::PerfEventSubsystem::recover</a></div><div class="ttdeci">virtual process::Future&lt; Nothing &gt; recover(const ContainerID &amp;containerId, const std::string &amp;cgroup)</div><div class="ttdoc">Recover the cgroups subsystem for the associated container. </div></div>
 <div class="ttc" id="src_2slave_2flags_8hpp_html"><div class="ttname"><a href="src_2slave_2flags_8hpp.html">flags.hpp</a></div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1CgroupsPerfEventIsolatorProcess_html_a58a03201ee510ea16e419f4c3035fa61"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1CgroupsPerfEventIsolatorProcess.html#a58a03201ee510ea16e419f4c3035fa61">mesos::internal::slave::CgroupsPerfEventIsolatorProcess::cleanup</a></div><div class="ttdeci">virtual process::Future&lt; Nothing &gt; cleanup(const ContainerID &amp;containerId)</div></div>
-<div class="ttc" id="id_8hpp_html"><div class="ttname"><a href="id_8hpp.html">id.hpp</a></div></div>
+<div class="ttc" id="owned_8hpp_html"><div class="ttname"><a href="owned_8hpp.html">owned.hpp</a></div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1PerfEventSubsystem_html_a63fba3b02e939d9d07a714c9f51f5821"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1PerfEventSubsystem.html#a63fba3b02e939d9d07a714c9f51f5821">mesos::internal::slave::PerfEventSubsystem::cleanup</a></div><div class="ttdeci">virtual process::Future&lt; Nothing &gt; cleanup(const ContainerID &amp;containerId, const std::string &amp;cgroup)</div><div class="ttdoc">Clean up the cgroups subsystem for the associated container. </div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1Subsystem_html_a8f9a6c398b905dcdac8c8efebde06fd5"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1Subsystem.html#a8f9a6c398b905dcdac8c8efebde06fd5">mesos::internal::slave::Subsystem::hierarchy</a></div><div class="ttdeci">const std::string hierarchy</div><div class="ttdoc">The hierarchy path of cgroups subsystem. </div><div class="ttdef"><b>Definition:</b> subsystem.hpp:181</div></div>
 <div class="ttc" id="hashmap_8hpp_html"><div class="ttname"><a href="hashmap_8hpp.html">hashmap.hpp</a></div></div>
 <div class="ttc" id="classprocess_1_1Future_html"><div class="ttname"><a href="classprocess_1_1Future.html">process::Future&lt; Nothing &gt;</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

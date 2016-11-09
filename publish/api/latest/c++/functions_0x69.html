@@ -172,7 +172,7 @@
 , <a class="el" href="classmesos_1_1internal_1_1logger_1_1LogrotateContainerLogger.html#a97d46cccc5db6ac73713f91901008dbb">mesos::internal::logger::LogrotateContainerLogger</a>
 , <a class="el" href="classmesos_1_1internal_1_1slave_1_1SandboxContainerLogger.html#aa7a5dd7cd2385baf009fbff4bfcfc234">mesos::internal::slave::SandboxContainerLogger</a>
 , <a class="el" href="classmesos_1_1internal_1_1slave_1_1CgroupsIsolatorProcess.html#af15917f9898bb6d74495dc163ea19ec1">mesos::internal::slave::CgroupsIsolatorProcess</a>
-, <a class="el" href="classmesos_1_1internal_1_1slave_1_1CgroupsPerfEventIsolatorProcess.html#a5d79ae6ff9c6bd39f98c762c02ab80d4">mesos::internal::slave::CgroupsPerfEventIsolatorProcess</a>
+, <a class="el" href="classmesos_1_1internal_1_1slave_1_1PerfEventSubsystem.html#a624c2b34dabb1615433c70fa03a04a0f">mesos::internal::slave::PerfEventSubsystem</a>
 , <a class="el" href="classmesos_1_1internal_1_1slave_1_1LoadQoSController.html#a156809fe62a01c4385126404473650a5">mesos::internal::slave::LoadQoSController</a>
 , <a class="el" href="classmesos_1_1internal_1_1slave_1_1NoopQoSController.html#ab4f1f5b763e1430fb90b6c9e2a0bb911">mesos::internal::slave::NoopQoSController</a>
 , <a class="el" href="classmesos_1_1internal_1_1slave_1_1NoopResourceEstimator.html#ab2d067f860463d4d65a4acd7199b71aa">mesos::internal::slave::NoopResourceEstimator</a>
@@ -191,11 +191,12 @@
 , <a class="el" href="classprocess_1_1ProcessBase.html#a6baf49d6234eb638d068a98514e4ae3f">process::ProcessBase</a>
 , <a class="el" href="classmesos_1_1internal_1_1log_1_1tool_1_1Replica_1_1Flags.html#a15d854cb98af8c2e79d47e4f68554331">mesos::internal::log::tool::Replica::Flags</a>
 , <a class="el" href="classprocess_1_1Profiler.html#a9131797d93999031d9e732c8a2d45da4">process::Profiler</a>
-, <a class="el" href="classprocess_1_1System.html#a5cfa4acb240377af06c74eca269df423">process::System</a>
+, <a class="el" href="classprocess_1_1internal_1_1ReaperProcess.html#afeb3d27d616c3c7c3b63f22eb0828dbf">process::internal::ReaperProcess</a>
 , <a class="el" href="classmesos_1_1allocator_1_1Allocator.html#af19b2995d30a1612023edcd661b6bff0">mesos::allocator::Allocator</a>
+, <a class="el" href="classprocess_1_1System.html#a5cfa4acb240377af06c74eca269df423">process::System</a>
 , <a class="el" href="classprocess_1_1EventLoop.html#a3a2654f192081711d6ce633fbf487641">process::EventLoop</a>
-, <a class="el" href="classprocess_1_1network_1_1LibeventSSLSocketImpl.html#a72edaaa04ffece65618e82ded9e9d82a">process::network::LibeventSSLSocketImpl</a>
 , <a class="el" href="classmesos_1_1Authenticator.html#a88e1acd32ebe8553b71b1504f55d723d">mesos::Authenticator</a>
+, <a class="el" href="classprocess_1_1network_1_1LibeventSSLSocketImpl.html#a72edaaa04ffece65618e82ded9e9d82a">process::network::LibeventSSLSocketImpl</a>
 , <a class="el" href="classmesos_1_1master_1_1contender_1_1MasterContender.html#a6df3292cd7a6f9e556a7f14df80948b9">mesos::master::contender::MasterContender</a>
 , <a class="el" href="classmesos_1_1slave_1_1ContainerLogger.html#abf91d08c21dae805eed4fdd9f9f5fbd5">mesos::slave::ContainerLogger</a>
 , <a class="el" href="classmesos_1_1slave_1_1QoSController.html#aba35ec151522f91bc8d20e4dc91162aa">mesos::slave::QoSController</a>
@@ -240,7 +241,6 @@
 <li>instance()
 : <a class="el" href="classprocess_1_1FilterTestEventListener.html#a83706dd9a07c5ea208ee1109183aa72f">process::FilterTestEventListener</a>
 , <a class="el" href="classprocess_1_1ClockTestEventListener.html#a684e54b986d32130f3b63e0f4cfa109e">process::ClockTestEventListener</a>
-, <a class="el" href="classprocess_1_1metrics_1_1internal_1_1MetricsProcess.html#a3811d08ab3bf737210a33744e78b7312">process::metrics::internal::MetricsProcess</a>
 </li>
 <li>int32()
 : <a class="el" href="classtests_1_1Message.html#a1ca046796f145a250e595344acb0aa3d">tests::Message</a>
@@ -256,10 +256,6 @@
 </li>
 <li>integer()
 : <a class="el" href="structos_1_1sysctl.html#ae4fa1e9a1934a5f694a83ba10b008764">os::sysctl</a>
-</li>
-<li>internal::convertJSON
-: <a class="el" href="classmesos_1_1v1_1_1Resources.html#af5c5df5e6851e59246b3f546fb17af55">mesos::v1::Resources</a>
-, <a class="el" href="classmesos_1_1Resources.html#af5c5df5e6851e59246b3f546fb17af55">mesos::Resources</a>
 </li>
 <li>internal::discarded
 : <a class="el" href="classprocess_1_1Promise.html#a6d293d289666af0adec11f68f9fede9c">process::Promise&lt; T &gt;</a>
@@ -280,7 +276,7 @@
 : <a class="el" href="structprocess_1_1http_1_1Status.html#ae1c6540846d05803ff13c01a17be2df7">process::http::Status</a>
 </li>
 <li>InternalServerError()
-: <a class="el" href="structprocess_1_1http_1_1InternalServerError.html#a016283ac8d01260ad0cd135ee402d7f6">process::http::InternalServerError</a>
+: <a class="el" href="structprocess_1_1http_1_1InternalServerError.html#a6bdecfce24be3ee7ac42abb0bafa1f77">process::http::InternalServerError</a>
 </li>
 <li>InterpreterLock()
 : <a class="el" href="classmesos_1_1python_1_1InterpreterLock.html#a73caa54f8d351dbf3e3bcc0139bddf4c">mesos::python::InterpreterLock</a>
@@ -288,6 +284,7 @@
 <li>intersects()
 : <a class="el" href="classInterval.html#a5e3d8ed4dcff671d337227dd1c8e88bb">Interval&lt; T &gt;</a>
 , <a class="el" href="classIntervalSet.html#ac0001fd71a35feb599e9861aabf710de">IntervalSet&lt; T &gt;</a>
+, <a class="el" href="classInterval.html#ada6af34cbe50c559bd09c8397142e5b0">Interval&lt; T &gt;</a>
 </li>
 <li>Interval()
 : <a class="el" href="classInterval.html#a7bf968b2b7991d0b3dbcb9f87eb09ea2">Interval&lt; T &gt;</a>
@@ -314,8 +311,8 @@
 : <a class="el" href="structmesos_1_1internal_1_1master_1_1Metrics.html#a6299e75c71aecf7cef2dd4c8d1b06baa">mesos::internal::master::Metrics</a>
 </li>
 <li>invalid_status_updates
-: <a class="el" href="structmesos_1_1internal_1_1slave_1_1Metrics.html#ab997b2b7880a9b3689bcdbcb93b88b4b">mesos::internal::slave::Metrics</a>
-, <a class="el" href="structmesos_1_1internal_1_1master_1_1Metrics.html#a1fe6b1e4082d0248423d5c274e4496f7">mesos::internal::master::Metrics</a>
+: <a class="el" href="structmesos_1_1internal_1_1master_1_1Metrics.html#a1fe6b1e4082d0248423d5c274e4496f7">mesos::internal::master::Metrics</a>
+, <a class="el" href="structmesos_1_1internal_1_1slave_1_1Metrics.html#ab997b2b7880a9b3689bcdbcb93b88b4b">mesos::internal::slave::Metrics</a>
 </li>
 <li>inverseOffer()
 : <a class="el" href="classmesos_1_1internal_1_1master_1_1Master.html#a4c34fc2e2243946f6996970bf6fad4c5">mesos::internal::master::Master</a>
@@ -344,13 +341,18 @@
 </li>
 <li>ip
 : <a class="el" href="structprocess_1_1http_1_1URL.html#ac0416d6239dbcd64e0b2d8dc4f151ef8">process::http::URL</a>
+, <a class="el" href="structmesos_1_1internal_1_1tests_1_1HealthCheckTestHelper_1_1Flags.html#a933dda9d8c0cf3b81e13268518823a39">mesos::internal::tests::HealthCheckTestHelper::Flags</a>
 , <a class="el" href="classprocess_1_1network_1_1Address.html#ab8d6dcbdf62e39b9d948ab9b97d4ba5c">process::network::Address</a>
+</li>
+<li>IP()
+: <a class="el" href="classnet_1_1IP.html#a458f3ae5cd3ce3de5b594fceb16c00a1">net::IP</a>
 </li>
 <li>ipAddress
 : <a class="el" href="classDocker_1_1Container.html#a3f16c086b28059796d404e040612a8a2">Docker::Container</a>
 </li>
 <li>is()
-: <a class="el" href="structprocess_1_1Event.html#ac2d1b2d710b1b3002da0116239787517">process::Event</a>
+: <a class="el" href="structJSON_1_1Value.html#a218f28cc093837f5a10cf893886fd92d">JSON::Value</a>
+, <a class="el" href="structprocess_1_1Event.html#ac2d1b2d710b1b3002da0116239787517">process::Event</a>
 , <a class="el" href="structJSON_1_1Value.html#a9f420d588c86317e0cc816b7d3ece0f8">JSON::Value</a>
 </li>
 <li>isAbsolute()
@@ -370,8 +372,8 @@
 , <a class="el" href="classmesos_1_1Resources.html#a65426926427f541434634ab4b63597f5">mesos::Resources</a>
 </li>
 <li>isEmpty()
-: <a class="el" href="classmesos_1_1Resources.html#af80276e0925e9e48dbf816aae62a2bb8">mesos::Resources</a>
-, <a class="el" href="classmesos_1_1v1_1_1Resources.html#a1122b880d0a01c919a35a41be0fa7b94">mesos::v1::Resources</a>
+: <a class="el" href="classmesos_1_1v1_1_1Resources.html#a1122b880d0a01c919a35a41be0fa7b94">mesos::v1::Resources</a>
+, <a class="el" href="classmesos_1_1Resources.html#af80276e0925e9e48dbf816aae62a2bb8">mesos::Resources</a>
 </li>
 <li>isError()
 : <a class="el" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">Try&lt; T, E &gt;</a>
@@ -403,26 +405,21 @@
 , <a class="el" href="classOption.html#a06eab791122ebc1f8af4ad310e5e7d7e">Option&lt; T &gt;</a>
 </li>
 <li>isolate()
-: <a class="el" href="classmesos_1_1slave_1_1Isolator.html#a7a703b2b2cdc4efdaa0fd4519b7109f9">mesos::slave::Isolator</a>
+: <a class="el" href="classmesos_1_1internal_1_1slave_1_1NetworkCniIsolatorProcess.html#a4d2771d57033cea741ec6dd2bc6f738d">mesos::internal::slave::NetworkCniIsolatorProcess</a>
 , <a class="el" href="classmesos_1_1internal_1_1slave_1_1PortMappingIsolatorProcess.html#a8b2c5ba6d056cdeb7968c2ce0f9859c6">mesos::internal::slave::PortMappingIsolatorProcess</a>
-, <a class="el" href="classmesos_1_1internal_1_1slave_1_1CgroupsPerfEventIsolatorProcess.html#ab753f557181c676fd9febf509c5d730d">mesos::internal::slave::CgroupsPerfEventIsolatorProcess</a>
-, <a class="el" href="classmesos_1_1internal_1_1slave_1_1MesosIsolator.html#a32a943445e8ff4eb60c269f35e92d19c">mesos::internal::slave::MesosIsolator</a>
-, <a class="el" href="classmesos_1_1internal_1_1slave_1_1CgroupsNetClsIsolatorProcess.html#a76cc51697accf6bbeabcf1c5ff8cb937">mesos::internal::slave::CgroupsNetClsIsolatorProcess</a>
-, <a class="el" href="classmesos_1_1internal_1_1slave_1_1CgroupsDevicesIsolatorProcess.html#ad7bfe2b92d29534b9c06b95c3c62f242">mesos::internal::slave::CgroupsDevicesIsolatorProcess</a>
-, <a class="el" href="classmesos_1_1internal_1_1slave_1_1PosixDiskIsolatorProcess.html#a9ffeb4eeca1ecf4f3d48eb48b058c4c9">mesos::internal::slave::PosixDiskIsolatorProcess</a>
-, <a class="el" href="classmesos_1_1internal_1_1slave_1_1MesosIsolatorProcess.html#a9be889e55c9fa3b300a1a2c30c19e35e">mesos::internal::slave::MesosIsolatorProcess</a>
-, <a class="el" href="classmesos_1_1internal_1_1slave_1_1NamespacesPidIsolatorProcess.html#a7c75a5313178e9147d5cf89f305bac4a">mesos::internal::slave::NamespacesPidIsolatorProcess</a>
-, <a class="el" href="classmesos_1_1internal_1_1slave_1_1PosixIsolatorProcess.html#a1a456c37615df1a0b54193cbe6052b04">mesos::internal::slave::PosixIsolatorProcess</a>
-, <a class="el" href="classmesos_1_1internal_1_1slave_1_1CgroupsMemIsolatorProcess.html#a1ef05dcc44050c16b5d0518a38dd2909">mesos::internal::slave::CgroupsMemIsolatorProcess</a>
-, <a class="el" href="classmesos_1_1internal_1_1slave_1_1NetworkCniIsolatorProcess.html#a4d2771d57033cea741ec6dd2bc6f738d">mesos::internal::slave::NetworkCniIsolatorProcess</a>
-, <a class="el" href="classmesos_1_1internal_1_1slave_1_1Subsystem.html#aeb1d6f3a257731add3e29b102c6c7d66">mesos::internal::slave::Subsystem</a>
-, <a class="el" href="classmesos_1_1internal_1_1slave_1_1CgroupsIsolatorProcess.html#a01b0f952a8b793faac974c34fd5a4967">mesos::internal::slave::CgroupsIsolatorProcess</a>
 , <a class="el" href="classmesos_1_1internal_1_1slave_1_1XfsDiskIsolatorProcess.html#ab8f24b1b41014dfa43a907c16ba3562d">mesos::internal::slave::XfsDiskIsolatorProcess</a>
-, <a class="el" href="classmesos_1_1internal_1_1slave_1_1CgroupsCpushareIsolatorProcess.html#a46a6827645724811b1fda06862cd99ad">mesos::internal::slave::CgroupsCpushareIsolatorProcess</a>
+, <a class="el" href="classmesos_1_1internal_1_1slave_1_1MesosIsolatorProcess.html#a9be889e55c9fa3b300a1a2c30c19e35e">mesos::internal::slave::MesosIsolatorProcess</a>
+, <a class="el" href="classmesos_1_1internal_1_1slave_1_1Subsystem.html#a5dcbb71ea3166e7ed9658fb2751cd53b">mesos::internal::slave::Subsystem</a>
+, <a class="el" href="classmesos_1_1internal_1_1slave_1_1PosixIsolatorProcess.html#a1a456c37615df1a0b54193cbe6052b04">mesos::internal::slave::PosixIsolatorProcess</a>
+, <a class="el" href="classmesos_1_1internal_1_1slave_1_1CgroupsIsolatorProcess.html#a01b0f952a8b793faac974c34fd5a4967">mesos::internal::slave::CgroupsIsolatorProcess</a>
+, <a class="el" href="classmesos_1_1internal_1_1slave_1_1NetClsSubsystem.html#aa8a0c2652dc5b2f235494e40f814ec9c">mesos::internal::slave::NetClsSubsystem</a>
+, <a class="el" href="classmesos_1_1internal_1_1slave_1_1PosixDiskIsolatorProcess.html#a9ffeb4eeca1ecf4f3d48eb48b058c4c9">mesos::internal::slave::PosixDiskIsolatorProcess</a>
+, <a class="el" href="classmesos_1_1slave_1_1Isolator.html#a7a703b2b2cdc4efdaa0fd4519b7109f9">mesos::slave::Isolator</a>
+, <a class="el" href="classmesos_1_1internal_1_1slave_1_1MesosIsolator.html#a32a943445e8ff4eb60c269f35e92d19c">mesos::internal::slave::MesosIsolator</a>
 </li>
 <li>isolation
-: <a class="el" href="classmesos_1_1internal_1_1slave_1_1Flags.html#a9c17940ada14b1be41aea68412c0fe7f">mesos::internal::slave::Flags</a>
-, <a class="el" href="classmesos_1_1internal_1_1tests_1_1Flags.html#abf2002c7d6b7bdaf841bfd18ef7251c2">mesos::internal::tests::Flags</a>
+: <a class="el" href="classmesos_1_1internal_1_1tests_1_1Flags.html#abf2002c7d6b7bdaf841bfd18ef7251c2">mesos::internal::tests::Flags</a>
+, <a class="el" href="classmesos_1_1internal_1_1slave_1_1Flags.html#a9c17940ada14b1be41aea68412c0fe7f">mesos::internal::slave::Flags</a>
 </li>
 <li>isPending()
 : <a class="el" href="classprocess_1_1Future.html#af23884cf963eb5ec061595eb2e288903">process::Future&lt; T &gt;</a>
@@ -445,10 +442,14 @@
 : <a class="el" href="classmesos_1_1v1_1_1Resources.html#aafe883992970766fad47c0f1bff39998">mesos::v1::Resources</a>
 , <a class="el" href="classmesos_1_1Resources.html#abb05dff78639303b244e9ffb0c765c14">mesos::Resources</a>
 </li>
+<li>isShared()
+: <a class="el" href="classmesos_1_1v1_1_1Resources.html#a3b642920fe195dca5e142ba9f1bf0445">mesos::v1::Resources</a>
+, <a class="el" href="classmesos_1_1Resources.html#a2543b70428e6d4546271615fc013776e">mesos::Resources</a>
+</li>
 <li>isSome()
-: <a class="el" href="classResult.html#a85eaa52037223d71092e65701c166562">Result&lt; T &gt;</a>
+: <a class="el" href="classTry.html#a6543d7d5db4f298bcd673bf3cd509acc">Try&lt; T, E &gt;</a>
 , <a class="el" href="classOption.html#a4e3bf8416d95246f43c91f1b5c309323">Option&lt; T &gt;</a>
-, <a class="el" href="classTry.html#a6543d7d5db4f298bcd673bf3cd509acc">Try&lt; T, E &gt;</a>
+, <a class="el" href="classResult.html#a85eaa52037223d71092e65701c166562">Result&lt; T &gt;</a>
 </li>
 <li>isUnreserved()
 : <a class="el" href="classmesos_1_1v1_1_1Resources.html#a4ce7250b1e5eec3b0e3bc3a66fe4007b">mesos::v1::Resources</a>
@@ -465,10 +466,10 @@
 : <a class="el" href="classmesos_1_1internal_1_1master_1_1allocator_1_1internal_1_1HierarchicalAllocatorProcess.html#a29b2b2f5e702c29307e16629e821ab45">mesos::internal::master::allocator::internal::HierarchicalAllocatorProcess</a>
 </li>
 <li>iterator
-: <a class="el" href="classflags_1_1FlagsBase.html#ac73a41c2c9ba65800a8aad11ba595612">flags::FlagsBase</a>
-, <a class="el" href="classmesos_1_1v1_1_1Resources.html#a7d595dbb779360ef854351a0b6d8095e">mesos::v1::Resources</a>
-, <a class="el" href="classmesos_1_1Resources.html#a2f4bcc0de9f40c0c947d355213aaac95">mesos::Resources</a>
+: <a class="el" href="classmesos_1_1Resources.html#a2f4bcc0de9f40c0c947d355213aaac95">mesos::Resources</a>
 , <a class="el" href="classmesos_1_1Attributes.html#a9ef5920e839795f7a7c0a8a83956aad4">mesos::Attributes</a>
+, <a class="el" href="classflags_1_1FlagsBase.html#ac73a41c2c9ba65800a8aad11ba595612">flags::FlagsBase</a>
+, <a class="el" href="classmesos_1_1v1_1_1Resources.html#a7d595dbb779360ef854351a0b6d8095e">mesos::v1::Resources</a>
 , <a class="el" href="classmesos_1_1v1_1_1Attributes.html#a8c1db754d5e166038dca1652c7939c95">mesos::v1::Attributes</a>
 </li>
 <li>itrealvalue

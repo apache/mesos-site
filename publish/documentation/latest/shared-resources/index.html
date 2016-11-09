@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Apache Mesos - Shared Persistent Volumes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta property="og:locale" content="en_US"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:title" content="Apache Mesos"/>
+    <meta property="og:site_name" content="Apache Mesos"/>
+    <meta property="og:url" content="http://mesos.apache.org/"/>
+    <meta property="og:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta property="og:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
+
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:site" content="@ApacheMesos"/>
+    <meta name="twitter:title" content="Apache Mesos"/>
+    <meta name="twitter:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta name="twitter:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
+
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
+    <link href="../../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+
+    
+
+    <!-- Google Analytics Magic -->
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-20226872-1']);
+    _gaq.push(['_setDomainName', 'apache.org']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+    
+  </head>
+  <body>
+    <!-- magical breadcrumbs -->
+    <div class="topnav">
+      <div class="container">
+        <ul class="breadcrumb">
+          <li>
+            <div class="dropdown">
+              <a data-toggle="dropdown" href="#">Apache Software Foundation <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                <li><a href="http://www.apache.org">Apache Homepage</a></li>
+                <li><a href="http://www.apache.org/licenses/">License</a></li>
+                <li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>
+                <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                <li><a href="http://www.apache.org/security/">Security</a></li>
+              </ul>
+            </div>
+          </li>
+
+          <li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+          
+          
+          <li><a href="/documentation
+/">Documentation
+</a></li>
+          
+          
+        </ul><!-- /.breadcrumb -->
+      </div><!-- /.container -->
+    </div><!-- /.topnav -->
+
+    <!-- navbar excitement -->
+<div class="navbar navbar-default navbar-static-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#mesos-menu" aria-expanded="false">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo"/></a>
+    </div><!-- /.navbar-header -->
+
+    <div class="navbar-collapse collapse" id="mesos-menu">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/gettingstarted/">Getting Started</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/documentation/latest/">Documentation</a></li>
+        <li><a href="/downloads/">Downloads</a></li>
+        <li><a href="/community/">Community</a></li>
+      </ul>
+    </div><!-- /#mesos-menu -->
+  </div><!-- /.container -->
+</div><!-- /.navbar -->
+
+<div class="content">
+  <div class="container">
+    <div class="row-fluid">
+  <div class="col-md-4">
+    <h4>If you're new to Mesos</h4>
+    <p>See the <a href="/gettingstarted/">getting started</a> page for more
+       information about downloading, building, and deploying Mesos.</p>
+
+    <h4>If you'd like to get involved or you're looking for support</h4>
+    <p>See our <a href="/community/">community</a> page for more details.</p>
+  </div>
+  <div class="col-md-8">
+    <h1>Shared Persistent Volumes</h1>
+
+<h2>Overview</h2>
+
+<p>By default, <a href="/documentation/latest/./persistent-volume/">persistent volumes</a> provide
+<em>exclusive</em> access: once a task is launched using a persistent volume,
+no other tasks can use that volume, and the volume will not appear in
+any resource offers until the task that is using it has finished.</p>
+
+<p>In some cases, it can be useful to share a volume between multiple tasks
+running on the same agent. For example, this could be used to
+efficiently share a large data set between multiple data analysis tasks.</p>
+
+<h2>Creating Shared Volumes</h2>
+
+<p>Shared persistent volumes are created using the same workflow as normal
+persistent volumes: by starting with a
+<a href="/documentation/latest/./reservation/">reserved resource</a> and applying a <code>CREATE</code> operation,
+either via the framework scheduler API or the
+<a href="/documentation/latest/./endpoints/master/create-volumes/">/create-volumes</a> HTTP endpoint. To
+create a shared volume, set the <code>shared</code> field during volume creation.</p>
+
+<p>For example, suppose a framework receives a resource offer containing
+2048MB of dynamically reserved disk:</p>
+
+<pre><code>{
+  "id" : &lt;offer_id&gt;,
+  "framework_id" : &lt;framework_id&gt;,
+  "slave_id" : &lt;slave_id&gt;,
+  "hostname" : &lt;hostname&gt;,
+  "resources" : [
+    {
+      "name" : "disk",
+      "type" : "SCALAR",
+      "scalar" : { "value" : 2048 },
+      "role" : &lt;framework_role&gt;,
+      "reservation" : {
+        "principal" : &lt;framework_principal&gt;
+      }
+    }
+  ]
+}
+</code></pre>
+
+<p>The framework can create a shared persistent volume using this disk
+resource via the following offer operation:</p>
+
+<pre><code>{
+  "type" : Offer::Operation::CREATE,
+  "create": {
+    "volumes" : [
+      {
+        "name" : "disk",
+        "type" : "SCALAR",
+        "scalar" : { "value" : 2048 },
+        "role" : &lt;framework_role&gt;,
+        "reservation" : {
+          "principal" : &lt;framework_principal&gt;
+        },
+        "disk": {
+          "persistence": {
+            "id" : &lt;persistent_volume_id&gt;
+          },
+          "volume" : {
+            "container_path" : &lt;container_path&gt;,
+            "mode" : &lt;mode&gt;
+          }
+        },
+        "shared" : {
+        }
+      }
+    ]
+  }
+}
+</code></pre>
+
+<p>Note that the <code>shared</code> field has been set (to an empty JSON object),
+which indicates that the <code>CREATE</code> operation will create a shared volume.</p>
+
+<h2>Using Shared Volumes</h2>
+
+<p>To be eligible to receive resource offers that contain shared volumes, a
+framework must enable the <code>SHARED_RESOURCES</code> capability in the
+<code>FrameworkInfo</code> it provides when it registers with the master.
+Frameworks that do <em>not</em> enable this capability will not be offered
+shared resources.</p>
+
+<p>When a framework receives a resource offer, it can determine whether a
+volume is shared by checking if the <code>shared</code> field has been set. Unlike
+normal persistent volumes, a shared volume that is in use by a task will
+continue to be offered to the frameworks in the volume&rsquo;s role; this
+gives those frameworks the opportunity to launch additional tasks that
+can access the volume. A framework can also launch multiple tasks that
+access the volume using a single <code>ACCEPT</code> call.</p>
+
+<p>Note that Mesos does not provide any isolation or concurrency control
+between the tasks that are sharing a volume. Framework developers should
+ensure that tasks that access the same volume do not conflict with one
+another. This can be done via careful application-level concurrency
+control, or by ensuring that the tasks access the volume in a read-only
+manner. Mesos provides support for read-only access to volumes: as
+described in the <a href="/documentation/latest/./persistent-volume/">persistent volume</a>
+documentation, tasks that are launched on a volume can specify a <code>mode</code>
+of <code>"RO"</code> to use the volume in read-only mode.</p>
+
+<h3>Destroying Shared Volumes</h3>
+
+<p>A persistent volume, whether shared or not, can only be destroyed if no
+running or pending tasks have been launched using the volume. For
+non-shared volumes, it is usually easy to determine when it is safe to
+delete a volume. For shared volumes, the framework(s) that have launched
+tasks using the volume typically need to coordinate to ensure (e.g., via
+reference counting) that a volume is no longer being used before it is
+destroyed.</p>
+
+<h3>Resource Allocation</h3>
+
+<p>TODO: how do shared volumes influence resource allocation?</p>
+
+<h2>References</h2>
+
+<ul>
+<li><p><a href="https://issues.apache.org/jira/browse/MESOS-3421">MESOS-3421</a>
+contains additional information about the implementation of this
+feature.</p></li>
+<li><p>Talk at MesosCon Europe 2016 on August 31, 2016 entitled
+&ldquo;<a href="http://schd.ws/hosted_files/mesosconeu2016/08/MesosConEurope2016PPVv1.0.pdf">Practical Persistent Volumes</a>&rdquo;.</p></li>
+</ul>
+
+
+  </div>
+</div>
+
+  </div><!-- /.container -->
+</div><!-- /.content -->
+
+<hr>
+
+
+
+    <!-- footer -->
+    <div class="footer">
+      <div class="container">
+        <div class="col-md-4 social-blk">
+          <span class="social">
+            <a href="https://twitter.com/ApacheMesos"
+              class="twitter-follow-button"
+              data-show-count="false" data-size="large">Follow @ApacheMesos</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+            <a href="https://twitter.com/intent/tweet?button_hashtag=mesos"
+              class="twitter-hashtag-button"
+              data-size="large"
+              data-related="ApacheMesos">Tweet #mesos</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+          </span>
+        </div>
+
+        <div class="col-md-8 trademark">
+          <p>&copy; 2012-2016 <a href="http://apache.org">The Apache Software Foundation</a>.
+            Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.
+          <p>
+        </div>
+      </div><!-- /.container -->
+    </div><!-- /.footer -->
+
+    <!-- JS -->
+    <script src="//code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="text/javascript"></script>
+  </body>
+</html>
