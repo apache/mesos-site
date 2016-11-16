@@ -4,7 +4,171 @@
   <id>http://mesos.apache.org/blog</id>
   <link href="http://mesos.apache.org/blog" />
   <link href="http://mesos.apache.org/blog/feed.xml" rel="self"/>
-  <updated>2016-08-23T00:00:00Z</updated>
+  <updated>2016-11-10T00:00:00Z</updated>
+  
+  <entry>
+    <id>http://mesos.apache.org/blog/mesos-1-1-0-released/</id>
+    <link href="/blog/mesos-1-1-0-released/" />
+    <title>
+      Apache Mesos 1.1.0 Released
+    </title>
+    <updated>2016-11-10T00:00:00Z</updated>
+    <author>
+      <name>Till Toenshoff</name>
+    </author>
+    <content type="html">
+      &lt;p&gt;The latest Mesos release, 1.1.0, is now available for &lt;a href=&quot;http://mesos.apache.org/downloads&quot;&gt;download&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;This release includes the following features and improvements:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;[MESOS-2449] - &lt;strong&gt;Experimental&lt;/strong&gt; support for launching a group of tasks
+via a new &lt;code&gt;LAUNCH_GROUP&lt;/code&gt; Offer operation. Mesos will guarantee that either
+all tasks or none of the tasks in the group are delivered to the executor.
+Executors receive the task group via a new &lt;code&gt;LAUNCH_GROUP&lt;/code&gt; event.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;[MESOS-2533] - &lt;strong&gt;Experimental&lt;/strong&gt; support for HTTP and HTTPS health checks.
+Executors may now use the updated &lt;code&gt;HealthCheck&lt;/code&gt; protobuf to implement
+HTTP(S) health checks. Both default executors (command and docker) leverage
+&lt;code&gt;curl&lt;/code&gt; binary for sending HTTP(S) requests and connect to &lt;code&gt;127.0.0.1&lt;/code&gt;,
+hence a task must listen on all interfaces. On Linux, for BRIDGE and USER
+modes, docker executor enters the task&amp;rsquo;s network namespace.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;[MESOS-3421] - &lt;strong&gt;Experimental&lt;/strong&gt; Support sharing of resources across
+containers. Currently persistent volumes are the only resources allowed to
+be shared.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;[MESOS-3567] - &lt;strong&gt;Experimental&lt;/strong&gt; support for TCP health checks. Executors
+may now use the updated &lt;code&gt;HealthCheck&lt;/code&gt; protobuf to implement TCP health
+checks. Both default executors (command and docker) connect to &lt;code&gt;127.0.0.1&lt;/code&gt;,
+hence a task must listen on all interfaces. On Linux, for BRIDGE and USER
+modes, docker executor enters the task&amp;rsquo;s network namespace.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;[MESOS-4324] - Allow tasks to access persistent volumes in either a
+read-only or read-write manner. Using a volume in read-only mode can
+simplify sharing that volume between multiple tasks on the same agent.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;[MESOS-5275] - &lt;strong&gt;Experimental&lt;/strong&gt; support for linux capabilities. Frameworks
+or operators now have fine-grained control over the capabilities that a
+container may have. This allows a container to run as root, but not have all
+the privileges associated with the root user (e.g., CAP_SYS_ADMIN).&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;[MESOS-5344] - &lt;strong&gt;Experimental&lt;/strong&gt; support for partition-aware Mesos
+frameworks. In previous Mesos releases, when an agent is partitioned from
+the master and then reregisters with the cluster, all tasks running on the
+agent are terminated and the agent is shutdown. In Mesos 1.1, partitioned
+agents will no longer be shutdown when they reregister with the master. By
+default, tasks running on such agents will still be killed (for backward
+compatibility); however, frameworks can opt-in to the new PARTITION_AWARE
+capability. If they do this, their tasks will not be killed when a partition
+is healed. This allows frameworks to define their own policies for how to
+handle partitioned tasks. Enabling the PARTITION_AWARE capability also
+introduces a new set of task states: TASK_UNREACHABLE, TASK_DROPPED,
+TASK_GONE, TASK_GONE_BY_OPERATOR, and TASK_UNKNOWN. These new states are
+intended to eventually replace the TASK_LOST state.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;[MESOS-5788] - &lt;strong&gt;Experimental&lt;/strong&gt; support for Java scheduler adapter. This
+adapter allows framework developers to toggle between the old/new API
+(driver/scheduler library) implementations, thereby allowing them to easily
+transition their frameworks to the new v1 Scheduler API.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;[MESOS-6014] - &lt;strong&gt;Experimental&lt;/strong&gt; A new port-mapper CNI plugin, the
+&lt;code&gt;mesos-cni-port-mapper&lt;/code&gt; has been introduced. For Mesos containers, with the
+CNI port-mapper plugin, users can now expose container ports through host
+ports using DNAT. This is especially useful when Mesos containers are
+attached to isolated CNI networks such as private bridge networks, and the
+services running in the container needs to be exposed outside these
+isolated networks.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;[MESOS-6077] - &lt;strong&gt;Experimental&lt;/strong&gt; A new default executor is introduced which
+frameworks can use to launch task groups as nested containers. All the
+nested containers share resources likes cpu, memory, network and volumes.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Deprecations&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;The following metrics are deprecated and will be removed in Mesos 1.4:
+  master/slave_shutdowns_scheduled,
+  master/slave_shutdowns_canceled,
+  slave_shutdowns_completed.
+As of Mesos 1.1.0, these metrics will always be zero. The following new
+metrics have been introduced as replacements:
+  master/slave_unreachable_scheduled,
+  master/slave_unreachable_canceled,
+  master/slave_unreachable_completed.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;[MESOS-5955] - Health check binary &amp;ldquo;mesos-health-check&amp;rdquo; is removed.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;[MESOS-6371] - Remove the &amp;lsquo;recover()&amp;rsquo; interface in &amp;lsquo;ContainerLogger&amp;rsquo;.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Additional API Changes&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;[MESOS-6204] - A new agent flag called &lt;code&gt;--runtime_dir&lt;/code&gt;. Unlike
+&lt;code&gt;--work_dir&lt;/code&gt; which persists data across reboots, &lt;code&gt;--runtime_dir&lt;/code&gt; is designed
+to checkpoint state that should persist across agent restarts, but not
+across reboots. By default this flag is set to &lt;code&gt;/var/run/mesos&lt;/code&gt; when run as
+root and &lt;code&gt;os::temp/mesos/runtime/&lt;/code&gt; when run as non-root.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;[MESOS-6220] - HTTP handler failures should result in 500 rather than
+503 responses. This means that when using the master or agent endpoints,
+failures will now result in a &lt;code&gt;500 Internal Server Error&lt;/code&gt; rather than a
+&lt;code&gt;503 Service Unavailable&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;[MESOS-6241] - New API calls (LAUNCH_NESTED_CONTAINER,
+KILL_NESTED_CONTAINER and WAIT_NESTED_CONTAINER) have been added to the
+v1 Agent API to manage nested containers within an executor container.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Unresolved Critical Issues&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;[MESOS-3794] - Master should not store arbitrarily sized data in ExecutorInfo.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;[MESOS-4642] - Mesos Agent Json API can dump binary data from log files out as invalid JSON.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;[MESOS-5396] - After failover, master does not remove agents with same UPID.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;[MESOS-5856] - Logrotate ContainerLogger module does not rotate logs when run as root with &lt;code&gt;--switch_user&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;[MESOS-6142] - Frameworks may RESERVE for an arbitrary role.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;[MESOS-6327] - Large docker images causes container launch failures: Too many levels of symbolic links.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;[MESOS-6360] - The handling of whiteout files in provisioner is not correct.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;[MESOS-6419] - The &amp;lsquo;master/teardown&amp;rsquo; endpoint should support tearing down &amp;lsquo;unregistered_frameworks&amp;rsquo;.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;[MESOS-6432] - Roles with quota assigned can &amp;ldquo;game&amp;rdquo; the system to receive excessive resources.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;All Experimental Features&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;[MESOS-2449] - Support group of tasks (Pod) constructs and API in Mesos.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;[MESOS-2533] - Support HTTP checks in Mesos.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;[MESOS-3094] - Mesos on Windows.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;[MESOS-3421] - Support sharing of resources across task instances.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;[MESOS-3567] - Support TCP checks in Mesos.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;[MESOS-4312] - Porting Mesos on Power (ppc64le).&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;[MESOS-4355] - Implement isolator for Docker volume.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;[MESOS-4641] - Support Container Network Interface (CNI).&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;[MESOS-4791] - Operator API v1.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;[MESOS-4828] - XFS disk quota isolator.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;[MESOS-5275] - Add capabilities support for unified containerizer.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;[MESOS-5344] - Partition-aware Mesos frameworks.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;[MESOS-5788] - Added JAVA API adapter for seamless transition to new scheduler API.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;[MESOS-6014] - Added port mapping CNI plugin.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;[MESOS-6077] - Added a default (task group) executor.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;Furthermore, several bugfixes and improvements made it into this release.
+For full release notes with all features and bug fixes, please refer to the &lt;a href=&quot;https://git-wip-us.apache.org/repos/asf?p=mesos.git;a=blob_plain;f=CHANGELOG;hb=1.1.0&quot;&gt;CHANGELOG&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3&gt;Upgrades&lt;/h3&gt;
+
+&lt;p&gt;Rolling upgrades from a Mesos 1.0.0 cluster to Mesos 1.1.0 are straightforward. There are just some minor, backwards compatible deprecations.
+Please refer to the &lt;a href=&quot;http://mesos.apache.org/documentation/latest/upgrades/&quot;&gt;upgrade guide&lt;/a&gt; for detailed information on upgrading to Mesos 1.1.0.&lt;/p&gt;
+
+&lt;h3&gt;Try it out&lt;/h3&gt;
+
+&lt;p&gt;We encourage you to try out this release and let us know what you think.
+If you run into any issues, please let us know on the &lt;a href=&quot;https://mesos.apache.org/community&quot;&gt;user mailing list and IRC&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3&gt;Thanks!&lt;/h3&gt;
+
+&lt;p&gt;Thanks to the 73 contributors who made 1.1.0 possible:&lt;/p&gt;
+
+&lt;p&gt;Aaron Wood, Abhishek Dasgupta, Alberto, Aleksandar Prokopec, Alex Clemmer, Alexander Rojas, Alexander Rukletsov, Ammar Askar, Anand Mazumdar, Andy Pang, Anindya Sinha, Artem Harutyunyan, Attila Szarvas, Avinash sridharan, Bart Spaans, Benjamin Bannier, Benjamin Hindman, Benjamin Mahler, Charles Allen, ChrisPaprocki, Daniel Pravat, Dario Rexin, Dave Lester, Gaojin CAO, Gastón Kleiman, Gilbert Song, Giulio Eulisse, Graham Taylor, Greg Mann, Guangya Liu, Haris Choudhary, Ian Babrou, Ilya Pronin, Jacob Janco, Jan Schlicht, Jay Guo, Jiang Yan Xu, Jie Yu, Joerg Schad, Joris Van Remoortere, Joseph Wu, Ken Sipe, Kevin Klues, Klaus Ma, Kunal Thakar, Lawrence Wu, Lijun Tang, Lukas Loesche, Mao Geng, Megha Sharma, Michael Park, Miguel Bernadin, Neil Conway, Pierre Cheynier, Qian Zhang, Roger Ignazio, Santhosh Kumar Shanmugham, Srinivas Brahmaroutu, Till Toenshoff, Tomasz Janiszewski, Vinod Kone, Will Rouesnel, Yong Tang, Yongqiao Wang, Yubo Li, Zhitao Li, anthony caiafa, gnolan, haosdent huang, janisz, uzyexe, zhou xing&lt;/p&gt;
+
+	</content>
+  </entry>
   
   <entry>
     <id>http://mesos.apache.org/blog/mesos-1-0-1-released/</id>
