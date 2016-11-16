@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Apache Mesos 1.1.0 Released</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta property="og:locale" content="en_US"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:title" content="Apache Mesos"/>
+    <meta property="og:site_name" content="Apache Mesos"/>
+    <meta property="og:url" content="http://mesos.apache.org/"/>
+    <meta property="og:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta property="og:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
+
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:site" content="@ApacheMesos"/>
+    <meta name="twitter:title" content="Apache Mesos"/>
+    <meta name="twitter:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta name="twitter:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
+
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
+    <link href="../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+
+    
+
+    <!-- Google Analytics Magic -->
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-20226872-1']);
+    _gaq.push(['_setDomainName', 'apache.org']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+    
+  </head>
+  <body>
+    <!-- magical breadcrumbs -->
+    <div class="topnav">
+      <div class="container">
+        <ul class="breadcrumb">
+          <li>
+            <div class="dropdown">
+              <a data-toggle="dropdown" href="#">Apache Software Foundation <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                <li><a href="http://www.apache.org">Apache Homepage</a></li>
+                <li><a href="http://www.apache.org/licenses/">License</a></li>
+                <li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>
+                <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                <li><a href="http://www.apache.org/security/">Security</a></li>
+              </ul>
+            </div>
+          </li>
+
+          <li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+          
+          
+          <li><a href="/blog
+/">Blog
+</a></li>
+          
+          
+        </ul><!-- /.breadcrumb -->
+      </div><!-- /.container -->
+    </div><!-- /.topnav -->
+
+    <!-- navbar excitement -->
+<div class="navbar navbar-default navbar-static-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#mesos-menu" aria-expanded="false">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo"/></a>
+    </div><!-- /.navbar-header -->
+
+    <div class="navbar-collapse collapse" id="mesos-menu">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/gettingstarted/">Getting Started</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/documentation/latest/">Documentation</a></li>
+        <li><a href="/downloads/">Downloads</a></li>
+        <li><a href="/community/">Community</a></li>
+      </ul>
+    </div><!-- /#mesos-menu -->
+  </div><!-- /.container -->
+</div><!-- /.navbar -->
+
+<div class="content">
+  <div class="container">
+    <div class="row">
+
+  <div class="col-md-3">
+    <div class="meta">
+      <span class="author">
+        
+        <span class="author_contact">
+          <p><strong>Till Toenshoff</strong></p>
+          <p><a href="http://twitter.com/ttoenshoff">@ttoenshoff</a></p>
+        </span>
+      </span>
+      <p><em>Posted November 10, 2016</em></p>
+    </div>
+
+    <div class="share">
+      <span class="social-share-button"><a href="https://twitter.com/share" class="twitter-share-button" data-via="apachemesos">Tweet</a></span>
+
+      <span><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></span>
+
+      <span><div class="g-plusone" data-size="medium"></div></span>
+
+      <!-- Place this tag after the last +1 button tag. -->
+      <script type="text/javascript">
+        (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'https://apis.google.com/js/plusone.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+        })();
+      </script>
+
+      <script src="//platform.linkedin.com/in.js" type="text/javascript">
+       lang: en_US
+      </script>
+      <script type="IN/Share" data-counter="right"></script>
+    </div>
+  </div>
+
+  <div class="post col-md-9">
+    <h1>Apache Mesos 1.1.0 Released</h1>
+
+    <p>The latest Mesos release, 1.1.0, is now available for <a href="http://mesos.apache.org/downloads">download</a>.</p>
+
+<p>This release includes the following features and improvements:</p>
+
+<ul>
+<li><p>[MESOS-2449] - <strong>Experimental</strong> support for launching a group of tasks
+via a new <code>LAUNCH_GROUP</code> Offer operation. Mesos will guarantee that either
+all tasks or none of the tasks in the group are delivered to the executor.
+Executors receive the task group via a new <code>LAUNCH_GROUP</code> event.</p></li>
+<li><p>[MESOS-2533] - <strong>Experimental</strong> support for HTTP and HTTPS health checks.
+Executors may now use the updated <code>HealthCheck</code> protobuf to implement
+HTTP(S) health checks. Both default executors (command and docker) leverage
+<code>curl</code> binary for sending HTTP(S) requests and connect to <code>127.0.0.1</code>,
+hence a task must listen on all interfaces. On Linux, for BRIDGE and USER
+modes, docker executor enters the task&rsquo;s network namespace.</p></li>
+<li><p>[MESOS-3421] - <strong>Experimental</strong> Support sharing of resources across
+containers. Currently persistent volumes are the only resources allowed to
+be shared.</p></li>
+<li><p>[MESOS-3567] - <strong>Experimental</strong> support for TCP health checks. Executors
+may now use the updated <code>HealthCheck</code> protobuf to implement TCP health
+checks. Both default executors (command and docker) connect to <code>127.0.0.1</code>,
+hence a task must listen on all interfaces. On Linux, for BRIDGE and USER
+modes, docker executor enters the task&rsquo;s network namespace.</p></li>
+<li><p>[MESOS-4324] - Allow tasks to access persistent volumes in either a
+read-only or read-write manner. Using a volume in read-only mode can
+simplify sharing that volume between multiple tasks on the same agent.</p></li>
+<li><p>[MESOS-5275] - <strong>Experimental</strong> support for linux capabilities. Frameworks
+or operators now have fine-grained control over the capabilities that a
+container may have. This allows a container to run as root, but not have all
+the privileges associated with the root user (e.g., CAP_SYS_ADMIN).</p></li>
+<li><p>[MESOS-5344] - <strong>Experimental</strong> support for partition-aware Mesos
+frameworks. In previous Mesos releases, when an agent is partitioned from
+the master and then reregisters with the cluster, all tasks running on the
+agent are terminated and the agent is shutdown. In Mesos 1.1, partitioned
+agents will no longer be shutdown when they reregister with the master. By
+default, tasks running on such agents will still be killed (for backward
+compatibility); however, frameworks can opt-in to the new PARTITION_AWARE
+capability. If they do this, their tasks will not be killed when a partition
+is healed. This allows frameworks to define their own policies for how to
+handle partitioned tasks. Enabling the PARTITION_AWARE capability also
+introduces a new set of task states: TASK_UNREACHABLE, TASK_DROPPED,
+TASK_GONE, TASK_GONE_BY_OPERATOR, and TASK_UNKNOWN. These new states are
+intended to eventually replace the TASK_LOST state.</p></li>
+<li><p>[MESOS-5788] - <strong>Experimental</strong> support for Java scheduler adapter. This
+adapter allows framework developers to toggle between the old/new API
+(driver/scheduler library) implementations, thereby allowing them to easily
+transition their frameworks to the new v1 Scheduler API.</p></li>
+<li><p>[MESOS-6014] - <strong>Experimental</strong> A new port-mapper CNI plugin, the
+<code>mesos-cni-port-mapper</code> has been introduced. For Mesos containers, with the
+CNI port-mapper plugin, users can now expose container ports through host
+ports using DNAT. This is especially useful when Mesos containers are
+attached to isolated CNI networks such as private bridge networks, and the
+services running in the container needs to be exposed outside these
+isolated networks.</p></li>
+<li><p>[MESOS-6077] - <strong>Experimental</strong> A new default executor is introduced which
+frameworks can use to launch task groups as nested containers. All the
+nested containers share resources likes cpu, memory, network and volumes.</p></li>
+</ul>
+
+
+<h4>Deprecations</h4>
+
+<ul>
+<li><p>The following metrics are deprecated and will be removed in Mesos 1.4:
+  master/slave_shutdowns_scheduled,
+  master/slave_shutdowns_canceled,
+  slave_shutdowns_completed.
+As of Mesos 1.1.0, these metrics will always be zero. The following new
+metrics have been introduced as replacements:
+  master/slave_unreachable_scheduled,
+  master/slave_unreachable_canceled,
+  master/slave_unreachable_completed.</p></li>
+<li><p>[MESOS-5955] - Health check binary &ldquo;mesos-health-check&rdquo; is removed.</p></li>
+<li><p>[MESOS-6371] - Remove the &lsquo;recover()&rsquo; interface in &lsquo;ContainerLogger&rsquo;.</p></li>
+</ul>
+
+
+<h4>Additional API Changes</h4>
+
+<ul>
+<li><p>[MESOS-6204] - A new agent flag called <code>--runtime_dir</code>. Unlike
+<code>--work_dir</code> which persists data across reboots, <code>--runtime_dir</code> is designed
+to checkpoint state that should persist across agent restarts, but not
+across reboots. By default this flag is set to <code>/var/run/mesos</code> when run as
+root and <code>os::temp/mesos/runtime/</code> when run as non-root.</p></li>
+<li><p>[MESOS-6220] - HTTP handler failures should result in 500 rather than
+503 responses. This means that when using the master or agent endpoints,
+failures will now result in a <code>500 Internal Server Error</code> rather than a
+<code>503 Service Unavailable</code>.</p></li>
+<li><p>[MESOS-6241] - New API calls (LAUNCH_NESTED_CONTAINER,
+KILL_NESTED_CONTAINER and WAIT_NESTED_CONTAINER) have been added to the
+v1 Agent API to manage nested containers within an executor container.</p></li>
+</ul>
+
+
+<h4>Unresolved Critical Issues</h4>
+
+<ul>
+<li><p>[MESOS-3794] - Master should not store arbitrarily sized data in ExecutorInfo.</p></li>
+<li><p>[MESOS-4642] - Mesos Agent Json API can dump binary data from log files out as invalid JSON.</p></li>
+<li><p>[MESOS-5396] - After failover, master does not remove agents with same UPID.</p></li>
+<li><p>[MESOS-5856] - Logrotate ContainerLogger module does not rotate logs when run as root with <code>--switch_user</code>.</p></li>
+<li><p>[MESOS-6142] - Frameworks may RESERVE for an arbitrary role.</p></li>
+<li><p>[MESOS-6327] - Large docker images causes container launch failures: Too many levels of symbolic links.</p></li>
+<li><p>[MESOS-6360] - The handling of whiteout files in provisioner is not correct.</p></li>
+<li><p>[MESOS-6419] - The &lsquo;master/teardown&rsquo; endpoint should support tearing down &lsquo;unregistered_frameworks&rsquo;.</p></li>
+<li><p>[MESOS-6432] - Roles with quota assigned can &ldquo;game&rdquo; the system to receive excessive resources.</p></li>
+</ul>
+
+
+<h4>All Experimental Features</h4>
+
+<ul>
+<li><p>[MESOS-2449] - Support group of tasks (Pod) constructs and API in Mesos.</p></li>
+<li><p>[MESOS-2533] - Support HTTP checks in Mesos.</p></li>
+<li><p>[MESOS-3094] - Mesos on Windows.</p></li>
+<li><p>[MESOS-3421] - Support sharing of resources across task instances.</p></li>
+<li><p>[MESOS-3567] - Support TCP checks in Mesos.</p></li>
+<li><p>[MESOS-4312] - Porting Mesos on Power (ppc64le).</p></li>
+<li><p>[MESOS-4355] - Implement isolator for Docker volume.</p></li>
+<li><p>[MESOS-4641] - Support Container Network Interface (CNI).</p></li>
+<li><p>[MESOS-4791] - Operator API v1.</p></li>
+<li><p>[MESOS-4828] - XFS disk quota isolator.</p></li>
+<li><p>[MESOS-5275] - Add capabilities support for unified containerizer.</p></li>
+<li><p>[MESOS-5344] - Partition-aware Mesos frameworks.</p></li>
+<li><p>[MESOS-5788] - Added JAVA API adapter for seamless transition to new scheduler API.</p></li>
+<li><p>[MESOS-6014] - Added port mapping CNI plugin.</p></li>
+<li><p>[MESOS-6077] - Added a default (task group) executor.</p></li>
+</ul>
+
+
+<p>Furthermore, several bugfixes and improvements made it into this release.
+For full release notes with all features and bug fixes, please refer to the <a href="https://git-wip-us.apache.org/repos/asf?p=mesos.git;a=blob_plain;f=CHANGELOG;hb=1.1.0">CHANGELOG</a>.</p>
+
+<h3>Upgrades</h3>
+
+<p>Rolling upgrades from a Mesos 1.0.0 cluster to Mesos 1.1.0 are straightforward. There are just some minor, backwards compatible deprecations.
+Please refer to the <a href="http://mesos.apache.org/documentation/latest/upgrades/">upgrade guide</a> for detailed information on upgrading to Mesos 1.1.0.</p>
+
+<h3>Try it out</h3>
+
+<p>We encourage you to try out this release and let us know what you think.
+If you run into any issues, please let us know on the <a href="https://mesos.apache.org/community">user mailing list and IRC</a>.</p>
+
+<h3>Thanks!</h3>
+
+<p>Thanks to the 73 contributors who made 1.1.0 possible:</p>
+
+<p>Aaron Wood, Abhishek Dasgupta, Alberto, Aleksandar Prokopec, Alex Clemmer, Alexander Rojas, Alexander Rukletsov, Ammar Askar, Anand Mazumdar, Andy Pang, Anindya Sinha, Artem Harutyunyan, Attila Szarvas, Avinash sridharan, Bart Spaans, Benjamin Bannier, Benjamin Hindman, Benjamin Mahler, Charles Allen, ChrisPaprocki, Daniel Pravat, Dario Rexin, Dave Lester, Gaojin CAO, Gastón Kleiman, Gilbert Song, Giulio Eulisse, Graham Taylor, Greg Mann, Guangya Liu, Haris Choudhary, Ian Babrou, Ilya Pronin, Jacob Janco, Jan Schlicht, Jay Guo, Jiang Yan Xu, Jie Yu, Joerg Schad, Joris Van Remoortere, Joseph Wu, Ken Sipe, Kevin Klues, Klaus Ma, Kunal Thakar, Lawrence Wu, Lijun Tang, Lukas Loesche, Mao Geng, Megha Sharma, Michael Park, Miguel Bernadin, Neil Conway, Pierre Cheynier, Qian Zhang, Roger Ignazio, Santhosh Kumar Shanmugham, Srinivas Brahmaroutu, Till Toenshoff, Tomasz Janiszewski, Vinod Kone, Will Rouesnel, Yong Tang, Yongqiao Wang, Yubo Li, Zhitao Li, anthony caiafa, gnolan, haosdent huang, janisz, uzyexe, zhou xing</p>
+
+  </div>
+</div>
+
+  </div><!-- /.container -->
+</div><!-- /.content -->
+
+<hr>
+
+
+
+    <!-- footer -->
+    <div class="footer">
+      <div class="container">
+        <div class="col-md-4 social-blk">
+          <span class="social">
+            <a href="https://twitter.com/ApacheMesos"
+              class="twitter-follow-button"
+              data-show-count="false" data-size="large">Follow @ApacheMesos</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+            <a href="https://twitter.com/intent/tweet?button_hashtag=mesos"
+              class="twitter-hashtag-button"
+              data-size="large"
+              data-related="ApacheMesos">Tweet #mesos</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+          </span>
+        </div>
+
+        <div class="col-md-8 trademark">
+          <p>&copy; 2012-2016 <a href="http://apache.org">The Apache Software Foundation</a>.
+            Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.
+          <p>
+        </div>
+      </div><!-- /.container -->
+    </div><!-- /.footer -->
+
+    <!-- JS -->
+    <script src="//code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="text/javascript"></script>
+  </body>
+</html>
