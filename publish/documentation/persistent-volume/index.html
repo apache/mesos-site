@@ -142,14 +142,6 @@ regarding reservation mechanisms available in Mesos.</p>
 <p>Persistent volumes can also be created on isolated and auxiliary disks by
 reserving <a href="/documentation/latest/./multiple-disk/">multiple disk resources</a>.</p>
 
-<p>By default, a persistent volume cannot be shared between tasks running
-being managed by different executors: that is, once a task is launched
-using a persistent volume, that volume will not appear in any resource
-offers until the task has finished running. <em>Shared</em> volumes are a type
-of persistent volumes that can be accessed by multiple tasks at the same
-agent simultaneously; see the documentation on
-<a href="/documentation/latest/./shared-resources/">shared volumes</a> for more information.</p>
-
 <p>Persistent volumes can be created by <strong>operators</strong> and authorized
 <strong>frameworks</strong>. By default, frameworks and operators can create volumes for <em>any</em>
 role and destroy <em>any</em> persistent volume. <a href="/documentation/latest/./authorization/">Authorization</a>
@@ -621,8 +613,7 @@ endpoints for creating and destroying volumes. Mesos 0.28 introduced support for
 master endpoint to include detailed information about persistent volumes and
 dynamic reservations. Mesos 1.0 changed the semantics of destroying a volume:
 in previous releases, destroying a volume would remove the Mesos-level metadata,
-but would not remove the volume&rsquo;s data from the agent&rsquo;s filesystem. Mesos 1.1
-introduced support for <a href="/documentation/latest/./shared-resources/">shared persistent volumes</a>.</p>
+but would not remove the volume&rsquo;s data from the agent&rsquo;s filesystem.</p>
 
   </div>
 </div>
