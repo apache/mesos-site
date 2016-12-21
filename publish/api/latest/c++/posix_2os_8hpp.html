@@ -68,13 +68,16 @@
 <code>#include &lt;stdlib.h&gt;</code><br/>
 <code>#include &lt;unistd.h&gt;</code><br/>
 <code>#include &lt;utime.h&gt;</code><br/>
+<code>#include &lt;sys/ioctl.h&gt;</code><br/>
 <code>#include &lt;sys/utsname.h&gt;</code><br/>
 <code>#include &lt;sys/wait.h&gt;</code><br/>
 <code>#include &lt;list&gt;</code><br/>
 <code>#include &lt;map&gt;</code><br/>
+<code>#include &lt;mutex&gt;</code><br/>
 <code>#include &lt;set&gt;</code><br/>
 <code>#include &lt;string&gt;</code><br/>
 <code>#include &lt;vector&gt;</code><br/>
+<code>#include &lt;<a class="el" href="synchronized_8hpp_source.html">stout/synchronized.hpp</a>&gt;</code><br/>
 <code>#include &lt;<a class="el" href="close_8hpp_source.html">stout/os/close.hpp</a>&gt;</code><br/>
 <code>#include &lt;<a class="el" href="3rdparty_2stout_2include_2stout_2os_2environment_8hpp_source.html">stout/os/environment.hpp</a>&gt;</code><br/>
 <code>#include &lt;<a class="el" href="fcntl_8hpp_source.html">stout/os/fcntl.hpp</a>&gt;</code><br/>
@@ -133,18 +136,24 @@ Functions</h2></td></tr>
 <tr class="separator:afc96a896b632cb0942b317a1f8543919"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abdecf7ea8278e2d8b2110ecd2e8ca0ec"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTry.html">Try</a>&lt; std::set&lt; <a class="el" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ab03ced250ed239bc3b50b669493997f9">pid_t</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceos.html#abdecf7ea8278e2d8b2110ecd2e8ca0ec">os::pids</a> (<a class="el" href="classOption.html">Option</a>&lt; <a class="el" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ab03ced250ed239bc3b50b669493997f9">pid_t</a> &gt; <a class="el" href="structgroup.html">group</a>, <a class="el" href="classOption.html">Option</a>&lt; <a class="el" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ab03ced250ed239bc3b50b669493997f9">pid_t</a> &gt; session)</td></tr>
 <tr class="separator:abdecf7ea8278e2d8b2110ecd2e8ca0ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:add69634db977768c56f0367b4bb03cd5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classOption.html">Option</a>&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceos.html#add69634db977768c56f0367b4bb03cd5">os::getenv</a> (const std::string &amp;key)</td></tr>
-<tr class="separator:add69634db977768c56f0367b4bb03cd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a30f836264363d7d7f0578fd0fb98ee36"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTry.html">Try</a>&lt; <a class="el" href="structNothing.html">Nothing</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceos.html#a30f836264363d7d7f0578fd0fb98ee36">os::tar</a> (const std::string &amp;path, const std::string &amp;archive)</td></tr>
 <tr class="separator:a30f836264363d7d7f0578fd0fb98ee36"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a079aa1b108c567735620a14ea2a2e506"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTry.html">Try</a>&lt; <a class="el" href="structVersion.html">Version</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceos.html#a079aa1b108c567735620a14ea2a2e506">os::release</a> ()</td></tr>
 <tr class="separator:a079aa1b108c567735620a14ea2a2e506"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acdff0f297e3166c5a2ad4766f6ef9e9b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classOption.html">Option</a>&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceos.html#acdff0f297e3166c5a2ad4766f6ef9e9b">os::which</a> (const std::string &amp;command, const <a class="el" href="classOption.html">Option</a>&lt; std::string &gt; &amp;_path=<a class="el" href="structNone.html">None</a>())</td></tr>
 <tr class="separator:acdff0f297e3166c5a2ad4766f6ef9e9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa3debc8caa054e7a0a3bfe4aa42aae07"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceos.html#aa3debc8caa054e7a0a3bfe4aa42aae07">os::temp</a> ()</td></tr>
-<tr class="separator:aa3debc8caa054e7a0a3bfe4aa42aae07"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a547f04b42e472b2ff0070897010fac78"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTry.html">Try</a>&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceos.html#a547f04b42e472b2ff0070897010fac78">os::var</a> ()</td></tr>
+<tr class="separator:a547f04b42e472b2ff0070897010fac78"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99c1b60fa8766f99f42e3d61616c028c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTry.html">Try</a>&lt; <a class="el" href="structNothing.html">Nothing</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceos.html#a99c1b60fa8766f99f42e3d61616c028c">os::pipe</a> (int pipe_fd[2])</td></tr>
 <tr class="separator:a99c1b60fa8766f99f42e3d61616c028c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54f3320a4d6f88c14f80f5247aa879b9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTry.html">Try</a>&lt; <a class="el" href="structNothing.html">Nothing</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceos.html#a54f3320a4d6f88c14f80f5247aa879b9">os::dup2</a> (int oldFd, int newFd)</td></tr>
+<tr class="separator:a54f3320a4d6f88c14f80f5247aa879b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07a766e0355221b949e5fe6fdfca63f2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTry.html">Try</a>&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceos.html#a07a766e0355221b949e5fe6fdfca63f2">os::ptsname</a> (int master)</td></tr>
+<tr class="separator:a07a766e0355221b949e5fe6fdfca63f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2cc6177f60b8bd36990aab876a3c3c3f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTry.html">Try</a>&lt; <a class="el" href="structNothing.html">Nothing</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceos.html#a2cc6177f60b8bd36990aab876a3c3c3f">os::setctty</a> (int fd)</td></tr>
+<tr class="separator:a2cc6177f60b8bd36990aab876a3c3c3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a788e763662cf01a30bcd06baa95332bb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTry.html">Try</a>&lt; <a class="el" href="structNothing.html">Nothing</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceos.html#a788e763662cf01a30bcd06baa95332bb">os::setWindowSize</a> (int fd, unsigned short rows, unsigned short columns)</td></tr>
+<tr class="separator:a788e763662cf01a30bcd06baa95332bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->

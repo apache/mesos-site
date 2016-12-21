@@ -146,7 +146,7 @@ example, if a role has been assigned a quota of 4 CPUs and also has 2 reserved
 resources at a particular agent, the role has a minimum guarantee of 4 CPUs, not
 6.</p>
 
-<h1>Terminology</h1>
+<h2>Terminology</h2>
 
 <p>For the purpose of this document, an “Operator” is a person, tool, or script
 that manages the Mesos cluster.</p>
@@ -163,12 +163,12 @@ that manages the Mesos cluster.</p>
 <p>In Mesos, a quota is a <strong>guaranteed</strong> resource allocation that a role may rely
 on; in other words, a minimum share a role is entitled to receive.</p>
 
-<h1>Motivation and Limitations</h1>
+<h2>Motivation and Limitations</h2>
 
 <p>Consider the following scenarios in a Mesos cluster to better understand which
 use-cases are supported by quota, and which are not.</p>
 
-<h2>Scenario 1: Greedy Framework</h2>
+<h3>Scenario 1: Greedy Framework</h3>
 
 <p>There are two frameworks in a cluster, each running in a separate role with
 equal weights: framework fA in role rA and framework fB in role rB. There is a
@@ -178,7 +178,7 @@ hogging the remaining 90 CPUs. Without quota, though fA’s fair share is 50 CPU
 it will not be able to make use of additional the 40 CPUs until some of fB’s
 tasks terminate.</p>
 
-<h2>Scenario 2: Resources for a new Framework</h2>
+<h3>Scenario 2: Resources for a new Framework</h3>
 
 <p>A greedy framework fB in role rB is currently the only framework in the cluster
 and it uses all available resources&mdash;100 CPUs. If a new framework fA in role rA
@@ -190,7 +190,7 @@ would be set after fB has started using all resources. Instead Scenario 2
 requires either always keeping a pool of resources which are not offered or
 introducing preemption for running tasks.</p>
 
-<h1>Operator HTTP Endpoint</h1>
+<h2>Operator HTTP Endpoint</h2>
 
 <p>The master <a href="/documentation/latest/./endpoints/master/quota/">/quota</a> HTTP endpoint enables operators
 to configure quotas. The endpoint currently offers a REST-like interface and
@@ -207,12 +207,12 @@ supports the following operations:</p>
 in order to update a quota for a given role, the operator has to remove the
 existing quota and then set a new one.</p>
 
-<p>The endpoint can optionally use authentication and authorization. See the
+<p>The endpoint can optionally use authentication and authorization. See
 <a href="/documentation/latest/./authentication/">authentication guide</a> for details.</p>
 
 <p><a name="setRequest"></a></p>
 
-<h2>Set</h2>
+<h3>Set</h3>
 
 <p>The operator can set a new quota by sending an HTTP POST request to the <code>/quota</code>
 endpoint.</p>
@@ -220,27 +220,27 @@ endpoint.</p>
 <p>An example request to the quota endpoint could look like this (using the JSON
 file below):</p>
 
-<pre><code>$ curl -d @quota.json -X POST http://&lt;master-ip&gt;:&lt;port&gt;/quota
+<pre><code> $ curl -d @quota.json -X POST http://&lt;master-ip&gt;:&lt;port&gt;/quota
 </code></pre>
 
 <p>For example to set a quota of 12 CPUs and 6144 MB of RAM for <code>role1</code> the operator
 can use the following <code>quota.json</code>:</p>
 
-<pre><code>    {
-      "role": "role1",
-      "guarantee": [
-        {
-          "name": "cpus",
-          "type": "SCALAR",
-          "scalar": { "value": 12 }
-        },
-        {
-          "name": "mem",
-          "type": "SCALAR",
-          "scalar": { "value": 6144 }
-        }
-      ]
-    }
+<pre><code> {
+   "role": "role1",
+   "guarantee": [
+     {
+       "name": "cpus",
+       "type": "SCALAR",
+       "scalar": { "value": 12 }
+     },
+     {
+       "name": "mem",
+       "type": "SCALAR",
+       "scalar": { "value": 6144 }
+     }
+   ]
+ }
 </code></pre>
 
 <p>A set request is only valid for roles for which no quota is currently set.
@@ -250,11 +250,11 @@ However if the master is configured without an explicit
 <p>In order to bypass the <a href="#capacityHeuristic">capacity heuristic</a> check the
 operator should set an optional <code>force</code> field:</p>
 
-<pre><code>    {
-      "force": true,
-      "role": "role1",
-      ...
-    }
+<pre><code> {
+   "force": true,
+   "role": "role1",
+   ...
+ }
 </code></pre>
 
 <p>The operator will receive one of the following HTTP response codes:</p>
@@ -272,13 +272,13 @@ resources.</li>
 
 <p><a name="removeRequest"></a></p>
 
-<h2>Remove</h2>
+<h3>Remove</h3>
 
 <p>The operator can remove a previously set quota by sending an HTTP DELETE request
 to the <code>/quota/&lt;role&gt;</code> endpoint. For example the following command removes
 a previously set quota for <code>role1</code>:</p>
 
-<pre><code>$ curl -X DELETE http://&lt;master-ip&gt;:&lt;port&gt;/quota/role1
+<pre><code> $ curl -X DELETE http://&lt;master-ip&gt;:&lt;port&gt;/quota/role1
 </code></pre>
 
 <p>The operator will receive one of the following HTTP response codes:</p>
@@ -294,39 +294,39 @@ does not have    any quota set).</li>
 
 <p><a name="statusRequest"></a></p>
 
-<h2>Status</h2>
+<h3>Status</h3>
 
 <p>The operator can query the configured quotas by sending a HTTP GET request
 to the <code>/quota</code> endpoint.</p>
 
-<pre><code>$ curl -X GET http://&lt;master-ip&gt;:&lt;port&gt;/quota
+<pre><code> $ curl -X GET http://&lt;master-ip&gt;:&lt;port&gt;/quota
 </code></pre>
 
 <p>The response message body includes a JSON representation of the current quota
 status for role(s) which principal is authorized to query quota status (if
 authorization is enabled). For example:</p>
 
-<pre><code>    {
-      "infos": [
-        {
-          "role": "role1",
-          "guarantee": [
-            {
-              "name": "cpus",
-              "role": "*",
-              "type": "SCALAR",
-              "scalar": { "value": 12 }
-            },
-            {
-              "name": "mem",
-              "role": "*",
-              "type": "SCALAR",
-              "scalar": { "value": 6144 }
-            }
-          ]
-        }
-      ]
-    }
+<pre><code> {
+   "infos": [
+     {
+       "role": "role1",
+       "guarantee": [
+         {
+           "name": "cpus",
+           "role": "*",
+           "type": "SCALAR",
+           "scalar": { "value": 12 }
+         },
+         {
+           "name": "mem",
+           "role": "*",
+           "type": "SCALAR",
+           "scalar": { "value": 6144 }
+         }
+       ]
+     }
+   ]
+ }
 </code></pre>
 
 <p>The operator will receive one of the following HTTP response codes:</p>
@@ -338,9 +338,9 @@ authorization is enabled). For example:</p>
 
 
 <p><strong>NOTE:</strong> If the principal is not authorized to query quota status for certain
-          role(s), the result will not include corresponding quota information.</p>
+role(s), the result will not include corresponding quota information.</p>
 
-<h1>How does it work?</h1>
+<h2>How Does It Work?</h2>
 
 <p>There are several stages in the lifetime of a quota issued by operator. First
 the <a href="#requestProcessing">quota set request is handled by the master</a>, after that
@@ -405,7 +405,7 @@ given the total cluster capacity. This heuristic tests whether the total quota,
 including the new request, does not exceed the sum of total
 non-statically-reserved cluster resources, i.e. the following inequality holds:</p>
 
-<pre><code>total resources - statically reserved &gt;= total quota + quota request
+<pre><code> total resources - statically reserved &gt;= total quota + quota request
 </code></pre>
 
 <p>Please be advised that even if there are enough resources at the moment of
@@ -448,17 +448,15 @@ resources to framework in roles with quota set. Once all quotas are
 satisfied, it proceeds with the standard wDRF for all frameworks.</p>
 
 <p><strong>NOTE:</strong> A quota'ed role may not be allocated any unreserved non-revocable
-          resources beyond its quota guarantee. If frameworks in the quota'ed
-          role have not opted for revocable resources, they may stop getting
-          offers once quota for the role is satisfied. In this case setting
-          quota to any value that is less than the role&rsquo;s fair share may reduce
-          the amount of resources offered to this role.</p>
+resources beyond its quota guarantee. If frameworks in the quota'ed role have
+not opted for revocable resources, they may stop getting offers once quota for
+the role is satisfied. In this case setting quota to any value that is less than
+the role&rsquo;s fair share may reduce the amount of resources offered to this role.</p>
 
-<p><strong>NOTE:</strong> Currently quota guarantee also serves as quota limit, i.e. once
-          quota for the role is satisfied, frameworks in this role will not
-          be offered any resources except those reserved for the role. This
-          behavior aims to mitigate the absence of quota limit and will be
-          changed in future releases.</p>
+<p><strong>NOTE:</strong> Currently quota guarantee also serves as quota limit, i.e. once quota
+for the role is satisfied, frameworks in this role will not be offered any
+resources except those reserved for the role. This behavior aims to mitigate the
+absence of quota limit and will be changed in future releases.</p>
 
 <p>If there are multiple frameworks in a role with quota set, the standard wDRF
 algorithm determines framework priority inside this role.</p>
@@ -487,13 +485,13 @@ the failover), or</li>
 </ul>
 
 
-<h1>Current Limitations</h1>
+<h2>Current Limitations</h2>
 
 <ul>
 <li>The quota set request does not allow specifying the granularity of the
-requested resources (e.g. 10 CPUs on a single node).</li>
-<li>The quota set request does not allow to specify constraints (e.g. 2*5 cpus on
-disjoint nodes for an HA like setup).</li>
+requested resources (e.g., 10 CPUs on a single node).</li>
+<li>The quota set request does not allow to specify constraints (e.g., 2*5 cpus
+on disjoint nodes for an HA like setup).</li>
 <li>Quota is not allowed for the default role ‘*’ (see
 <a href="https://issues.apache.org/jira/browse/MESOS-3938">MESOS-3938</a>).</li>
 <li>Currently it is not possible to update previously configured quotas. See

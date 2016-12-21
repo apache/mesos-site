@@ -50,7 +50,8 @@
 <div class="header">
   <div class="summary">
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#nested-classes">Classes</a>  </div>
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">mesos::internal::recordio Namespace Reference</div>  </div>
 </div><!--header-->
@@ -66,7 +67,53 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1recordio_1_1Reader.html">Reader</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provides RecordIO decoding on top of an <a href="http::Pipe::Reader">http::Pipe::Reader</a>.  <a href="classmesos_1_1internal_1_1recordio_1_1Reader.html#details">More...</a><br/></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a5fcab68176c462aaeed909f304c91bdf"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a5fcab68176c462aaeed909f304c91bdf"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt; <a class="el" href="structNothing.html">Nothing</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1internal_1_1recordio.html#a5fcab68176c462aaeed909f304c91bdf">transform</a> (<a class="el" href="classprocess_1_1Owned.html">process::Owned</a>&lt; <a class="el" href="classmesos_1_1internal_1_1recordio_1_1Reader.html">Reader</a>&lt; T &gt;&gt; &amp;&amp;reader, const std::function&lt; std::string(const T &amp;)&gt; &amp;func, <a class="el" href="classprocess_1_1http_1_1Pipe_1_1Writer.html">process::http::Pipe::Writer</a> writer)</td></tr>
+<tr class="memdesc:a5fcab68176c462aaeed909f304c91bdf"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is a helper function that reads records from a <code><a class="el" href="classmesos_1_1internal_1_1recordio_1_1Reader.html" title="Provides RecordIO decoding on top of an http::Pipe::Reader. ">Reader</a></code>, applies a transformation to the records and writes to the pipe.  <a href="#a5fcab68176c462aaeed909f304c91bdf">More...</a><br/></td></tr>
+<tr class="separator:a5fcab68176c462aaeed909f304c91bdf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Function Documentation</h2>
+<a class="anchor" id="a5fcab68176c462aaeed909f304c91bdf"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt;<a class="el" href="structNothing.html">Nothing</a>&gt; mesos::internal::recordio::transform </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classprocess_1_1Owned.html">process::Owned</a>&lt; Reader&lt; T &gt;&gt; &amp;&amp;&#160;</td>
+          <td class="paramname"><em>reader</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::function&lt; std::string(const T &amp;)&gt; &amp;&#160;</td>
+          <td class="paramname"><em>func</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classprocess_1_1http_1_1Pipe_1_1Writer.html">process::http::Pipe::Writer</a>&#160;</td>
+          <td class="paramname"><em>writer</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This is a helper function that reads records from a <code><a class="el" href="classmesos_1_1internal_1_1recordio_1_1Reader.html" title="Provides RecordIO decoding on top of an http::Pipe::Reader. ">Reader</a></code>, applies a transformation to the records and writes to the pipe. </p>
+<p>Returns a failed future if there are any errors reading or writing. The future is satisfied when we get a EOF.</p>
+<p>TODO(vinod): Split this method into primitives that can transform a stream of bytes to a stream of typed records that can be further transformed. See the TODO above in <code><a class="el" href="classmesos_1_1internal_1_1recordio_1_1Reader.html" title="Provides RecordIO decoding on top of an http::Pipe::Reader. ">Reader</a></code> for further details. </p>
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

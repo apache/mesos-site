@@ -123,45 +123,53 @@
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordflow">return</span> future;</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  }</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="keyword">struct </span>Data</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  {</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    Data() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    ~Data()</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    {</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;      <span class="comment">// TODO(benh): Fail promises?</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    }</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="comment">// Rather than use a process to serialize access to the queue&#39;s</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="comment">// internal data we use a &#39;std::atomic_flag&#39;.</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    std::atomic_flag lock = ATOMIC_FLAG_INIT;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="comment">// Represents &quot;waiters&quot; for elements from the queue.</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    std::deque&lt;Owned&lt;Promise&lt;T&gt;&gt;&gt; promises;</div>
+<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="classprocess_1_1Queue.html#a4d055c0e16b5078d60f4395223ad47ec">   72</a></span>&#160;  <span class="keywordtype">size_t</span> <a class="code" href="classprocess_1_1Queue.html#a4d055c0e16b5078d60f4395223ad47ec">size</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="keyword">  </span>{</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keyword">synchronized</span> (data-&gt;lock) {</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;      <span class="keywordflow">return</span> data-&gt;elements.size();</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    }</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  }</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <span class="keyword">struct </span>Data</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  {</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    Data() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    ~Data()</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    {</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;      <span class="comment">// TODO(benh): Fail promises?</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    }</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="comment">// Represents elements already put in the queue.</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    std::queue&lt;T&gt; elements;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  };</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="comment">// Rather than use a process to serialize access to the queue&#39;s</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="comment">// internal data we use a &#39;std::atomic_flag&#39;.</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    std::atomic_flag lock = ATOMIC_FLAG_INIT;</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  std::shared_ptr&lt;Data&gt; data;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;};</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="comment">// Represents &quot;waiters&quot; for elements from the queue.</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    std::deque&lt;Owned&lt;Promise&lt;T&gt;&gt;&gt; promises;</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;} <span class="comment">// namespace process {</span></div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="preprocessor">#endif // __PROCESS_QUEUE_HPP__</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="comment">// Represents elements already put in the queue.</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    std::queue&lt;T&gt; elements;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  };</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  std::shared_ptr&lt;Data&gt; data;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;};</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;} <span class="comment">// namespace process {</span></div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="preprocessor">#endif // __PROCESS_QUEUE_HPP__</span></div>
 <div class="ttc" id="synchronized_8hpp_html"><div class="ttname"><a href="synchronized_8hpp.html">synchronized.hpp</a></div></div>
 <div class="ttc" id="classprocess_1_1Queue_html_a674a915e518d5bb71bcca95fb593be6c"><div class="ttname"><a href="classprocess_1_1Queue.html#a674a915e518d5bb71bcca95fb593be6c">process::Queue::Queue</a></div><div class="ttdeci">Queue()</div><div class="ttdef"><b>Definition:</b> queue.hpp:32</div></div>
 <div class="ttc" id="classprocess_1_1Queue_html_a9f8aa372271f673f283797728afebb08"><div class="ttname"><a href="classprocess_1_1Queue.html#a9f8aa372271f673f283797728afebb08">process::Queue::put</a></div><div class="ttdeci">void put(const T &amp;t)</div><div class="ttdef"><b>Definition:</b> queue.hpp:34</div></div>
 <div class="ttc" id="classprocess_1_1Owned_html_a2f64ec02eea2321e25611175edf776aa"><div class="ttname"><a href="classprocess_1_1Owned.html#a2f64ec02eea2321e25611175edf776aa">process::Owned::get</a></div><div class="ttdeci">T * get() const </div><div class="ttdef"><b>Definition:</b> owned.hpp:115</div></div>
-<div class="ttc" id="classprocess_1_1Promise_html"><div class="ttname"><a href="classprocess_1_1Promise.html">process::Promise</a></div><div class="ttdef"><b>Definition:</b> future.hpp:70</div></div>
+<div class="ttc" id="classprocess_1_1Promise_html"><div class="ttname"><a href="classprocess_1_1Promise.html">process::Promise</a></div><div class="ttdef"><b>Definition:</b> future.hpp:72</div></div>
 <div class="ttc" id="namespacemesos_1_1internal_1_1log_1_1protocol_html_a3b1f8bd7b18c51af9d1f58842950b545"><div class="ttname"><a href="namespacemesos_1_1internal_1_1log_1_1protocol.html#a3b1f8bd7b18c51af9d1f58842950b545">mesos::internal::log::protocol::promise</a></div><div class="ttdeci">Protocol&lt; PromiseRequest, PromiseResponse &gt; promise</div></div>
 <div class="ttc" id="future_8hpp_html"><div class="ttname"><a href="future_8hpp.html">future.hpp</a></div></div>
 <div class="ttc" id="namespaceos_html_ae19e4161a51b86a1f330f3bf1dc75389"><div class="ttname"><a href="namespaceos.html#ae19e4161a51b86a1f330f3bf1dc75389">os::process</a></div><div class="ttdeci">Result&lt; Process &gt; process(pid_t pid)</div><div class="ttdef"><b>Definition:</b> freebsd.hpp:30</div></div>
 <div class="ttc" id="classprocess_1_1Queue_html"><div class="ttname"><a href="classprocess_1_1Queue.html">process::Queue</a></div><div class="ttdef"><b>Definition:</b> queue.hpp:29</div></div>
+<div class="ttc" id="classprocess_1_1Queue_html_a4d055c0e16b5078d60f4395223ad47ec"><div class="ttname"><a href="classprocess_1_1Queue.html#a4d055c0e16b5078d60f4395223ad47ec">process::Queue::size</a></div><div class="ttdeci">size_t size() const </div><div class="ttdef"><b>Definition:</b> queue.hpp:72</div></div>
 <div class="ttc" id="owned_8hpp_html"><div class="ttname"><a href="owned_8hpp.html">owned.hpp</a></div></div>
 <div class="ttc" id="classprocess_1_1Owned_html"><div class="ttname"><a href="classprocess_1_1Owned.html">process::Owned</a></div><div class="ttdef"><b>Definition:</b> owned.hpp:35</div></div>
-<div class="ttc" id="classprocess_1_1Future_html"><div class="ttname"><a href="classprocess_1_1Future.html">process::Future</a></div><div class="ttdef"><b>Definition:</b> future.hpp:54</div></div>
+<div class="ttc" id="classprocess_1_1Future_html"><div class="ttname"><a href="classprocess_1_1Future.html">process::Future</a></div><div class="ttdef"><b>Definition:</b> future.hpp:56</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

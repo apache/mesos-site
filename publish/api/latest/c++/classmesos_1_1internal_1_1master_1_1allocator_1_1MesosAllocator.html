@@ -80,9 +80,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa38e6a84a1dc03b531897ea1ee7745f1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1master_1_1allocator_1_1MesosAllocator.html#aa38e6a84a1dc03b531897ea1ee7745f1">recover</a> (const int expectedAgentCount, const <a class="el" href="classhashmap.html">hashmap</a>&lt; std::string, <a class="el" href="structQuota.html">Quota</a> &gt; &amp;quotas)</td></tr>
 <tr class="memdesc:aa38e6a84a1dc03b531897ea1ee7745f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Informs the allocator of the recovered state from the master.  <a href="#aa38e6a84a1dc03b531897ea1ee7745f1">More...</a><br/></td></tr>
 <tr class="separator:aa38e6a84a1dc03b531897ea1ee7745f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13bd7a713510c5aa4cceff85201e1b55"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1master_1_1allocator_1_1MesosAllocator.html#a13bd7a713510c5aa4cceff85201e1b55">addFramework</a> (const FrameworkID &amp;frameworkId, const FrameworkInfo &amp;frameworkInfo, const <a class="el" href="classhashmap.html">hashmap</a>&lt; SlaveID, <a class="el" href="classmesos_1_1Resources.html">Resources</a> &gt; &amp;used)</td></tr>
-<tr class="memdesc:a13bd7a713510c5aa4cceff85201e1b55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a framework to the Mesos cluster.  <a href="#a13bd7a713510c5aa4cceff85201e1b55">More...</a><br/></td></tr>
-<tr class="separator:a13bd7a713510c5aa4cceff85201e1b55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2bada3270698413305fa2dd8cabca97f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1master_1_1allocator_1_1MesosAllocator.html#a2bada3270698413305fa2dd8cabca97f">addFramework</a> (const FrameworkID &amp;frameworkId, const FrameworkInfo &amp;frameworkInfo, const <a class="el" href="classhashmap.html">hashmap</a>&lt; SlaveID, <a class="el" href="classmesos_1_1Resources.html">Resources</a> &gt; &amp;used, bool active)</td></tr>
+<tr class="memdesc:a2bada3270698413305fa2dd8cabca97f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a framework to the Mesos cluster.  <a href="#a2bada3270698413305fa2dd8cabca97f">More...</a><br/></td></tr>
+<tr class="separator:a2bada3270698413305fa2dd8cabca97f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23724d1a04045cf433dc3d7c4e8ea44c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1master_1_1allocator_1_1MesosAllocator.html#a23724d1a04045cf433dc3d7c4e8ea44c">removeFramework</a> (const FrameworkID &amp;frameworkId)</td></tr>
 <tr class="memdesc:a23724d1a04045cf433dc3d7c4e8ea44c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes a framework from the Mesos cluster.  <a href="#a23724d1a04045cf433dc3d7c4e8ea44c">More...</a><br/></td></tr>
 <tr class="separator:a23724d1a04045cf433dc3d7c4e8ea44c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -255,7 +255,7 @@ template&lt;typename AllocatorProcess &gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="a13bd7a713510c5aa4cceff85201e1b55"></a>
+<a class="anchor" id="a2bada3270698413305fa2dd8cabca97f"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -280,7 +280,13 @@ template&lt;typename AllocatorProcess &gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const <a class="el" href="classhashmap.html">hashmap</a>&lt; SlaveID, <a class="el" href="classmesos_1_1Resources.html">Resources</a> &gt; &amp;&#160;</td>
-          <td class="paramname"><em>used</em>&#160;</td>
+          <td class="paramname"><em>used</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>active</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -299,12 +305,13 @@ template&lt;typename AllocatorProcess &gt; </div>
 <p>The allocator is invoked when a new framework joins the Mesos cluster and is entitled to participate in resource sharing.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">used</td><td><a class="el" href="classmesos_1_1Resources.html">Resources</a> used by this framework. The allocator should account for these resources when updating the allocation of this framework. The allocator should avoid double accounting when yet unknown agents are added later in <code><a class="el" href="classmesos_1_1internal_1_1master_1_1allocator_1_1MesosAllocator.html#af8bdeca4ce4bf4889039605905e9452e" title="Adds or re-adds an agent to the Mesos cluster. ">addSlave()</a></code>. </td></tr>
+    <tr><td class="paramname">used</td><td><a class="el" href="classmesos_1_1Resources.html">Resources</a> used by this framework. The allocator should account for these resources when updating the allocation of this framework. The allocator should avoid double accounting when yet unknown agents are added later in <code><a class="el" href="classmesos_1_1internal_1_1master_1_1allocator_1_1MesosAllocator.html#af8bdeca4ce4bf4889039605905e9452e" title="Adds or re-adds an agent to the Mesos cluster. ">addSlave()</a></code>.</td></tr>
+    <tr><td class="paramname">active</td><td>Whether the framework is initially activated. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="classmesos_1_1allocator_1_1Allocator.html#a4e19e2d44c9e66dc8159cb7ee17f438f">mesos::allocator::Allocator</a>.</p>
+<p>Implements <a class="el" href="classmesos_1_1allocator_1_1Allocator.html#a8dbc103b21872ed885a45ac3d928c83d">mesos::allocator::Allocator</a>.</p>
 
 </div>
 </div>
@@ -367,7 +374,7 @@ template&lt;typename AllocatorProcess &gt; </div>
     <tr><td class="paramname">slaveId</td><td>ID of the agent to be added or re-added. </td></tr>
     <tr><td class="paramname">slaveInfo</td><td>Detailed info of the agent. The slaveInfo resources correspond directly to the static &ndash;resources flag value on the agent. </td></tr>
     <tr><td class="paramname">total</td><td>The <code>total</code> resources are passed explicitly because it includes resources that are dynamically "checkpointed" on the agent (e.g. persistent volumes, dynamic reservations, etc). </td></tr>
-    <tr><td class="paramname">used</td><td><a class="el" href="classmesos_1_1Resources.html">Resources</a> that are allocated on the current agent. The allocator should avoid double accounting when yet unknown frameworks are added later in <code><a class="el" href="classmesos_1_1internal_1_1master_1_1allocator_1_1MesosAllocator.html#a13bd7a713510c5aa4cceff85201e1b55" title="Adds a framework to the Mesos cluster. ">addFramework()</a></code>. </td></tr>
+    <tr><td class="paramname">used</td><td><a class="el" href="classmesos_1_1Resources.html">Resources</a> that are allocated on the current agent. The allocator should avoid double accounting when yet unknown frameworks are added later in <code><a class="el" href="classmesos_1_1internal_1_1master_1_1allocator_1_1MesosAllocator.html#a2bada3270698413305fa2dd8cabca97f" title="Adds a framework to the Mesos cluster. ">addFramework()</a></code>. </td></tr>
   </table>
   </dd>
 </dl>

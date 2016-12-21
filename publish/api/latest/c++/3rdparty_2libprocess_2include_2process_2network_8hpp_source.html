@@ -84,10 +84,10 @@
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">// TODO(benh): Remove and defer to Socket::accept.</span></div>
 <div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="namespaceprocess_1_1network.html#a88769404db677f530e5e8e2279a4856a">   31</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;int&gt;</a> <a class="code" href="namespaceprocess_1_1network.html#a88769404db677f530e5e8e2279a4856a">accept</a>(<span class="keywordtype">int</span> s)</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;{</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  <span class="keyword">struct </span>sockaddr_storage storage;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  socklen_t storagelen = <span class="keyword">sizeof</span>(storage);</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  sockaddr_storage storage;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  socklen_t length = <span class="keyword">sizeof</span>(storage);</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <span class="keywordtype">int</span> accepted = <a class="code" href="namespaceprocess_1_1network.html#a88769404db677f530e5e8e2279a4856a">::accept</a>(s, (<span class="keyword">struct</span> sockaddr*) &amp;storage, &amp;storagelen);</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <span class="keywordtype">int</span> accepted = <a class="code" href="namespaceprocess_1_1network.html#a88769404db677f530e5e8e2279a4856a">::accept</a>(s, (sockaddr*) &amp;storage, &amp;length);</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <span class="keywordflow">if</span> (accepted &lt; 0) {</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classErrnoError.html">ErrnoError</a>(<span class="stringliteral">&quot;Failed to accept&quot;</span>);</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  }</div>
@@ -99,84 +99,79 @@
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">// TODO(benh): Remove and defer to Socket::bind.</span></div>
 <div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="namespaceprocess_1_1network.html#a0a0e16bed4bf0122f2b3513a78399d70">   46</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;Nothing&gt;</a> <a class="code" href="namespaceprocess_1_1network.html#a0a0e16bed4bf0122f2b3513a78399d70">bind</a>(<span class="keywordtype">int</span> s, <span class="keyword">const</span> <a class="code" href="classprocess_1_1network_1_1Address.html">Address</a>&amp; <a class="code" href="namespaceprocess_1_1network.html#a19fdac67ec6782ce4b4a23fe98ddb1e2">address</a>)</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;{</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <span class="keyword">struct </span>sockaddr_storage storage =</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <a class="code" href="namespacenet.html#ab4d0ab0e84637f13642f87d0fc089c80">net::createSockaddrStorage</a>(address.<a class="code" href="classprocess_1_1network_1_1Address.html#ab8d6dcbdf62e39b9d948ab9b97d4ba5c">ip</a>, address.<a class="code" href="classprocess_1_1network_1_1Address.html#afb07f1dbdb009d8be98c71d899d234aa">port</a>);</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="namespacenet.html#a2079d24ce06c702f8ded024deb2b25b7">net::bind</a>(s, (<span class="keyword">struct</span> sockaddr*) &amp;storage, address.<a class="code" href="classprocess_1_1network_1_1Address.html#a0008f4285e960406a0e2e6ec96f875ad">size</a>()) &lt; 0) {</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classErrnoError.html">ErrnoError</a>(<span class="stringliteral">&quot;Failed to bind on &quot;</span> + <a class="code" href="namespacens.html#a28116b46e6543597a11733424cd1aa20">stringify</a>(address));</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  }</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="structNothing.html">Nothing</a>();</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;}</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  sockaddr_storage storage = <a class="code" href="namespaceprocess_1_1network.html#a19fdac67ec6782ce4b4a23fe98ddb1e2">address</a>;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="namespacenet.html#a2079d24ce06c702f8ded024deb2b25b7">net::bind</a>(s, (sockaddr*) &amp;storage, address.<a class="code" href="classprocess_1_1network_1_1Address.html#a0008f4285e960406a0e2e6ec96f875ad">size</a>()) &lt; 0) {</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classErrnoError.html">ErrnoError</a>(<span class="stringliteral">&quot;Failed to bind on &quot;</span> + <a class="code" href="namespacens.html#a28116b46e6543597a11733424cd1aa20">stringify</a>(address));</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  }</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="structNothing.html">Nothing</a>();</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;}</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">// TODO(benh): Remove and defer to Socket::connect.</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="namespaceprocess_1_1network.html#a80f87e8ca7d4dc648f7e2c07c1cb78f8">   60</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;Nothing, SocketError&gt;</a> <a class="code" href="namespaceprocess_1_1network.html#a80f87e8ca7d4dc648f7e2c07c1cb78f8">connect</a>(<span class="keywordtype">int</span> s, <span class="keyword">const</span> <a class="code" href="classprocess_1_1network_1_1Address.html">Address</a>&amp; <a class="code" href="namespaceprocess_1_1network.html#a19fdac67ec6782ce4b4a23fe98ddb1e2">address</a>)</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;{</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keyword">struct </span>sockaddr_storage storage =</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <a class="code" href="namespacenet.html#ab4d0ab0e84637f13642f87d0fc089c80">net::createSockaddrStorage</a>(address.<a class="code" href="classprocess_1_1network_1_1Address.html#ab8d6dcbdf62e39b9d948ab9b97d4ba5c">ip</a>, address.<a class="code" href="classprocess_1_1network_1_1Address.html#afb07f1dbdb009d8be98c71d899d234aa">port</a>);</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="namespacenet.html#a48731dd265aac9362f05f58e4d9fc648">net::connect</a>(s, (<span class="keyword">struct</span> sockaddr*) &amp;storage, address.<a class="code" href="classprocess_1_1network_1_1Address.html#a0008f4285e960406a0e2e6ec96f875ad">size</a>()) &lt; 0) {</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="error_8hpp.html#a176f6fc34ea37d40201853a52a475762">SocketError</a>(<span class="stringliteral">&quot;Failed to connect to &quot;</span> + <a class="code" href="namespacens.html#a28116b46e6543597a11733424cd1aa20">stringify</a>(address));</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  }</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="structNothing.html">Nothing</a>();</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;}</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="namespaceprocess_1_1network.html#a19fdac67ec6782ce4b4a23fe98ddb1e2">   79</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;Address&gt;</a> <a class="code" href="namespaceprocess_1_1network.html#a19fdac67ec6782ce4b4a23fe98ddb1e2">address</a>(<span class="keywordtype">int</span> s)</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;{</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="keyword">struct </span>sockaddr_storage storage;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  socklen_t storagelen = <span class="keyword">sizeof</span>(storage);</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <span class="keywordflow">if</span> (::getsockname(s, (<span class="keyword">struct</span> sockaddr*) &amp;storage, &amp;storagelen) &lt; 0) {</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classErrnoError.html">ErrnoError</a>(<span class="stringliteral">&quot;Failed to getsockname&quot;</span>);</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  }</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="classprocess_1_1network_1_1Address.html#a926a59ec213b5ec4631966233f497806">Address::create</a>(storage);</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;}</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
-<div class="line"><a name="l00098"></a><span class="lineno"><a class="line" href="namespaceprocess_1_1network.html#af76dcbcaa68417071482a717fa4f4bfb">   98</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;Address&gt;</a> <a class="code" href="namespaceprocess_1_1network.html#af76dcbcaa68417071482a717fa4f4bfb">peer</a>(<span class="keywordtype">int</span> s)</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;{</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  <span class="keyword">struct </span>sockaddr_storage storage;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  socklen_t storagelen = <span class="keyword">sizeof</span>(storage);</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  <span class="keywordflow">if</span> (::getpeername(s, (<span class="keyword">struct</span> sockaddr*) &amp;storage, &amp;storagelen) &lt; 0) {</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classErrnoError.html">ErrnoError</a>(<span class="stringliteral">&quot;Failed to getpeername&quot;</span>);</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  }</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="classprocess_1_1network_1_1Address.html#a926a59ec213b5ec4631966233f497806">Address::create</a>(storage);</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;}</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;} <span class="comment">// namespace network {</span></div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;} <span class="comment">// namespace process {</span></div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="preprocessor">#endif // __PROCESS_NETWORK_HPP__</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">// TODO(benh): Remove and defer to Socket::connect.</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="namespaceprocess_1_1network.html#a80f87e8ca7d4dc648f7e2c07c1cb78f8">   59</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;Nothing, SocketError&gt;</a> <a class="code" href="namespaceprocess_1_1network.html#a80f87e8ca7d4dc648f7e2c07c1cb78f8">connect</a>(<span class="keywordtype">int</span> s, <span class="keyword">const</span> <a class="code" href="classprocess_1_1network_1_1Address.html">Address</a>&amp; <a class="code" href="namespaceprocess_1_1network.html#a19fdac67ec6782ce4b4a23fe98ddb1e2">address</a>)</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;{</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  sockaddr_storage storage = <a class="code" href="namespaceprocess_1_1network.html#a19fdac67ec6782ce4b4a23fe98ddb1e2">address</a>;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="namespacenet.html#a48731dd265aac9362f05f58e4d9fc648">net::connect</a>(s, (sockaddr*) &amp;storage, address.<a class="code" href="classprocess_1_1network_1_1Address.html#a0008f4285e960406a0e2e6ec96f875ad">size</a>()) &lt; 0) {</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="error_8hpp.html#a176f6fc34ea37d40201853a52a475762">SocketError</a>(<span class="stringliteral">&quot;Failed to connect to &quot;</span> + <a class="code" href="namespacens.html#a28116b46e6543597a11733424cd1aa20">stringify</a>(address));</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  }</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="structNothing.html">Nothing</a>();</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;}</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="namespaceprocess_1_1network.html#a19fdac67ec6782ce4b4a23fe98ddb1e2">   77</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;Address&gt;</a> <a class="code" href="namespaceprocess_1_1network.html#a19fdac67ec6782ce4b4a23fe98ddb1e2">address</a>(<span class="keywordtype">int</span> s)</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;{</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  sockaddr_storage storage;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  socklen_t length = <span class="keyword">sizeof</span>(storage);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <span class="keywordflow">if</span> (::getsockname(s, (sockaddr*) &amp;storage, &amp;length) &lt; 0) {</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classErrnoError.html">ErrnoError</a>(<span class="stringliteral">&quot;Failed to getsockname&quot;</span>);</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  }</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="classprocess_1_1network_1_1Address.html#a65e3511ccaa4fe9e6794675cab161c4c">Address::create</a>(storage);</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;}</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
+<div class="line"><a name="l00096"></a><span class="lineno"><a class="line" href="namespaceprocess_1_1network.html#af76dcbcaa68417071482a717fa4f4bfb">   96</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;Address&gt;</a> <a class="code" href="namespaceprocess_1_1network.html#af76dcbcaa68417071482a717fa4f4bfb">peer</a>(<span class="keywordtype">int</span> s)</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;{</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  sockaddr_storage storage;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  socklen_t length = <span class="keyword">sizeof</span>(storage);</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  <span class="keywordflow">if</span> (::getpeername(s, (sockaddr*) &amp;storage, &amp;length) &lt; 0) {</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classErrnoError.html">ErrnoError</a>(<span class="stringliteral">&quot;Failed to getpeername&quot;</span>);</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  }</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="classprocess_1_1network_1_1Address.html#a65e3511ccaa4fe9e6794675cab161c4c">Address::create</a>(storage);</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;}</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;} <span class="comment">// namespace network {</span></div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;} <span class="comment">// namespace process {</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="preprocessor">#endif // __PROCESS_NETWORK_HPP__</span></div>
+<div class="ttc" id="classprocess_1_1network_1_1Address_html_a65e3511ccaa4fe9e6794675cab161c4c"><div class="ttname"><a href="classprocess_1_1network_1_1Address.html#a65e3511ccaa4fe9e6794675cab161c4c">process::network::Address::create</a></div><div class="ttdeci">static Try&lt; Address &gt; create(const sockaddr_storage &amp;storage)</div><div class="ttdef"><b>Definition:</b> address.hpp:68</div></div>
 <div class="ttc" id="structNothing_html"><div class="ttname"><a href="structNothing.html">Nothing</a></div><div class="ttdef"><b>Definition:</b> nothing.hpp:16</div></div>
-<div class="ttc" id="namespaceprocess_1_1network_html_a19fdac67ec6782ce4b4a23fe98ddb1e2"><div class="ttname"><a href="namespaceprocess_1_1network.html#a19fdac67ec6782ce4b4a23fe98ddb1e2">process::network::address</a></div><div class="ttdeci">Try&lt; Address &gt; address(int s)</div><div class="ttdoc">Returns the Address with the assigned ip and assigned port. </div><div class="ttdef"><b>Definition:</b> network.hpp:79</div></div>
+<div class="ttc" id="namespaceprocess_1_1network_html_a19fdac67ec6782ce4b4a23fe98ddb1e2"><div class="ttname"><a href="namespaceprocess_1_1network.html#a19fdac67ec6782ce4b4a23fe98ddb1e2">process::network::address</a></div><div class="ttdeci">Try&lt; Address &gt; address(int s)</div><div class="ttdoc">Returns the Address with the assigned ip and assigned port. </div><div class="ttdef"><b>Definition:</b> network.hpp:77</div></div>
 <div class="ttc" id="address_8hpp_html"><div class="ttname"><a href="address_8hpp.html">address.hpp</a></div></div>
 <div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
 <div class="ttc" id="namespaceprocess_1_1network_html_a88769404db677f530e5e8e2279a4856a"><div class="ttname"><a href="namespaceprocess_1_1network.html#a88769404db677f530e5e8e2279a4856a">process::network::accept</a></div><div class="ttdeci">Try&lt; int &gt; accept(int s)</div><div class="ttdef"><b>Definition:</b> network.hpp:31</div></div>
 <div class="ttc" id="namespacenet_html_ae2eecd88179039566daadf206b05411f"><div class="ttname"><a href="namespacenet.html#ae2eecd88179039566daadf206b05411f">net::socket</a></div><div class="ttdeci">Try&lt; int &gt; socket(int family, int type, int protocol)</div><div class="ttdef"><b>Definition:</b> socket.hpp:29</div></div>
 <div class="ttc" id="namespaceprocess_1_1network_html_a0a0e16bed4bf0122f2b3513a78399d70"><div class="ttname"><a href="namespaceprocess_1_1network.html#a0a0e16bed4bf0122f2b3513a78399d70">process::network::bind</a></div><div class="ttdeci">Try&lt; Nothing &gt; bind(int s, const Address &amp;address)</div><div class="ttdef"><b>Definition:</b> network.hpp:46</div></div>
-<div class="ttc" id="classprocess_1_1network_1_1Address_html"><div class="ttname"><a href="classprocess_1_1network_1_1Address.html">process::network::Address</a></div><div class="ttdef"><b>Definition:</b> address.hpp:44</div></div>
+<div class="ttc" id="classprocess_1_1network_1_1Address_html"><div class="ttname"><a href="classprocess_1_1network_1_1Address.html">process::network::Address</a></div><div class="ttdef"><b>Definition:</b> address.hpp:58</div></div>
 <div class="ttc" id="classErrnoError_html"><div class="ttname"><a href="classErrnoError.html">ErrnoError</a></div><div class="ttdef"><b>Definition:</b> errorbase.hpp:44</div></div>
-<div class="ttc" id="classprocess_1_1network_1_1Address_html_a0008f4285e960406a0e2e6ec96f875ad"><div class="ttname"><a href="classprocess_1_1network_1_1Address.html#a0008f4285e960406a0e2e6ec96f875ad">process::network::Address::size</a></div><div class="ttdeci">size_t size() const </div><div class="ttdef"><b>Definition:</b> address.hpp:98</div></div>
+<div class="ttc" id="classprocess_1_1network_1_1Address_html_a0008f4285e960406a0e2e6ec96f875ad"><div class="ttname"><a href="classprocess_1_1network_1_1Address.html#a0008f4285e960406a0e2e6ec96f875ad">process::network::Address::size</a></div><div class="ttdeci">size_t size() const </div><div class="ttdef"><b>Definition:</b> address.hpp:96</div></div>
 <div class="ttc" id="stout_2include_2stout_2os_2socket_8hpp_html"><div class="ttname"><a href="stout_2include_2stout_2os_2socket_8hpp.html">socket.hpp</a></div></div>
-<div class="ttc" id="namespacenet_html_a2079d24ce06c702f8ded024deb2b25b7"><div class="ttname"><a href="namespacenet.html#a2079d24ce06c702f8ded024deb2b25b7">net::bind</a></div><div class="ttdeci">int bind(int socket, const struct sockaddr *addr, size_t addrlen)</div><div class="ttdef"><b>Definition:</b> socket.hpp:146</div></div>
+<div class="ttc" id="namespacenet_html_a2079d24ce06c702f8ded024deb2b25b7"><div class="ttname"><a href="namespacenet.html#a2079d24ce06c702f8ded024deb2b25b7">net::bind</a></div><div class="ttdeci">int bind(int socket, const struct sockaddr *addr, size_t addrlen)</div><div class="ttdef"><b>Definition:</b> socket.hpp:130</div></div>
 <div class="ttc" id="error_8hpp_html_a176f6fc34ea37d40201853a52a475762"><div class="ttname"><a href="error_8hpp.html#a176f6fc34ea37d40201853a52a475762">SocketError</a></div><div class="ttdeci">ErrnoError SocketError</div><div class="ttdef"><b>Definition:</b> error.hpp:33</div></div>
-<div class="ttc" id="classprocess_1_1network_1_1Address_html_ab8d6dcbdf62e39b9d948ab9b97d4ba5c"><div class="ttname"><a href="classprocess_1_1network_1_1Address.html#ab8d6dcbdf62e39b9d948ab9b97d4ba5c">process::network::Address::ip</a></div><div class="ttdeci">net::IP ip</div><div class="ttdef"><b>Definition:</b> address.hpp:136</div></div>
-<div class="ttc" id="namespaceprocess_1_1network_html_af76dcbcaa68417071482a717fa4f4bfb"><div class="ttname"><a href="namespaceprocess_1_1network.html#af76dcbcaa68417071482a717fa4f4bfb">process::network::peer</a></div><div class="ttdeci">Try&lt; Address &gt; peer(int s)</div><div class="ttdoc">Returns the peer&amp;#39;s Address for the accepted or connected socket. </div><div class="ttdef"><b>Definition:</b> network.hpp:98</div></div>
+<div class="ttc" id="namespaceprocess_1_1network_html_af76dcbcaa68417071482a717fa4f4bfb"><div class="ttname"><a href="namespaceprocess_1_1network.html#af76dcbcaa68417071482a717fa4f4bfb">process::network::peer</a></div><div class="ttdeci">Try&lt; Address &gt; peer(int s)</div><div class="ttdoc">Returns the peer&amp;#39;s Address for the accepted or connected socket. </div><div class="ttdef"><b>Definition:</b> network.hpp:96</div></div>
 <div class="ttc" id="namespaceos_html_ae19e4161a51b86a1f330f3bf1dc75389"><div class="ttname"><a href="namespaceos.html#ae19e4161a51b86a1f330f3bf1dc75389">os::process</a></div><div class="ttdeci">Result&lt; Process &gt; process(pid_t pid)</div><div class="ttdef"><b>Definition:</b> freebsd.hpp:30</div></div>
-<div class="ttc" id="classprocess_1_1network_1_1Address_html_a926a59ec213b5ec4631966233f497806"><div class="ttname"><a href="classprocess_1_1network_1_1Address.html#a926a59ec213b5ec4631966233f497806">process::network::Address::create</a></div><div class="ttdeci">static Try&lt; Address &gt; create(const struct sockaddr_storage &amp;storage)</div><div class="ttdef"><b>Definition:</b> address.hpp:56</div></div>
 <div class="ttc" id="try_8hpp_html"><div class="ttname"><a href="try_8hpp.html">try.hpp</a></div></div>
-<div class="ttc" id="namespacenet_html_ab4d0ab0e84637f13642f87d0fc089c80"><div class="ttname"><a href="namespacenet.html#ab4d0ab0e84637f13642f87d0fc089c80">net::createSockaddrStorage</a></div><div class="ttdeci">struct sockaddr_storage createSockaddrStorage(const IP &amp;ip, int port)</div><div class="ttdef"><b>Definition:</b> net.hpp:202</div></div>
-<div class="ttc" id="namespacenet_html_a48731dd265aac9362f05f58e4d9fc648"><div class="ttname"><a href="namespacenet.html#a48731dd265aac9362f05f58e4d9fc648">net::connect</a></div><div class="ttdeci">int connect(int socket, const struct sockaddr *address, size_t addrlen)</div><div class="ttdef"><b>Definition:</b> socket.hpp:153</div></div>
+<div class="ttc" id="namespacenet_html_a48731dd265aac9362f05f58e4d9fc648"><div class="ttname"><a href="namespacenet.html#a48731dd265aac9362f05f58e4d9fc648">net::connect</a></div><div class="ttdeci">int connect(int socket, const struct sockaddr *address, size_t addrlen)</div><div class="ttdef"><b>Definition:</b> socket.hpp:137</div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2net_8hpp_html"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2net_8hpp.html">net.hpp</a></div></div>
-<div class="ttc" id="classprocess_1_1network_1_1Address_html_afb07f1dbdb009d8be98c71d899d234aa"><div class="ttname"><a href="classprocess_1_1network_1_1Address.html#afb07f1dbdb009d8be98c71d899d234aa">process::network::Address::port</a></div><div class="ttdeci">uint16_t port</div><div class="ttdef"><b>Definition:</b> address.hpp:137</div></div>
-<div class="ttc" id="namespacens_html_a28116b46e6543597a11733424cd1aa20"><div class="ttname"><a href="namespacens.html#a28116b46e6543597a11733424cd1aa20">ns::stringify</a></div><div class="ttdeci">std::string stringify(int flags)</div><div class="ttdef"><b>Definition:</b> ns.hpp:680</div></div>
-<div class="ttc" id="namespaceprocess_1_1network_html_a80f87e8ca7d4dc648f7e2c07c1cb78f8"><div class="ttname"><a href="namespaceprocess_1_1network.html#a80f87e8ca7d4dc648f7e2c07c1cb78f8">process::network::connect</a></div><div class="ttdeci">Try&lt; Nothing, SocketError &gt; connect(int s, const Address &amp;address)</div><div class="ttdef"><b>Definition:</b> network.hpp:60</div></div>
+<div class="ttc" id="namespacens_html_a28116b46e6543597a11733424cd1aa20"><div class="ttname"><a href="namespacens.html#a28116b46e6543597a11733424cd1aa20">ns::stringify</a></div><div class="ttdeci">std::string stringify(int flags)</div><div class="ttdef"><b>Definition:</b> ns.hpp:685</div></div>
+<div class="ttc" id="namespaceprocess_1_1network_html_a80f87e8ca7d4dc648f7e2c07c1cb78f8"><div class="ttname"><a href="namespaceprocess_1_1network.html#a80f87e8ca7d4dc648f7e2c07c1cb78f8">process::network::connect</a></div><div class="ttdeci">Try&lt; Nothing, SocketError &gt; connect(int s, const Address &amp;address)</div><div class="ttdef"><b>Definition:</b> network.hpp:59</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

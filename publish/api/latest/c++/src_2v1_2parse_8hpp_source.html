@@ -115,9 +115,23 @@
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="keywordflow">return</span> protobuf::parse&lt;mesos::v1::TaskGroupInfo&gt;(json.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>());</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;}</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;} <span class="comment">// namespace flags {</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="preprocessor">#endif // __V1_PARSE_HPP__</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="namespaceflags.html#ace2be9b6ba81d629b5873b6f178baa3d">   66</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;mesos::v1::TaskInfo&gt;</a> <a class="code" href="namespaceflags.html#af30eac14fca1a6fd93863545a0666e0c">parse</a>(<span class="keyword">const</span> std::string&amp; value)</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;{</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="comment">// Convert from string or file to JSON.</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <a class="code" href="classTry.html">Try&lt;JSON::Object&gt;</a> <a class="code" href="namespacemesos_1_1internal.html#a3752d85ef726065c6c1b946eef1ba87a">json</a> = parse&lt;JSON::Object&gt;(value);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="keywordflow">if</span> (json.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(json.<a class="code" href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">error</a>());</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  }</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="comment">// Convert from JSON to Protobuf.</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="keywordflow">return</span> protobuf::parse&lt;mesos::v1::TaskInfo&gt;(json.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>());</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;}</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;} <span class="comment">// namespace flags {</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="preprocessor">#endif // __V1_PARSE_HPP__</span></div>
 <div class="ttc" id="classError_html"><div class="ttname"><a href="classError.html">Error</a></div><div class="ttdef"><b>Definition:</b> errorbase.hpp:35</div></div>
 <div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2flags_2parse_8hpp_html"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2flags_2parse_8hpp.html">parse.hpp</a></div></div>

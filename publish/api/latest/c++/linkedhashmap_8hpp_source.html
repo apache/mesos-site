@@ -70,121 +70,152 @@
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &lt;list&gt;</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &lt;utility&gt;</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="hashmap_8hpp.html">stout/hashmap.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="option_8hpp.html">stout/option.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">// Implementation of a hashmap that maintains the insertion order</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">// of the keys. Note that re-insertion of a key (i.e., update)</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">// doesn&#39;t update its insertion order.</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">// TODO(vinod/bmahler): Consider extending from stout::hashmap and/or</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment">// having a compatible API with stout::hashmap.</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> Key, <span class="keyword">typename</span> Value&gt;</div>
-<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="classLinkedHashMap.html">   28</a></span>&#160;<span class="keyword">class </span><a class="code" href="classLinkedHashMap.html">LinkedHashMap</a></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;{</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="classLinkedHashMap.html#aa4aded6047c16127085b71e482b5b023">   31</a></span>&#160;  <span class="keyword">typedef</span> std::list&lt;Key&gt; <a class="code" href="classLinkedHashMap.html#aa4aded6047c16127085b71e482b5b023">list</a>;</div>
-<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="classLinkedHashMap.html#ae1481b645456990fbcf9493e334ac555">   32</a></span>&#160;  <span class="keyword">typedef</span> <a class="code" href="classhashmap.html">hashmap&lt;Key, std::pair&lt;Value, typename list::iterator&gt;</a>&gt; <a class="code" href="classLinkedHashMap.html#ae1481b645456990fbcf9493e334ac555">map</a>;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="classLinkedHashMap.html#a420faa2efd1818fdbc58193256825760">   34</a></span>&#160;  Value&amp; <a class="code" href="classLinkedHashMap.html#a420faa2efd1818fdbc58193256825760">operator[] </a>(<span class="keyword">const</span> Key&amp; key)</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  {</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keywordflow">if</span> (!values_.<a class="code" href="classhashmap.html#ac142b3f8b73c76d5d4545bbd299007e5">contains</a>(key)) {</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;      <span class="comment">// Insert into the list and get the &quot;pointer&quot; into the list.</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;      <span class="keyword">typename</span> list::iterator i = keys_.insert(keys_.end(), key);</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;      values_[key] = std::make_pair(Value(), i); <span class="comment">// Store default value.</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    }</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keywordflow">return</span> values_[key].first;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  }</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="foreach_8hpp.html">stout/foreach.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="hashmap_8hpp.html">stout/hashmap.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="option_8hpp.html">stout/option.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">// Implementation of a hashmap that maintains the insertion order of</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">// the keys. Updating a key does not change insertion order.</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment">// TODO(vinod/bmahler): Consider extending from stout::hashmap and/or</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">// having a compatible API with stout::hashmap.</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> Key, <span class="keyword">typename</span> Value&gt;</div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="classLinkedHashMap.html">   29</a></span>&#160;<span class="keyword">class </span><a class="code" href="classLinkedHashMap.html">LinkedHashMap</a></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;{</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="classLinkedHashMap.html#ae6cfccfbd837f8f746d1e1efeeeb5455">   32</a></span>&#160;  <span class="keyword">typedef</span> std::pair&lt;Key, Value&gt; <a class="code" href="classLinkedHashMap.html#ae6cfccfbd837f8f746d1e1efeeeb5455">entry</a>;</div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="classLinkedHashMap.html#aa39f6b99d893dd183e93dd79086fdfd6">   33</a></span>&#160;  <span class="keyword">typedef</span> std::list&lt;entry&gt; <a class="code" href="classLinkedHashMap.html#aa39f6b99d893dd183e93dd79086fdfd6">list</a>;</div>
+<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="classLinkedHashMap.html#a0e2e18b706727c05990f0b65dc5e0cf2">   34</a></span>&#160;  <span class="keyword">typedef</span> <a class="code" href="classhashmap.html">hashmap&lt;Key, typename list::iterator&gt;</a> <a class="code" href="classLinkedHashMap.html#a0e2e18b706727c05990f0b65dc5e0cf2">map</a>;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
+<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="classLinkedHashMap.html#a420faa2efd1818fdbc58193256825760">   36</a></span>&#160;  Value&amp; <a class="code" href="classLinkedHashMap.html#a420faa2efd1818fdbc58193256825760">operator[] </a>(<span class="keyword">const</span> Key&amp; key)</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  {</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keywordflow">if</span> (!keys_.<a class="code" href="classhashmap.html#ac142b3f8b73c76d5d4545bbd299007e5">contains</a>(key)) {</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;      <span class="comment">// Insert a new entry into the list and get a &quot;pointer&quot; to its</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;      <span class="comment">// location. The initial value is default-constructed.</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;      <span class="keyword">typename</span> list::iterator iter =</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        entries_.insert(entries_.end(), std::make_pair(key, Value()));</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="classLinkedHashMap.html#a394b34d6febbbfa4b8cfa788d32a3ded">   44</a></span>&#160;  <a class="code" href="classOption.html">Option&lt;Value&gt;</a> <span class="keyword">get</span>(<span class="keyword">const</span> Key&amp; key) <span class="keyword">const</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  {</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keywordflow">if</span> (values_.<a class="code" href="classhashmap.html#ac142b3f8b73c76d5d4545bbd299007e5">contains</a>(key)) {</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;      <span class="keywordflow">return</span> values_.at(key).first;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    }</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="structNone.html">None</a>();</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  }</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="classLinkedHashMap.html#a4b6c8f1254c3ccd2459d94215156c1bd">   52</a></span>&#160;  Value&amp; <a class="code" href="classLinkedHashMap.html#a4b6c8f1254c3ccd2459d94215156c1bd">at</a>(<span class="keyword">const</span> Key&amp; key)</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  {</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keywordflow">return</span> values_.at(key).first;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  }</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="classLinkedHashMap.html#ae87141dd103665dca487b62d385d5c44">   57</a></span>&#160;  <span class="keyword">const</span> Value&amp; <a class="code" href="classLinkedHashMap.html#ae87141dd103665dca487b62d385d5c44">at</a>(<span class="keyword">const</span> Key&amp; key)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keyword">  </span>{</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keywordflow">return</span> values_.at(key).first;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  }</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="classLinkedHashMap.html#a1e01999a72b4e7f0d2541ff1b9892123">   62</a></span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="classLinkedHashMap.html#a1e01999a72b4e7f0d2541ff1b9892123">contains</a>(<span class="keyword">const</span> Key&amp; key)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="keyword">  </span>{</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordflow">return</span> values_.<a class="code" href="classhashmap.html#ac142b3f8b73c76d5d4545bbd299007e5">contains</a>(key);</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  }</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
-<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="classLinkedHashMap.html#aeef7db0820a261eb3629b229f9952049">   67</a></span>&#160;  <span class="keywordtype">size_t</span> <a class="code" href="classLinkedHashMap.html#aeef7db0820a261eb3629b229f9952049">erase</a>(<span class="keyword">const</span> Key&amp; key)</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  {</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordflow">if</span> (values_.<a class="code" href="classhashmap.html#ac142b3f8b73c76d5d4545bbd299007e5">contains</a>(key)) {</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;      <span class="comment">// Get the &quot;pointer&quot; into the list.</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;      <span class="keyword">typename</span> list::iterator i = values_[key].second;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;      keys_.erase(i);</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;      <span class="keywordflow">return</span> values_.erase(key);</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    }</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  }</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
-<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="classLinkedHashMap.html#a06baf18c4e2394b6cdc4da4e0c6f4348">   78</a></span>&#160;  std::list&lt;Key&gt; <a class="code" href="classLinkedHashMap.html#a06baf18c4e2394b6cdc4da4e0c6f4348">keys</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="keyword">  </span>{</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordflow">return</span> keys_;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  }</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
-<div class="line"><a name="l00083"></a><span class="lineno"><a class="line" href="classLinkedHashMap.html#a9963e9d9df74ec0f589efe7d81d74c30">   83</a></span>&#160;  std::list&lt;Value&gt; <a class="code" href="classLinkedHashMap.html#a9963e9d9df74ec0f589efe7d81d74c30">values</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="keyword">  </span>{</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    std::list&lt;Value&gt; result;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keywordflow">foreach</span> (<span class="keyword">const</span> Key&amp; key, keys_) {</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;      result.push_back(values_.at(key).first);</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    }</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  }</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
-<div class="line"><a name="l00092"></a><span class="lineno"><a class="line" href="classLinkedHashMap.html#adc48b5dccbbe7fcb942d2f425ca6534a">   92</a></span>&#160;  <span class="keywordtype">size_t</span> <a class="code" href="classLinkedHashMap.html#adc48b5dccbbe7fcb942d2f425ca6534a">size</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="keyword">  </span>{</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keywordflow">return</span> keys_.size();</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  }</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
-<div class="line"><a name="l00097"></a><span class="lineno"><a class="line" href="classLinkedHashMap.html#ab364b2e480e7913f5b999742104b9ad5">   97</a></span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="classLinkedHashMap.html#ab364b2e480e7913f5b999742104b9ad5">empty</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;      keys_[key] = iter;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    }</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordflow">return</span> keys_[key]-&gt;second;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  }</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="classLinkedHashMap.html#a394b34d6febbbfa4b8cfa788d32a3ded">   50</a></span>&#160;  <a class="code" href="classOption.html">Option&lt;Value&gt;</a> <span class="keyword">get</span>(<span class="keyword">const</span> Key&amp; key) <span class="keyword">const</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  {</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordflow">if</span> (keys_.<a class="code" href="classhashmap.html#ac142b3f8b73c76d5d4545bbd299007e5">contains</a>(key)) {</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;      <span class="keywordflow">return</span> keys_.at(key)-&gt;second;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    }</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="structNone.html">None</a>();</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  }</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="classLinkedHashMap.html#a4b6c8f1254c3ccd2459d94215156c1bd">   58</a></span>&#160;  Value&amp; <a class="code" href="classLinkedHashMap.html#a4b6c8f1254c3ccd2459d94215156c1bd">at</a>(<span class="keyword">const</span> Key&amp; key)</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  {</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordflow">return</span> keys_.at(key)-&gt;second;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  }</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="classLinkedHashMap.html#ae87141dd103665dca487b62d385d5c44">   63</a></span>&#160;  <span class="keyword">const</span> Value&amp; <a class="code" href="classLinkedHashMap.html#ae87141dd103665dca487b62d385d5c44">at</a>(<span class="keyword">const</span> Key&amp; key)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="keyword">  </span>{</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keywordflow">return</span> keys_.at(key)-&gt;second;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  }</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="classLinkedHashMap.html#a1e01999a72b4e7f0d2541ff1b9892123">   68</a></span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="classLinkedHashMap.html#a1e01999a72b4e7f0d2541ff1b9892123">contains</a>(<span class="keyword">const</span> Key&amp; key)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="keyword">  </span>{</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordflow">return</span> keys_.<a class="code" href="classhashmap.html#ac142b3f8b73c76d5d4545bbd299007e5">contains</a>(key);</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  }</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
+<div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="classLinkedHashMap.html#aeef7db0820a261eb3629b229f9952049">   73</a></span>&#160;  <span class="keywordtype">size_t</span> <a class="code" href="classLinkedHashMap.html#aeef7db0820a261eb3629b229f9952049">erase</a>(<span class="keyword">const</span> Key&amp; key)</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  {</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keywordflow">if</span> (keys_.<a class="code" href="classhashmap.html#ac142b3f8b73c76d5d4545bbd299007e5">contains</a>(key)) {</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;      <span class="keyword">typename</span> list::iterator iter = keys_[key];</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;      keys_.erase(key);</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;      entries_.erase(iter);</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;      <span class="keywordflow">return</span> 1;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    }</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  }</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <span class="comment">// Returns the keys in the map in insertion order.</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno"><a class="line" href="classLinkedHashMap.html#a06baf18c4e2394b6cdc4da4e0c6f4348">   85</a></span>&#160;  std::list&lt;Key&gt; <a class="code" href="classLinkedHashMap.html#a06baf18c4e2394b6cdc4da4e0c6f4348">keys</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="keyword">  </span>{</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    std::list&lt;Key&gt; result;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="keywordflow">foreach</span> (<span class="keyword">const</span> <a class="code" href="classLinkedHashMap.html#ae6cfccfbd837f8f746d1e1efeeeb5455">entry</a>&amp; <a class="code" href="classLinkedHashMap.html#ae6cfccfbd837f8f746d1e1efeeeb5455">entry</a>, entries_) {</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;      result.push_back(entry.first);</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    }</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  }</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  <span class="comment">// Returns the values in the map in insertion order.</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno"><a class="line" href="classLinkedHashMap.html#a9963e9d9df74ec0f589efe7d81d74c30">   97</a></span>&#160;  std::list&lt;Value&gt; <a class="code" href="classLinkedHashMap.html#a9963e9d9df74ec0f589efe7d81d74c30">values</a>()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="keyword">  </span>{</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="keywordflow">return</span> keys_.empty();</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  }</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
-<div class="line"><a name="l00102"></a><span class="lineno"><a class="line" href="classLinkedHashMap.html#adb20fe094f8e8b9b772ce24c6288a390">  102</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classLinkedHashMap.html#adb20fe094f8e8b9b772ce24c6288a390">clear</a>()</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  {</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    values_.clear();</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    keys_.clear();</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    std::list&lt;Value&gt; result;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="keywordflow">foreach</span> (<span class="keyword">const</span> <a class="code" href="classLinkedHashMap.html#ae6cfccfbd837f8f746d1e1efeeeb5455">entry</a>&amp; <a class="code" href="classLinkedHashMap.html#ae6cfccfbd837f8f746d1e1efeeeb5455">entry</a>, entries_) {</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;      result.push_back(entry.second);</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    }</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <span class="keywordflow">return</span> result;</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  }</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  <a class="code" href="classLinkedHashMap.html#aa4aded6047c16127085b71e482b5b023">list</a> keys_;  <span class="comment">// Keys ordered by the insertion order.</span></div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  <a class="code" href="classLinkedHashMap.html#ae1481b645456990fbcf9493e334ac555">map</a> values_;  <span class="comment">// Map of values and &quot;pointers&quot; to the linked list.</span></div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;};</div>
+<div class="line"><a name="l00108"></a><span class="lineno"><a class="line" href="classLinkedHashMap.html#adc48b5dccbbe7fcb942d2f425ca6534a">  108</a></span>&#160;  <span class="keywordtype">size_t</span> <a class="code" href="classLinkedHashMap.html#adc48b5dccbbe7fcb942d2f425ca6534a">size</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="keyword">  </span>{</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <span class="keywordflow">return</span> keys_.size();</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  }</div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="preprocessor">#endif // __STOUT_LINKEDHASHMAP_HPP__</span></div>
-<div class="ttc" id="classLinkedHashMap_html_ab364b2e480e7913f5b999742104b9ad5"><div class="ttname"><a href="classLinkedHashMap.html#ab364b2e480e7913f5b999742104b9ad5">LinkedHashMap::empty</a></div><div class="ttdeci">bool empty() const </div><div class="ttdef"><b>Definition:</b> linkedhashmap.hpp:97</div></div>
+<div class="line"><a name="l00113"></a><span class="lineno"><a class="line" href="classLinkedHashMap.html#ab364b2e480e7913f5b999742104b9ad5">  113</a></span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="classLinkedHashMap.html#ab364b2e480e7913f5b999742104b9ad5">empty</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="keyword">  </span>{</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <span class="keywordflow">return</span> keys_.empty();</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;  }</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;</div>
+<div class="line"><a name="l00118"></a><span class="lineno"><a class="line" href="classLinkedHashMap.html#adb20fe094f8e8b9b772ce24c6288a390">  118</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classLinkedHashMap.html#adb20fe094f8e8b9b772ce24c6288a390">clear</a>()</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;  {</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    entries_.clear();</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    keys_.clear();</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;  }</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;  <span class="comment">// Support for iteration; this allows using `foreachpair` and</span></div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;  <span class="comment">// related constructs. Note that these iterate over the map in</span></div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;  <span class="comment">// insertion order.</span></div>
+<div class="line"><a name="l00127"></a><span class="lineno"><a class="line" href="classLinkedHashMap.html#a04be3981a72f3a912a2c6fefccc0f017">  127</a></span>&#160;  <span class="keyword">typename</span> list::iterator <a class="code" href="classLinkedHashMap.html#a04be3981a72f3a912a2c6fefccc0f017">begin</a>() { <span class="keywordflow">return</span> entries_.begin(); }</div>
+<div class="line"><a name="l00128"></a><span class="lineno"><a class="line" href="classLinkedHashMap.html#aee49d78a6e99dac010bd0d2a3b68229b">  128</a></span>&#160;  <span class="keyword">typename</span> list::iterator <a class="code" href="classLinkedHashMap.html#aee49d78a6e99dac010bd0d2a3b68229b">end</a>() { <span class="keywordflow">return</span> entries_.end(); }</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;</div>
+<div class="line"><a name="l00130"></a><span class="lineno"><a class="line" href="classLinkedHashMap.html#a730c1964960e69c5f768d43828e98243">  130</a></span>&#160;  <span class="keyword">typename</span> list::const_iterator <a class="code" href="classLinkedHashMap.html#a730c1964960e69c5f768d43828e98243">begin</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> entries_.cbegin(); }</div>
+<div class="line"><a name="l00131"></a><span class="lineno"><a class="line" href="classLinkedHashMap.html#a02edf8b2b3a433886bd07c7090242e93">  131</a></span>&#160;  <span class="keyword">typename</span> list::const_iterator <a class="code" href="classLinkedHashMap.html#a02edf8b2b3a433886bd07c7090242e93">end</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> entries_.cend(); }</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;  <a class="code" href="classLinkedHashMap.html#aa39f6b99d893dd183e93dd79086fdfd6">list</a> entries_; <span class="comment">// Key-value pairs ordered by insertion order.</span></div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;  <a class="code" href="classLinkedHashMap.html#a0e2e18b706727c05990f0b65dc5e0cf2">map</a> keys_; <span class="comment">// Map from key to &quot;pointer&quot; to key&#39;s location in list.</span></div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;};</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;<span class="preprocessor">#endif // __STOUT_LINKEDHASHMAP_HPP__</span></div>
+<div class="ttc" id="classLinkedHashMap_html_ab364b2e480e7913f5b999742104b9ad5"><div class="ttname"><a href="classLinkedHashMap.html#ab364b2e480e7913f5b999742104b9ad5">LinkedHashMap::empty</a></div><div class="ttdeci">bool empty() const </div><div class="ttdef"><b>Definition:</b> linkedhashmap.hpp:113</div></div>
 <div class="ttc" id="classOption_html"><div class="ttname"><a href="classOption.html">Option</a></div><div class="ttdef"><b>Definition:</b> option.hpp:24</div></div>
-<div class="ttc" id="classLinkedHashMap_html_ae87141dd103665dca487b62d385d5c44"><div class="ttname"><a href="classLinkedHashMap.html#ae87141dd103665dca487b62d385d5c44">LinkedHashMap::at</a></div><div class="ttdeci">const Value &amp; at(const Key &amp;key) const </div><div class="ttdef"><b>Definition:</b> linkedhashmap.hpp:57</div></div>
-<div class="ttc" id="classLinkedHashMap_html_aa4aded6047c16127085b71e482b5b023"><div class="ttname"><a href="classLinkedHashMap.html#aa4aded6047c16127085b71e482b5b023">LinkedHashMap::list</a></div><div class="ttdeci">std::list&lt; Key &gt; list</div><div class="ttdef"><b>Definition:</b> linkedhashmap.hpp:31</div></div>
-<div class="ttc" id="classLinkedHashMap_html_a06baf18c4e2394b6cdc4da4e0c6f4348"><div class="ttname"><a href="classLinkedHashMap.html#a06baf18c4e2394b6cdc4da4e0c6f4348">LinkedHashMap::keys</a></div><div class="ttdeci">std::list&lt; Key &gt; keys() const </div><div class="ttdef"><b>Definition:</b> linkedhashmap.hpp:78</div></div>
-<div class="ttc" id="classLinkedHashMap_html_adc48b5dccbbe7fcb942d2f425ca6534a"><div class="ttname"><a href="classLinkedHashMap.html#adc48b5dccbbe7fcb942d2f425ca6534a">LinkedHashMap::size</a></div><div class="ttdeci">size_t size() const </div><div class="ttdef"><b>Definition:</b> linkedhashmap.hpp:92</div></div>
-<div class="ttc" id="classhashmap_html"><div class="ttname"><a href="classhashmap.html">hashmap</a></div><div class="ttdef"><b>Definition:</b> hashmap.hpp:38</div></div>
-<div class="ttc" id="classLinkedHashMap_html_aeef7db0820a261eb3629b229f9952049"><div class="ttname"><a href="classLinkedHashMap.html#aeef7db0820a261eb3629b229f9952049">LinkedHashMap::erase</a></div><div class="ttdeci">size_t erase(const Key &amp;key)</div><div class="ttdef"><b>Definition:</b> linkedhashmap.hpp:67</div></div>
+<div class="ttc" id="classLinkedHashMap_html_ae87141dd103665dca487b62d385d5c44"><div class="ttname"><a href="classLinkedHashMap.html#ae87141dd103665dca487b62d385d5c44">LinkedHashMap::at</a></div><div class="ttdeci">const Value &amp; at(const Key &amp;key) const </div><div class="ttdef"><b>Definition:</b> linkedhashmap.hpp:63</div></div>
+<div class="ttc" id="classLinkedHashMap_html_ae6cfccfbd837f8f746d1e1efeeeb5455"><div class="ttname"><a href="classLinkedHashMap.html#ae6cfccfbd837f8f746d1e1efeeeb5455">LinkedHashMap::entry</a></div><div class="ttdeci">std::pair&lt; Key, Value &gt; entry</div><div class="ttdef"><b>Definition:</b> linkedhashmap.hpp:32</div></div>
+<div class="ttc" id="classLinkedHashMap_html_a06baf18c4e2394b6cdc4da4e0c6f4348"><div class="ttname"><a href="classLinkedHashMap.html#a06baf18c4e2394b6cdc4da4e0c6f4348">LinkedHashMap::keys</a></div><div class="ttdeci">std::list&lt; Key &gt; keys() const </div><div class="ttdef"><b>Definition:</b> linkedhashmap.hpp:85</div></div>
+<div class="ttc" id="classLinkedHashMap_html_a730c1964960e69c5f768d43828e98243"><div class="ttname"><a href="classLinkedHashMap.html#a730c1964960e69c5f768d43828e98243">LinkedHashMap::begin</a></div><div class="ttdeci">list::const_iterator begin() const </div><div class="ttdef"><b>Definition:</b> linkedhashmap.hpp:130</div></div>
+<div class="ttc" id="classLinkedHashMap_html_adc48b5dccbbe7fcb942d2f425ca6534a"><div class="ttname"><a href="classLinkedHashMap.html#adc48b5dccbbe7fcb942d2f425ca6534a">LinkedHashMap::size</a></div><div class="ttdeci">size_t size() const </div><div class="ttdef"><b>Definition:</b> linkedhashmap.hpp:108</div></div>
+<div class="ttc" id="classhashmap_html"><div class="ttname"><a href="classhashmap.html">hashmap&lt; Key, typename list::iterator &gt;</a></div></div>
+<div class="ttc" id="classLinkedHashMap_html_a02edf8b2b3a433886bd07c7090242e93"><div class="ttname"><a href="classLinkedHashMap.html#a02edf8b2b3a433886bd07c7090242e93">LinkedHashMap::end</a></div><div class="ttdeci">list::const_iterator end() const </div><div class="ttdef"><b>Definition:</b> linkedhashmap.hpp:131</div></div>
+<div class="ttc" id="classLinkedHashMap_html_aeef7db0820a261eb3629b229f9952049"><div class="ttname"><a href="classLinkedHashMap.html#aeef7db0820a261eb3629b229f9952049">LinkedHashMap::erase</a></div><div class="ttdeci">size_t erase(const Key &amp;key)</div><div class="ttdef"><b>Definition:</b> linkedhashmap.hpp:73</div></div>
+<div class="ttc" id="classLinkedHashMap_html_a0e2e18b706727c05990f0b65dc5e0cf2"><div class="ttname"><a href="classLinkedHashMap.html#a0e2e18b706727c05990f0b65dc5e0cf2">LinkedHashMap::map</a></div><div class="ttdeci">hashmap&lt; Key, typename list::iterator &gt; map</div><div class="ttdef"><b>Definition:</b> linkedhashmap.hpp:34</div></div>
+<div class="ttc" id="classLinkedHashMap_html_a04be3981a72f3a912a2c6fefccc0f017"><div class="ttname"><a href="classLinkedHashMap.html#a04be3981a72f3a912a2c6fefccc0f017">LinkedHashMap::begin</a></div><div class="ttdeci">list::iterator begin()</div><div class="ttdef"><b>Definition:</b> linkedhashmap.hpp:127</div></div>
 <div class="ttc" id="option_8hpp_html"><div class="ttname"><a href="option_8hpp.html">option.hpp</a></div></div>
-<div class="ttc" id="classLinkedHashMap_html_a4b6c8f1254c3ccd2459d94215156c1bd"><div class="ttname"><a href="classLinkedHashMap.html#a4b6c8f1254c3ccd2459d94215156c1bd">LinkedHashMap::at</a></div><div class="ttdeci">Value &amp; at(const Key &amp;key)</div><div class="ttdef"><b>Definition:</b> linkedhashmap.hpp:52</div></div>
-<div class="ttc" id="classLinkedHashMap_html_a420faa2efd1818fdbc58193256825760"><div class="ttname"><a href="classLinkedHashMap.html#a420faa2efd1818fdbc58193256825760">LinkedHashMap::operator[]</a></div><div class="ttdeci">Value &amp; operator[](const Key &amp;key)</div><div class="ttdef"><b>Definition:</b> linkedhashmap.hpp:34</div></div>
+<div class="ttc" id="classLinkedHashMap_html_a4b6c8f1254c3ccd2459d94215156c1bd"><div class="ttname"><a href="classLinkedHashMap.html#a4b6c8f1254c3ccd2459d94215156c1bd">LinkedHashMap::at</a></div><div class="ttdeci">Value &amp; at(const Key &amp;key)</div><div class="ttdef"><b>Definition:</b> linkedhashmap.hpp:58</div></div>
+<div class="ttc" id="classLinkedHashMap_html_a420faa2efd1818fdbc58193256825760"><div class="ttname"><a href="classLinkedHashMap.html#a420faa2efd1818fdbc58193256825760">LinkedHashMap::operator[]</a></div><div class="ttdeci">Value &amp; operator[](const Key &amp;key)</div><div class="ttdef"><b>Definition:</b> linkedhashmap.hpp:36</div></div>
+<div class="ttc" id="foreach_8hpp_html"><div class="ttname"><a href="foreach_8hpp.html">foreach.hpp</a></div></div>
 <div class="ttc" id="structNone_html"><div class="ttname"><a href="structNone.html">None</a></div><div class="ttdef"><b>Definition:</b> none.hpp:27</div></div>
-<div class="ttc" id="classLinkedHashMap_html_adb20fe094f8e8b9b772ce24c6288a390"><div class="ttname"><a href="classLinkedHashMap.html#adb20fe094f8e8b9b772ce24c6288a390">LinkedHashMap::clear</a></div><div class="ttdeci">void clear()</div><div class="ttdef"><b>Definition:</b> linkedhashmap.hpp:102</div></div>
-<div class="ttc" id="classLinkedHashMap_html"><div class="ttname"><a href="classLinkedHashMap.html">LinkedHashMap</a></div><div class="ttdef"><b>Definition:</b> linkedhashmap.hpp:28</div></div>
-<div class="ttc" id="classLinkedHashMap_html_a1e01999a72b4e7f0d2541ff1b9892123"><div class="ttname"><a href="classLinkedHashMap.html#a1e01999a72b4e7f0d2541ff1b9892123">LinkedHashMap::contains</a></div><div class="ttdeci">bool contains(const Key &amp;key) const </div><div class="ttdef"><b>Definition:</b> linkedhashmap.hpp:62</div></div>
-<div class="ttc" id="classLinkedHashMap_html_ae1481b645456990fbcf9493e334ac555"><div class="ttname"><a href="classLinkedHashMap.html#ae1481b645456990fbcf9493e334ac555">LinkedHashMap::map</a></div><div class="ttdeci">hashmap&lt; Key, std::pair&lt; Value, typename list::iterator &gt; &gt; map</div><div class="ttdef"><b>Definition:</b> linkedhashmap.hpp:32</div></div>
-<div class="ttc" id="classhashmap_html_ac142b3f8b73c76d5d4545bbd299007e5"><div class="ttname"><a href="classhashmap.html#ac142b3f8b73c76d5d4545bbd299007e5">hashmap::contains</a></div><div class="ttdeci">bool contains(const Key &amp;key) const </div><div class="ttdef"><b>Definition:</b> hashmap.hpp:86</div></div>
+<div class="ttc" id="classLinkedHashMap_html_adb20fe094f8e8b9b772ce24c6288a390"><div class="ttname"><a href="classLinkedHashMap.html#adb20fe094f8e8b9b772ce24c6288a390">LinkedHashMap::clear</a></div><div class="ttdeci">void clear()</div><div class="ttdef"><b>Definition:</b> linkedhashmap.hpp:118</div></div>
+<div class="ttc" id="classLinkedHashMap_html"><div class="ttname"><a href="classLinkedHashMap.html">LinkedHashMap</a></div><div class="ttdef"><b>Definition:</b> linkedhashmap.hpp:29</div></div>
+<div class="ttc" id="classLinkedHashMap_html_a1e01999a72b4e7f0d2541ff1b9892123"><div class="ttname"><a href="classLinkedHashMap.html#a1e01999a72b4e7f0d2541ff1b9892123">LinkedHashMap::contains</a></div><div class="ttdeci">bool contains(const Key &amp;key) const </div><div class="ttdef"><b>Definition:</b> linkedhashmap.hpp:68</div></div>
+<div class="ttc" id="classhashmap_html_ac142b3f8b73c76d5d4545bbd299007e5"><div class="ttname"><a href="classhashmap.html#ac142b3f8b73c76d5d4545bbd299007e5">hashmap::contains</a></div><div class="ttdeci">bool contains(const Key &amp;key) const </div><div class="ttdef"><b>Definition:</b> hashmap.hpp:84</div></div>
 <div class="ttc" id="hashmap_8hpp_html"><div class="ttname"><a href="hashmap_8hpp.html">hashmap.hpp</a></div></div>
-<div class="ttc" id="classLinkedHashMap_html_a9963e9d9df74ec0f589efe7d81d74c30"><div class="ttname"><a href="classLinkedHashMap.html#a9963e9d9df74ec0f589efe7d81d74c30">LinkedHashMap::values</a></div><div class="ttdeci">std::list&lt; Value &gt; values() const </div><div class="ttdef"><b>Definition:</b> linkedhashmap.hpp:83</div></div>
+<div class="ttc" id="classLinkedHashMap_html_aee49d78a6e99dac010bd0d2a3b68229b"><div class="ttname"><a href="classLinkedHashMap.html#aee49d78a6e99dac010bd0d2a3b68229b">LinkedHashMap::end</a></div><div class="ttdeci">list::iterator end()</div><div class="ttdef"><b>Definition:</b> linkedhashmap.hpp:128</div></div>
+<div class="ttc" id="classLinkedHashMap_html_a9963e9d9df74ec0f589efe7d81d74c30"><div class="ttname"><a href="classLinkedHashMap.html#a9963e9d9df74ec0f589efe7d81d74c30">LinkedHashMap::values</a></div><div class="ttdeci">std::list&lt; Value &gt; values() const </div><div class="ttdef"><b>Definition:</b> linkedhashmap.hpp:97</div></div>
+<div class="ttc" id="classLinkedHashMap_html_aa39f6b99d893dd183e93dd79086fdfd6"><div class="ttname"><a href="classLinkedHashMap.html#aa39f6b99d893dd183e93dd79086fdfd6">LinkedHashMap::list</a></div><div class="ttdeci">std::list&lt; entry &gt; list</div><div class="ttdef"><b>Definition:</b> linkedhashmap.hpp:33</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

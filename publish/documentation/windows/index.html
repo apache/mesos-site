@@ -151,9 +151,7 @@ $ cd mesos
 $ .\bootstrap.bat
 
 # Generate the solution and build.
-$ mkdir build
-$ cd build
-$ cmake .. -G "Visual Studio 14 2015 Win64" -DENABLE_LIBEVENT=1
+$ .\support\windows-build.bat
 
 # After generating the Visual Studio solution you can use the IDE to open
 # the project and skip the next step. In this case it is recommended to set
@@ -167,7 +165,7 @@ $ cd src
 # The Windows agent exposes new isolators that must be used as with
 # the `--isolation` flag. To get started point the agent to a working
 # master, using eiher an IP address or zookeeper information.
-$ mesos-agent.exe --master=&lt;master&gt; --work_dir=&lt;work folder&gt; --isolation=windows/cpu,filesystem/windows --launcher_dir=&lt;repository&gt;\build\src
+$ mesos-agent.exe --master=&lt;master&gt; --work_dir=&lt;work folder&gt; --launcher_dir=&lt;repository&gt;\build\src
 </code></pre>
 
 <h2>Known Limitations</h2>
