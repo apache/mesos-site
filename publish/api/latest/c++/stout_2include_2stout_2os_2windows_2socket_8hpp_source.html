@@ -72,164 +72,153 @@
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;glog/logging.h&gt;</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="abort_8hpp.html">stout/abort.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keyword">namespace </span>net {</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">// Initialize Windows socket stack.</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="namespacenet.html#a17ce7717149ddc94672426766a990fbb">   25</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code" href="namespacenet.html#a17ce7717149ddc94672426766a990fbb">wsa_initialize</a>()</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;{</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;  <span class="comment">// Initialize WinSock (request version 2.2).</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;  WORD requestedVersion = MAKEWORD(2, 2);</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  WSADATA data;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">int</span> result = ::WSAStartup(requestedVersion, &amp;data);</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <span class="keywordflow">if</span> (result != 0) {</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#ae58e703656ab4a1bd5d9870441236727">error</a> = ::WSAGetLastError();</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    LOG(ERROR) &lt;&lt; <span class="stringliteral">&quot;Could not initialize WinSock, error code : &quot;</span> &lt;&lt; <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#ae58e703656ab4a1bd5d9870441236727">error</a>;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  }</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <span class="comment">// Check that the WinSock version we got back is 2.2 or higher.</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <span class="comment">// The high-order byte specifies the minor version number.</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  <span class="keywordflow">if</span> (LOBYTE(data.wVersion) &lt; 2 ||</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;      (LOBYTE(data.wVersion) == 2 &amp;&amp; HIBYTE(data.wVersion) != 2)) {</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    LOG(ERROR) &lt;&lt; <span class="stringliteral">&quot;Incorrect WinSock version found : &quot;</span> &lt;&lt; LOBYTE(data.wVersion)</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;               &lt;&lt; <span class="stringliteral">&quot;.&quot;</span> &lt;&lt; HIBYTE(data.wVersion);</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="comment">// WinSock was initialized, we just didn&#39;t like the version, so we need to</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="comment">// clean up.</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordflow">if</span> (::WSACleanup() != 0) {</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;      <span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#ae58e703656ab4a1bd5d9870441236727">error</a> = ::WSAGetLastError();</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;      LOG(ERROR) &lt;&lt; <span class="stringliteral">&quot;Could not cleanup WinSock, error code : &quot;</span> &lt;&lt; <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#ae58e703656ab4a1bd5d9870441236727">error</a>;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    }</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  }</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;}</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="fd_8hpp.html">stout/os/windows/fd.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">namespace </span>net {</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">// Initialize Windows socket stack.</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="namespacenet.html#a17ce7717149ddc94672426766a990fbb">   26</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code" href="namespacenet.html#a17ce7717149ddc94672426766a990fbb">wsa_initialize</a>()</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;{</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;  <span class="comment">// Initialize WinSock (request version 2.2).</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  WORD requestedVersion = MAKEWORD(2, 2);</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;  WSADATA data;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">int</span> result = ::WSAStartup(requestedVersion, &amp;data);</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  <span class="keywordflow">if</span> (result != 0) {</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#ae58e703656ab4a1bd5d9870441236727">error</a> = ::WSAGetLastError();</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    LOG(ERROR) &lt;&lt; <span class="stringliteral">&quot;Could not initialize WinSock, error code : &quot;</span> &lt;&lt; <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#ae58e703656ab4a1bd5d9870441236727">error</a>;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  }</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <span class="comment">// Check that the WinSock version we got back is 2.2 or higher.</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  <span class="comment">// The high-order byte specifies the minor version number.</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <span class="keywordflow">if</span> (LOBYTE(data.wVersion) &lt; 2 ||</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;      (LOBYTE(data.wVersion) == 2 &amp;&amp; HIBYTE(data.wVersion) != 2)) {</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    LOG(ERROR) &lt;&lt; <span class="stringliteral">&quot;Incorrect WinSock version found : &quot;</span> &lt;&lt; LOBYTE(data.wVersion)</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;               &lt;&lt; <span class="stringliteral">&quot;.&quot;</span> &lt;&lt; HIBYTE(data.wVersion);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="comment">// WinSock was initialized, we just didn&#39;t like the version, so we need to</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="comment">// clean up.</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keywordflow">if</span> (::WSACleanup() != 0) {</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;      <span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#ae58e703656ab4a1bd5d9870441236727">error</a> = ::WSAGetLastError();</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;      LOG(ERROR) &lt;&lt; <span class="stringliteral">&quot;Could not cleanup WinSock, error code : &quot;</span> &lt;&lt; <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#ae58e703656ab4a1bd5d9870441236727">error</a>;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    }</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  }</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;}</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
-<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="namespacenet.html#a31f4fd4303f4fd588673f1a4847a44bc">   59</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code" href="namespacenet.html#a31f4fd4303f4fd588673f1a4847a44bc">wsa_cleanup</a>()</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;{</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="comment">// Cleanup WinSock. Wait for any outstanding socket operations to complete</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="comment">// before exiting. Retry for a maximum of 10 times at 1 second intervals.</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <span class="keywordtype">int</span> retriesLeft = 10;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="keywordflow">while</span> (retriesLeft &gt; 0) {</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> result = ::WSACleanup();</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keywordflow">if</span> (result != 0) {</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;      <span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#ae58e703656ab4a1bd5d9870441236727">error</a> = ::WSAGetLastError();</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;      <span class="comment">// Make it idempotent.</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;      <span class="keywordflow">if</span> (error == WSANOTINITIALISED) {</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;      }</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;      <span class="comment">// Wait for any blocking calls to complete and retry after 1 second.</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;      <span class="keywordflow">if</span> (error == WSAEINPROGRESS) {</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        LOG(ERROR) &lt;&lt; <span class="stringliteral">&quot;Waiting for outstanding WinSock calls to complete.&quot;</span>;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        ::Sleep(1000);</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        retriesLeft--;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;      } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        LOG(ERROR) &lt;&lt; <span class="stringliteral">&quot;Could not cleanup WinSock, error code : &quot;</span> &lt;&lt; <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#ae58e703656ab4a1bd5d9870441236727">error</a>;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;      }</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    }</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  }</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  <span class="keywordflow">if</span> (retriesLeft == 0) {</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  }</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;}</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="namespacenet.html#a31f4fd4303f4fd588673f1a4847a44bc">   60</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code" href="namespacenet.html#a31f4fd4303f4fd588673f1a4847a44bc">wsa_cleanup</a>()</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;{</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="comment">// Cleanup WinSock. Wait for any outstanding socket operations to complete</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <span class="comment">// before exiting. Retry for a maximum of 10 times at 1 second intervals.</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keywordtype">int</span> retriesLeft = 10;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <span class="keywordflow">while</span> (retriesLeft &gt; 0) {</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> result = ::WSACleanup();</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keywordflow">if</span> (result != 0) {</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;      <span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#ae58e703656ab4a1bd5d9870441236727">error</a> = ::WSAGetLastError();</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;      <span class="comment">// Make it idempotent.</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;      <span class="keywordflow">if</span> (error == WSANOTINITIALISED) {</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;      }</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;      <span class="comment">// Wait for any blocking calls to complete and retry after 1 second.</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;      <span class="keywordflow">if</span> (error == WSAEINPROGRESS) {</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        LOG(ERROR) &lt;&lt; <span class="stringliteral">&quot;Waiting for outstanding WinSock calls to complete.&quot;</span>;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        ::Sleep(1000);</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        retriesLeft--;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;      } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        LOG(ERROR) &lt;&lt; <span class="stringliteral">&quot;Could not cleanup WinSock, error code : &quot;</span> &lt;&lt; <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#ae58e703656ab4a1bd5d9870441236727">error</a>;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;      }</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    }</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  }</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <span class="keywordflow">if</span> (retriesLeft == 0) {</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  }</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;}</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="comment">// The error indicates the last socket operation has been</span></div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="comment">// interupted, the operation can be restarted imediately.</span></div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="comment">// The error will append on Windows only when the operation</span></div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="comment">// is interupted using  `WSACancelBlockingCall`.</span></div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code" href="namespacenet.html#a190d273d305decda6696ed04b3adbd59">is_restartable_error</a>(<span class="keywordtype">int</span> <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#ae58e703656ab4a1bd5d9870441236727">error</a>) { <span class="keywordflow">return</span> (error == WSAEINTR); }</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="comment">// The error indicates the last socket operation has been</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="comment">// interupted, the operation can be restarted imediately.</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="comment">// The error will append on Windows only when the operation</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="comment">// is interupted using  `WSACancelBlockingCall`.</span></div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code" href="namespacenet.html#a190d273d305decda6696ed04b3adbd59">is_restartable_error</a>(<span class="keywordtype">int</span> <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#ae58e703656ab4a1bd5d9870441236727">error</a>) { <span class="keywordflow">return</span> (error == WSAEINTR); }</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="comment">// The error indicates the last socket function on a non-blocking socket</span></div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="comment">// cannot be completed. This is a temporary condition and the caller can</span></div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="comment">// retry the operation later.</span></div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code" href="namespacenet.html#a750f9463500ec714c5d5db550340a772">is_retryable_error</a>(<span class="keywordtype">int</span> error) { <span class="keywordflow">return</span> (error == WSAEWOULDBLOCK); }</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code" href="namespacenet.html#a6d996e15b39630257af8d8a0379c7f7a">is_inprogress_error</a>(<span class="keywordtype">int</span> error) { <span class="keywordflow">return</span> (error == WSAEWOULDBLOCK); }</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="comment">// The error indicates the last socket function on a non-blocking socket</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="comment">// cannot be completed. This is a temporary condition and the caller can</span></div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="comment">// retry the operation later.</span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code" href="namespacenet.html#a750f9463500ec714c5d5db550340a772">is_retryable_error</a>(<span class="keywordtype">int</span> error) { <span class="keywordflow">return</span> (error == WSAEWOULDBLOCK); }</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code" href="namespacenet.html#a6d996e15b39630257af8d8a0379c7f7a">is_inprogress_error</a>(<span class="keywordtype">int</span> error) { <span class="keywordflow">return</span> (error == WSAEWOULDBLOCK); }</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
-<div class="line"><a name="l00108"></a><span class="lineno"><a class="line" href="namespacenet.html#a2fa6b31301f6be7d405058c0ba8e6fdc">  108</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code" href="namespacenet.html#a55b1d2f6617c801b8c5c54dfc8ad2036">is_socket</a>(SOCKET fd)</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;{</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  <span class="keywordtype">int</span> value = 0;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  <span class="keywordtype">int</span> length = <span class="keyword">sizeof</span>(int);</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;  <span class="keywordflow">if</span> (::getsockopt(fd, SOL_SOCKET, SO_TYPE, (<span class="keywordtype">char</span>*)&amp;value, &amp;length) ==</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;      SOCKET_ERROR) {</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <span class="keywordflow">switch</span> (WSAGetLastError()) {</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;      <span class="keywordflow">case</span> WSAENOTSOCK:</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;      <span class="keywordflow">default</span>:</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        <span class="comment">// TODO(benh): Handle `WSANOTINITIALISED`.</span></div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        <a class="code" href="abort_8hpp.html#a4d84a74fe6e4f84bc3d2f901b9e89f93">ABORT</a>(<span class="stringliteral">&quot;Not expecting &#39;getsockopt&#39; to fail when passed a valid socket&quot;</span>);</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    }</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;  }</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;}</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;<span class="comment">// NOTE: The below wrappers are used to silence some implicit</span></div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="comment">// type-casting warnings.</span></div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;</div>
-<div class="line"><a name="l00130"></a><span class="lineno"><a class="line" href="namespacenet.html#a2079d24ce06c702f8ded024deb2b25b7">  130</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">int</span> <a class="code" href="namespacenet.html#a2079d24ce06c702f8ded024deb2b25b7">bind</a>(<span class="keywordtype">int</span> <a class="code" href="namespacenet.html#ae2eecd88179039566daadf206b05411f">socket</a>, <span class="keyword">const</span> <span class="keyword">struct</span> sockaddr* addr, <span class="keywordtype">size_t</span> addrlen)</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;{</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;  CHECK_LE(addrlen, INT32_MAX);</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;  <a class="code" href="namespaceprocess_1_1network.html#a0a0e16bed4bf0122f2b3513a78399d70">return ::bind</a>(socket, addr, static_cast&lt;int&gt;(addrlen));</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;}</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;</div>
-<div class="line"><a name="l00137"></a><span class="lineno"><a class="line" href="namespacenet.html#a48731dd265aac9362f05f58e4d9fc648">  137</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">int</span> <a class="code" href="namespacenet.html#a48731dd265aac9362f05f58e4d9fc648">connect</a>(<span class="keywordtype">int</span> <a class="code" href="namespacenet.html#ae2eecd88179039566daadf206b05411f">socket</a>, <span class="keyword">const</span> <span class="keyword">struct</span> sockaddr* <a class="code" href="namespaceprocess_1_1network.html#a19fdac67ec6782ce4b4a23fe98ddb1e2">address</a>, <span class="keywordtype">size_t</span> addrlen)</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;{</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;  CHECK_LE(addrlen, INT32_MAX);</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;  <a class="code" href="namespaceprocess_1_1http.html#a54e53c8006298fe99e3fb5f55c0e8c41">return ::connect</a>(socket, address, static_cast&lt;int&gt;(addrlen));</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;}</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;</div>
-<div class="line"><a name="l00144"></a><span class="lineno"><a class="line" href="namespacenet.html#a3638840ecc7fad1f5deb9c5616b50027">  144</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a894c4d58faeee7675b9e7e8244de1386">ssize_t</a> <a class="code" href="namespacenet.html#a3638840ecc7fad1f5deb9c5616b50027">send</a>(<span class="keywordtype">int</span> sockfd, <span class="keyword">const</span> <span class="keywordtype">void</span>* buf, <span class="keywordtype">size_t</span> len, <span class="keywordtype">int</span> <a class="code" href="namespacemesos_1_1internal_1_1tests.html#af8289f648a916c3f66923867452c7b1b">flags</a>)</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;{</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;  CHECK_LE(len, INT32_MAX);</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;  <a class="code" href="namespacenet.html#a3638840ecc7fad1f5deb9c5616b50027">return ::send</a>(</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;      sockfd, static_cast&lt;const char*&gt;(buf), static_cast&lt;int&gt;(len), flags);</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;}</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;</div>
-<div class="line"><a name="l00152"></a><span class="lineno"><a class="line" href="namespacenet.html#a98dbffd7c3defce348ff8b1f7e91f803">  152</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">size_t</span> <a class="code" href="namespacenet.html#a98dbffd7c3defce348ff8b1f7e91f803">recv</a>(<span class="keywordtype">int</span> sockfd, <span class="keywordtype">void</span>* buf, <span class="keywordtype">size_t</span> len, <span class="keywordtype">int</span> <a class="code" href="namespacemesos_1_1internal_1_1tests.html#af8289f648a916c3f66923867452c7b1b">flags</a>)</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;{</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;  CHECK_LE(len, INT32_MAX);</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;  <a class="code" href="namespacenet.html#a98dbffd7c3defce348ff8b1f7e91f803">return ::recv</a>(sockfd, static_cast&lt;char*&gt;(buf), static_cast&lt;int&gt;(len), flags);</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;}</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;} <span class="comment">// namespace net {</span></div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="preprocessor">#endif // __STOUT_OS_WINDOWS_SOCKET_HPP__</span></div>
-<div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_a894c4d58faeee7675b9e7e8244de1386"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a894c4d58faeee7675b9e7e8244de1386">ssize_t</a></div><div class="ttdeci">SSIZE_T ssize_t</div><div class="ttdef"><b>Definition:</b> windows.hpp:175</div></div>
-<div class="ttc" id="namespacenet_html_a55b1d2f6617c801b8c5c54dfc8ad2036"><div class="ttname"><a href="namespacenet.html#a55b1d2f6617c801b8c5c54dfc8ad2036">net::is_socket</a></div><div class="ttdeci">bool is_socket(int fd)</div><div class="ttdef"><b>Definition:</b> socket.hpp:52</div></div>
-<div class="ttc" id="abort_8hpp_html_a4d84a74fe6e4f84bc3d2f901b9e89f93"><div class="ttname"><a href="abort_8hpp.html#a4d84a74fe6e4f84bc3d2f901b9e89f93">ABORT</a></div><div class="ttdeci">#define ABORT(...)</div><div class="ttdef"><b>Definition:</b> abort.hpp:40</div></div>
-<div class="ttc" id="namespaceprocess_1_1network_html_a19fdac67ec6782ce4b4a23fe98ddb1e2"><div class="ttname"><a href="namespaceprocess_1_1network.html#a19fdac67ec6782ce4b4a23fe98ddb1e2">process::network::address</a></div><div class="ttdeci">Try&lt; Address &gt; address(int s)</div><div class="ttdoc">Returns the Address with the assigned ip and assigned port. </div><div class="ttdef"><b>Definition:</b> network.hpp:77</div></div>
-<div class="ttc" id="namespacenet_html_ae2eecd88179039566daadf206b05411f"><div class="ttname"><a href="namespacenet.html#ae2eecd88179039566daadf206b05411f">net::socket</a></div><div class="ttdeci">Try&lt; int &gt; socket(int family, int type, int protocol)</div><div class="ttdef"><b>Definition:</b> socket.hpp:29</div></div>
-<div class="ttc" id="namespaceprocess_1_1network_html_a0a0e16bed4bf0122f2b3513a78399d70"><div class="ttname"><a href="namespaceprocess_1_1network.html#a0a0e16bed4bf0122f2b3513a78399d70">process::network::bind</a></div><div class="ttdeci">Try&lt; Nothing &gt; bind(int s, const Address &amp;address)</div><div class="ttdef"><b>Definition:</b> network.hpp:46</div></div>
-<div class="ttc" id="namespacenet_html_a6d996e15b39630257af8d8a0379c7f7a"><div class="ttname"><a href="namespacenet.html#a6d996e15b39630257af8d8a0379c7f7a">net::is_inprogress_error</a></div><div class="ttdeci">bool is_inprogress_error(int error)</div><div class="ttdef"><b>Definition:</b> socket.hpp:46</div></div>
-<div class="ttc" id="namespacenet_html_a2079d24ce06c702f8ded024deb2b25b7"><div class="ttname"><a href="namespacenet.html#a2079d24ce06c702f8ded024deb2b25b7">net::bind</a></div><div class="ttdeci">int bind(int socket, const struct sockaddr *addr, size_t addrlen)</div><div class="ttdef"><b>Definition:</b> socket.hpp:130</div></div>
-<div class="ttc" id="namespacenet_html_a190d273d305decda6696ed04b3adbd59"><div class="ttname"><a href="namespacenet.html#a190d273d305decda6696ed04b3adbd59">net::is_restartable_error</a></div><div class="ttdeci">bool is_restartable_error(int error)</div><div class="ttdef"><b>Definition:</b> socket.hpp:31</div></div>
-<div class="ttc" id="namespacenet_html_a17ce7717149ddc94672426766a990fbb"><div class="ttname"><a href="namespacenet.html#a17ce7717149ddc94672426766a990fbb">net::wsa_initialize</a></div><div class="ttdeci">bool wsa_initialize()</div><div class="ttdef"><b>Definition:</b> socket.hpp:25</div></div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="comment">// NOTE: The below wrappers are used to silence some implicit</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="comment">// type-casting warnings.</span></div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;</div>
+<div class="line"><a name="l00112"></a><span class="lineno"><a class="line" href="namespacenet.html#a9edfdf63a58b569ec3cb601aef9df17c">  112</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classos_1_1WindowsFD.html">os::WindowsFD</a> <a class="code" href="namespacenet.html#a9edfdf63a58b569ec3cb601aef9df17c">accept</a>(</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <span class="keyword">const</span> <a class="code" href="classos_1_1WindowsFD.html">os::WindowsFD</a>&amp; fd, sockaddr* addr, socklen_t* addrlen)</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;{</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;  <a class="code" href="namespaceprocess_1_1network.html#aa05dd9eea0c1e4d3d49e2fc049c1a446">return ::accept</a>(fd, addr, reinterpret_cast&lt;int*&gt;(addrlen));</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;}</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;</div>
+<div class="line"><a name="l00118"></a><span class="lineno"><a class="line" href="namespacenet.html#a96764dea6ff234ddde909e6372090459">  118</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">int</span> <a class="code" href="namespacenet.html#a96764dea6ff234ddde909e6372090459">bind</a>(</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    <span class="keyword">const</span> <a class="code" href="classos_1_1WindowsFD.html">os::WindowsFD</a>&amp; fd, <span class="keyword">const</span> sockaddr* addr, socklen_t addrlen)</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;{</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;  CHECK_LE(addrlen, INT32_MAX);</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;  <a class="code" href="namespaceprocess_1_1network.html#ad067110a4b38cc83785a43f49bf6c8e2">return ::bind</a>(fd, addr, static_cast&lt;int&gt;(addrlen));</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;}</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;</div>
+<div class="line"><a name="l00125"></a><span class="lineno"><a class="line" href="namespacenet.html#acf6a462b79620cf648fb3bcbb900d153">  125</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">int</span> <a class="code" href="namespacenet.html#acf6a462b79620cf648fb3bcbb900d153">connect</a>(</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="keyword">const</span> <a class="code" href="classos_1_1WindowsFD.html">os::WindowsFD</a>&amp; fd, <span class="keyword">const</span> sockaddr* <a class="code" href="namespaceprocess_1_1network.html#a1987d4376ac5e2f04ad72e6c84c7569c">address</a>, socklen_t addrlen)</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;{</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;  CHECK_LE(addrlen, INT32_MAX);</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;  <a class="code" href="namespaceprocess_1_1http.html#a54e53c8006298fe99e3fb5f55c0e8c41">return ::connect</a>(fd, address, static_cast&lt;int&gt;(addrlen));</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;}</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;</div>
+<div class="line"><a name="l00132"></a><span class="lineno"><a class="line" href="namespacenet.html#a69f77aa4677f1dd1c69169589b30a31b">  132</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a894c4d58faeee7675b9e7e8244de1386">ssize_t</a> <a class="code" href="namespacenet.html#a69f77aa4677f1dd1c69169589b30a31b">send</a>(</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    <span class="keyword">const</span> <a class="code" href="classos_1_1WindowsFD.html">os::WindowsFD</a>&amp; fd, <span class="keyword">const</span> <span class="keywordtype">void</span>* buf, <span class="keywordtype">size_t</span> len, <span class="keywordtype">int</span> <a class="code" href="namespacemesos_1_1internal_1_1tests.html#af8289f648a916c3f66923867452c7b1b">flags</a>)</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;{</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;  CHECK_LE(len, INT32_MAX);</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;  <a class="code" href="namespacenet.html#a69f77aa4677f1dd1c69169589b30a31b">return ::send</a>(</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;      fd, static_cast&lt;const char*&gt;(buf), static_cast&lt;int&gt;(len), flags);</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;}</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;</div>
+<div class="line"><a name="l00140"></a><span class="lineno"><a class="line" href="namespacenet.html#a5b5c23ac2d0fa4ccaedff024f2d9a32c">  140</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a894c4d58faeee7675b9e7e8244de1386">ssize_t</a> <a class="code" href="namespacenet.html#a5b5c23ac2d0fa4ccaedff024f2d9a32c">recv</a>(<span class="keyword">const</span> <a class="code" href="classos_1_1WindowsFD.html">os::WindowsFD</a>&amp; fd, <span class="keywordtype">void</span>* buf, <span class="keywordtype">size_t</span> len, <span class="keywordtype">int</span> <a class="code" href="namespacemesos_1_1internal_1_1tests.html#af8289f648a916c3f66923867452c7b1b">flags</a>)</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;{</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;  CHECK_LE(len, INT32_MAX);</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;  <a class="code" href="namespacenet.html#a5b5c23ac2d0fa4ccaedff024f2d9a32c">return ::recv</a>(fd, static_cast&lt;char*&gt;(buf), static_cast&lt;int&gt;(len), flags);</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;}</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;} <span class="comment">// namespace net {</span></div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;<span class="preprocessor">#endif // __STOUT_OS_WINDOWS_SOCKET_HPP__</span></div>
+<div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_a894c4d58faeee7675b9e7e8244de1386"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a894c4d58faeee7675b9e7e8244de1386">ssize_t</a></div><div class="ttdeci">SSIZE_T ssize_t</div><div class="ttdef"><b>Definition:</b> windows.hpp:176</div></div>
+<div class="ttc" id="namespacenet_html_a96764dea6ff234ddde909e6372090459"><div class="ttname"><a href="namespacenet.html#a96764dea6ff234ddde909e6372090459">net::bind</a></div><div class="ttdeci">int bind(const os::WindowsFD &amp;fd, const sockaddr *addr, socklen_t addrlen)</div><div class="ttdef"><b>Definition:</b> socket.hpp:118</div></div>
+<div class="ttc" id="namespacenet_html_a9edfdf63a58b569ec3cb601aef9df17c"><div class="ttname"><a href="namespacenet.html#a9edfdf63a58b569ec3cb601aef9df17c">net::accept</a></div><div class="ttdeci">os::WindowsFD accept(const os::WindowsFD &amp;fd, sockaddr *addr, socklen_t *addrlen)</div><div class="ttdef"><b>Definition:</b> socket.hpp:112</div></div>
+<div class="ttc" id="fd_8hpp_html"><div class="ttname"><a href="fd_8hpp.html">fd.hpp</a></div></div>
+<div class="ttc" id="classos_1_1WindowsFD_html"><div class="ttname"><a href="classos_1_1WindowsFD.html">os::WindowsFD</a></div><div class="ttdef"><b>Definition:</b> fd.hpp:49</div></div>
+<div class="ttc" id="namespaceprocess_1_1network_html_a1987d4376ac5e2f04ad72e6c84c7569c"><div class="ttname"><a href="namespaceprocess_1_1network.html#a1987d4376ac5e2f04ad72e6c84c7569c">process::network::address</a></div><div class="ttdeci">Try&lt; Address &gt; address(int_fd s)</div><div class="ttdoc">Returns the Address with the assigned ip and assigned port. </div><div class="ttdef"><b>Definition:</b> network.hpp:79</div></div>
+<div class="ttc" id="namespacenet_html_acf6a462b79620cf648fb3bcbb900d153"><div class="ttname"><a href="namespacenet.html#acf6a462b79620cf648fb3bcbb900d153">net::connect</a></div><div class="ttdeci">int connect(const os::WindowsFD &amp;fd, const sockaddr *address, socklen_t addrlen)</div><div class="ttdef"><b>Definition:</b> socket.hpp:125</div></div>
+<div class="ttc" id="namespacenet_html_a6d996e15b39630257af8d8a0379c7f7a"><div class="ttname"><a href="namespacenet.html#a6d996e15b39630257af8d8a0379c7f7a">net::is_inprogress_error</a></div><div class="ttdeci">bool is_inprogress_error(int error)</div><div class="ttdef"><b>Definition:</b> socket.hpp:48</div></div>
+<div class="ttc" id="namespacenet_html_a69f77aa4677f1dd1c69169589b30a31b"><div class="ttname"><a href="namespacenet.html#a69f77aa4677f1dd1c69169589b30a31b">net::send</a></div><div class="ttdeci">ssize_t send(const os::WindowsFD &amp;fd, const void *buf, size_t len, int flags)</div><div class="ttdef"><b>Definition:</b> socket.hpp:132</div></div>
+<div class="ttc" id="namespacenet_html_a190d273d305decda6696ed04b3adbd59"><div class="ttname"><a href="namespacenet.html#a190d273d305decda6696ed04b3adbd59">net::is_restartable_error</a></div><div class="ttdeci">bool is_restartable_error(int error)</div><div class="ttdef"><b>Definition:</b> socket.hpp:33</div></div>
+<div class="ttc" id="namespacenet_html_a17ce7717149ddc94672426766a990fbb"><div class="ttname"><a href="namespacenet.html#a17ce7717149ddc94672426766a990fbb">net::wsa_initialize</a></div><div class="ttdeci">bool wsa_initialize()</div><div class="ttdef"><b>Definition:</b> socket.hpp:26</div></div>
+<div class="ttc" id="namespacenet_html_a5b5c23ac2d0fa4ccaedff024f2d9a32c"><div class="ttname"><a href="namespacenet.html#a5b5c23ac2d0fa4ccaedff024f2d9a32c">net::recv</a></div><div class="ttdeci">ssize_t recv(const os::WindowsFD &amp;fd, void *buf, size_t len, int flags)</div><div class="ttdef"><b>Definition:</b> socket.hpp:140</div></div>
 <div class="ttc" id="namespaceprocess_1_1http_html_a54e53c8006298fe99e3fb5f55c0e8c41"><div class="ttname"><a href="namespaceprocess_1_1http.html#a54e53c8006298fe99e3fb5f55c0e8c41">process::http::connect</a></div><div class="ttdeci">Future&lt; Connection &gt; connect(const network::Address &amp;address, Scheme scheme)</div></div>
+<div class="ttc" id="namespaceprocess_1_1network_html_aa05dd9eea0c1e4d3d49e2fc049c1a446"><div class="ttname"><a href="namespaceprocess_1_1network.html#aa05dd9eea0c1e4d3d49e2fc049c1a446">process::network::accept</a></div><div class="ttdeci">Try&lt; int_fd &gt; accept(int_fd s)</div><div class="ttdef"><b>Definition:</b> network.hpp:31</div></div>
 <div class="ttc" id="abort_8hpp_html"><div class="ttname"><a href="abort_8hpp.html">abort.hpp</a></div></div>
-<div class="ttc" id="namespacenet_html_a98dbffd7c3defce348ff8b1f7e91f803"><div class="ttname"><a href="namespacenet.html#a98dbffd7c3defce348ff8b1f7e91f803">net::recv</a></div><div class="ttdeci">size_t recv(int sockfd, void *buf, size_t len, int flags)</div><div class="ttdef"><b>Definition:</b> socket.hpp:152</div></div>
 <div class="ttc" id="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec_html_ae58e703656ab4a1bd5d9870441236727"><div class="ttname"><a href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#ae58e703656ab4a1bd5d9870441236727">mesos::internal::slave::cni::spec::error</a></div><div class="ttdeci">std::string error(const std::string &amp;msg, uint32_t code)</div></div>
-<div class="ttc" id="namespacenet_html_a48731dd265aac9362f05f58e4d9fc648"><div class="ttname"><a href="namespacenet.html#a48731dd265aac9362f05f58e4d9fc648">net::connect</a></div><div class="ttdeci">int connect(int socket, const struct sockaddr *address, size_t addrlen)</div><div class="ttdef"><b>Definition:</b> socket.hpp:137</div></div>
-<div class="ttc" id="namespacenet_html_a31f4fd4303f4fd588673f1a4847a44bc"><div class="ttname"><a href="namespacenet.html#a31f4fd4303f4fd588673f1a4847a44bc">net::wsa_cleanup</a></div><div class="ttdeci">bool wsa_cleanup()</div><div class="ttdef"><b>Definition:</b> socket.hpp:59</div></div>
-<div class="ttc" id="namespacenet_html_a3638840ecc7fad1f5deb9c5616b50027"><div class="ttname"><a href="namespacenet.html#a3638840ecc7fad1f5deb9c5616b50027">net::send</a></div><div class="ttdeci">ssize_t send(int sockfd, const void *buf, size_t len, int flags)</div><div class="ttdef"><b>Definition:</b> socket.hpp:144</div></div>
-<div class="ttc" id="namespacenet_html_a750f9463500ec714c5d5db550340a772"><div class="ttname"><a href="namespacenet.html#a750f9463500ec714c5d5db550340a772">net::is_retryable_error</a></div><div class="ttdeci">bool is_retryable_error(int error)</div><div class="ttdef"><b>Definition:</b> socket.hpp:40</div></div>
+<div class="ttc" id="namespacenet_html_a31f4fd4303f4fd588673f1a4847a44bc"><div class="ttname"><a href="namespacenet.html#a31f4fd4303f4fd588673f1a4847a44bc">net::wsa_cleanup</a></div><div class="ttdeci">bool wsa_cleanup()</div><div class="ttdef"><b>Definition:</b> socket.hpp:60</div></div>
+<div class="ttc" id="namespaceprocess_1_1network_html_ad067110a4b38cc83785a43f49bf6c8e2"><div class="ttname"><a href="namespaceprocess_1_1network.html#ad067110a4b38cc83785a43f49bf6c8e2">process::network::bind</a></div><div class="ttdeci">Try&lt; Nothing &gt; bind(int_fd s, const Address &amp;address)</div><div class="ttdef"><b>Definition:</b> network.hpp:46</div></div>
+<div class="ttc" id="namespacenet_html_a750f9463500ec714c5d5db550340a772"><div class="ttname"><a href="namespacenet.html#a750f9463500ec714c5d5db550340a772">net::is_retryable_error</a></div><div class="ttdeci">bool is_retryable_error(int error)</div><div class="ttdef"><b>Definition:</b> socket.hpp:42</div></div>
 <div class="ttc" id="namespacemesos_1_1internal_1_1tests_html_af8289f648a916c3f66923867452c7b1b"><div class="ttname"><a href="namespacemesos_1_1internal_1_1tests.html#af8289f648a916c3f66923867452c7b1b">mesos::internal::tests::flags</a></div><div class="ttdeci">Flags flags</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

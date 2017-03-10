@@ -139,10 +139,10 @@ default.</p>
 
 <ul>
 <li><a href="#configuring-cni-networks">Configuring CNI networks</a></li>
+<li><a href="#adding-modifying-deleting">Adding/Deleting/Modifying CNI networks</a></li>
 <li><a href="#attaching-containers-to-cni-networks">Attaching containers to CNI networks</a></li>
 <li><a href="#accessing-container-network-namespace">Accessing container network namespace</a></li>
 <li><a href="#mesos-meta-data-to-cni-plugins">Passing network labels and port-mapping information to CNI plugins</a></li>
-<li><a href="#adding-modifying-deleting">Adding/Deleting/Modifying CNI networks</a></li>
 </ul>
 </li>
 <li><a href="#networking-recipes">Networking Recipes</a>
@@ -225,6 +225,38 @@ after Agent startup, the Agent needs to be restarted. The
 <code>network/cni</code> isolator has been designed with <code>recover</code> capabilities
 and hence restarting the Agent (and therefore the <code>network/cni</code>
 isolator) will not affect container orchestration.</p>
+
+<h4><a name="adding-modifying-deleting"></a>Adding/Deleting/Modifying CNI networks</h4>
+
+<p>The <code>network/cni</code> isolator learns about all the CNI networks by
+reading the CNI configuration specified in <code>--network_cni_config_dir</code>
+. Hence, if the operator wants to add a CNI network, the corresponding
+configuration needs to be added to <code>--network_cni_config_dir</code>.</p>
+
+<p>While the <code>network/cni</code> isolator learns the CNI networks by reading
+the CNI configuration files in <code>--network_cni_config_dir</code>, it does not
+keep an in-memory copy of the CNI configurations. The <code>network/cni</code>
+isolator only stores a mapping of the CNI network names to the
+corresponding CNI configuration files. Whenever the <code>network/cni</code>
+isolator needs to attach a container to a CNI network it reads the
+corresponding configuration from the disk and invokes the appropriate
+plugin with the specified JSON configuration. Though the <code>network/cni</code>
+isolator does not keep an in-memory copy of the JSON configuration, it
+checkpoints the CNI configuration used to launch a container.
+Checkpointing the CNI configuration protects the resources, associated
+with the container, by freeing them correctly when the container is
+destroyed, even if the CNI configuration is deleted.</p>
+
+<p>The fact that the <code>network/cni</code> isolator always reads the CNI
+configurations from the disk allows the operator to dynamically add,
+modify and delete CNI configurations without the need to restart the
+agent. Whenever the operator adds a new CNI configuration, or modifies
+an existing CNI configuration, the agent will pick up this new CNI
+configuration when the next container is launched on that specific CNI
+network. Similarly when the operator deletes a CNI network the
+<code>network/cni</code> isolator will &ldquo;unlearn&rdquo; the CNI network (since it will
+have a reference to this CNI network when it started) in case a
+framework tries to launch a container on the deleted CNI network.</p>
 
 <h4><a name="attaching-containers-to-cni-networks"></a>Attaching containers to CNI networks</h4>
 
@@ -336,38 +368,6 @@ running the command:</p>
 completed, executing commands within the container network namespace
 would be simplified and we will no longer have a dependency on the
 <code>iproute2</code> package to debug Mesos container networking.</p>
-
-<h4><a name="adding-modifying-deleting"></a>Adding/Deleting/Modifying CNI networks</h4>
-
-<p>The <code>network/cni</code> isolator learns about all the CNI networks by
-reading the CNI configuration specified in <code>--network_cni_config_dir</code>
-at startup. Hence, if the operator wants to add a CNI network, the
-corresponding configuration needs to be added to
-<code>--network_cni_config_dir</code> and the agent needs to be restarted.</p>
-
-<p>While the <code>network/cni</code> isolator learns the CNI networks at startup,
-it does not keep an in-memory copy of the CNI configurations. Whenever
-the <code>network/cni</code> isolator needs to attach a container to a CNI
-network, it reads the corresponding configuration from the disk and
-invokes the appropriate plugin with the specified JSON configuration.
-Though the <code>network/cni</code> isolator does not keep an in-memory copy of
-the JSON configuration, it checkpoints the CNI configuration used to
-launch a container.  Checkpointing the CNI configuration protects the
-resources associated with the container to be freed correctly when the
-container is destroyed, even if the CNI configuration is deleted.
-Thus, to delete a CNI network, the operator needs to delete the
-corresponding configuration and restart the agent.</p>
-
-<p>While addition and deletion of CNI networks require an agent restart,
-modification to a CNI network does not need a restart. To modify a CNI
-network the operator needs to only change the JSON CNI configuration
-for the network on the disk. The changes made to the CNI configuration
-will be used when the next container on that specific network is
-launched. It is important to note that the changes made to the CNI
-configuration will not affect any existing containers that were
-launched with the un-modified CNI configuration. Since, to tear down
-an exiting container the <code>network/cni</code> isolator will be using the
-checkpointed configuration.</p>
 
 <h3><a name="networking-recipes"></a>Networking Recipes</h3>
 
@@ -648,7 +648,7 @@ documentation</a></p>
         </div>
 
         <div class="col-md-8 trademark">
-          <p>&copy; 2012-2016 <a href="http://apache.org">The Apache Software Foundation</a>.
+          <p>&copy; 2012-2017 <a href="http://apache.org">The Apache Software Foundation</a>.
             Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.
           <p>
         </div>

@@ -106,27 +106,36 @@
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keywordtype">bool</span> <a class="code" href="namespaceperf.html#a305765234cd6747318f894ea1a5c0aef">supported</a>();</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">// Note: The parse function is exposed to allow testing of the</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment">// multiple supported perf stat output formats.</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<a class="code" href="classTry.html">Try&lt;hashmap&lt;std::string, mesos::PerfStatistics&gt;</a>&gt; <a class="code" href="namespaceperf.html#a38f6b8b99bfe38c10b9ceb1d5d3d2002">parse</a>(</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keyword">const</span> std::string&amp; output,</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keyword">const</span> <a class="code" href="structVersion.html">Version</a>&amp; <a class="code" href="namespacemesos_1_1internal.html#a4311a7bd3d79fd1225d08444f8ff758a">version</a>);</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;} <span class="comment">// namespace perf {</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">// Returns the detected perf version. Exposed for testing.</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<a class="code" href="classprocess_1_1Future.html">process::Future&lt;Version&gt;</a> <a class="code" href="namespaceperf.html#a240601d1c5090f329a23755094e5b089">version</a>();</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">// Parse a perf(1) version string. Exposed for testing.</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<a class="code" href="classTry.html">Try&lt;Version&gt;</a> <a class="code" href="namespaceperf.html#a08b3cc22b081233c81040b4595b56e73">parseVersion</a>(<span class="keyword">const</span> std::string&amp; output);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor">#endif // __PERF_HPP__</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="comment">// Note: The parse function is exposed to allow testing of the</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="comment">// multiple supported perf stat output formats.</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<a class="code" href="classTry.html">Try&lt;hashmap&lt;std::string, mesos::PerfStatistics&gt;</a>&gt; <a class="code" href="namespaceperf.html#a38f6b8b99bfe38c10b9ceb1d5d3d2002">parse</a>(</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keyword">const</span> std::string&amp; output,</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keyword">const</span> <a class="code" href="structVersion.html">Version</a>&amp; version);</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;} <span class="comment">// namespace perf {</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">#endif // __PERF_HPP__</span></div>
 <div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
 <div class="ttc" id="include_2mesos_2mesos_8hpp_html"><div class="ttname"><a href="include_2mesos_2mesos_8hpp.html">mesos.hpp</a></div></div>
-<div class="ttc" id="namespacemesos_1_1internal_html_a4311a7bd3d79fd1225d08444f8ff758a"><div class="ttname"><a href="namespacemesos_1_1internal.html#a4311a7bd3d79fd1225d08444f8ff758a">mesos::internal::version</a></div><div class="ttdeci">JSON::Object version()</div><div class="ttdef"><b>Definition:</b> version.hpp:32</div></div>
 <div class="ttc" id="classDuration_html"><div class="ttname"><a href="classDuration.html">Duration</a></div><div class="ttdef"><b>Definition:</b> duration.hpp:32</div></div>
 <div class="ttc" id="namespaceperf_html_ad4bda81f92db3821306ec856dfca9a77"><div class="ttname"><a href="namespaceperf.html#ad4bda81f92db3821306ec856dfca9a77">perf::valid</a></div><div class="ttdeci">bool valid(const std::set&lt; std::string &gt; &amp;events)</div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2version_8hpp_html"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2version_8hpp.html">version.hpp</a></div></div>
 <div class="ttc" id="namespaceperf_html_a38f6b8b99bfe38c10b9ceb1d5d3d2002"><div class="ttname"><a href="namespaceperf.html#a38f6b8b99bfe38c10b9ceb1d5d3d2002">perf::parse</a></div><div class="ttdeci">Try&lt; hashmap&lt; std::string, mesos::PerfStatistics &gt; &gt; parse(const std::string &amp;output, const Version &amp;version)</div></div>
 <div class="ttc" id="duration_8hpp_html"><div class="ttname"><a href="duration_8hpp.html">duration.hpp</a></div></div>
 <div class="ttc" id="namespaceperf_html_a305765234cd6747318f894ea1a5c0aef"><div class="ttname"><a href="namespaceperf.html#a305765234cd6747318f894ea1a5c0aef">perf::supported</a></div><div class="ttdeci">bool supported()</div></div>
+<div class="ttc" id="namespaceperf_html_a240601d1c5090f329a23755094e5b089"><div class="ttname"><a href="namespaceperf.html#a240601d1c5090f329a23755094e5b089">perf::version</a></div><div class="ttdeci">process::Future&lt; Version &gt; version()</div><div class="ttdef"><b>Definition:</b> version.hpp:32</div></div>
 <div class="ttc" id="namespaceperf_html_a1da325bd0688dc480ff4d5159d620310"><div class="ttname"><a href="namespaceperf.html#a1da325bd0688dc480ff4d5159d620310">perf::sample</a></div><div class="ttdeci">process::Future&lt; hashmap&lt; std::string, mesos::PerfStatistics &gt; &gt; sample(const std::set&lt; std::string &gt; &amp;events, const std::set&lt; std::string &gt; &amp;cgroups, const Duration &amp;duration)</div></div>
 <div class="ttc" id="future_8hpp_html"><div class="ttname"><a href="future_8hpp.html">future.hpp</a></div></div>
 <div class="ttc" id="structVersion_html"><div class="ttname"><a href="structVersion.html">Version</a></div><div class="ttdef"><b>Definition:</b> version.hpp:37</div></div>
+<div class="ttc" id="namespaceperf_html_a08b3cc22b081233c81040b4595b56e73"><div class="ttname"><a href="namespaceperf.html#a08b3cc22b081233c81040b4595b56e73">perf::parseVersion</a></div><div class="ttdeci">Try&lt; Version &gt; parseVersion(const std::string &amp;output)</div></div>
 <div class="ttc" id="hashmap_8hpp_html"><div class="ttname"><a href="hashmap_8hpp.html">hashmap.hpp</a></div></div>
 <div class="ttc" id="classprocess_1_1Future_html"><div class="ttname"><a href="classprocess_1_1Future.html">process::Future</a></div><div class="ttdef"><b>Definition:</b> future.hpp:56</div></div>
 </div><!-- fragment --></div><!-- contents -->

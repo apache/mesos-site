@@ -401,8 +401,31 @@ is <code>/tmp/mesos/store/appc</code>.</p>
 <h2>Provisioner Backends</h2>
 
 <p>A provisioner backend takes a set of filesystem layers and stacks them
-into a root filesystem. The following backends are supported
-currently.</p>
+into a root filesystem. Currently, we support the following backends:
+<code>copy</code>, <code>bind</code>, <code>overlay</code> and <code>aufs</code>. Mesos will validate if the
+selected backend works with the underlying filesystem (the filesystem
+used by the image store <code>--docker_store_dir</code> or <code>--appc_store_dir</code>)
+using the following logic table:</p>
+
+<pre><code>+---------+--------------+------------------------------------------+
+| Backend | Suggested on | Disabled on                              |
++---------+--------------+------------------------------------------+
+| aufs    | ext4 xfs     | btrfs aufs eCryptfs                      |
+| overlay | ext4 xfs     | btrfs aufs overlay overlay2 zfs eCryptfs |
+| bind    |              | N/A(`--sandbox_directory' must exist)    |
+| copy    |              | N/A                                      |
++---------+--------------+------------------------------------------+
+</code></pre>
+
+<p>The provisioner backend can be specified through the agent flag
+<code>--provisioner_image_backend</code>. If not set, Mesos will select the best
+backend automatically for the users/operators. The selection logic is
+as following:</p>
+
+<pre><code>1. Use `overlay` backend if the overlayfs is available.
+2. Use `aufs` backend if the aufs is available and overlayfs is not supported.
+3. Use `copy` backend if none of above is selected.
+</code></pre>
 
 <h3>Copy</h3>
 
@@ -514,7 +537,7 @@ launching Docker containers through the Docker containerizer, visit
         </div>
 
         <div class="col-md-8 trademark">
-          <p>&copy; 2012-2016 <a href="http://apache.org">The Apache Software Foundation</a>.
+          <p>&copy; 2012-2017 <a href="http://apache.org">The Apache Software Foundation</a>.
             Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.
           <p>
         </div>

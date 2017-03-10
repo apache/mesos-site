@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Apache Mesos - POSIX Resource Limits Support in Mesos Containerizer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta property="og:locale" content="en_US"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:title" content="Apache Mesos"/>
+    <meta property="og:site_name" content="Apache Mesos"/>
+    <meta property="og:url" content="http://mesos.apache.org/"/>
+    <meta property="og:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta property="og:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
+
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:site" content="@ApacheMesos"/>
+    <meta name="twitter:title" content="Apache Mesos"/>
+    <meta name="twitter:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta name="twitter:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
+
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
+    <link href="../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+
+    
+
+    <!-- Google Analytics Magic -->
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-20226872-1']);
+    _gaq.push(['_setDomainName', 'apache.org']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+    
+  </head>
+  <body>
+    <!-- magical breadcrumbs -->
+    <div class="topnav">
+      <div class="container">
+        <ul class="breadcrumb">
+          <li>
+            <div class="dropdown">
+              <a data-toggle="dropdown" href="#">Apache Software Foundation <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                <li><a href="http://www.apache.org">Apache Homepage</a></li>
+                <li><a href="http://www.apache.org/licenses/">License</a></li>
+                <li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>
+                <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                <li><a href="http://www.apache.org/security/">Security</a></li>
+              </ul>
+            </div>
+          </li>
+
+          <li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+          
+          
+          <li><a href="/documentation
+/">Documentation
+</a></li>
+          
+          
+        </ul><!-- /.breadcrumb -->
+      </div><!-- /.container -->
+    </div><!-- /.topnav -->
+
+    <!-- navbar excitement -->
+<div class="navbar navbar-default navbar-static-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#mesos-menu" aria-expanded="false">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo"/></a>
+    </div><!-- /.navbar-header -->
+
+    <div class="navbar-collapse collapse" id="mesos-menu">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/gettingstarted/">Getting Started</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/documentation/latest/">Documentation</a></li>
+        <li><a href="/downloads/">Downloads</a></li>
+        <li><a href="/community/">Community</a></li>
+      </ul>
+    </div><!-- /#mesos-menu -->
+  </div><!-- /.container -->
+</div><!-- /.navbar -->
+
+<div class="content">
+  <div class="container">
+    <div class="row-fluid">
+  <div class="col-md-4">
+    <h4>If you're new to Mesos</h4>
+    <p>See the <a href="/gettingstarted/">getting started</a> page for more
+       information about downloading, building, and deploying Mesos.</p>
+
+    <h4>If you'd like to get involved or you're looking for support</h4>
+    <p>See our <a href="/community/">community</a> page for more details.</p>
+  </div>
+  <div class="col-md-8">
+    <h1>POSIX Resource Limits Support in Mesos Containerizer</h1>
+
+<p>This document describes the <code>posix/rlimits</code> isolator. The isolator adds support
+for setting POSIX resource limits (rlimits) for containers launched using the
+<a href="/documentation/latest/./mesos-containerizer/">Mesos containerizer</a>.</p>
+
+<h2>POSIX Resource Limits</h2>
+
+<p>POSIX rlimits can be used control the resources a process can consume. Resource
+limits are typically set at boot time and inherited when a child process is
+forked from a parent process; resource limits can also be modified via
+<code>setrlimit(2)</code>. In many interactive shells, resource limits can be inspected or
+modified with the <code>ulimit</code> shell built-in.</p>
+
+<p>A POSIX resource limit consist of a <em>soft</em> and a <em>hard</em> limit. The soft limit
+specifies the effective resource limit for the current and forked process, while
+the hard limit gives the value up to which processes may increase their
+effective limit; increasing the hard limit is a privileged action. It is
+required that the soft limit is less than or equal to the hard limit.
+System administrators can use a hard resource limit to define the maximum amount
+of resources that can be consumed by a user; users can employ soft resource
+limits to ensure that one of their tasks only consumes a limited amount of the
+global hard resource limit.</p>
+
+<h2>Setting POSIX Resource Limits for Tasks</h2>
+
+<p>This isolator permits setting per-task resource limits. This isolator interprets
+rlimits specified as part of a task&rsquo;s <code>ContainerInfo</code> for the Mesos
+containerizer, e.g.,</p>
+
+<pre><code class="{.json}">{
+  "container": {
+    "type": "MESOS",
+    "rlimit_info": {
+      "rlimits": [
+        {
+          "type": "RLMT_CORE"
+        },
+        {
+          "type": "RLMT_STACK",
+          "soft": 8192,
+          "hard": 32768
+        }
+      ]
+    }
+  }
+}
+</code></pre>
+
+<p>To enable interpretation of rlimits, agents need to
+be started with <code>posix/rlimits</code> in its <code>--isolation</code> flag, e.g.,</p>
+
+<pre><code class="{.console}">mesos-agent --master=&lt;master ip&gt; --ip=&lt;agent ip&gt;
+  --work_dir=/var/lib/mesos
+  --isolation=posix/rlimits[,other isolation flags]
+</code></pre>
+
+<p>To set a hard limit for a task larger than the current value of the hard limit,
+the agent process needs to be under a privileged user (with the
+<code>CAP_SYS_RESOURCE</code> capability), typically <code>root</code>.</p>
+
+<p>POSIX currently defines a base set of resources, see
+<a href="http://pubs.opengroup.org/onlinepubs/009695399/functions/getrlimit.html">the documentation</a>;
+Linux defines additional resource limits, see e.g., the documentation of
+<code>setrlimit(2)</code>.</p>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Resource</th>
+      <th>Comment</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>RLIMIT_CORE</code></td>
+      <td><em>POSIX</em>: This is the maximum size of a core file, in bytes, that may be created by a process.</td>
+    </tr>
+    <tr>
+      <td><code>RLIMIT_CPU</code></td>
+      <td><em>POSIX</em>: This is the maximum amount of CPU time, in seconds, used by a process.</td>
+    </tr>
+    <tr>
+      <td><code>RLIMIT_DATA</code></td>
+      <td><em>POSIX</em>: This is the maximum size of a process' data segment, in bytes.</td>
+    </tr>
+    <tr>
+      <td><code>RLIMIT_FSIZE</code></td>
+      <td><em>POSIX</em>: This is the maximum size of a file, in bytes, that may be created by a process.</td>
+    </tr>
+    <tr>
+      <td><code>RLIMIT_NOFILE</code></td>
+      <td><em>POSIX</em>: This is a number one greater than the maximum value that the system may assign to a newly-created descriptor.</td>
+    </tr>
+    <tr>
+      <td><code>RLIMIT_STACK</code></td>
+      <td><em>POSIX</em>: This is the maximum size of the initial thread's stack, in bytes.</td>
+    </tr>
+    <tr>
+      <td><code>RLIMIT_AS</code></td>
+      <td><em>POSIX</em>: This is the maximum size of a process' total available memory, in bytes.</td>
+    </tr>
+    <tr>
+      <td><code>RLMT_LOCKS</code></td>
+      <td><em>Linux</em>: (Early Linux 2.4 only) A limit on the combined number of <code>flock(2)</code> locks and <code>fcntl(2)</code> leases that this process may establish.</td>
+    </tr>
+    <tr>
+      <td><code>RLMT_MEMLOCK</code></td>
+      <td><em>Linux</em>: The maximum number of bytes of memory that may be locked into RAM.</td>
+    </tr>
+    <tr>
+      <td><code>RLMT_MSGQUEUE</code></td>
+      <td><em>Linux</em>: Specifies the limit on the number of bytes that can be allocated for POSIX message queues for the real user ID of the calling process.</td>
+    </tr>
+    <tr>
+      <td><code>RLMT_NICE</code></td>
+      <td><em>Linux</em>: (Since Linux 2.6.12) Specifies a ceiling to which the process's nice value can be raised using <code>setpriority(2)</code> or <code>nice(2)</code>.</td>
+    </tr>
+    <tr>
+      <td><code>RLMT_NPROC</code></td>
+      <td><em>Linux</em>: The maximum number of processes (or, more precisely on Linux, threads) that can be created for the real user ID of the calling process.</td>
+    </tr>
+    <tr>
+      <td><code>RLMT_RSS</code></td>
+      <td><em>Linux</em>: Specifies the limit (in pages) of the process's resident set (the number of virtual pages resident in RAM).</td>
+    </tr>
+    <tr>
+      <td><code>RLMT_RTPRIO</code></td>
+      <td><em>Linux</em>: (Since Linux 2.6.12) Specifies a ceiling on the real-time priority that may be set for this process using sched_setscheduler(2) and sched_setparam(2).</td>
+    </tr>
+    <tr>
+      <td><code>RLMT_RTTIME</code></td>
+      <td><em>Linux</em>: (Since Linux 2.6.25) Specifies a limit (in microseconds) on the amount of CPU time that a process scheduled under a real-time scheduling policy may consume without making a blocking system call.</td>
+    </tr>
+    <tr>
+      <td><code>RLMT_SIGPENDING</code></td>
+      <td><em>Linux</em>: (Since Linux 2.6.8) Specifies the limit on the number of signals that may be queued for the real user ID of the calling process.</td>
+    </tr>
+  </tbody>
+</table>
+
+
+<p>Mesos maps these resource types onto <code>RLimit</code> types, where by convention the
+prefix <code>RLMT_</code> is used in place of <code>RLIMIT_</code> above. Not all limits types are
+supported on all platforms.</p>
+
+<p>We require either both the soft and hard <code>RLimit</code> value, or none to be
+set; the latter case is interpreted as the absence of an explicit limit.</p>
+
+  </div>
+</div>
+
+  </div><!-- /.container -->
+</div><!-- /.content -->
+
+<hr>
+
+
+
+    <!-- footer -->
+    <div class="footer">
+      <div class="container">
+        <div class="col-md-4 social-blk">
+          <span class="social">
+            <a href="https://twitter.com/ApacheMesos"
+              class="twitter-follow-button"
+              data-show-count="false" data-size="large">Follow @ApacheMesos</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+            <a href="https://twitter.com/intent/tweet?button_hashtag=mesos"
+              class="twitter-hashtag-button"
+              data-size="large"
+              data-related="ApacheMesos">Tweet #mesos</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+          </span>
+        </div>
+
+        <div class="col-md-8 trademark">
+          <p>&copy; 2012-2017 <a href="http://apache.org">The Apache Software Foundation</a>.
+            Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.
+          <p>
+        </div>
+      </div><!-- /.container -->
+    </div><!-- /.footer -->
+
+    <!-- JS -->
+    <script src="//code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="text/javascript"></script>
+  </body>
+</html>

@@ -93,13 +93,13 @@
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">// implementation of sendfile:</span></div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">//   1. s must be a stream oriented socket descriptor.</span></div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">//   2. fd must be a regular file descriptor.</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="namespaceos.html#a460546abacf88239fd801e9e3f0263dd">   42</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;ssize_t, SocketError&gt;</a> <a class="code" href="namespaceos.html#a460546abacf88239fd801e9e3f0263dd">sendfile</a>(</div>
+<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="namespaceos.html#a625f02f99e88345b3e8f59223d7aa237">   42</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;ssize_t, SocketError&gt;</a> <a class="code" href="namespaceos.html#a625f02f99e88345b3e8f59223d7aa237">sendfile</a>(</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keywordtype">int</span> s, <span class="keywordtype">int</span> fd, off_t offset, <span class="keywordtype">size_t</span> length)</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;{</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#if defined(__linux__) || defined(__sun)</span></div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor"></span>  <a class="code" href="signals_8hpp.html#a46ae7b627b3369e0ebb89b83a1341d67">SUPPRESS</a> (<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a57e9c8c5fa13bf86bc779a9f6f408b7c">SIGPIPE</a>) {</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="comment">// This will set errno to EPIPE if a SIGPIPE occurs.</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a894c4d58faeee7675b9e7e8244de1386">ssize_t</a> sent = <a class="code" href="namespaceos.html#a460546abacf88239fd801e9e3f0263dd">::sendfile</a>(s, fd, &amp;offset, length);</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a894c4d58faeee7675b9e7e8244de1386">ssize_t</a> sent = <a class="code" href="namespaceos.html#a625f02f99e88345b3e8f59223d7aa237">::sendfile</a>(s, fd, &amp;offset, length);</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keywordflow">if</span> (sent &lt; 0) {</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="error_8hpp.html#a176f6fc34ea37d40201853a52a475762">SocketError</a>();</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    }</div>
@@ -111,7 +111,7 @@
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor"></span>  <span class="comment">// On OS X, sendfile does not need to have SIGPIPE suppressed.</span></div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  off_t _length = <span class="keyword">static_cast&lt;</span>off_t<span class="keyword">&gt;</span>(length);</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="keywordflow">if</span> (::<a class="code" href="namespaceos.html#a460546abacf88239fd801e9e3f0263dd">sendfile</a>(fd, s, offset, &amp;_length, <span class="keyword">nullptr</span>, 0) &lt; 0) {</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="keywordflow">if</span> (::<a class="code" href="namespaceos.html#a625f02f99e88345b3e8f59223d7aa237">sendfile</a>(fd, s, offset, &amp;_length, <span class="keyword">nullptr</span>, 0) &lt; 0) {</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordflow">if</span> (errno == EAGAIN &amp;&amp; _length &gt; 0) {</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;      <span class="keywordflow">return</span> _length;</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    }</div>
@@ -123,7 +123,7 @@
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor"></span>  off_t _length = 0;</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <a class="code" href="signals_8hpp.html#a46ae7b627b3369e0ebb89b83a1341d67">SUPPRESS</a> (<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a57e9c8c5fa13bf86bc779a9f6f408b7c">SIGPIPE</a>) {</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;      <span class="keywordflow">if</span> (::<a class="code" href="namespaceos.html#a460546abacf88239fd801e9e3f0263dd">sendfile</a>(fd, s, offset, length, <span class="keyword">nullptr</span>, &amp;_length, 0) &lt; 0) {</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;      <span class="keywordflow">if</span> (::<a class="code" href="namespaceos.html#a625f02f99e88345b3e8f59223d7aa237">sendfile</a>(fd, s, offset, length, <span class="keyword">nullptr</span>, &amp;_length, 0) &lt; 0) {</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <span class="keywordflow">if</span> (errno == EAGAIN &amp;&amp; length &gt; 0) {</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;          <span class="keywordflow">return</span> _length;</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        }</div>
@@ -138,16 +138,16 @@
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;} <span class="comment">// namespace os {</span></div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="preprocessor">#endif // __STOUT_OS_POSIX_SENDFILE_HPP__</span></div>
-<div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_a894c4d58faeee7675b9e7e8244de1386"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a894c4d58faeee7675b9e7e8244de1386">ssize_t</a></div><div class="ttdeci">SSIZE_T ssize_t</div><div class="ttdef"><b>Definition:</b> windows.hpp:175</div></div>
+<div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_a894c4d58faeee7675b9e7e8244de1386"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a894c4d58faeee7675b9e7e8244de1386">ssize_t</a></div><div class="ttdeci">SSIZE_T ssize_t</div><div class="ttdef"><b>Definition:</b> windows.hpp:176</div></div>
 <div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
 <div class="ttc" id="error_8hpp_html_a176f6fc34ea37d40201853a52a475762"><div class="ttname"><a href="error_8hpp.html#a176f6fc34ea37d40201853a52a475762">SocketError</a></div><div class="ttdeci">ErrnoError SocketError</div><div class="ttdef"><b>Definition:</b> error.hpp:33</div></div>
-<div class="ttc" id="namespaceos_html_a460546abacf88239fd801e9e3f0263dd"><div class="ttname"><a href="namespaceos.html#a460546abacf88239fd801e9e3f0263dd">os::sendfile</a></div><div class="ttdeci">Try&lt; ssize_t, SocketError &gt; sendfile(int s, int fd, off_t offset, size_t length)</div><div class="ttdef"><b>Definition:</b> sendfile.hpp:42</div></div>
 <div class="ttc" id="signals_8hpp_html_a46ae7b627b3369e0ebb89b83a1341d67"><div class="ttname"><a href="signals_8hpp.html#a46ae7b627b3369e0ebb89b83a1341d67">SUPPRESS</a></div><div class="ttdeci">#define SUPPRESS(signal)</div><div class="ttdef"><b>Definition:</b> signals.hpp:26</div></div>
 <div class="ttc" id="unreachable_8hpp_html_a0bc63b24b654ca433be7b97a3edde132"><div class="ttname"><a href="unreachable_8hpp.html#a0bc63b24b654ca433be7b97a3edde132">UNREACHABLE</a></div><div class="ttdeci">#define UNREACHABLE()</div><div class="ttdef"><b>Definition:</b> unreachable.hpp:22</div></div>
 <div class="ttc" id="error_8hpp_html"><div class="ttname"><a href="error_8hpp.html">error.hpp</a></div></div>
 <div class="ttc" id="try_8hpp_html"><div class="ttname"><a href="try_8hpp.html">try.hpp</a></div></div>
 <div class="ttc" id="signals_8hpp_html"><div class="ttname"><a href="signals_8hpp.html">signals.hpp</a></div></div>
-<div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_a57e9c8c5fa13bf86bc779a9f6f408b7c"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a57e9c8c5fa13bf86bc779a9f6f408b7c">SIGPIPE</a></div><div class="ttdeci">#define SIGPIPE</div><div class="ttdef"><b>Definition:</b> windows.hpp:421</div></div>
+<div class="ttc" id="namespaceos_html_a625f02f99e88345b3e8f59223d7aa237"><div class="ttname"><a href="namespaceos.html#a625f02f99e88345b3e8f59223d7aa237">os::sendfile</a></div><div class="ttdeci">Try&lt; ssize_t, SocketError &gt; sendfile(int s, int fd, off_t offset, size_t length)</div><div class="ttdef"><b>Definition:</b> sendfile.hpp:42</div></div>
+<div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_a57e9c8c5fa13bf86bc779a9f6f408b7c"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a57e9c8c5fa13bf86bc779a9f6f408b7c">SIGPIPE</a></div><div class="ttdeci">#define SIGPIPE</div><div class="ttdef"><b>Definition:</b> windows.hpp:414</div></div>
 <div class="ttc" id="unreachable_8hpp_html"><div class="ttname"><a href="unreachable_8hpp.html">unreachable.hpp</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

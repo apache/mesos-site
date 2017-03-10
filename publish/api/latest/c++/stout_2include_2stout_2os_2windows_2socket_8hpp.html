@@ -58,6 +58,7 @@
 <div class="textblock"><code>#include &lt;winsock.h&gt;</code><br/>
 <code>#include &lt;glog/logging.h&gt;</code><br/>
 <code>#include &lt;<a class="el" href="abort_8hpp_source.html">stout/abort.hpp</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="fd_8hpp_source.html">stout/os/windows/fd.hpp</a>&gt;</code><br/>
 </div>
 <p><a href="stout_2include_2stout_2os_2windows_2socket_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -78,16 +79,16 @@ Functions</h2></td></tr>
 <tr class="separator:a750f9463500ec714c5d5db550340a772"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6d996e15b39630257af8d8a0379c7f7a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacenet.html#a6d996e15b39630257af8d8a0379c7f7a">net::is_inprogress_error</a> (int error)</td></tr>
 <tr class="separator:a6d996e15b39630257af8d8a0379c7f7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2fa6b31301f6be7d405058c0ba8e6fdc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacenet.html#a2fa6b31301f6be7d405058c0ba8e6fdc">net::is_socket</a> (SOCKET fd)</td></tr>
-<tr class="separator:a2fa6b31301f6be7d405058c0ba8e6fdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2079d24ce06c702f8ded024deb2b25b7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacenet.html#a2079d24ce06c702f8ded024deb2b25b7">net::bind</a> (int socket, const struct sockaddr *addr, size_t addrlen)</td></tr>
-<tr class="separator:a2079d24ce06c702f8ded024deb2b25b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48731dd265aac9362f05f58e4d9fc648"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacenet.html#a48731dd265aac9362f05f58e4d9fc648">net::connect</a> (int socket, const struct sockaddr *address, size_t addrlen)</td></tr>
-<tr class="separator:a48731dd265aac9362f05f58e4d9fc648"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3638840ecc7fad1f5deb9c5616b50027"><td class="memItemLeft" align="right" valign="top"><a class="el" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a894c4d58faeee7675b9e7e8244de1386">ssize_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacenet.html#a3638840ecc7fad1f5deb9c5616b50027">net::send</a> (int sockfd, const void *buf, size_t len, int flags)</td></tr>
-<tr class="separator:a3638840ecc7fad1f5deb9c5616b50027"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a98dbffd7c3defce348ff8b1f7e91f803"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacenet.html#a98dbffd7c3defce348ff8b1f7e91f803">net::recv</a> (int sockfd, void *buf, size_t len, int flags)</td></tr>
-<tr class="separator:a98dbffd7c3defce348ff8b1f7e91f803"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9edfdf63a58b569ec3cb601aef9df17c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classos_1_1WindowsFD.html">os::WindowsFD</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacenet.html#a9edfdf63a58b569ec3cb601aef9df17c">net::accept</a> (const <a class="el" href="classos_1_1WindowsFD.html">os::WindowsFD</a> &amp;fd, sockaddr *addr, socklen_t *addrlen)</td></tr>
+<tr class="separator:a9edfdf63a58b569ec3cb601aef9df17c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96764dea6ff234ddde909e6372090459"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacenet.html#a96764dea6ff234ddde909e6372090459">net::bind</a> (const <a class="el" href="classos_1_1WindowsFD.html">os::WindowsFD</a> &amp;fd, const sockaddr *addr, socklen_t addrlen)</td></tr>
+<tr class="separator:a96764dea6ff234ddde909e6372090459"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf6a462b79620cf648fb3bcbb900d153"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacenet.html#acf6a462b79620cf648fb3bcbb900d153">net::connect</a> (const <a class="el" href="classos_1_1WindowsFD.html">os::WindowsFD</a> &amp;fd, const sockaddr *address, socklen_t addrlen)</td></tr>
+<tr class="separator:acf6a462b79620cf648fb3bcbb900d153"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69f77aa4677f1dd1c69169589b30a31b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a894c4d58faeee7675b9e7e8244de1386">ssize_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacenet.html#a69f77aa4677f1dd1c69169589b30a31b">net::send</a> (const <a class="el" href="classos_1_1WindowsFD.html">os::WindowsFD</a> &amp;fd, const void *buf, size_t len, int flags)</td></tr>
+<tr class="separator:a69f77aa4677f1dd1c69169589b30a31b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b5c23ac2d0fa4ccaedff024f2d9a32c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a894c4d58faeee7675b9e7e8244de1386">ssize_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacenet.html#a5b5c23ac2d0fa4ccaedff024f2d9a32c">net::recv</a> (const <a class="el" href="classos_1_1WindowsFD.html">os::WindowsFD</a> &amp;fd, void *buf, size_t len, int flags)</td></tr>
+<tr class="separator:a5b5c23ac2d0fa4ccaedff024f2d9a32c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->

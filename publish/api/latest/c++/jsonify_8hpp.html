@@ -56,13 +56,16 @@
 <div class="title">jsonify.hpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;cstddef&gt;</code><br/>
+<div class="textblock"><code>#include &lt;xlocale.h&gt;</code><br/>
+<code>#include &lt;clocale&gt;</code><br/>
+<code>#include &lt;cstddef&gt;</code><br/>
 <code>#include &lt;functional&gt;</code><br/>
 <code>#include &lt;ostream&gt;</code><br/>
 <code>#include &lt;sstream&gt;</code><br/>
 <code>#include &lt;string&gt;</code><br/>
 <code>#include &lt;type_traits&gt;</code><br/>
 <code>#include &lt;utility&gt;</code><br/>
+<code>#include &lt;<a class="el" href="stout_2include_2stout_2check_8hpp_source.html">stout/check.hpp</a>&gt;</code><br/>
 <code>#include &lt;<a class="el" href="result__of_8hpp_source.html">stout/result_of.hpp</a>&gt;</code><br/>
 <code>#include &lt;<a class="el" href="strings_8hpp_source.html">stout/strings.hpp</a>&gt;</code><br/>
 </div>
@@ -70,6 +73,9 @@
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJSON_1_1internal_1_1ClassicLocale.html">JSON::internal::ClassicLocale</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This object changes the current thread's locale to the default "C" locale for number printing purposes.  <a href="classJSON_1_1internal_1_1ClassicLocale.html#details">More...</a><br/></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJSON_1_1Proxy.html">JSON::Proxy</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJSON_1_1BooleanWriter.html">JSON::BooleanWriter</a></td></tr>
@@ -141,7 +147,7 @@ Functions</h2></td></tr>
 <tr class="memitem:a7820e0ea3646c981c8cb721e925eb0b5"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceJSON.html#a7820e0ea3646c981c8cb721e925eb0b5">JSON::json</a> (ObjectWriter *writer, const Dictionary &amp;dictionary)</td></tr>
 <tr class="separator:a7820e0ea3646c981c8cb721e925eb0b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9613261ae4d73b235c78dc37b58ec0ff"><td class="memTemplParams" colspan="2">template&lt;typename F , typename  = typename result_of&lt;F(WriterProxy)&gt;::type&gt; </td></tr>
-<tr class="memitem:a9613261ae4d73b235c78dc37b58ec0ff"><td class="memTemplItemLeft" align="right" valign="top">std::function&lt; void(std::ostream *)&gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceJSON_1_1internal.html#a9613261ae4d73b235c78dc37b58ec0ff">JSON::internal::jsonify</a> (const F &amp;<a class="el" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a88c241152bfa1b7f24a7f0c579b862ea">write</a>, Prefer)</td></tr>
+<tr class="memitem:a9613261ae4d73b235c78dc37b58ec0ff"><td class="memTemplItemLeft" align="right" valign="top">std::function&lt; void(std::ostream *)&gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceJSON_1_1internal.html#a9613261ae4d73b235c78dc37b58ec0ff">JSON::internal::jsonify</a> (const F &amp;write, Prefer)</td></tr>
 <tr class="separator:a9613261ae4d73b235c78dc37b58ec0ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a77e46ccd299317e0a2f3d1aa506c5581"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a77e46ccd299317e0a2f3d1aa506c5581"><td class="memTemplItemLeft" align="right" valign="top">std::function&lt; void(std::ostream *)&gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceJSON_1_1internal.html#a77e46ccd299317e0a2f3d1aa506c5581">JSON::internal::jsonify</a> (const T &amp;value, LessPrefer)</td></tr>

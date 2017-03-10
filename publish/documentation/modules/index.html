@@ -348,6 +348,13 @@ object</td>
 capabilities. Examples of these could be 3rdparty resource isolation mechanisms
 for GPGPU hardware, networking, etc.</p>
 
+<p>If a custom isolator module needs to checkpoint state to disk, it should do this
+on its own; Mesos does not provide public helpers to checkpoint module state.
+The standard location for such stored state is:</p>
+
+<pre><code>&lt;runtime_dir&gt;/isolators/&lt;name_of_isolator&gt;/
+</code></pre>
+
 <h3>Master Contender and Detector</h3>
 
 <p>Contender and Detector modules enable developers to implement custom leader
@@ -641,7 +648,7 @@ must exist between the various versions:</p>
         </div>
 
         <div class="col-md-8 trademark">
-          <p>&copy; 2012-2016 <a href="http://apache.org">The Apache Software Foundation</a>.
+          <p>&copy; 2012-2017 <a href="http://apache.org">The Apache Software Foundation</a>.
             Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.
           <p>
         </div>

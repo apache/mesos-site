@@ -177,7 +177,7 @@
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;  {</div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    stream.next_in =</div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;      <span class="keyword">const_cast&lt;</span>Bytef*<span class="keyword">&gt;</span>(<span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>Bytef*<span class="keyword">&gt;</span>(compressed.data()));</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    stream.avail_in = compressed.length();</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    stream.avail_in = <span class="keyword">static_cast&lt;</span>uInt<span class="keyword">&gt;</span>(compressed.length());</div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;</div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <span class="comment">// Build up the decompressed result.</span></div>
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    Bytef buffer[<a class="code" href="gzip_8hpp.html#ab5bb6360130257e53d2205c798cccc59">GZIP_BUFFER_SIZE</a>];</div>
@@ -243,7 +243,7 @@
 <div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;  z_stream_s stream;</div>
 <div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;  stream.next_in =</div>
 <div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    <span class="keyword">const_cast&lt;</span>Bytef*<span class="keyword">&gt;</span>(<span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>Bytef*<span class="keyword">&gt;</span>(decompressed.data()));</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;  stream.avail_in = decompressed.length();</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;  stream.avail_in = <span class="keyword">static_cast&lt;</span>uInt<span class="keyword">&gt;</span>(decompressed.length());</div>
 <div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;  stream.zalloc = Z_NULL;</div>
 <div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;  stream.zfree = Z_NULL;</div>
 <div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;  stream.opaque = Z_NULL;</div>
@@ -263,7 +263,7 @@
 <div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;</div>
 <div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;  <span class="comment">// Build up the compressed result.</span></div>
 <div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;  Bytef buffer[<a class="code" href="gzip_8hpp.html#ab5bb6360130257e53d2205c798cccc59">GZIP_BUFFER_SIZE</a>];</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;  std::string result = <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;  std::string result;</div>
 <div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;  <span class="keywordflow">do</span> {</div>
 <div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    stream.next_out = buffer;</div>
 <div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;    stream.avail_out = <a class="code" href="gzip_8hpp.html#ab5bb6360130257e53d2205c798cccc59">GZIP_BUFFER_SIZE</a>;</div>
@@ -326,7 +326,7 @@
 <div class="ttc" id="classgzip_1_1internal_1_1GzipError_html_a1ccd6de1092e6b9410c059e075e7bcd4"><div class="ttname"><a href="classgzip_1_1internal_1_1GzipError.html#a1ccd6de1092e6b9410c059e075e7bcd4">gzip::internal::GzipError::GzipError</a></div><div class="ttdeci">GzipError(int _code)</div><div class="ttdef"><b>Definition:</b> gzip.hpp:49</div></div>
 <div class="ttc" id="namespacegzip_html_a3bbc44fdaf5d546e4399fbf5d479477c"><div class="ttname"><a href="namespacegzip.html#a3bbc44fdaf5d546e4399fbf5d479477c">gzip::decompress</a></div><div class="ttdeci">Try&lt; std::string &gt; decompress(const std::string &amp;compressed)</div><div class="ttdef"><b>Definition:</b> gzip.hpp:243</div></div>
 <div class="ttc" id="classgzip_1_1Decompressor_html_af4ba354d45fc080218615318e17f779e"><div class="ttname"><a href="classgzip_1_1Decompressor.html#af4ba354d45fc080218615318e17f779e">gzip::Decompressor::finished</a></div><div class="ttdeci">bool finished() const </div><div class="ttdef"><b>Definition:</b> gzip.hpp:161</div></div>
-<div class="ttc" id="classTry_html_a6543d7d5db4f298bcd673bf3cd509acc"><div class="ttname"><a href="classTry.html#a6543d7d5db4f298bcd673bf3cd509acc">Try::isSome</a></div><div class="ttdeci">bool isSome() const </div><div class="ttdef"><b>Definition:</b> try.hpp:67</div></div>
+<div class="ttc" id="classTry_html_a6543d7d5db4f298bcd673bf3cd509acc"><div class="ttname"><a href="classTry.html#a6543d7d5db4f298bcd673bf3cd509acc">Try::isSome</a></div><div class="ttdeci">bool isSome() const </div><div class="ttdef"><b>Definition:</b> try.hpp:70</div></div>
 <div class="ttc" id="classgzip_1_1internal_1_1GzipError_html_a329eac2b003b8e0d17ebe4379107d943"><div class="ttname"><a href="classgzip_1_1internal_1_1GzipError.html#a329eac2b003b8e0d17ebe4379107d943">gzip::internal::GzipError::GzipError</a></div><div class="ttdeci">GzipError(const std::string &amp;message, int _code)</div><div class="ttdef"><b>Definition:</b> gzip.hpp:43</div></div>
 <div class="ttc" id="abort_8hpp_html"><div class="ttname"><a href="abort_8hpp.html">abort.hpp</a></div></div>
 <div class="ttc" id="classgzip_1_1Decompressor_html_a50830001abf74dd578318ef0fc55cfe9"><div class="ttname"><a href="classgzip_1_1Decompressor.html#a50830001abf74dd578318ef0fc55cfe9">gzip::Decompressor::~Decompressor</a></div><div class="ttdeci">~Decompressor()</div><div class="ttdef"><b>Definition:</b> gzip.hpp:113</div></div>
@@ -335,7 +335,7 @@
 <div class="ttc" id="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec_html_ae58e703656ab4a1bd5d9870441236727"><div class="ttname"><a href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#ae58e703656ab4a1bd5d9870441236727">mesos::internal::slave::cni::spec::error</a></div><div class="ttdeci">std::string error(const std::string &amp;msg, uint32_t code)</div></div>
 <div class="ttc" id="stringify_8hpp_html"><div class="ttname"><a href="stringify_8hpp.html">stringify.hpp</a></div></div>
 <div class="ttc" id="try_8hpp_html"><div class="ttname"><a href="try_8hpp.html">try.hpp</a></div></div>
-<div class="ttc" id="namespacens_html_a28116b46e6543597a11733424cd1aa20"><div class="ttname"><a href="namespacens.html#a28116b46e6543597a11733424cd1aa20">ns::stringify</a></div><div class="ttdeci">std::string stringify(int flags)</div><div class="ttdef"><b>Definition:</b> ns.hpp:685</div></div>
+<div class="ttc" id="namespacens_html_a28116b46e6543597a11733424cd1aa20"><div class="ttname"><a href="namespacens.html#a28116b46e6543597a11733424cd1aa20">ns::stringify</a></div><div class="ttdeci">std::string stringify(int flags)</div><div class="ttdef"><b>Definition:</b> ns.hpp:688</div></div>
 <div class="ttc" id="classgzip_1_1internal_1_1GzipError_html"><div class="ttname"><a href="classgzip_1_1internal_1_1GzipError.html">gzip::internal::GzipError</a></div><div class="ttdef"><b>Definition:</b> gzip.hpp:37</div></div>
 <div class="ttc" id="classgzip_1_1Decompressor_html_a7a7d893074b0b0b5eeb9ec3f5f7ffef3"><div class="ttname"><a href="classgzip_1_1Decompressor.html#a7a7d893074b0b0b5eeb9ec3f5f7ffef3">gzip::Decompressor::Decompressor</a></div><div class="ttdeci">Decompressor()</div><div class="ttdef"><b>Definition:</b> gzip.hpp:91</div></div>
 <div class="ttc" id="gzip_8hpp_html_ab5bb6360130257e53d2205c798cccc59"><div class="ttname"><a href="gzip_8hpp.html#ab5bb6360130257e53d2205c798cccc59">GZIP_BUFFER_SIZE</a></div><div class="ttdeci">#define GZIP_BUFFER_SIZE</div><div class="ttdef"><b>Definition:</b> gzip.hpp:34</div></div>

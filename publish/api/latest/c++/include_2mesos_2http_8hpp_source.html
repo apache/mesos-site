@@ -79,39 +79,44 @@
 <div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="namespacemesos.html#a612a4d4c00bd9c023062039cc15e0924">   25</a></span>&#160;<span class="keyword">const</span> <span class="keywordtype">char</span> <a class="code" href="namespacemesos.html#a612a4d4c00bd9c023062039cc15e0924">APPLICATION_JSON</a>[] = <span class="stringliteral">&quot;application/json&quot;</span>;</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment">// The content-types used for streaming requests.</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">// TODO(anand): These need to be revisited before calling</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">// out any features that use them as _stable_.</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="namespacemesos.html#a90a1d8cdf06079bf87cecdba0019183a">   32</a></span>&#160;<span class="keyword">const</span> <span class="keywordtype">char</span> <a class="code" href="namespacemesos.html#a90a1d8cdf06079bf87cecdba0019183a">APPLICATION_STREAMING_PROTOBUF</a>[] = <span class="stringliteral">&quot;application/x-protobuf+recordio&quot;</span>;</div>
-<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="namespacemesos.html#a20fb40bb942a412e9b652f417e8d3e97">   33</a></span>&#160;<span class="keyword">const</span> <span class="keywordtype">char</span> <a class="code" href="namespacemesos.html#a20fb40bb942a412e9b652f417e8d3e97">APPLICATION_STREAMING_JSON</a>[] = <span class="stringliteral">&quot;application/json+recordio&quot;</span>;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment">// The content-type used for streaming requests/responses.</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="namespacemesos.html#a5bb93875adbf30bc871be8008f3734db">   29</a></span>&#160;<span class="keyword">const</span> <span class="keywordtype">char</span> <a class="code" href="namespacemesos.html#a5bb93875adbf30bc871be8008f3734db">APPLICATION_RECORDIO</a>[] = <span class="stringliteral">&quot;application/recordio&quot;</span>;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">// The header used by the client/server to specify the content-type</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">// of messages in a streaming request/response.</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="namespacemesos.html#a7cf85c8dbda3d81772996a7830c9c29e">   34</a></span>&#160;<span class="keyword">const</span> <span class="keywordtype">char</span> <a class="code" href="namespacemesos.html#a7cf85c8dbda3d81772996a7830c9c29e">MESSAGE_CONTENT_TYPE</a>[] = <span class="stringliteral">&quot;Message-Content-Type&quot;</span>;</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">// Possible content-types that can be used for requests to the Mesos HTTP API.</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="namespacemesos.html#a13035ce0cc66cca4a467787b4716039e">   37</a></span>&#160;<span class="keyword">enum class</span> <a class="code" href="namespacemesos.html#a13035ce0cc66cca4a467787b4716039e">ContentType</a></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;{</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <a class="code" href="namespacemesos.html#a13035ce0cc66cca4a467787b4716039ead938347008a2e932aaa4a568a3c3f2e7">PROTOBUF</a>,</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  <a class="code" href="namespacemesos.html#a13035ce0cc66cca4a467787b4716039ea0ecd11c1d7a287401d148a23bbd7a2f8">JSON</a>,</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <a class="code" href="namespacemesos.html#a13035ce0cc66cca4a467787b4716039ea5a7d09437b793c894356b20970da4cf1">STREAMING_PROTOBUF</a>,</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  <a class="code" href="namespacemesos.html#a13035ce0cc66cca4a467787b4716039ea15959b0521a8228d4463e8d7c7630b5c">STREAMING_JSON</a></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;};</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;std::ostream&amp; <a class="code" href="namespacemesos.html#a5dc9d475094af726a46d485950cde6cb">operator&lt;&lt;</a>(std::ostream&amp; stream, <a class="code" href="namespacemesos.html#a13035ce0cc66cca4a467787b4716039e">ContentType</a> contentType);</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;} <span class="comment">// namespace mesos {</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">// The header used by the client to specify acceptable content-type</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">// of messages in a streaming response.</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="namespacemesos.html#acf42413ba78dc1a9cf763f982d6f6150">   39</a></span>&#160;<span class="keyword">const</span> <span class="keywordtype">char</span> <a class="code" href="namespacemesos.html#acf42413ba78dc1a9cf763f982d6f6150">MESSAGE_ACCEPT</a>[] = <span class="stringliteral">&quot;Message-Accept&quot;</span>;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">// Possible content-types that can be used for requests to the Mesos HTTP API.</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="namespacemesos.html#a13035ce0cc66cca4a467787b4716039e">   43</a></span>&#160;<span class="keyword">enum class</span> <a class="code" href="namespacemesos.html#a13035ce0cc66cca4a467787b4716039e">ContentType</a></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;{</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <a class="code" href="namespacemesos.html#a13035ce0cc66cca4a467787b4716039ead938347008a2e932aaa4a568a3c3f2e7">PROTOBUF</a>,</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  <a class="code" href="namespacemesos.html#a13035ce0cc66cca4a467787b4716039ea0ecd11c1d7a287401d148a23bbd7a2f8">JSON</a>,</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <a class="code" href="namespacemesos.html#a13035ce0cc66cca4a467787b4716039ea218af913ed9c4f4144a589f8e3a67776">RECORDIO</a></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;};</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="preprocessor">#endif // __MESOS_HTTP_HPP__</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;std::ostream&amp; <a class="code" href="namespacemesos.html#a5dc9d475094af726a46d485950cde6cb">operator&lt;&lt;</a>(std::ostream&amp; stream, <a class="code" href="namespacemesos.html#a13035ce0cc66cca4a467787b4716039e">ContentType</a> contentType);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;} <span class="comment">// namespace mesos {</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor">#endif // __MESOS_HTTP_HPP__</span></div>
 <div class="ttc" id="namespacemesos_html_a5dc9d475094af726a46d485950cde6cb"><div class="ttname"><a href="namespacemesos.html#a5dc9d475094af726a46d485950cde6cb">mesos::operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;stream, const Attribute &amp;attribute)</div></div>
-<div class="ttc" id="namespacemesos_html_a13035ce0cc66cca4a467787b4716039e"><div class="ttname"><a href="namespacemesos.html#a13035ce0cc66cca4a467787b4716039e">mesos::ContentType</a></div><div class="ttdeci">ContentType</div><div class="ttdef"><b>Definition:</b> http.hpp:37</div></div>
+<div class="ttc" id="namespacemesos_html_a13035ce0cc66cca4a467787b4716039e"><div class="ttname"><a href="namespacemesos.html#a13035ce0cc66cca4a467787b4716039e">mesos::ContentType</a></div><div class="ttdeci">ContentType</div><div class="ttdef"><b>Definition:</b> http.hpp:43</div></div>
+<div class="ttc" id="namespacemesos_html_a13035ce0cc66cca4a467787b4716039ea218af913ed9c4f4144a589f8e3a67776"><div class="ttname"><a href="namespacemesos.html#a13035ce0cc66cca4a467787b4716039ea218af913ed9c4f4144a589f8e3a67776">mesos::ContentType::RECORDIO</a></div></div>
+<div class="ttc" id="namespacemesos_html_a5bb93875adbf30bc871be8008f3734db"><div class="ttname"><a href="namespacemesos.html#a5bb93875adbf30bc871be8008f3734db">mesos::APPLICATION_RECORDIO</a></div><div class="ttdeci">const char APPLICATION_RECORDIO[]</div><div class="ttdef"><b>Definition:</b> http.hpp:29</div></div>
 <div class="ttc" id="namespacemesos_html_a0ddd4d6027e971c5997fcdc1ec34a939"><div class="ttname"><a href="namespacemesos.html#a0ddd4d6027e971c5997fcdc1ec34a939">mesos::APPLICATION_PROTOBUF</a></div><div class="ttdeci">const char APPLICATION_PROTOBUF[]</div><div class="ttdef"><b>Definition:</b> http.hpp:24</div></div>
-<div class="ttc" id="namespacemesos_html_a20fb40bb942a412e9b652f417e8d3e97"><div class="ttname"><a href="namespacemesos.html#a20fb40bb942a412e9b652f417e8d3e97">mesos::APPLICATION_STREAMING_JSON</a></div><div class="ttdeci">const char APPLICATION_STREAMING_JSON[]</div><div class="ttdef"><b>Definition:</b> http.hpp:33</div></div>
 <div class="ttc" id="namespacemesos_html_a13035ce0cc66cca4a467787b4716039ead938347008a2e932aaa4a568a3c3f2e7"><div class="ttname"><a href="namespacemesos.html#a13035ce0cc66cca4a467787b4716039ead938347008a2e932aaa4a568a3c3f2e7">mesos::ContentType::PROTOBUF</a></div></div>
-<div class="ttc" id="namespacemesos_html_a13035ce0cc66cca4a467787b4716039ea15959b0521a8228d4463e8d7c7630b5c"><div class="ttname"><a href="namespacemesos.html#a13035ce0cc66cca4a467787b4716039ea15959b0521a8228d4463e8d7c7630b5c">mesos::ContentType::STREAMING_JSON</a></div></div>
-<div class="ttc" id="namespacemesos_html_a13035ce0cc66cca4a467787b4716039ea5a7d09437b793c894356b20970da4cf1"><div class="ttname"><a href="namespacemesos.html#a13035ce0cc66cca4a467787b4716039ea5a7d09437b793c894356b20970da4cf1">mesos::ContentType::STREAMING_PROTOBUF</a></div></div>
+<div class="ttc" id="namespacemesos_html_acf42413ba78dc1a9cf763f982d6f6150"><div class="ttname"><a href="namespacemesos.html#acf42413ba78dc1a9cf763f982d6f6150">mesos::MESSAGE_ACCEPT</a></div><div class="ttdeci">const char MESSAGE_ACCEPT[]</div><div class="ttdef"><b>Definition:</b> http.hpp:39</div></div>
 <div class="ttc" id="namespacemesos_html_a612a4d4c00bd9c023062039cc15e0924"><div class="ttname"><a href="namespacemesos.html#a612a4d4c00bd9c023062039cc15e0924">mesos::APPLICATION_JSON</a></div><div class="ttdeci">const char APPLICATION_JSON[]</div><div class="ttdef"><b>Definition:</b> http.hpp:25</div></div>
+<div class="ttc" id="namespacemesos_html_a7cf85c8dbda3d81772996a7830c9c29e"><div class="ttname"><a href="namespacemesos.html#a7cf85c8dbda3d81772996a7830c9c29e">mesos::MESSAGE_CONTENT_TYPE</a></div><div class="ttdeci">const char MESSAGE_CONTENT_TYPE[]</div><div class="ttdef"><b>Definition:</b> http.hpp:34</div></div>
 <div class="ttc" id="namespacemesos_html_a13035ce0cc66cca4a467787b4716039ea0ecd11c1d7a287401d148a23bbd7a2f8"><div class="ttname"><a href="namespacemesos.html#a13035ce0cc66cca4a467787b4716039ea0ecd11c1d7a287401d148a23bbd7a2f8">mesos::ContentType::JSON</a></div></div>
-<div class="ttc" id="namespacemesos_html_a90a1d8cdf06079bf87cecdba0019183a"><div class="ttname"><a href="namespacemesos.html#a90a1d8cdf06079bf87cecdba0019183a">mesos::APPLICATION_STREAMING_PROTOBUF</a></div><div class="ttdeci">const char APPLICATION_STREAMING_PROTOBUF[]</div><div class="ttdef"><b>Definition:</b> http.hpp:32</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

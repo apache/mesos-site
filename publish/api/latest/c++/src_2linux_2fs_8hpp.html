@@ -60,6 +60,7 @@
 <div class="textblock"><code>#include &lt;mntent.h&gt;</code><br/>
 <code>#include &lt;sys/mount.h&gt;</code><br/>
 <code>#include &lt;sys/types.h&gt;</code><br/>
+<code>#include &lt;sys/vfs.h&gt;</code><br/>
 <code>#include &lt;string&gt;</code><br/>
 <code>#include &lt;vector&gt;</code><br/>
 <code>#include &lt;<a class="el" href="nothing_8hpp_source.html">stout/nothing.hpp</a>&gt;</code><br/>
@@ -150,11 +151,53 @@ Macros</h2></td></tr>
 <tr class="separator:ac68f46084b7991556285f5927e12c040"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a34b04741fa68d7de9b7a79a265b8227f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="src_2linux_2fs_8hpp.html#a34b04741fa68d7de9b7a79a265b8227f">UMOUNT_NOFOLLOW</a>&#160;&#160;&#160;8</td></tr>
 <tr class="separator:a34b04741fa68d7de9b7a79a265b8227f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba91cbd9d92aef71e55e33c2492d2edb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="src_2linux_2fs_8hpp.html#aba91cbd9d92aef71e55e33c2492d2edb">FS_TYPE_AUFS</a>&#160;&#160;&#160;0x61756673</td></tr>
+<tr class="separator:aba91cbd9d92aef71e55e33c2492d2edb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15b2a4c4f6f5024002510e2f628347a6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="src_2linux_2fs_8hpp.html#a15b2a4c4f6f5024002510e2f628347a6">FS_TYPE_BTRFS</a>&#160;&#160;&#160;0x9123683E</td></tr>
+<tr class="separator:a15b2a4c4f6f5024002510e2f628347a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af99f35bdaed76adb25c60a2b9692583a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="src_2linux_2fs_8hpp.html#af99f35bdaed76adb25c60a2b9692583a">FS_TYPE_CRAMFS</a>&#160;&#160;&#160;0x28cd3d45</td></tr>
+<tr class="separator:af99f35bdaed76adb25c60a2b9692583a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae25726778397f42e580b1e5af259252b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="src_2linux_2fs_8hpp.html#ae25726778397f42e580b1e5af259252b">FS_TYPE_ECRYPTFS</a>&#160;&#160;&#160;0xf15f</td></tr>
+<tr class="separator:ae25726778397f42e580b1e5af259252b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78f8e5134daf96646e5991fdab9b8c9c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="src_2linux_2fs_8hpp.html#a78f8e5134daf96646e5991fdab9b8c9c">FS_TYPE_EXTFS</a>&#160;&#160;&#160;0x0000EF53</td></tr>
+<tr class="separator:a78f8e5134daf96646e5991fdab9b8c9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0545e268800bc533878a26f88e50af79"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="src_2linux_2fs_8hpp.html#a0545e268800bc533878a26f88e50af79">FS_TYPE_F2FS</a>&#160;&#160;&#160;0xF2F52010</td></tr>
+<tr class="separator:a0545e268800bc533878a26f88e50af79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3c7f4eeb37b0ad50c9739f00407bb5e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="src_2linux_2fs_8hpp.html#ad3c7f4eeb37b0ad50c9739f00407bb5e">FS_TYPE_GPFS</a>&#160;&#160;&#160;0x47504653</td></tr>
+<tr class="separator:ad3c7f4eeb37b0ad50c9739f00407bb5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43c9df459546a461fa9ffd22f553d333"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="src_2linux_2fs_8hpp.html#a43c9df459546a461fa9ffd22f553d333">FS_TYPE_JFFS2FS</a>&#160;&#160;&#160;0x000072b6</td></tr>
+<tr class="separator:a43c9df459546a461fa9ffd22f553d333"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a354ec800de850029f26165b27fd907bd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="src_2linux_2fs_8hpp.html#a354ec800de850029f26165b27fd907bd">FS_TYPE_JFS</a>&#160;&#160;&#160;0x3153464a</td></tr>
+<tr class="separator:a354ec800de850029f26165b27fd907bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f2da2aeb1b93027665fcb705985e70c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="src_2linux_2fs_8hpp.html#a6f2da2aeb1b93027665fcb705985e70c">FS_TYPE_NFSFS</a>&#160;&#160;&#160;0x00006969</td></tr>
+<tr class="separator:a6f2da2aeb1b93027665fcb705985e70c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e384402b10580248a58ca631ccb1093"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="src_2linux_2fs_8hpp.html#a3e384402b10580248a58ca631ccb1093">FS_TYPE_RAMFS</a>&#160;&#160;&#160;0x858458f6</td></tr>
+<tr class="separator:a3e384402b10580248a58ca631ccb1093"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aafa09f9367e44643253f672100b08e53"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="src_2linux_2fs_8hpp.html#aafa09f9367e44643253f672100b08e53">FS_TYPE_REISERFS</a>&#160;&#160;&#160;0x52654973</td></tr>
+<tr class="separator:aafa09f9367e44643253f672100b08e53"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a505f1ed03891cf115f0519f95d6bf3ac"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="src_2linux_2fs_8hpp.html#a505f1ed03891cf115f0519f95d6bf3ac">FS_TYPE_SMBFS</a>&#160;&#160;&#160;0x0000517B</td></tr>
+<tr class="separator:a505f1ed03891cf115f0519f95d6bf3ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14ab14613c58aadf27f989a207469ddd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="src_2linux_2fs_8hpp.html#a14ab14613c58aadf27f989a207469ddd">FS_TYPE_SQUASHFS</a>&#160;&#160;&#160;0x73717368</td></tr>
+<tr class="separator:a14ab14613c58aadf27f989a207469ddd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39e51c6392c08d2e5249a2920f50cc83"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="src_2linux_2fs_8hpp.html#a39e51c6392c08d2e5249a2920f50cc83">FS_TYPE_TMPFS</a>&#160;&#160;&#160;0x01021994</td></tr>
+<tr class="separator:a39e51c6392c08d2e5249a2920f50cc83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6738a5149c85c0f664183ae3b051ea8c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="src_2linux_2fs_8hpp.html#a6738a5149c85c0f664183ae3b051ea8c">FS_TYPE_VXFS</a>&#160;&#160;&#160;0xa501fcf5</td></tr>
+<tr class="separator:a6738a5149c85c0f664183ae3b051ea8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b237fa98f2cc64e81342f74e451db4a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="src_2linux_2fs_8hpp.html#a9b237fa98f2cc64e81342f74e451db4a">FS_TYPE_XFS</a>&#160;&#160;&#160;0x58465342</td></tr>
+<tr class="separator:a9b237fa98f2cc64e81342f74e451db4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d619ac65ba18c6585cfcb95daf4951b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="src_2linux_2fs_8hpp.html#a0d619ac65ba18c6585cfcb95daf4951b">FS_TYPE_ZFS</a>&#160;&#160;&#160;0x2fc12fc1</td></tr>
+<tr class="separator:a0d619ac65ba18c6585cfcb95daf4951b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab38d5286660b5b755a4b85e663486145"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="src_2linux_2fs_8hpp.html#ab38d5286660b5b755a4b85e663486145">FS_TYPE_OVERLAY</a>&#160;&#160;&#160;0x794C7630</td></tr>
+<tr class="separator:ab38d5286660b5b755a4b85e663486145"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a0c6fe63428ca6e781338ed507a5952bd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTry.html">Try</a>&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1internal_1_1fs.html#a0c6fe63428ca6e781338ed507a5952bd">mesos::internal::fs::supported</a> (const std::string &amp;fsname)</td></tr>
 <tr class="separator:a0c6fe63428ca6e781338ed507a5952bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2343e2642db514496ba8380776487fba"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTry.html">Try</a>&lt; uint32_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1internal_1_1fs.html#a2343e2642db514496ba8380776487fba">mesos::internal::fs::type</a> (const std::string &amp;path)</td></tr>
+<tr class="separator:a2343e2642db514496ba8380776487fba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d5046cea634bcb658321fc495884020"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTry.html">Try</a>&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1internal_1_1fs.html#a0d5046cea634bcb658321fc495884020">mesos::internal::fs::typeName</a> (uint32_t fsType)</td></tr>
+<tr class="separator:a0d5046cea634bcb658321fc495884020"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af0d63e921d6b48554eaee82037356187"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTry.html">Try</a>&lt; <a class="el" href="structNothing.html">Nothing</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1internal_1_1fs.html#af0d63e921d6b48554eaee82037356187">mesos::internal::fs::mount</a> (const <a class="el" href="classOption.html">Option</a>&lt; std::string &gt; &amp;source, const std::string &amp;target, const <a class="el" href="classOption.html">Option</a>&lt; std::string &gt; &amp;type, unsigned long flags, const void *data)</td></tr>
 <tr class="separator:af0d63e921d6b48554eaee82037356187"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd1e45c2b648ff930d2df614beb6f34b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTry.html">Try</a>&lt; <a class="el" href="structNothing.html">Nothing</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1internal_1_1fs.html#afd1e45c2b648ff930d2df614beb6f34b">mesos::internal::fs::mount</a> (const <a class="el" href="classOption.html">Option</a>&lt; std::string &gt; &amp;source, const std::string &amp;target, const <a class="el" href="classOption.html">Option</a>&lt; std::string &gt; &amp;type, unsigned long flags, const <a class="el" href="classOption.html">Option</a>&lt; std::string &gt; &amp;options)</td></tr>
@@ -169,6 +212,234 @@ Functions</h2></td></tr>
 <tr class="separator:a3374f58b971e9b4e75d03793e24be549"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
+<a class="anchor" id="aba91cbd9d92aef71e55e33c2492d2edb"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define FS_TYPE_AUFS&#160;&#160;&#160;0x61756673</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a15b2a4c4f6f5024002510e2f628347a6"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define FS_TYPE_BTRFS&#160;&#160;&#160;0x9123683E</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="af99f35bdaed76adb25c60a2b9692583a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define FS_TYPE_CRAMFS&#160;&#160;&#160;0x28cd3d45</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ae25726778397f42e580b1e5af259252b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define FS_TYPE_ECRYPTFS&#160;&#160;&#160;0xf15f</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a78f8e5134daf96646e5991fdab9b8c9c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define FS_TYPE_EXTFS&#160;&#160;&#160;0x0000EF53</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a0545e268800bc533878a26f88e50af79"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define FS_TYPE_F2FS&#160;&#160;&#160;0xF2F52010</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ad3c7f4eeb37b0ad50c9739f00407bb5e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define FS_TYPE_GPFS&#160;&#160;&#160;0x47504653</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a43c9df459546a461fa9ffd22f553d333"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define FS_TYPE_JFFS2FS&#160;&#160;&#160;0x000072b6</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a354ec800de850029f26165b27fd907bd"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define FS_TYPE_JFS&#160;&#160;&#160;0x3153464a</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a6f2da2aeb1b93027665fcb705985e70c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define FS_TYPE_NFSFS&#160;&#160;&#160;0x00006969</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ab38d5286660b5b755a4b85e663486145"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define FS_TYPE_OVERLAY&#160;&#160;&#160;0x794C7630</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a3e384402b10580248a58ca631ccb1093"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define FS_TYPE_RAMFS&#160;&#160;&#160;0x858458f6</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="aafa09f9367e44643253f672100b08e53"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define FS_TYPE_REISERFS&#160;&#160;&#160;0x52654973</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a505f1ed03891cf115f0519f95d6bf3ac"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define FS_TYPE_SMBFS&#160;&#160;&#160;0x0000517B</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a14ab14613c58aadf27f989a207469ddd"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define FS_TYPE_SQUASHFS&#160;&#160;&#160;0x73717368</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a39e51c6392c08d2e5249a2920f50cc83"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define FS_TYPE_TMPFS&#160;&#160;&#160;0x01021994</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a6738a5149c85c0f664183ae3b051ea8c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define FS_TYPE_VXFS&#160;&#160;&#160;0xa501fcf5</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a9b237fa98f2cc64e81342f74e451db4a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define FS_TYPE_XFS&#160;&#160;&#160;0x58465342</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a0d619ac65ba18c6585cfcb95daf4951b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define FS_TYPE_ZFS&#160;&#160;&#160;0x2fc12fc1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a724db0d55adda6a70d1cfc6ea6815c80"></a>
 <div class="memitem">
 <div class="memproto">

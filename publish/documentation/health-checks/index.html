@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Apache Mesos - Task Health Checking</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta property="og:locale" content="en_US"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:title" content="Apache Mesos"/>
+    <meta property="og:site_name" content="Apache Mesos"/>
+    <meta property="og:url" content="http://mesos.apache.org/"/>
+    <meta property="og:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta property="og:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
+
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:site" content="@ApacheMesos"/>
+    <meta name="twitter:title" content="Apache Mesos"/>
+    <meta name="twitter:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta name="twitter:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
+
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
+    <link href="../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+
+    
+
+    <!-- Google Analytics Magic -->
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-20226872-1']);
+    _gaq.push(['_setDomainName', 'apache.org']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+    
+  </head>
+  <body>
+    <!-- magical breadcrumbs -->
+    <div class="topnav">
+      <div class="container">
+        <ul class="breadcrumb">
+          <li>
+            <div class="dropdown">
+              <a data-toggle="dropdown" href="#">Apache Software Foundation <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                <li><a href="http://www.apache.org">Apache Homepage</a></li>
+                <li><a href="http://www.apache.org/licenses/">License</a></li>
+                <li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>
+                <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                <li><a href="http://www.apache.org/security/">Security</a></li>
+              </ul>
+            </div>
+          </li>
+
+          <li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+          
+          
+          <li><a href="/documentation
+/">Documentation
+</a></li>
+          
+          
+        </ul><!-- /.breadcrumb -->
+      </div><!-- /.container -->
+    </div><!-- /.topnav -->
+
+    <!-- navbar excitement -->
+<div class="navbar navbar-default navbar-static-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#mesos-menu" aria-expanded="false">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo"/></a>
+    </div><!-- /.navbar-header -->
+
+    <div class="navbar-collapse collapse" id="mesos-menu">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/gettingstarted/">Getting Started</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/documentation/latest/">Documentation</a></li>
+        <li><a href="/downloads/">Downloads</a></li>
+        <li><a href="/community/">Community</a></li>
+      </ul>
+    </div><!-- /#mesos-menu -->
+  </div><!-- /.container -->
+</div><!-- /.navbar -->
+
+<div class="content">
+  <div class="container">
+    <div class="row-fluid">
+  <div class="col-md-4">
+    <h4>If you're new to Mesos</h4>
+    <p>See the <a href="/gettingstarted/">getting started</a> page for more
+       information about downloading, building, and deploying Mesos.</p>
+
+    <h4>If you'd like to get involved or you're looking for support</h4>
+    <p>See our <a href="/community/">community</a> page for more details.</p>
+  </div>
+  <div class="col-md-8">
+    <h1>Task Health Checking</h1>
+
+<p>Sometimes applications crash, misbehave, or become unresponsive. To detect and
+recover from such situations, some frameworks (e.g.,
+<a href="https://github.com/mesosphere/marathon/blob/v1.3.6/docs/docs/health-checks.md">Marathon</a>,
+<a href="https://aurora.apache.org/documentation/0.8.0/user-guide/#http-health-checking-and-graceful-shutdown">Apache Aurora</a>)
+implement their own logic for checking the health of their tasks. This is
+typically done by having the framework scheduler send a &ldquo;ping&rdquo; request, e.g.,
+via HTTP, to the host where the task is running and arranging for the task or
+executor to respond to the ping. Although this technique is extremely useful,
+there are several disadvantages in the way it is usually implemented:</p>
+
+<ul>
+<li>Each Mesos framework uses its own API and protocol.</li>
+<li>Framework developers have to reimplement common functionality.</li>
+<li>Health checks originating from a scheduler generate extra network traffic if
+the task and the scheduler run on different nodes (which is usually the case);
+moreover, network failures between the task and the scheduler may make the
+latter think that the former is unhealthy, which might not be the case.</li>
+<li>Implementing health checks in the framework scheduler can be a performance
+bottleneck. If a framework is managing a large number of tasks, performing
+health checks for every task can cause scheduler performance problems.</li>
+</ul>
+
+
+<p>To address the aforementioned problems, Mesos 1.2.0 introduces
+<a href="#mesos-native-health-checks">the Mesos-native health check design</a>, defines
+common API for <a href="#command-health-checks">command</a>, <a href="#http-health-checks">HTTP(S)</a>,
+and <a href="#tcp-health-checks">TCP</a> health checks, and provides reference
+implementations for all built-in executors.</p>
+
+<p><strong>NOTE:</strong> Some functionality related to health checking was available prior to
+1.2.0 release, however it was considered experimental.</p>
+
+<p><strong>NOTE:</strong> Mesos monitors each process-based task, including Docker containers,
+using an equivalent of a <code>waitpid()</code> system call. This technique allows
+detecting and reporting process crashes, but is insufficient for cases when the
+process is still running but is not responsive.</p>
+
+<p>This document describes supported health check types, touches on relevant
+implementation details, and mentions limitations and caveats.</p>
+
+<p><a name="mesos-native-health-checks"></a></p>
+
+<h2>Mesos-native Health Checks</h2>
+
+<p>In contrast to the state-of-the-art &ldquo;scheduler health check&rdquo; pattern mentioned
+above, Mesos-native health checks run on the agent node: it is the executor
+which performs checks and not the scheduler. This improves scalability but means
+that detecting network faults or task availability from the outside world
+becomes a separate concern. For instance, if the task is running on a
+partitioned agent, it will still be health checked and&mdash;if those health checks
+fail&mdash;will be terminated. Needless to say that due to the network partition,
+all this will happen without the framework scheduler being notified.</p>
+
+<p>Task status updates are leveraged to transfer the health check status to the
+Mesos master and further to the framework&rsquo;s scheduler ensuring the
+&ldquo;at-least-once&rdquo; delivery guarantee. The boolean <code>healthy</code> field is used to
+convey health status, which <a href="#current-limitations">may be insufficient</a> in
+certain cases. This means a task that has failed health checks will be <code>RUNNING</code>
+with <code>healthy</code> set to <code>false</code>. Currently, the <code>healthy</code> field is only set for
+<code>TASK_RUNNING</code> status updates.</p>
+
+<p>When a task turns unhealthy, a task status update message with the <code>healthy</code>
+field set to <code>false</code> is sent to the Mesos master and then forwarded to a
+scheduler. The executor is expected to kill the task after a number of
+consecutive failures defined in the <code>consecutive_failures</code> field of the
+<code>HealthCheck</code> protobuf.</p>
+
+<p><strong>NOTE:</strong> While a scheduler currently cannot cancel a task kill due to failing
+health checks, it may issue a <code>killTask</code> command itself. This may be helpful to
+emulate a &ldquo;global&rdquo; policy for handling tasks with failing health checks (see
+<a href="#current-limitations">limitations</a>).</p>
+
+<p>Built-in executors forward all unhealthy status updates, as well as the first
+healthy update when a task turns healthy, i.e., when the task has started or
+after one or more unhealthy updates have occurred. Note that custom executors
+may use a different strategy.</p>
+
+<p>Custom executors can use <a href="#under-the-hood">the health checker library</a>, the
+reference implementation for health checking all built-in executors rely on.</p>
+
+<h2>Anatomy of a Health Check</h2>
+
+<p>Mesos health checks are described in the
+<a href="https://github.com/apache/mesos/blob/1.1.0/include/mesos/mesos.proto#L345"><code>HealthCheck</code></a>
+protobuf. Currently, only tasks can be health checked, not arbitrary processes
+or executors, i.e., only the <code>TaskInfo</code> protobuf has the optional <code>HealthCheck</code>
+field. However, it is worth noting that all built-in executors map a task to a
+process.</p>
+
+<p>It is an executor&rsquo;s responsibility to health check its tasks, because only
+executor knows how to interpret <code>TaskInfo</code>. All built-in executors support
+health checking their tasks (see <a href="#under-the-hood">implementation details</a>
+and <a href="#current-limitations">limitations</a>).</p>
+
+<p><strong>NOTE:</strong> It is up to the executor how&mdash;and whether at all&mdash;to honor
+the <code>HealthCheck</code> field in <code>TaskInfo</code>. Implementations may vary significantly
+depending on what entity <code>TaskInfo</code> represents. In this section only the
+reference implementation for built-in executors is considered.</p>
+
+<p><a name="command-health-checks"></a></p>
+
+<h3>Command Health Checks</h3>
+
+<p>Command health checks are described by the <code>CommandInfo</code> protobuf; some fields
+are ignored though: <code>CommandInfo.user</code> and <code>CommandInfo.uris</code>. A command health
+check specifies an arbitrary command that is used to validate the health of the
+task. The executor launches the command and inspects its exit status: <code>0</code> is
+treated as success, any other status as failure.</p>
+
+<p><strong>NOTE:</strong> If a task is a Docker container launched by the docker executor, it
+will be wrapped in <code>docker run</code>. For all other tasks, including Docker
+containers launched in the <a href="/documentation/latest/./mesos-containerizer/">mesos containerizer</a>, the
+command will be executed from the task&rsquo;s mount namespace.</p>
+
+<p>To specify a command health check, set <code>type</code> to <code>HealthCheck::COMMAND</code> and
+populate <code>CommandInfo</code>, for example:</p>
+
+<pre><code class="{.cpp}">HealthCheck healthCheck;
+healthCheck.set_type(HealthCheck::COMMAND);
+healthCheck.mutable_command()-&gt;set_value("ls /checkfile &gt; /dev/null");
+
+task.mutable_health_check()-&gt;CopyFrom(healthCheck);
+</code></pre>
+
+<p><a name="http-health-checks"></a></p>
+
+<h3>HTTP(S) Health Checks</h3>
+
+<p>HTTP(S) health checks are described by the <code>HealthCheck.HTTPCheckInfo</code> protobuf
+with <code>scheme</code>, <code>port</code>, <code>path</code>, and <code>statuses</code> fields. A <code>GET</code> request is sent to
+<code>scheme://&lt;host&gt;:port/path</code> using the <code>curl</code> command. Note that <code>&lt;host&gt;</code> is
+currently not configurable and is resolved automatically to <code>127.0.0.1</code> (see
+<a href="#current-limitations">limitations</a>). The <code>scheme</code> field supports <code>"http"</code> and
+<code>"https"</code> values only. Field <code>port</code> must specify an actual port the task is
+listening on, not a mapped one.</p>
+
+<p>Built-in executors treat status codes between <code>200</code> and <code>399</code> as success; custom
+executors may employ a different strategy, e.g., leveraging the <code>statuses</code> field.</p>
+
+<p><strong>NOTE:</strong> Setting <code>HealthCheck.HTTPCheckInfo.statuses</code> has no effect on the
+built-in executors.</p>
+
+<p>If necessary, executors enter the task&rsquo;s network namespace prior to launching
+the <code>curl</code> command.</p>
+
+<p>To specify an HTTP health check, set <code>type</code> to <code>HealthCheck::HTTP</code> and populate
+<code>HTTPCheckInfo</code>, for example:</p>
+
+<pre><code class="{.cpp}">HealthCheck healthCheck;
+healthCheck.set_type(HealthCheck::HTTP);
+healthCheck.mutable_http()-&gt;set_port(8080);
+healthCheck.mutable_http()-&gt;set_scheme("http");
+healthCheck.mutable_http()-&gt;set_path("/health");
+
+task.mutable_health_check()-&gt;CopyFrom(healthCheck);
+</code></pre>
+
+<p><a name="tcp-health-checks"></a></p>
+
+<h3>TCP Health Checks</h3>
+
+<p>TCP health checks are described by the <code>HealthCheck.TCPCheckInfo</code> protobuf,
+which has a single <code>port</code> field, which must specify an actual port the task is
+listening on, not a mapped one. The task is probed using Mesos'
+<code>mesos-tcp-connect</code> command, which tries to establish a TCP connection to
+<code>&lt;host&gt;:port</code>. Note that <code>&lt;host&gt;</code> is currently not configurable and is resolved
+automatically to <code>127.0.0.1</code> (see <a href="#current-limitations">limitations</a>).</p>
+
+<p>The health check is considered successful if the connection can be established.</p>
+
+<p>If necessary, executors enter the task&rsquo;s network namespace prior to launching
+the <code>mesos-tcp-connect</code> command.</p>
+
+<p>To specify a TCP health check, set <code>type</code> to <code>HealthCheck::TCP</code> and populate
+<code>TCPCheckInfo</code>, for example:</p>
+
+<pre><code class="{.cpp}">HealthCheck healthCheck;
+healthCheck.set_type(HealthCheck::TCP);
+healthCheck.mutable_tcp()-&gt;set_port(8080);
+
+task.mutable_health_check()-&gt;CopyFrom(healthCheck);
+</code></pre>
+
+<h3>Common options</h3>
+
+<p>The <code>HealthCheck</code> protobuf contains common options which regulate how a health
+check must be interpreted by an executor:</p>
+
+<ul>
+<li><code>delay_seconds</code> is the amount of time to wait until starting health checking
+the task.</li>
+<li><code>interval_seconds</code> is the interval between health checks.</li>
+<li><code>timeout_seconds</code> is the amount of time to wait for the health check to
+complete. After this timeout, the health check is aborted and treated as a
+failure.</li>
+<li><code>consecutive_failures</code> is the number of consecutive failures until the task is
+killed by the executor.</li>
+<li><code>grace_period_seconds</code> is the amount of time after the task is launched during
+which health check failures are ignored. Once a health check succeeds for the
+first time, the grace period does not apply anymore. Note that it includes
+<code>delay_seconds</code>, i.e., setting <code>grace_period_seconds</code> &lt; <code>delay_seconds</code> has
+no effect.</li>
+</ul>
+
+
+<p><strong>NOTE:</strong> Since each time a health check is performed a helper command is
+launched (see <a href="#current-limitations">limitations</a>), setting <code>timeout_seconds</code>
+to a small value, e.g., <code>&lt;5s</code>, may lead to intermittent failures.</p>
+
+<p>As an example, the code below specifies a task which is a Docker container with
+a simple HTTP server listening on port <code>8080</code> and an HTTP health check that
+should be performed every second starting from the task launch and allows
+consecutive failures during first <code>15</code> seconds and response time under <code>1</code>
+second.</p>
+
+<pre><code class="{.cpp}">TaskInfo task = createTask(...);
+
+// Use Netcat to emulate an HTTP server.
+const string command =
+    "nc -lk -p 8080 -e echo -e \"HTTP/1.1 200 OK\r\nContent-Length: 0\r\n\"";
+task.mutable_command()-&gt;set_value(command)
+
+Image image;
+image.set_type(Image::DOCKER);
+image.mutable_docker()-&gt;set_name("alpine");
+
+ContainerInfo* container = task.mutable_container();
+container-&gt;set_type(ContainerInfo::MESOS);
+container-&gt;mutable_mesos()-&gt;mutable_image()-&gt;CopyFrom(image);
+
+// Set `grace_period_seconds` here because it takes
+// some time to launch Netcat to serve requests.
+HealthCheck healthCheck;
+healthCheck.set_type(HealthCheck::HTTP);
+healthCheck.mutable_http()-&gt;set_port(8080);
+healthCheck.set_delay_seconds(0);
+healthCheck.set_interval_seconds(1);
+healthCheck.set_timeout_seconds(1);
+healthCheck.set_grace_period_seconds(15);
+
+task.mutable_health_check()-&gt;CopyFrom(healthCheck);
+</code></pre>
+
+<p><a name="under-the-hood"></a></p>
+
+<h2>Under the Hood</h2>
+
+<p>All built-in executors rely on the health checker library, which lives in
+<a href="https://github.com/apache/mesos/tree/master/src/checks">&ldquo;src/checks&rdquo;</a>.
+An executor creates an instance of the <code>HealthChecker</code> per task and passes the
+health check definition together with extra parameters. In return, the library
+notifies the executor of changes in the task&rsquo;s health status.</p>
+
+<p>The library depends on <code>curl</code> for HTTP(S) checks and <code>mesos-tcp-connect</code> for
+TCP checks (the latter is a simple command bundled with Mesos).</p>
+
+<p>One of the most non-trivial things the library takes care of is entering the
+appropriate task&rsquo;s namespaces (<code>mnt</code>, <code>net</code>) on Linux agents. To perform a
+command health check, the checker must be in the same mount namespace as the
+checked process; this is achieved by either calling <code>docker run</code> for the health
+check command in case of <a href="/documentation/latest/./docker-containerizer/">docker containerizer</a> or
+by explicitly calling <code>setns()</code> for <code>mnt</code> namespace in case of
+<a href="/documentation/latest/./mesos-containerizer/">mesos containerizer</a> (see
+<a href="/documentation/latest/./containerizer/">containerization in Mesos</a>). To perform an HTTP(S) or TCP
+health check, the most reliable solution is to share the same network namespace
+with the checked process; in case of docker containerizer <code>setns()</code> for <code>net</code>
+namespace is explicitly called, while mesos containerizer guarantees an executor
+and its tasks are in the same network namespace.</p>
+
+<p><strong>NOTE:</strong> Custom executors may or may not use this library. Please check the
+respective framework&rsquo;s documentation.</p>
+
+<p>Regardless of executor, all resources used to health check a task are accounted
+towards task&rsquo;s resource allocation. Hence it is a good idea to add some extra
+resources, e.g., 0.05 cpu and 32MB mem, to the task definition if a Mesos-native
+health check is specified.</p>
+
+<p><a name="current-limitations"></a></p>
+
+<h2>Current Limitations</h2>
+
+<ul>
+<li>When a task becomes unhealthy, it is deemed to be killed after
+<code>HealthCheck.consecutive_failures</code> failures. This decision is taken locally by
+an executor, there is no way for a scheduler to intervene and react
+differently. A workaround is to set <code>HealthCheck.consecutive_failures</code> to some
+large value so that the scheduler can react. One possible solution is to
+introduce a &ldquo;global&rdquo; policy for handling unhealthy tasks (see
+<a href="https://issues.apache.org/jira/browse/MESOS-6171">MESOS-6171</a>).</li>
+<li>HTTP(S) and TCP health checks use <code>127.0.0.1</code> as target IP. As a result, if
+tasks want to support HTTP or TCP health checks, they should listen on the
+loopback interface in addition to whatever interface they require (see
+<a href="https://issues.apache.org/jira/browse/MESOS-6517">MESOS-6517</a>).</li>
+<li>HTTP(S) health checks rely on the <code>curl</code> command; if it is not available, a
+health check is considered failed.</li>
+<li>TCP health checks are not supported on Windows (see
+<a href="https://issues.apache.org/jira/browse/MESOS-6117">MESOS-6117</a>).</li>
+<li>Only a single health check per task is allowed (see
+<a href="https://issues.apache.org/jira/browse/MESOS-5962">MESOS-5962</a>).</li>
+<li>Each time a health check runs, <a href="#under-the-hood">a helper command is launched</a>.
+This introduces some run-time overhead (see
+<a href="https://issues.apache.org/jira/browse/MESOS-6766">MESOS-6766</a>).</li>
+<li>A task without a health check may be indistinguishable from a task with a
+health check but still in a grace period. An extra state should be introduced
+(see <a href="https://issues.apache.org/jira/browse/MESOS-6417">MESOS-6417</a>).</li>
+<li>Task&rsquo;s health status cannot be assigned from outside, e.g., by an operator via
+an endpoint.</li>
+</ul>
+
+
+  </div>
+</div>
+
+  </div><!-- /.container -->
+</div><!-- /.content -->
+
+<hr>
+
+
+
+    <!-- footer -->
+    <div class="footer">
+      <div class="container">
+        <div class="col-md-4 social-blk">
+          <span class="social">
+            <a href="https://twitter.com/ApacheMesos"
+              class="twitter-follow-button"
+              data-show-count="false" data-size="large">Follow @ApacheMesos</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+            <a href="https://twitter.com/intent/tweet?button_hashtag=mesos"
+              class="twitter-hashtag-button"
+              data-size="large"
+              data-related="ApacheMesos">Tweet #mesos</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+          </span>
+        </div>
+
+        <div class="col-md-8 trademark">
+          <p>&copy; 2012-2017 <a href="http://apache.org">The Apache Software Foundation</a>.
+            Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.
+          <p>
+        </div>
+      </div><!-- /.container -->
+    </div><!-- /.footer -->
+
+    <!-- JS -->
+    <script src="//code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="text/javascript"></script>
+  </body>
+</html>

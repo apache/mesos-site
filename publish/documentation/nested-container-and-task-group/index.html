@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Apache Mesos - Mesos Nested Container and Task Group</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta property="og:locale" content="en_US"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:title" content="Apache Mesos"/>
+    <meta property="og:site_name" content="Apache Mesos"/>
+    <meta property="og:url" content="http://mesos.apache.org/"/>
+    <meta property="og:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta property="og:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
+
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:site" content="@ApacheMesos"/>
+    <meta name="twitter:title" content="Apache Mesos"/>
+    <meta name="twitter:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta name="twitter:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
+
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
+    <link href="../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+
+    
+
+    <!-- Google Analytics Magic -->
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-20226872-1']);
+    _gaq.push(['_setDomainName', 'apache.org']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+    
+  </head>
+  <body>
+    <!-- magical breadcrumbs -->
+    <div class="topnav">
+      <div class="container">
+        <ul class="breadcrumb">
+          <li>
+            <div class="dropdown">
+              <a data-toggle="dropdown" href="#">Apache Software Foundation <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                <li><a href="http://www.apache.org">Apache Homepage</a></li>
+                <li><a href="http://www.apache.org/licenses/">License</a></li>
+                <li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>
+                <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                <li><a href="http://www.apache.org/security/">Security</a></li>
+              </ul>
+            </div>
+          </li>
+
+          <li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+          
+          
+          <li><a href="/documentation
+/">Documentation
+</a></li>
+          
+          
+        </ul><!-- /.breadcrumb -->
+      </div><!-- /.container -->
+    </div><!-- /.topnav -->
+
+    <!-- navbar excitement -->
+<div class="navbar navbar-default navbar-static-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#mesos-menu" aria-expanded="false">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo"/></a>
+    </div><!-- /.navbar-header -->
+
+    <div class="navbar-collapse collapse" id="mesos-menu">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/gettingstarted/">Getting Started</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/documentation/latest/">Documentation</a></li>
+        <li><a href="/downloads/">Downloads</a></li>
+        <li><a href="/community/">Community</a></li>
+      </ul>
+    </div><!-- /#mesos-menu -->
+  </div><!-- /.container -->
+</div><!-- /.navbar -->
+
+<div class="content">
+  <div class="container">
+    <div class="row-fluid">
+  <div class="col-md-4">
+    <h4>If you're new to Mesos</h4>
+    <p>See the <a href="/gettingstarted/">getting started</a> page for more
+       information about downloading, building, and deploying Mesos.</p>
+
+    <h4>If you'd like to get involved or you're looking for support</h4>
+    <p>See our <a href="/community/">community</a> page for more details.</p>
+  </div>
+  <div class="col-md-8">
+    <h1>Overview</h1>
+
+<h2>Motivation</h2>
+
+<p>A <a href="http://kubernetes.io/docs/user-guide/pods">pod</a> can be defined as
+a set of containers co-located and co-managed on an agent that share
+some resources (e.g., network namespace, volumes) but not others
+(e.g., container image, resource limits). Here are the use cases for
+pod:</p>
+
+<ul>
+<li>Run a side-car container (e.g., logger, backup) next the the main
+application controller.</li>
+<li>Run an adapter container (e.g., metrics endpoint, queue consumer)
+next to the main container.</li>
+<li>Run transient tasks inside a pod for a operations which are
+short-lived and whose exit does not imply that a pod should
+exit (e.g., a task which backs up data in a persistent volume).</li>
+<li>Provide performance isolation between latency-critical application
+and supporting processes.</li>
+<li>Run a group of containers sharing volumes and network namespace
+while some of them can have their own mount namespace.</li>
+<li>Run a group of containers with the same life cycle, e.g, one
+container&rsquo;s failure would cause all other containers being
+cleaned up.</li>
+</ul>
+
+
+<p>In order to have first class support for running “pods”, two new
+primitives are introduced in Mesos: <code>Task Group</code> and <code>Nested Container</code>.</p>
+
+<h2>Background</h2>
+
+<p>Mesos has the concept of Executors and Tasks. An executor can launch
+multiple tasks while the executor runs in a container. An agent can
+run multiple executors. The pod can be implemented by leveraging the
+executor and task abstractions. More specifically, the executor runs
+in the top level container (called executor container) and its tasks
+run in separate nested containers inside this top level container,
+while the container image can be specified for each container.</p>
+
+<h2>New Primitives: Task Group and Nested Container</h2>
+
+<h3>Task Group</h3>
+
+<p>The concept of Task Group addresses the limitation of the existing
+Scheduler and Executor APIs, which cannot send a group of tasks to
+an executor <code>atomically</code>. Even though a scheduler can launch multiple
+tasks for the same executor in a LAUNCH offer operation, these tasks
+are delivered to the executor one at a time via separate LAUNCH events.
+It cannot guarantee atomicity since any individual task might be dropped
+due to different reasons (e.g., network partition). Therefore, the Task
+Group provides <code>all-or-nothing</code> semantics to ensure a group of tasks
+are delivered <code>atomically</code> to an executor.</p>
+
+<h3>Nested Container</h3>
+
+<p>The concept of Nested Container describes containers nested under an
+executor container. They share the network namespace and volumes while
+they may have their own container images and resource limits. By
+introducing the new agent API for nested container in the following
+section, executors no longer need to implement their own containerization.
+Instead, executors can reuse the containerizer (in the agent) to launch
+nested container. Both authorized operators or executors will be allowed
+to create nested containers.</p>
+
+<h1>Task Group API</h1>
+
+<h2>Framework API</h2>
+
+<pre><code>message TaskGroupInfo {
+  repeated TaskInfo tasks = 1;
+}
+
+message Offer {
+  ...
+
+  message Operation {
+    enum Type {
+      ...
+      LAUNCH_GROUP = 6;
+      ...
+    }
+    ...
+
+    message LaunchGroup {
+      required ExecutorInfo executor = 1;
+      required TaskGroupInfo task_group = 2;
+    }
+    ...
+
+    optional LaunchGroup launch_group = 7;
+  }
+}
+</code></pre>
+
+<p>By using the TaskGroup Framework API, frameworks can launch a task
+group with the <a href="/documentation/latest/./app-framework-development-guide/">default executor</a>
+or a custom executor. The group of tasks can be specified through an
+offer operation <code>LaunchGroup</code> when accepting an offer. The
+<code>ExecutorInfo</code> indicates the executor to launch the task group, while
+the <code>TaskGroupInfo</code> includes the group of tasks to be launched
+atomically.</p>
+
+<p>To use the default executor for launching the task group, the framework should:
+* Set <code>ExecutorInfo.type</code> as <code>DEFAULT</code>.
+* Set <code>ExecutorInfo.resources</code> for the resources needed for the executor.</p>
+
+<p>Please note that the following fields in the <code>ExecutorInfo</code> are not allowed to set when using the default executor:
+* <code>ExecutorInfo.command</code>.
+* <code>ExecutorInfo.container.type</code>, <code>ExecutorInfo.container.docker</code> and <code>ExecutorInfo.container.mesos</code>.</p>
+
+<p>To allow containers to share a network namespace:
+* Set <code>ExecutorInfo.container.network</code>.</p>
+
+<p>To allow containers to share an ephemeral volume:
+Specify the <code>volume/sandbox_path</code> isolator.
+* Set <code>TaskGroupInfo.tasks.container.volumes.source.type</code> as <code>SANDBOX_PATH</code>.
+* Set <code>TaskGroupInfo.tasks.container.volumes.source.sandbox_path.type</code> as <code>PARENT</code> and the path relative to the parent container’s sandbox.</p>
+
+<h2>Executor API</h2>
+
+<pre><code>message Event {
+  enum Type {
+    ...
+    LAUNCH_GROUP = 8;
+    ...
+  }
+  ...
+
+  message LaunchGroup {
+    required TaskGroupInfo task_group = 1;
+  }
+  ...
+
+  optional LaunchGroup launch_group = 8;
+}
+</code></pre>
+
+<p>A new event <code>LAUNCH_GROUP</code> is added to Executor API. Similar to the
+Framework API, the <code>LAUNCH_GROUP</code> event guarantees a group of tasks
+are delivered to the executor atomically.</p>
+
+<h1>Nested Container API</h1>
+
+<h2>New Agent API</h2>
+
+<pre><code>package mesos.agent;
+
+message Call {
+  enum Type {
+    ...
+    // Calls for managing nested containers underneath an executor's container.
+    NESTED_CONTAINER_LAUNCH = 14;  // See 'NestedContainerLaunch' below.
+    NESTED_CONTAINER_WAIT = 15;    // See 'NestedContainerWait' below.
+    NESTED_CONTAINER_KILL = 16;    // See 'NestedContainerKill' below.
+  }
+
+  // Launches a nested container within an executor's tree of containers.
+  message LaunchNestedContainer {
+    required ContainerID container_id = 1;
+    optional CommandInfo command = 2;
+    optional ContainerInfo container = 3;
+  }
+
+  // Waits for the nested container to terminate and receives the exit status.
+  message WaitNestedContainer {
+    required ContainerID container_id = 1;
+  }
+
+  // Kills the nested container. Currently only supports SIGKILL.
+  message KillNestedContainer {
+    required ContainerID container_id = 1;
+  }
+
+  optional Type type = 1;
+  ...
+  optional NestedContainerLaunch nested_container_launch = 6;
+  optional NestedContainerWait nested_container_wait = 7;
+  optional NestedContainerKill nested_container_kill = 8;
+}
+
+message Response {
+  enum Type {
+    ...
+    NESTED_CONTAINER_WAIT = 13;    // See 'NestedContainerWait' below.
+  }
+
+  // Returns termination information about the nested container.
+  message NestedContainerWait {
+    optional int32 exit_status = 1;
+  }
+
+  optional Type type = 1;
+  ...
+  optional NestedContainerWait nested_container_wait = 14;
+}
+</code></pre>
+
+<p>By adding the new Agent API, any authorized entity, including the
+executor itself, its tasks, or the operator can use this API to
+launch/wait/kill nested containers. Multi-level nesting is supported
+by using this API. Technically, the nested level is up to 32 since
+it is limited by the maximum depth of <a href="https://github.com/torvalds/linux/commit/f2302505775fd13ba93f034206f1e2a587017929">pid namespace</a> and
+<a href="http://man7.org/linux/man-pages/man7/user_namespaces.7.html">user namespace</a> from the Linux Kernel.</p>
+
+<p>The following is the workflow of how the new Agent API works:</p>
+
+<ol>
+<li><p>The executor sends a <code>NESTED_CONTAINER_LAUNCH</code> call to the agent.</p>
+
+<pre><code>                                +---------------------+
+                                |                     |
+                                |     Container       |
+                                |                     |
+ +-------------+                | +-----------------+ |
+ |             |     LAUNCH     | |                 | |
+ |             | &lt;------------+ | |    Executor     | |
+ |             |                | |                 | |
+ | Mesos Agent |                | +-----------------+ |
+ |             |                |                     |
+ |             |                |                     |
+ |             |                |                     |
+ +-------------+                |                     |
+                                +---------------------+
+</code></pre></li>
+<li><p>Depending on the <code>LaunchNestedContainer</code> from the executor, the
+agent launches a nested container inside of the executor container
+by calling <code>containerizer::launch()</code>.</p>
+
+<pre><code>                                 +---------------------+
+                                 |                     |
+                                 |     Container       |
+                                 |                     |
+  +-------------+                | +-----------------+ |
+  |             |     LAUNCH     | |                 | |
+  |             | &lt;------------+ | |    Executor     | |
+  |             |                | |                 | |
+  | Mesos Agent |                | +-----------------+ |
+  |             |                |                     |
+  |             |                | +---------+         |
+  |             | +------------&gt; | |Nested   |         |
+  +-------------+                | |Container|         |
+                                 | +---------+         |
+                                 +---------------------+
+</code></pre></li>
+<li><p>The executor sends a <code>NESTED_CONTAINER_WAIT</code> call to the agent.</p>
+
+<pre><code>                                +---------------------+
+                                |                     |
+                                |     Container       |
+                                |                     |
+ +-------------+                | +-----------------+ |
+ |             |      WAIT      | |                 | |
+ |             | &lt;------------+ | |    Executor     | |
+ |             |                | |                 | |
+ | Mesos Agent |                | +-----------------+ |
+ |             |                |                     |
+ |             |                | +---------+         |
+ |             |                | |Nested   |         |
+ +-------------+                | |Container|         |
+                                | +---------+         |
+                                +---------------------+
+</code></pre></li>
+<li><p>Depending on the <code>ContainerID</code>, the agent calls <code>containerizer::wait()</code>
+to wait for the nested container to terminate or exit. Once the container
+terminates or exits, the agent returns the container exit status to the
+executor.</p>
+
+<pre><code>                                 +---------------------+
+                                 |                     |
+                                 |     Container       |
+                                 |                     |
+  +-------------+      WAIT      | +-----------------+ |
+  |             | &lt;------------+ | |                 | |
+  |             |                | |    Executor     | |
+  |             | +------------&gt; | |                 | |
+  | Mesos Agent |  Exited with   | +-----------------+ |
+  |             |  status 0      |                     |
+  |             |                | +--XX-XX--+         |
+  |             |                | |   XXX   |         |
+  +-------------+                | |   XXX   |         |
+                                 | +--XX-XX--+         |
+                                 +---------------------+
+</code></pre></li>
+</ol>
+
+
+<h1>Future Work</h1>
+
+<ul>
+<li>Authentication and authorization on the new Agent API.</li>
+<li>Command health checks inside of the container’s mount namespace.</li>
+<li>Resource isolation for nested containers.</li>
+<li>Resource statistics reporting for nested containers.</li>
+<li>Multiple task groups.</li>
+</ul>
+
+
+<h1>Reference</h1>
+
+<ul>
+<li><a href="http://kubernetes.io/docs/user-guide/pods/">Kubernetes Pods</a></li>
+<li><a href="https://github.com/docker/docker/issues/8781">Docker Pods</a></li>
+</ul>
+
+
+  </div>
+</div>
+
+  </div><!-- /.container -->
+</div><!-- /.content -->
+
+<hr>
+
+
+
+    <!-- footer -->
+    <div class="footer">
+      <div class="container">
+        <div class="col-md-4 social-blk">
+          <span class="social">
+            <a href="https://twitter.com/ApacheMesos"
+              class="twitter-follow-button"
+              data-show-count="false" data-size="large">Follow @ApacheMesos</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+            <a href="https://twitter.com/intent/tweet?button_hashtag=mesos"
+              class="twitter-hashtag-button"
+              data-size="large"
+              data-related="ApacheMesos">Tweet #mesos</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+          </span>
+        </div>
+
+        <div class="col-md-8 trademark">
+          <p>&copy; 2012-2017 <a href="http://apache.org">The Apache Software Foundation</a>.
+            Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.
+          <p>
+        </div>
+      </div><!-- /.container -->
+    </div><!-- /.footer -->
+
+    <!-- JS -->
+    <script src="//code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="text/javascript"></script>
+  </body>
+</html>

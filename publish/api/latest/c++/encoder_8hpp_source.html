@@ -70,345 +70,355 @@
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &lt;time.h&gt;</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;map&gt;</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;sstream&gt;</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="3rdparty_2libprocess_2include_2process_2http_8hpp.html">process/http.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="libprocess_2include_2process_2process_8hpp.html">process/process.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="foreach_8hpp.html">stout/foreach.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="gzip_8hpp.html">stout/gzip.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="hashmap_8hpp.html">stout/hashmap.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="numify_8hpp.html">stout/numify.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="os_8hpp.html">stout/os.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;limits&gt;</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;map&gt;</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;sstream&gt;</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="3rdparty_2libprocess_2include_2process_2http_8hpp.html">process/http.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="libprocess_2include_2process_2process_8hpp.html">process/process.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="foreach_8hpp.html">stout/foreach.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="gzip_8hpp.html">stout/gzip.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="hashmap_8hpp.html">stout/hashmap.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="numify_8hpp.html">stout/numify.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="os_8hpp.html">stout/os.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceos.html#ae19e4161a51b86a1f330f3bf1dc75389">process</a> {</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="namespaceprocess.html#a13d37773ca341b12d88d7e5cf2654e83">   34</a></span>&#160;<span class="keyword">const</span> uint32_t <a class="code" href="namespaceprocess.html#a13d37773ca341b12d88d7e5cf2654e83">GZIP_MINIMUM_BODY_LENGTH</a> = 1024;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">// Forward declarations.</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">class </span><a class="code" href="classprocess_1_1Encoder.html">Encoder</a>;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceos.html#ae19e4161a51b86a1f330f3bf1dc75389">process</a> {</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
+<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="namespaceprocess.html#a13d37773ca341b12d88d7e5cf2654e83">   35</a></span>&#160;<span class="keyword">const</span> uint32_t <a class="code" href="namespaceprocess.html#a13d37773ca341b12d88d7e5cf2654e83">GZIP_MINIMUM_BODY_LENGTH</a> = 1024;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">// Forward declarations.</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">class </span><a class="code" href="classprocess_1_1Encoder.html">Encoder</a>;</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="classprocess_1_1Encoder.html">   40</a></span>&#160;<span class="keyword">class </span><a class="code" href="classprocess_1_1Encoder.html">Encoder</a></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;{</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="classprocess_1_1Encoder.html#a61ab7c7c77f3285b9e1a91c3f962a007">   43</a></span>&#160;  <span class="keyword">enum</span> <a class="code" href="classprocess_1_1Encoder.html#a61ab7c7c77f3285b9e1a91c3f962a007">Kind</a></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  {</div>
-<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="classprocess_1_1Encoder.html#a61ab7c7c77f3285b9e1a91c3f962a007ac87a85b245f499b11d47cf8c1a941b34">   45</a></span>&#160;    <a class="code" href="classprocess_1_1Encoder.html#a61ab7c7c77f3285b9e1a91c3f962a007ac87a85b245f499b11d47cf8c1a941b34">DATA</a>,</div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="classprocess_1_1Encoder.html#a61ab7c7c77f3285b9e1a91c3f962a007a0268afc52c40ae5367e3735511000246">   46</a></span>&#160;    <a class="code" href="classprocess_1_1Encoder.html#a61ab7c7c77f3285b9e1a91c3f962a007a0268afc52c40ae5367e3735511000246">FILE</a></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  };</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <a class="code" href="classprocess_1_1Encoder.html#a088747c70d4551a8971fc916c785bc1b">Encoder</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="classprocess_1_1Encoder.html#a9168827ab5f9afb73fb91b2b7d100b6a">   51</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Encoder.html#a9168827ab5f9afb73fb91b2b7d100b6a">~Encoder</a>() {}</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Encoder.html#a61ab7c7c77f3285b9e1a91c3f962a007">Kind</a> <a class="code" href="classprocess_1_1Encoder.html#ab897ad4d4c34b843b2470a687955110a">kind</a>() <span class="keyword">const</span> = 0;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classprocess_1_1Encoder.html#ad4d01c19116f3044ad6b5640085f51b1">backup</a>(<span class="keywordtype">size_t</span> length) = 0;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">size_t</span> <a class="code" href="classprocess_1_1Encoder.html#aecd2a94984a8e5297b0f5e18679d2583">remaining</a>() <span class="keyword">const</span> = 0;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;};</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="classprocess_1_1Encoder.html">   41</a></span>&#160;<span class="keyword">class </span><a class="code" href="classprocess_1_1Encoder.html">Encoder</a></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;{</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="classprocess_1_1Encoder.html#a61ab7c7c77f3285b9e1a91c3f962a007">   44</a></span>&#160;  <span class="keyword">enum</span> <a class="code" href="classprocess_1_1Encoder.html#a61ab7c7c77f3285b9e1a91c3f962a007">Kind</a></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  {</div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="classprocess_1_1Encoder.html#a61ab7c7c77f3285b9e1a91c3f962a007ac87a85b245f499b11d47cf8c1a941b34">   46</a></span>&#160;    <a class="code" href="classprocess_1_1Encoder.html#a61ab7c7c77f3285b9e1a91c3f962a007ac87a85b245f499b11d47cf8c1a941b34">DATA</a>,</div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="classprocess_1_1Encoder.html#a61ab7c7c77f3285b9e1a91c3f962a007a0268afc52c40ae5367e3735511000246">   47</a></span>&#160;    <a class="code" href="classprocess_1_1Encoder.html#a61ab7c7c77f3285b9e1a91c3f962a007a0268afc52c40ae5367e3735511000246">FILE</a></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  };</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <a class="code" href="classprocess_1_1Encoder.html#a088747c70d4551a8971fc916c785bc1b">Encoder</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="classprocess_1_1Encoder.html#a9168827ab5f9afb73fb91b2b7d100b6a">   52</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Encoder.html#a9168827ab5f9afb73fb91b2b7d100b6a">~Encoder</a>() {}</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Encoder.html#a61ab7c7c77f3285b9e1a91c3f962a007">Kind</a> <a class="code" href="classprocess_1_1Encoder.html#ab897ad4d4c34b843b2470a687955110a">kind</a>() <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classprocess_1_1Encoder.html#ad4d01c19116f3044ad6b5640085f51b1">backup</a>(<span class="keywordtype">size_t</span> length) = 0;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">size_t</span> <a class="code" href="classprocess_1_1Encoder.html#aecd2a94984a8e5297b0f5e18679d2583">remaining</a>() <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;};</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-<div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="classprocess_1_1DataEncoder.html">   61</a></span>&#160;<span class="keyword">class </span><a class="code" href="classprocess_1_1DataEncoder.html">DataEncoder</a> : <span class="keyword">public</span> <a class="code" href="classprocess_1_1Encoder.html">Encoder</a></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;{</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="classprocess_1_1DataEncoder.html#ad0fbdefe790670db3d6d83c78d00e88e">   64</a></span>&#160;  <a class="code" href="classprocess_1_1DataEncoder.html#ad0fbdefe790670db3d6d83c78d00e88e">DataEncoder</a>(<span class="keyword">const</span> std::string&amp; _data)</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    : data(_data), index(0) {}</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
-<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="classprocess_1_1DataEncoder.html#acb993d917c7bbf177318d6d68ab5f800">   67</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1DataEncoder.html#acb993d917c7bbf177318d6d68ab5f800">~DataEncoder</a>() {}</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
-<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="classprocess_1_1DataEncoder.html#a5430bf4549e2aa2d841970d8c48dd3f1">   69</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Encoder.html#a61ab7c7c77f3285b9e1a91c3f962a007">Kind</a> <a class="code" href="classprocess_1_1DataEncoder.html#a5430bf4549e2aa2d841970d8c48dd3f1">kind</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="keyword">  </span>{</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classprocess_1_1Encoder.html#a61ab7c7c77f3285b9e1a91c3f962a007ac87a85b245f499b11d47cf8c1a941b34">Encoder::DATA</a>;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  }</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="classprocess_1_1DataEncoder.html#a640834efa9c9e8a37f26cc8be8d19c86">   74</a></span>&#160;  <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code" href="classprocess_1_1DataEncoder.html#a640834efa9c9e8a37f26cc8be8d19c86">next</a>(<span class="keywordtype">size_t</span>* length)</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  {</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordtype">size_t</span> <a class="code" href="namespaceos.html#aa3debc8caa054e7a0a3bfe4aa42aae07">temp</a> = index;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    index = data.size();</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    *length = data.size() - <a class="code" href="namespaceos.html#aa3debc8caa054e7a0a3bfe4aa42aae07">temp</a>;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordflow">return</span> data.data() + <a class="code" href="namespaceos.html#aa3debc8caa054e7a0a3bfe4aa42aae07">temp</a>;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  }</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
-<div class="line"><a name="l00082"></a><span class="lineno"><a class="line" href="classprocess_1_1DataEncoder.html#a70909315bb6d4dd0add1064fe1d113a5">   82</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classprocess_1_1DataEncoder.html#a70909315bb6d4dd0add1064fe1d113a5">backup</a>(<span class="keywordtype">size_t</span> length)</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  {</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordflow">if</span> (index &gt;= length) {</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;      index -= length;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    }</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  }</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
-<div class="line"><a name="l00089"></a><span class="lineno"><a class="line" href="classprocess_1_1DataEncoder.html#ac1aad9f354442ecb25d18bbb89b6f239">   89</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">size_t</span> <a class="code" href="classprocess_1_1DataEncoder.html#ac1aad9f354442ecb25d18bbb89b6f239">remaining</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="keyword">  </span>{</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="keywordflow">return</span> data.size() - index;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  }</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  <span class="keyword">const</span> std::string data;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  <span class="keywordtype">size_t</span> index;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;};</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="classprocess_1_1DataEncoder.html">   62</a></span>&#160;<span class="keyword">class </span><a class="code" href="classprocess_1_1DataEncoder.html">DataEncoder</a> : <span class="keyword">public</span> <a class="code" href="classprocess_1_1Encoder.html">Encoder</a></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;{</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="classprocess_1_1DataEncoder.html#ad0fbdefe790670db3d6d83c78d00e88e">   65</a></span>&#160;  <a class="code" href="classprocess_1_1DataEncoder.html#ad0fbdefe790670db3d6d83c78d00e88e">DataEncoder</a>(<span class="keyword">const</span> std::string&amp; _data)</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    : data(_data), index(0) {}</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="classprocess_1_1DataEncoder.html#acb993d917c7bbf177318d6d68ab5f800">   68</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1DataEncoder.html#acb993d917c7bbf177318d6d68ab5f800">~DataEncoder</a>() {}</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
+<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="classprocess_1_1DataEncoder.html#a5430bf4549e2aa2d841970d8c48dd3f1">   70</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Encoder.html#a61ab7c7c77f3285b9e1a91c3f962a007">Kind</a> <a class="code" href="classprocess_1_1DataEncoder.html#a5430bf4549e2aa2d841970d8c48dd3f1">kind</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="keyword">  </span>{</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classprocess_1_1Encoder.html#a61ab7c7c77f3285b9e1a91c3f962a007ac87a85b245f499b11d47cf8c1a941b34">Encoder::DATA</a>;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  }</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
+<div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="classprocess_1_1DataEncoder.html#a640834efa9c9e8a37f26cc8be8d19c86">   75</a></span>&#160;  <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code" href="classprocess_1_1DataEncoder.html#a640834efa9c9e8a37f26cc8be8d19c86">next</a>(<span class="keywordtype">size_t</span>* length)</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  {</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordtype">size_t</span> <a class="code" href="namespaceos.html#aa3debc8caa054e7a0a3bfe4aa42aae07">temp</a> = index;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    index = data.size();</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    *length = data.size() - <a class="code" href="namespaceos.html#aa3debc8caa054e7a0a3bfe4aa42aae07">temp</a>;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordflow">return</span> data.data() + <a class="code" href="namespaceos.html#aa3debc8caa054e7a0a3bfe4aa42aae07">temp</a>;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  }</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
+<div class="line"><a name="l00083"></a><span class="lineno"><a class="line" href="classprocess_1_1DataEncoder.html#a70909315bb6d4dd0add1064fe1d113a5">   83</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classprocess_1_1DataEncoder.html#a70909315bb6d4dd0add1064fe1d113a5">backup</a>(<span class="keywordtype">size_t</span> length)</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  {</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keywordflow">if</span> (index &gt;= length) {</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;      index -= length;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    }</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  }</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
+<div class="line"><a name="l00090"></a><span class="lineno"><a class="line" href="classprocess_1_1DataEncoder.html#ac1aad9f354442ecb25d18bbb89b6f239">   90</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">size_t</span> <a class="code" href="classprocess_1_1DataEncoder.html#ac1aad9f354442ecb25d18bbb89b6f239">remaining</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="keyword">  </span>{</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="keywordflow">return</span> data.size() - index;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  }</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  <span class="keyword">const</span> std::string data;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  <span class="keywordtype">size_t</span> index;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;};</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;</div>
-<div class="line"><a name="l00100"></a><span class="lineno"><a class="line" href="classprocess_1_1MessageEncoder.html">  100</a></span>&#160;<span class="keyword">class </span><a class="code" href="classprocess_1_1MessageEncoder.html">MessageEncoder</a> : <span class="keyword">public</span> <a class="code" href="classprocess_1_1DataEncoder.html">DataEncoder</a></div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;{</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00103"></a><span class="lineno"><a class="line" href="classprocess_1_1MessageEncoder.html#a5f7a6eefde5fe9c9c7a3b98d5f980448">  103</a></span>&#160;  <a class="code" href="classprocess_1_1MessageEncoder.html#a5f7a6eefde5fe9c9c7a3b98d5f980448">MessageEncoder</a>(<a class="code" href="structprocess_1_1Message.html">Message</a>* _message)</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    : <a class="code" href="classprocess_1_1DataEncoder.html">DataEncoder</a>(<a class="code" href="classprocess_1_1MessageEncoder.html#a28b00d2695185a172bf4bb8984e87637">encode</a>(_message)), message(_message) {}</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
-<div class="line"><a name="l00106"></a><span class="lineno"><a class="line" href="classprocess_1_1MessageEncoder.html#a95150268a4621a21a08442f68dd67a26">  106</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1MessageEncoder.html#a95150268a4621a21a08442f68dd67a26">~MessageEncoder</a>()</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;  {</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    <span class="keywordflow">if</span> (message != <span class="keyword">nullptr</span>) {</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;      <span class="keyword">delete</span> message;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    }</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  }</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
-<div class="line"><a name="l00113"></a><span class="lineno"><a class="line" href="classprocess_1_1MessageEncoder.html#a28b00d2695185a172bf4bb8984e87637">  113</a></span>&#160;  <span class="keyword">static</span> std::string <a class="code" href="classprocess_1_1MessageEncoder.html#a28b00d2695185a172bf4bb8984e87637">encode</a>(<a class="code" href="structprocess_1_1Message.html">Message</a>* message)</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;  {</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    std::ostringstream out;</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    <span class="keywordflow">if</span> (message != <span class="keyword">nullptr</span>) {</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;      out &lt;&lt; <span class="stringliteral">&quot;POST &quot;</span>;</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;      <span class="comment">// Nothing keeps the &#39;id&#39; component of a PID from being an empty</span></div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;      <span class="comment">// string which would create a malformed path that has two</span></div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;      <span class="comment">// &#39;//&#39; unless we check for it explicitly.</span></div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;      <span class="comment">// TODO(benh): Make the &#39;id&#39; part of a PID optional so when it&#39;s</span></div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;      <span class="comment">// missing it&#39;s clear that we&#39;re simply addressing an ip:port.</span></div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;      <span class="keywordflow">if</span> (message-&gt;<a class="code" href="structprocess_1_1Message.html#a8a407ef45ff459747256f8d701951d28">to</a>.<a class="code" href="structprocess_1_1UPID.html#ae741ecedc15ad9dff2b7af1b5d8ff363">id</a> != <span class="stringliteral">&quot;&quot;</span>) {</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;        out &lt;&lt; <span class="stringliteral">&quot;/&quot;</span> &lt;&lt; message-&gt;<a class="code" href="structprocess_1_1Message.html#a8a407ef45ff459747256f8d701951d28">to</a>.<a class="code" href="structprocess_1_1UPID.html#ae741ecedc15ad9dff2b7af1b5d8ff363">id</a>;</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;      }</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;      out &lt;&lt; <span class="stringliteral">&quot;/&quot;</span> &lt;&lt; message-&gt;<a class="code" href="structprocess_1_1Message.html#a97a2032a98cf03075101d02dbc50539c">name</a> &lt;&lt; <span class="stringliteral">&quot; HTTP/1.1\r\n&quot;</span></div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;          &lt;&lt; <span class="stringliteral">&quot;User-Agent: libprocess/&quot;</span> &lt;&lt; message-&gt;<a class="code" href="structprocess_1_1Message.html#a34b9bf104323f4cb48049c00046bf02c">from</a> &lt;&lt; <span class="stringliteral">&quot;\r\n&quot;</span></div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;          &lt;&lt; <span class="stringliteral">&quot;Libprocess-From: &quot;</span> &lt;&lt; message-&gt;<a class="code" href="structprocess_1_1Message.html#a34b9bf104323f4cb48049c00046bf02c">from</a> &lt;&lt; <span class="stringliteral">&quot;\r\n&quot;</span></div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;          &lt;&lt; <span class="stringliteral">&quot;Connection: Keep-Alive\r\n&quot;</span></div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;          &lt;&lt; <span class="stringliteral">&quot;Host: \r\n&quot;</span>;</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;      <span class="keywordflow">if</span> (message-&gt;<a class="code" href="structprocess_1_1Message.html#aba0d1f741d939864cf287833dd14792e">body</a>.size() &gt; 0) {</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;        out &lt;&lt; <span class="stringliteral">&quot;Transfer-Encoding: chunked\r\n\r\n&quot;</span></div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;            &lt;&lt; std::hex &lt;&lt; message-&gt;<a class="code" href="structprocess_1_1Message.html#aba0d1f741d939864cf287833dd14792e">body</a>.size() &lt;&lt; <span class="stringliteral">&quot;\r\n&quot;</span>;</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        out.write(message-&gt;<a class="code" href="structprocess_1_1Message.html#aba0d1f741d939864cf287833dd14792e">body</a>.data(), message-&gt;<a class="code" href="structprocess_1_1Message.html#aba0d1f741d939864cf287833dd14792e">body</a>.size());</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;        out &lt;&lt; <span class="stringliteral">&quot;\r\n&quot;</span></div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;            &lt;&lt; <span class="stringliteral">&quot;0\r\n&quot;</span></div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;            &lt;&lt; <span class="stringliteral">&quot;\r\n&quot;</span>;</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;      } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;        out &lt;&lt; <span class="stringliteral">&quot;\r\n&quot;</span>;</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;      }</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    }</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    <span class="keywordflow">return</span> out.str();</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;  }</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;  <a class="code" href="structprocess_1_1Message.html">Message</a>* message;</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;};</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
+<div class="line"><a name="l00101"></a><span class="lineno"><a class="line" href="classprocess_1_1MessageEncoder.html">  101</a></span>&#160;<span class="keyword">class </span><a class="code" href="classprocess_1_1MessageEncoder.html">MessageEncoder</a> : <span class="keyword">public</span> <a class="code" href="classprocess_1_1DataEncoder.html">DataEncoder</a></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;{</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00104"></a><span class="lineno"><a class="line" href="classprocess_1_1MessageEncoder.html#a5f7a6eefde5fe9c9c7a3b98d5f980448">  104</a></span>&#160;  <a class="code" href="classprocess_1_1MessageEncoder.html#a5f7a6eefde5fe9c9c7a3b98d5f980448">MessageEncoder</a>(<a class="code" href="structprocess_1_1Message.html">Message</a>* _message)</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    : <a class="code" href="classprocess_1_1DataEncoder.html">DataEncoder</a>(<a class="code" href="classprocess_1_1MessageEncoder.html#a28b00d2695185a172bf4bb8984e87637">encode</a>(_message)), message(_message) {}</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
+<div class="line"><a name="l00107"></a><span class="lineno"><a class="line" href="classprocess_1_1MessageEncoder.html#a95150268a4621a21a08442f68dd67a26">  107</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1MessageEncoder.html#a95150268a4621a21a08442f68dd67a26">~MessageEncoder</a>()</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  {</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    <span class="keywordflow">if</span> (message != <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;      <span class="keyword">delete</span> message;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    }</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;  }</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;</div>
+<div class="line"><a name="l00114"></a><span class="lineno"><a class="line" href="classprocess_1_1MessageEncoder.html#a28b00d2695185a172bf4bb8984e87637">  114</a></span>&#160;  <span class="keyword">static</span> std::string <a class="code" href="classprocess_1_1MessageEncoder.html#a28b00d2695185a172bf4bb8984e87637">encode</a>(<a class="code" href="structprocess_1_1Message.html">Message</a>* message)</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;  {</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    std::ostringstream out;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    <span class="keywordflow">if</span> (message != <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;      out &lt;&lt; <span class="stringliteral">&quot;POST &quot;</span>;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;      <span class="comment">// Nothing keeps the &#39;id&#39; component of a PID from being an empty</span></div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;      <span class="comment">// string which would create a malformed path that has two</span></div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;      <span class="comment">// &#39;//&#39; unless we check for it explicitly.</span></div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;      <span class="comment">// TODO(benh): Make the &#39;id&#39; part of a PID optional so when it&#39;s</span></div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;      <span class="comment">// missing it&#39;s clear that we&#39;re simply addressing an ip:port.</span></div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;      <span class="keywordflow">if</span> (message-&gt;<a class="code" href="structprocess_1_1Message.html#a8a407ef45ff459747256f8d701951d28">to</a>.<a class="code" href="structprocess_1_1UPID.html#ae741ecedc15ad9dff2b7af1b5d8ff363">id</a> != <span class="stringliteral">&quot;&quot;</span>) {</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        out &lt;&lt; <span class="stringliteral">&quot;/&quot;</span> &lt;&lt; message-&gt;<a class="code" href="structprocess_1_1Message.html#a8a407ef45ff459747256f8d701951d28">to</a>.<a class="code" href="structprocess_1_1UPID.html#ae741ecedc15ad9dff2b7af1b5d8ff363">id</a>;</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;      }</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;      out &lt;&lt; <span class="stringliteral">&quot;/&quot;</span> &lt;&lt; message-&gt;<a class="code" href="structprocess_1_1Message.html#a97a2032a98cf03075101d02dbc50539c">name</a> &lt;&lt; <span class="stringliteral">&quot; HTTP/1.1\r\n&quot;</span></div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;          &lt;&lt; <span class="stringliteral">&quot;User-Agent: libprocess/&quot;</span> &lt;&lt; message-&gt;<a class="code" href="structprocess_1_1Message.html#a34b9bf104323f4cb48049c00046bf02c">from</a> &lt;&lt; <span class="stringliteral">&quot;\r\n&quot;</span></div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;          &lt;&lt; <span class="stringliteral">&quot;Libprocess-From: &quot;</span> &lt;&lt; message-&gt;<a class="code" href="structprocess_1_1Message.html#a34b9bf104323f4cb48049c00046bf02c">from</a> &lt;&lt; <span class="stringliteral">&quot;\r\n&quot;</span></div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;          &lt;&lt; <span class="stringliteral">&quot;Connection: Keep-Alive\r\n&quot;</span></div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;          &lt;&lt; <span class="stringliteral">&quot;Host: \r\n&quot;</span>;</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;      <span class="keywordflow">if</span> (message-&gt;<a class="code" href="structprocess_1_1Message.html#aba0d1f741d939864cf287833dd14792e">body</a>.size() &gt; 0) {</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;        out &lt;&lt; <span class="stringliteral">&quot;Transfer-Encoding: chunked\r\n\r\n&quot;</span></div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;            &lt;&lt; std::hex &lt;&lt; message-&gt;<a class="code" href="structprocess_1_1Message.html#aba0d1f741d939864cf287833dd14792e">body</a>.size() &lt;&lt; <span class="stringliteral">&quot;\r\n&quot;</span>;</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;        out.write(message-&gt;<a class="code" href="structprocess_1_1Message.html#aba0d1f741d939864cf287833dd14792e">body</a>.data(), message-&gt;<a class="code" href="structprocess_1_1Message.html#aba0d1f741d939864cf287833dd14792e">body</a>.size());</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;        out &lt;&lt; <span class="stringliteral">&quot;\r\n&quot;</span></div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;            &lt;&lt; <span class="stringliteral">&quot;0\r\n&quot;</span></div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;            &lt;&lt; <span class="stringliteral">&quot;\r\n&quot;</span>;</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;      } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;        out &lt;&lt; <span class="stringliteral">&quot;\r\n&quot;</span>;</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;      }</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    }</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    <span class="keywordflow">return</span> out.str();</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;  }</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;  <a class="code" href="structprocess_1_1Message.html">Message</a>* message;</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;};</div>
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;</div>
-<div class="line"><a name="l00154"></a><span class="lineno"><a class="line" href="classprocess_1_1HttpResponseEncoder.html">  154</a></span>&#160;<span class="keyword">class </span><a class="code" href="classprocess_1_1HttpResponseEncoder.html">HttpResponseEncoder</a> : <span class="keyword">public</span> <a class="code" href="classprocess_1_1DataEncoder.html">DataEncoder</a></div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;{</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00157"></a><span class="lineno"><a class="line" href="classprocess_1_1HttpResponseEncoder.html#a2e9196004c508b063fee9ed5f82ccf3d">  157</a></span>&#160;  <a class="code" href="classprocess_1_1HttpResponseEncoder.html#a2e9196004c508b063fee9ed5f82ccf3d">HttpResponseEncoder</a>(</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;      <span class="keyword">const</span> <a class="code" href="structprocess_1_1http_1_1Response.html">http::Response</a>&amp; response,</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;      <span class="keyword">const</span> <a class="code" href="structprocess_1_1http_1_1Request.html">http::Request</a>&amp; <a class="code" href="namespaceprocess_1_1http.html#ad8f400b5e54038df7e5662ec35da05fa">request</a>)</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    : <a class="code" href="classprocess_1_1DataEncoder.html">DataEncoder</a>(<a class="code" href="classprocess_1_1HttpResponseEncoder.html#a6e30448aa442e8aec33dc6ff2d3747d9">encode</a>(response, request)) {}</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;</div>
-<div class="line"><a name="l00162"></a><span class="lineno"><a class="line" href="classprocess_1_1HttpResponseEncoder.html#a6e30448aa442e8aec33dc6ff2d3747d9">  162</a></span>&#160;  <span class="keyword">static</span> std::string <a class="code" href="classprocess_1_1HttpResponseEncoder.html#a6e30448aa442e8aec33dc6ff2d3747d9">encode</a>(</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;      <span class="keyword">const</span> <a class="code" href="structprocess_1_1http_1_1Response.html">http::Response</a>&amp; response,</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;      <span class="keyword">const</span> <a class="code" href="structprocess_1_1http_1_1Request.html">http::Request</a>&amp; <a class="code" href="namespaceprocess_1_1http.html#ad8f400b5e54038df7e5662ec35da05fa">request</a>)</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;  {</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    std::ostringstream out;</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    <span class="comment">// TODO(benh): Check version?</span></div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    out &lt;&lt; <span class="stringliteral">&quot;HTTP/1.1 &quot;</span> &lt;&lt; response.<a class="code" href="structprocess_1_1http_1_1Response.html#a8fcbd2073ace160af24a9ee531cb4378">status</a> &lt;&lt; <span class="stringliteral">&quot;\r\n&quot;</span>;</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    <span class="keyword">auto</span> headers = response.<a class="code" href="structprocess_1_1http_1_1Response.html#ae463c5c7a083aea98a89cf9b675b59ab">headers</a>;</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    <span class="comment">// HTTP 1.1 requires the &quot;Date&quot; header. In the future once we</span></div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    <span class="comment">// start checking the version (above) then we can conditionally</span></div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    <span class="comment">// add this header, but for now, we always do.</span></div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    time_t rawtime;</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    time(&amp;rawtime);</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    <span class="keywordtype">char</span> date[256];</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    tm tm_;</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    PCHECK(<a class="code" href="namespaceos.html#a5e0295f0e3bae2bd29d86803f9293b5d">os::gmtime_r</a>(&amp;rawtime, &amp;tm_) != <span class="keyword">nullptr</span>)</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;      &lt;&lt; <span class="stringliteral">&quot;Failed to convert the current time to a tm struct &quot;</span></div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;      &lt;&lt; <span class="stringliteral">&quot;using os::gmtime_r()&quot;</span>;</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    <span class="comment">// TODO(benh): Check return code of strftime!</span></div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    strftime(date, 256, <span class="stringliteral">&quot;%a, %d %b %Y %H:%M:%S GMT&quot;</span>, &amp;tm_);</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    headers[<span class="stringliteral">&quot;Date&quot;</span>] = date;</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    <span class="comment">// Should we compress this response?</span></div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    std::string body = response.<a class="code" href="structprocess_1_1http_1_1Response.html#a5f6d23dd77e1eeb0737dc728e0109905">body</a>;</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    <span class="keywordflow">if</span> (response.<a class="code" href="structprocess_1_1http_1_1Response.html#a00b3a2344f46dcb6868be6a7e962e091">type</a> == <a class="code" href="structprocess_1_1http_1_1Response.html#ac8b9e44a3e44f148c14e81cbb9fafe24a7d2a4db1b1426c6caab18fa8b484f4f5">http::Response::BODY</a> &amp;&amp;</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;        response.<a class="code" href="structprocess_1_1http_1_1Response.html#a5f6d23dd77e1eeb0737dc728e0109905">body</a>.length() &gt;= <a class="code" href="namespaceprocess.html#a13d37773ca341b12d88d7e5cf2654e83">GZIP_MINIMUM_BODY_LENGTH</a> &amp;&amp;</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;        !headers.contains(<span class="stringliteral">&quot;Content-Encoding&quot;</span>) &amp;&amp;</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;        request.<a class="code" href="structprocess_1_1http_1_1Request.html#ab73883ea45426022ec851b2069f8ed21">acceptsEncoding</a>(<span class="stringliteral">&quot;gzip&quot;</span>)) {</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;      <a class="code" href="classTry.html">Try&lt;std::string&gt;</a> compressed = <a class="code" href="namespacegzip.html#a6ca8f3e08feb9af115ddcb685b8db57b">gzip::compress</a>(body);</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;      <span class="keywordflow">if</span> (compressed.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;        LOG(WARNING) &lt;&lt; <span class="stringliteral">&quot;Failed to gzip response body: &quot;</span> &lt;&lt; compressed.<a class="code" href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">error</a>();</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;      } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;        body = compressed.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>();</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;        headers[<span class="stringliteral">&quot;Content-Length&quot;</span>] = <a class="code" href="namespacens.html#a28116b46e6543597a11733424cd1aa20">stringify</a>(body.length());</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;        headers[<span class="stringliteral">&quot;Content-Encoding&quot;</span>] = <span class="stringliteral">&quot;gzip&quot;</span>;</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;      }</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    }</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    <a class="code" href="foreach_8hpp.html#a66900b166526abe66464d6597536b111">foreachpair</a> (<span class="keyword">const</span> std::string&amp; key, <span class="keyword">const</span> std::string&amp; value, headers) {</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;      out &lt;&lt; key &lt;&lt; <span class="stringliteral">&quot;: &quot;</span> &lt;&lt; value &lt;&lt; <span class="stringliteral">&quot;\r\n&quot;</span>;</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    }</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    <span class="comment">// Add a Content-Length header if the response is of type &quot;none&quot;</span></div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    <span class="comment">// or &quot;body&quot; and no Content-Length header has been supplied.</span></div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;    <span class="keywordflow">if</span> (response.<a class="code" href="structprocess_1_1http_1_1Response.html#a00b3a2344f46dcb6868be6a7e962e091">type</a> == <a class="code" href="structprocess_1_1http_1_1Response.html#ac8b9e44a3e44f148c14e81cbb9fafe24aa49acb0a3f416b805cb49ec1a4549b14">http::Response::NONE</a> &amp;&amp;</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;        !headers.contains(<span class="stringliteral">&quot;Content-Length&quot;</span>)) {</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;      out &lt;&lt; <span class="stringliteral">&quot;Content-Length: 0\r\n&quot;</span>;</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (response.<a class="code" href="structprocess_1_1http_1_1Response.html#a00b3a2344f46dcb6868be6a7e962e091">type</a> == <a class="code" href="structprocess_1_1http_1_1Response.html#ac8b9e44a3e44f148c14e81cbb9fafe24a7d2a4db1b1426c6caab18fa8b484f4f5">http::Response::BODY</a> &amp;&amp;</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;               !headers.contains(<span class="stringliteral">&quot;Content-Length&quot;</span>)) {</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;      out &lt;&lt; <span class="stringliteral">&quot;Content-Length: &quot;</span> &lt;&lt; body.size() &lt;&lt; <span class="stringliteral">&quot;\r\n&quot;</span>;</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    }</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;    <span class="comment">// Use a CRLF to mark end of headers.</span></div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    out &lt;&lt; <span class="stringliteral">&quot;\r\n&quot;</span>;</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    <span class="comment">// Add the body if necessary.</span></div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    <span class="keywordflow">if</span> (response.<a class="code" href="structprocess_1_1http_1_1Response.html#a00b3a2344f46dcb6868be6a7e962e091">type</a> == <a class="code" href="structprocess_1_1http_1_1Response.html#ac8b9e44a3e44f148c14e81cbb9fafe24a7d2a4db1b1426c6caab18fa8b484f4f5">http::Response::BODY</a>) {</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;      <span class="comment">// If the Content-Length header was supplied, only write as much data</span></div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;      <span class="comment">// as the length specifies.</span></div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;      <a class="code" href="classResult.html">Result&lt;uint32_t&gt;</a> length = numify&lt;uint32_t&gt;(headers.get(<span class="stringliteral">&quot;Content-Length&quot;</span>));</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;      <span class="keywordflow">if</span> (length.<a class="code" href="classResult.html#a85eaa52037223d71092e65701c166562">isSome</a>() &amp;&amp; length.<a class="code" href="classResult.html#aedf79f3b14dcda5791b84a64ada4d412">get</a>() &lt;= body.length()) {</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;        out.write(body.data(), length.<a class="code" href="classResult.html#aedf79f3b14dcda5791b84a64ada4d412">get</a>());</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;      } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;        out.write(body.data(), body.size());</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;      }</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    }</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    <span class="keywordflow">return</span> out.str();</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;  }</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;};</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;</div>
+<div class="line"><a name="l00155"></a><span class="lineno"><a class="line" href="classprocess_1_1HttpResponseEncoder.html">  155</a></span>&#160;<span class="keyword">class </span><a class="code" href="classprocess_1_1HttpResponseEncoder.html">HttpResponseEncoder</a> : <span class="keyword">public</span> <a class="code" href="classprocess_1_1DataEncoder.html">DataEncoder</a></div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;{</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00158"></a><span class="lineno"><a class="line" href="classprocess_1_1HttpResponseEncoder.html#a2e9196004c508b063fee9ed5f82ccf3d">  158</a></span>&#160;  <a class="code" href="classprocess_1_1HttpResponseEncoder.html#a2e9196004c508b063fee9ed5f82ccf3d">HttpResponseEncoder</a>(</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;      <span class="keyword">const</span> <a class="code" href="structprocess_1_1http_1_1Response.html">http::Response</a>&amp; response,</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;      <span class="keyword">const</span> <a class="code" href="structprocess_1_1http_1_1Request.html">http::Request</a>&amp; <a class="code" href="namespaceprocess_1_1http.html#ad8f400b5e54038df7e5662ec35da05fa">request</a>)</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    : <a class="code" href="classprocess_1_1DataEncoder.html">DataEncoder</a>(<a class="code" href="classprocess_1_1HttpResponseEncoder.html#a6e30448aa442e8aec33dc6ff2d3747d9">encode</a>(response, request)) {}</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;</div>
+<div class="line"><a name="l00163"></a><span class="lineno"><a class="line" href="classprocess_1_1HttpResponseEncoder.html#a6e30448aa442e8aec33dc6ff2d3747d9">  163</a></span>&#160;  <span class="keyword">static</span> std::string <a class="code" href="classprocess_1_1HttpResponseEncoder.html#a6e30448aa442e8aec33dc6ff2d3747d9">encode</a>(</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;      <span class="keyword">const</span> <a class="code" href="structprocess_1_1http_1_1Response.html">http::Response</a>&amp; response,</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;      <span class="keyword">const</span> <a class="code" href="structprocess_1_1http_1_1Request.html">http::Request</a>&amp; <a class="code" href="namespaceprocess_1_1http.html#ad8f400b5e54038df7e5662ec35da05fa">request</a>)</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;  {</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    std::ostringstream out;</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    <span class="comment">// TODO(benh): Check version?</span></div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    out &lt;&lt; <span class="stringliteral">&quot;HTTP/1.1 &quot;</span> &lt;&lt; response.<a class="code" href="structprocess_1_1http_1_1Response.html#a8fcbd2073ace160af24a9ee531cb4378">status</a> &lt;&lt; <span class="stringliteral">&quot;\r\n&quot;</span>;</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    <span class="keyword">auto</span> headers = response.<a class="code" href="structprocess_1_1http_1_1Response.html#ae463c5c7a083aea98a89cf9b675b59ab">headers</a>;</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    <span class="comment">// HTTP 1.1 requires the &quot;Date&quot; header. In the future once we</span></div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    <span class="comment">// start checking the version (above) then we can conditionally</span></div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    <span class="comment">// add this header, but for now, we always do.</span></div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    time_t rawtime;</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    time(&amp;rawtime);</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    <span class="keywordtype">char</span> date[256];</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    tm tm_;</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    PCHECK(<a class="code" href="namespaceos.html#a5e0295f0e3bae2bd29d86803f9293b5d">os::gmtime_r</a>(&amp;rawtime, &amp;tm_) != <span class="keyword">nullptr</span>)</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;      &lt;&lt; <span class="stringliteral">&quot;Failed to convert the current time to a tm struct &quot;</span></div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;      &lt;&lt; <span class="stringliteral">&quot;using os::gmtime_r()&quot;</span>;</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    <span class="comment">// TODO(benh): Check return code of strftime!</span></div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    strftime(date, 256, <span class="stringliteral">&quot;%a, %d %b %Y %H:%M:%S GMT&quot;</span>, &amp;tm_);</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    headers[<span class="stringliteral">&quot;Date&quot;</span>] = date;</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    <span class="comment">// Should we compress this response?</span></div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    std::string body = response.<a class="code" href="structprocess_1_1http_1_1Response.html#a5f6d23dd77e1eeb0737dc728e0109905">body</a>;</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    <span class="keywordflow">if</span> (response.<a class="code" href="structprocess_1_1http_1_1Response.html#a00b3a2344f46dcb6868be6a7e962e091">type</a> == <a class="code" href="structprocess_1_1http_1_1Response.html#ac8b9e44a3e44f148c14e81cbb9fafe24a7d2a4db1b1426c6caab18fa8b484f4f5">http::Response::BODY</a> &amp;&amp;</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;        response.<a class="code" href="structprocess_1_1http_1_1Response.html#a5f6d23dd77e1eeb0737dc728e0109905">body</a>.length() &gt;= <a class="code" href="namespaceprocess.html#a13d37773ca341b12d88d7e5cf2654e83">GZIP_MINIMUM_BODY_LENGTH</a> &amp;&amp;</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;        !headers.contains(<span class="stringliteral">&quot;Content-Encoding&quot;</span>) &amp;&amp;</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;        request.<a class="code" href="structprocess_1_1http_1_1Request.html#ab73883ea45426022ec851b2069f8ed21">acceptsEncoding</a>(<span class="stringliteral">&quot;gzip&quot;</span>)) {</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;      <a class="code" href="classTry.html">Try&lt;std::string&gt;</a> compressed = <a class="code" href="namespacegzip.html#a6ca8f3e08feb9af115ddcb685b8db57b">gzip::compress</a>(body);</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;      <span class="keywordflow">if</span> (compressed.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;        LOG(WARNING) &lt;&lt; <span class="stringliteral">&quot;Failed to gzip response body: &quot;</span> &lt;&lt; compressed.<a class="code" href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">error</a>();</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;      } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;        body = compressed.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>();</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;        headers[<span class="stringliteral">&quot;Content-Length&quot;</span>] = <a class="code" href="namespacens.html#a28116b46e6543597a11733424cd1aa20">stringify</a>(body.length());</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;        headers[<span class="stringliteral">&quot;Content-Encoding&quot;</span>] = <span class="stringliteral">&quot;gzip&quot;</span>;</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;      }</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    }</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    <a class="code" href="foreach_8hpp.html#a66900b166526abe66464d6597536b111">foreachpair</a> (<span class="keyword">const</span> std::string&amp; key, <span class="keyword">const</span> std::string&amp; value, headers) {</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;      out &lt;&lt; key &lt;&lt; <span class="stringliteral">&quot;: &quot;</span> &lt;&lt; value &lt;&lt; <span class="stringliteral">&quot;\r\n&quot;</span>;</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    }</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    <span class="comment">// Add a Content-Length header if the response is of type &quot;none&quot;</span></div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;    <span class="comment">// or &quot;body&quot; and no Content-Length header has been supplied.</span></div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    <span class="keywordflow">if</span> (response.<a class="code" href="structprocess_1_1http_1_1Response.html#a00b3a2344f46dcb6868be6a7e962e091">type</a> == <a class="code" href="structprocess_1_1http_1_1Response.html#ac8b9e44a3e44f148c14e81cbb9fafe24aa49acb0a3f416b805cb49ec1a4549b14">http::Response::NONE</a> &amp;&amp;</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;        !headers.contains(<span class="stringliteral">&quot;Content-Length&quot;</span>)) {</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;      out &lt;&lt; <span class="stringliteral">&quot;Content-Length: 0\r\n&quot;</span>;</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (response.<a class="code" href="structprocess_1_1http_1_1Response.html#a00b3a2344f46dcb6868be6a7e962e091">type</a> == <a class="code" href="structprocess_1_1http_1_1Response.html#ac8b9e44a3e44f148c14e81cbb9fafe24a7d2a4db1b1426c6caab18fa8b484f4f5">http::Response::BODY</a> &amp;&amp;</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;               !headers.contains(<span class="stringliteral">&quot;Content-Length&quot;</span>)) {</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;      out &lt;&lt; <span class="stringliteral">&quot;Content-Length: &quot;</span> &lt;&lt; body.size() &lt;&lt; <span class="stringliteral">&quot;\r\n&quot;</span>;</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;    }</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    <span class="comment">// Use a CRLF to mark end of headers.</span></div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;    out &lt;&lt; <span class="stringliteral">&quot;\r\n&quot;</span>;</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    <span class="comment">// Add the body if necessary.</span></div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    <span class="keywordflow">if</span> (response.<a class="code" href="structprocess_1_1http_1_1Response.html#a00b3a2344f46dcb6868be6a7e962e091">type</a> == <a class="code" href="structprocess_1_1http_1_1Response.html#ac8b9e44a3e44f148c14e81cbb9fafe24a7d2a4db1b1426c6caab18fa8b484f4f5">http::Response::BODY</a>) {</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;      <span class="comment">// If the Content-Length header was supplied, only write as much data</span></div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;      <span class="comment">// as the length specifies.</span></div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;      <a class="code" href="classResult.html">Result&lt;uint32_t&gt;</a> length = numify&lt;uint32_t&gt;(headers.get(<span class="stringliteral">&quot;Content-Length&quot;</span>));</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;      <span class="keywordflow">if</span> (length.<a class="code" href="classResult.html#a85eaa52037223d71092e65701c166562">isSome</a>() &amp;&amp; length.<a class="code" href="classResult.html#aedf79f3b14dcda5791b84a64ada4d412">get</a>() &lt;= body.length()) {</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;        out.write(body.data(), length.<a class="code" href="classResult.html#aedf79f3b14dcda5791b84a64ada4d412">get</a>());</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;      } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;        out.write(body.data(), body.size());</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;      }</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    }</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;    <span class="keywordflow">return</span> out.str();</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;  }</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;};</div>
 <div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;</div>
-<div class="line"><a name="l00243"></a><span class="lineno"><a class="line" href="classprocess_1_1FileEncoder.html">  243</a></span>&#160;<span class="keyword">class </span><a class="code" href="classprocess_1_1FileEncoder.html">FileEncoder</a> : <span class="keyword">public</span> <a class="code" href="classprocess_1_1Encoder.html">Encoder</a></div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;{</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00246"></a><span class="lineno"><a class="line" href="classprocess_1_1FileEncoder.html#abbdcd3a843ad67fd87b8393983c086ff">  246</a></span>&#160;  <a class="code" href="classprocess_1_1FileEncoder.html#abbdcd3a843ad67fd87b8393983c086ff">FileEncoder</a>(<span class="keywordtype">int</span> _fd, <span class="keywordtype">size_t</span> _size)</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;    : fd(_fd), size(_size), index(0) {}</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;</div>
-<div class="line"><a name="l00249"></a><span class="lineno"><a class="line" href="classprocess_1_1FileEncoder.html#a25204db3e56d1089156b5954f3ca973b">  249</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1FileEncoder.html#a25204db3e56d1089156b5954f3ca973b">~FileEncoder</a>()</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;  {</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    <a class="code" href="stout_2include_2stout_2check_8hpp.html#aee320e7c6e107071f4b85d4cc135a265">CHECK_SOME</a>(<a class="code" href="namespaceos.html#a7b641801fde90b7b5d1e536969fd28c5">os::close</a>(fd)) &lt;&lt; <span class="stringliteral">&quot;Failed to close file descriptor&quot;</span>;</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;  }</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;</div>
-<div class="line"><a name="l00254"></a><span class="lineno"><a class="line" href="classprocess_1_1FileEncoder.html#af378b042ec2124981cad35280f64dd2d">  254</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Encoder.html#a61ab7c7c77f3285b9e1a91c3f962a007">Kind</a> <a class="code" href="classprocess_1_1FileEncoder.html#af378b042ec2124981cad35280f64dd2d">kind</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;<span class="keyword">  </span>{</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classprocess_1_1Encoder.html#a61ab7c7c77f3285b9e1a91c3f962a007a0268afc52c40ae5367e3735511000246">Encoder::FILE</a>;</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;  }</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;</div>
-<div class="line"><a name="l00259"></a><span class="lineno"><a class="line" href="classprocess_1_1FileEncoder.html#a62449d7307252d1ded3897862c439973">  259</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">int</span> <a class="code" href="classprocess_1_1FileEncoder.html#a62449d7307252d1ded3897862c439973">next</a>(off_t* offset, <span class="keywordtype">size_t</span>* length)</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;  {</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;    off_t <a class="code" href="namespaceos.html#aa3debc8caa054e7a0a3bfe4aa42aae07">temp</a> = index;</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;    index = size;</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;    *offset = <a class="code" href="namespaceos.html#aa3debc8caa054e7a0a3bfe4aa42aae07">temp</a>;</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;    *length = size - <a class="code" href="namespaceos.html#aa3debc8caa054e7a0a3bfe4aa42aae07">temp</a>;</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;    <span class="keywordflow">return</span> fd;</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;  }</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;</div>
-<div class="line"><a name="l00268"></a><span class="lineno"><a class="line" href="classprocess_1_1FileEncoder.html#a4d6103c619e2c9ec1918813ada1f7b32">  268</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classprocess_1_1FileEncoder.html#a4d6103c619e2c9ec1918813ada1f7b32">backup</a>(<span class="keywordtype">size_t</span> length)</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;  {</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;    <span class="keywordflow">if</span> (index &gt;= static_cast&lt;off_t&gt;(length)) {</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;      index -= length;</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;    }</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;  }</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;</div>
-<div class="line"><a name="l00275"></a><span class="lineno"><a class="line" href="classprocess_1_1FileEncoder.html#ac17e03b4af0e161920a134f2b48c8317">  275</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">size_t</span> <a class="code" href="classprocess_1_1FileEncoder.html#ac17e03b4af0e161920a134f2b48c8317">remaining</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;<span class="keyword">  </span>{</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(size - index);</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;  }</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;  <span class="keywordtype">int</span> fd;</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;  off_t size;</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;  off_t index;</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;};</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;}  <span class="comment">// namespace process {</span></div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;</div>
+<div class="line"><a name="l00244"></a><span class="lineno"><a class="line" href="classprocess_1_1FileEncoder.html">  244</a></span>&#160;<span class="keyword">class </span><a class="code" href="classprocess_1_1FileEncoder.html">FileEncoder</a> : <span class="keyword">public</span> <a class="code" href="classprocess_1_1Encoder.html">Encoder</a></div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;{</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00247"></a><span class="lineno"><a class="line" href="classprocess_1_1FileEncoder.html#a9dddbc42a5af6024cfc0cb89ab987497">  247</a></span>&#160;  <a class="code" href="classprocess_1_1FileEncoder.html#a9dddbc42a5af6024cfc0cb89ab987497">FileEncoder</a>(<a class="code" href="int__fd_8hpp.html#aea4dbda01c90455f158ffa9b924c2f07">int_fd</a> _fd, <span class="keywordtype">size_t</span> _size)</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;    : fd(_fd), size(static_cast&lt;off_t&gt;(_size)), index(0)</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;  {</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;    <span class="comment">// NOTE: For files, we expect the size to be derived from `stat`-ing</span></div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    <span class="comment">// the file.  The `struct stat` returns the size in `off_t` form,</span></div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    <span class="comment">// meaning that it is a programmer error to construct the `FileEncoder`</span></div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;    <span class="comment">// with a size greater the max value of `off_t`.</span></div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;    CHECK_LE(_size, static_cast&lt;size_t&gt;(<a class="code" href="option_8hpp.html#ac4b53d77033a5d2405ef12ceb3dc6498">std::numeric_limits&lt;off_t&gt;::max</a>()));</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;  }</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;</div>
+<div class="line"><a name="l00257"></a><span class="lineno"><a class="line" href="classprocess_1_1FileEncoder.html#a25204db3e56d1089156b5954f3ca973b">  257</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1FileEncoder.html#a25204db3e56d1089156b5954f3ca973b">~FileEncoder</a>()</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;  {</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;    <a class="code" href="stout_2include_2stout_2check_8hpp.html#aee320e7c6e107071f4b85d4cc135a265">CHECK_SOME</a>(<a class="code" href="namespaceos.html#a8df77ec6d6b8d32d9b287a41bc74cfdc">os::close</a>(fd)) &lt;&lt; <span class="stringliteral">&quot;Failed to close file descriptor&quot;</span>;</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;  }</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;</div>
+<div class="line"><a name="l00262"></a><span class="lineno"><a class="line" href="classprocess_1_1FileEncoder.html#af378b042ec2124981cad35280f64dd2d">  262</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Encoder.html#a61ab7c7c77f3285b9e1a91c3f962a007">Kind</a> <a class="code" href="classprocess_1_1FileEncoder.html#af378b042ec2124981cad35280f64dd2d">kind</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;<span class="keyword">  </span>{</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classprocess_1_1Encoder.html#a61ab7c7c77f3285b9e1a91c3f962a007a0268afc52c40ae5367e3735511000246">Encoder::FILE</a>;</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;  }</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;</div>
+<div class="line"><a name="l00267"></a><span class="lineno"><a class="line" href="classprocess_1_1FileEncoder.html#ab809c049d3804ee27b5b62997f167e3a">  267</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="int__fd_8hpp.html#aea4dbda01c90455f158ffa9b924c2f07">int_fd</a> <a class="code" href="classprocess_1_1FileEncoder.html#ab809c049d3804ee27b5b62997f167e3a">next</a>(off_t* offset, <span class="keywordtype">size_t</span>* length)</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;  {</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;    off_t <a class="code" href="namespaceos.html#aa3debc8caa054e7a0a3bfe4aa42aae07">temp</a> = index;</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;    index = size;</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;    *offset = <a class="code" href="namespaceos.html#aa3debc8caa054e7a0a3bfe4aa42aae07">temp</a>;</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;    *length = size - <a class="code" href="namespaceos.html#aa3debc8caa054e7a0a3bfe4aa42aae07">temp</a>;</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    <span class="keywordflow">return</span> fd;</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;  }</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;</div>
+<div class="line"><a name="l00276"></a><span class="lineno"><a class="line" href="classprocess_1_1FileEncoder.html#a4d6103c619e2c9ec1918813ada1f7b32">  276</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classprocess_1_1FileEncoder.html#a4d6103c619e2c9ec1918813ada1f7b32">backup</a>(<span class="keywordtype">size_t</span> length)</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;  {</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;    <span class="keywordflow">if</span> (index &gt;= static_cast&lt;off_t&gt;(length)) {</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;      index -= <span class="keyword">static_cast&lt;</span>off_t<span class="keyword">&gt;</span>(length);</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;    }</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;  }</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;</div>
+<div class="line"><a name="l00283"></a><span class="lineno"><a class="line" href="classprocess_1_1FileEncoder.html#ac17e03b4af0e161920a134f2b48c8317">  283</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">size_t</span> <a class="code" href="classprocess_1_1FileEncoder.html#ac17e03b4af0e161920a134f2b48c8317">remaining</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;<span class="keyword">  </span>{</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(size - index);</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;  }</div>
 <div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;<span class="preprocessor">#endif // __ENCODER_HPP__</span></div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;  <a class="code" href="int__fd_8hpp.html#aea4dbda01c90455f158ffa9b924c2f07">int_fd</a> fd;</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;  off_t size;</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;  off_t index;</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;};</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;}  <span class="comment">// namespace process {</span></div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;<span class="preprocessor">#endif // __ENCODER_HPP__</span></div>
 <div class="ttc" id="gzip_8hpp_html"><div class="ttname"><a href="gzip_8hpp.html">gzip.hpp</a></div></div>
-<div class="ttc" id="classprocess_1_1Encoder_html_a9168827ab5f9afb73fb91b2b7d100b6a"><div class="ttname"><a href="classprocess_1_1Encoder.html#a9168827ab5f9afb73fb91b2b7d100b6a">process::Encoder::~Encoder</a></div><div class="ttdeci">virtual ~Encoder()</div><div class="ttdef"><b>Definition:</b> encoder.hpp:51</div></div>
+<div class="ttc" id="classprocess_1_1Encoder_html_a9168827ab5f9afb73fb91b2b7d100b6a"><div class="ttname"><a href="classprocess_1_1Encoder.html#a9168827ab5f9afb73fb91b2b7d100b6a">process::Encoder::~Encoder</a></div><div class="ttdeci">virtual ~Encoder()</div><div class="ttdef"><b>Definition:</b> encoder.hpp:52</div></div>
+<div class="ttc" id="classprocess_1_1FileEncoder_html_a9dddbc42a5af6024cfc0cb89ab987497"><div class="ttname"><a href="classprocess_1_1FileEncoder.html#a9dddbc42a5af6024cfc0cb89ab987497">process::FileEncoder::FileEncoder</a></div><div class="ttdeci">FileEncoder(int_fd _fd, size_t _size)</div><div class="ttdef"><b>Definition:</b> encoder.hpp:247</div></div>
 <div class="ttc" id="classprocess_1_1Encoder_html_a088747c70d4551a8971fc916c785bc1b"><div class="ttname"><a href="classprocess_1_1Encoder.html#a088747c70d4551a8971fc916c785bc1b">process::Encoder::Encoder</a></div><div class="ttdeci">Encoder()=default</div></div>
 <div class="ttc" id="namespaceprocess_1_1http_html_ad8f400b5e54038df7e5662ec35da05fa"><div class="ttname"><a href="namespaceprocess_1_1http.html#ad8f400b5e54038df7e5662ec35da05fa">process::http::request</a></div><div class="ttdeci">Future&lt; Response &gt; request(const Request &amp;request, bool streamedResponse=false)</div><div class="ttdoc">Asynchronously sends an HTTP request to the process and returns the HTTP response once the entire res...</div></div>
-<div class="ttc" id="classprocess_1_1DataEncoder_html_a70909315bb6d4dd0add1064fe1d113a5"><div class="ttname"><a href="classprocess_1_1DataEncoder.html#a70909315bb6d4dd0add1064fe1d113a5">process::DataEncoder::backup</a></div><div class="ttdeci">virtual void backup(size_t length)</div><div class="ttdef"><b>Definition:</b> encoder.hpp:82</div></div>
+<div class="ttc" id="classprocess_1_1DataEncoder_html_a70909315bb6d4dd0add1064fe1d113a5"><div class="ttname"><a href="classprocess_1_1DataEncoder.html#a70909315bb6d4dd0add1064fe1d113a5">process::DataEncoder::backup</a></div><div class="ttdeci">virtual void backup(size_t length)</div><div class="ttdef"><b>Definition:</b> encoder.hpp:83</div></div>
 <div class="ttc" id="structprocess_1_1http_1_1Request_html_ab73883ea45426022ec851b2069f8ed21"><div class="ttname"><a href="structprocess_1_1http_1_1Request.html#ab73883ea45426022ec851b2069f8ed21">process::http::Request::acceptsEncoding</a></div><div class="ttdeci">bool acceptsEncoding(const std::string &amp;encoding) const </div><div class="ttdoc">Returns whether the encoding is considered acceptable in the response. </div></div>
 <div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
-<div class="ttc" id="structprocess_1_1http_1_1Response_html_a8fcbd2073ace160af24a9ee531cb4378"><div class="ttname"><a href="structprocess_1_1http_1_1Response.html#a8fcbd2073ace160af24a9ee531cb4378">process::http::Response::status</a></div><div class="ttdeci">std::string status</div><div class="ttdef"><b>Definition:</b> http.hpp:518</div></div>
+<div class="ttc" id="structprocess_1_1http_1_1Response_html_a8fcbd2073ace160af24a9ee531cb4378"><div class="ttname"><a href="structprocess_1_1http_1_1Response.html#a8fcbd2073ace160af24a9ee531cb4378">process::http::Response::status</a></div><div class="ttdeci">std::string status</div><div class="ttdef"><b>Definition:</b> http.hpp:614</div></div>
 <div class="ttc" id="structprocess_1_1Message_html"><div class="ttname"><a href="structprocess_1_1Message.html">process::Message</a></div><div class="ttdef"><b>Definition:</b> message.hpp:22</div></div>
-<div class="ttc" id="classprocess_1_1DataEncoder_html_a5430bf4549e2aa2d841970d8c48dd3f1"><div class="ttname"><a href="classprocess_1_1DataEncoder.html#a5430bf4549e2aa2d841970d8c48dd3f1">process::DataEncoder::kind</a></div><div class="ttdeci">virtual Kind kind() const </div><div class="ttdef"><b>Definition:</b> encoder.hpp:69</div></div>
+<div class="ttc" id="classprocess_1_1DataEncoder_html_a5430bf4549e2aa2d841970d8c48dd3f1"><div class="ttname"><a href="classprocess_1_1DataEncoder.html#a5430bf4549e2aa2d841970d8c48dd3f1">process::DataEncoder::kind</a></div><div class="ttdeci">virtual Kind kind() const </div><div class="ttdef"><b>Definition:</b> encoder.hpp:70</div></div>
 <div class="ttc" id="os_8hpp_html"><div class="ttname"><a href="os_8hpp.html">os.hpp</a></div></div>
-<div class="ttc" id="classprocess_1_1DataEncoder_html_ad0fbdefe790670db3d6d83c78d00e88e"><div class="ttname"><a href="classprocess_1_1DataEncoder.html#ad0fbdefe790670db3d6d83c78d00e88e">process::DataEncoder::DataEncoder</a></div><div class="ttdeci">DataEncoder(const std::string &amp;_data)</div><div class="ttdef"><b>Definition:</b> encoder.hpp:64</div></div>
+<div class="ttc" id="classprocess_1_1DataEncoder_html_ad0fbdefe790670db3d6d83c78d00e88e"><div class="ttname"><a href="classprocess_1_1DataEncoder.html#ad0fbdefe790670db3d6d83c78d00e88e">process::DataEncoder::DataEncoder</a></div><div class="ttdeci">DataEncoder(const std::string &amp;_data)</div><div class="ttdef"><b>Definition:</b> encoder.hpp:65</div></div>
 <div class="ttc" id="classprocess_1_1Encoder_html_ab897ad4d4c34b843b2470a687955110a"><div class="ttname"><a href="classprocess_1_1Encoder.html#ab897ad4d4c34b843b2470a687955110a">process::Encoder::kind</a></div><div class="ttdeci">virtual Kind kind() const =0</div></div>
-<div class="ttc" id="namespaceos_html_a7b641801fde90b7b5d1e536969fd28c5"><div class="ttname"><a href="namespaceos.html#a7b641801fde90b7b5d1e536969fd28c5">os::close</a></div><div class="ttdeci">Try&lt; Nothing &gt; close(int fd)</div><div class="ttdef"><b>Definition:</b> close.hpp:24</div></div>
 <div class="ttc" id="numify_8hpp_html"><div class="ttname"><a href="numify_8hpp.html">numify.hpp</a></div></div>
+<div class="ttc" id="classprocess_1_1FileEncoder_html_ab809c049d3804ee27b5b62997f167e3a"><div class="ttname"><a href="classprocess_1_1FileEncoder.html#ab809c049d3804ee27b5b62997f167e3a">process::FileEncoder::next</a></div><div class="ttdeci">virtual int_fd next(off_t *offset, size_t *length)</div><div class="ttdef"><b>Definition:</b> encoder.hpp:267</div></div>
 <div class="ttc" id="structprocess_1_1UPID_html_ae741ecedc15ad9dff2b7af1b5d8ff363"><div class="ttname"><a href="structprocess_1_1UPID.html#ae741ecedc15ad9dff2b7af1b5d8ff363">process::UPID::id</a></div><div class="ttdeci">std::string id</div><div class="ttdef"><b>Definition:</b> pid.hpp:95</div></div>
-<div class="ttc" id="classprocess_1_1MessageEncoder_html_a5f7a6eefde5fe9c9c7a3b98d5f980448"><div class="ttname"><a href="classprocess_1_1MessageEncoder.html#a5f7a6eefde5fe9c9c7a3b98d5f980448">process::MessageEncoder::MessageEncoder</a></div><div class="ttdeci">MessageEncoder(Message *_message)</div><div class="ttdef"><b>Definition:</b> encoder.hpp:103</div></div>
+<div class="ttc" id="classprocess_1_1MessageEncoder_html_a5f7a6eefde5fe9c9c7a3b98d5f980448"><div class="ttname"><a href="classprocess_1_1MessageEncoder.html#a5f7a6eefde5fe9c9c7a3b98d5f980448">process::MessageEncoder::MessageEncoder</a></div><div class="ttdeci">MessageEncoder(Message *_message)</div><div class="ttdef"><b>Definition:</b> encoder.hpp:104</div></div>
 <div class="ttc" id="classResult_html"><div class="ttname"><a href="classResult.html">Result</a></div><div class="ttdef"><b>Definition:</b> result.hpp:40</div></div>
-<div class="ttc" id="classprocess_1_1Encoder_html_a61ab7c7c77f3285b9e1a91c3f962a007"><div class="ttname"><a href="classprocess_1_1Encoder.html#a61ab7c7c77f3285b9e1a91c3f962a007">process::Encoder::Kind</a></div><div class="ttdeci">Kind</div><div class="ttdef"><b>Definition:</b> encoder.hpp:43</div></div>
-<div class="ttc" id="structprocess_1_1http_1_1Request_html"><div class="ttname"><a href="structprocess_1_1http_1_1Request.html">process::http::Request</a></div><div class="ttdef"><b>Definition:</b> http.hpp:430</div></div>
+<div class="ttc" id="classprocess_1_1Encoder_html_a61ab7c7c77f3285b9e1a91c3f962a007"><div class="ttname"><a href="classprocess_1_1Encoder.html#a61ab7c7c77f3285b9e1a91c3f962a007">process::Encoder::Kind</a></div><div class="ttdeci">Kind</div><div class="ttdef"><b>Definition:</b> encoder.hpp:44</div></div>
+<div class="ttc" id="structprocess_1_1http_1_1Request_html"><div class="ttname"><a href="structprocess_1_1http_1_1Request.html">process::http::Request</a></div><div class="ttdef"><b>Definition:</b> http.hpp:511</div></div>
 <div class="ttc" id="namespacegzip_html_a6ca8f3e08feb9af115ddcb685b8db57b"><div class="ttname"><a href="namespacegzip.html#a6ca8f3e08feb9af115ddcb685b8db57b">gzip::compress</a></div><div class="ttdeci">Try&lt; std::string &gt; compress(const std::string &amp;decompressed, int level=Z_DEFAULT_COMPRESSION)</div><div class="ttdef"><b>Definition:</b> gzip.hpp:179</div></div>
-<div class="ttc" id="classprocess_1_1HttpResponseEncoder_html_a6e30448aa442e8aec33dc6ff2d3747d9"><div class="ttname"><a href="classprocess_1_1HttpResponseEncoder.html#a6e30448aa442e8aec33dc6ff2d3747d9">process::HttpResponseEncoder::encode</a></div><div class="ttdeci">static std::string encode(const http::Response &amp;response, const http::Request &amp;request)</div><div class="ttdef"><b>Definition:</b> encoder.hpp:162</div></div>
-<div class="ttc" id="classprocess_1_1HttpResponseEncoder_html"><div class="ttname"><a href="classprocess_1_1HttpResponseEncoder.html">process::HttpResponseEncoder</a></div><div class="ttdef"><b>Definition:</b> encoder.hpp:154</div></div>
+<div class="ttc" id="classprocess_1_1HttpResponseEncoder_html_a6e30448aa442e8aec33dc6ff2d3747d9"><div class="ttname"><a href="classprocess_1_1HttpResponseEncoder.html#a6e30448aa442e8aec33dc6ff2d3747d9">process::HttpResponseEncoder::encode</a></div><div class="ttdeci">static std::string encode(const http::Response &amp;response, const http::Request &amp;request)</div><div class="ttdef"><b>Definition:</b> encoder.hpp:163</div></div>
+<div class="ttc" id="classprocess_1_1HttpResponseEncoder_html"><div class="ttname"><a href="classprocess_1_1HttpResponseEncoder.html">process::HttpResponseEncoder</a></div><div class="ttdef"><b>Definition:</b> encoder.hpp:155</div></div>
 <div class="ttc" id="classprocess_1_1Encoder_html_ad4d01c19116f3044ad6b5640085f51b1"><div class="ttname"><a href="classprocess_1_1Encoder.html#ad4d01c19116f3044ad6b5640085f51b1">process::Encoder::backup</a></div><div class="ttdeci">virtual void backup(size_t length)=0</div></div>
 <div class="ttc" id="structprocess_1_1Message_html_a8a407ef45ff459747256f8d701951d28"><div class="ttname"><a href="structprocess_1_1Message.html#a8a407ef45ff459747256f8d701951d28">process::Message::to</a></div><div class="ttdeci">UPID to</div><div class="ttdef"><b>Definition:</b> message.hpp:26</div></div>
-<div class="ttc" id="classprocess_1_1MessageEncoder_html_a95150268a4621a21a08442f68dd67a26"><div class="ttname"><a href="classprocess_1_1MessageEncoder.html#a95150268a4621a21a08442f68dd67a26">process::MessageEncoder::~MessageEncoder</a></div><div class="ttdeci">virtual ~MessageEncoder()</div><div class="ttdef"><b>Definition:</b> encoder.hpp:106</div></div>
+<div class="ttc" id="classprocess_1_1MessageEncoder_html_a95150268a4621a21a08442f68dd67a26"><div class="ttname"><a href="classprocess_1_1MessageEncoder.html#a95150268a4621a21a08442f68dd67a26">process::MessageEncoder::~MessageEncoder</a></div><div class="ttdeci">virtual ~MessageEncoder()</div><div class="ttdef"><b>Definition:</b> encoder.hpp:107</div></div>
 <div class="ttc" id="structprocess_1_1Message_html_a34b9bf104323f4cb48049c00046bf02c"><div class="ttname"><a href="structprocess_1_1Message.html#a34b9bf104323f4cb48049c00046bf02c">process::Message::from</a></div><div class="ttdeci">UPID from</div><div class="ttdef"><b>Definition:</b> message.hpp:25</div></div>
-<div class="ttc" id="classprocess_1_1DataEncoder_html_acb993d917c7bbf177318d6d68ab5f800"><div class="ttname"><a href="classprocess_1_1DataEncoder.html#acb993d917c7bbf177318d6d68ab5f800">process::DataEncoder::~DataEncoder</a></div><div class="ttdeci">virtual ~DataEncoder()</div><div class="ttdef"><b>Definition:</b> encoder.hpp:67</div></div>
+<div class="ttc" id="classprocess_1_1DataEncoder_html_acb993d917c7bbf177318d6d68ab5f800"><div class="ttname"><a href="classprocess_1_1DataEncoder.html#acb993d917c7bbf177318d6d68ab5f800">process::DataEncoder::~DataEncoder</a></div><div class="ttdeci">virtual ~DataEncoder()</div><div class="ttdef"><b>Definition:</b> encoder.hpp:68</div></div>
 <div class="ttc" id="stout_2include_2stout_2check_8hpp_html_aee320e7c6e107071f4b85d4cc135a265"><div class="ttname"><a href="stout_2include_2stout_2check_8hpp.html#aee320e7c6e107071f4b85d4cc135a265">CHECK_SOME</a></div><div class="ttdeci">#define CHECK_SOME(expression)</div><div class="ttdef"><b>Definition:</b> check.hpp:44</div></div>
-<div class="ttc" id="structprocess_1_1http_1_1Response_html_a5f6d23dd77e1eeb0737dc728e0109905"><div class="ttname"><a href="structprocess_1_1http_1_1Response.html#a5f6d23dd77e1eeb0737dc728e0109905">process::http::Response::body</a></div><div class="ttdeci">std::string body</div><div class="ttdef"><b>Definition:</b> http.hpp:551</div></div>
-<div class="ttc" id="classprocess_1_1FileEncoder_html_abbdcd3a843ad67fd87b8393983c086ff"><div class="ttname"><a href="classprocess_1_1FileEncoder.html#abbdcd3a843ad67fd87b8393983c086ff">process::FileEncoder::FileEncoder</a></div><div class="ttdeci">FileEncoder(int _fd, size_t _size)</div><div class="ttdef"><b>Definition:</b> encoder.hpp:246</div></div>
-<div class="ttc" id="classprocess_1_1FileEncoder_html_a4d6103c619e2c9ec1918813ada1f7b32"><div class="ttname"><a href="classprocess_1_1FileEncoder.html#a4d6103c619e2c9ec1918813ada1f7b32">process::FileEncoder::backup</a></div><div class="ttdeci">virtual void backup(size_t length)</div><div class="ttdef"><b>Definition:</b> encoder.hpp:268</div></div>
-<div class="ttc" id="classprocess_1_1FileEncoder_html_af378b042ec2124981cad35280f64dd2d"><div class="ttname"><a href="classprocess_1_1FileEncoder.html#af378b042ec2124981cad35280f64dd2d">process::FileEncoder::kind</a></div><div class="ttdeci">virtual Kind kind() const </div><div class="ttdef"><b>Definition:</b> encoder.hpp:254</div></div>
-<div class="ttc" id="classprocess_1_1MessageEncoder_html_a28b00d2695185a172bf4bb8984e87637"><div class="ttname"><a href="classprocess_1_1MessageEncoder.html#a28b00d2695185a172bf4bb8984e87637">process::MessageEncoder::encode</a></div><div class="ttdeci">static std::string encode(Message *message)</div><div class="ttdef"><b>Definition:</b> encoder.hpp:113</div></div>
-<div class="ttc" id="classprocess_1_1Encoder_html"><div class="ttname"><a href="classprocess_1_1Encoder.html">process::Encoder</a></div><div class="ttdef"><b>Definition:</b> encoder.hpp:40</div></div>
-<div class="ttc" id="classprocess_1_1DataEncoder_html_a640834efa9c9e8a37f26cc8be8d19c86"><div class="ttname"><a href="classprocess_1_1DataEncoder.html#a640834efa9c9e8a37f26cc8be8d19c86">process::DataEncoder::next</a></div><div class="ttdeci">virtual const char * next(size_t *length)</div><div class="ttdef"><b>Definition:</b> encoder.hpp:74</div></div>
+<div class="ttc" id="structprocess_1_1http_1_1Response_html_a5f6d23dd77e1eeb0737dc728e0109905"><div class="ttname"><a href="structprocess_1_1http_1_1Response.html#a5f6d23dd77e1eeb0737dc728e0109905">process::http::Response::body</a></div><div class="ttdeci">std::string body</div><div class="ttdef"><b>Definition:</b> http.hpp:647</div></div>
+<div class="ttc" id="namespaceos_html_a8df77ec6d6b8d32d9b287a41bc74cfdc"><div class="ttname"><a href="namespaceos.html#a8df77ec6d6b8d32d9b287a41bc74cfdc">os::close</a></div><div class="ttdeci">Try&lt; Nothing &gt; close(int fd)</div><div class="ttdef"><b>Definition:</b> close.hpp:24</div></div>
+<div class="ttc" id="classprocess_1_1FileEncoder_html_a4d6103c619e2c9ec1918813ada1f7b32"><div class="ttname"><a href="classprocess_1_1FileEncoder.html#a4d6103c619e2c9ec1918813ada1f7b32">process::FileEncoder::backup</a></div><div class="ttdeci">virtual void backup(size_t length)</div><div class="ttdef"><b>Definition:</b> encoder.hpp:276</div></div>
+<div class="ttc" id="option_8hpp_html_ac4b53d77033a5d2405ef12ceb3dc6498"><div class="ttname"><a href="option_8hpp.html#ac4b53d77033a5d2405ef12ceb3dc6498">max</a></div><div class="ttdeci">Option&lt; T &gt; max(const Option&lt; T &gt; &amp;left, const Option&lt; T &gt; &amp;right)</div><div class="ttdef"><b>Definition:</b> option.hpp:192</div></div>
+<div class="ttc" id="classprocess_1_1FileEncoder_html_af378b042ec2124981cad35280f64dd2d"><div class="ttname"><a href="classprocess_1_1FileEncoder.html#af378b042ec2124981cad35280f64dd2d">process::FileEncoder::kind</a></div><div class="ttdeci">virtual Kind kind() const </div><div class="ttdef"><b>Definition:</b> encoder.hpp:262</div></div>
+<div class="ttc" id="classprocess_1_1MessageEncoder_html_a28b00d2695185a172bf4bb8984e87637"><div class="ttname"><a href="classprocess_1_1MessageEncoder.html#a28b00d2695185a172bf4bb8984e87637">process::MessageEncoder::encode</a></div><div class="ttdeci">static std::string encode(Message *message)</div><div class="ttdef"><b>Definition:</b> encoder.hpp:114</div></div>
+<div class="ttc" id="classprocess_1_1Encoder_html"><div class="ttname"><a href="classprocess_1_1Encoder.html">process::Encoder</a></div><div class="ttdef"><b>Definition:</b> encoder.hpp:41</div></div>
+<div class="ttc" id="classprocess_1_1DataEncoder_html_a640834efa9c9e8a37f26cc8be8d19c86"><div class="ttname"><a href="classprocess_1_1DataEncoder.html#a640834efa9c9e8a37f26cc8be8d19c86">process::DataEncoder::next</a></div><div class="ttdeci">virtual const char * next(size_t *length)</div><div class="ttdef"><b>Definition:</b> encoder.hpp:75</div></div>
 <div class="ttc" id="foreach_8hpp_html_a66900b166526abe66464d6597536b111"><div class="ttname"><a href="foreach_8hpp.html#a66900b166526abe66464d6597536b111">foreachpair</a></div><div class="ttdeci">#define foreachpair(KEY, VALUE, ELEMS)</div><div class="ttdef"><b>Definition:</b> foreach.hpp:51</div></div>
-<div class="ttc" id="structprocess_1_1http_1_1Response_html_ac8b9e44a3e44f148c14e81cbb9fafe24aa49acb0a3f416b805cb49ec1a4549b14"><div class="ttname"><a href="structprocess_1_1http_1_1Response.html#ac8b9e44a3e44f148c14e81cbb9fafe24aa49acb0a3f416b805cb49ec1a4549b14">process::http::Response::NONE</a></div><div class="ttdef"><b>Definition:</b> http.hpp:545</div></div>
-<div class="ttc" id="classprocess_1_1DataEncoder_html_ac1aad9f354442ecb25d18bbb89b6f239"><div class="ttname"><a href="classprocess_1_1DataEncoder.html#ac1aad9f354442ecb25d18bbb89b6f239">process::DataEncoder::remaining</a></div><div class="ttdeci">virtual size_t remaining() const </div><div class="ttdef"><b>Definition:</b> encoder.hpp:89</div></div>
+<div class="ttc" id="structprocess_1_1http_1_1Response_html_ac8b9e44a3e44f148c14e81cbb9fafe24aa49acb0a3f416b805cb49ec1a4549b14"><div class="ttname"><a href="structprocess_1_1http_1_1Response.html#ac8b9e44a3e44f148c14e81cbb9fafe24aa49acb0a3f416b805cb49ec1a4549b14">process::http::Response::NONE</a></div><div class="ttdef"><b>Definition:</b> http.hpp:641</div></div>
+<div class="ttc" id="classprocess_1_1DataEncoder_html_ac1aad9f354442ecb25d18bbb89b6f239"><div class="ttname"><a href="classprocess_1_1DataEncoder.html#ac1aad9f354442ecb25d18bbb89b6f239">process::DataEncoder::remaining</a></div><div class="ttdeci">virtual size_t remaining() const </div><div class="ttdef"><b>Definition:</b> encoder.hpp:90</div></div>
 <div class="ttc" id="classResult_html_aedf79f3b14dcda5791b84a64ada4d412"><div class="ttname"><a href="classResult.html#aedf79f3b14dcda5791b84a64ada4d412">Result::get</a></div><div class="ttdeci">const T &amp; get() const </div><div class="ttdef"><b>Definition:</b> result.hpp:112</div></div>
 <div class="ttc" id="classTry_html_aec4a11ddd3c036e889d90b7eb6258ba7"><div class="ttname"><a href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">Try::error</a></div><div class="ttdeci">static Try error(const E &amp;e)</div><div class="ttdef"><b>Definition:</b> try.hpp:42</div></div>
-<div class="ttc" id="classprocess_1_1Encoder_html_a61ab7c7c77f3285b9e1a91c3f962a007ac87a85b245f499b11d47cf8c1a941b34"><div class="ttname"><a href="classprocess_1_1Encoder.html#a61ab7c7c77f3285b9e1a91c3f962a007ac87a85b245f499b11d47cf8c1a941b34">process::Encoder::DATA</a></div><div class="ttdef"><b>Definition:</b> encoder.hpp:45</div></div>
+<div class="ttc" id="classprocess_1_1Encoder_html_a61ab7c7c77f3285b9e1a91c3f962a007ac87a85b245f499b11d47cf8c1a941b34"><div class="ttname"><a href="classprocess_1_1Encoder.html#a61ab7c7c77f3285b9e1a91c3f962a007ac87a85b245f499b11d47cf8c1a941b34">process::Encoder::DATA</a></div><div class="ttdef"><b>Definition:</b> encoder.hpp:46</div></div>
 <div class="ttc" id="classprocess_1_1Encoder_html_aecd2a94984a8e5297b0f5e18679d2583"><div class="ttname"><a href="classprocess_1_1Encoder.html#aecd2a94984a8e5297b0f5e18679d2583">process::Encoder::remaining</a></div><div class="ttdeci">virtual size_t remaining() const =0</div></div>
-<div class="ttc" id="classprocess_1_1FileEncoder_html"><div class="ttname"><a href="classprocess_1_1FileEncoder.html">process::FileEncoder</a></div><div class="ttdef"><b>Definition:</b> encoder.hpp:243</div></div>
+<div class="ttc" id="classprocess_1_1FileEncoder_html"><div class="ttname"><a href="classprocess_1_1FileEncoder.html">process::FileEncoder</a></div><div class="ttdef"><b>Definition:</b> encoder.hpp:244</div></div>
 <div class="ttc" id="foreach_8hpp_html"><div class="ttname"><a href="foreach_8hpp.html">foreach.hpp</a></div></div>
 <div class="ttc" id="namespaceos_html_ae19e4161a51b86a1f330f3bf1dc75389"><div class="ttname"><a href="namespaceos.html#ae19e4161a51b86a1f330f3bf1dc75389">os::process</a></div><div class="ttdeci">Result&lt; Process &gt; process(pid_t pid)</div><div class="ttdef"><b>Definition:</b> freebsd.hpp:30</div></div>
-<div class="ttc" id="classTry_html_a0b98f95163b8a38daafd1651b043a276"><div class="ttname"><a href="classTry.html#a0b98f95163b8a38daafd1651b043a276">Try::isError</a></div><div class="ttdeci">bool isError() const </div><div class="ttdef"><b>Definition:</b> try.hpp:68</div></div>
-<div class="ttc" id="classprocess_1_1HttpResponseEncoder_html_a2e9196004c508b063fee9ed5f82ccf3d"><div class="ttname"><a href="classprocess_1_1HttpResponseEncoder.html#a2e9196004c508b063fee9ed5f82ccf3d">process::HttpResponseEncoder::HttpResponseEncoder</a></div><div class="ttdeci">HttpResponseEncoder(const http::Response &amp;response, const http::Request &amp;request)</div><div class="ttdef"><b>Definition:</b> encoder.hpp:157</div></div>
-<div class="ttc" id="structprocess_1_1http_1_1Response_html"><div class="ttname"><a href="structprocess_1_1http_1_1Response.html">process::http::Response</a></div><div class="ttdef"><b>Definition:</b> http.hpp:492</div></div>
+<div class="ttc" id="classTry_html_a0b98f95163b8a38daafd1651b043a276"><div class="ttname"><a href="classTry.html#a0b98f95163b8a38daafd1651b043a276">Try::isError</a></div><div class="ttdeci">bool isError() const </div><div class="ttdef"><b>Definition:</b> try.hpp:71</div></div>
+<div class="ttc" id="classprocess_1_1HttpResponseEncoder_html_a2e9196004c508b063fee9ed5f82ccf3d"><div class="ttname"><a href="classprocess_1_1HttpResponseEncoder.html#a2e9196004c508b063fee9ed5f82ccf3d">process::HttpResponseEncoder::HttpResponseEncoder</a></div><div class="ttdeci">HttpResponseEncoder(const http::Response &amp;response, const http::Request &amp;request)</div><div class="ttdef"><b>Definition:</b> encoder.hpp:158</div></div>
+<div class="ttc" id="structprocess_1_1http_1_1Response_html"><div class="ttname"><a href="structprocess_1_1http_1_1Response.html">process::http::Response</a></div><div class="ttdef"><b>Definition:</b> http.hpp:588</div></div>
 <div class="ttc" id="structprocess_1_1http_1_1Response_html_a00b3a2344f46dcb6868be6a7e962e091"><div class="ttname"><a href="structprocess_1_1http_1_1Response.html#a00b3a2344f46dcb6868be6a7e962e091">process::http::Response::type</a></div><div class="ttdeci">enum process::http::Response::@5 type</div></div>
-<div class="ttc" id="classprocess_1_1DataEncoder_html"><div class="ttname"><a href="classprocess_1_1DataEncoder.html">process::DataEncoder</a></div><div class="ttdef"><b>Definition:</b> encoder.hpp:61</div></div>
-<div class="ttc" id="classprocess_1_1FileEncoder_html_ac17e03b4af0e161920a134f2b48c8317"><div class="ttname"><a href="classprocess_1_1FileEncoder.html#ac17e03b4af0e161920a134f2b48c8317">process::FileEncoder::remaining</a></div><div class="ttdeci">virtual size_t remaining() const </div><div class="ttdef"><b>Definition:</b> encoder.hpp:275</div></div>
+<div class="ttc" id="classprocess_1_1DataEncoder_html"><div class="ttname"><a href="classprocess_1_1DataEncoder.html">process::DataEncoder</a></div><div class="ttdef"><b>Definition:</b> encoder.hpp:62</div></div>
+<div class="ttc" id="classprocess_1_1FileEncoder_html_ac17e03b4af0e161920a134f2b48c8317"><div class="ttname"><a href="classprocess_1_1FileEncoder.html#ac17e03b4af0e161920a134f2b48c8317">process::FileEncoder::remaining</a></div><div class="ttdeci">virtual size_t remaining() const </div><div class="ttdef"><b>Definition:</b> encoder.hpp:283</div></div>
 <div class="ttc" id="structprocess_1_1Message_html_aba0d1f741d939864cf287833dd14792e"><div class="ttname"><a href="structprocess_1_1Message.html#aba0d1f741d939864cf287833dd14792e">process::Message::body</a></div><div class="ttdeci">std::string body</div><div class="ttdef"><b>Definition:</b> message.hpp:27</div></div>
-<div class="ttc" id="classprocess_1_1FileEncoder_html_a62449d7307252d1ded3897862c439973"><div class="ttname"><a href="classprocess_1_1FileEncoder.html#a62449d7307252d1ded3897862c439973">process::FileEncoder::next</a></div><div class="ttdeci">virtual int next(off_t *offset, size_t *length)</div><div class="ttdef"><b>Definition:</b> encoder.hpp:259</div></div>
 <div class="ttc" id="namespaceos_html_aa3debc8caa054e7a0a3bfe4aa42aae07"><div class="ttname"><a href="namespaceos.html#aa3debc8caa054e7a0a3bfe4aa42aae07">os::temp</a></div><div class="ttdeci">std::string temp()</div><div class="ttdef"><b>Definition:</b> temp.hpp:27</div></div>
 <div class="ttc" id="classResult_html_a85eaa52037223d71092e65701c166562"><div class="ttname"><a href="classResult.html#a85eaa52037223d71092e65701c166562">Result::isSome</a></div><div class="ttdeci">bool isSome() const </div><div class="ttdef"><b>Definition:</b> result.hpp:108</div></div>
-<div class="ttc" id="classprocess_1_1MessageEncoder_html"><div class="ttname"><a href="classprocess_1_1MessageEncoder.html">process::MessageEncoder</a></div><div class="ttdef"><b>Definition:</b> encoder.hpp:100</div></div>
-<div class="ttc" id="structprocess_1_1http_1_1Response_html_ac8b9e44a3e44f148c14e81cbb9fafe24a7d2a4db1b1426c6caab18fa8b484f4f5"><div class="ttname"><a href="structprocess_1_1http_1_1Response.html#ac8b9e44a3e44f148c14e81cbb9fafe24a7d2a4db1b1426c6caab18fa8b484f4f5">process::http::Response::BODY</a></div><div class="ttdef"><b>Definition:</b> http.hpp:546</div></div>
-<div class="ttc" id="namespacens_html_a28116b46e6543597a11733424cd1aa20"><div class="ttname"><a href="namespacens.html#a28116b46e6543597a11733424cd1aa20">ns::stringify</a></div><div class="ttdeci">std::string stringify(int flags)</div><div class="ttdef"><b>Definition:</b> ns.hpp:685</div></div>
-<div class="ttc" id="structprocess_1_1http_1_1Response_html_ae463c5c7a083aea98a89cf9b675b59ab"><div class="ttname"><a href="structprocess_1_1http_1_1Response.html#ae463c5c7a083aea98a89cf9b675b59ab">process::http::Response::headers</a></div><div class="ttdeci">Headers headers</div><div class="ttdef"><b>Definition:</b> http.hpp:520</div></div>
+<div class="ttc" id="classprocess_1_1MessageEncoder_html"><div class="ttname"><a href="classprocess_1_1MessageEncoder.html">process::MessageEncoder</a></div><div class="ttdef"><b>Definition:</b> encoder.hpp:101</div></div>
+<div class="ttc" id="structprocess_1_1http_1_1Response_html_ac8b9e44a3e44f148c14e81cbb9fafe24a7d2a4db1b1426c6caab18fa8b484f4f5"><div class="ttname"><a href="structprocess_1_1http_1_1Response.html#ac8b9e44a3e44f148c14e81cbb9fafe24a7d2a4db1b1426c6caab18fa8b484f4f5">process::http::Response::BODY</a></div><div class="ttdef"><b>Definition:</b> http.hpp:642</div></div>
+<div class="ttc" id="int__fd_8hpp_html_aea4dbda01c90455f158ffa9b924c2f07"><div class="ttname"><a href="int__fd_8hpp.html#aea4dbda01c90455f158ffa9b924c2f07">int_fd</a></div><div class="ttdeci">int int_fd</div><div class="ttdef"><b>Definition:</b> int_fd.hpp:35</div></div>
+<div class="ttc" id="namespacens_html_a28116b46e6543597a11733424cd1aa20"><div class="ttname"><a href="namespacens.html#a28116b46e6543597a11733424cd1aa20">ns::stringify</a></div><div class="ttdeci">std::string stringify(int flags)</div><div class="ttdef"><b>Definition:</b> ns.hpp:688</div></div>
+<div class="ttc" id="structprocess_1_1http_1_1Response_html_ae463c5c7a083aea98a89cf9b675b59ab"><div class="ttname"><a href="structprocess_1_1http_1_1Response.html#ae463c5c7a083aea98a89cf9b675b59ab">process::http::Response::headers</a></div><div class="ttdeci">Headers headers</div><div class="ttdef"><b>Definition:</b> http.hpp:616</div></div>
 <div class="ttc" id="3rdparty_2libprocess_2include_2process_2http_8hpp_html"><div class="ttname"><a href="3rdparty_2libprocess_2include_2process_2http_8hpp.html">http.hpp</a></div></div>
 <div class="ttc" id="structprocess_1_1Message_html_a97a2032a98cf03075101d02dbc50539c"><div class="ttname"><a href="structprocess_1_1Message.html#a97a2032a98cf03075101d02dbc50539c">process::Message::name</a></div><div class="ttdeci">std::string name</div><div class="ttdef"><b>Definition:</b> message.hpp:24</div></div>
 <div class="ttc" id="libprocess_2include_2process_2process_8hpp_html"><div class="ttname"><a href="libprocess_2include_2process_2process_8hpp.html">process.hpp</a></div></div>
-<div class="ttc" id="classTry_html_a7be0768038e0628632492edf6cc1515a"><div class="ttname"><a href="classTry.html#a7be0768038e0628632492edf6cc1515a">Try::get</a></div><div class="ttdeci">const T &amp; get() const </div><div class="ttdef"><b>Definition:</b> try.hpp:70</div></div>
+<div class="ttc" id="classTry_html_a7be0768038e0628632492edf6cc1515a"><div class="ttname"><a href="classTry.html#a7be0768038e0628632492edf6cc1515a">Try::get</a></div><div class="ttdeci">const T &amp; get() const </div><div class="ttdef"><b>Definition:</b> try.hpp:73</div></div>
 <div class="ttc" id="hashmap_8hpp_html"><div class="ttname"><a href="hashmap_8hpp.html">hashmap.hpp</a></div></div>
-<div class="ttc" id="namespaceprocess_html_a13d37773ca341b12d88d7e5cf2654e83"><div class="ttname"><a href="namespaceprocess.html#a13d37773ca341b12d88d7e5cf2654e83">process::GZIP_MINIMUM_BODY_LENGTH</a></div><div class="ttdeci">const uint32_t GZIP_MINIMUM_BODY_LENGTH</div><div class="ttdef"><b>Definition:</b> encoder.hpp:34</div></div>
-<div class="ttc" id="classprocess_1_1Encoder_html_a61ab7c7c77f3285b9e1a91c3f962a007a0268afc52c40ae5367e3735511000246"><div class="ttname"><a href="classprocess_1_1Encoder.html#a61ab7c7c77f3285b9e1a91c3f962a007a0268afc52c40ae5367e3735511000246">process::Encoder::FILE</a></div><div class="ttdef"><b>Definition:</b> encoder.hpp:46</div></div>
-<div class="ttc" id="namespaceos_html_a5e0295f0e3bae2bd29d86803f9293b5d"><div class="ttname"><a href="namespaceos.html#a5e0295f0e3bae2bd29d86803f9293b5d">os::gmtime_r</a></div><div class="ttdeci">tm * gmtime_r(const time_t *timep, tm *result)</div><div class="ttdef"><b>Definition:</b> os.hpp:494</div></div>
-<div class="ttc" id="classprocess_1_1FileEncoder_html_a25204db3e56d1089156b5954f3ca973b"><div class="ttname"><a href="classprocess_1_1FileEncoder.html#a25204db3e56d1089156b5954f3ca973b">process::FileEncoder::~FileEncoder</a></div><div class="ttdeci">virtual ~FileEncoder()</div><div class="ttdef"><b>Definition:</b> encoder.hpp:249</div></div>
+<div class="ttc" id="namespaceprocess_html_a13d37773ca341b12d88d7e5cf2654e83"><div class="ttname"><a href="namespaceprocess.html#a13d37773ca341b12d88d7e5cf2654e83">process::GZIP_MINIMUM_BODY_LENGTH</a></div><div class="ttdeci">const uint32_t GZIP_MINIMUM_BODY_LENGTH</div><div class="ttdef"><b>Definition:</b> encoder.hpp:35</div></div>
+<div class="ttc" id="classprocess_1_1Encoder_html_a61ab7c7c77f3285b9e1a91c3f962a007a0268afc52c40ae5367e3735511000246"><div class="ttname"><a href="classprocess_1_1Encoder.html#a61ab7c7c77f3285b9e1a91c3f962a007a0268afc52c40ae5367e3735511000246">process::Encoder::FILE</a></div><div class="ttdef"><b>Definition:</b> encoder.hpp:47</div></div>
+<div class="ttc" id="namespaceos_html_a5e0295f0e3bae2bd29d86803f9293b5d"><div class="ttname"><a href="namespaceos.html#a5e0295f0e3bae2bd29d86803f9293b5d">os::gmtime_r</a></div><div class="ttdeci">tm * gmtime_r(const time_t *timep, tm *result)</div><div class="ttdef"><b>Definition:</b> os.hpp:509</div></div>
+<div class="ttc" id="classprocess_1_1FileEncoder_html_a25204db3e56d1089156b5954f3ca973b"><div class="ttname"><a href="classprocess_1_1FileEncoder.html#a25204db3e56d1089156b5954f3ca973b">process::FileEncoder::~FileEncoder</a></div><div class="ttdeci">virtual ~FileEncoder()</div><div class="ttdef"><b>Definition:</b> encoder.hpp:257</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

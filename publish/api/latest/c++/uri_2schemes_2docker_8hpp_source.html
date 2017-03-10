@@ -81,49 +81,67 @@
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">namespace </span>uri {</div>
 <div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="namespacemesos_1_1uri_1_1docker.html">   28</a></span>&#160;<span class="keyword">namespace </span>docker {</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="namespacemesos_1_1uri_1_1docker.html#a1eda794a7823cda93a463645f213d642">   30</a></span>&#160;<span class="keyword">inline</span> URI <a class="code" href="namespacemesos_1_1uri_1_1docker.html#a1eda794a7823cda93a463645f213d642">image</a>(</div>
+<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="namespacemesos_1_1uri_1_1docker.html#abbd9f55734f0b832bc5a87c3ee5d449e">   30</a></span>&#160;<span class="keyword">inline</span> URI <a class="code" href="namespacemesos_1_1uri_1_1docker.html#abbd9f55734f0b832bc5a87c3ee5d449e">image</a>(</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keyword">const</span> std::string&amp; repository,</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keyword">const</span> std::string&amp; tag,</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keyword">const</span> std::string&amp; reference, <span class="comment">// Either tag or digest.</span></div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keyword">const</span> std::string&amp; registry,</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;std::string&gt;</a>&amp; scheme = <a class="code" href="structNone.html">None</a>(),</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;int&gt;</a>&amp; port = <a class="code" href="structNone.html">None</a>())</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;{</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="namespacemesos_1_1uri.html#a4bbf8b5e900159cbe1f4f311ce26fb63">construct</a>(<span class="stringliteral">&quot;docker&quot;</span>, repository, registry, port, tag, scheme);</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;}</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
-<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="namespacemesos_1_1uri_1_1docker.html#a8f596080612b9c8511ab3457cc2866cb">   41</a></span>&#160;<span class="keyword">inline</span> URI <a class="code" href="namespacemesos_1_1uri_1_1docker.html#a8f596080612b9c8511ab3457cc2866cb">manifest</a>(</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keyword">const</span> std::string&amp; repository,</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keyword">const</span> std::string&amp; tag,</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keyword">const</span> std::string&amp; registry,</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;std::string&gt;</a>&amp; scheme = <a class="code" href="structNone.html">None</a>(),</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;int&gt;</a>&amp; port = <a class="code" href="structNone.html">None</a>())</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;{</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="namespacemesos_1_1uri.html#a4bbf8b5e900159cbe1f4f311ce26fb63">construct</a>(<span class="stringliteral">&quot;docker-manifest&quot;</span>, repository, registry, port, tag, scheme);</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;}</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="namespacemesos_1_1uri_1_1docker.html#a0376fa1291e79a09daa1df39b6f0b03b">   52</a></span>&#160;<span class="keyword">inline</span> URI <a class="code" href="namespacemesos_1_1uri_1_1docker.html#a0376fa1291e79a09daa1df39b6f0b03b">blob</a>(</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keyword">const</span> std::string&amp; repository,</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keyword">const</span> std::string&amp; digest,</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keyword">const</span> std::string&amp; registry,</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;std::string&gt;</a>&amp; scheme = <a class="code" href="structNone.html">None</a>(),</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;int&gt;</a>&amp; port = <a class="code" href="structNone.html">None</a>())</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;{</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="namespacemesos_1_1uri.html#a4bbf8b5e900159cbe1f4f311ce26fb63">construct</a>(<span class="stringliteral">&quot;docker-blob&quot;</span>, repository, registry, port, digest, scheme);</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;}</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;} <span class="comment">// namespace docker {</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;} <span class="comment">// namespace uri {</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;} <span class="comment">// namespace mesos {</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="preprocessor">#endif // __URI_SCHEMES_DOCKER_HPP__</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="namespacemesos_1_1uri.html#a4bbf8b5e900159cbe1f4f311ce26fb63">construct</a>(</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;      <span class="stringliteral">&quot;docker&quot;</span>,</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;      repository,</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;      registry,</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;      port,</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;      reference,</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;      scheme);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;}</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="namespacemesos_1_1uri_1_1docker.html#a001e34ad4b471e43d16e9f03e39a4566">   47</a></span>&#160;<span class="keyword">inline</span> URI <a class="code" href="namespacemesos_1_1uri_1_1docker.html#a001e34ad4b471e43d16e9f03e39a4566">manifest</a>(</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keyword">const</span> std::string&amp; repository,</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keyword">const</span> std::string&amp; reference, <span class="comment">// Either tag or digest.</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keyword">const</span> std::string&amp; registry,</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;std::string&gt;</a>&amp; scheme = <a class="code" href="structNone.html">None</a>(),</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;int&gt;</a>&amp; port = <a class="code" href="structNone.html">None</a>())</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;{</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="namespacemesos_1_1uri.html#a4bbf8b5e900159cbe1f4f311ce26fb63">construct</a>(</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;      <span class="stringliteral">&quot;docker-manifest&quot;</span>,</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;      repository,</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;      registry,</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;      port,</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;      reference,</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;      scheme);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;}</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="namespacemesos_1_1uri_1_1docker.html#a0376fa1291e79a09daa1df39b6f0b03b">   64</a></span>&#160;<span class="keyword">inline</span> URI <a class="code" href="namespacemesos_1_1uri_1_1docker.html#a0376fa1291e79a09daa1df39b6f0b03b">blob</a>(</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keyword">const</span> std::string&amp; repository,</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keyword">const</span> std::string&amp; digest,</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keyword">const</span> std::string&amp; registry,</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;std::string&gt;</a>&amp; scheme = <a class="code" href="structNone.html">None</a>(),</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;int&gt;</a>&amp; port = <a class="code" href="structNone.html">None</a>())</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;{</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="namespacemesos_1_1uri.html#a4bbf8b5e900159cbe1f4f311ce26fb63">construct</a>(</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;      <span class="stringliteral">&quot;docker-blob&quot;</span>,</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;      repository,</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;      registry,</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;      port,</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;      digest,</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;      scheme);</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;}</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;} <span class="comment">// namespace docker {</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;} <span class="comment">// namespace uri {</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;} <span class="comment">// namespace mesos {</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="preprocessor">#endif // __URI_SCHEMES_DOCKER_HPP__</span></div>
 <div class="ttc" id="classOption_html"><div class="ttname"><a href="classOption.html">Option&lt; std::string &gt;</a></div></div>
 <div class="ttc" id="namespacemesos_1_1uri_html_a4bbf8b5e900159cbe1f4f311ce26fb63"><div class="ttname"><a href="namespacemesos_1_1uri.html#a4bbf8b5e900159cbe1f4f311ce26fb63">mesos::uri::construct</a></div><div class="ttdeci">URI construct(const std::string &amp;scheme, const std::string &amp;path=&quot;&quot;, const Option&lt; std::string &gt; &amp;host=None(), const Option&lt; int &gt; &amp;port=None(), const Option&lt; std::string &gt; &amp;query=None(), const Option&lt; std::string &gt; &amp;fragment=None(), const Option&lt; std::string &gt; &amp;user=None(), const Option&lt; std::string &gt; &amp;password=None())</div><div class="ttdoc">Construct an URI with the given parameters. </div></div>
-<div class="ttc" id="namespacemesos_1_1uri_1_1docker_html_a0376fa1291e79a09daa1df39b6f0b03b"><div class="ttname"><a href="namespacemesos_1_1uri_1_1docker.html#a0376fa1291e79a09daa1df39b6f0b03b">mesos::uri::docker::blob</a></div><div class="ttdeci">URI blob(const std::string &amp;repository, const std::string &amp;digest, const std::string &amp;registry, const Option&lt; std::string &gt; &amp;scheme=None(), const Option&lt; int &gt; &amp;port=None())</div><div class="ttdef"><b>Definition:</b> docker.hpp:52</div></div>
-<div class="ttc" id="namespacemesos_1_1uri_1_1docker_html_a8f596080612b9c8511ab3457cc2866cb"><div class="ttname"><a href="namespacemesos_1_1uri_1_1docker.html#a8f596080612b9c8511ab3457cc2866cb">mesos::uri::docker::manifest</a></div><div class="ttdeci">URI manifest(const std::string &amp;repository, const std::string &amp;tag, const std::string &amp;registry, const Option&lt; std::string &gt; &amp;scheme=None(), const Option&lt; int &gt; &amp;port=None())</div><div class="ttdef"><b>Definition:</b> docker.hpp:41</div></div>
+<div class="ttc" id="namespacemesos_1_1uri_1_1docker_html_a0376fa1291e79a09daa1df39b6f0b03b"><div class="ttname"><a href="namespacemesos_1_1uri_1_1docker.html#a0376fa1291e79a09daa1df39b6f0b03b">mesos::uri::docker::blob</a></div><div class="ttdeci">URI blob(const std::string &amp;repository, const std::string &amp;digest, const std::string &amp;registry, const Option&lt; std::string &gt; &amp;scheme=None(), const Option&lt; int &gt; &amp;port=None())</div><div class="ttdef"><b>Definition:</b> docker.hpp:64</div></div>
+<div class="ttc" id="namespacemesos_1_1uri_1_1docker_html_a001e34ad4b471e43d16e9f03e39a4566"><div class="ttname"><a href="namespacemesos_1_1uri_1_1docker.html#a001e34ad4b471e43d16e9f03e39a4566">mesos::uri::docker::manifest</a></div><div class="ttdeci">URI manifest(const std::string &amp;repository, const std::string &amp;reference, const std::string &amp;registry, const Option&lt; std::string &gt; &amp;scheme=None(), const Option&lt; int &gt; &amp;port=None())</div><div class="ttdef"><b>Definition:</b> docker.hpp:47</div></div>
 <div class="ttc" id="src_2uri_2utils_8hpp_html"><div class="ttname"><a href="src_2uri_2utils_8hpp.html">utils.hpp</a></div></div>
-<div class="ttc" id="namespacemesos_1_1uri_1_1docker_html_a1eda794a7823cda93a463645f213d642"><div class="ttname"><a href="namespacemesos_1_1uri_1_1docker.html#a1eda794a7823cda93a463645f213d642">mesos::uri::docker::image</a></div><div class="ttdeci">URI image(const std::string &amp;repository, const std::string &amp;tag, const std::string &amp;registry, const Option&lt; std::string &gt; &amp;scheme=None(), const Option&lt; int &gt; &amp;port=None())</div><div class="ttdef"><b>Definition:</b> docker.hpp:30</div></div>
+<div class="ttc" id="namespacemesos_1_1uri_1_1docker_html_abbd9f55734f0b832bc5a87c3ee5d449e"><div class="ttname"><a href="namespacemesos_1_1uri_1_1docker.html#abbd9f55734f0b832bc5a87c3ee5d449e">mesos::uri::docker::image</a></div><div class="ttdeci">URI image(const std::string &amp;repository, const std::string &amp;reference, const std::string &amp;registry, const Option&lt; std::string &gt; &amp;scheme=None(), const Option&lt; int &gt; &amp;port=None())</div><div class="ttdef"><b>Definition:</b> docker.hpp:30</div></div>
 <div class="ttc" id="structNone_html"><div class="ttname"><a href="structNone.html">None</a></div><div class="ttdef"><b>Definition:</b> none.hpp:27</div></div>
 <div class="ttc" id="uri_8hpp_html"><div class="ttname"><a href="uri_8hpp.html">uri.hpp</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

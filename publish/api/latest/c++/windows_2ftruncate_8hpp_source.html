@@ -74,32 +74,37 @@
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="stringify_8hpp.html">stout/stringify.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="try_8hpp.html">stout/try.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keyword">namespace </span>os {</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="fd_8hpp.html">stout/os/windows/fd.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment">// Identical in functionality to POSIX standard `ftruncate`.</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="namespaceos.html#a21edf8a7d4099e475c8a7b9fd978823e">   27</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;Nothing&gt;</a> <a class="code" href="namespaceos.html#af41b169df092f5afbd41de13c450e959">ftruncate</a>(<span class="keywordtype">int</span> fd, __int64 length)</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;{</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  <span class="keywordflow">if</span> (::_chsize_s(fd, length) != 0) {</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classErrnoError.html">ErrnoError</a>(</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;      <span class="stringliteral">&quot;Failed to truncate file at file descriptor &#39;&quot;</span> + <a class="code" href="namespacens.html#a28116b46e6543597a11733424cd1aa20">stringify</a>(fd) + <span class="stringliteral">&quot;&#39; to &quot;</span> +</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;      <a class="code" href="namespacens.html#a28116b46e6543597a11733424cd1aa20">stringify</a>(length) + <span class="stringliteral">&quot; bytes.&quot;</span>);</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  }</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="structNothing.html">Nothing</a>();</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;}</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;} <span class="comment">// namespace os {</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">namespace </span>os {</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment">// Identical in functionality to POSIX standard `ftruncate`.</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="namespaceos.html#a5d2d138ebc3c21c23e5bfa01453beb23">   29</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;Nothing&gt;</a> <a class="code" href="namespaceos.html#af41b169df092f5afbd41de13c450e959">ftruncate</a>(<span class="keyword">const</span> <a class="code" href="classos_1_1WindowsFD.html">WindowsFD</a>&amp; fd, __int64 length)</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;{</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  <span class="keywordflow">if</span> (::_chsize_s(fd.<a class="code" href="classos_1_1WindowsFD.html#a94b69cae4edb8f3549845fbfa0355b7c">crt</a>(), length) != 0) {</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classErrnoError.html">ErrnoError</a>(</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;      <span class="stringliteral">&quot;Failed to truncate file at file descriptor &#39;&quot;</span> + <a class="code" href="namespacens.html#a28116b46e6543597a11733424cd1aa20">stringify</a>(fd) + <span class="stringliteral">&quot;&#39; to &quot;</span> +</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;      <a class="code" href="namespacens.html#a28116b46e6543597a11733424cd1aa20">stringify</a>(length) + <span class="stringliteral">&quot; bytes.&quot;</span>);</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  }</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="structNothing.html">Nothing</a>();</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;}</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#endif // __STOUT_OS_WINDOWS_FTRUNCATE_HPP__</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;} <span class="comment">// namespace os {</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#endif // __STOUT_OS_WINDOWS_FTRUNCATE_HPP__</span></div>
 <div class="ttc" id="structNothing_html"><div class="ttname"><a href="structNothing.html">Nothing</a></div><div class="ttdef"><b>Definition:</b> nothing.hpp:16</div></div>
+<div class="ttc" id="fd_8hpp_html"><div class="ttname"><a href="fd_8hpp.html">fd.hpp</a></div></div>
+<div class="ttc" id="classos_1_1WindowsFD_html"><div class="ttname"><a href="classos_1_1WindowsFD.html">os::WindowsFD</a></div><div class="ttdef"><b>Definition:</b> fd.hpp:49</div></div>
 <div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
 <div class="ttc" id="classErrnoError_html"><div class="ttname"><a href="classErrnoError.html">ErrnoError</a></div><div class="ttdef"><b>Definition:</b> errorbase.hpp:44</div></div>
 <div class="ttc" id="nothing_8hpp_html"><div class="ttname"><a href="nothing_8hpp.html">nothing.hpp</a></div></div>
+<div class="ttc" id="classos_1_1WindowsFD_html_a94b69cae4edb8f3549845fbfa0355b7c"><div class="ttname"><a href="classos_1_1WindowsFD.html#a94b69cae4edb8f3549845fbfa0355b7c">os::WindowsFD::crt</a></div><div class="ttdeci">int crt() const </div><div class="ttdef"><b>Definition:</b> fd.hpp:94</div></div>
 <div class="ttc" id="error_8hpp_html"><div class="ttname"><a href="error_8hpp.html">error.hpp</a></div></div>
 <div class="ttc" id="stringify_8hpp_html"><div class="ttname"><a href="stringify_8hpp.html">stringify.hpp</a></div></div>
 <div class="ttc" id="try_8hpp_html"><div class="ttname"><a href="try_8hpp.html">try.hpp</a></div></div>
-<div class="ttc" id="namespacens_html_a28116b46e6543597a11733424cd1aa20"><div class="ttname"><a href="namespacens.html#a28116b46e6543597a11733424cd1aa20">ns::stringify</a></div><div class="ttdeci">std::string stringify(int flags)</div><div class="ttdef"><b>Definition:</b> ns.hpp:685</div></div>
+<div class="ttc" id="namespacens_html_a28116b46e6543597a11733424cd1aa20"><div class="ttname"><a href="namespacens.html#a28116b46e6543597a11733424cd1aa20">ns::stringify</a></div><div class="ttdeci">std::string stringify(int flags)</div><div class="ttdef"><b>Definition:</b> ns.hpp:688</div></div>
 <div class="ttc" id="namespaceos_html_af41b169df092f5afbd41de13c450e959"><div class="ttname"><a href="namespaceos.html#af41b169df092f5afbd41de13c450e959">os::ftruncate</a></div><div class="ttdeci">Try&lt; Nothing &gt; ftruncate(int fd, off_t length)</div><div class="ttdef"><b>Definition:</b> ftruncate.hpp:26</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

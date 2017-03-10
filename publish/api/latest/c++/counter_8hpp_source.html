@@ -87,7 +87,7 @@
 <div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="classprocess_1_1metrics_1_1Counter.html#aa238bccd62145967b0db2c9624353d7b">   33</a></span>&#160;    : <a class="code" href="classprocess_1_1metrics_1_1Metric.html">Metric</a>(name, <a class="code" href="classprocess_1_1metrics_1_1Counter.html#aa238bccd62145967b0db2c9624353d7b">window</a>),</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;      data(new Data())</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  {</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <a class="code" href="classprocess_1_1metrics_1_1Metric.html#a062843ad9a1376532c176370a09e29d2">push</a>(data-&gt;value.load());</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <a class="code" href="classprocess_1_1metrics_1_1Metric.html#a062843ad9a1376532c176370a09e29d2">push</a>(static_cast&lt;double&gt;(data-&gt;value.load()));</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  }</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
 <div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="classprocess_1_1metrics_1_1Counter.html#af423056f1c102a5660ed8984fd3b8120">   39</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1metrics_1_1Counter.html#af423056f1c102a5660ed8984fd3b8120">~Counter</a>() {}</div>
@@ -118,7 +118,7 @@
 <div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="classprocess_1_1metrics_1_1Counter.html#ad6c58e7eb5f6d5827894234f6c88a047">   64</a></span>&#160;  <a class="code" href="classprocess_1_1metrics_1_1Counter.html">Counter</a>&amp; <a class="code" href="classprocess_1_1metrics_1_1Counter.html#ad6c58e7eb5f6d5827894234f6c88a047">operator+=</a>(int64_t v)</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  {</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    int64_t prev = data-&gt;value.fetch_add(v);</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <a class="code" href="classprocess_1_1metrics_1_1Metric.html#a062843ad9a1376532c176370a09e29d2">push</a>(prev + v);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <a class="code" href="classprocess_1_1metrics_1_1Metric.html#a062843ad9a1376532c176370a09e29d2">push</a>(static_cast&lt;double&gt;(prev + v));</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  }</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>

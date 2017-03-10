@@ -79,10 +79,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a97d46cccc5db6ac73713f91901008dbb"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classTry.html">Try</a>&lt; <a class="el" href="structNothing.html">Nothing</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1logger_1_1LogrotateContainerLogger.html#a97d46cccc5db6ac73713f91901008dbb">initialize</a> ()</td></tr>
 <tr class="memdesc:a97d46cccc5db6ac73713f91901008dbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes this container logger.  <a href="#a97d46cccc5db6ac73713f91901008dbb">More...</a><br/></td></tr>
 <tr class="separator:a97d46cccc5db6ac73713f91901008dbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05b2a8d6ec91b043cd0b618aed35b0ac"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classprocess_1_1Future.html">process::Future</a><br class="typebreak"/>
-&lt; <a class="el" href="structmesos_1_1slave_1_1ContainerLogger_1_1SubprocessInfo.html">mesos::slave::ContainerLogger::SubprocessInfo</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1logger_1_1LogrotateContainerLogger.html#a05b2a8d6ec91b043cd0b618aed35b0ac">prepare</a> (const ExecutorInfo &amp;executorInfo, const std::string &amp;sandboxDirectory, const <a class="el" href="classOption.html">Option</a>&lt; std::string &gt; &amp;user)</td></tr>
-<tr class="memdesc:a05b2a8d6ec91b043cd0b618aed35b0ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called before Mesos creates a container.  <a href="#a05b2a8d6ec91b043cd0b618aed35b0ac">More...</a><br/></td></tr>
-<tr class="separator:a05b2a8d6ec91b043cd0b618aed35b0ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c4ae73855054894da085dba0d037ffe"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classprocess_1_1Future.html">process::Future</a><br class="typebreak"/>
+&lt; <a class="el" href="structmesos_1_1slave_1_1ContainerIO.html">mesos::slave::ContainerIO</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1logger_1_1LogrotateContainerLogger.html#a9c4ae73855054894da085dba0d037ffe">prepare</a> (const ExecutorInfo &amp;executorInfo, const std::string &amp;sandboxDirectory, const <a class="el" href="classOption.html">Option</a>&lt; std::string &gt; &amp;user)</td></tr>
+<tr class="memdesc:a9c4ae73855054894da085dba0d037ffe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called before Mesos creates a container.  <a href="#a9c4ae73855054894da085dba0d037ffe">More...</a><br/></td></tr>
+<tr class="separator:a9c4ae73855054894da085dba0d037ffe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classmesos_1_1slave_1_1ContainerLogger"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classmesos_1_1slave_1_1ContainerLogger')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classmesos_1_1slave_1_1ContainerLogger.html">mesos::slave::ContainerLogger</a></td></tr>
 <tr class="memitem:a2655dbc87f01116b204bcc03a199da16 inherit pub_methods_classmesos_1_1slave_1_1ContainerLogger"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1slave_1_1ContainerLogger.html#a2655dbc87f01116b204bcc03a199da16">~ContainerLogger</a> ()</td></tr>
 <tr class="separator:a2655dbc87f01116b204bcc03a199da16 inherit pub_methods_classmesos_1_1slave_1_1ContainerLogger"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -172,7 +172,7 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a05b2a8d6ec91b043cd0b618aed35b0ac"></a>
+<a class="anchor" id="a9c4ae73855054894da085dba0d037ffe"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -180,7 +180,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt;<a class="el" href="structmesos_1_1slave_1_1ContainerLogger_1_1SubprocessInfo.html">mesos::slave::ContainerLogger::SubprocessInfo</a>&gt; mesos::internal::logger::LogrotateContainerLogger::prepare </td>
+          <td class="memname">virtual <a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt;<a class="el" href="structmesos_1_1slave_1_1ContainerIO.html">mesos::slave::ContainerIO</a>&gt; mesos::internal::logger::LogrotateContainerLogger::prepare </td>
           <td>(</td>
           <td class="paramtype">const ExecutorInfo &amp;&#160;</td>
           <td class="paramname"><em>executorInfo</em>, </td>
@@ -211,7 +211,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Called before Mesos creates a container. </p>
-<p>The container logger is given some of the arguments which the containerizer will use to launch a container. The container logger should return a <code>SubprocessInfo</code> which tells the containerizer how to handle the stdout and stderr of the subprocess. The container logger can modify the fields within the <code>SubprocessInfo</code> as much as necessary, with some exceptions; see the struct <code>SubprocessInfo</code> above.</p>
+<p>The container logger is given some of the arguments which the containerizer will use to launch a container. The container logger should return a <code>ContainerIO</code> which tells the containerizer how to handle the stdout and stderr of the container. The container logger can modify the fields within the <code>ContainerIO</code> as much as necessary, with some exceptions; see the struct <code>ContainerIO</code> above.</p>
 <p>NOTE: The container logger should not lose stdout/stderr if the agent fails over. Additionally, if the container logger is stateful, the logger should be capable of recovering managed executors during the agent recovery process. See <code>ContainerLogger::recover</code>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -221,7 +221,7 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="classmesos_1_1slave_1_1ContainerLogger.html#a42549a7b84fc3388c0d49793b1aacb93">mesos::slave::ContainerLogger</a>.</p>
+<p>Implements <a class="el" href="classmesos_1_1slave_1_1ContainerLogger.html#ad5f5c3cb7cbe6499cc609a165917cc72">mesos::slave::ContainerLogger</a>.</p>
 
 </div>
 </div>

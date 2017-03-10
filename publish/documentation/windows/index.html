@@ -125,7 +125,7 @@
 <li>Install the latest version of <a href="https://www.visualstudio.com/post-download-vs?sku=community">Visual Studio Community 2015</a>.
 Make sure to select the Common Tools for Visual C++ and the Windows 10 SDK.
 Start Visual Studio Community to complete the setup and configuration.</li>
-<li>Install <a href="https://cmake.org/files/v3.5/cmake-3.5.2-win32-x86.msi">CMake 3.5.2 or later</a>.
+<li>Install <a href="https://cmake.org/files/v3.6/cmake-3.6.3-win32-x86.msi">CMake 3.6.3 or later</a>.
 Do not run CMake before finishing the Visual Studio Community setup.</li>
 <li>Install <a href="http://downloads.sourceforge.net/project/gnuwin32/patch/2.5.9-7/patch-2.5.9-7-setup.exe">Gnu Patch 2.5.9-7 or later</a>.</li>
 <li>If building from git, make sure you have Windows-style line endings.
@@ -153,11 +153,13 @@ $ .\bootstrap.bat
 # Generate the solution and build.
 $ .\support\windows-build.bat
 
-# After generating the Visual Studio solution you can use the IDE to open
-# the project and skip the next step. In this case it is recommended to set
-# `PreferredToolArchitecture` environment variable to `x64`.
+# Set the `PreferredToolArchitecture` environment variable to `x64`.
 # NOTE: `PreferredToolArchitecture` can be set system-wide via Control Panel.
-$ msbuild Mesos.sln /p:PreferredToolArchitecture=x64
+$ SET PreferredToolArchitecture=x64
+
+# After generating the Visual Studio solution you can use the IDE to open
+# the project and skip this step.
+$ msbuild Mesos.sln /m
 
 # mesos-agent.exe can be found in the &lt;repository&gt;\build\src folder.
 $ cd src
@@ -225,7 +227,7 @@ please refer to the <a href="https://issues.apache.org/jira/browse/MESOS-3094">J
         </div>
 
         <div class="col-md-8 trademark">
-          <p>&copy; 2012-2016 <a href="http://apache.org">The Apache Software Foundation</a>.
+          <p>&copy; 2012-2017 <a href="http://apache.org">The Apache Software Foundation</a>.
             Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.
           <p>
         </div>
