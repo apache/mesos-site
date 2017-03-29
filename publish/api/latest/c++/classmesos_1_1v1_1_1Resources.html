@@ -204,6 +204,10 @@ Static Public Member Functions</h2></td></tr>
 &lt; Resource &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1v1_1_1Resources.html#a4c8d1ca13522473ecbeaecf8f8b31f50">fromSimpleString</a> (const std::string &amp;text, const std::string &amp;defaultRole=&quot;*&quot;)</td></tr>
 <tr class="memdesc:a4c8d1ca13522473ecbeaecf8f8b31f50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses an input text string into a vector of Resource objects.  <a href="#a4c8d1ca13522473ecbeaecf8f8b31f50">More...</a><br/></td></tr>
 <tr class="separator:a4c8d1ca13522473ecbeaecf8f8b31f50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad46385859813ded1f902075c266410c2"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classTry.html">Try</a>&lt; std::vector<br class="typebreak"/>
+&lt; Resource &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1v1_1_1Resources.html#ad46385859813ded1f902075c266410c2">fromString</a> (const std::string &amp;text, const std::string &amp;defaultRole=&quot;*&quot;)</td></tr>
+<tr class="memdesc:ad46385859813ded1f902075c266410c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse an input string into a vector of Resource objects.  <a href="#ad46385859813ded1f902075c266410c2">More...</a><br/></td></tr>
+<tr class="separator:ad46385859813ded1f902075c266410c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa1501df2cd47829fcebb26410f38fa6e"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classOption.html">Option</a>&lt; <a class="el" href="classError.html">Error</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1v1_1_1Resources.html#aa1501df2cd47829fcebb26410f38fa6e">validate</a> (const Resource &amp;resource)</td></tr>
 <tr class="memdesc:aa1501df2cd47829fcebb26410f38fa6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validates a Resource object.  <a href="#aa1501df2cd47829fcebb26410f38fa6e">More...</a><br/></td></tr>
 <tr class="separator:aa1501df2cd47829fcebb26410f38fa6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -815,6 +819,44 @@ template&lt;typename Iterable &gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A <code><a class="el" href="classTry.html">Try</a></code> which contains the parsed vector of Resource objects if parsing was successful, or an <a class="el" href="classError.html">Error</a> otherwise. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ad46385859813ded1f902075c266410c2"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="classTry.html">Try</a>&lt;std::vector&lt;Resource&gt; &gt; mesos::v1::Resources::fromString </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>defaultRole</em> = <code>&quot;*&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Parse an input string into a vector of Resource objects. </p>
+<p>Parses into a vector of Resource objects from either <a class="el" href="namespaceJSON.html">JSON</a> or plain text. If the string is well-formed <a class="el" href="namespaceJSON.html">JSON</a> it is assumed to be <a class="el" href="namespaceJSON.html">JSON</a>, otherwise plain text. Any resource that doesn't specify a role is assigned to the provided default role.</p>
+<p>NOTE: The <code>Resource</code> objects in the result vector may not be valid semantically (i.e., they may not pass <code><a class="el" href="classmesos_1_1v1_1_1Resources.html#aa1501df2cd47829fcebb26410f38fa6e" title="Validates a Resource object. ">Resources::validate()</a></code>). This is to allow additional handling of the parsing results in some cases. </p>
 
 </div>
 </div>

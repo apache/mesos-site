@@ -75,8 +75,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a98caed7c7f98f89fa2cb716cbfe38217"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6803557157471add8d9cccc7272beb14"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmesos_1_1internal_1_1slave_1_1Framework.html#a6803557157471add8d9cccc7272beb14">~Framework</a> ()</td></tr>
 <tr class="separator:a6803557157471add8d9cccc7272beb14"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05b90be308ad0832e5a73642e8296a9f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structmesos_1_1internal_1_1slave_1_1Executor.html">Executor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmesos_1_1internal_1_1slave_1_1Framework.html#a05b90be308ad0832e5a73642e8296a9f">launchExecutor</a> (const ExecutorInfo &amp;executorInfo, const <a class="el" href="classOption.html">Option</a>&lt; TaskInfo &gt; &amp;taskInfo)</td></tr>
-<tr class="separator:a05b90be308ad0832e5a73642e8296a9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4cbc84739c113be2cb1e6b4c88c46983"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structmesos_1_1internal_1_1slave_1_1Executor.html">Executor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmesos_1_1internal_1_1slave_1_1Framework.html#a4cbc84739c113be2cb1e6b4c88c46983">addExecutor</a> (const ExecutorInfo &amp;executorInfo)</td></tr>
+<tr class="separator:a4cbc84739c113be2cb1e6b4c88c46983"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a39feb604858a43d0f7f747961d4592"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmesos_1_1internal_1_1slave_1_1Framework.html#a8a39feb604858a43d0f7f747961d4592">destroyExecutor</a> (const ExecutorID &amp;executorId)</td></tr>
 <tr class="separator:a8a39feb604858a43d0f7f747961d4592"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa044d0c042d68e59815f1244440560e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structmesos_1_1internal_1_1slave_1_1Executor.html">Executor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmesos_1_1internal_1_1slave_1_1Framework.html#aaa044d0c042d68e59815f1244440560e">getExecutor</a> (const ExecutorID &amp;executorId) const </td></tr>
@@ -87,6 +87,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a440112e6053e7d36a46c18580a1b5133"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae1271f8b0a5113b0413c4c5ca3035ae5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmesos_1_1internal_1_1slave_1_1Framework.html#ae1271f8b0a5113b0413c4c5ca3035ae5">checkpointFramework</a> () const </td></tr>
 <tr class="separator:ae1271f8b0a5113b0413c4c5ca3035ae5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac1e7ac1e68ad63a9f4bc73663a3b1fa8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmesos_1_1internal_1_1slave_1_1Framework.html#ac1e7ac1e68ad63a9f4bc73663a3b1fa8">removePendingTask</a> (const TaskInfo &amp;task, const ExecutorInfo &amp;executorInfo)</td></tr>
+<tr class="separator:ac1e7ac1e68ad63a9f4bc73663a3b1fa8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a65933e3034706258069b54549081fdbf"><td class="memItemLeft" align="right" valign="top">const FrameworkID&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmesos_1_1internal_1_1slave_1_1Framework.html#a65933e3034706258069b54549081fdbf">id</a> () const </td></tr>
 <tr class="separator:a65933e3034706258069b54549081fdbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d4c6ffcaa374896c7da9dbd62bb74c7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmesos_1_1internal_1_1slave_1_1Framework.html#a0d4c6ffcaa374896c7da9dbd62bb74c7">hasTask</a> (const TaskID &amp;taskId)</td></tr>
@@ -188,6 +190,22 @@ Public Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a4cbc84739c113be2cb1e6b4c88c46983"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structmesos_1_1internal_1_1slave_1_1Executor.html">Executor</a>* mesos::internal::slave::Framework::addExecutor </td>
+          <td>(</td>
+          <td class="paramtype">const ExecutorInfo &amp;&#160;</td>
+          <td class="paramname"><em>executorInfo</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="ae1271f8b0a5113b0413c4c5ca3035ae5"></a>
 <div class="memitem">
 <div class="memproto">
@@ -298,32 +316,6 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a05b90be308ad0832e5a73642e8296a9f"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structmesos_1_1internal_1_1slave_1_1Executor.html">Executor</a>* mesos::internal::slave::Framework::launchExecutor </td>
-          <td>(</td>
-          <td class="paramtype">const ExecutorInfo &amp;&#160;</td>
-          <td class="paramname"><em>executorInfo</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classOption.html">Option</a>&lt; TaskInfo &gt; &amp;&#160;</td>
-          <td class="paramname"><em>taskInfo</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a class="anchor" id="a440112e6053e7d36a46c18580a1b5133"></a>
 <div class="memitem">
 <div class="memproto">
@@ -345,6 +337,32 @@ Public Attributes</h2></td></tr>
           <td></td>
           <td class="paramtype">const <a class="el" href="classhashset.html">hashset</a>&lt; TaskID &gt; &amp;&#160;</td>
           <td class="paramname"><em>tasksToRecheckpoint</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ac1e7ac1e68ad63a9f4bc73663a3b1fa8"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mesos::internal::slave::Framework::removePendingTask </td>
+          <td>(</td>
+          <td class="paramtype">const TaskInfo &amp;&#160;</td>
+          <td class="paramname"><em>task</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const ExecutorInfo &amp;&#160;</td>
+          <td class="paramname"><em>executorInfo</em>&#160;</td>
         </tr>
         <tr>
           <td></td>

@@ -148,7 +148,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  “type”: “GET_HEALTH”
+  "type": "GET_HEALTH"
 }
 
 
@@ -179,7 +179,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  “type”: “GET_FLAGS”
+  "type": "GET_FLAGS"
 }
 
 
@@ -359,7 +359,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  “type”: “GET_VERSION”
+  "type": "GET_VERSION"
 }
 
 
@@ -370,9 +370,9 @@ HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
-  “type”: GET_VERSION,
-  “get_version”: {
-    “version_info”: {
+  "type": "GET_VERSION",
+  "get_version": {
+    "version_info": {
       "version": "1.0.0",
       "build_date": "2016-06-24 23:18:37",
       "build_time": 1466810317,
@@ -1446,7 +1446,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  “type”: “GET_FRAMEWORKS”
+  "type": "GET_FRAMEWORKS"
 }
 
 
@@ -1457,7 +1457,7 @@ HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
-  “type”: “GET_FRAMEWORKS”,
+  "type": "GET_FRAMEWORKS",
   "get_frameworks": {
     "frameworks": [
       {
@@ -1500,7 +1500,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  “type”: “GET_EXECUTORS”
+  "type": "GET_EXECUTORS"
 }
 
 
@@ -1511,7 +1511,7 @@ HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
-  “type”: “GET_EXECUTORS”,
+  "type": "GET_EXECUTORS",
   "get_executors": {
     "executors": [
       {
@@ -1750,7 +1750,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  “type”: “GET_WEIGHTS”
+  "type": "GET_WEIGHTS"
 }
 
 
@@ -1761,7 +1761,7 @@ HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
-  “type”: “GET_WEIGHTS”,
+  "type": "GET_WEIGHTS",
   "get_weights": {
     "weight_infos": [
       {
@@ -2503,7 +2503,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  “type”: "GET_FLAGS"
+  "type": "GET_FLAGS"
 }
 
 
@@ -2812,7 +2812,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  “type”: “GET_STATE”
+  "type": "GET_STATE"
 }
 
 
@@ -2990,7 +2990,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  “type”: “GET_CONTAINERS”
+  "type": "GET_CONTAINERS"
 }
 
 
@@ -3049,7 +3049,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  “type”: "GET_FRAMEWORKS"
+  "type": "GET_FRAMEWORKS"
 }
 
 
@@ -3095,7 +3095,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  “type”: "GET_EXECUTORS"
+  "type": "GET_EXECUTORS"
 }
 
 
@@ -3165,7 +3165,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
- “type”: "GET_TASKS"
+  "type": "GET_TASKS"
 }
 
 
@@ -3176,7 +3176,7 @@ HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
-  “type”: “GET_TASKS”,
+  "type": "GET_TASKS",
   "get_tasks": {
     "launched_tasks": [
       {
@@ -3476,7 +3476,7 @@ of type CONTAINER_ID and contain the ContainerID of the container
 being attached to. Subsequent messages must be of type PROCESS_IO, but
 they may contain subtypes of either DATA or CONTROL. DATA messages
 must be of type STDIN and contain the actual data to stream to the
-STDIN of the container beinga attached to. Currently, the only valid
+STDIN of the container being attached to. Currently, the only valid
 CONTROL message sends a heartbeat to keep the connection alive. We may
 add more CONTROL messages in the future.</p>
 
@@ -3596,6 +3596,39 @@ Message-Content-Type: application/json
   }
 }
 ...
+</code></pre>
+
+<h3>REMOVE_NESTED_CONTAINER</h3>
+
+<p>This call triggers the removal of a nested container and its artifacts
+(e.g., the sandbox and runtime directories). This call can only be made
+against containers that have already terminated, and whose parent
+container has not been destroyed. Any authorized entity, including the
+executor itself, its tasks, or the operator can use this API call.</p>
+
+<pre><code>REMOVE_NESTED_CONTAINER HTTP Request (JSON):
+
+POST /api/v1  HTTP/1.1
+
+Host: agenthost:5051
+Content-Type: application/json
+Accept: application/json
+
+{
+  "type": "REMOVE_NESTED_CONTAINER",
+  "remove_nested_container": {
+    "container_id": {
+      "parent": {
+        "value": "6643b4be-583a-4dc3-bf23-a1ffb26dd452"
+      },
+      "value": "3192b9d1-db71-4699-ae25-e28dfbf42de1"
+    }
+  }
+}
+
+REMOVE_NESTED_CONTAINER HTTP Response (JSON):
+
+HTTP/1.1 200 OK
 </code></pre>
 
   </div>

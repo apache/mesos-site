@@ -131,7 +131,7 @@ mesos) are specified using the <code>--containerizers</code> flag, then the
 composing containerizer will be used to create a containerizer.</li>
 <li>If an executor is not specified in <code>TaskInfo</code>, Mesos agent will use
 the default executor for the task (depending on the Containerizer
-  the agent is using, it could be <code>mesos-executor</code> or
+the agent is using, it could be <code>mesos-executor</code> or
 <code>mesos-docker-executor</code>). TODO: Update this after MESOS-1718 is
 completed. After this change, master will be responsible for
 generating executor information.</li>
@@ -153,12 +153,12 @@ generating executor information.</li>
 
 <p>Composing containerizer will compose the specified containerizers
 (using agent flag <code>--containerizers</code>) and act like a single
-containerizer. This is an implementation of <code>composite</code> design
+containerizer. This is an implementation of the <code>composite</code> design
 pattern.</p>
 
 <h4>Docker Containerizer</h4>
 
-<p>Docker containerizer manages containers using docker engine provided
+<p>Docker containerizer manages containers using the docker engine provided
 in the docker package.</p>
 
 <h5>Container launch</h5>
@@ -238,12 +238,12 @@ I/O descriptors.</li>
 <h6>Linux launcher</h6>
 
 <ul>
-<li>Creates a “freezer” cgroup for the container.</li>
-<li>Creates posix “pipe” to enable communication between host (parent
+<li>Creates a &ldquo;freezer&rdquo; cgroup for the container.</li>
+<li>Creates posix &ldquo;pipe&rdquo; to enable communication between host (parent
 process) and container process.</li>
-<li>Spawn child process(container process) using <code>clone</code> system call.</li>
+<li>Spawn child process (container process) using <code>clone</code> system call.</li>
 <li>Moves the new container process to the freezer hierarchy.</li>
-<li>Signals the child process to continue (exec’ing) by writing a
+<li>Signals the child process to continue (exec'ing) by writing a
 character to the write end of the pipe in the parent process.</li>
 </ul>
 

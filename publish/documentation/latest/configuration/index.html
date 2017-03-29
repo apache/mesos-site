@@ -238,8 +238,7 @@ HTTP authenticator implementation to use when handling requests to
 authenticated endpoints. Use the default
 <code>basic</code>, or load an alternate
 HTTP authenticator module using <code>--modules</code>.
-<p/>
-Currently there is no support for multiple HTTP authenticators. (default: basic)
+(default: basic, or basic and JWT if executor authentication is enabled)
   </td>
 </tr>
 <tr>
@@ -1167,6 +1166,17 @@ Attributes of the agent machine, in the form:
 </tr>
 <tr>
   <td>
+    --[no-]authenticate_http_executors
+  </td>
+  <td>
+If <code>true</code>, only authenticated requests for the HTTP executor API are
+allowed. If <code>false</code>, unauthenticated requests are also allowed. This
+flag is only available when Mesos is built with SSL support.
+(default: false)
+  </td>
+</tr>
+<tr>
+  <td>
     --authenticatee=VALUE
   </td>
   <td>
@@ -1522,6 +1532,15 @@ in memory. (default: 150)
 </tr>
 <tr>
   <td>
+    --executor_secret_key=VALUE
+  </td>
+  <td>
+The key used when generating executor secrets. This flag is only
+available when Mesos is built with SSL support.
+  </td>
+</tr>
+<tr>
+  <td>
     --executor_shutdown_grace_period=VALUE
   </td>
   <td>
@@ -1725,7 +1744,7 @@ string `gpu/nvidia`.
   <td>
 Directory path of the CNI plugin binaries. The <code>network/cni</code>
 isolator will find CNI plugins under this directory so that it can execute
-the plugins to add/delete container from the CNI networks. It is the operator’s
+the plugins to add/delete container from the CNI networks. It is the operator's
 responsibility to install the CNI plugin binaries in the specified directory.
   </td>
 </tr>
@@ -2165,7 +2184,7 @@ quotas for container sandbox directories. Valid project IDs range from
     </td>
     <td>
       To enable the profiler, this variable must be set to 1. Note that this
-      variable will only work if mesos has been configured with
+      variable will only work if Mesos has been configured with
       <code>--enable-perftools</code>.
     </td>
   </tr>

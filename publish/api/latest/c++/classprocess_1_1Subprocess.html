@@ -313,9 +313,11 @@ Friends</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Exit status of this subprocess captured as a <a class="el" href="classprocess_1_1Future.html">Future</a> (completed when the subprocess exits). </p>
-<p>The exit status is propagated from an underlying call to 'waitpid' and can be used with macros defined in wait.h, i.e., '<a class="el" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#af9a4ddf9eee6c4a3bc9be070d59b7ccf">WIFEXITED(status)</a>'.</p>
+<p>On Posix, the exit status is propagated from an underlying call to <code>waitpid</code> and can be used with macros defined in wait.h, i.e., <code><a class="el" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#af9a4ddf9eee6c4a3bc9be070d59b7ccf">WIFEXITED(status)</a></code>.</p>
+<p>On Windows, the exit status contains the exit code from an underlying call to <code>GetExitCodeProcess()</code>.</p>
+<p>TODO(alexr): Ensure the code working with <code>status</code> is portable by either making <code>WIFEXITED</code> family macros no-op on Windows or converting <code>status</code> to a tuple &lt;termination status, exit code&gt;, see MESOS-7242.</p>
 <p>NOTE: Discarding this future has no effect on the subprocess!</p>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classprocess_1_1Future.html">Future</a> from doing a <a class="el" href="namespaceprocess.html#a8225ae5aa1b4963bb8413312282a91be">process::reap</a> of this subprocess. Note that <a class="el" href="namespaceprocess.html#a8225ae5aa1b4963bb8413312282a91be">process::reap</a> never fails or discards this future. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classprocess_1_1Future.html">Future</a> from doing a <code><a class="el" href="namespaceprocess.html#a8225ae5aa1b4963bb8413312282a91be">process::reap()</a></code> of this subprocess. Note that <code><a class="el" href="namespaceprocess.html#a8225ae5aa1b4963bb8413312282a91be">process::reap()</a></code> never fails or discards this future. </dd></dl>
 
 </div>
 </div>

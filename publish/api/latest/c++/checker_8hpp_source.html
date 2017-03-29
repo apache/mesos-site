@@ -71,35 +71,81 @@
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#ifndef __CHECKER_HPP__</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define __CHECKER_HPP__</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="include_2mesos_2mesos_8hpp.html">mesos/mesos.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="error_8hpp.html">stout/error.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="option_8hpp.html">stout/option.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="include_2mesos_2mesos_8hpp.html">mesos/mesos.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">namespace </span>mesos {</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">namespace </span>internal {</div>
-<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="namespacemesos_1_1internal_1_1checks.html">   27</a></span>&#160;<span class="keyword">namespace </span>checks {</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="namespacemesos_1_1internal_1_1checks_1_1validation.html">   29</a></span>&#160;<span class="keyword">namespace </span>validation {</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">// TODO(alexr): A better place for these functions would be something like</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">// &quot;mesos_validation.cpp&quot;, since they validate API protobufs which are not</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">// solely related to this library.</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<a class="code" href="classOption.html">Option&lt;Error&gt;</a> <a class="code" href="namespacemesos_1_1internal_1_1checks_1_1validation.html#a0433104ba01994c3f1b8948b5a0975ff">checkInfo</a>(<span class="keyword">const</span> CheckInfo&amp; <a class="code" href="namespacemesos_1_1internal_1_1checks_1_1validation.html#a0433104ba01994c3f1b8948b5a0975ff">checkInfo</a>);</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<a class="code" href="classOption.html">Option&lt;Error&gt;</a> <a class="code" href="namespacemesos_1_1internal_1_1checks_1_1validation.html#a23cbf90199a74d315aba67135fbdc1d6">checkStatusInfo</a>(<span class="keyword">const</span> CheckStatusInfo&amp; <a class="code" href="namespacemesos_1_1internal_1_1checks_1_1validation.html#a23cbf90199a74d315aba67135fbdc1d6">checkStatusInfo</a>);</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;} <span class="comment">// namespace validation {</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="owned_8hpp.html">process/owned.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="error_8hpp.html">stout/error.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="lambda_8hpp.html">stout/lambda.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="option_8hpp.html">stout/option.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="try_8hpp.html">stout/try.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">namespace </span>mesos {</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">namespace </span>internal {</div>
+<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="namespacemesos_1_1internal_1_1checks.html">   34</a></span>&#160;<span class="keyword">namespace </span>checks {</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">// Forward declarations.</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">class </span>CheckerProcess;</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;} <span class="comment">// namespace checks {</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;} <span class="comment">// namespace internal {</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;} <span class="comment">// namespace mesos {</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#endif // __CHECKER_HPP__</span></div>
-<div class="ttc" id="classOption_html"><div class="ttname"><a href="classOption.html">Option&lt; Error &gt;</a></div></div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1checks_1_1Checker.html">   39</a></span>&#160;<span class="keyword">class </span><a class="code" href="classmesos_1_1internal_1_1checks_1_1Checker.html">Checker</a></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;{</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="keyword">static</span> <a class="code" href="classTry.html">Try&lt;process::Owned&lt;Checker&gt;</a>&gt; <a class="code" href="classmesos_1_1internal_1_1checks_1_1Checker.html#a909eb91977670f262ed1e14fdcac6c17">create</a>(</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;      <span class="keyword">const</span> CheckInfo&amp; <a class="code" href="namespacemesos_1_1internal_1_1checks_1_1validation.html#a0433104ba01994c3f1b8948b5a0975ff">checkInfo</a>,</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;      <span class="keyword">const</span> lambda::function&lt;<span class="keywordtype">void</span>(<span class="keyword">const</span> CheckStatusInfo&amp;)&gt;&amp; callback,</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;      <span class="keyword">const</span> TaskID&amp; taskId,</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;      <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;pid_t&gt;</a>&amp; taskPid,</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;      <span class="keyword">const</span> std::vector&lt;std::string&gt;&amp; <a class="code" href="namespacens.html#aab01ae26d9da2efc741aa838c69db6e2">namespaces</a>);</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <a class="code" href="classmesos_1_1internal_1_1checks_1_1Checker.html#ac9d5d6780eb612871e8cd78310096879">~Checker</a>();</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <span class="comment">// Not copyable, not assignable.</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <a class="code" href="classmesos_1_1internal_1_1checks_1_1Checker.html#a86d489d94d5cf21382dba2c0264f2ccd">Checker</a>(<span class="keyword">const</span> <a class="code" href="classmesos_1_1internal_1_1checks_1_1Checker.html">Checker</a>&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <a class="code" href="classmesos_1_1internal_1_1checks_1_1Checker.html">Checker</a>&amp; <a class="code" href="classmesos_1_1internal_1_1checks_1_1Checker.html#a72edd5484c4aac855f23f530057153f5">operator=</a>(<span class="keyword">const</span> <a class="code" href="classmesos_1_1internal_1_1checks_1_1Checker.html">Checker</a>&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classmesos_1_1internal_1_1checks_1_1Checker.html#ab637efdb5e39ac56f59ec30b60c9d3e8">stop</a>();</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="classmesos_1_1internal_1_1checks_1_1Checker.html#a86d489d94d5cf21382dba2c0264f2ccd">Checker</a>(<a class="code" href="classprocess_1_1Owned.html">process::Owned&lt;CheckerProcess&gt;</a> process);</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <a class="code" href="classprocess_1_1Owned.html">process::Owned&lt;CheckerProcess&gt;</a> process;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;};</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
+<div class="line"><a name="l00082"></a><span class="lineno"><a class="line" href="namespacemesos_1_1internal_1_1checks_1_1validation.html">   82</a></span>&#160;<span class="keyword">namespace </span>validation {</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="comment">// TODO(alexr): A better place for these functions would be something like</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="comment">// &quot;mesos_validation.cpp&quot;, since they validate API protobufs which are not</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="comment">// solely related to this library.</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<a class="code" href="classOption.html">Option&lt;Error&gt;</a> <a class="code" href="namespacemesos_1_1internal_1_1checks_1_1validation.html#a0433104ba01994c3f1b8948b5a0975ff">checkInfo</a>(<span class="keyword">const</span> CheckInfo&amp; <a class="code" href="namespacemesos_1_1internal_1_1checks_1_1validation.html#a0433104ba01994c3f1b8948b5a0975ff">checkInfo</a>);</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<a class="code" href="classOption.html">Option&lt;Error&gt;</a> <a class="code" href="namespacemesos_1_1internal_1_1checks_1_1validation.html#a23cbf90199a74d315aba67135fbdc1d6">checkStatusInfo</a>(<span class="keyword">const</span> CheckStatusInfo&amp; <a class="code" href="namespacemesos_1_1internal_1_1checks_1_1validation.html#a23cbf90199a74d315aba67135fbdc1d6">checkStatusInfo</a>);</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;} <span class="comment">// namespace validation {</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;} <span class="comment">// namespace checks {</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;} <span class="comment">// namespace internal {</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;} <span class="comment">// namespace mesos {</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="preprocessor">#endif // __CHECKER_HPP__</span></div>
+<div class="ttc" id="classOption_html"><div class="ttname"><a href="classOption.html">Option&lt; pid_t &gt;</a></div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1checks_1_1Checker_html"><div class="ttname"><a href="classmesos_1_1internal_1_1checks_1_1Checker.html">mesos::internal::checks::Checker</a></div><div class="ttdef"><b>Definition:</b> checker.hpp:39</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1checks_1_1Checker_html_a909eb91977670f262ed1e14fdcac6c17"><div class="ttname"><a href="classmesos_1_1internal_1_1checks_1_1Checker.html#a909eb91977670f262ed1e14fdcac6c17">mesos::internal::checks::Checker::create</a></div><div class="ttdeci">static Try&lt; process::Owned&lt; Checker &gt; &gt; create(const CheckInfo &amp;checkInfo, const lambda::function&lt; void(const CheckStatusInfo &amp;)&gt; &amp;callback, const TaskID &amp;taskId, const Option&lt; pid_t &gt; &amp;taskPid, const std::vector&lt; std::string &gt; &amp;namespaces)</div><div class="ttdoc">Attempts to create a Checker object. </div></div>
+<div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
 <div class="ttc" id="include_2mesos_2mesos_8hpp_html"><div class="ttname"><a href="include_2mesos_2mesos_8hpp.html">mesos.hpp</a></div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1checks_1_1Checker_html_a72edd5484c4aac855f23f530057153f5"><div class="ttname"><a href="classmesos_1_1internal_1_1checks_1_1Checker.html#a72edd5484c4aac855f23f530057153f5">mesos::internal::checks::Checker::operator=</a></div><div class="ttdeci">Checker &amp; operator=(const Checker &amp;)=delete</div></div>
+<div class="ttc" id="lambda_8hpp_html"><div class="ttname"><a href="lambda_8hpp.html">lambda.hpp</a></div></div>
 <div class="ttc" id="namespacemesos_1_1internal_1_1checks_1_1validation_html_a0433104ba01994c3f1b8948b5a0975ff"><div class="ttname"><a href="namespacemesos_1_1internal_1_1checks_1_1validation.html#a0433104ba01994c3f1b8948b5a0975ff">mesos::internal::checks::validation::checkInfo</a></div><div class="ttdeci">Option&lt; Error &gt; checkInfo(const CheckInfo &amp;checkInfo)</div></div>
 <div class="ttc" id="option_8hpp_html"><div class="ttname"><a href="option_8hpp.html">option.hpp</a></div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1checks_1_1Checker_html_a86d489d94d5cf21382dba2c0264f2ccd"><div class="ttname"><a href="classmesos_1_1internal_1_1checks_1_1Checker.html#a86d489d94d5cf21382dba2c0264f2ccd">mesos::internal::checks::Checker::Checker</a></div><div class="ttdeci">Checker(const Checker &amp;)=delete</div></div>
+<div class="ttc" id="namespacens_html_aab01ae26d9da2efc741aa838c69db6e2"><div class="ttname"><a href="namespacens.html#aab01ae26d9da2efc741aa838c69db6e2">ns::namespaces</a></div><div class="ttdeci">std::set&lt; std::string &gt; namespaces()</div><div class="ttdef"><b>Definition:</b> ns.hpp:126</div></div>
 <div class="ttc" id="error_8hpp_html"><div class="ttname"><a href="error_8hpp.html">error.hpp</a></div></div>
+<div class="ttc" id="try_8hpp_html"><div class="ttname"><a href="try_8hpp.html">try.hpp</a></div></div>
+<div class="ttc" id="owned_8hpp_html"><div class="ttname"><a href="owned_8hpp.html">owned.hpp</a></div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1checks_1_1Checker_html_ac9d5d6780eb612871e8cd78310096879"><div class="ttname"><a href="classmesos_1_1internal_1_1checks_1_1Checker.html#ac9d5d6780eb612871e8cd78310096879">mesos::internal::checks::Checker::~Checker</a></div><div class="ttdeci">~Checker()</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1checks_1_1Checker_html_ab637efdb5e39ac56f59ec30b60c9d3e8"><div class="ttname"><a href="classmesos_1_1internal_1_1checks_1_1Checker.html#ab637efdb5e39ac56f59ec30b60c9d3e8">mesos::internal::checks::Checker::stop</a></div><div class="ttdeci">void stop()</div><div class="ttdoc">Immediately stops checking. </div></div>
+<div class="ttc" id="classprocess_1_1Owned_html"><div class="ttname"><a href="classprocess_1_1Owned.html">process::Owned&lt; CheckerProcess &gt;</a></div></div>
 <div class="ttc" id="namespacemesos_1_1internal_1_1checks_1_1validation_html_a23cbf90199a74d315aba67135fbdc1d6"><div class="ttname"><a href="namespacemesos_1_1internal_1_1checks_1_1validation.html#a23cbf90199a74d315aba67135fbdc1d6">mesos::internal::checks::validation::checkStatusInfo</a></div><div class="ttdeci">Option&lt; Error &gt; checkStatusInfo(const CheckStatusInfo &amp;checkStatusInfo)</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

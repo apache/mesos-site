@@ -100,48 +100,53 @@
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<a class="code" href="classOption.html">Option&lt;Error&gt;</a> <a class="code" href="namespacemesos_1_1internal_1_1xfs.html#a66c651d8d2d24b42b449fa43273a37e0">validateProjectIds</a>(<span class="keyword">const</span> <a class="code" href="classIntervalSet.html">IntervalSet&lt;prid_t&gt;</a>&amp; projectRange);</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keywordtype">bool</span> <a class="code" href="namespacemesos_1_1internal_1_1xfs.html#a575b75562049e93eb50bd1a65d0cf1ee">pathIsXfs</a>(<span class="keyword">const</span> std::string&amp; path);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keywordtype">bool</span> <a class="code" href="namespacemesos_1_1internal_1_1xfs.html#a3be2dffb9483b203330c29cff99bf8bd">isPathXfs</a>(<span class="keyword">const</span> std::string&amp; path);</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<a class="code" href="classResult.html">Result&lt;QuotaInfo&gt;</a> <a class="code" href="namespacemesos_1_1internal_1_1xfs.html#aa733e5e8162e69f52e99eaca1975a1a5">getProjectQuota</a>(</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keyword">const</span> std::string&amp; path,</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    prid_t projectId);</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">// Test whether XFS project quotas are enabled on the filesystem at the</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment">// given path. This does not imply that quotas are being enforced, just</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">// that they are enabled.</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<a class="code" href="classTry.html">Try&lt;bool&gt;</a> <a class="code" href="namespacemesos_1_1internal_1_1xfs.html#ae8c9917f4e16c6ab0da9f75ea29ae5f5">isQuotaEnabled</a>(<span class="keyword">const</span> std::string&amp; path);</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<a class="code" href="classTry.html">Try&lt;Nothing&gt;</a> <a class="code" href="namespacemesos_1_1internal_1_1xfs.html#aabad116194769a67636d572b63ae7ad1">setProjectQuota</a>(</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keyword">const</span> std::string&amp; path,</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    prid_t projectId,</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <a class="code" href="classBytes.html">Bytes</a> limit);</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<a class="code" href="classResult.html">Result&lt;QuotaInfo&gt;</a> <a class="code" href="namespacemesos_1_1internal_1_1xfs.html#aa733e5e8162e69f52e99eaca1975a1a5">getProjectQuota</a>(</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keyword">const</span> std::string&amp; path,</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    prid_t projectId);</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<a class="code" href="classTry.html">Try&lt;Nothing&gt;</a> <a class="code" href="namespacemesos_1_1internal_1_1xfs.html#a02c77f8c98b1d1764a5a638e4a27e712">clearProjectQuota</a>(</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<a class="code" href="classTry.html">Try&lt;Nothing&gt;</a> <a class="code" href="namespacemesos_1_1internal_1_1xfs.html#aabad116194769a67636d572b63ae7ad1">setProjectQuota</a>(</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keyword">const</span> std::string&amp; path,</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    prid_t projectId);</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    prid_t projectId,</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <a class="code" href="classBytes.html">Bytes</a> limit);</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<a class="code" href="classResult.html">Result&lt;prid_t&gt;</a> <a class="code" href="namespacemesos_1_1internal_1_1xfs.html#a2faab4664eacd0de5147cfc3289bd976">getProjectId</a>(</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keyword">const</span> std::string&amp; directory);</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<a class="code" href="classTry.html">Try&lt;Nothing&gt;</a> <a class="code" href="namespacemesos_1_1internal_1_1xfs.html#a9a6cb4d8955449287db2981675dbde24">setProjectId</a>(</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keyword">const</span> std::string&amp; directory,</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    prid_t projectId);</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<a class="code" href="classTry.html">Try&lt;Nothing&gt;</a> <a class="code" href="namespacemesos_1_1internal_1_1xfs.html#a02c77f8c98b1d1764a5a638e4a27e712">clearProjectQuota</a>(</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keyword">const</span> std::string&amp; path,</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    prid_t projectId);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<a class="code" href="classResult.html">Result&lt;prid_t&gt;</a> <a class="code" href="namespacemesos_1_1internal_1_1xfs.html#a2faab4664eacd0de5147cfc3289bd976">getProjectId</a>(</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keyword">const</span> std::string&amp; directory);</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<a class="code" href="classTry.html">Try&lt;Nothing&gt;</a> <a class="code" href="namespacemesos_1_1internal_1_1xfs.html#a12b38538bbe7711b214ae98544b5cf94">clearProjectId</a>(</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keyword">const</span> std::string&amp; directory);</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;} <span class="comment">// namespace xfs {</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;} <span class="comment">// namespace internal {</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;} <span class="comment">// namespace mesos {</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="preprocessor">#endif // __XFS_UTILS_HPP__</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<a class="code" href="classTry.html">Try&lt;Nothing&gt;</a> <a class="code" href="namespacemesos_1_1internal_1_1xfs.html#a9a6cb4d8955449287db2981675dbde24">setProjectId</a>(</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keyword">const</span> std::string&amp; directory,</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    prid_t projectId);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<a class="code" href="classTry.html">Try&lt;Nothing&gt;</a> <a class="code" href="namespacemesos_1_1internal_1_1xfs.html#a12b38538bbe7711b214ae98544b5cf94">clearProjectId</a>(</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keyword">const</span> std::string&amp; directory);</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;} <span class="comment">// namespace xfs {</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;} <span class="comment">// namespace internal {</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;} <span class="comment">// namespace mesos {</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="preprocessor">#endif // __XFS_UTILS_HPP__</span></div>
 <div class="ttc" id="namespacemesos_1_1internal_1_1xfs_html_aa733e5e8162e69f52e99eaca1975a1a5"><div class="ttname"><a href="namespacemesos_1_1internal_1_1xfs.html#aa733e5e8162e69f52e99eaca1975a1a5">mesos::internal::xfs::getProjectQuota</a></div><div class="ttdeci">Result&lt; QuotaInfo &gt; getProjectQuota(const std::string &amp;path, prid_t projectId)</div></div>
 <div class="ttc" id="classOption_html"><div class="ttname"><a href="classOption.html">Option&lt; Error &gt;</a></div></div>
 <div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
 <div class="ttc" id="structmesos_1_1internal_1_1xfs_1_1QuotaInfo_html_a6becf14bf4942e6bea1e0e6dbf71a22f"><div class="ttname"><a href="structmesos_1_1internal_1_1xfs_1_1QuotaInfo.html#a6becf14bf4942e6bea1e0e6dbf71a22f">mesos::internal::xfs::QuotaInfo::limit</a></div><div class="ttdeci">Bytes limit</div><div class="ttdef"><b>Definition:</b> utils.hpp:35</div></div>
 <div class="ttc" id="structmesos_1_1internal_1_1xfs_1_1QuotaInfo_html_a2afa7846a2048a9f425353c331ccefcc"><div class="ttname"><a href="structmesos_1_1internal_1_1xfs_1_1QuotaInfo.html#a2afa7846a2048a9f425353c331ccefcc">mesos::internal::xfs::QuotaInfo::used</a></div><div class="ttdeci">Bytes used</div><div class="ttdef"><b>Definition:</b> utils.hpp:36</div></div>
-<div class="ttc" id="namespacemesos_1_1internal_1_1xfs_html_a575b75562049e93eb50bd1a65d0cf1ee"><div class="ttname"><a href="namespacemesos_1_1internal_1_1xfs.html#a575b75562049e93eb50bd1a65d0cf1ee">mesos::internal::xfs::pathIsXfs</a></div><div class="ttdeci">bool pathIsXfs(const std::string &amp;path)</div></div>
 <div class="ttc" id="classIntervalSet_html"><div class="ttname"><a href="classIntervalSet.html">IntervalSet&lt; prid_t &gt;</a></div></div>
 <div class="ttc" id="classResult_html"><div class="ttname"><a href="classResult.html">Result</a></div><div class="ttdef"><b>Definition:</b> result.hpp:40</div></div>
 <div class="ttc" id="namespacemesos_1_1internal_1_1xfs_html_ae68b6cb89b0b81fe5604f0464c3f7513"><div class="ttname"><a href="namespacemesos_1_1internal_1_1xfs.html#ae68b6cb89b0b81fe5604f0464c3f7513">mesos::internal::xfs::operator==</a></div><div class="ttdeci">bool operator==(const QuotaInfo &amp;left, const QuotaInfo &amp;right)</div><div class="ttdef"><b>Definition:</b> utils.hpp:40</div></div>
@@ -150,9 +155,11 @@
 <div class="ttc" id="namespacemesos_1_1internal_1_1xfs_html_a02c77f8c98b1d1764a5a638e4a27e712"><div class="ttname"><a href="namespacemesos_1_1internal_1_1xfs.html#a02c77f8c98b1d1764a5a638e4a27e712">mesos::internal::xfs::clearProjectQuota</a></div><div class="ttdeci">Try&lt; Nothing &gt; clearProjectQuota(const std::string &amp;path, prid_t projectId)</div></div>
 <div class="ttc" id="namespacemesos_1_1internal_1_1xfs_html_a2faab4664eacd0de5147cfc3289bd976"><div class="ttname"><a href="namespacemesos_1_1internal_1_1xfs.html#a2faab4664eacd0de5147cfc3289bd976">mesos::internal::xfs::getProjectId</a></div><div class="ttdeci">Result&lt; prid_t &gt; getProjectId(const std::string &amp;directory)</div></div>
 <div class="ttc" id="interval_8hpp_html"><div class="ttname"><a href="interval_8hpp.html">interval.hpp</a></div></div>
+<div class="ttc" id="namespacemesos_1_1internal_1_1xfs_html_a3be2dffb9483b203330c29cff99bf8bd"><div class="ttname"><a href="namespacemesos_1_1internal_1_1xfs.html#a3be2dffb9483b203330c29cff99bf8bd">mesos::internal::xfs::isPathXfs</a></div><div class="ttdeci">bool isPathXfs(const std::string &amp;path)</div></div>
 <div class="ttc" id="structmesos_1_1internal_1_1xfs_1_1QuotaInfo_html"><div class="ttname"><a href="structmesos_1_1internal_1_1xfs_1_1QuotaInfo.html">mesos::internal::xfs::QuotaInfo</a></div><div class="ttdef"><b>Definition:</b> utils.hpp:33</div></div>
 <div class="ttc" id="try_8hpp_html"><div class="ttname"><a href="try_8hpp.html">try.hpp</a></div></div>
 <div class="ttc" id="classBytes_html"><div class="ttname"><a href="classBytes.html">Bytes</a></div><div class="ttdef"><b>Definition:</b> bytes.hpp:30</div></div>
+<div class="ttc" id="namespacemesos_1_1internal_1_1xfs_html_ae8c9917f4e16c6ab0da9f75ea29ae5f5"><div class="ttname"><a href="namespacemesos_1_1internal_1_1xfs.html#ae8c9917f4e16c6ab0da9f75ea29ae5f5">mesos::internal::xfs::isQuotaEnabled</a></div><div class="ttdeci">Try&lt; bool &gt; isQuotaEnabled(const std::string &amp;path)</div></div>
 <div class="ttc" id="namespacemesos_1_1internal_1_1xfs_html_a12b38538bbe7711b214ae98544b5cf94"><div class="ttname"><a href="namespacemesos_1_1internal_1_1xfs.html#a12b38538bbe7711b214ae98544b5cf94">mesos::internal::xfs::clearProjectId</a></div><div class="ttdeci">Try&lt; Nothing &gt; clearProjectId(const std::string &amp;directory)</div></div>
 <div class="ttc" id="namespacemesos_1_1internal_1_1xfs_html_a9a6cb4d8955449287db2981675dbde24"><div class="ttname"><a href="namespacemesos_1_1internal_1_1xfs.html#a9a6cb4d8955449287db2981675dbde24">mesos::internal::xfs::setProjectId</a></div><div class="ttdeci">Try&lt; Nothing &gt; setProjectId(const std::string &amp;directory, prid_t projectId)</div></div>
 <div class="ttc" id="namespacemesos_1_1internal_1_1xfs_html_a66c651d8d2d24b42b449fa43273a37e0"><div class="ttname"><a href="namespacemesos_1_1internal_1_1xfs.html#a66c651d8d2d24b42b449fa43273a37e0">mesos::internal::xfs::validateProjectIds</a></div><div class="ttdeci">Option&lt; Error &gt; validateProjectIds(const IntervalSet&lt; prid_t &gt; &amp;projectRange)</div></div>

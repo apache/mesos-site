@@ -221,7 +221,7 @@ There are two ways to disallow unauthorized uses on specific operations:</p>
 <li><p>Leave <code>permissive</code> set to <code>true</code> and disallow <code>ANY</code> principal to perform
 actions to all objects except the ones explicitly allowed.
 Consider the <a href="#disallowExample">example below</a> for details.</p></li>
-<li><p>Set <code>permissive</code> to <code>false</code> but allow for <code>ANY</code> principle to perform the
+<li><p>Set <code>permissive</code> to <code>false</code> but allow <code>ANY</code> principal to perform the
 action on <code>ANY</code> object. This needs to be done for all actions which should
 work without being checked against ACLs. A template doing this for all
 actions can be found in <a href="../examples/acls_template.json">acls_template.json</a>.</p></li>
@@ -232,8 +232,8 @@ actions can be found in <a href="../examples/acls_template.json">acls_template.j
 <a href="https://github.com/apache/mesos/blob/master/include/mesos/authorizer/acls.proto">their definition</a>
 inside the Mesos source code.</p>
 
-<p>Note that ACLs are compared in the order that they are specified. In other
-words, if an ACL allows some action and a later ACL forbids it, the action is
+<p>ACLs are compared in the order that they are specified. In other words,
+if an ACL allows some action and a later ACL forbids it, the action is
 allowed; likewise, if the ACL forbidding the action appears earlier than the
 one allowing the action, the action is forbidden. If no ACLs match a request,
 the request is authorized if the ACLs are permissive (which is the default
@@ -242,7 +242,7 @@ are declined.</p>
 
 <h3>Authorizable Actions</h3>
 
-<p>Currently the local authorizer configuration format supports the following
+<p>Currently, the local authorizer configuration format supports the following
 entries, each representing an authorizable action:</p>
 
 <table class="table table-striped">
@@ -849,7 +849,7 @@ authorization interface consists of three parts:</p>
 <p>First, the <code>authorization::Request</code> protobuf message represents a request to be
 authorized. It follows the
 <em><a href="https://en.wikipedia.org/wiki/Subject%E2%80%93verb%E2%80%93object">Subject-Verb-Object</a></em>
-pattern, where a <em>subject</em> — commonly a principal — attempts to perform an
+pattern, where a <em>subject</em> &mdash;commonly a principal&mdash;attempts to perform an
 <em>action</em> on a given <em>object</em>.</p>
 
 <p>Second, the
@@ -893,8 +893,8 @@ one or more fields must be set
 (e.g., the <code>view_executors</code> action expects the <code>executor_info</code> and
 <code>framework_info</code> to be set).</p>
 
-<p>The <code>action</code> field of the <code>Request</code> message is an enum. It is kept optional —
-even though a valid action is necessary for every request — to allow for
+<p>The <code>action</code> field of the <code>Request</code> message is an enum. It is kept optional&mdash;
+even though a valid action is necessary for every request&mdash;to allow for
 backwards compatibility when adding new fields (see
 <a href="https://issues.apache.org/jira/browse/MESOS-4997">MESOS-4997</a> for details).</p>
 
