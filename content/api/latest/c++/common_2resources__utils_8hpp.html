@@ -50,13 +50,17 @@
 <div class="header">
   <div class="summary">
 <a href="#namespaces">Namespaces</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">resources_utils.hpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;<a class="el" href="include_2mesos_2mesos_8hpp_source.html">mesos/mesos.hpp</a>&gt;</code><br/>
+<div class="textblock"><code>#include &lt;vector&gt;</code><br/>
+<code>#include &lt;google/protobuf/repeated_field.h&gt;</code><br/>
+<code>#include &lt;<a class="el" href="include_2mesos_2mesos_8hpp_source.html">mesos/mesos.hpp</a>&gt;</code><br/>
 <code>#include &lt;<a class="el" href="resources_8hpp_source.html">mesos/resources.hpp</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="nothing_8hpp_source.html">stout/nothing.hpp</a>&gt;</code><br/>
 <code>#include &lt;<a class="el" href="try_8hpp_source.html">stout/try.hpp</a>&gt;</code><br/>
 </div>
 <p><a href="common_2resources__utils_8hpp_source.html">Go to the source code of this file.</a></p>
@@ -66,12 +70,30 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacemesos"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos.html">mesos</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:aeea322fd31c5b71ac06c65bcf1241a82"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos.html#aeea322fd31c5b71ac06c65bcf1241a82">mesos::ResourceFormat</a> { <a class="el" href="namespacemesos.html#aeea322fd31c5b71ac06c65bcf1241a82ad24f1702a48dcce5a1688eec0519fb5c">mesos::PRE_RESERVATION_REFINEMENT</a>, 
+<a class="el" href="namespacemesos.html#aeea322fd31c5b71ac06c65bcf1241a82acc3723fdea465eaae535d3c19da528f2">mesos::POST_RESERVATION_REFINEMENT</a>, 
+<a class="el" href="namespacemesos.html#aeea322fd31c5b71ac06c65bcf1241a82a3f59e6dad3a4b4f6aff438d84c0ab0d6">mesos::ENDPOINT</a>
+ }</td></tr>
+<tr class="separator:aeea322fd31c5b71ac06c65bcf1241a82"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a4c15c1f79f8e77b9c96823ce2313b4aa"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos.html#a4c15c1f79f8e77b9c96823ce2313b4aa">mesos::needCheckpointing</a> (const Resource &amp;resource)</td></tr>
 <tr class="separator:a4c15c1f79f8e77b9c96823ce2313b4aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa29c69dc413109882c5009aec52b50b2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTry.html">Try</a>&lt; Resources &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos.html#aa29c69dc413109882c5009aec52b50b2">mesos::applyCheckpointedResources</a> (const Resources &amp;resources, const Resources &amp;checkpointedResources)</td></tr>
 <tr class="separator:aa29c69dc413109882c5009aec52b50b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0bd8e49e373a07b70645e94527af581"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos.html#ad0bd8e49e373a07b70645e94527af581">mesos::convertResourceFormat</a> (Resource *resource, ResourceFormat format)</td></tr>
+<tr class="separator:ad0bd8e49e373a07b70645e94527af581"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad248dd7e67de347397e0e53018dde98c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos.html#ad248dd7e67de347397e0e53018dde98c">mesos::convertResourceFormat</a> (google::protobuf::RepeatedPtrField&lt; Resource &gt; *resources, ResourceFormat format)</td></tr>
+<tr class="separator:ad248dd7e67de347397e0e53018dde98c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adffefc8a8e27c477ede7849dcc8e1897"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos.html#adffefc8a8e27c477ede7849dcc8e1897">mesos::convertResourceFormat</a> (std::vector&lt; Resource &gt; *resources, ResourceFormat format)</td></tr>
+<tr class="separator:adffefc8a8e27c477ede7849dcc8e1897"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ec63bc99c73641f157fad102059f782"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos.html#a9ec63bc99c73641f157fad102059f782">mesos::convertResourceFormat</a> (Offer::Operation *operation, ResourceFormat format)</td></tr>
+<tr class="separator:a9ec63bc99c73641f157fad102059f782"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6aedf5b9bda94224599094cb8140c83"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTry.html">Try</a>&lt; <a class="el" href="structNothing.html">Nothing</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos.html#ab6aedf5b9bda94224599094cb8140c83">mesos::downgradeResources</a> (google::protobuf::RepeatedPtrField&lt; Resource &gt; *resources)</td></tr>
+<tr class="separator:ab6aedf5b9bda94224599094cb8140c83"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->

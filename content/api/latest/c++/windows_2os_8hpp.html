@@ -64,6 +64,7 @@
 <code>#include &lt;codecvt&gt;</code><br/>
 <code>#include &lt;list&gt;</code><br/>
 <code>#include &lt;map&gt;</code><br/>
+<code>#include &lt;memory&gt;</code><br/>
 <code>#include &lt;set&gt;</code><br/>
 <code>#include &lt;string&gt;</code><br/>
 <code>#include &lt;<a class="el" href="duration_8hpp_source.html">stout/duration.hpp</a>&gt;</code><br/>
@@ -73,6 +74,7 @@
 <code>#include &lt;<a class="el" href="path_8hpp_source.html">stout/path.hpp</a>&gt;</code><br/>
 <code>#include &lt;<a class="el" href="strings_8hpp_source.html">stout/strings.hpp</a>&gt;</code><br/>
 <code>#include &lt;<a class="el" href="try_8hpp_source.html">stout/try.hpp</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="3rdparty_2stout_2include_2stout_2version_8hpp_source.html">stout/version.hpp</a>&gt;</code><br/>
 <code>#include &lt;<a class="el" href="3rdparty_2stout_2include_2stout_2windows_8hpp_source.html">stout/windows.hpp</a>&gt;</code><br/>
 <code>#include &lt;<a class="el" href="os_2os_8hpp_source.html">stout/os/os.hpp</a>&gt;</code><br/>
 <code>#include &lt;<a class="el" href="getenv_8hpp_source.html">stout/os/getenv.hpp</a>&gt;</code><br/>
@@ -144,10 +146,16 @@ Functions</h2></td></tr>
 <tr class="separator:ae19e4161a51b86a1f330f3bf1dc75389"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aede9f61dcb4b7d1f276302a7bce37446"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceos.html#aede9f61dcb4b7d1f276302a7bce37446">os::random</a> ()</td></tr>
 <tr class="separator:aede9f61dcb4b7d1f276302a7bce37446"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab2529b00a115732502b9789bb273e153"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTry.html">Try</a>&lt; HANDLE &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceos.html#ab2529b00a115732502b9789bb273e153">os::create_job</a> (<a class="el" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ab03ced250ed239bc3b50b669493997f9">pid_t</a> pid)</td></tr>
-<tr class="separator:ab2529b00a115732502b9789bb273e153"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4e37750ef56b988e54f0978afacdf038"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTry.html">Try</a>&lt; <a class="el" href="structNothing.html">Nothing</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceos.html#a4e37750ef56b988e54f0978afacdf038">os::kill_job</a> (<a class="el" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ab03ced250ed239bc3b50b669493997f9">pid_t</a> pid)</td></tr>
-<tr class="separator:a4e37750ef56b988e54f0978afacdf038"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a478b788eda6def822a369c7f5e6f800e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTry.html">Try</a>&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceos.html#a478b788eda6def822a369c7f5e6f800e">os::name_job</a> (<a class="el" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ab03ced250ed239bc3b50b669493997f9">pid_t</a> pid)</td></tr>
+<tr class="separator:a478b788eda6def822a369c7f5e6f800e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a389db0f47a9e24b3c79ee9b835fd3e4b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTry.html">Try</a>&lt; <a class="el" href="classSharedHandle.html">SharedHandle</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceos.html#a389db0f47a9e24b3c79ee9b835fd3e4b">os::open_job</a> (const DWORD desired_access, BOOL inherit_handles, const std::string &amp;name)</td></tr>
+<tr class="separator:a389db0f47a9e24b3c79ee9b835fd3e4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab36b98b5b1e34a097d590c15d9979dc5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTry.html">Try</a>&lt; <a class="el" href="classSharedHandle.html">SharedHandle</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceos.html#ab36b98b5b1e34a097d590c15d9979dc5">os::create_job</a> (const std::string &amp;name)</td></tr>
+<tr class="separator:ab36b98b5b1e34a097d590c15d9979dc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4a2195dc6e4a058f8cac5f65858fbb3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTry.html">Try</a>&lt; <a class="el" href="structNothing.html">Nothing</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceos.html#aa4a2195dc6e4a058f8cac5f65858fbb3">os::assign_job</a> (<a class="el" href="classSharedHandle.html">SharedHandle</a> jobHandle, <a class="el" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ab03ced250ed239bc3b50b669493997f9">pid_t</a> pid)</td></tr>
+<tr class="separator:aa4a2195dc6e4a058f8cac5f65858fbb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd6de159f33dbb6ab80e7011e96ee444"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTry.html">Try</a>&lt; <a class="el" href="structNothing.html">Nothing</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceos.html#acd6de159f33dbb6ab80e7011e96ee444">os::kill_job</a> (<a class="el" href="classSharedHandle.html">SharedHandle</a> jobHandle)</td></tr>
+<tr class="separator:acd6de159f33dbb6ab80e7011e96ee444"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a547f04b42e472b2ff0070897010fac78"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTry.html">Try</a>&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceos.html#a547f04b42e472b2ff0070897010fac78">os::var</a> ()</td></tr>
 <tr class="separator:a547f04b42e472b2ff0070897010fac78"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a05476e646f895fd2f27f0e449f86ff63"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceos.html#a05476e646f895fd2f27f0e449f86ff63">os::host_default_path</a> ()</td></tr>

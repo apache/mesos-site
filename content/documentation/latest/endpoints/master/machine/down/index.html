@@ -128,12 +128,15 @@
 
 <h3>DESCRIPTION</h3>
 
-<p>Returns 200 OK when the operation was successful.
-Returns 307 TEMPORARY_REDIRECT redirect to the leading master when
-current master is not the leader.
-Returns 503 SERVICE_UNAVAILABLE if the leading master cannot be
-found.
-POST: Validates the request body as JSON and transitions
+<p>Returns 200 OK when the operation was successful.</p>
+
+<p>Returns 307 TEMPORARY_REDIRECT redirect to the leading master when
+current master is not the leader.</p>
+
+<p>Returns 503 SERVICE_UNAVAILABLE if the leading master cannot be
+found.</p>
+
+<p>POST: Validates the request body as JSON and transitions
   the list of machines into DOWN mode.  Currently, only
   machines in DRAINING mode are allowed to be brought down.</p>
 
@@ -141,6 +144,11 @@ POST: Validates the request body as JSON and transitions
 
 <p>This endpoint requires authentication iff HTTP authentication is
 enabled.</p>
+
+<h3>AUTHORIZATION</h3>
+
+<p>The current principal must be allowed to bring down all the machines
+in the request, otherwise the request will fail.</p>
 
   </div>
 </div>

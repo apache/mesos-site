@@ -81,7 +81,7 @@
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">// NOTE: This is not supported on Windows.</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="namespaceos.html#a8d08e707471b9d65cd37a53ce7df7a3e">   28</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;Nothing&gt;</a> <a class="code" href="namespaceos.html#a7d71bda07a41304403b0e13aa47f0764">cloexec</a>(<span class="keyword">const</span> <a class="code" href="classos_1_1WindowsFD.html">WindowsFD</a>&amp; fd)</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;{</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;  LOG(WARNING) &lt;&lt; <span class="stringliteral">&quot;`os::cloexec` has been called, but is a no-op on Windows&quot;</span>;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;  VLOG(2) &lt;&lt; <span class="stringliteral">&quot;`os::cloexec` has been called, but is a no-op on Windows&quot;</span>;</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="structNothing.html">Nothing</a>();</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;}</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
@@ -89,53 +89,51 @@
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">// NOTE: This is not supported on Windows.</span></div>
 <div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="namespaceos.html#a828e9e96f7df698070e04539f23a0e0a">   36</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;Nothing&gt;</a> <a class="code" href="namespaceos.html#aab17ac89b279bf4c1b5a0625db845f90">unsetCloexec</a>(<span class="keyword">const</span> <a class="code" href="classos_1_1WindowsFD.html">WindowsFD</a>&amp; fd)</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;{</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  LOG(WARNING) &lt;&lt; <span class="stringliteral">&quot;`os::unsetCloexec` has been called, &quot;</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;               &lt;&lt; <span class="stringliteral">&quot;but is a no-op on Windows&quot;</span>;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="structNothing.html">Nothing</a>();</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;}</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
-<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="namespaceos.html#acbeb71651c02b049a37ab0bb7a9b1b82">   45</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;bool&gt;</a> <a class="code" href="namespaceos.html#a32281111157c19876d8dd6dac7cdbc13">isCloexec</a>(<span class="keyword">const</span> <a class="code" href="classos_1_1WindowsFD.html">WindowsFD</a>&amp; fd)</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;{</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  LOG(WARNING) &lt;&lt; <span class="stringliteral">&quot;`os::isCloexec` has been called, but is a stub on Windows&quot;</span>;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;}</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="namespaceos.html#a33c6c5a29bf5921fa0e14b0a7e92092e">   52</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;Nothing&gt;</a> <a class="code" href="namespaceos.html#adcd5b59146bb45a7ba431120a0d3b464">nonblock</a>(<span class="keyword">const</span> <a class="code" href="classos_1_1WindowsFD.html">WindowsFD</a>&amp; fd)</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;{</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="keywordflow">switch</span> (fd.<a class="code" href="classos_1_1WindowsFD.html#a3ce17a730ace5352a1fc6d49f8336d52">type</a>()) {</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordflow">case</span> <a class="code" href="classos_1_1WindowsFD.html#ac0377db41e1c167339c97dbd69c79ae5a89172e93673bdea9363778d0b20b6926">WindowsFD::FD_CRT</a>:</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordflow">case</span> <a class="code" href="classos_1_1WindowsFD.html#ac0377db41e1c167339c97dbd69c79ae5a450a175cecd05b630d2d3364d89d68c7">WindowsFD::FD_HANDLE</a>: {</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;      <span class="comment">/* Do nothing. */</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;      <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    }</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordflow">case</span> <a class="code" href="classos_1_1WindowsFD.html#ac0377db41e1c167339c97dbd69c79ae5a2cd82bac02ef9802698fe360bb0f46bd">WindowsFD::FD_SOCKET</a>: {</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;      <span class="keyword">const</span> u_long non_block_mode = 1;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;      u_long <a class="code" href="namespaceos_1_1stat.html#a0b77d3699a25c2c39a29b36062f07321">mode</a> = non_block_mode;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;      <span class="keywordtype">int</span> result = ioctlsocket(fd, FIONBIO, &amp;mode);</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;      <span class="keywordflow">if</span> (result != NO_ERROR) {</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classWindowsSocketError.html">WindowsSocketError</a>();</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;      }</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;      <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    }</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  }</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="structNothing.html">Nothing</a>();</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;}</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="comment">// NOTE: This is not supported on Windows.</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="namespaceos.html#a3b9ef76d308da69c6e3a1c1136a657db">   76</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;bool&gt;</a> <a class="code" href="namespaceos.html#a238d27a90a749967761c1019d27b7e83">isNonblock</a>(<span class="keyword">const</span> <a class="code" href="classos_1_1WindowsFD.html">WindowsFD</a>&amp; fd)</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;{</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  LOG(WARNING) &lt;&lt; <span class="stringliteral">&quot;`os::isNonblock` has been called, but is a stub on Windows&quot;</span>;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;}</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  VLOG(2) &lt;&lt; <span class="stringliteral">&quot;`os::unsetCloexec` has been called, but is a no-op on Windows&quot;</span>;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="structNothing.html">Nothing</a>();</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;}</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="namespaceos.html#acbeb71651c02b049a37ab0bb7a9b1b82">   43</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;bool&gt;</a> <a class="code" href="namespaceos.html#a32281111157c19876d8dd6dac7cdbc13">isCloexec</a>(<span class="keyword">const</span> <a class="code" href="classos_1_1WindowsFD.html">WindowsFD</a>&amp; fd)</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;{</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  VLOG(2) &lt;&lt; <span class="stringliteral">&quot;`os::isCloexec` has been called, but is a stub on Windows&quot;</span>;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;}</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="namespaceos.html#a33c6c5a29bf5921fa0e14b0a7e92092e">   50</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;Nothing&gt;</a> <a class="code" href="namespaceos.html#adcd5b59146bb45a7ba431120a0d3b464">nonblock</a>(<span class="keyword">const</span> <a class="code" href="classos_1_1WindowsFD.html">WindowsFD</a>&amp; fd)</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;{</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <span class="keywordflow">switch</span> (fd.<a class="code" href="classos_1_1WindowsFD.html#a3ce17a730ace5352a1fc6d49f8336d52">type</a>()) {</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordflow">case</span> <a class="code" href="classos_1_1WindowsFD.html#ac0377db41e1c167339c97dbd69c79ae5a89172e93673bdea9363778d0b20b6926">WindowsFD::FD_CRT</a>:</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keywordflow">case</span> <a class="code" href="classos_1_1WindowsFD.html#ac0377db41e1c167339c97dbd69c79ae5a450a175cecd05b630d2d3364d89d68c7">WindowsFD::FD_HANDLE</a>: {</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;      <span class="comment">/* Do nothing. */</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;      <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    }</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordflow">case</span> <a class="code" href="classos_1_1WindowsFD.html#ac0377db41e1c167339c97dbd69c79ae5a2cd82bac02ef9802698fe360bb0f46bd">WindowsFD::FD_SOCKET</a>: {</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;      <span class="keyword">const</span> u_long non_block_mode = 1;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;      u_long <a class="code" href="namespaceos_1_1stat.html#a0b77d3699a25c2c39a29b36062f07321">mode</a> = non_block_mode;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;      <span class="keywordtype">int</span> result = ioctlsocket(fd, FIONBIO, &amp;mode);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;      <span class="keywordflow">if</span> (result != NO_ERROR) {</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classWindowsSocketError.html">WindowsSocketError</a>();</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;      }</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;      <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    }</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  }</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="structNothing.html">Nothing</a>();</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;}</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="comment">// NOTE: This is not supported on Windows.</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="namespaceos.html#a3b9ef76d308da69c6e3a1c1136a657db">   74</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;bool&gt;</a> <a class="code" href="namespaceos.html#a238d27a90a749967761c1019d27b7e83">isNonblock</a>(<span class="keyword">const</span> <a class="code" href="classos_1_1WindowsFD.html">WindowsFD</a>&amp; fd)</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;{</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  VLOG(2) &lt;&lt; <span class="stringliteral">&quot;`os::isNonblock` has been called, but is a stub on Windows&quot;</span>;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;}</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;} <span class="comment">// namespace os {</span></div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;} <span class="comment">// namespace os {</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="preprocessor">#endif // __STOUT_OS_WINDOWS_FCNTL_HPP__</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="preprocessor">#endif // __STOUT_OS_WINDOWS_FCNTL_HPP__</span></div>
 <div class="ttc" id="classos_1_1WindowsFD_html_ac0377db41e1c167339c97dbd69c79ae5a2cd82bac02ef9802698fe360bb0f46bd"><div class="ttname"><a href="classos_1_1WindowsFD.html#ac0377db41e1c167339c97dbd69c79ae5a2cd82bac02ef9802698fe360bb0f46bd">os::WindowsFD::FD_SOCKET</a></div><div class="ttdef"><b>Definition:</b> fd.hpp:56</div></div>
 <div class="ttc" id="structNothing_html"><div class="ttname"><a href="structNothing.html">Nothing</a></div><div class="ttdef"><b>Definition:</b> nothing.hpp:16</div></div>
 <div class="ttc" id="classos_1_1WindowsFD_html_ac0377db41e1c167339c97dbd69c79ae5a450a175cecd05b630d2d3364d89d68c7"><div class="ttname"><a href="classos_1_1WindowsFD.html#ac0377db41e1c167339c97dbd69c79ae5a450a175cecd05b630d2d3364d89d68c7">os::WindowsFD::FD_HANDLE</a></div><div class="ttdef"><b>Definition:</b> fd.hpp:55</div></div>

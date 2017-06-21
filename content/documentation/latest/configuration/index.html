@@ -116,8 +116,8 @@
     <h1>Mesos Configuration</h1>
 
 <p>The Mesos master and agent can take a variety of configuration options
-through command-line arguments, or environment variables. A list of
-the available options can be seen by running <code>mesos-master --help</code> or
+through command-line arguments or environment variables. A list of the
+available options can be seen by running <code>mesos-master --help</code> or
 <code>mesos-agent --help</code>. Each option can be set in two ways:</p>
 
 <ul>
@@ -231,63 +231,6 @@ Show the help message and exit. (default: false)
 </tr>
 <tr>
   <td>
-    --http_authenticators=VALUE
-  </td>
-  <td>
-HTTP authenticator implementation to use when handling requests to
-authenticated endpoints. Use the default
-<code>basic</code>, or load an alternate
-HTTP authenticator module using <code>--modules</code>.
-(default: basic, or basic and JWT if executor authentication is enabled)
-  </td>
-</tr>
-<tr>
-  <td>
-    --ip=VALUE
-  </td>
-  <td>
-IP address to listen on. This cannot be used in conjunction
-with <code>--ip_discovery_command</code>. (master default: 5050; agent default: 5051)
-  </td>
-</tr>
-<tr>
-  <td>
-    --ip_discovery_command=VALUE
-  </td>
-  <td>
-Optional IP discovery binary: if set, it is expected to emit
-the IP address which the master/agent will try to bind to.
-Cannot be used in conjunction with <code>--ip</code>.
-  </td>
-</tr>
-<tr>
-  <td>
-    --modules_dir=VALUE
-  </td>
-  <td>
-Directory path of the module manifest files. The manifest files are processed in
-alphabetical order. (See <code>--modules</code> for more information on module
-manifest files) Cannot be used in conjunction with <code>--modules</code>.
-  </td>
-</tr>
-<tr>
-  <td>
-    --port=VALUE
-  </td>
-  <td>
-Port to listen on.
-  </td>
-</tr>
-<tr>
-  <td>
-    --[no-]version
-  </td>
-  <td>
-Show version and exit. (default: false)
-  </td>
-</tr>
-<tr>
-  <td>
     --hooks=VALUE
   </td>
   <td>
@@ -316,6 +259,36 @@ Whether we should execute a lookup to find out the server's hostname,
 if not explicitly set (via, e.g., <code>--hostname</code>).
 True by default; if set to <code>false</code> it will cause Mesos
 to use the IP address, unless the hostname is explicitly set. (default: true)
+  </td>
+</tr>
+<tr>
+  <td>
+    --http_authenticators=VALUE
+  </td>
+  <td>
+HTTP authenticator implementation to use when handling requests to
+authenticated endpoints. Use the default <code>basic</code>, or load an
+alternate HTTP authenticator module using <code>--modules</code>.
+(default: basic, or basic and JWT if executor authentication is enabled)
+  </td>
+</tr>
+<tr>
+  <td>
+    --ip=VALUE
+  </td>
+  <td>
+IP address to listen on. This cannot be used in conjunction
+with <code>--ip_discovery_command</code>. (master default: 5050; agent default: 5051)
+  </td>
+</tr>
+<tr>
+  <td>
+    --ip_discovery_command=VALUE
+  </td>
+  <td>
+Optional IP discovery binary: if set, it is expected to emit
+the IP address which the master/agent will try to bind to.
+Cannot be used in conjunction with <code>--ip</code>.
   </td>
 </tr>
 <tr>
@@ -365,6 +338,32 @@ Example:
 <p/> Cannot be used in conjunction with --modules_dir.
   </td>
 </tr>
+<tr>
+  <td>
+    --modules_dir=VALUE
+  </td>
+  <td>
+Directory path of the module manifest files. The manifest files are processed in
+alphabetical order. (See <code>--modules</code> for more information on module
+manifest files). Cannot be used in conjunction with <code>--modules</code>.
+  </td>
+</tr>
+<tr>
+  <td>
+    --port=VALUE
+  </td>
+  <td>
+Port to listen on.
+  </td>
+</tr>
+<tr>
+  <td>
+    --[no-]version
+  </td>
+  <td>
+Show version and exit. (default: false)
+  </td>
+</tr>
 </table>
 
 
@@ -387,7 +386,7 @@ For more about logging, see the <a href="/documentation/latest/./logging/">loggi
     --[no-]quiet
   </td>
   <td>
-Disable logging to stderr (default: false)
+Disable logging to stderr. (default: false)
   </td>
 </tr>
 <tr>
@@ -428,7 +427,7 @@ written to <code>--log_dir</code>, if specified. (default: INFO)
   </td>
   <td>
 Whether the master/agent should initialize Google logging for the
-Mesos scheduler and executor drivers, in same way as described here.
+scheduler and executor drivers, in the same way as described here.
 The scheduler/executor drivers have separate logs and do not get
 written to the master/agent logs.
 <p/>
@@ -499,7 +498,7 @@ lose data when cleanup occurs. (Example: <code>/var/lib/mesos/master</code>)
     --zk=VALUE
   </td>
   <td>
-ZooKeeper URL (used for leader election amongst masters)
+ZooKeeper URL (used for leader election amongst masters).
 May be one of:
 <pre><code>zk://host1:port1,host2:port2,.../path
 zk://username:password@host1:port1,host2:port2,.../path
@@ -701,7 +700,7 @@ Note that if the flag <code>--authorizers</code> is provided with a value
 different than the default <code>local</code>, the ACLs
 passed through the <code>--acls</code> flag will be ignored.
 <p/>
-Currently there's no support for multiple authorizers. (default: local)
+Currently there is no support for multiple authorizers. (default: local)
   </td>
 </tr>
 <tr>
@@ -745,12 +744,29 @@ sharing implementation currently has limitations. E.g. See the problem of
 </tr>
 <tr>
   <td>
+    --[no_]filter_gpu_resources
+  </td>
+  <td>
+When set to true, this flag will cause the mesos master to filter all offers
+from agents with GPU resources by only sending them to frameworks that opt into
+the 'GPU_RESOURCES' framework capability. When set to false, this flag will
+cause the master to not filter offers from agents with GPU resources, and
+indiscriminately send them to all frameworks whether they set the
+'GPU_RESOURCES' capability or not.  This flag is meant as a temporary workaround
+towards the eventual deprecation of the 'GPU_RESOURCES' capability. Please see
+the following for more information:
+    <a href="https://www.mail-archive.com/dev@mesos.apache.org/msg37571.html">msg37571</a>
+    <a href="https://issues.apache.org/jira/browse/MESOS-7576">MESOS-7576</a>
+  </td>
+</tr>
+<tr>
+  <td>
     --framework_sorter=VALUE
   </td>
   <td>
-Policy to use for allocating resources
-between a given user's frameworks. Options
-are the same as for user_allocator. (default: drf)
+Policy to use for allocating resources between a given user's
+frameworks. Options are the same as for <code>--user_sorter</code>.
+(default: drf)
   </td>
 </tr>
 <tr>
@@ -945,8 +961,7 @@ Can root submit frameworks? (default: true)
     --user_sorter=VALUE
   </td>
   <td>
-Policy to use for allocating resources
-between users. May be one of:
+Policy to use for allocating resources between users. May be one of:
   dominant_resource_fairness (drf) (default: drf)
   </td>
 </tr>
@@ -976,9 +991,9 @@ using the <code>/weights</code> HTTP endpoint.
   </td>
   <td>
 Path to a file which contains a list of agents (one per line) to
-advertise offers for. The file is watched, and periodically re-read to
-refresh the agent whitelist. By default there is no whitelist / all
-machines are accepted. Path could be of the form
+advertise offers for. The file is watched and periodically re-read to
+refresh the agent whitelist. By default there is no whitelist: all
+machines are accepted. Path can be of the form
 <code>file:///path/to/file</code> or <code>/path/to/file</code>.
   </td>
 </tr>
@@ -1118,23 +1133,56 @@ Present functionality is intended for resource monitoring and
 no cgroup limits are set, they are inherited from the root mesos
 cgroup.
   </td>
+
 </tr>
 <tr>
   <td>
-    --allowed_capabilities=VALUE
+    --effective_capabilities=VALUE
   </td>
   <td>
-The value needs to be a JSON-formatted string of Linux capabilities
-that the agent should allow. Note that if no Linux capabilities
-isolation is enabled (<code>linux/capabilities</code> is not present
-in the arguments to <code>--isolation</code>), this flags is ignored.
+JSON representation of the Linux capabilities that the agent will
+grant to a task that will be run in containers launched by the
+containerizer (currently only supported by the Mesos Containerizer).
+This set overrides the default capabilities for the user but not
+the capabilities requested by the framework.
+<p/>
+To set capabilities the agent should have the <code>SETPCAP</code> capability.
+<p/>
+This flag is effective iff <code>linux/capabilities</code> isolation is enabled.
+When <code>linux/capabilities</code> isolation is enabled, the absence of this flag
+implies that the operator intends to allow ALL capabilities.
 <p/>
 Example:
-<pre><code>{
-"capabilities": [NET_RAW, MKNOD]
-}</code></pre>
+<pre><code>
+{
+  "capabilities": [
+    "NET_RAW",
+    "SYS_ADMIN"
+  ]
+}
+</code></pre>
   </td>
 </tr>
+
+</tr>
+<tr>
+  <td>
+    --bounding_capabilities=VALUE
+  </td>
+  <td>
+JSON representation of the Linux capabilities that the operator
+will allow as the maximum level of privilege that a task launched
+by the containerizer may acquire (currently only supported by the
+Mesos Containerizer).
+<p/>
+This flag is effective iff <code>linux/capabilities</code> isolation is enabled.
+When <code>linux/capabilities</code> isolation is enabled, the absence of this flag
+implies that the operator intends to allow ALL capabilities.
+<p/>
+This flag has the same syntax as <code>--effective_capabilities</code>.
+  </td>
+</tr>
+
 <tr>
   <td>
     --appc_simple_discovery_uri_prefix=VALUE
@@ -1266,6 +1314,48 @@ the primary handle for the net_cls cgroup.
 A range of the form 0xAAAA,0xBBBB, specifying the valid secondary
 handles that can be used with the primary handle. This will take
 effect only when the <code>--cgroups_net_cls_primary_handle</code> is set.
+  </td>
+</tr>
+<tr>
+  <td>
+    --allowed_devices
+  </td>
+  <td>
+JSON object representing the devices that will be additionally
+whitelisted by cgroups devices subsystem. Noted that the following
+devices always be whitelisted by default:
+<pre><code>  * /dev/console
+  * /dev/tty0
+  * /dev/tty1
+  * /dev/pts/*
+  * /dev/ptmx
+  * /dev/net/tun
+  * /dev/null
+  * /dev/zero
+  * /dev/full
+  * /dev/tty
+  * /dev/urandom
+  * /dev/random
+</code></pre>
+This flag will take effect only when <code>cgroups/devices</code> is set in
+<code>--isolation</code> flag.
+<p/>
+Example:
+<pre><code>{
+  "allowed_devices": [
+    {
+      "device": {
+        "path": "/path/to/device"
+      },
+      "access": {
+        "read": true,
+        "write": false,
+        "mknod": false
+      }
+    }
+  ]
+}
+</code></pre>
   </td>
 </tr>
 <tr>
@@ -1453,10 +1543,13 @@ The amount of time to wait before removing docker containers
     --docker_socket=VALUE
   </td>
   <td>
-The UNIX socket path to be mounted into the docker executor container
-to provide docker CLI access to the docker daemon. This must be the
-path used by the agent's docker image.
-(default: /var/run/docker.sock)
+Resource used by the agent and the executor to provide CLI access to the
+Docker daemon. On Unix, this is typically a path to a socket, such as
+<code>/var/run/docker.sock</code>. On Windows this must be a named pipe,
+such as <code>//./pipe/docker_engine</code>. <b>NOTE</b>: This must be the path
+used by the Docker image used to run the agent. (default:
+//./pipe/docker_engine on Windows; /var/run/docker.sock on other
+platforms).
   </td>
 </tr>
 <tr>
@@ -1523,6 +1616,17 @@ shutting it down (e.g., 60secs, 3mins, etc) (default: 1mins)
 </tr>
 <tr>
   <td>
+    --executor_reregistration_timeout=VALUE
+  </td>
+  <td>
+The timeout within which an executor is expected to re-register after
+the agent has restarted, before the agent considers it gone and shuts
+it down. Note that currently, the agent will not re-register with the
+master until this timeout has elapsed (see MESOS-7539). (default: 2secs)
+  </td>
+</tr>
+<tr>
+  <td>
     --max_completed_executors_per_framework
   </td>
   <td>
@@ -1535,8 +1639,9 @@ in memory. (default: 150)
     --executor_secret_key=VALUE
   </td>
   <td>
-The key used when generating executor secrets. This flag is only
-available when Mesos is built with SSL support.
+Path to a file containing the key used when generating executor
+secrets. This flag is only available when Mesos is built with SSL
+support.
   </td>
 </tr>
 <tr>
@@ -1683,9 +1788,9 @@ Strategy for provisioning container rootfs from images, e.g., <code>aufs</code>,
   </td>
   <td>
 Isolation mechanisms to use, e.g., <code>posix/cpu,posix/mem</code>, or
-<code>cgroups/cpu,cgroups/mem</code>, or network/port_mapping
+<code>cgroups/cpu,cgroups/mem</code>, or <code>network/port_mapping</code>
 (configure with flag: <code>--with-network-isolator</code> to enable),
-or `gpu/nvidia` for nvidia specific gpu isolation, or load an alternate
+or <code>gpu/nvidia</code> for nvidia specific gpu isolation, or load an alternate
 isolator module using the <code>--modules</code> flag. Note that this
 flag is only relevant for the Mesos Containerizer.
 (default: posix/cpu,posix/mem)
@@ -1728,13 +1833,13 @@ conjunction with <code>--master</code>.
     --nvidia_gpu_devices=VALUE
   </td>
   <td>
-A comma-separated list of Nvidia GPU devices. When `gpus` is specified
-in the `--resources` flag, this flag determines which GPU devices will
+A comma-separated list of Nvidia GPU devices. When <code>gpus</code> is specified
+in the <code>--resources</code> flag, this flag determines which GPU devices will
 be made available. The devices should be listed as numbers that
 correspond to Nvidia's NVML device enumeration (as seen by running the
-command `nvidia-smi` on an Nvidia GPU equipped system). The GPUs
-listed will only be isolated if the `--isolation` flag contains the
-string `gpu/nvidia`.
+command <code>nvidia-smi</code> on an Nvidia GPU equipped system). The GPUs
+listed will only be isolated if the <code>--isolation</code> flag contains the
+string <code>gpu/nvidia</code>.
   </td>
 </tr>
 <tr>
@@ -2176,6 +2281,23 @@ quotas for container sandbox directories. Valid project IDs range from
       this port will not actually be bound (the local LIBPROCESS_PORT
       will be), so redirection to the local IP and port must be
       provided separately.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      LIBPROCESS_REQUIRE_PEER_ADDRESS_IP_MATCH
+    </td>
+    <td>
+      If set, the IP address portion of the libprocess UPID in
+      incoming messages is required to match the IP address
+      of the socket from which the message was sent. This can be a
+      security enhancement since it prevents unauthorized senders
+      impersonating other libprocess actors. This check may
+      break configurations that require setting LIBPROCESS_IP,
+      or LIBPROCESS_ADVERTISE_IP. Additionally, multi-homed
+      configurations may be affected since the address on
+      which libprocess is listening may not match the address from
+      which libprocess connects to other actors.
     </td>
   </tr>
   <tr>

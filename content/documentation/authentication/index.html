@@ -146,8 +146,8 @@ passwords.</p>
 <p>Principals are used primarily for authentication and
 <a href="/documentation/latest/./authorization/">authorization</a>; note that a principal is different from a
 framework&rsquo;s <em>user</em>, which is the operating system account used by the agent to
-run executors, and a framework&rsquo;s <em><a href="/documentation/latest/./roles/">role</a></em>, which is used to determine
-which resources a framework can use.</p>
+run executors, and the framework&rsquo;s <em><a href="/documentation/latest/./roles/">roles</a></em>, which are used to
+determine which resources a framework can use.</p>
 
 <h2>Configuration</h2>
 
@@ -202,7 +202,13 @@ the state of the agent.</p></li>
 to make HTTP requests to the read-write HTTP endpoints that support
 authentication. If <code>false</code> (the default), these endpoints can be used without
 authentication. Read-write endpoints are those which can be used to modify the
-state of the agent.</p></li>
+state of the agent. Note that for backward compatibility reasons, the V1
+executor API is not affected by this flag.</p></li>
+<li><p><code>--[no-]authenticate_http_executors</code> - If <code>true</code>, authentication is required
+to make HTTP requests to the V1 executor API. If <code>false</code> (the default), that
+API can be used without authentication. If this flag is <code>true</code> and custom
+HTTP authenticators are not specified, then the default <code>JWT</code> authenticator is
+loaded to handle executor authentication.</p></li>
 <li><p><code>--http_authenticators</code> - Specifies which HTTP authenticator module to use.
 The default is <code>basic</code>, but additional modules can be added using the
 <code>--modules</code> option.</p></li>
@@ -210,6 +216,60 @@ The default is <code>basic</code>, but additional modules can be added using the
 format) of accepted credentials.  This may be optional depending on the
 authenticator being used.</p></li>
 </ul>
+
+
+<h3>Multiple HTTP Authenticators</h3>
+
+<p>Multiple HTTP authenticators may be loaded into the Mesos master and agent. In
+order to load multiple authenticators, specify them as a comma-separated list
+using the <code>--http_authenticators</code> flag. The authenticators will be called
+serially, and the result of the first successful authentication attempt will be
+returned.</p>
+
+<p>If you wish to specify the default basic HTTP authenticator in addition to
+custom authenticator modules, add the name <code>basic</code> to your authenticator list.
+To specify the default JWT HTTP authenticator in addition to custom
+authenticator modules, add the name <code>jwt</code> to your authenticator list.</p>
+
+<h3>Executor</h3>
+
+<p>If HTTP executor authentication is enabled on the agent, then all requests from
+HTTP executors must be authenticated. This includes the default executor, HTTP
+command executors, and custom HTTP executors. By default, the agent&rsquo;s JSON web
+token (JWT) HTTP authenticator is loaded to handle executor authentication on
+both the executor and operator API endpoints. Note that command and custom
+executors not using the HTTP API will remain unauthenticated.</p>
+
+<p>When a secret key is loaded via the <code>--executor_secret_key</code> flag, the agent will
+generate a default JWT for each executor before it is launched. This token is
+passed into the executor&rsquo;s environment via the
+<code>MESOS_EXECUTOR_AUTHENTICATION_TOKEN</code> environment variable. In order to
+authenticate with the agent, the executor should place this token into the
+<code>Authorization</code> header of all its requests as follows:</p>
+
+<pre><code>    Authorization: Bearer MESOS_EXECUTOR_AUTHENTICATION_TOKEN
+</code></pre>
+
+<p>In order to upgrade an existing cluster to require executor authentication, the
+following procedure should be followed:</p>
+
+<ol>
+<li><p>Upgrade all agents, and provide each agent with a cryptographic key via the
+<code>--executor_secret_key</code> flag. This key will be used to sign executor
+authentication tokens using the HMAC-SHA256 procedure.</p></li>
+<li><p>Before executor authentication can be enabled successfully, all HTTP
+executors must have executor authentication tokens in their environment and
+support authentication. To accomplish this, executors which were already
+running before the upgrade must be restarted. This could either be done all
+at once, or the cluster may be left in this intermediate state while
+executors gradually turn over.</p></li>
+<li><p>Once all running default/HTTP command executors have been launched by
+upgraded agents, and any custom HTTP executors have been upgraded, the agent
+processes can be restarted with the <code>--authenticate_http_executors</code> flag set.
+This will enable required HTTP executor authentication, and since all
+executors now have authentication tokens and support authentication, their
+requests to the agent will authenticate successfully.</p></li>
+</ol>
 
 
 <h3>Framework</h3>

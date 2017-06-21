@@ -349,12 +349,21 @@ of the Docker image.</p>
 <p>If the <code>--switch_user</code> flag is set on the agent and the framework
 specifies a user (either <code>CommandInfo.user</code> or <code>FrameworkInfo.user</code>),
 we expect that user exists in the container image and its uid and gids
-matches that on the host. User namespace and capabilities are not
-supported yet.</p>
+matches that on the host. User namespace is not supported yet. If the
+user is not specified, <code>root</code> will be used by default. The operator or
+the framework can limit the
+<a href="http://man7.org/linux/man-pages/man7/capabilities.7.html">capabilities</a>
+of the container by using the
+<a href="/documentation/latest/./linux_capabilities/">linux/capabilities</a> isolator.</p>
 
-<p>Only host network is supported. We will add bridge network support
-soon using CNI support in Mesos
-(<a href="https://issues.apache.org/jira/browse/MESOS-4641">MESOS-4641</a>).</p>
+<p>Currently, we support <code>host</code>, <code>bridge</code> and user defined networks
+(<a href="https://docs.docker.com/engine/userguide/networking/">reference</a>).
+<code>none</code> is not supported yet. We support the above networking modes in
+<a href="/documentation/latest/./mesos-containerizer/">Mesos Containerizer</a> using the
+<a href="https://github.com/containernetworking/cni">CNI</a> (Container Network
+Interface) standard. Please refer to the <a href="/documentation/latest/./cni/">network/cni</a>
+isolator document for more details about how to configure the network
+for the container.</p>
 
 <h3>More agent flags</h3>
 
@@ -418,7 +427,7 @@ using the following logic table:</p>
 </code></pre>
 
 <p>The provisioner backend can be specified through the agent flag
-<code>--provisioner_image_backend</code>. If not set, Mesos will select the best
+<code>--image_provisioner_backend</code>. If not set, Mesos will select the best
 backend automatically for the users/operators. The selection logic is
 as following:</p>
 

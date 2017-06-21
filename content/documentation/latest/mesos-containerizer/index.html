@@ -197,18 +197,19 @@ minute. The default interval is 15 seconds.</p>
 
 <h3>XFS Disk Isolator</h3>
 
-<p>The XFS Disk isolator uses XFS project quotas to track the disk
-space used by each container sandbox and to enforce the corresponding
-disk space allocation. Write operations performed by tasks exceeding
-their disk allocation will fail with an <code>EDQUOT</code> error. The task
-will not be terminated by the containerizer.</p>
-
-<p>The XFS disk isolator is functionally similar to Posix Disk isolator
-but avoids the cost of repeatedly running the <code>du</code>.  Though they will
-not interfere with each other, it is not recommended to use them together.</p>
+<p>The XFS Disk isolator uses XFS project quotas to track the disk space
+used by each container sandbox and to enforce the corresponding disk
+space allocation. When quota enforcement is enabled, write operations
+performed by tasks exceeding their disk allocation will fail with an
+<code>EDQUOT</code> error. The task will not be terminated by the containerizer.</p>
 
 <p>To enable the XFS Disk isolator, append <code>disk/xfs</code> to the <code>--isolation</code>
 flag when starting the agent.</p>
+
+<p>The XFS Disk isolator supports the <code>--enforce_container_disk_quota</code> flag.
+If enforcement is enabled, the isolator will set both the hard and soft
+quota limit. Otherwise, no limits will be set, Disk usage accounting
+will be performed but the task will be allowed to exceed its allocation.</p>
 
 <p>The XFS Disk isolator requires the sandbox directory to be located
 on an XFS filesystem that is mounted with the <code>pquota</code> option. There
@@ -218,15 +219,11 @@ or <a href="http://man7.org/linux/man-pages/man5/projid.5.html">projid</a>
 files. The range of project IDs given to the <code>--xfs_project_range</code>
 must not overlap any project IDs allocated for other uses.</p>
 
-<p>The XFS disk isolator does not natively support an accounting-only mode
-like that of the Posix Disk isolator. Quota enforcement can be disabled
-by mounting the filesystem with the <code>pqnoenforce</code> mount option.</p>
-
 <p>The <a href="http://man7.org/linux/man-pages/man8/xfs_quota.8.html">xfs_quota</a>
 command can be used to show the current allocation of project IDs
 and quota. For example:</p>
 
-<pre><code>$ xfs_quota -x -c "report -a -n -L 5000 -U 1000"
+<pre><code>$ xfs_quota -x -c "report -a -n -L 5000 -U 10000"
 </code></pre>
 
 <p>To show which project a file belongs to, use the
@@ -236,9 +233,8 @@ to display the <code>fsxattr.projid</code> field. For example:</p>
 <pre><code>$ xfs_io -r -c stat /mnt/mesos/
 </code></pre>
 
-<p>Note that the Posix Disk isolator flags <code>--enforce_container_disk_quota</code>,
-<code>--container_disk_watch_interval</code> and <code>--enforce_container_disk_quota</code> do
-not apply to the XFS Disk isolator.</p>
+<p>Note that the Posix Disk isolator <code>--container_disk_watch_interval</code>
+does not apply to the XFS Disk isolator.</p>
 
 <h3>Docker Runtime Isolator</h3>
 

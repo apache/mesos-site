@@ -101,6 +101,7 @@
 <code>#include &quot;<a class="el" href="src_2slave_2containerizer_2containerizer_8hpp_source.html">slave/containerizer/containerizer.hpp</a>&quot;</code><br/>
 <code>#include &quot;<a class="el" href="src_2slave_2flags_8hpp_source.html">slave/flags.hpp</a>&quot;</code><br/>
 <code>#include &quot;<a class="el" href="src_2slave_2gc_8hpp_source.html">slave/gc.hpp</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="src_2slave_2http_8hpp_source.html">slave/http.hpp</a>&quot;</code><br/>
 <code>#include &quot;<a class="el" href="src_2slave_2metrics_8hpp_source.html">slave/metrics.hpp</a>&quot;</code><br/>
 <code>#include &quot;<a class="el" href="paths_8hpp_source.html">slave/paths.hpp</a>&quot;</code><br/>
 <code>#include &quot;<a class="el" href="src_2slave_2state_8hpp_source.html">slave/state.hpp</a>&quot;</code><br/>
@@ -115,9 +116,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmesos_1_1internal_1_1slave_1_1HttpConnection.html">mesos::internal::slave::HttpConnection</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmesos_1_1internal_1_1slave_1_1Executor.html">mesos::internal::slave::Executor</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1slave_1_1Executor.html">mesos::internal::slave::Executor</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmesos_1_1internal_1_1slave_1_1Framework.html">mesos::internal::slave::Framework</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1slave_1_1Framework.html">mesos::internal::slave::Framework</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
@@ -134,19 +135,15 @@ Functions</h2></td></tr>
 <tr class="memitem:a48a59f25d5b99e3c3e9bc9437ba42d6c"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1internal_1_1slave.html#a48a59f25d5b99e3c3e9bc9437ba42d6c">mesos::internal::slave::operator&lt;&lt;</a> (std::ostream &amp;stream, const Executor &amp;executor)</td></tr>
 <tr class="separator:a48a59f25d5b99e3c3e9bc9437ba42d6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a300cf38a0e34b0dded9297699aad4cd7"><td class="memItemLeft" align="right" valign="top">std::map&lt; std::string, <br class="typebreak"/>
-std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1internal_1_1slave.html#a300cf38a0e34b0dded9297699aad4cd7">mesos::internal::slave::executorEnvironment</a> (const Flags &amp;flags, const ExecutorInfo &amp;executorInfo, const std::string &amp;directory, const SlaveID &amp;slaveId, const <a class="el" href="structprocess_1_1PID.html">process::PID</a>&lt; Slave &gt; &amp;slavePid, const <a class="el" href="classOption.html">Option</a>&lt; Secret &gt; &amp;authenticationToken, bool checkpoint)</td></tr>
+std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1internal_1_1slave.html#a300cf38a0e34b0dded9297699aad4cd7">mesos::internal::slave::executorEnvironment</a> (const Flags &amp;<a class="el" href="decoder_8hpp.html#abb0829cce9dd20a40ae0d86890ae85c6">flags</a>, const ExecutorInfo &amp;executorInfo, const std::string &amp;directory, const SlaveID &amp;slaveId, const <a class="el" href="structprocess_1_1PID.html">process::PID</a>&lt; Slave &gt; &amp;slavePid, const <a class="el" href="classOption.html">Option</a>&lt; Secret &gt; &amp;authenticationToken, bool checkpoint)</td></tr>
 <tr class="memdesc:a300cf38a0e34b0dded9297699aad4cd7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a map of environment variables necessary in order to launch an executor.  <a href="#a300cf38a0e34b0dded9297699aad4cd7">More...</a><br/></td></tr>
 <tr class="separator:a300cf38a0e34b0dded9297699aad4cd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa17bd5c6396d3fc8cbfe1579affbcbae"><td class="memItemLeft" align="right" valign="top">CommandInfo&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1internal_1_1slave.html#aa17bd5c6396d3fc8cbfe1579affbcbae">mesos::internal::slave::defaultExecutorCommandInfo</a> (const std::string &amp;launcherDir, const <a class="el" href="classOption.html">Option</a>&lt; std::string &gt; &amp;user)</td></tr>
-<tr class="separator:aa17bd5c6396d3fc8cbfe1579affbcbae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a591b9aa2ef19239263841988faa27fc4"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1internal_1_1slave.html#a591b9aa2ef19239263841988faa27fc4">mesos::internal::slave::operator&lt;&lt;</a> (std::ostream &amp;stream, Slave::State state)</td></tr>
-<tr class="separator:a591b9aa2ef19239263841988faa27fc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adfd49b5ab14a65efd8770853f16a7786"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1internal_1_1slave.html#adfd49b5ab14a65efd8770853f16a7786">mesos::internal::slave::operator&lt;&lt;</a> (std::ostream &amp;stream, Framework::State state)</td></tr>
-<tr class="separator:adfd49b5ab14a65efd8770853f16a7786"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa38e22680e702e7e739a7ddf4d26ef99"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1internal_1_1slave.html#aa38e22680e702e7e739a7ddf4d26ef99">mesos::internal::slave::operator&lt;&lt;</a> (std::ostream &amp;stream, Executor::State state)</td></tr>
 <tr class="separator:aa38e22680e702e7e739a7ddf4d26ef99"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a63bad54d8050536e0ccb7dce7072ef10"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1internal_1_1slave.html#a63bad54d8050536e0ccb7dce7072ef10">mesos::internal::slave::taskOrTaskGroup</a> (const <a class="el" href="classOption.html">Option</a>&lt; TaskInfo &gt; &amp;task, const <a class="el" href="classOption.html">Option</a>&lt; TaskGroupInfo &gt; &amp;taskGroup)</td></tr>
-<tr class="separator:a63bad54d8050536e0ccb7dce7072ef10"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adfd49b5ab14a65efd8770853f16a7786"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1internal_1_1slave.html#adfd49b5ab14a65efd8770853f16a7786">mesos::internal::slave::operator&lt;&lt;</a> (std::ostream &amp;stream, Framework::State state)</td></tr>
+<tr class="separator:adfd49b5ab14a65efd8770853f16a7786"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a591b9aa2ef19239263841988faa27fc4"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1internal_1_1slave.html#a591b9aa2ef19239263841988faa27fc4">mesos::internal::slave::operator&lt;&lt;</a> (std::ostream &amp;stream, Slave::State state)</td></tr>
+<tr class="separator:a591b9aa2ef19239263841988faa27fc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->

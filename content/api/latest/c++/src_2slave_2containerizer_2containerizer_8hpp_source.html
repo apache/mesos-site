@@ -76,192 +76,179 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="include_2mesos_2mesos_8hpp.html">mesos/mesos.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="resources_8hpp.html">mesos/resources.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="include_2mesos_2slave_2containerizer_8hpp.html">mesos/slave/containerizer.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="resolver_8hpp.html">mesos/secret/resolver.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="future_8hpp.html">process/future.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="3rdparty_2libprocess_2include_2process_2http_8hpp.html">process/http.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="owned_8hpp.html">process/owned.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="libprocess_2include_2process_2process_8hpp.html">process/process.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="duration_8hpp.html">stout/duration.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="hashset_8hpp.html">stout/hashset.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="option_8hpp.html">stout/option.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="try_8hpp.html">stout/try.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="src_2slave_2containerizer_2fetcher_8hpp.html">slave/containerizer/fetcher.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="include_2mesos_2slave_2containerizer_8hpp.html">mesos/slave/containerizer.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="future_8hpp.html">process/future.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="3rdparty_2libprocess_2include_2process_2http_8hpp.html">process/http.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="owned_8hpp.html">process/owned.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="libprocess_2include_2process_2process_8hpp.html">process/process.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="duration_8hpp.html">stout/duration.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="hashset_8hpp.html">stout/hashset.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="option_8hpp.html">stout/option.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="try_8hpp.html">stout/try.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keyword">namespace </span>mesos {</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keyword">namespace </span>internal {</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keyword">namespace </span>slave {</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">// Forward declaration.</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keyword">class </span>Slave;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keyword">class </span>Flags;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
-<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="namespacemesos_1_1internal_1_1slave_1_1state.html">   47</a></span>&#160;<span class="keyword">namespace </span>state {</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">// Forward declaration.</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keyword">struct </span><a class="code" href="structmesos_1_1internal_1_1slave_1_1state_1_1SlaveState.html">SlaveState</a>;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;} <span class="comment">// namespace state {</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment">// An abstraction of a Containerizer that will contain an executor and</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">// its tasks.</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html">   55</a></span>&#160;<span class="keyword">class </span><a class="code" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html">Containerizer</a></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;{</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="comment">// Attempts to create a containerizer as specified by &#39;isolation&#39; in</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <span class="comment">// flags.</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="keyword">static</span> <a class="code" href="classTry.html">Try&lt;Containerizer*&gt;</a> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a35fbb45a7dc615380d30ba79585d6dc8">create</a>(</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;      <span class="keyword">const</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Flags.html">Flags</a>&amp; <a class="code" href="namespacemesos_1_1internal_1_1tests.html#af8289f648a916c3f66923867452c7b1b">flags</a>,</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;      <span class="keywordtype">bool</span> local,</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;      <a class="code" href="classmesos_1_1internal_1_1slave_1_1Fetcher.html">Fetcher</a>* fetcher);</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="comment">// Determine slave resources from flags, probing the system or</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <span class="comment">// querying a delegate.</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <span class="comment">// TODO(idownes): Consider making this non-static and moving to</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="comment">// containerizer implementations to enable a containerizer to best</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="comment">// determine the resources, particularly if containerizeration is</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="comment">// delegated.</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="keyword">static</span> <a class="code" href="classTry.html">Try&lt;Resources&gt;</a> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#acde902a94e389c2ef64b4fe78bb039a3">resources</a>(<span class="keyword">const</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Flags.html">Flags</a>&amp; flags);</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a3e3987673fd56c473973a8c1bfea9ab1">   73</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a3e3987673fd56c473973a8c1bfea9ab1">~Containerizer</a>() {}</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="comment">// Recover all containerized executors specified in state. Any</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="comment">// containerized executors present on the system but not included in</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="comment">// state (or state is None) will be terminated and cleaned up.</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;Nothing&gt;</a> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#afb384accdd6d431e1882cd861de3212d">recover</a>(</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;      <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;state::SlaveState&gt;</a>&amp; state) = 0;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="comment">// Launch a containerized task/executor. Returns true if launching</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <span class="comment">// this TaskInfo/ExecutorInfo is supported and it has been launched,</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="comment">// otherwise false or a failure if something went wrong.</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;bool&gt;</a> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a4f9a918e704fbace67bdeb9047ac24a6">launch</a>(</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;      <span class="keyword">const</span> ContainerID&amp; containerId,</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;      <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;TaskInfo&gt;</a>&amp; taskInfo,</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;      <span class="keyword">const</span> ExecutorInfo&amp; executorInfo,</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;      <span class="keyword">const</span> std::string&amp; directory,</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;      <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;std::string&gt;</a>&amp; <a class="code" href="namespaceos.html#a698aa27e5ea6b1dc1c190b978c2f7960">user</a>,</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;      <span class="keyword">const</span> SlaveID&amp; slaveId,</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;      <span class="keyword">const</span> std::map&lt;std::string, std::string&gt;&amp; <a class="code" href="namespacemesos_1_1internal_1_1tests.html#a1396c5e3b0a179220de2792d74770ec2">environment</a>,</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;      <span class="keywordtype">bool</span> <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1state_1_1internal.html#a749d698dcb6786428fa589b72cee6467">checkpoint</a>) = 0;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  <span class="comment">// Launch a nested container.</span></div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  <span class="comment">// TODO(jieyu): Consider combining with the &#39;launch&#39; above.</span></div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  <span class="comment">//</span></div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  <span class="comment">// TODO(gilbert): Remove the &#39;slaveId&#39; once the fetcher does</span></div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  <span class="comment">// not rely on SlaveID.</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a8a0f0b50243587499e94495a02777159">   99</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;bool&gt;</a> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a8a0f0b50243587499e94495a02777159">launch</a>(</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;      <span class="keyword">const</span> ContainerID&amp; containerId,</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;      <span class="keyword">const</span> CommandInfo&amp; commandInfo,</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;      <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;ContainerInfo&gt;</a>&amp; containerInfo,</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;      <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;std::string&gt;</a>&amp; <a class="code" href="namespaceos.html#a698aa27e5ea6b1dc1c190b978c2f7960">user</a>,</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;      <span class="keyword">const</span> SlaveID&amp; slaveId,</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;      <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;mesos::slave::ContainerClass&gt;</a>&amp; containerClass = <a class="code" href="structNone.html">None</a>())</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  {</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="structprocess_1_1Failure.html">process::Failure</a>(<span class="stringliteral">&quot;Unsupported&quot;</span>);</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  }</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  <span class="comment">// Create an HTTP connection that can be used to &quot;attach&quot; (i.e.,</span></div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  <span class="comment">// stream input to or stream output from) a container.</span></div>
-<div class="line"><a name="l00112"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a2b3b394a0928d213a32bd02face608b7">  112</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;process::http::Connection&gt;</a> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a2b3b394a0928d213a32bd02face608b7">attach</a>(</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;      <span class="keyword">const</span> ContainerID&amp; containerId)</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;  {</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="structprocess_1_1Failure.html">process::Failure</a>(<span class="stringliteral">&quot;Unsupported&quot;</span>);</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;  }</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  <span class="comment">// Update the resources for a container.</span></div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;Nothing&gt;</a> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a11ed2cb6c50a4d26c40eaf4e203ce728">update</a>(</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;      <span class="keyword">const</span> ContainerID&amp; containerId,</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;      <span class="keyword">const</span> <a class="code" href="classmesos_1_1Resources.html">Resources</a>&amp; resources) = 0;</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;  <span class="comment">// Get resource usage statistics on the container.</span></div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;ResourceStatistics&gt;</a> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a16acaf5e8129bb470694c842cf5d79bd">usage</a>(</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;      <span class="keyword">const</span> ContainerID&amp; containerId) = 0;</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;  <span class="comment">// Retrieve the run-time state of various isolator properties</span></div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;  <span class="comment">// associated with the container. Unlike other methods in this class</span></div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;  <span class="comment">// we are not making this pure virtual, since a `Containerizer`</span></div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;  <span class="comment">// doesn&#39;t necessarily need to return the status of a container.</span></div>
-<div class="line"><a name="l00131"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a41ab321c7dd4a940fce865953621881f">  131</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;ContainerStatus&gt;</a> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a41ab321c7dd4a940fce865953621881f">status</a>(</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;      <span class="keyword">const</span> ContainerID &amp;containerId)</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;  {</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    <span class="keywordflow">return</span> ContainerStatus();</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;  }</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;  <span class="comment">// Wait on the &#39;ContainerTermination&#39;. If the executor terminates,</span></div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;  <span class="comment">// the containerizer should also destroy the containerized context.</span></div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;  <span class="comment">// Returns None if the container cannot be found.</span></div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;  <span class="comment">// The future may be failed if an error occurs during termination of</span></div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;  <span class="comment">// the executor or destruction of the container.</span></div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;Option&lt;mesos::slave::ContainerTermination&gt;</a>&gt; <a class="code" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a688a58965f318010cd3d1e01230b955c">wait</a>(</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;      <span class="keyword">const</span> ContainerID&amp; containerId) = 0;</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;  <span class="comment">// Destroy a running container, killing all processes and releasing</span></div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;  <span class="comment">// all resources. Returns false when the container cannot be found,</span></div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;  <span class="comment">// or a failure if something went wrong.</span></div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;  <span class="comment">//</span></div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;  <span class="comment">// NOTE: You cannot wait() on containers that have been destroyed,</span></div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;  <span class="comment">// so you should always call wait() before destroy().</span></div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;bool&gt;</a> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a3167c607a5e95b4619ebcc8361174712">destroy</a>(<span class="keyword">const</span> ContainerID&amp; containerId) = 0;</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;hashset&lt;ContainerID&gt;</a>&gt; <a class="code" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#af0da001473e339d2e35d40f5ee1a32d4">containers</a>() = 0;</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;  <span class="comment">// Remove a nested container, including its sandbox and runtime directories.</span></div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;  <span class="comment">//</span></div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;  <span class="comment">// NOTE: You can only remove a a nested container that has been fully</span></div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;  <span class="comment">// destroyed and whose parent has not been destroyed yet. If the parent has</span></div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;  <span class="comment">// already been destroyed, then the sandbox and runtime directories will be</span></div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;  <span class="comment">// eventually garbage collected. The caller is responsible for ensuring that</span></div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;  <span class="comment">// `containerId` belongs to a nested container.</span></div>
-<div class="line"><a name="l00162"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#af62e593d744b6fe45dff965aa6a6f69b">  162</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;Nothing&gt;</a> <span class="keyword">remove</span>(<span class="keyword">const</span> ContainerID&amp; containerId)</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;  {</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="structprocess_1_1Failure.html">process::Failure</a>(<span class="stringliteral">&quot;Unsupported&quot;</span>);</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;  }</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;};</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;} <span class="comment">// namespace slave {</span></div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;} <span class="comment">// namespace internal {</span></div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;} <span class="comment">// namespace mesos {</span></div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;<span class="preprocessor">#endif // __CONTAINERIZER_HPP__</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="src_2slave_2containerizer_2fetcher_8hpp.html">slave/containerizer/fetcher.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keyword">namespace </span>mesos {</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">namespace </span>internal {</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword">namespace </span>slave {</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">// Forward declaration.</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">class </span>Slave;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keyword">class </span>Flags;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="namespacemesos_1_1internal_1_1slave_1_1state.html">   49</a></span>&#160;<span class="keyword">namespace </span>state {</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">// Forward declaration.</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword">struct </span><a class="code" href="structmesos_1_1internal_1_1slave_1_1state_1_1SlaveState.html">SlaveState</a>;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;} <span class="comment">// namespace state {</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">// An abstraction of a Containerizer that will contain an executor and</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment">// its tasks.</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html">   57</a></span>&#160;<span class="keyword">class </span><a class="code" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html">Containerizer</a></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;{</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="comment">// Attempts to create a containerizer as specified by &#39;isolation&#39; in</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="comment">// flags.</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keyword">static</span> <a class="code" href="classTry.html">Try&lt;Containerizer*&gt;</a> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a3473584d632ab3bab0fec7c0fc765554">create</a>(</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;      <span class="keyword">const</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Flags.html">Flags</a>&amp; <a class="code" href="decoder_8hpp.html#abb0829cce9dd20a40ae0d86890ae85c6">flags</a>,</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;      <span class="keywordtype">bool</span> local,</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;      <a class="code" href="classmesos_1_1internal_1_1slave_1_1Fetcher.html">Fetcher</a>* fetcher,</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;      <a class="code" href="classmesos_1_1SecretResolver.html">SecretResolver</a>* secretResolver = <span class="keyword">nullptr</span>);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="comment">// Determine slave resources from flags, probing the system or</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="comment">// querying a delegate.</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="comment">// TODO(idownes): Consider making this non-static and moving to</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="comment">// containerizer implementations to enable a containerizer to best</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="comment">// determine the resources, particularly if containerizeration is</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="comment">// delegated.</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="keyword">static</span> <a class="code" href="classTry.html">Try&lt;Resources&gt;</a> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#acde902a94e389c2ef64b4fe78bb039a3">resources</a>(<span class="keyword">const</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Flags.html">Flags</a>&amp; flags);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
+<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a3e3987673fd56c473973a8c1bfea9ab1">   76</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a3e3987673fd56c473973a8c1bfea9ab1">~Containerizer</a>() {}</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="comment">// Recover all containerized executors specified in state. Any</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="comment">// containerized executors present on the system but not included in</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <span class="comment">// state (or state is None) will be terminated and cleaned up.</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;Nothing&gt;</a> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#afb384accdd6d431e1882cd861de3212d">recover</a>(</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;      <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;state::SlaveState&gt;</a>&amp; state) = 0;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <span class="comment">// Launch a container with the specified ContainerConfig.</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  <span class="comment">//</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  <span class="comment">// If the ContainerID has a parent, this will attempt to launch</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <span class="comment">// a nested container.</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  <span class="comment">// NOTE: For nested containers, the required `directory` field of</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <span class="comment">// the ContainerConfig will be determined by the containerizer.</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  <span class="comment">//</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  <span class="comment">// Returns true if launching this container is supported and it has</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  <span class="comment">// been launched, otherwise false or a failure if something went wrong.</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;bool&gt;</a> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a0f8b2095ca04f1834c5d7be77820d081">launch</a>(</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;      <span class="keyword">const</span> ContainerID&amp; containerId,</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;      <span class="keyword">const</span> mesos::slave::ContainerConfig&amp; containerConfig,</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;      <span class="keyword">const</span> std::map&lt;std::string, std::string&gt;&amp; <a class="code" href="namespacemesos_1_1internal_1_1tests.html#a1396c5e3b0a179220de2792d74770ec2">environment</a>,</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;      <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;std::string&gt;</a>&amp; pidCheckpointPath) = 0;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  <span class="comment">// Create an HTTP connection that can be used to &quot;attach&quot; (i.e.,</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  <span class="comment">// stream input to or stream output from) a container.</span></div>
+<div class="line"><a name="l00101"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a2b3b394a0928d213a32bd02face608b7">  101</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;process::http::Connection&gt;</a> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a2b3b394a0928d213a32bd02face608b7">attach</a>(</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;      <span class="keyword">const</span> ContainerID&amp; containerId)</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  {</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="structprocess_1_1Failure.html">process::Failure</a>(<span class="stringliteral">&quot;Unsupported&quot;</span>);</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  }</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;  <span class="comment">// Update the resources for a container.</span></div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;Nothing&gt;</a> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a11ed2cb6c50a4d26c40eaf4e203ce728">update</a>(</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;      <span class="keyword">const</span> ContainerID&amp; containerId,</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;      <span class="keyword">const</span> <a class="code" href="classmesos_1_1Resources.html">Resources</a>&amp; resources) = 0;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;  <span class="comment">// Get resource usage statistics on the container.</span></div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;ResourceStatistics&gt;</a> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a16acaf5e8129bb470694c842cf5d79bd">usage</a>(</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;      <span class="keyword">const</span> ContainerID&amp; containerId) = 0;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;  <span class="comment">// Retrieve the run-time state of various isolator properties</span></div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;  <span class="comment">// associated with the container. Unlike other methods in this class</span></div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  <span class="comment">// we are not making this pure virtual, since a `Containerizer`</span></div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;  <span class="comment">// doesn&#39;t necessarily need to return the status of a container.</span></div>
+<div class="line"><a name="l00120"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a41ab321c7dd4a940fce865953621881f">  120</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;ContainerStatus&gt;</a> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a41ab321c7dd4a940fce865953621881f">status</a>(</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;      <span class="keyword">const</span> ContainerID &amp;containerId)</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;  {</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    <span class="keywordflow">return</span> ContainerStatus();</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;  }</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;  <span class="comment">// Wait on the &#39;ContainerTermination&#39;. If the executor terminates,</span></div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;  <span class="comment">// the containerizer should also destroy the containerized context.</span></div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;  <span class="comment">// Returns None if the container cannot be found.</span></div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;  <span class="comment">// The future may be failed if an error occurs during termination of</span></div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;  <span class="comment">// the executor or destruction of the container.</span></div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;Option&lt;mesos::slave::ContainerTermination&gt;</a>&gt; <a class="code" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a688a58965f318010cd3d1e01230b955c">wait</a>(</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;      <span class="keyword">const</span> ContainerID&amp; containerId) = 0;</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;  <span class="comment">// Destroy a running container, killing all processes and releasing</span></div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;  <span class="comment">// all resources. Returns false when the container cannot be found,</span></div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;  <span class="comment">// or a failure if something went wrong.</span></div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;  <span class="comment">//</span></div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;  <span class="comment">// NOTE: You cannot wait() on containers that have been destroyed,</span></div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;  <span class="comment">// so you should always call wait() before destroy().</span></div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;bool&gt;</a> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a3167c607a5e95b4619ebcc8361174712">destroy</a>(<span class="keyword">const</span> ContainerID&amp; containerId) = 0;</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;hashset&lt;ContainerID&gt;</a>&gt; <a class="code" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#af0da001473e339d2e35d40f5ee1a32d4">containers</a>() = 0;</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;  <span class="comment">// Remove a nested container, including its sandbox and runtime directories.</span></div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;  <span class="comment">//</span></div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;  <span class="comment">// NOTE: You can only remove a a nested container that has been fully</span></div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;  <span class="comment">// destroyed and whose parent has not been destroyed yet. If the parent has</span></div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;  <span class="comment">// already been destroyed, then the sandbox and runtime directories will be</span></div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;  <span class="comment">// eventually garbage collected. The caller is responsible for ensuring that</span></div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;  <span class="comment">// `containerId` belongs to a nested container.</span></div>
+<div class="line"><a name="l00151"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#af62e593d744b6fe45dff965aa6a6f69b">  151</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;Nothing&gt;</a> <span class="keyword">remove</span>(<span class="keyword">const</span> ContainerID&amp; containerId)</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;  {</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="structprocess_1_1Failure.html">process::Failure</a>(<span class="stringliteral">&quot;Unsupported&quot;</span>);</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;  }</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;};</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;} <span class="comment">// namespace slave {</span></div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;} <span class="comment">// namespace internal {</span></div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;} <span class="comment">// namespace mesos {</span></div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="preprocessor">#endif // __CONTAINERIZER_HPP__</span></div>
 <div class="ttc" id="resources_8hpp_html"><div class="ttname"><a href="resources_8hpp.html">resources.hpp</a></div></div>
+<div class="ttc" id="resolver_8hpp_html"><div class="ttname"><a href="resolver_8hpp.html">resolver.hpp</a></div></div>
 <div class="ttc" id="classOption_html"><div class="ttname"><a href="classOption.html">Option</a></div><div class="ttdef"><b>Definition:</b> option.hpp:24</div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1slave_1_1Fetcher_html"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1Fetcher.html">mesos::internal::slave::Fetcher</a></div><div class="ttdef"><b>Definition:</b> fetcher.hpp:55</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1Containerizer_html_a0f8b2095ca04f1834c5d7be77820d081"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a0f8b2095ca04f1834c5d7be77820d081">mesos::internal::slave::Containerizer::launch</a></div><div class="ttdeci">virtual process::Future&lt; bool &gt; launch(const ContainerID &amp;containerId, const mesos::slave::ContainerConfig &amp;containerConfig, const std::map&lt; std::string, std::string &gt; &amp;environment, const Option&lt; std::string &gt; &amp;pidCheckpointPath)=0</div></div>
 <div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
 <div class="ttc" id="structprocess_1_1Failure_html"><div class="ttname"><a href="structprocess_1_1Failure.html">process::Failure</a></div><div class="ttdef"><b>Definition:</b> future.hpp:546</div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1Containerizer_html_a41ab321c7dd4a940fce865953621881f"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a41ab321c7dd4a940fce865953621881f">mesos::internal::slave::Containerizer::status</a></div><div class="ttdeci">virtual process::Future&lt; ContainerStatus &gt; status(const ContainerID &amp;containerId)</div><div class="ttdef"><b>Definition:</b> containerizer.hpp:131</div></div>
-<div class="ttc" id="namespaceos_html_a698aa27e5ea6b1dc1c190b978c2f7960"><div class="ttname"><a href="namespaceos.html#a698aa27e5ea6b1dc1c190b978c2f7960">os::user</a></div><div class="ttdeci">Result&lt; std::string &gt; user(Option&lt; uid_t &gt; uid=None())</div><div class="ttdef"><b>Definition:</b> su.hpp:277</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1Containerizer_html_a41ab321c7dd4a940fce865953621881f"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a41ab321c7dd4a940fce865953621881f">mesos::internal::slave::Containerizer::status</a></div><div class="ttdeci">virtual process::Future&lt; ContainerStatus &gt; status(const ContainerID &amp;containerId)</div><div class="ttdef"><b>Definition:</b> containerizer.hpp:120</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1Containerizer_html_a3473584d632ab3bab0fec7c0fc765554"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a3473584d632ab3bab0fec7c0fc765554">mesos::internal::slave::Containerizer::create</a></div><div class="ttdeci">static Try&lt; Containerizer * &gt; create(const Flags &amp;flags, bool local, Fetcher *fetcher, SecretResolver *secretResolver=nullptr)</div></div>
 <div class="ttc" id="include_2mesos_2mesos_8hpp_html"><div class="ttname"><a href="include_2mesos_2mesos_8hpp.html">mesos.hpp</a></div></div>
 <div class="ttc" id="structmesos_1_1internal_1_1slave_1_1state_1_1SlaveState_html"><div class="ttname"><a href="structmesos_1_1internal_1_1slave_1_1state_1_1SlaveState.html">mesos::internal::slave::state::SlaveState</a></div><div class="ttdef"><b>Definition:</b> state.hpp:286</div></div>
 <div class="ttc" id="classmesos_1_1Resources_html"><div class="ttname"><a href="classmesos_1_1Resources.html">mesos::Resources</a></div><div class="ttdef"><b>Definition:</b> resources.hpp:63</div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1Containerizer_html_a4f9a918e704fbace67bdeb9047ac24a6"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a4f9a918e704fbace67bdeb9047ac24a6">mesos::internal::slave::Containerizer::launch</a></div><div class="ttdeci">virtual process::Future&lt; bool &gt; launch(const ContainerID &amp;containerId, const Option&lt; TaskInfo &gt; &amp;taskInfo, const ExecutorInfo &amp;executorInfo, const std::string &amp;directory, const Option&lt; std::string &gt; &amp;user, const SlaveID &amp;slaveId, const std::map&lt; std::string, std::string &gt; &amp;environment, bool checkpoint)=0</div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1slave_1_1Containerizer_html_a11ed2cb6c50a4d26c40eaf4e203ce728"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a11ed2cb6c50a4d26c40eaf4e203ce728">mesos::internal::slave::Containerizer::update</a></div><div class="ttdeci">virtual process::Future&lt; Nothing &gt; update(const ContainerID &amp;containerId, const Resources &amp;resources)=0</div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1Flags_html"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1Flags.html">mesos::internal::slave::Flags</a></div><div class="ttdef"><b>Definition:</b> flags.hpp:38</div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1Containerizer_html_a35fbb45a7dc615380d30ba79585d6dc8"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a35fbb45a7dc615380d30ba79585d6dc8">mesos::internal::slave::Containerizer::create</a></div><div class="ttdeci">static Try&lt; Containerizer * &gt; create(const Flags &amp;flags, bool local, Fetcher *fetcher)</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1Flags_html"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1Flags.html">mesos::internal::slave::Flags</a></div><div class="ttdef"><b>Definition:</b> flags.hpp:39</div></div>
 <div class="ttc" id="src_2slave_2containerizer_2fetcher_8hpp_html"><div class="ttname"><a href="src_2slave_2containerizer_2fetcher_8hpp.html">fetcher.hpp</a></div></div>
 <div class="ttc" id="namespacemesos_1_1internal_1_1tests_html_a1396c5e3b0a179220de2792d74770ec2"><div class="ttname"><a href="namespacemesos_1_1internal_1_1tests.html#a1396c5e3b0a179220de2792d74770ec2">mesos::internal::tests::environment</a></div><div class="ttdeci">Environment * environment</div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1slave_1_1Containerizer_html_afb384accdd6d431e1882cd861de3212d"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#afb384accdd6d431e1882cd861de3212d">mesos::internal::slave::Containerizer::recover</a></div><div class="ttdeci">virtual process::Future&lt; Nothing &gt; recover(const Option&lt; state::SlaveState &gt; &amp;state)=0</div></div>
 <div class="ttc" id="duration_8hpp_html"><div class="ttname"><a href="duration_8hpp.html">duration.hpp</a></div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1Containerizer_html"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1Containerizer.html">mesos::internal::slave::Containerizer</a></div><div class="ttdef"><b>Definition:</b> containerizer.hpp:55</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1Containerizer_html"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1Containerizer.html">mesos::internal::slave::Containerizer</a></div><div class="ttdef"><b>Definition:</b> containerizer.hpp:57</div></div>
 <div class="ttc" id="include_2mesos_2slave_2containerizer_8hpp_html"><div class="ttname"><a href="include_2mesos_2slave_2containerizer_8hpp.html">containerizer.hpp</a></div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1Containerizer_html_a2b3b394a0928d213a32bd02face608b7"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a2b3b394a0928d213a32bd02face608b7">mesos::internal::slave::Containerizer::attach</a></div><div class="ttdeci">virtual process::Future&lt; process::http::Connection &gt; attach(const ContainerID &amp;containerId)</div><div class="ttdef"><b>Definition:</b> containerizer.hpp:112</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1Containerizer_html_a2b3b394a0928d213a32bd02face608b7"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a2b3b394a0928d213a32bd02face608b7">mesos::internal::slave::Containerizer::attach</a></div><div class="ttdeci">virtual process::Future&lt; process::http::Connection &gt; attach(const ContainerID &amp;containerId)</div><div class="ttdef"><b>Definition:</b> containerizer.hpp:101</div></div>
 <div class="ttc" id="option_8hpp_html"><div class="ttname"><a href="option_8hpp.html">option.hpp</a></div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1Containerizer_html_a3e3987673fd56c473973a8c1bfea9ab1"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a3e3987673fd56c473973a8c1bfea9ab1">mesos::internal::slave::Containerizer::~Containerizer</a></div><div class="ttdeci">virtual ~Containerizer()</div><div class="ttdef"><b>Definition:</b> containerizer.hpp:73</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1Containerizer_html_a3e3987673fd56c473973a8c1bfea9ab1"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a3e3987673fd56c473973a8c1bfea9ab1">mesos::internal::slave::Containerizer::~Containerizer</a></div><div class="ttdeci">virtual ~Containerizer()</div><div class="ttdef"><b>Definition:</b> containerizer.hpp:76</div></div>
 <div class="ttc" id="future_8hpp_html"><div class="ttname"><a href="future_8hpp.html">future.hpp</a></div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1slave_1_1Containerizer_html_a3167c607a5e95b4619ebcc8361174712"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a3167c607a5e95b4619ebcc8361174712">mesos::internal::slave::Containerizer::destroy</a></div><div class="ttdeci">virtual process::Future&lt; bool &gt; destroy(const ContainerID &amp;containerId)=0</div></div>
-<div class="ttc" id="namespacemesos_1_1internal_1_1slave_1_1state_1_1internal_html_a749d698dcb6786428fa589b72cee6467"><div class="ttname"><a href="namespacemesos_1_1internal_1_1slave_1_1state_1_1internal.html#a749d698dcb6786428fa589b72cee6467">mesos::internal::slave::state::internal::checkpoint</a></div><div class="ttdeci">Try&lt; Nothing &gt; checkpoint(const std::string &amp;path, const std::string &amp;message)</div><div class="ttdef"><b>Definition:</b> state.hpp:77</div></div>
-<div class="ttc" id="structNone_html"><div class="ttname"><a href="structNone.html">None</a></div><div class="ttdef"><b>Definition:</b> none.hpp:27</div></div>
+<div class="ttc" id="decoder_8hpp_html_abb0829cce9dd20a40ae0d86890ae85c6"><div class="ttname"><a href="decoder_8hpp.html#abb0829cce9dd20a40ae0d86890ae85c6">flags</a></div><div class="ttdeci">#define flags</div><div class="ttdef"><b>Definition:</b> decoder.hpp:18</div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1slave_1_1Containerizer_html_af0da001473e339d2e35d40f5ee1a32d4"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#af0da001473e339d2e35d40f5ee1a32d4">mesos::internal::slave::Containerizer::containers</a></div><div class="ttdeci">virtual process::Future&lt; hashset&lt; ContainerID &gt; &gt; containers()=0</div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1slave_1_1Containerizer_html_a16acaf5e8129bb470694c842cf5d79bd"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a16acaf5e8129bb470694c842cf5d79bd">mesos::internal::slave::Containerizer::usage</a></div><div class="ttdeci">virtual process::Future&lt; ResourceStatistics &gt; usage(const ContainerID &amp;containerId)=0</div></div>
 <div class="ttc" id="try_8hpp_html"><div class="ttname"><a href="try_8hpp.html">try.hpp</a></div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1slave_1_1Containerizer_html_acde902a94e389c2ef64b4fe78bb039a3"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#acde902a94e389c2ef64b4fe78bb039a3">mesos::internal::slave::Containerizer::resources</a></div><div class="ttdeci">static Try&lt; Resources &gt; resources(const Flags &amp;flags)</div></div>
 <div class="ttc" id="hashset_8hpp_html"><div class="ttname"><a href="hashset_8hpp.html">hashset.hpp</a></div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1Containerizer_html_a8a0f0b50243587499e94495a02777159"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a8a0f0b50243587499e94495a02777159">mesos::internal::slave::Containerizer::launch</a></div><div class="ttdeci">virtual process::Future&lt; bool &gt; launch(const ContainerID &amp;containerId, const CommandInfo &amp;commandInfo, const Option&lt; ContainerInfo &gt; &amp;containerInfo, const Option&lt; std::string &gt; &amp;user, const SlaveID &amp;slaveId, const Option&lt; mesos::slave::ContainerClass &gt; &amp;containerClass=None())</div><div class="ttdef"><b>Definition:</b> containerizer.hpp:99</div></div>
 <div class="ttc" id="owned_8hpp_html"><div class="ttname"><a href="owned_8hpp.html">owned.hpp</a></div></div>
+<div class="ttc" id="classmesos_1_1SecretResolver_html"><div class="ttname"><a href="classmesos_1_1SecretResolver.html">mesos::SecretResolver</a></div><div class="ttdef"><b>Definition:</b> resolver.hpp:34</div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1slave_1_1Containerizer_html_a688a58965f318010cd3d1e01230b955c"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a688a58965f318010cd3d1e01230b955c">mesos::internal::slave::Containerizer::wait</a></div><div class="ttdeci">virtual process::Future&lt; Option&lt; mesos::slave::ContainerTermination &gt; &gt; wait(const ContainerID &amp;containerId)=0</div></div>
 <div class="ttc" id="3rdparty_2libprocess_2include_2process_2http_8hpp_html"><div class="ttname"><a href="3rdparty_2libprocess_2include_2process_2http_8hpp.html">http.hpp</a></div></div>
 <div class="ttc" id="libprocess_2include_2process_2process_8hpp_html"><div class="ttname"><a href="libprocess_2include_2process_2process_8hpp.html">process.hpp</a></div></div>
-<div class="ttc" id="namespacemesos_1_1internal_1_1tests_html_af8289f648a916c3f66923867452c7b1b"><div class="ttname"><a href="namespacemesos_1_1internal_1_1tests.html#af8289f648a916c3f66923867452c7b1b">mesos::internal::tests::flags</a></div><div class="ttdeci">Flags flags</div></div>
 <div class="ttc" id="classprocess_1_1Future_html"><div class="ttname"><a href="classprocess_1_1Future.html">process::Future&lt; Nothing &gt;</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

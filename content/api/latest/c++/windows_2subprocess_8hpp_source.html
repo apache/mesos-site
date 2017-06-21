@@ -80,61 +80,61 @@
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="hashset_8hpp.html">stout/hashset.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="option_8hpp.html">stout/option.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="os_8hpp.html">stout/os.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="try_8hpp.html">stout/try.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html">stout/windows.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="close_8hpp.html">stout/os/close.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="3rdparty_2stout_2include_2stout_2os_2environment_8hpp.html">stout/os/environment.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;userEnv.h&gt;</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceos.html#ae19e4161a51b86a1f330f3bf1dc75389">process</a> {</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">namespace </span>internal {</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">// Retrieves system environment in a `std::map`, ignoring</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">// the current process&#39;s environment variables.</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="namespaceprocess_1_1internal.html#a3e0b94580a5faaa58408883833e7b3f9">   42</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classOption.html">Option&lt;std::map&lt;std::string, std::string&gt;</a>&gt; <a class="code" href="namespaceprocess_1_1internal.html#a3e0b94580a5faaa58408883833e7b3f9">getSystemEnvironment</a>()</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;{</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  std::wstring_convert&lt;std::codecvt&lt;wchar_t, char, mbstate_t&gt;,</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keywordtype">wchar_t</span>&gt; converter;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  std::map&lt;std::string, std::string&gt; systemEnvironment;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <span class="keywordtype">wchar_t</span>* environmentEntry = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <span class="comment">// Get the system environment.</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <span class="comment">// The third parameter (bool) tells the function *not* to inherit</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <span class="comment">// variables from the current process.</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <span class="keywordflow">if</span> (!CreateEnvironmentBlock((LPVOID*)&amp;environmentEntry, <span class="keyword">nullptr</span>, FALSE)) {</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="structNone.html">None</a>();</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  }</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="comment">// Save the environment block in order to destroy it later.</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="keywordtype">wchar_t</span>* environmentBlock = environmentEntry;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="keywordflow">while</span> (*environmentEntry != L<span class="charliteral">&#39;\0&#39;</span>) {</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="comment">// Each environment block contains the environment variables as follows:</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="comment">// Var1=Value1\0</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="comment">// Var2=Value2\0</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="comment">// Var3=Value3\0</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="comment">// ...</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="comment">// VarN=ValueN\0\0</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="comment">// The name of an environment variable cannot include an equal sign (=).</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordtype">wchar_t</span> * separator = wcschr(environmentEntry, L<span class="charliteral">&#39;=&#39;</span>);</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    std::wstring varName = std::wstring(environmentEntry, separator);</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    std::wstring varVal = std::wstring(separator + 1);</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="comment">// Mesos variables are upper case. Convert system variables to</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="comment">// match the name provided by the scheduler in case of a collision.</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <a class="code" href="namespacemesos_1_1internal_1_1recordio.html#a5fcab68176c462aaeed909f304c91bdf">std::transform</a>(varName.begin(), varName.end(), varName.begin(), ::towupper);</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="comment">// The system environment has priority. Force `ANSI` usage until the code</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="comment">// is converted to UNICODE.</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    systemEnvironment.insert_or_assign(</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;      converter.to_bytes(varName.c_str()),</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;      converter.to_bytes(varVal.c_str()));</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    environmentEntry += varName.length() + varVal.length() + 2;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="shell_8hpp.html">stout/os/shell.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="try_8hpp.html">stout/try.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html">stout/windows.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="close_8hpp.html">stout/os/close.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="3rdparty_2stout_2include_2stout_2os_2environment_8hpp.html">stout/os/environment.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &lt;userEnv.h&gt;</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceos.html#ae19e4161a51b86a1f330f3bf1dc75389">process</a> {</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keyword">namespace </span>internal {</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">// Retrieves system environment in a `std::map`, ignoring</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">// the current process&#39;s environment variables.</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="namespaceprocess_1_1internal.html#a5bbcc26efc27f4ab46261f4d9585ec7e">   43</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classOption.html">Option&lt;std::map&lt;std::wstring, std::wstring&gt;</a>&gt; <a class="code" href="namespaceprocess_1_1internal.html#a5bbcc26efc27f4ab46261f4d9585ec7e">getSystemEnvironment</a>()</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;{</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  std::map&lt;std::wstring, std::wstring&gt; systemEnvironment;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  <span class="keywordtype">wchar_t</span>* environmentEntry = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <span class="comment">// Get the system environment.</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <span class="comment">// The third parameter (bool) tells the function *not* to inherit</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <span class="comment">// variables from the current process.</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <span class="keywordflow">if</span> (!CreateEnvironmentBlock((LPVOID*)&amp;environmentEntry, <span class="keyword">nullptr</span>, FALSE)) {</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="structNone.html">None</a>();</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  }</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <span class="comment">// Save the environment block in order to destroy it later.</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="keywordtype">wchar_t</span>* environmentBlock = environmentEntry;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="keywordflow">while</span> (*environmentEntry != L<span class="charliteral">&#39;\0&#39;</span>) {</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="comment">// Each environment block contains the environment variables as follows:</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="comment">// Var1=Value1\0</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="comment">// Var2=Value2\0</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="comment">// Var3=Value3\0</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="comment">// ...</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="comment">// VarN=ValueN\0\0</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="comment">// The name of an environment variable cannot include an equal sign (=).</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="comment">// Construct a string from the pointer up to the first &#39;\0&#39;,</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="comment">// e.g. &quot;Var1=Value1\0&quot;, then split into name and value.</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    std::wstring entryString(environmentEntry);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    std::wstring::size_type separator = entryString.find(L<span class="stringliteral">&quot;=&quot;</span>);</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    std::wstring varName(entryString.substr(0, separator));</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    std::wstring varVal(entryString.substr(separator + 1));</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="comment">// Mesos variables are upper case. Convert system variables to</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="comment">// match the name provided by the scheduler in case of a collision.</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="comment">// This is safe because Windows environment variables are case insensitive.</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <a class="code" href="namespacemesos_1_1internal_1_1recordio.html#a5fcab68176c462aaeed909f304c91bdf">std::transform</a>(varName.begin(), varName.end(), varName.begin(), ::towupper);</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="comment">// The system environment has priority.</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    systemEnvironment.insert_or_assign(varName.data(), varVal.data());</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="comment">// Advance the pointer the length of the entry string plus the &#39;\0&#39;.</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    environmentEntry += entryString.length() + 1;</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  }</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  DestroyEnvironmentBlock(environmentBlock);</div>
@@ -142,183 +142,193 @@
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  <span class="keywordflow">return</span> systemEnvironment;</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;}</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="comment">// Creates a null-terminated array of null-terminated strings that will be</span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="comment">// passed to `CreateProcess` as the `lpEnvironment` argument, as described by</span></div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="comment">// MSDN[1]. This array needs to be sorted in alphabetical order, but the `map`</span></div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="comment">// already takes care of that. Note that this function does not handle Unicode</span></div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="comment">// environments, so it should not be used in conjunction with the</span></div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="comment">// `CREATE_UNICODE_ENVIRONMENT` flag.</span></div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="comment">// NOTE: This function will add the system&#39;s environment variables into</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="comment">// the returned string. These variables take precedence over the provided</span></div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="comment">// `env` and are generally necessary in order to launch things on Windows.</span></div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="comment">// [1] https://msdn.microsoft.com/en-us/library/windows/desktop/ms682425(v=vs.85).aspx</span></div>
-<div class="line"><a name="l00103"></a><span class="lineno"><a class="line" href="namespaceprocess_1_1internal.html#af7b70b1b1ed3292e7d2f4559abd99f17">  103</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classOption.html">Option&lt;std::string&gt;</a> <a class="code" href="namespaceprocess_1_1internal.html#af7b70b1b1ed3292e7d2f4559abd99f17">createProcessEnvironment</a>(</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    <span class="keyword">const</span> <a class="code" href="classOption.html">Option</a>&lt;std::map&lt;std::string, std::string&gt;&gt;&amp; env)</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;{</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  <span class="keywordflow">if</span> (env.isNone() || (env.isSome() &amp;&amp; env.get().size() == 0)) {</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="structNone.html">None</a>();</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  }</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  <a class="code" href="classOption.html">Option&lt;std::map&lt;std::string, std::string&gt;</a>&gt; systemEnvironment =</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    <a class="code" href="namespaceprocess_1_1internal.html#a3e0b94580a5faaa58408883833e7b3f9">getSystemEnvironment</a>();</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;  <span class="comment">// The system environment must be non-empty.</span></div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;  <span class="comment">// No subprocesses will be able to launch if the system environment is blank.</span></div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;  CHECK(systemEnvironment.<a class="code" href="classOption.html#a4e3bf8416d95246f43c91f1b5c309323">isSome</a>() &amp;&amp; systemEnvironment.<a class="code" href="classOption.html#a21358442c0fac1cc978a67a9a9089a79">get</a>().size() &gt; 0);</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;  std::map&lt;std::string, std::string&gt; combinedEnvironment = env.get();</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;  <a class="code" href="foreach_8hpp.html#a66900b166526abe66464d6597536b111">foreachpair</a> (<span class="keyword">const</span> std::string&amp; key,</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;               <span class="keyword">const</span> std::string&amp; value,</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;               systemEnvironment.<a class="code" href="classOption.html#a21358442c0fac1cc978a67a9a9089a79">get</a>()) {</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    combinedEnvironment[key] = value;</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;  }</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;  std::string environmentString;</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;  <a class="code" href="foreach_8hpp.html#a66900b166526abe66464d6597536b111">foreachpair</a> (<span class="keyword">const</span> std::string&amp; key,</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;               <span class="keyword">const</span> std::string&amp; value,</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;               combinedEnvironment) {</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    environmentString += key + <span class="charliteral">&#39;=&#39;</span> + value + <span class="charliteral">&#39;\0&#39;</span>;</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;  }</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;  <span class="keywordflow">return</span> environmentString;</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;}</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;</div>
-<div class="line"><a name="l00136"></a><span class="lineno"><a class="line" href="namespaceprocess_1_1internal.html#abf938910f618aa4626eb0ffb7f028697">  136</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;PROCESS_INFORMATION&gt;</a> <a class="code" href="namespaceprocess_1_1internal.html#abf938910f618aa4626eb0ffb7f028697">createChildProcess</a>(</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    <span class="keyword">const</span> std::string&amp; path,</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    <span class="keyword">const</span> std::vector&lt;std::string&gt;&amp; argv,</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    <span class="keyword">const</span> <a class="code" href="classOption.html">Option</a>&lt;std::map&lt;std::string, std::string&gt;&gt;&amp; <a class="code" href="namespacemesos_1_1internal_1_1tests.html#a1396c5e3b0a179220de2792d74770ec2">environment</a>,</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    <span class="keyword">const</span> <a class="code" href="structprocess_1_1Subprocess_1_1IO_1_1InputFileDescriptors.html">InputFileDescriptors</a> stdinfds,</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    <span class="keyword">const</span> <a class="code" href="structprocess_1_1Subprocess_1_1IO_1_1OutputFileDescriptors.html">OutputFileDescriptors</a> stdoutfds,</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    <span class="keyword">const</span> <a class="code" href="structprocess_1_1Subprocess_1_1IO_1_1OutputFileDescriptors.html">OutputFileDescriptors</a> stderrfds,</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    <span class="keyword">const</span> std::vector&lt;Subprocess::ParentHook&gt;&amp; parent_hooks)</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;{</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;  <span class="comment">// Construct the environment that will be passed to `CreateProcess`.</span></div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;  <a class="code" href="classOption.html">Option&lt;std::string&gt;</a> environmentString = <a class="code" href="namespaceprocess_1_1internal.html#af7b70b1b1ed3292e7d2f4559abd99f17">createProcessEnvironment</a>(<a class="code" href="namespacemesos_1_1internal_1_1tests.html#a1396c5e3b0a179220de2792d74770ec2">environment</a>);</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span>* processEnvironment = environmentString.<a class="code" href="classOption.html#a06eab791122ebc1f8af4ad310e5e7d7e">isNone</a>()</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    ? <span class="keyword">nullptr</span></div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    : environmentString.<a class="code" href="classOption.html#a21358442c0fac1cc978a67a9a9089a79">get</a>().c_str();</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;  PROCESS_INFORMATION processInfo;</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;  STARTUPINFO startupInfo;</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;  ::ZeroMemory(&amp;processInfo, <span class="keyword">sizeof</span>(PROCESS_INFORMATION));</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;  ::ZeroMemory(&amp;startupInfo, <span class="keyword">sizeof</span>(STARTUPINFO));</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;  <span class="comment">// Hook up the `stdin`/`stdout`/`stderr` pipes and use the</span></div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;  <span class="comment">// `STARTF_USESTDHANDLES` flag to instruct the child to use them[1]. A more</span></div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;  <span class="comment">// user-friendly example can be found in [2].</span></div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;  <span class="comment">//</span></div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;  <span class="comment">// [1] https://msdn.microsoft.com/en-us/library/windows/desktop/ms686331(v=vs.85).aspx</span></div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;  <span class="comment">// [2] https://msdn.microsoft.com/en-us/library/windows/desktop/ms682499(v=vs.85).aspx</span></div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;  startupInfo.cb = <span class="keyword">sizeof</span>(STARTUPINFO);</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;  startupInfo.hStdInput = stdinfds.<a class="code" href="structprocess_1_1Subprocess_1_1IO_1_1InputFileDescriptors.html#a0a3f315345ef7b7ee6f3f1d4d337854d">read</a>;</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;  startupInfo.hStdOutput = stdoutfds.<a class="code" href="structprocess_1_1Subprocess_1_1IO_1_1OutputFileDescriptors.html#a5dabb8e3008efd61ce42478f260b54ac">write</a>;</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;  startupInfo.hStdError = stderrfds.<a class="code" href="structprocess_1_1Subprocess_1_1IO_1_1OutputFileDescriptors.html#a5dabb8e3008efd61ce42478f260b54ac">write</a>;</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;  startupInfo.dwFlags |= STARTF_USESTDHANDLES;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="comment">// Creates a null-terminated array of null-terminated strings that will be</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="comment">// passed to `CreateProcessW` as the `lpEnvironment` argument, as described by</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="comment">// MSDN[1]. This array needs to be sorted in alphabetical order, but the `map`</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="comment">// already takes care of that. Note that this function explicitly handles</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="comment">// UTF-16 environments, so it must be used in conjunction with the</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="comment">// `CREATE_UNICODE_ENVIRONMENT` flag.</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="comment">// NOTE: This function will add the system&#39;s environment variables into</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="comment">// the returned string. These variables take precedence over the provided</span></div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="comment">// `env` and are generally necessary in order to launch things on Windows.</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="comment">// [1] https://msdn.microsoft.com/en-us/library/windows/desktop/ms682425(v=vs.85).aspx</span></div>
+<div class="line"><a name="l00104"></a><span class="lineno"><a class="line" href="namespaceprocess_1_1internal.html#a10f20a65735cbbc07c9f10a63263897b">  104</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classOption.html">Option&lt;std::wstring&gt;</a> <a class="code" href="namespaceprocess_1_1internal.html#a10f20a65735cbbc07c9f10a63263897b">createProcessEnvironment</a>(</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <span class="keyword">const</span> <a class="code" href="classOption.html">Option</a>&lt;std::map&lt;std::string, std::string&gt;&gt;&amp; env)</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;{</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;  <span class="keywordflow">if</span> (env.isNone() || (env.isSome() &amp;&amp; env.get().size() == 0)) {</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="structNone.html">None</a>();</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  }</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  <a class="code" href="classOption.html">Option&lt;std::map&lt;std::wstring, std::wstring&gt;</a>&gt; systemEnvironment =</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <a class="code" href="namespaceprocess_1_1internal.html#a5bbcc26efc27f4ab46261f4d9585ec7e">getSystemEnvironment</a>();</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;  <span class="comment">// The system environment must be non-empty.</span></div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;  <span class="comment">// No subprocesses will be able to launch if the system environment is blank.</span></div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;  CHECK(systemEnvironment.<a class="code" href="classOption.html#a4e3bf8416d95246f43c91f1b5c309323">isSome</a>() &amp;&amp; systemEnvironment.<a class="code" href="classOption.html#a21358442c0fac1cc978a67a9a9089a79">get</a>().size() &gt; 0);</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  std::map&lt;std::wstring, std::wstring&gt; combinedEnvironment;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;  <span class="comment">// Populate the combined environment first with the given environment</span></div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;  <span class="comment">// converted to UTF-16 for Windows.</span></div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;  std::wstring_convert&lt;std::codecvt_utf8_utf16&lt;wchar_t&gt;, <span class="keywordtype">wchar_t</span>&gt; converter;</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;  <a class="code" href="foreach_8hpp.html#a66900b166526abe66464d6597536b111">foreachpair</a> (<span class="keyword">const</span> std::string&amp; key,</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;               <span class="keyword">const</span> std::string&amp; value,</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;               env.get()) {</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    combinedEnvironment[converter.from_bytes(key)] =</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;      converter.from_bytes(value);</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;  }</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;  <span class="comment">// Add the system environment variables, overwriting the previous.</span></div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;  <a class="code" href="foreach_8hpp.html#a66900b166526abe66464d6597536b111">foreachpair</a> (<span class="keyword">const</span> std::wstring&amp; key,</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;               <span class="keyword">const</span> std::wstring&amp; value,</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;               systemEnvironment.<a class="code" href="classOption.html#a21358442c0fac1cc978a67a9a9089a79">get</a>()) {</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    combinedEnvironment[key] = value;</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;  }</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;  std::wstring environmentString;</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;  <a class="code" href="foreach_8hpp.html#a66900b166526abe66464d6597536b111">foreachpair</a> (<span class="keyword">const</span> std::wstring&amp; key,</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;               <span class="keyword">const</span> std::wstring&amp; value,</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;               combinedEnvironment) {</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    environmentString += key + L<span class="charliteral">&#39;=&#39;</span> + value + L<span class="charliteral">&#39;\0&#39;</span>;</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;  }</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;  <span class="comment">// Append final null terminating character.</span></div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;  environmentString.push_back(L<span class="charliteral">&#39;\0&#39;</span>);</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;  <span class="keywordflow">return</span> environmentString;</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;}</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="comment">// NOTE: We are expecting that components of `argv` that need to be quoted</span></div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;<span class="comment">// (for example, paths with spaces in them like `C:\&quot;Program Files&quot;\foo.exe`)</span></div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;<span class="comment">// to have been already quoted correctly before we generate `command`.</span></div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;<span class="comment">// Incorrectly-quoted command arguments will probably lead the child process</span></div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;<span class="comment">// to terminate with an error. See also NOTE on `process::subprocess`.</span></div>
+<div class="line"><a name="l00155"></a><span class="lineno"><a class="line" href="namespaceprocess_1_1internal.html#abf938910f618aa4626eb0ffb7f028697">  155</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;PROCESS_INFORMATION&gt;</a> <a class="code" href="namespaceprocess_1_1internal.html#abf938910f618aa4626eb0ffb7f028697">createChildProcess</a>(</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    <span class="keyword">const</span> std::string&amp; path,</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    <span class="keyword">const</span> std::vector&lt;std::string&gt;&amp; argv,</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    <span class="keyword">const</span> <a class="code" href="classOption.html">Option</a>&lt;std::map&lt;std::string, std::string&gt;&gt;&amp; <a class="code" href="namespacemesos_1_1internal_1_1tests.html#a1396c5e3b0a179220de2792d74770ec2">environment</a>,</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    <span class="keyword">const</span> <a class="code" href="structprocess_1_1Subprocess_1_1IO_1_1InputFileDescriptors.html">InputFileDescriptors</a> stdinfds,</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    <span class="keyword">const</span> <a class="code" href="structprocess_1_1Subprocess_1_1IO_1_1OutputFileDescriptors.html">OutputFileDescriptors</a> stdoutfds,</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    <span class="keyword">const</span> <a class="code" href="structprocess_1_1Subprocess_1_1IO_1_1OutputFileDescriptors.html">OutputFileDescriptors</a> stderrfds,</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    <span class="keyword">const</span> std::vector&lt;Subprocess::ParentHook&gt;&amp; parent_hooks)</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;{</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;  <span class="comment">// The second argument to `::CreateProcessW` explicitly requries a writable</span></div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;  <span class="comment">// buffer, so we copy the `wstring` data into this `vector`.</span></div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;  std::wstring command = <a class="code" href="namespaceos.html#a3154cfaf8e2778fa9af84f11fdbcf344">os::stringify_args</a>(argv);</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;  std::vector&lt;wchar_t&gt; commandLine(command.begin(), command.end());</div>
 <div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;  <span class="comment">// Build command to pass to `::CreateProcess`.</span></div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;  <span class="comment">//</span></div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;  <span class="comment">// NOTE: We are expecting that components of `argv` that need to be quoted</span></div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;  <span class="comment">// (for example, paths with spaces in them like `C:\&quot;Program Files&quot;\foo.exe`)</span></div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;  <span class="comment">// to have been already quoted correctly before we generate `command`.</span></div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;  <span class="comment">// Incorrectly-quoted command arguments will probably lead the child process</span></div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;  <span class="comment">// to terminate with an error. See also NOTE on `process::subprocess`.</span></div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;  std::string command = <a class="code" href="namespacestrings.html#ac315a6174f56cba0d8295f84da265416">strings::join</a>(<span class="stringliteral">&quot; &quot;</span>, argv);</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;  <span class="comment">// Escape the quotes in `command`.</span></div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;  <span class="comment">//</span></div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;  <span class="comment">// TODO(dpravat): Add tests cases that cover this functionality. See</span></div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;  <span class="comment">// MESOS-5418.</span></div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;  command = <a class="code" href="namespacestrings.html#a082f6de42f9c52047369e2ff80155eca">strings::replace</a>(command, <span class="stringliteral">&quot;\&quot;&quot;</span>, <span class="stringliteral">&quot;\\\&quot;&quot;</span>);</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;  <span class="comment">// NOTE: If Mesos is built against the ANSI version of this function, the</span></div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;  <span class="comment">// environment is limited to 32,767 characters. See[1].</span></div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;  <span class="comment">//</span></div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;  <span class="comment">// TODO(hausdorff): Figure out how to map the `path` and `args` arguments of</span></div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;  <span class="comment">// this function into a call to `::CreateProcess` that is more general</span></div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;  <span class="comment">// purpose. In particular, on POSIX, we expect that calls to `subprocess` can</span></div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;  <span class="comment">// be called with relative `path` (e.g., it could simply be `sh`). However,</span></div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;  <span class="comment">// on Windows, unlike the calls to (e.g.) `exec`, `::CreateProcess` will</span></div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;  <span class="comment">// expect that this argument be a fully-qualified path. In the end, we&#39;d like</span></div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;  <span class="comment">// the calls to `subprocess` to have similar command formats to minimize</span></div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;  <span class="comment">// confusion and mistakes.</span></div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;  <span class="comment">//</span></div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;  <span class="comment">// [1] https://msdn.microsoft.com/en-us/library/windows/desktop/ms682425(v=vs.85).aspx</span></div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;  BOOL createProcessResult = CreateProcess(</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;      <span class="keyword">nullptr</span>,</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;      (LPSTR)command.data(),</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;      <span class="keyword">nullptr</span>,                 <span class="comment">// Default security attributes.</span></div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;      <span class="keyword">nullptr</span>,                 <span class="comment">// Default primary thread security attributes.</span></div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;      TRUE,                    <span class="comment">// Inherited parent process handles.</span></div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;      CREATE_SUSPENDED,        <span class="comment">// Create process in suspended state.</span></div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;      (LPVOID)processEnvironment,</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;      <span class="keyword">nullptr</span>,                 <span class="comment">// Use parent&#39;s current directory.</span></div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;      &amp;startupInfo,            <span class="comment">// STARTUPINFO pointer.</span></div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;      &amp;processInfo);           <span class="comment">// PROCESS_INFORMATION pointer.</span></div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;  <span class="keywordflow">if</span> (!createProcessResult) {</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classWindowsError.html">WindowsError</a>(</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;        <span class="stringliteral">&quot;Failed to call CreateProcess on command &#39;&quot;</span> + command + <span class="stringliteral">&quot;&#39;&quot;</span>);</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;  }</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;  <span class="comment">// Run the parent hooks.</span></div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;  <span class="keyword">const</span> <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ab03ced250ed239bc3b50b669493997f9">pid_t</a> pid = processInfo.dwProcessId;</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;  <span class="keywordflow">foreach</span> (<span class="keyword">const</span> <a class="code" href="structprocess_1_1Subprocess_1_1ParentHook.html">Subprocess::ParentHook</a>&amp; hook, parent_hooks) {</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;    <a class="code" href="classTry.html">Try&lt;Nothing&gt;</a> parentSetup = hook.<a class="code" href="structprocess_1_1Subprocess_1_1ParentHook.html#aaf9ff141314d619cd65cd8ec9320fb7d">parent_setup</a>(pid);</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;    <span class="comment">// If the hook callback fails, we shouldn&#39;t proceed with the</span></div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;    <span class="comment">// execution and hence the child process should be killed.</span></div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    <span class="keywordflow">if</span> (parentSetup.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;      <span class="comment">// Attempt to kill the process. Since it is still in suspended state, we</span></div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;      <span class="comment">// do not need to kill any descendents. We also can&#39;t use `os::kill_job`</span></div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;      <span class="comment">// because this process is not in a Job Object unless one of the parent</span></div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;      <span class="comment">// hooks added it.</span></div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;      ::TerminateProcess(processInfo.hProcess, 1);</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;          <span class="stringliteral">&quot;Failed to execute Parent Hook in child &#39;&quot;</span> + <a class="code" href="namespacens.html#a28116b46e6543597a11733424cd1aa20">stringify</a>(pid) +</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;          <span class="stringliteral">&quot;&#39; with command &#39;&quot;</span> + command + <span class="stringliteral">&quot;&#39;: &quot;</span> + parentSetup.<a class="code" href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">error</a>());</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;    }</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;  }</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;  <span class="comment">// Start child process.</span></div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;  <span class="keywordflow">if</span> (::ResumeThread(processInfo.hThread) == -1) {</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classWindowsError.html">WindowsError</a>(</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;        <span class="stringliteral">&quot;Failed to resume child process with command &#39;&quot;</span> + command + <span class="stringliteral">&quot;&#39;&quot;</span>);</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;  }</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;  <span class="keywordflow">return</span> processInfo;</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;}</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;}  <span class="comment">// namespace internal {</span></div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;}  <span class="comment">// namespace process {</span></div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;  <span class="comment">// Create the process suspended and with a Unicode environment.</span></div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;  DWORD creationFlags = CREATE_SUSPENDED | CREATE_UNICODE_ENVIRONMENT;</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;  <span class="comment">// Construct the environment that will be passed to `::CreateProcessW`.</span></div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;  <a class="code" href="classOption.html">Option&lt;std::wstring&gt;</a> environmentString =</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    <a class="code" href="namespaceprocess_1_1internal.html#a10f20a65735cbbc07c9f10a63263897b">createProcessEnvironment</a>(<a class="code" href="namespacemesos_1_1internal_1_1tests.html#a1396c5e3b0a179220de2792d74770ec2">environment</a>);</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">wchar_t</span>* processEnvironment = environmentString.<a class="code" href="classOption.html#a06eab791122ebc1f8af4ad310e5e7d7e">isNone</a>()</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    ? <span class="keyword">nullptr</span></div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    : environmentString.<a class="code" href="classOption.html#a21358442c0fac1cc978a67a9a9089a79">get</a>().data();</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;  STARTUPINFOW startupInfo;</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;  PROCESS_INFORMATION processInfo;</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;  ::ZeroMemory(&amp;startupInfo, <span class="keyword">sizeof</span>(STARTUPINFOW));</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;  ::ZeroMemory(&amp;processInfo, <span class="keyword">sizeof</span>(PROCESS_INFORMATION));</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;  <span class="comment">// Hook up the `stdin`/`stdout`/`stderr` pipes and use the</span></div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;  <span class="comment">// `STARTF_USESTDHANDLES` flag to instruct the child to use them[1]. A more</span></div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;  <span class="comment">// user-friendly example can be found in [2].</span></div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;  <span class="comment">//</span></div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;  <span class="comment">// [1] https://msdn.microsoft.com/en-us/library/windows/desktop/ms686331(v=vs.85).aspx</span></div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;  <span class="comment">// [2] https://msdn.microsoft.com/en-us/library/windows/desktop/ms682499(v=vs.85).aspx</span></div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;  startupInfo.cb = <span class="keyword">sizeof</span>(STARTUPINFOW);</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;  startupInfo.hStdInput = stdinfds.<a class="code" href="structprocess_1_1Subprocess_1_1IO_1_1InputFileDescriptors.html#a0a3f315345ef7b7ee6f3f1d4d337854d">read</a>;</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;  startupInfo.hStdOutput = stdoutfds.<a class="code" href="structprocess_1_1Subprocess_1_1IO_1_1OutputFileDescriptors.html#a5dabb8e3008efd61ce42478f260b54ac">write</a>;</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;  startupInfo.hStdError = stderrfds.<a class="code" href="structprocess_1_1Subprocess_1_1IO_1_1OutputFileDescriptors.html#a5dabb8e3008efd61ce42478f260b54ac">write</a>;</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;  startupInfo.dwFlags |= STARTF_USESTDHANDLES;</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;  <span class="comment">// TODO(hausdorff): Figure out how to map the `path` and `args` arguments of</span></div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;  <span class="comment">// this function into a call to `::CreateProcess` that is more general</span></div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;  <span class="comment">// purpose. In particular, on POSIX, we expect that calls to `subprocess` can</span></div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;  <span class="comment">// be called with relative `path` (e.g., it could simply be `sh`). However,</span></div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;  <span class="comment">// on Windows, unlike the calls to (e.g.) `exec`, `::CreateProcessW` will</span></div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;  <span class="comment">// expect that this argument be a fully-qualified path. In the end, we&#39;d like</span></div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;  <span class="comment">// the calls to `subprocess` to have similar command formats to minimize</span></div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;  <span class="comment">// confusion and mistakes.</span></div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;  <span class="comment">//</span></div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;  <span class="comment">// [1] https://msdn.microsoft.com/en-us/library/windows/desktop/ms682425(v=vs.85).aspx</span></div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;  BOOL createProcessResult = ::CreateProcessW(</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;      <span class="keyword">nullptr</span>,</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;      (LPWSTR)commandLine.data(),</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;      <span class="keyword">nullptr</span>,                 <span class="comment">// Default security attributes.</span></div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;      <span class="keyword">nullptr</span>,                 <span class="comment">// Default primary thread security attributes.</span></div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;      TRUE,                    <span class="comment">// Inherited parent process handles.</span></div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;      creationFlags,</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;      (LPVOID)processEnvironment,</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;      <span class="keyword">nullptr</span>,                 <span class="comment">// Use parent&#39;s current directory.</span></div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;      &amp;startupInfo,            <span class="comment">// STARTUPINFO pointer.</span></div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;      &amp;processInfo);           <span class="comment">// PROCESS_INFORMATION pointer.</span></div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;  <span class="keywordflow">if</span> (!createProcessResult) {</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classWindowsError.html">WindowsError</a>(</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;        <span class="stringliteral">&quot;Failed to call CreateProcess on command &#39;&quot;</span> + <a class="code" href="namespacens.html#a28116b46e6543597a11733424cd1aa20">stringify</a>(command) + <span class="stringliteral">&quot;&#39;&quot;</span>);</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;  }</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;  <span class="comment">// Run the parent hooks.</span></div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;  <span class="keyword">const</span> <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ab03ced250ed239bc3b50b669493997f9">pid_t</a> pid = processInfo.dwProcessId;</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;  <span class="keywordflow">foreach</span> (<span class="keyword">const</span> <a class="code" href="structprocess_1_1Subprocess_1_1ParentHook.html">Subprocess::ParentHook</a>&amp; hook, parent_hooks) {</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    <a class="code" href="classTry.html">Try&lt;Nothing&gt;</a> parentSetup = hook.<a class="code" href="structprocess_1_1Subprocess_1_1ParentHook.html#aaf9ff141314d619cd65cd8ec9320fb7d">parent_setup</a>(pid);</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    <span class="comment">// If the hook callback fails, we shouldn&#39;t proceed with the</span></div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;    <span class="comment">// execution and hence the child process should be killed.</span></div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    <span class="keywordflow">if</span> (parentSetup.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;      <span class="comment">// Attempt to kill the process. Since it is still in suspended state, we</span></div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;      <span class="comment">// do not need to kill any descendents. We also can&#39;t use `os::kill_job`</span></div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;      <span class="comment">// because this process is not in a Job Object unless one of the parent</span></div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;      <span class="comment">// hooks added it.</span></div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;      ::TerminateProcess(processInfo.hProcess, 1);</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;          <span class="stringliteral">&quot;Failed to execute Parent Hook in child &#39;&quot;</span> + <a class="code" href="namespacens.html#a28116b46e6543597a11733424cd1aa20">stringify</a>(pid) +</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;          <span class="stringliteral">&quot;&#39; with command &#39;&quot;</span> + <a class="code" href="namespacens.html#a28116b46e6543597a11733424cd1aa20">stringify</a>(command) + <span class="stringliteral">&quot;&#39;: &quot;</span> +</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;          parentSetup.<a class="code" href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">error</a>());</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    }</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;  }</div>
 <div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;<span class="preprocessor">#endif // __PROCESS_WINDOWS_SUBPROCESS_HPP__</span></div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;  <span class="comment">// Start child process.</span></div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;  <span class="keywordflow">if</span> (::ResumeThread(processInfo.hThread) == -1) {</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classWindowsError.html">WindowsError</a>(</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;        <span class="stringliteral">&quot;Failed to resume child process with command &#39;&quot;</span> +</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;        <a class="code" href="namespacens.html#a28116b46e6543597a11733424cd1aa20">stringify</a>(command) + <span class="stringliteral">&quot;&#39;&quot;</span>);</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;  }</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;  <span class="keywordflow">return</span> processInfo;</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;}</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;}  <span class="comment">// namespace internal {</span></div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;}  <span class="comment">// namespace process {</span></div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;<span class="preprocessor">#endif // __PROCESS_WINDOWS_SUBPROCESS_HPP__</span></div>
 <div class="ttc" id="classError_html"><div class="ttname"><a href="classError.html">Error</a></div><div class="ttdef"><b>Definition:</b> errorbase.hpp:35</div></div>
 <div class="ttc" id="classOption_html"><div class="ttname"><a href="classOption.html">Option</a></div><div class="ttdef"><b>Definition:</b> option.hpp:24</div></div>
-<div class="ttc" id="namespacestrings_html_ac315a6174f56cba0d8295f84da265416"><div class="ttname"><a href="namespacestrings.html#ac315a6174f56cba0d8295f84da265416">strings::join</a></div><div class="ttdeci">std::stringstream &amp; join(std::stringstream &amp;stream, const std::string &amp;separator, T &amp;&amp;...args)</div><div class="ttdef"><b>Definition:</b> strings.hpp:294</div></div>
 <div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
-<div class="ttc" id="namespaceprocess_1_1internal_html_abf938910f618aa4626eb0ffb7f028697"><div class="ttname"><a href="namespaceprocess_1_1internal.html#abf938910f618aa4626eb0ffb7f028697">process::internal::createChildProcess</a></div><div class="ttdeci">Try&lt; PROCESS_INFORMATION &gt; createChildProcess(const std::string &amp;path, const std::vector&lt; std::string &gt; &amp;argv, const Option&lt; std::map&lt; std::string, std::string &gt;&gt; &amp;environment, const InputFileDescriptors stdinfds, const OutputFileDescriptors stdoutfds, const OutputFileDescriptors stderrfds, const std::vector&lt; Subprocess::ParentHook &gt; &amp;parent_hooks)</div><div class="ttdef"><b>Definition:</b> subprocess.hpp:136</div></div>
+<div class="ttc" id="namespaceprocess_1_1internal_html_abf938910f618aa4626eb0ffb7f028697"><div class="ttname"><a href="namespaceprocess_1_1internal.html#abf938910f618aa4626eb0ffb7f028697">process::internal::createChildProcess</a></div><div class="ttdeci">Try&lt; PROCESS_INFORMATION &gt; createChildProcess(const std::string &amp;path, const std::vector&lt; std::string &gt; &amp;argv, const Option&lt; std::map&lt; std::string, std::string &gt;&gt; &amp;environment, const InputFileDescriptors stdinfds, const OutputFileDescriptors stdoutfds, const OutputFileDescriptors stderrfds, const std::vector&lt; Subprocess::ParentHook &gt; &amp;parent_hooks)</div><div class="ttdef"><b>Definition:</b> subprocess.hpp:155</div></div>
 <div class="ttc" id="subprocess_8hpp_html"><div class="ttname"><a href="subprocess_8hpp.html">subprocess.hpp</a></div></div>
 <div class="ttc" id="os_8hpp_html"><div class="ttname"><a href="os_8hpp.html">os.hpp</a></div></div>
 <div class="ttc" id="classWindowsError_html"><div class="ttname"><a href="classWindowsError.html">WindowsError</a></div><div class="ttdef"><b>Definition:</b> error.hpp:105</div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2os_2environment_8hpp_html"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2os_2environment_8hpp.html">environment.hpp</a></div></div>
 <div class="ttc" id="structprocess_1_1Subprocess_1_1IO_1_1InputFileDescriptors_html_a0a3f315345ef7b7ee6f3f1d4d337854d"><div class="ttname"><a href="structprocess_1_1Subprocess_1_1IO_1_1InputFileDescriptors.html#a0a3f315345ef7b7ee6f3f1d4d337854d">process::Subprocess::IO::InputFileDescriptors::read</a></div><div class="ttdeci">int_fd read</div><div class="ttdef"><b>Definition:</b> subprocess_base.hpp:79</div></div>
 <div class="ttc" id="structprocess_1_1Subprocess_1_1IO_1_1OutputFileDescriptors_html"><div class="ttname"><a href="structprocess_1_1Subprocess_1_1IO_1_1OutputFileDescriptors.html">process::Subprocess::IO::OutputFileDescriptors</a></div><div class="ttdoc">For output file descriptors a child writes to the write file descriptor and a parent may read from th...</div><div class="ttdef"><b>Definition:</b> subprocess_base.hpp:92</div></div>
-<div class="ttc" id="namespaceprocess_1_1internal_html_a3e0b94580a5faaa58408883833e7b3f9"><div class="ttname"><a href="namespaceprocess_1_1internal.html#a3e0b94580a5faaa58408883833e7b3f9">process::internal::getSystemEnvironment</a></div><div class="ttdeci">Option&lt; std::map&lt; std::string, std::string &gt; &gt; getSystemEnvironment()</div><div class="ttdef"><b>Definition:</b> subprocess.hpp:42</div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html">windows.hpp</a></div></div>
 <div class="ttc" id="close_8hpp_html"><div class="ttname"><a href="close_8hpp.html">close.hpp</a></div></div>
 <div class="ttc" id="classOption_html_a4e3bf8416d95246f43c91f1b5c309323"><div class="ttname"><a href="classOption.html#a4e3bf8416d95246f43c91f1b5c309323">Option::isSome</a></div><div class="ttdeci">bool isSome() const </div><div class="ttdef"><b>Definition:</b> option.hpp:108</div></div>
 <div class="ttc" id="namespacemesos_1_1internal_1_1tests_html_a1396c5e3b0a179220de2792d74770ec2"><div class="ttname"><a href="namespacemesos_1_1internal_1_1tests.html#a1396c5e3b0a179220de2792d74770ec2">mesos::internal::tests::environment</a></div><div class="ttdeci">Environment * environment</div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_ab03ced250ed239bc3b50b669493997f9"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ab03ced250ed239bc3b50b669493997f9">pid_t</a></div><div class="ttdeci">DWORD pid_t</div><div class="ttdef"><b>Definition:</b> windows.hpp:171</div></div>
+<div class="ttc" id="namespaceprocess_1_1internal_html_a5bbcc26efc27f4ab46261f4d9585ec7e"><div class="ttname"><a href="namespaceprocess_1_1internal.html#a5bbcc26efc27f4ab46261f4d9585ec7e">process::internal::getSystemEnvironment</a></div><div class="ttdeci">Option&lt; std::map&lt; std::wstring, std::wstring &gt; &gt; getSystemEnvironment()</div><div class="ttdef"><b>Definition:</b> subprocess.hpp:43</div></div>
 <div class="ttc" id="structprocess_1_1Subprocess_1_1IO_1_1OutputFileDescriptors_html_a5dabb8e3008efd61ce42478f260b54ac"><div class="ttname"><a href="structprocess_1_1Subprocess_1_1IO_1_1OutputFileDescriptors.html#a5dabb8e3008efd61ce42478f260b54ac">process::Subprocess::IO::OutputFileDescriptors::write</a></div><div class="ttdeci">int_fd write</div><div class="ttdef"><b>Definition:</b> subprocess_base.hpp:95</div></div>
-<div class="ttc" id="namespaceprocess_1_1internal_html_af7b70b1b1ed3292e7d2f4559abd99f17"><div class="ttname"><a href="namespaceprocess_1_1internal.html#af7b70b1b1ed3292e7d2f4559abd99f17">process::internal::createProcessEnvironment</a></div><div class="ttdeci">Option&lt; std::string &gt; createProcessEnvironment(const Option&lt; std::map&lt; std::string, std::string &gt;&gt; &amp;env)</div><div class="ttdef"><b>Definition:</b> subprocess.hpp:103</div></div>
 <div class="ttc" id="classOption_html_a21358442c0fac1cc978a67a9a9089a79"><div class="ttname"><a href="classOption.html#a21358442c0fac1cc978a67a9a9089a79">Option::get</a></div><div class="ttdeci">const T &amp; get() const &amp;</div><div class="ttdef"><b>Definition:</b> option.hpp:111</div></div>
-<div class="ttc" id="namespacestrings_html_a082f6de42f9c52047369e2ff80155eca"><div class="ttname"><a href="namespacestrings.html#a082f6de42f9c52047369e2ff80155eca">strings::replace</a></div><div class="ttdeci">std::string replace(const std::string &amp;s, const std::string &amp;from, const std::string &amp;to)</div><div class="ttdef"><b>Definition:</b> strings.hpp:112</div></div>
 <div class="ttc" id="foreach_8hpp_html_a66900b166526abe66464d6597536b111"><div class="ttname"><a href="foreach_8hpp.html#a66900b166526abe66464d6597536b111">foreachpair</a></div><div class="ttdeci">#define foreachpair(KEY, VALUE, ELEMS)</div><div class="ttdef"><b>Definition:</b> foreach.hpp:51</div></div>
 <div class="ttc" id="structprocess_1_1Subprocess_1_1IO_1_1InputFileDescriptors_html"><div class="ttname"><a href="structprocess_1_1Subprocess_1_1IO_1_1InputFileDescriptors.html">process::Subprocess::IO::InputFileDescriptors</a></div><div class="ttdoc">For input file descriptors a child reads from the read file descriptor and a parent may write to the ...</div><div class="ttdef"><b>Definition:</b> subprocess_base.hpp:77</div></div>
 <div class="ttc" id="option_8hpp_html"><div class="ttname"><a href="option_8hpp.html">option.hpp</a></div></div>
@@ -331,8 +341,11 @@
 <div class="ttc" id="structNone_html"><div class="ttname"><a href="structNone.html">None</a></div><div class="ttdef"><b>Definition:</b> none.hpp:27</div></div>
 <div class="ttc" id="classTry_html_a0b98f95163b8a38daafd1651b043a276"><div class="ttname"><a href="classTry.html#a0b98f95163b8a38daafd1651b043a276">Try::isError</a></div><div class="ttdeci">bool isError() const </div><div class="ttdef"><b>Definition:</b> try.hpp:71</div></div>
 <div class="ttc" id="try_8hpp_html"><div class="ttname"><a href="try_8hpp.html">try.hpp</a></div></div>
+<div class="ttc" id="namespaceprocess_1_1internal_html_a10f20a65735cbbc07c9f10a63263897b"><div class="ttname"><a href="namespaceprocess_1_1internal.html#a10f20a65735cbbc07c9f10a63263897b">process::internal::createProcessEnvironment</a></div><div class="ttdeci">Option&lt; std::wstring &gt; createProcessEnvironment(const Option&lt; std::map&lt; std::string, std::string &gt;&gt; &amp;env)</div><div class="ttdef"><b>Definition:</b> subprocess.hpp:104</div></div>
 <div class="ttc" id="hashset_8hpp_html"><div class="ttname"><a href="hashset_8hpp.html">hashset.hpp</a></div></div>
+<div class="ttc" id="namespaceos_html_a3154cfaf8e2778fa9af84f11fdbcf344"><div class="ttname"><a href="namespaceos.html#a3154cfaf8e2778fa9af84f11fdbcf344">os::stringify_args</a></div><div class="ttdeci">std::wstring stringify_args(const std::vector&lt; std::string &gt; &amp;argv)</div><div class="ttdef"><b>Definition:</b> shell.hpp:189</div></div>
 <div class="ttc" id="classOption_html_a06eab791122ebc1f8af4ad310e5e7d7e"><div class="ttname"><a href="classOption.html#a06eab791122ebc1f8af4ad310e5e7d7e">Option::isNone</a></div><div class="ttdeci">bool isNone() const </div><div class="ttdef"><b>Definition:</b> option.hpp:109</div></div>
+<div class="ttc" id="shell_8hpp_html"><div class="ttname"><a href="shell_8hpp.html">shell.hpp</a></div></div>
 <div class="ttc" id="structprocess_1_1Subprocess_1_1ParentHook_html"><div class="ttname"><a href="structprocess_1_1Subprocess_1_1ParentHook.html">process::Subprocess::ParentHook</a></div><div class="ttdoc">A hook can be passed to a subprocess call. </div><div class="ttdef"><b>Definition:</b> subprocess_base.hpp:155</div></div>
 <div class="ttc" id="namespacens_html_a28116b46e6543597a11733424cd1aa20"><div class="ttname"><a href="namespacens.html#a28116b46e6543597a11733424cd1aa20">ns::stringify</a></div><div class="ttdeci">std::string stringify(int flags)</div><div class="ttdef"><b>Definition:</b> ns.hpp:688</div></div>
 </div><!-- fragment --></div><!-- contents -->

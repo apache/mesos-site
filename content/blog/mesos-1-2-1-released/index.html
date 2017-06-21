@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Apache Mesos 1.2.1 Released</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta property="og:locale" content="en_US"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:title" content="Apache Mesos"/>
+    <meta property="og:site_name" content="Apache Mesos"/>
+    <meta property="og:url" content="http://mesos.apache.org/"/>
+    <meta property="og:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta property="og:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
+
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:site" content="@ApacheMesos"/>
+    <meta name="twitter:title" content="Apache Mesos"/>
+    <meta name="twitter:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta name="twitter:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
+
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
+    <link href="../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+
+    
+
+    <!-- Google Analytics Magic -->
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-20226872-1']);
+    _gaq.push(['_setDomainName', 'apache.org']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+    
+  </head>
+  <body>
+    <!-- magical breadcrumbs -->
+    <div class="topnav">
+      <div class="container">
+        <ul class="breadcrumb">
+          <li>
+            <div class="dropdown">
+              <a data-toggle="dropdown" href="#">Apache Software Foundation <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                <li><a href="http://www.apache.org">Apache Homepage</a></li>
+                <li><a href="http://www.apache.org/licenses/">License</a></li>
+                <li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>
+                <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                <li><a href="http://www.apache.org/security/">Security</a></li>
+              </ul>
+            </div>
+          </li>
+
+          <li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+          
+          
+          <li><a href="/blog
+/">Blog
+</a></li>
+          
+          
+        </ul><!-- /.breadcrumb -->
+      </div><!-- /.container -->
+    </div><!-- /.topnav -->
+
+    <!-- navbar excitement -->
+<div class="navbar navbar-default navbar-static-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#mesos-menu" aria-expanded="false">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo"/></a>
+    </div><!-- /.navbar-header -->
+
+    <div class="navbar-collapse collapse" id="mesos-menu">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/gettingstarted/">Getting Started</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/documentation/latest/">Documentation</a></li>
+        <li><a href="/downloads/">Downloads</a></li>
+        <li><a href="/community/">Community</a></li>
+      </ul>
+    </div><!-- /#mesos-menu -->
+  </div><!-- /.container -->
+</div><!-- /.navbar -->
+
+<div class="content">
+  <div class="container">
+    <div class="row">
+
+  <div class="col-md-3">
+    <div class="meta">
+      <span class="author">
+        
+        <span class="author_contact">
+          <p><strong>Adam</strong></p>
+          
+        </span>
+      </span>
+      <p><em>Posted June 12, 2017</em></p>
+    </div>
+
+    <div class="share">
+      <span class="social-share-button"><a href="https://twitter.com/share" class="twitter-share-button" data-via="apachemesos">Tweet</a></span>
+
+      <span><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></span>
+
+      <span><div class="g-plusone" data-size="medium"></div></span>
+
+      <!-- Place this tag after the last +1 button tag. -->
+      <script type="text/javascript">
+        (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'https://apis.google.com/js/plusone.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+        })();
+      </script>
+
+      <script src="//platform.linkedin.com/in.js" type="text/javascript">
+       lang: en_US
+      </script>
+      <script type="IN/Share" data-counter="right"></script>
+    </div>
+  </div>
+
+  <div class="post col-md-9">
+    <h1>Apache Mesos 1.2.1 Released</h1>
+
+    <p>The latest Mesos 1.2.x release, 1.2.1, is now available for <a href="http://mesos.apache.org/downloads">download</a>. This release includes important bug fixes and improvements on top of 1.2.0. It is recommended to use this version if you are considering using Mesos 1.2. More specifically, this release includes the following:</p>
+
+<ul>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-1987">MESOS-1987</a> - Add support for SemVer build and prerelease labels to stout.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-5028">MESOS-5028</a> - Copy provisioner cannot replace directory with symlink.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-5172">MESOS-5172</a> - Registry puller cannot fetch blobs correctly from http Redirect 3xx urls.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-6327">MESOS-6327</a> - Large docker images causes container launch failures: Too many levels of symbolic links.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-6951">MESOS-6951</a> - Docker containerizer: mangled environment when env value contains LF byte.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-6976">MESOS-6976</a> - Disallow (re-)registration attempts by old agents.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-7133">MESOS-7133</a> - mesos-fetcher fails with openssl-related output.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-7197">MESOS-7197</a> - Requesting tiny amount of CPU crashes master.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-7208">MESOS-7208</a> - Persistent volume ownership is set to root when task is running with non-root user.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-7210">MESOS-7210</a> - HTTP health check doesn&rsquo;t work when mesos runs with &ndash;docker_mesos_image.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-7232">MESOS-7232</a> - Add support to auto-load /dev/nvidia-uvm in the GPU isolator.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-7237">MESOS-7237</a> - Enabling cgroups_limit_swap can lead to &ldquo;invalid argument&rdquo; error.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-7261">MESOS-7261</a> - maintenance.html is missing during packaging.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-7263">MESOS-7263</a> - User supplied task environment variables cause warnings in sandbox stdout.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-7264">MESOS-7264</a> - Possibly duplicate environment variables should not leak values to the sandbox.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-7265">MESOS-7265</a> - Containerizer startup may cause sensitive data to leak into sandbox logs.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-7272">MESOS-7272</a> - Unified containerizer does not support docker registry version &lt; 2.3.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-7280">MESOS-7280</a> - Unified containerizer provisions docker image error with COPY backend.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-7316">MESOS-7316</a> - Upgrading Mesos to 1.2.0 results in some information missing from the <code>/flags</code> endpoint.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-7346">MESOS-7346</a> - Agent crashes if the task name is too long.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-7350">MESOS-7350</a> - Failed to pull image from Nexus Registry due to signature missing.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-7366">MESOS-7366</a> - Agent sandbox gc could accidentally delete the entire persistent volume content.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-7368">MESOS-7368</a> - Documentation of framework role(s) in proto definition is confusing.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-7383">MESOS-7383</a> - Docker executor logs possibly sensitive parameters.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-7389">MESOS-7389</a> - Mesos 1.2.0 crashes with pre-1.0 Mesos agents.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-7400">MESOS-7400</a> - The mesos master crashes due to an incorrect invariant check in the decoder.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-7427">MESOS-7427</a> - Registry puller cannot fetch manifests from Amazon ECR: 405 Unsupported.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-7429">MESOS-7429</a> - Allow isolators to inject task-specific environment variables.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-7453">MESOS-7453</a> - glyphicons-halflings-regular.woff2 is missing in WebUI.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-7464">MESOS-7464</a> - Recent Docker versions cannot be parsed by stout.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-7471">MESOS-7471</a> - Provisioner recover should not always assume &lsquo;rootfses&rsquo; dir exists.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-7478">MESOS-7478</a> - Pre-1.2.x master does not work with 1.2.x agent.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-7484">MESOS-7484</a> - VersionTest.ParseInvalid aborts on Windows.</li>
+</ul>
+
+
+<p>Full release notes are available in the release <a href="https://git-wip-us.apache.org/repos/asf?p=mesos.git;a=blob_plain;f=CHANGELOG;hb=1.2.1">CHANGELOG</a></p>
+
+<h3>Upgrades</h3>
+
+<p>Rolling upgrades from a Mesos 1.2.0 cluster to Mesos 1.2.1 are straightforward. Please refer to the <a href="http://mesos.apache.org/documentation/latest/upgrades/">upgrade guide</a> for detailed information on upgrading to Mesos 1.2.1 from 1.1.x or 1.0.x.</p>
+
+<p>NOTE: In Mesos 1.2.1, the master will no longer allow 0.x agents to register. Interoperability between 1.1+ masters and 0.x agents has never been supported;
+however, it was not explicitly disallowed, either. Starting with this release of Mesos, registration attempts by 0.x Mesos agents will be ignored.</p>
+
+<h3>Try it out</h3>
+
+<p>Please try out this release and let us know what you think. If you run into any issues, let us know on the <a href="https://mesos.apache.org/community">user mailing list and/or Slack/IRC</a>.</p>
+
+<h3>Thanks!</h3>
+
+<p>Thanks to the 16 contributors who made 1.2.1 possible:</p>
+
+<p>Aaron Wood, Adam B, Alexander Rukletsov, Anand Mazumdar, Andrew Schwartzmeyer, Anindya Sinha, Benjamin Bannier, Benjamin Mahler, Chun-Hung Hsiao, Deshi Xiao, Gilbert Song, Haosdent Huang, Jie Yu, Kevin Klues, Neil Conway, and Till Toenshoff.</p>
+
+  </div>
+</div>
+
+  </div><!-- /.container -->
+</div><!-- /.content -->
+
+<hr>
+
+
+
+    <!-- footer -->
+    <div class="footer">
+      <div class="container">
+        <div class="col-md-4 social-blk">
+          <span class="social">
+            <a href="https://twitter.com/ApacheMesos"
+              class="twitter-follow-button"
+              data-show-count="false" data-size="large">Follow @ApacheMesos</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+            <a href="https://twitter.com/intent/tweet?button_hashtag=mesos"
+              class="twitter-hashtag-button"
+              data-size="large"
+              data-related="ApacheMesos">Tweet #mesos</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+          </span>
+        </div>
+
+        <div class="col-md-8 trademark">
+          <p>&copy; 2012-2017 <a href="http://apache.org">The Apache Software Foundation</a>.
+            Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.
+          <p>
+        </div>
+      </div><!-- /.container -->
+    </div><!-- /.footer -->
+
+    <!-- JS -->
+    <script src="//code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="text/javascript"></script>
+  </body>
+</html>

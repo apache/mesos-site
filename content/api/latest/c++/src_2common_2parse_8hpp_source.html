@@ -84,10 +84,10 @@
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="messages_8hpp.html">messages/messages.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="namespaceflags.html">   33</a></span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacemesos_1_1internal_1_1tests.html#af8289f648a916c3f66923867452c7b1b">flags</a> {</div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="namespaceflags.html">   33</a></span>&#160;<span class="keyword">namespace </span><a class="code" href="decoder_8hpp.html#abb0829cce9dd20a40ae0d86890ae85c6">flags</a> {</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="namespaceldcache.html#a79499891e0a17642e8cdb5d7625d7706">   36</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;mesos::ACLs&gt;</a> <a class="code" href="namespaceflags.html#af30eac14fca1a6fd93863545a0666e0c">parse</a>(<span class="keyword">const</span> std::string&amp; value)</div>
+<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="namespaceperf.html#a5692707e1d769c80a4bf0777965c0c11">   36</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;mesos::ACLs&gt;</a> <a class="code" href="namespaceflags.html#af30eac14fca1a6fd93863545a0666e0c">parse</a>(<span class="keyword">const</span> std::string&amp; value)</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;{</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <span class="comment">// Convert from string or file to JSON.</span></div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <a class="code" href="classTry.html">Try&lt;JSON::Object&gt;</a> <a class="code" href="namespacemesos_1_1internal.html#a3752d85ef726065c6c1b946eef1ba87a">json</a> = parse&lt;JSON::Object&gt;(value);</div>
@@ -142,176 +142,190 @@
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;}</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="comment">// When the same variable is listed multiple times,</span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="comment">// uses only the last value.</span></div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a name="l00094"></a><span class="lineno"><a class="line" href="namespaceflags.html#ab48910d4d9eac60450118f5ac04b2cc1">   94</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;hashmap&lt;std::string, std::string&gt;</a>&gt; <a class="code" href="namespaceflags.html#af30eac14fca1a6fd93863545a0666e0c">parse</a>(<span class="keyword">const</span> std::string&amp; value)</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;{</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  <span class="comment">// Convert from string or file to JSON.</span></div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  <a class="code" href="classTry.html">Try&lt;JSON::Object&gt;</a> <a class="code" href="namespacemesos_1_1internal.html#a3752d85ef726065c6c1b946eef1ba87a">json</a> = parse&lt;JSON::Object&gt;(value);</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  <span class="keywordflow">if</span> (json.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(json.<a class="code" href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">error</a>());</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  }</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  <span class="comment">// Convert from JSON to Hashmap.</span></div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  <a class="code" href="classhashmap.html">hashmap&lt;std::string, std::string&gt;</a> map;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  <a class="code" href="foreach_8hpp.html#a66900b166526abe66464d6597536b111">foreachpair</a> (<span class="keyword">const</span> std::string&amp; key,</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;               <span class="keyword">const</span> <a class="code" href="structJSON_1_1Value.html">JSON::Value</a>&amp; value,</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;               json.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>().<a class="code" href="structJSON_1_1Object.html#a41bbf967d564eb3f57c2bb5453a0e7af">values</a>) {</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    <span class="keywordflow">if</span> (!value.<a class="code" href="structJSON_1_1Value.html#a9f420d588c86317e0cc816b7d3ece0f8">is</a>&lt;<a class="code" href="structJSON_1_1String.html">JSON::String</a>&gt;()) {</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;          <span class="stringliteral">&quot;The value of key &#39;&quot;</span> + key + <span class="stringliteral">&quot;&#39; in &#39;&quot;</span> + <a class="code" href="namespacens.html#a28116b46e6543597a11733424cd1aa20">stringify</a>(json.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>()) + <span class="stringliteral">&quot;&#39;&quot;</span></div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;          <span class="stringliteral">&quot; is not a string&quot;</span>);</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    }</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    map[key] = value.<a class="code" href="structJSON_1_1Value.html#a32ddf233c0ec159c4d72252529219cf6">as</a>&lt;<a class="code" href="structJSON_1_1String.html">JSON::String</a>&gt;().value;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a name="l00092"></a><span class="lineno"><a class="line" href="namespaceflags.html#a56e229e9259389d27f427fb84f114e4f">   92</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;mesos::DeviceWhitelist&gt;</a> <a class="code" href="namespaceflags.html#af30eac14fca1a6fd93863545a0666e0c">parse</a>(<span class="keyword">const</span> std::string&amp; value)</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;{</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  <span class="comment">// Convert from string or file to JSON.</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  <a class="code" href="classTry.html">Try&lt;JSON::Object&gt;</a> <a class="code" href="namespacemesos_1_1internal.html#a3752d85ef726065c6c1b946eef1ba87a">json</a> = parse&lt;JSON::Object&gt;(value);</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  <span class="keywordflow">if</span> (json.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(json.<a class="code" href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">error</a>());</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  }</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  <span class="comment">// Convert from JSON to Protobuf.</span></div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  <span class="keywordflow">return</span> protobuf::parse&lt;mesos::DeviceWhitelist&gt;(json.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>());</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;}</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="comment">// When the same variable is listed multiple times,</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="comment">// uses only the last value.</span></div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a name="l00108"></a><span class="lineno"><a class="line" href="namespaceflags.html#ab48910d4d9eac60450118f5ac04b2cc1">  108</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;hashmap&lt;std::string, std::string&gt;</a>&gt; <a class="code" href="namespaceflags.html#af30eac14fca1a6fd93863545a0666e0c">parse</a>(<span class="keyword">const</span> std::string&amp; value)</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;{</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  <span class="comment">// Convert from string or file to JSON.</span></div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  <a class="code" href="classTry.html">Try&lt;JSON::Object&gt;</a> <a class="code" href="namespacemesos_1_1internal.html#a3752d85ef726065c6c1b946eef1ba87a">json</a> = parse&lt;JSON::Object&gt;(value);</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;  <span class="keywordflow">if</span> (json.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(json.<a class="code" href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">error</a>());</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;  }</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;  <span class="keywordflow">return</span> map;</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;}</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="comment">// TODO(klueska): Generalize this parser to take any comma separated</span></div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="comment">// list and convert it to its appropriate type (i.e., not just for</span></div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="comment">// unsigned ints). Issues could arise when the generic type is a</span></div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="comment">// string that contains commas though, so generalizing this is not as</span></div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="comment">// straightforward as it looks at first glance.</span></div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a name="l00125"></a><span class="lineno"><a class="line" href="namespaceflags.html#a309ce09d3d62bea7d94580a72eaf856e">  125</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;std::vector&lt;unsigned int&gt;</a>&gt; <a class="code" href="namespaceflags.html#af30eac14fca1a6fd93863545a0666e0c">parse</a>(<span class="keyword">const</span> std::string&amp; value)</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;{</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;  std::vector&lt;unsigned int&gt; result;</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;  <span class="keywordflow">foreach</span> (<span class="keyword">const</span> std::string&amp; token, <a class="code" href="namespacestrings.html#afffe11c8ecce961981653358520d6a04">strings::tokenize</a>(value, <span class="stringliteral">&quot;,&quot;</span>)) {</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    <a class="code" href="classTry.html">Try&lt;unsigned int&gt;</a> number = numify&lt;unsigned int&gt;(token);</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;  <span class="comment">// Convert from JSON to Hashmap.</span></div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;  <a class="code" href="classhashmap.html">hashmap&lt;std::string, std::string&gt;</a> map;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  <a class="code" href="foreach_8hpp.html#a66900b166526abe66464d6597536b111">foreachpair</a> (<span class="keyword">const</span> std::string&amp; key,</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;               <span class="keyword">const</span> <a class="code" href="structJSON_1_1Value.html">JSON::Value</a>&amp; value,</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;               json.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>().<a class="code" href="structJSON_1_1Object.html#a41bbf967d564eb3f57c2bb5453a0e7af">values</a>) {</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    <span class="keywordflow">if</span> (!value.<a class="code" href="structJSON_1_1Value.html#a9f420d588c86317e0cc816b7d3ece0f8">is</a>&lt;<a class="code" href="structJSON_1_1String.html">JSON::String</a>&gt;()) {</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;          <span class="stringliteral">&quot;The value of key &#39;&quot;</span> + key + <span class="stringliteral">&quot;&#39; in &#39;&quot;</span> + <a class="code" href="namespacens.html#a28116b46e6543597a11733424cd1aa20">stringify</a>(json.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>()) + <span class="stringliteral">&quot;&#39;&quot;</span></div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;          <span class="stringliteral">&quot; is not a string&quot;</span>);</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    }</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    map[key] = value.<a class="code" href="structJSON_1_1Value.html#a32ddf233c0ec159c4d72252529219cf6">as</a>&lt;<a class="code" href="structJSON_1_1String.html">JSON::String</a>&gt;().value;</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;  }</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;  <span class="keywordflow">return</span> map;</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;}</div>
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    <span class="keywordflow">if</span> (number.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(<span class="stringliteral">&quot;Failed to numify &#39;&quot;</span> + token + <span class="stringliteral">&quot;&#39;: &quot;</span> + number.<a class="code" href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">error</a>());</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    }</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    result.push_back(number.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>());</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;  }</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;  <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;}</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="comment">// TODO(klueska): Generalize this parser to take any comma separated</span></div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="comment">// list and convert it to its appropriate type (i.e., not just for</span></div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;<span class="comment">// unsigned ints). Issues could arise when the generic type is a</span></div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="comment">// string that contains commas though, so generalizing this is not as</span></div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;<span class="comment">// straightforward as it looks at first glance.</span></div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a name="l00139"></a><span class="lineno"><a class="line" href="namespaceflags.html#a309ce09d3d62bea7d94580a72eaf856e">  139</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;std::vector&lt;unsigned int&gt;</a>&gt; <a class="code" href="namespaceflags.html#af30eac14fca1a6fd93863545a0666e0c">parse</a>(<span class="keyword">const</span> std::string&amp; value)</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;{</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;  std::vector&lt;unsigned int&gt; result;</div>
 <div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;<span class="comment">// NOTE: Strings in the set cannot contain commas, since that</span></div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;<span class="comment">// is the delimiter and we provide no way to escape it.</span></div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;<span class="comment">// TODO(klueska): Generalize this parser to take any comma separated</span></div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;<span class="comment">// list and convert it to its appropriate type (i.e., not just for</span></div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;<span class="comment">// unsigned ints).</span></div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a name="l00150"></a><span class="lineno"><a class="line" href="namespaceflags.html#a6ca914ce2cd6c21e317d4318b87054d3">  150</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;std::set&lt;std::string&gt;</a>&gt; <a class="code" href="namespaceflags.html#af30eac14fca1a6fd93863545a0666e0c">parse</a>(<span class="keyword">const</span> std::string&amp; value)</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;{</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;  std::set&lt;std::string&gt; result;</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;  <span class="keywordflow">foreach</span> (<span class="keyword">const</span> std::string&amp; token, <a class="code" href="namespacestrings.html#afffe11c8ecce961981653358520d6a04">strings::tokenize</a>(value, <span class="stringliteral">&quot;,&quot;</span>)) {</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <span class="keywordflow">if</span> (result.count(token) &gt; 0) {</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(<span class="stringliteral">&quot;Duplicate token &#39;&quot;</span> + token + <span class="stringliteral">&quot;&#39;&quot;</span>);</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    }</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    result.insert(token);</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;  }</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;  <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;}</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a name="l00167"></a><span class="lineno"><a class="line" href="namespaceflags.html#a286a74f154d7c08adb062bb29a953b37">  167</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;mesos::CapabilityInfo&gt;</a> <a class="code" href="namespaceflags.html#af30eac14fca1a6fd93863545a0666e0c">parse</a>(<span class="keyword">const</span> std::string&amp; value)</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;{</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;  <a class="code" href="classTry.html">Try&lt;JSON::Object&gt;</a> <a class="code" href="namespacemesos_1_1internal.html#a3752d85ef726065c6c1b946eef1ba87a">json</a> = parse&lt;JSON::Object&gt;(value);</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;  <span class="keywordflow">if</span> (json.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(json.<a class="code" href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">error</a>());</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;  }</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;  <span class="keywordflow">return</span> protobuf::parse&lt;mesos::CapabilityInfo&gt;(json.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>());</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;}</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a name="l00179"></a><span class="lineno"><a class="line" href="namespaceflags.html#a2c8bebc75a74ef7a7dd9bab17d7911da">  179</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;mesos::Environment&gt;</a> <a class="code" href="namespaceflags.html#af30eac14fca1a6fd93863545a0666e0c">parse</a>(<span class="keyword">const</span> std::string&amp; value)</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;{</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;  <a class="code" href="classTry.html">Try&lt;JSON::Object&gt;</a> <a class="code" href="namespacemesos_1_1internal.html#a3752d85ef726065c6c1b946eef1ba87a">json</a> = parse&lt;JSON::Object&gt;(value);</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;  <span class="keywordflow">if</span> (json.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(json.<a class="code" href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">error</a>());</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;  }</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;  <span class="keywordflow">return</span> protobuf::parse&lt;mesos::Environment&gt;(json.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>());</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;}</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a name="l00191"></a><span class="lineno"><a class="line" href="namespaceflags.html#adb42f28d5f66f0f39302dbe3bbdd44ba">  191</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;mesos::RLimitInfo&gt;</a> <a class="code" href="namespaceflags.html#af30eac14fca1a6fd93863545a0666e0c">parse</a>(<span class="keyword">const</span> std::string&amp; value)</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;{</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;  <a class="code" href="classTry.html">Try&lt;JSON::Object&gt;</a> <a class="code" href="namespacemesos_1_1internal.html#a3752d85ef726065c6c1b946eef1ba87a">json</a> = parse&lt;JSON::Object&gt;(value);</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;  <span class="keywordflow">if</span> (json.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(json.<a class="code" href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">error</a>());</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;  }</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;  <span class="keywordflow">return</span> protobuf::parse&lt;mesos::RLimitInfo&gt;(json.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>());</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;}</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a name="l00203"></a><span class="lineno"><a class="line" href="namespaceflags.html#a92cf25b5edec6585475a27d0553c5f7b">  203</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;mesos::FrameworkID&gt;</a> <a class="code" href="namespaceflags.html#af30eac14fca1a6fd93863545a0666e0c">parse</a>(<span class="keyword">const</span> std::string&amp; value)</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;{</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;  mesos::FrameworkID frameworkId;</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;  frameworkId.set_value(value);</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;  <span class="keywordflow">return</span> frameworkId;</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;}</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;  <span class="keywordflow">foreach</span> (<span class="keyword">const</span> std::string&amp; token, <a class="code" href="namespacestrings.html#afffe11c8ecce961981653358520d6a04">strings::tokenize</a>(value, <span class="stringliteral">&quot;,&quot;</span>)) {</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    <a class="code" href="classTry.html">Try&lt;unsigned int&gt;</a> number = numify&lt;unsigned int&gt;(token);</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    <span class="keywordflow">if</span> (number.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(<span class="stringliteral">&quot;Failed to numify &#39;&quot;</span> + token + <span class="stringliteral">&quot;&#39;: &quot;</span> + number.<a class="code" href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">error</a>());</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    }</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    result.push_back(number.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>());</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;  }</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;  <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;}</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;<span class="comment">// NOTE: Strings in the set cannot contain commas, since that</span></div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;<span class="comment">// is the delimiter and we provide no way to escape it.</span></div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="comment">// TODO(klueska): Generalize this parser to take any comma separated</span></div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="comment">// list and convert it to its appropriate type (i.e., not just for</span></div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;<span class="comment">// unsigned ints).</span></div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a name="l00164"></a><span class="lineno"><a class="line" href="namespaceflags.html#a6ca914ce2cd6c21e317d4318b87054d3">  164</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;std::set&lt;std::string&gt;</a>&gt; <a class="code" href="namespaceflags.html#af30eac14fca1a6fd93863545a0666e0c">parse</a>(<span class="keyword">const</span> std::string&amp; value)</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;{</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;  std::set&lt;std::string&gt; result;</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;  <span class="keywordflow">foreach</span> (<span class="keyword">const</span> std::string&amp; token, <a class="code" href="namespacestrings.html#afffe11c8ecce961981653358520d6a04">strings::tokenize</a>(value, <span class="stringliteral">&quot;,&quot;</span>)) {</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    <span class="keywordflow">if</span> (result.count(token) &gt; 0) {</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(<span class="stringliteral">&quot;Duplicate token &#39;&quot;</span> + token + <span class="stringliteral">&quot;&#39;&quot;</span>);</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    }</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    result.insert(token);</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;  }</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;  <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;}</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a name="l00181"></a><span class="lineno"><a class="line" href="namespaceflags.html#a286a74f154d7c08adb062bb29a953b37">  181</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;mesos::CapabilityInfo&gt;</a> <a class="code" href="namespaceflags.html#af30eac14fca1a6fd93863545a0666e0c">parse</a>(<span class="keyword">const</span> std::string&amp; value)</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;{</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;  <a class="code" href="classTry.html">Try&lt;JSON::Object&gt;</a> <a class="code" href="namespacemesos_1_1internal.html#a3752d85ef726065c6c1b946eef1ba87a">json</a> = parse&lt;JSON::Object&gt;(value);</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;  <span class="keywordflow">if</span> (json.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(json.<a class="code" href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">error</a>());</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;  }</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;  <span class="keywordflow">return</span> protobuf::parse&lt;mesos::CapabilityInfo&gt;(json.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>());</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;}</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a name="l00193"></a><span class="lineno"><a class="line" href="namespaceflags.html#a2c8bebc75a74ef7a7dd9bab17d7911da">  193</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;mesos::Environment&gt;</a> <a class="code" href="namespaceflags.html#af30eac14fca1a6fd93863545a0666e0c">parse</a>(<span class="keyword">const</span> std::string&amp; value)</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;{</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;  <a class="code" href="classTry.html">Try&lt;JSON::Object&gt;</a> <a class="code" href="namespacemesos_1_1internal.html#a3752d85ef726065c6c1b946eef1ba87a">json</a> = parse&lt;JSON::Object&gt;(value);</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;  <span class="keywordflow">if</span> (json.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(json.<a class="code" href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">error</a>());</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;  }</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;  <span class="keywordflow">return</span> protobuf::parse&lt;mesos::Environment&gt;(json.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>());</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;}</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a name="l00205"></a><span class="lineno"><a class="line" href="namespaceflags.html#adb42f28d5f66f0f39302dbe3bbdd44ba">  205</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;mesos::RLimitInfo&gt;</a> <a class="code" href="namespaceflags.html#af30eac14fca1a6fd93863545a0666e0c">parse</a>(<span class="keyword">const</span> std::string&amp; value)</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;{</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;  <a class="code" href="classTry.html">Try&lt;JSON::Object&gt;</a> <a class="code" href="namespacemesos_1_1internal.html#a3752d85ef726065c6c1b946eef1ba87a">json</a> = parse&lt;JSON::Object&gt;(value);</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;  <span class="keywordflow">if</span> (json.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(json.<a class="code" href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">error</a>());</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;  }</div>
 <div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a name="l00213"></a><span class="lineno"><a class="line" href="namespaceflags.html#a1a49c5b64eb01185399d54bd02808c35">  213</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;mesos::ExecutorID&gt;</a> <a class="code" href="namespaceflags.html#af30eac14fca1a6fd93863545a0666e0c">parse</a>(<span class="keyword">const</span> std::string&amp; value)</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;{</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;  mesos::ExecutorID executorId;</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;  executorId.set_value(value);</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;  <span class="keywordflow">return</span> executorId;</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;}</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;  <span class="keywordflow">return</span> protobuf::parse&lt;mesos::RLimitInfo&gt;(json.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>());</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;}</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a name="l00217"></a><span class="lineno"><a class="line" href="namespaceflags.html#a92cf25b5edec6585475a27d0553c5f7b">  217</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;mesos::FrameworkID&gt;</a> <a class="code" href="namespaceflags.html#af30eac14fca1a6fd93863545a0666e0c">parse</a>(<span class="keyword">const</span> std::string&amp; value)</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;{</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;  mesos::FrameworkID frameworkId;</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;  frameworkId.set_value(value);</div>
 <div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a name="l00223"></a><span class="lineno"><a class="line" href="namespaceflags.html#a0318440c1e1f457d8e8337ba13c14c5c">  223</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;mesos::SlaveID&gt;</a> <a class="code" href="namespaceflags.html#af30eac14fca1a6fd93863545a0666e0c">parse</a>(<span class="keyword">const</span> std::string&amp; value)</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;{</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;  mesos::SlaveID slaveId;</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;  slaveId.set_value(value);</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;  <span class="keywordflow">return</span> slaveId;</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;}</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;} <span class="comment">// namespace flags {</span></div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;<span class="preprocessor">#endif // __COMMON_PARSE_HPP__</span></div>
-<div class="ttc" id="structJSON_1_1Value_html_a32ddf233c0ec159c4d72252529219cf6"><div class="ttname"><a href="structJSON_1_1Value.html#a32ddf233c0ec159c4d72252529219cf6">JSON::Value::as</a></div><div class="ttdeci">const T &amp; as() const </div><div class="ttdef"><b>Definition:</b> json.hpp:339</div></div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;  <span class="keywordflow">return</span> frameworkId;</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;}</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a name="l00227"></a><span class="lineno"><a class="line" href="namespaceflags.html#a1a49c5b64eb01185399d54bd02808c35">  227</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;mesos::ExecutorID&gt;</a> <a class="code" href="namespaceflags.html#af30eac14fca1a6fd93863545a0666e0c">parse</a>(<span class="keyword">const</span> std::string&amp; value)</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;{</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;  mesos::ExecutorID executorId;</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;  executorId.set_value(value);</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;  <span class="keywordflow">return</span> executorId;</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;}</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a name="l00237"></a><span class="lineno"><a class="line" href="namespaceflags.html#a0318440c1e1f457d8e8337ba13c14c5c">  237</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;mesos::SlaveID&gt;</a> <a class="code" href="namespaceflags.html#af30eac14fca1a6fd93863545a0666e0c">parse</a>(<span class="keyword">const</span> std::string&amp; value)</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;{</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;  mesos::SlaveID slaveId;</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;  slaveId.set_value(value);</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;  <span class="keywordflow">return</span> slaveId;</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;}</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;} <span class="comment">// namespace flags {</span></div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;<span class="preprocessor">#endif // __COMMON_PARSE_HPP__</span></div>
+<div class="ttc" id="structJSON_1_1Value_html_a32ddf233c0ec159c4d72252529219cf6"><div class="ttname"><a href="structJSON_1_1Value.html#a32ddf233c0ec159c4d72252529219cf6">JSON::Value::as</a></div><div class="ttdeci">const T &amp; as() const </div><div class="ttdef"><b>Definition:</b> json.hpp:342</div></div>
 <div class="ttc" id="classError_html"><div class="ttname"><a href="classError.html">Error</a></div><div class="ttdef"><b>Definition:</b> errorbase.hpp:35</div></div>
 <div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2flags_2parse_8hpp_html"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2flags_2parse_8hpp.html">parse.hpp</a></div></div>
 <div class="ttc" id="include_2mesos_2mesos_8hpp_html"><div class="ttname"><a href="include_2mesos_2mesos_8hpp.html">mesos.hpp</a></div></div>
 <div class="ttc" id="json_8hpp_html"><div class="ttname"><a href="json_8hpp.html">json.hpp</a></div></div>
-<div class="ttc" id="structJSON_1_1Object_html_a41bbf967d564eb3f57c2bb5453a0e7af"><div class="ttname"><a href="structJSON_1_1Object.html#a41bbf967d564eb3f57c2bb5453a0e7af">JSON::Object::values</a></div><div class="ttdeci">std::map&lt; std::string, Value &gt; values</div><div class="ttdef"><b>Definition:</b> json.hpp:187</div></div>
-<div class="ttc" id="structJSON_1_1Value_html_a9f420d588c86317e0cc816b7d3ece0f8"><div class="ttname"><a href="structJSON_1_1Value.html#a9f420d588c86317e0cc816b7d3ece0f8">JSON::Value::is</a></div><div class="ttdeci">bool is() const </div><div class="ttdef"><b>Definition:</b> json.hpp:324</div></div>
+<div class="ttc" id="structJSON_1_1Object_html_a41bbf967d564eb3f57c2bb5453a0e7af"><div class="ttname"><a href="structJSON_1_1Object.html#a41bbf967d564eb3f57c2bb5453a0e7af">JSON::Object::values</a></div><div class="ttdeci">std::map&lt; std::string, Value &gt; values</div><div class="ttdef"><b>Definition:</b> json.hpp:190</div></div>
+<div class="ttc" id="structJSON_1_1Value_html_a9f420d588c86317e0cc816b7d3ece0f8"><div class="ttname"><a href="structJSON_1_1Value.html#a9f420d588c86317e0cc816b7d3ece0f8">JSON::Value::is</a></div><div class="ttdeci">bool is() const </div><div class="ttdef"><b>Definition:</b> json.hpp:327</div></div>
 <div class="ttc" id="classhashmap_html"><div class="ttname"><a href="classhashmap.html">hashmap&lt; std::string, std::string &gt;</a></div></div>
-<div class="ttc" id="namespacestrings_html_afffe11c8ecce961981653358520d6a04"><div class="ttname"><a href="namespacestrings.html#afffe11c8ecce961981653358520d6a04">strings::tokenize</a></div><div class="ttdeci">std::vector&lt; std::string &gt; tokenize(const std::string &amp;s, const std::string &amp;delims, const Option&lt; size_t &gt; &amp;maxTokens=None())</div><div class="ttdef"><b>Definition:</b> strings.hpp:136</div></div>
-<div class="ttc" id="namespaceflags_html_af30eac14fca1a6fd93863545a0666e0c"><div class="ttname"><a href="namespaceflags.html#af30eac14fca1a6fd93863545a0666e0c">flags::parse</a></div><div class="ttdeci">Try&lt; mesos::ACLs &gt; parse(const std::string &amp;value)</div><div class="ttdoc">Returns the docker v1 image manifest from the given string. </div><div class="ttdef"><b>Definition:</b> parse.hpp:36</div></div>
+<div class="ttc" id="namespacestrings_html_afffe11c8ecce961981653358520d6a04"><div class="ttname"><a href="namespacestrings.html#afffe11c8ecce961981653358520d6a04">strings::tokenize</a></div><div class="ttdeci">std::vector&lt; std::string &gt; tokenize(const std::string &amp;s, const std::string &amp;delims, const Option&lt; size_t &gt; &amp;maxTokens=None())</div><div class="ttdef"><b>Definition:</b> strings.hpp:138</div></div>
+<div class="ttc" id="namespaceflags_html_af30eac14fca1a6fd93863545a0666e0c"><div class="ttname"><a href="namespaceflags.html#af30eac14fca1a6fd93863545a0666e0c">flags::parse</a></div><div class="ttdeci">Try&lt; mesos::ACLs &gt; parse(const std::string &amp;value)</div><div class="ttdoc">Returns the OCI v1 descriptor, image index, image manifest and image configuration from the given str...</div><div class="ttdef"><b>Definition:</b> parse.hpp:36</div></div>
 <div class="ttc" id="namespacemesos_1_1internal_html_a3752d85ef726065c6c1b946eef1ba87a"><div class="ttname"><a href="namespacemesos_1_1internal.html#a3752d85ef726065c6c1b946eef1ba87a">mesos::internal::json</a></div><div class="ttdeci">void json(JSON::ObjectWriter *writer, const Task &amp;task)</div></div>
 <div class="ttc" id="foreach_8hpp_html_a66900b166526abe66464d6597536b111"><div class="ttname"><a href="foreach_8hpp.html#a66900b166526abe66464d6597536b111">foreachpair</a></div><div class="ttdeci">#define foreachpair(KEY, VALUE, ELEMS)</div><div class="ttdef"><b>Definition:</b> foreach.hpp:51</div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2protobuf_8hpp_html"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2protobuf_8hpp.html">protobuf.hpp</a></div></div>
 <div class="ttc" id="classTry_html_aec4a11ddd3c036e889d90b7eb6258ba7"><div class="ttname"><a href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">Try::error</a></div><div class="ttdeci">static Try error(const E &amp;e)</div><div class="ttdef"><b>Definition:</b> try.hpp:42</div></div>
 <div class="ttc" id="acls_8hpp_html"><div class="ttname"><a href="acls_8hpp.html">acls.hpp</a></div></div>
-<div class="ttc" id="structJSON_1_1Value_html"><div class="ttname"><a href="structJSON_1_1Value.html">JSON::Value</a></div><div class="ttdef"><b>Definition:</b> json.hpp:242</div></div>
+<div class="ttc" id="structJSON_1_1Value_html"><div class="ttname"><a href="structJSON_1_1Value.html">JSON::Value</a></div><div class="ttdef"><b>Definition:</b> json.hpp:245</div></div>
+<div class="ttc" id="decoder_8hpp_html_abb0829cce9dd20a40ae0d86890ae85c6"><div class="ttname"><a href="decoder_8hpp.html#abb0829cce9dd20a40ae0d86890ae85c6">flags</a></div><div class="ttdeci">#define flags</div><div class="ttdef"><b>Definition:</b> decoder.hpp:18</div></div>
 <div class="ttc" id="error_8hpp_html"><div class="ttname"><a href="error_8hpp.html">error.hpp</a></div></div>
 <div class="ttc" id="classTry_html_a0b98f95163b8a38daafd1651b043a276"><div class="ttname"><a href="classTry.html#a0b98f95163b8a38daafd1651b043a276">Try::isError</a></div><div class="ttdeci">bool isError() const </div><div class="ttdef"><b>Definition:</b> try.hpp:71</div></div>
-<div class="ttc" id="structJSON_1_1String_html"><div class="ttname"><a href="structJSON_1_1String.html">JSON::String</a></div><div class="ttdef"><b>Definition:</b> json.hpp:72</div></div>
+<div class="ttc" id="structJSON_1_1String_html"><div class="ttname"><a href="structJSON_1_1String.html">JSON::String</a></div><div class="ttdef"><b>Definition:</b> json.hpp:75</div></div>
 <div class="ttc" id="stringify_8hpp_html"><div class="ttname"><a href="stringify_8hpp.html">stringify.hpp</a></div></div>
 <div class="ttc" id="try_8hpp_html"><div class="ttname"><a href="try_8hpp.html">try.hpp</a></div></div>
 <div class="ttc" id="include_2mesos_2module_2module_8hpp_html"><div class="ttname"><a href="include_2mesos_2module_2module_8hpp.html">module.hpp</a></div></div>
 <div class="ttc" id="namespacens_html_a28116b46e6543597a11733424cd1aa20"><div class="ttname"><a href="namespacens.html#a28116b46e6543597a11733424cd1aa20">ns::stringify</a></div><div class="ttdeci">std::string stringify(int flags)</div><div class="ttdef"><b>Definition:</b> ns.hpp:688</div></div>
 <div class="ttc" id="classTry_html_a7be0768038e0628632492edf6cc1515a"><div class="ttname"><a href="classTry.html#a7be0768038e0628632492edf6cc1515a">Try::get</a></div><div class="ttdeci">const T &amp; get() const </div><div class="ttdef"><b>Definition:</b> try.hpp:73</div></div>
 <div class="ttc" id="hashmap_8hpp_html"><div class="ttname"><a href="hashmap_8hpp.html">hashmap.hpp</a></div></div>
-<div class="ttc" id="namespacemesos_1_1internal_1_1tests_html_af8289f648a916c3f66923867452c7b1b"><div class="ttname"><a href="namespacemesos_1_1internal_1_1tests.html#af8289f648a916c3f66923867452c7b1b">mesos::internal::tests::flags</a></div><div class="ttdeci">Flags flags</div></div>
 <div class="ttc" id="messages_8hpp_html"><div class="ttname"><a href="messages_8hpp.html">messages.hpp</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

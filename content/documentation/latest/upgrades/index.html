@@ -154,9 +154,46 @@ R Removed feature/behavior
   </thead>
 <tr>
   <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Version-->
+  1.3.x
+  </td>
+  <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Mesos Core-->
+    <ul style="padding-left:10px;">
+      <li>R <a href="#1-3-x-disallow-old-agents">Prevent registration by old Mesos agents</a></li>
+    </ul>
+  </td>
+  <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Flags-->
+    <ul style="padding-left:10px;">
+      <li>R <a href="#1-3-x-setquota-removequota-acl">--acls (set_quotas and remove_quotas)</a></li>
+      <li>R <a href="#1-3-x-shutdown-framework-acl">--acls (shutdown_frameworks)</a></li>
+      <li>A <a href="#1-3-x-executor-authentication">authenticate_http_executors</a></li>
+      <li>A <a href="#1-3-x-executor-authentication">executor_secret_key</a></li>
+    </ul>
+  </td>
+  <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Framework API-->
+    <ul style="padding-left:10px;">
+      <li>A <a href="#1-3-x-multi-role-support">MULTI_ROLE support</a></li>
+      <li>D <a href="#1-3-x-framework-info-role">FrameworkInfo.roles deprecates FrameworkInfo.role</a></li>
+    </ul>
+  </td>
+  <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Module API-->
+    <ul style="padding-left:10px;">
+      <li>C <a href="#1-3-x-allocator-interface-change">Allocator MULTI_ROLE interface changes</a></li>
+    </ul>
+  </td>
+  <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Endpoints-->
+    <ul style="padding-left:10px;">
+      <li>D <a href="#1-3-x-endpoints-roles">MULTI_ROLE deprecates 'role' field in endpoints</a></li>
+    </ul>
+  </td>
+</tr>
+<tr>
+  <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Version-->
   1.2.x
   </td>
   <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Mesos Core-->
+    <ul style="padding-left:10px;">
+      <li>R <a href="#1-2-1-disallow-old-agents">Prevent registration by old Mesos agents</a></li>
+    </ul>
   </td>
   <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Flags-->
     <ul style="padding-left:10px;">
@@ -350,7 +387,45 @@ R Removed feature/behavior
 </table>
 
 
+<h2>Upgrading from 1.2.x to 1.3.x</h2>
+
+<p><a name="1-3-x-disallow-old-agents"></a>
+* The master will no longer allow 0.x agents to register. Interoperability between 1.1+ masters and 0.x agents has never been supported; however, it was not explicitly disallowed, either. Starting with this release of Mesos, registration attempts by 0.x agents will be ignored.</p>
+
+<p><a name="1-3-x-setquota-removequota-acl"></a>
+* Support for deprecated ACLs <code>set_quotas</code> and <code>remove_quotas</code> has been removed from the local authorizer. Before upgrading the Mesos binaries, consolidate the ACLs used under <code>set_quotas</code> and <code>remove_quotes</code> under their replacement ACL <code>update_quotas</code>. After consolidation of the ACLs, the binaries could be safely replaced.</p>
+
+<p><a name="1-3-x-shutdown-framework-acl"></a>
+* Support for deprecated ACL <code>shutdown_frameworks</code> has been removed from the local authorizer. Before upgrading the Mesos binaries, replace all instances of the ACL <code>shutdown_frameworks</code> with the newer ACL <code>teardown_frameworks</code>. After updating the ACLs, the binaries can be safely replaced.</p>
+
+<p><a name="1-3-x-framework-info-role"></a>
+* Support for multi-role frameworks deprecates the <code>FrameworkInfo.role</code> field in favor of <code>FrameworkInfo.roles</code> and the <code>MULTI_ROLE</code> capability. Frameworks using the new field can continue to use a single role.</p>
+
+<p><a name="1-3-x-endpoints-roles"></a>
+* Support for multi-role frameworks means that the framework <code>role</code> field in the master and agent endpoints is deprecated in favor of <code>roles</code>. Any tooling parsing endpoint information and relying on the role field needs to be updated before multi-role frameworks can be safely run in the cluster.</p>
+
+<p><a name="1-3-x-allocator-interface-change"></a>
+* Implementors of allocator modules have to provide new implementation functionality to satisfy the <code>MULTI_ROLE</code> framework capability. Also, the interface has changed.</p>
+
+<p><a name="1-3-x-executor-authentication"></a>
+* New Agent flags <code>authenticate_http_executors</code> and <code>executor_secret_key</code>: Used to enable required HTTP executor authentication and set the key file used for generation and authentication of HTTP executor tokens. Note that enabling these flags after upgrade is disruptive to HTTP executors that were launched before the upgrade. For more information on the recommended upgrade procedure when enabling these flags, see the <a href="/documentation/latest/./authentication/">authentication documentation</a>.</p>
+
+<p>In order to upgrade a running cluster:</p>
+
+<ol>
+<li>Rebuild and install any modules so that upgraded masters/agents/schedulers can use them.</li>
+<li>Install the new master binaries and restart the masters.</li>
+<li>Install the new agent binaries and restart the agents.</li>
+<li>Upgrade the schedulers by linking the latest native library / jar / egg (if necessary).</li>
+<li>Restart the schedulers.</li>
+<li>Upgrade the executors by linking the latest native library / jar / egg (if necessary).</li>
+</ol>
+
+
 <h2>Upgrading from 1.1.x to 1.2.x</h2>
+
+<p><a name="1-2-1-disallow-old-agents"></a>
+* In Mesos 1.2.1, the master will no longer allow 0.x agents to register. Interoperability between 1.1+ masters and 0.x agents has never been supported; however, it was not explicitly disallowed, either. Starting with Mesos 1.2.1, registration attempts by 0.x agents will be ignored. <strong>NOTE:</strong> This applies only when upgrading to Mesos 1.2.1. Mesos 1.2.0 does not implement this behavior.</p>
 
 <p><a name="1-2-x-heartbeat-flag"></a>
 * New Agent flag http_heartbeat_interval: This flag sets a heartbeat interval for messages to be sent over persistent connections made against the agent HTTP API. Currently, this only applies to the LAUNCH_NESTED_CONTAINER_SESSION and ATTACH_CONTAINER_OUTPUT calls. (default: 30secs)</p>

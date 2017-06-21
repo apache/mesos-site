@@ -156,15 +156,13 @@ the agent. Data is mapped into the <code>work_dir</code> of the agent.</p>
 operator could optionally specify a <code>role</code> for the disk, which would result in
 <a href="/documentation/latest/./reservation/">statically reserving</a> the disk for a single <a href="/documentation/latest/./roles/">role</a>.</p>
 
-<pre><code>    {
-      "resources" : [
-        {
-          "name" : "disk",
-          "type" : "SCALAR",
-          "scalar" : { "value" : 2048 }
-        }
-      ]
-    }
+<pre><code>    [
+      {
+        "name" : "disk",
+        "type" : "SCALAR",
+        "scalar" : { "value" : 2048 }
+      }
+    ]
 </code></pre>
 
 <h3><code>Path</code> disks</h3>
@@ -191,21 +189,19 @@ most 10GB of disk space in total.</p>
 operator could optionally specify a <code>role</code> for the disk, which would result in
 <a href="/documentation/latest/./reservation/">statically reserving</a> the disk for a single <a href="/documentation/latest/./roles/">role</a>.</p>
 
-<pre><code>    {
-      "resources" : [
-        {
-          "name" : "disk",
-          "type" : "SCALAR",
-          "scalar" : { "value" : 2048 },
-          "disk" : {
-            "source" : {
-              "type" : "PATH",
-              "path" : { "root" : "/mnt/data" }
-            }
+<pre><code>    [
+      {
+        "name" : "disk",
+        "type" : "SCALAR",
+        "scalar" : { "value" : 2048 },
+        "disk" : {
+          "source" : {
+            "type" : "PATH",
+            "path" : { "root" : "/mnt/data" }
           }
         }
-      ]
-    }
+      }
+    ]
 </code></pre>
 
 <h3><code>Mount</code> disks</h3>
@@ -232,21 +228,19 @@ isolation is disabled for <code>Mount</code> disks.</p>
 operator could optionally specify a <code>role</code> for the disk, which would result in
 <a href="/documentation/latest/./reservation/">statically reserving</a> the disk for a single <a href="/documentation/latest/./roles/">role</a>.</p>
 
-<pre><code>    {
-      "resources" : [
-        {
-          "name" : "disk",
-          "type" : "SCALAR",
-          "scalar" : { "value" : 2048 },
-          "disk" : {
-            "source" : {
-              "type" : "MOUNT",
-              "mount" : { "root" : "/mnt/data" }
-            }
+<pre><code>    [
+      {
+        "name" : "disk",
+        "type" : "SCALAR",
+        "scalar" : { "value" : 2048 },
+        "disk" : {
+          "source" : {
+            "type" : "MOUNT",
+            "mount" : { "root" : "/mnt/data" }
           }
         }
-      ]
-    }
+      }
+    ]
 </code></pre>
 
 <h4><code>Block</code> disks</h4>

@@ -532,21 +532,6 @@ Try&lt;Owned&lt;LocalAuthorizer&gt;&gt; authorizer = LocalAuthorizer::create();
 </code></pre>
 
 <ul>
-<li>Prefer default capture by value, explicit capture by value, then capture by reference. To avoid dangling-pointer bugs, <em>never</em> use default capture by reference:</li>
-</ul>
-
-
-<pre><code class="{.cpp}">// 1: OK.
-[=]() { ... }; // Default capture by value.
-[n]() { ... }; // Explicit capture by value.
-[&amp;n]() { ... }; // Explicit capture by reference.
-[=, &amp;n]() { ... }; // Default capture by value, explicit capture by reference.
-
-// 2: Don't use.
-[&amp;]() { ... }; // Default capture by reference.
-</code></pre>
-
-<ul>
 <li>Use <code>mutable</code> only when absolutely necessary.</li>
 </ul>
 
@@ -844,6 +829,11 @@ auto lambda = [
 </code></pre>
 
 <p>  C++11 does not provide <code>constexpr string</code> or <code>constexpr</code> containers in the STL and hence <code>constexpr</code> cannot be used for any class using stout&rsquo;s Error() class.</p>
+
+<ul>
+<li><code>enum class</code>.</li>
+</ul>
+
 
   </div>
 </div>

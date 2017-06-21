@@ -128,12 +128,15 @@
 
 <h3>DESCRIPTION</h3>
 
-<p>Returns 200 OK when the maintenance status was queried successfully.
-Returns 307 TEMPORARY_REDIRECT redirect to the leading master when
-current master is not the leader.
-Returns 503 SERVICE_UNAVAILABLE if the leading master cannot be
-found.
-Returns an object with one list of machines per machine mode.
+<p>Returns 200 OK when the maintenance status was queried successfully.</p>
+
+<p>Returns 307 TEMPORARY_REDIRECT redirect to the leading master when
+current master is not the leader.</p>
+
+<p>Returns 503 SERVICE_UNAVAILABLE if the leading master cannot be
+found.</p>
+
+<p>Returns an object with one list of machines per machine mode.
 For draining machines, this list includes the frameworks' responses
 to inverse offers.
 <strong>NOTE</strong>:
@@ -144,6 +147,12 @@ However, new inverse offers will be sent once the master recovers.</p>
 
 <p>This endpoint requires authentication iff HTTP authentication is
 enabled.</p>
+
+<h3>AUTHORIZATION</h3>
+
+<p>The response will contain only the maintenance status for those
+machines the current principal is allowed to see. If none, an empty
+response will be returned.</p>
 
   </div>
 </div>

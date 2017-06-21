@@ -284,235 +284,227 @@
 <div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#endif // __WINDOWS__</span></div>
 <div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;<span class="preprocessor">#ifndef __WINDOWS__</span></div>
-<div class="line"><a name="l00234"></a><span class="lineno"><a class="line" href="stout_2include_2stout_2gtest_8hpp.html#a77ba763e4f61cbbb251f94cb55a3ac43">  234</a></span>&#160;<span class="preprocessor"></span>constexpr <span class="keywordtype">char</span> <a class="code" href="stout_2include_2stout_2gtest_8hpp.html#a77ba763e4f61cbbb251f94cb55a3ac43">TRUE_COMMAND</a>[] = <span class="stringliteral">&quot;true&quot;</span>;</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;<span class="preprocessor"></span>constexpr <span class="keywordtype">char</span> <a class="code" href="stout_2include_2stout_2gtest_8hpp.html#a77ba763e4f61cbbb251f94cb55a3ac43">TRUE_COMMAND</a>[] = <span class="stringliteral">&quot;cmd /c exit 0&quot;</span>;</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;<span class="preprocessor">#endif // __WINDOWS__</span></div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;</div>
-<div class="line"><a name="l00240"></a><span class="lineno"><a class="line" href="stout_2include_2stout_2gtest_8hpp.html#a35ffb1309cac5b5df236add23d5582a4">  240</a></span>&#160;inline ::testing::AssertionResult <a class="code" href="stout_2include_2stout_2gtest_8hpp.html#a35ffb1309cac5b5df236add23d5582a4">AssertExited</a>(</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* actualExpr,</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> actual)</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;{</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#af9a4ddf9eee6c4a3bc9be070d59b7ccf">WIFEXITED</a>(actual)) {</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    return ::testing::AssertionSuccess();</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;  } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a6953e62fd0dec274a397678d31c344b4">WIFSIGNALED</a>(actual)) {</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;    return ::testing::AssertionFailure()</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;      &lt;&lt; <span class="stringliteral">&quot;Expecting WIFEXITED(&quot;</span> &lt;&lt; actualExpr &lt;&lt; <span class="stringliteral">&quot;) but &quot;</span></div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;      &lt;&lt; <span class="stringliteral">&quot; WIFSIGNALED(&quot;</span> &lt;&lt; actualExpr &lt;&lt; <span class="stringliteral">&quot;) is true and &quot;</span></div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;      &lt;&lt; <span class="stringliteral">&quot;WTERMSIG(&quot;</span> &lt;&lt; actualExpr &lt;&lt; <span class="stringliteral">&quot;) is &quot;</span> &lt;&lt; <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a3858fc90369448097210e69437ca7c66">strsignal</a>(<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#aeba4d421572a9d681c73c347f24ad348">WTERMSIG</a>(actual));</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;  } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ae2b610235f988f4f3109f02a2f395727">WIFSTOPPED</a>(actual)) {</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    return ::testing::AssertionFailure()</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;      &lt;&lt; <span class="stringliteral">&quot;Expecting WIFEXITED(&quot;</span> &lt;&lt; actualExpr &lt;&lt; <span class="stringliteral">&quot;) but&quot;</span></div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;      &lt;&lt; <span class="stringliteral">&quot; WIFSTOPPED(&quot;</span> &lt;&lt; actualExpr &lt;&lt; <span class="stringliteral">&quot;) is true and &quot;</span></div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;      &lt;&lt; <span class="stringliteral">&quot;WSTOPSIG(&quot;</span> &lt;&lt; actualExpr &lt;&lt; <span class="stringliteral">&quot;) is &quot;</span> &lt;&lt; <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a3858fc90369448097210e69437ca7c66">strsignal</a>(<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a2c6d84ce222454bb6387fc20d930f5b7">WSTOPSIG</a>(actual));</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;  }</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;  return ::testing::AssertionFailure()</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;    &lt;&lt; <span class="stringliteral">&quot;Expecting WIFEXITED(&quot;</span> &lt;&lt; actualExpr &lt;&lt; <span class="stringliteral">&quot;) but got&quot;</span></div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;    &lt;&lt; <span class="stringliteral">&quot; unknown value: &quot;</span> &lt;&lt; ::testing::PrintToString(actual);</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;}</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;</div>
-<div class="line"><a name="l00264"></a><span class="lineno"><a class="line" href="stout_2include_2stout_2gtest_8hpp.html#a6edc9bb8992aef99bdcb5213266ab49e">  264</a></span>&#160;<span class="preprocessor">#define ASSERT_EXITED(expected, actual)                 \</span></div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;<span class="preprocessor">  ASSERT_PRED_FORMAT2(AssertExited, expected, actual)</span></div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;</div>
-<div class="line"><a name="l00268"></a><span class="lineno"><a class="line" href="stout_2include_2stout_2gtest_8hpp.html#addaa736ef62e1837941905b0ba4f1b93">  268</a></span>&#160;<span class="preprocessor">#define EXPECT_EXITED(expected, actual)                 \</span></div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;<span class="preprocessor">  EXPECT_PRED_FORMAT2(AssertExited, expected, actual)</span></div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;</div>
-<div class="line"><a name="l00272"></a><span class="lineno"><a class="line" href="stout_2include_2stout_2gtest_8hpp.html#a9f0924a7f42c846a34589d10d60d7538">  272</a></span>&#160;inline ::testing::AssertionResult <a class="code" href="stout_2include_2stout_2gtest_8hpp.html#a9f0924a7f42c846a34589d10d60d7538">AssertExitStatusEq</a>(</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* expectedExpr,</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* actualExpr,</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> expected,</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> actual)</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;{</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;  const ::testing::AssertionResult result = <a class="code" href="stout_2include_2stout_2gtest_8hpp.html#a35ffb1309cac5b5df236add23d5582a4">AssertExited</a>(actualExpr, actual);</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;  <span class="keywordflow">if</span> (result) {</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ae0c8840076dd63d5e2367fff4f7f46f3">WEXITSTATUS</a>(actual) == expected) {</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;      return ::testing::AssertionSuccess();</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;      return ::testing::AssertionFailure()</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;        &lt;&lt; <span class="stringliteral">&quot;Value of: WEXITSTATUS(&quot;</span> &lt;&lt; actualExpr &lt;&lt; <span class="stringliteral">&quot;)\n&quot;</span></div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;        &lt;&lt; <span class="stringliteral">&quot;  Actual: &quot;</span> &lt;&lt; ::testing::PrintToString(<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ae0c8840076dd63d5e2367fff4f7f46f3">WEXITSTATUS</a>(actual)) &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;        &lt;&lt; <span class="stringliteral">&quot;Expected: &quot;</span> &lt;&lt; expectedExpr &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;        &lt;&lt; <span class="stringliteral">&quot;Which is: &quot;</span> &lt;&lt; ::testing::PrintToString(expected);</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;    }</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;  }</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;  <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;}</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;</div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;</div>
-<div class="line"><a name="l00296"></a><span class="lineno"><a class="line" href="stout_2include_2stout_2gtest_8hpp.html#a0fbb9aaec69edbb04a48525cbb0df14f">  296</a></span>&#160;<span class="preprocessor">#define ASSERT_WEXITSTATUS_EQ(expected, actual)                 \</span></div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;<span class="preprocessor">  ASSERT_PRED_FORMAT2(AssertExitStatusEq, expected, actual)</span></div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;</div>
-<div class="line"><a name="l00300"></a><span class="lineno"><a class="line" href="stout_2include_2stout_2gtest_8hpp.html#af6f8835a8aa28206986c8e3d8ba9638c">  300</a></span>&#160;<span class="preprocessor">#define EXPECT_WEXITSTATUS_EQ(expected, actual)                 \</span></div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;<span class="preprocessor">  EXPECT_PRED_FORMAT2(AssertExitStatusEq, expected, actual)</span></div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;</div>
-<div class="line"><a name="l00305"></a><span class="lineno"><a class="line" href="stout_2include_2stout_2gtest_8hpp.html#a0eee39affc289ff372336ce8bbeef40a">  305</a></span>&#160;inline ::testing::AssertionResult <a class="code" href="stout_2include_2stout_2gtest_8hpp.html#a0eee39affc289ff372336ce8bbeef40a">AssertExitStatusNe</a>(</div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* expectedExpr,</div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* actualExpr,</div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> expected,</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> actual)</div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;{</div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;  const ::testing::AssertionResult result = <a class="code" href="stout_2include_2stout_2gtest_8hpp.html#a35ffb1309cac5b5df236add23d5582a4">AssertExited</a>(actualExpr, actual);</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;</div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;  <span class="keywordflow">if</span> (result) {</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ae0c8840076dd63d5e2367fff4f7f46f3">WEXITSTATUS</a>(actual) != expected) {</div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;      return ::testing::AssertionSuccess();</div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;      return ::testing::AssertionFailure()</div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;        &lt;&lt; <span class="stringliteral">&quot;Value of: WEXITSTATUS(&quot;</span> &lt;&lt; actualExpr &lt;&lt; <span class="stringliteral">&quot;)\n&quot;</span></div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;        &lt;&lt; <span class="stringliteral">&quot;  Actual: &quot;</span> &lt;&lt; ::testing::PrintToString(<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ae0c8840076dd63d5e2367fff4f7f46f3">WEXITSTATUS</a>(actual)) &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;        &lt;&lt; <span class="stringliteral">&quot;Expected: &quot;</span> &lt;&lt; expectedExpr &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;        &lt;&lt; <span class="stringliteral">&quot;Which is: &quot;</span> &lt;&lt; ::testing::PrintToString(expected);</div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;    }</div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;  }</div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;  <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;}</div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;</div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;</div>
-<div class="line"><a name="l00329"></a><span class="lineno"><a class="line" href="stout_2include_2stout_2gtest_8hpp.html#accf76a475038f20704d30b6bd66710a9">  329</a></span>&#160;<span class="preprocessor">#define ASSERT_WEXITSTATUS_NE(expected, actual)                 \</span></div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;<span class="preprocessor">  ASSERT_PRED_FORMAT2(AssertExitStatusNe, expected, actual)</span></div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;</div>
-<div class="line"><a name="l00333"></a><span class="lineno"><a class="line" href="stout_2include_2stout_2gtest_8hpp.html#ad38707e6d3876b027320749e67e9fe01">  333</a></span>&#160;<span class="preprocessor">#define EXPECT_WEXITSTATUS_NE(expected, actual)                 \</span></div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;<span class="preprocessor">  EXPECT_PRED_FORMAT2(AssertExitStatusNe, expected, actual)</span></div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;</div>
-<div class="line"><a name="l00337"></a><span class="lineno"><a class="line" href="stout_2include_2stout_2gtest_8hpp.html#a799901963033736968a8328d9aa63b38">  337</a></span>&#160;inline ::testing::AssertionResult <a class="code" href="stout_2include_2stout_2gtest_8hpp.html#a799901963033736968a8328d9aa63b38">AssertSignaled</a>(</div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* actualExpr,</div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> actual)</div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;{</div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#af9a4ddf9eee6c4a3bc9be070d59b7ccf">WIFEXITED</a>(actual)) {</div>
+<div class="line"><a name="l00233"></a><span class="lineno"><a class="line" href="stout_2include_2stout_2gtest_8hpp.html#a35ffb1309cac5b5df236add23d5582a4">  233</a></span>&#160;inline ::testing::AssertionResult <a class="code" href="stout_2include_2stout_2gtest_8hpp.html#a35ffb1309cac5b5df236add23d5582a4">AssertExited</a>(</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* actualExpr,</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> actual)</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;{</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#af9a4ddf9eee6c4a3bc9be070d59b7ccf">WIFEXITED</a>(actual)) {</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    return ::testing::AssertionSuccess();</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;  } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a6953e62fd0dec274a397678d31c344b4">WIFSIGNALED</a>(actual)) {</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    return ::testing::AssertionFailure()</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;      &lt;&lt; <span class="stringliteral">&quot;Expecting WIFEXITED(&quot;</span> &lt;&lt; actualExpr &lt;&lt; <span class="stringliteral">&quot;) but &quot;</span></div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;      &lt;&lt; <span class="stringliteral">&quot; WIFSIGNALED(&quot;</span> &lt;&lt; actualExpr &lt;&lt; <span class="stringliteral">&quot;) is true and &quot;</span></div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;      &lt;&lt; <span class="stringliteral">&quot;WTERMSIG(&quot;</span> &lt;&lt; actualExpr &lt;&lt; <span class="stringliteral">&quot;) is &quot;</span> &lt;&lt; <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a3858fc90369448097210e69437ca7c66">strsignal</a>(<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#aeba4d421572a9d681c73c347f24ad348">WTERMSIG</a>(actual));</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;  } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ae2b610235f988f4f3109f02a2f395727">WIFSTOPPED</a>(actual)) {</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    return ::testing::AssertionFailure()</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;      &lt;&lt; <span class="stringliteral">&quot;Expecting WIFEXITED(&quot;</span> &lt;&lt; actualExpr &lt;&lt; <span class="stringliteral">&quot;) but&quot;</span></div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;      &lt;&lt; <span class="stringliteral">&quot; WIFSTOPPED(&quot;</span> &lt;&lt; actualExpr &lt;&lt; <span class="stringliteral">&quot;) is true and &quot;</span></div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;      &lt;&lt; <span class="stringliteral">&quot;WSTOPSIG(&quot;</span> &lt;&lt; actualExpr &lt;&lt; <span class="stringliteral">&quot;) is &quot;</span> &lt;&lt; <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a3858fc90369448097210e69437ca7c66">strsignal</a>(<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a2c6d84ce222454bb6387fc20d930f5b7">WSTOPSIG</a>(actual));</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;  }</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;  return ::testing::AssertionFailure()</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    &lt;&lt; <span class="stringliteral">&quot;Expecting WIFEXITED(&quot;</span> &lt;&lt; actualExpr &lt;&lt; <span class="stringliteral">&quot;) but got&quot;</span></div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;    &lt;&lt; <span class="stringliteral">&quot; unknown value: &quot;</span> &lt;&lt; ::testing::PrintToString(actual);</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;}</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;</div>
+<div class="line"><a name="l00257"></a><span class="lineno"><a class="line" href="stout_2include_2stout_2gtest_8hpp.html#a6edc9bb8992aef99bdcb5213266ab49e">  257</a></span>&#160;<span class="preprocessor">#define ASSERT_EXITED(expected, actual)                 \</span></div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;<span class="preprocessor">  ASSERT_PRED_FORMAT2(AssertExited, expected, actual)</span></div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;</div>
+<div class="line"><a name="l00261"></a><span class="lineno"><a class="line" href="stout_2include_2stout_2gtest_8hpp.html#addaa736ef62e1837941905b0ba4f1b93">  261</a></span>&#160;<span class="preprocessor">#define EXPECT_EXITED(expected, actual)                 \</span></div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;<span class="preprocessor">  EXPECT_PRED_FORMAT2(AssertExited, expected, actual)</span></div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;</div>
+<div class="line"><a name="l00265"></a><span class="lineno"><a class="line" href="stout_2include_2stout_2gtest_8hpp.html#a9f0924a7f42c846a34589d10d60d7538">  265</a></span>&#160;inline ::testing::AssertionResult <a class="code" href="stout_2include_2stout_2gtest_8hpp.html#a9f0924a7f42c846a34589d10d60d7538">AssertExitStatusEq</a>(</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* expectedExpr,</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* actualExpr,</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> expected,</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> actual)</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;{</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;  const ::testing::AssertionResult result = <a class="code" href="stout_2include_2stout_2gtest_8hpp.html#a35ffb1309cac5b5df236add23d5582a4">AssertExited</a>(actualExpr, actual);</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;  <span class="keywordflow">if</span> (result) {</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ae0c8840076dd63d5e2367fff4f7f46f3">WEXITSTATUS</a>(actual) == expected) {</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;      return ::testing::AssertionSuccess();</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;      return ::testing::AssertionFailure()</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;        &lt;&lt; <span class="stringliteral">&quot;Value of: WEXITSTATUS(&quot;</span> &lt;&lt; actualExpr &lt;&lt; <span class="stringliteral">&quot;)\n&quot;</span></div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;        &lt;&lt; <span class="stringliteral">&quot;  Actual: &quot;</span> &lt;&lt; ::testing::PrintToString(<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ae0c8840076dd63d5e2367fff4f7f46f3">WEXITSTATUS</a>(actual)) &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;        &lt;&lt; <span class="stringliteral">&quot;Expected: &quot;</span> &lt;&lt; expectedExpr &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;        &lt;&lt; <span class="stringliteral">&quot;Which is: &quot;</span> &lt;&lt; ::testing::PrintToString(expected);</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;    }</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;  }</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;  <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;}</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;</div>
+<div class="line"><a name="l00289"></a><span class="lineno"><a class="line" href="stout_2include_2stout_2gtest_8hpp.html#a0fbb9aaec69edbb04a48525cbb0df14f">  289</a></span>&#160;<span class="preprocessor">#define ASSERT_WEXITSTATUS_EQ(expected, actual)                 \</span></div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;<span class="preprocessor">  ASSERT_PRED_FORMAT2(AssertExitStatusEq, expected, actual)</span></div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;</div>
+<div class="line"><a name="l00293"></a><span class="lineno"><a class="line" href="stout_2include_2stout_2gtest_8hpp.html#af6f8835a8aa28206986c8e3d8ba9638c">  293</a></span>&#160;<span class="preprocessor">#define EXPECT_WEXITSTATUS_EQ(expected, actual)                 \</span></div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;<span class="preprocessor">  EXPECT_PRED_FORMAT2(AssertExitStatusEq, expected, actual)</span></div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;</div>
+<div class="line"><a name="l00298"></a><span class="lineno"><a class="line" href="stout_2include_2stout_2gtest_8hpp.html#a0eee39affc289ff372336ce8bbeef40a">  298</a></span>&#160;inline ::testing::AssertionResult <a class="code" href="stout_2include_2stout_2gtest_8hpp.html#a0eee39affc289ff372336ce8bbeef40a">AssertExitStatusNe</a>(</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* expectedExpr,</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* actualExpr,</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> expected,</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> actual)</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;{</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;  const ::testing::AssertionResult result = <a class="code" href="stout_2include_2stout_2gtest_8hpp.html#a35ffb1309cac5b5df236add23d5582a4">AssertExited</a>(actualExpr, actual);</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;  <span class="keywordflow">if</span> (result) {</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ae0c8840076dd63d5e2367fff4f7f46f3">WEXITSTATUS</a>(actual) != expected) {</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;      return ::testing::AssertionSuccess();</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;      return ::testing::AssertionFailure()</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;        &lt;&lt; <span class="stringliteral">&quot;Value of: WEXITSTATUS(&quot;</span> &lt;&lt; actualExpr &lt;&lt; <span class="stringliteral">&quot;)\n&quot;</span></div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;        &lt;&lt; <span class="stringliteral">&quot;  Actual: &quot;</span> &lt;&lt; ::testing::PrintToString(<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ae0c8840076dd63d5e2367fff4f7f46f3">WEXITSTATUS</a>(actual)) &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;        &lt;&lt; <span class="stringliteral">&quot;Expected: &quot;</span> &lt;&lt; expectedExpr &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;        &lt;&lt; <span class="stringliteral">&quot;Which is: &quot;</span> &lt;&lt; ::testing::PrintToString(expected);</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;    }</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;  }</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;  <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;}</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;</div>
+<div class="line"><a name="l00322"></a><span class="lineno"><a class="line" href="stout_2include_2stout_2gtest_8hpp.html#accf76a475038f20704d30b6bd66710a9">  322</a></span>&#160;<span class="preprocessor">#define ASSERT_WEXITSTATUS_NE(expected, actual)                 \</span></div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;<span class="preprocessor">  ASSERT_PRED_FORMAT2(AssertExitStatusNe, expected, actual)</span></div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;</div>
+<div class="line"><a name="l00326"></a><span class="lineno"><a class="line" href="stout_2include_2stout_2gtest_8hpp.html#ad38707e6d3876b027320749e67e9fe01">  326</a></span>&#160;<span class="preprocessor">#define EXPECT_WEXITSTATUS_NE(expected, actual)                 \</span></div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;<span class="preprocessor">  EXPECT_PRED_FORMAT2(AssertExitStatusNe, expected, actual)</span></div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;</div>
+<div class="line"><a name="l00330"></a><span class="lineno"><a class="line" href="stout_2include_2stout_2gtest_8hpp.html#a799901963033736968a8328d9aa63b38">  330</a></span>&#160;inline ::testing::AssertionResult <a class="code" href="stout_2include_2stout_2gtest_8hpp.html#a799901963033736968a8328d9aa63b38">AssertSignaled</a>(</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* actualExpr,</div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> actual)</div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;{</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#af9a4ddf9eee6c4a3bc9be070d59b7ccf">WIFEXITED</a>(actual)) {</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;    return ::testing::AssertionFailure()</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;      &lt;&lt; <span class="stringliteral">&quot;Expecting WIFSIGNALED(&quot;</span> &lt;&lt; actualExpr &lt;&lt; <span class="stringliteral">&quot;) but &quot;</span></div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;      &lt;&lt; <span class="stringliteral">&quot; WIFEXITED(&quot;</span> &lt;&lt; actualExpr &lt;&lt; <span class="stringliteral">&quot;) is true and &quot;</span></div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;      &lt;&lt; <span class="stringliteral">&quot;WEXITSTATUS(&quot;</span> &lt;&lt; actualExpr &lt;&lt; <span class="stringliteral">&quot;) is &quot;</span> &lt;&lt; <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ae0c8840076dd63d5e2367fff4f7f46f3">WEXITSTATUS</a>(actual);</div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;  } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a6953e62fd0dec274a397678d31c344b4">WIFSIGNALED</a>(actual)) {</div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;    return ::testing::AssertionSuccess();</div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;  } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ae2b610235f988f4f3109f02a2f395727">WIFSTOPPED</a>(actual)) {</div>
 <div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;    return ::testing::AssertionFailure()</div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;      &lt;&lt; <span class="stringliteral">&quot;Expecting WIFSIGNALED(&quot;</span> &lt;&lt; actualExpr &lt;&lt; <span class="stringliteral">&quot;) but &quot;</span></div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;      &lt;&lt; <span class="stringliteral">&quot; WIFEXITED(&quot;</span> &lt;&lt; actualExpr &lt;&lt; <span class="stringliteral">&quot;) is true and &quot;</span></div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;      &lt;&lt; <span class="stringliteral">&quot;WEXITSTATUS(&quot;</span> &lt;&lt; actualExpr &lt;&lt; <span class="stringliteral">&quot;) is &quot;</span> &lt;&lt; <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ae0c8840076dd63d5e2367fff4f7f46f3">WEXITSTATUS</a>(actual);</div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;  } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a6953e62fd0dec274a397678d31c344b4">WIFSIGNALED</a>(actual)) {</div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;    return ::testing::AssertionSuccess();</div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;  } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ae2b610235f988f4f3109f02a2f395727">WIFSTOPPED</a>(actual)) {</div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;    return ::testing::AssertionFailure()</div>
-<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;      &lt;&lt; <span class="stringliteral">&quot;Expecting WIFSIGNALED(&quot;</span> &lt;&lt; actualExpr &lt;&lt; <span class="stringliteral">&quot;) but&quot;</span></div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;      &lt;&lt; <span class="stringliteral">&quot; WIFSTOPPED(&quot;</span> &lt;&lt; actualExpr &lt;&lt; <span class="stringliteral">&quot;) is true and &quot;</span></div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;      &lt;&lt; <span class="stringliteral">&quot;WSTOPSIG(&quot;</span> &lt;&lt; actualExpr &lt;&lt; <span class="stringliteral">&quot;) is &quot;</span> &lt;&lt; <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a3858fc90369448097210e69437ca7c66">strsignal</a>(<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a2c6d84ce222454bb6387fc20d930f5b7">WSTOPSIG</a>(actual));</div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;  }</div>
-<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;</div>
-<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;  return ::testing::AssertionFailure()</div>
-<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;    &lt;&lt; <span class="stringliteral">&quot;Expecting WIFSIGNALED(&quot;</span> &lt;&lt; actualExpr &lt;&lt; <span class="stringliteral">&quot;) but got&quot;</span></div>
-<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;    &lt;&lt; <span class="stringliteral">&quot; unknown value: &quot;</span> &lt;&lt; ::testing::PrintToString(actual);</div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;}</div>
-<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;</div>
-<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;</div>
-<div class="line"><a name="l00361"></a><span class="lineno"><a class="line" href="stout_2include_2stout_2gtest_8hpp.html#af182a83b056fb6a40855d939c7a98443">  361</a></span>&#160;<span class="preprocessor">#define ASSERT_SIGNALED(expected, actual)               \</span></div>
-<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;<span class="preprocessor">  ASSERT_PRED_FORMAT2(AssertSignaled, expected, actual)</span></div>
-<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;</div>
-<div class="line"><a name="l00365"></a><span class="lineno"><a class="line" href="stout_2include_2stout_2gtest_8hpp.html#a2e14e8db6cbc03003e3b37b02fa754e2">  365</a></span>&#160;<span class="preprocessor">#define EXPECT_SIGNALED(expected, actual)               \</span></div>
-<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;<span class="preprocessor">  EXPECT_PRED_FORMAT2(AssertSignaled, expected, actual)</span></div>
-<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;</div>
-<div class="line"><a name="l00369"></a><span class="lineno"><a class="line" href="stout_2include_2stout_2gtest_8hpp.html#a5e399531eaa0ff53ca397cadd739fe33">  369</a></span>&#160;inline ::testing::AssertionResult <a class="code" href="stout_2include_2stout_2gtest_8hpp.html#a5e399531eaa0ff53ca397cadd739fe33">AssertTermSigEq</a>(</div>
-<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* expectedExpr,</div>
-<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* actualExpr,</div>
-<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> expected,</div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> actual)</div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;{</div>
-<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;  const ::testing::AssertionResult result = <a class="code" href="stout_2include_2stout_2gtest_8hpp.html#a799901963033736968a8328d9aa63b38">AssertSignaled</a>(actualExpr, actual);</div>
-<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;</div>
-<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;  <span class="keywordflow">if</span> (result) {</div>
-<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#aeba4d421572a9d681c73c347f24ad348">WTERMSIG</a>(actual) == expected) {</div>
-<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;      return ::testing::AssertionSuccess();</div>
-<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;      return ::testing::AssertionFailure()</div>
-<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;        &lt;&lt; <span class="stringliteral">&quot;Value of: WTERMSIG(&quot;</span> &lt;&lt; actualExpr &lt;&lt; <span class="stringliteral">&quot;)\n&quot;</span></div>
-<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;        &lt;&lt; <span class="stringliteral">&quot;  Actual: &quot;</span> &lt;&lt; <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a3858fc90369448097210e69437ca7c66">strsignal</a>(<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#aeba4d421572a9d681c73c347f24ad348">WTERMSIG</a>(actual)) &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
-<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;        &lt;&lt; <span class="stringliteral">&quot;Expected: &quot;</span> &lt;&lt; expectedExpr &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
-<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;        &lt;&lt; <span class="stringliteral">&quot;Which is: &quot;</span> &lt;&lt; <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a3858fc90369448097210e69437ca7c66">strsignal</a>(expected);</div>
-<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;    }</div>
-<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;  }</div>
-<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;</div>
-<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;  <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;}</div>
-<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;</div>
-<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;</div>
-<div class="line"><a name="l00393"></a><span class="lineno"><a class="line" href="stout_2include_2stout_2gtest_8hpp.html#ad80789c9ee764b85fbfee97683e1dae7">  393</a></span>&#160;<span class="preprocessor">#define ASSERT_WTERMSIG_EQ(expected, actual)                    \</span></div>
-<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;<span class="preprocessor">  ASSERT_PRED_FORMAT2(AssertTermSigEq, expected, actual)</span></div>
-<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;</div>
-<div class="line"><a name="l00397"></a><span class="lineno"><a class="line" href="stout_2include_2stout_2gtest_8hpp.html#a6bf2b8705fa80981a718bf55ba14db11">  397</a></span>&#160;<span class="preprocessor">#define EXPECT_WTERMSIG_EQ(expected, actual)                    \</span></div>
-<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;<span class="preprocessor">  EXPECT_PRED_FORMAT2(AssertTermSigEq, expected, actual)</span></div>
-<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;</div>
-<div class="line"><a name="l00401"></a><span class="lineno"><a class="line" href="stout_2include_2stout_2gtest_8hpp.html#a4af6af348abe6fc830763329ae961e5f">  401</a></span>&#160;inline ::testing::AssertionResult <a class="code" href="stout_2include_2stout_2gtest_8hpp.html#a4af6af348abe6fc830763329ae961e5f">AssertTermSigNe</a>(</div>
-<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* expectedExpr,</div>
-<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* actualExpr,</div>
-<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> expected,</div>
-<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> actual)</div>
-<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;{</div>
-<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;  const ::testing::AssertionResult result = <a class="code" href="stout_2include_2stout_2gtest_8hpp.html#a799901963033736968a8328d9aa63b38">AssertSignaled</a>(actualExpr, actual);</div>
-<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;</div>
-<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;  <span class="keywordflow">if</span> (result) {</div>
-<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#aeba4d421572a9d681c73c347f24ad348">WTERMSIG</a>(actual) != expected) {</div>
-<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;      return ::testing::AssertionSuccess();</div>
-<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;      return ::testing::AssertionFailure()</div>
-<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;        &lt;&lt; <span class="stringliteral">&quot;Value of: WTERMSIG(&quot;</span> &lt;&lt; actualExpr &lt;&lt; <span class="stringliteral">&quot;)\n&quot;</span></div>
-<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;        &lt;&lt; <span class="stringliteral">&quot;  Actual: &quot;</span> &lt;&lt; <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a3858fc90369448097210e69437ca7c66">strsignal</a>(<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#aeba4d421572a9d681c73c347f24ad348">WTERMSIG</a>(actual)) &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
-<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;        &lt;&lt; <span class="stringliteral">&quot;Expected: &quot;</span> &lt;&lt; expectedExpr &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
-<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;        &lt;&lt; <span class="stringliteral">&quot;Which is: &quot;</span> &lt;&lt; <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a3858fc90369448097210e69437ca7c66">strsignal</a>(expected);</div>
-<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;    }</div>
-<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;  }</div>
-<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;</div>
-<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;  <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;}</div>
-<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;</div>
-<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;</div>
-<div class="line"><a name="l00425"></a><span class="lineno"><a class="line" href="stout_2include_2stout_2gtest_8hpp.html#a62cb0011a53d50333095f035e0283de1">  425</a></span>&#160;<span class="preprocessor">#define ASSERT_WTERMSIG_NE(expected, actual)                    \</span></div>
-<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;<span class="preprocessor">  ASSERT_PRED_FORMAT2(AssertTermSigNe, expected, actual)</span></div>
-<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;</div>
-<div class="line"><a name="l00429"></a><span class="lineno"><a class="line" href="stout_2include_2stout_2gtest_8hpp.html#ae522965b91bc36ce90dd3a91c269a28e">  429</a></span>&#160;<span class="preprocessor">#define EXPECT_WTERMSIG_NE(expected, actual)                    \</span></div>
-<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;<span class="preprocessor">  EXPECT_PRED_FORMAT2(AssertTermSigNe, expected, actual)</span></div>
-<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;<span class="preprocessor">#endif // __STOUT_GTEST_HPP__</span></div>
-<div class="ttc" id="stout_2include_2stout_2gtest_8hpp_html_a0eee39affc289ff372336ce8bbeef40a"><div class="ttname"><a href="stout_2include_2stout_2gtest_8hpp.html#a0eee39affc289ff372336ce8bbeef40a">AssertExitStatusNe</a></div><div class="ttdeci">inline::testing::AssertionResult AssertExitStatusNe(const char *expectedExpr, const char *actualExpr, const int expected, const int actual)</div><div class="ttdef"><b>Definition:</b> gtest.hpp:305</div></div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;      &lt;&lt; <span class="stringliteral">&quot;Expecting WIFSIGNALED(&quot;</span> &lt;&lt; actualExpr &lt;&lt; <span class="stringliteral">&quot;) but&quot;</span></div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;      &lt;&lt; <span class="stringliteral">&quot; WIFSTOPPED(&quot;</span> &lt;&lt; actualExpr &lt;&lt; <span class="stringliteral">&quot;) is true and &quot;</span></div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;      &lt;&lt; <span class="stringliteral">&quot;WSTOPSIG(&quot;</span> &lt;&lt; actualExpr &lt;&lt; <span class="stringliteral">&quot;) is &quot;</span> &lt;&lt; <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a3858fc90369448097210e69437ca7c66">strsignal</a>(<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a2c6d84ce222454bb6387fc20d930f5b7">WSTOPSIG</a>(actual));</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;  }</div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;</div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;  return ::testing::AssertionFailure()</div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;    &lt;&lt; <span class="stringliteral">&quot;Expecting WIFSIGNALED(&quot;</span> &lt;&lt; actualExpr &lt;&lt; <span class="stringliteral">&quot;) but got&quot;</span></div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;    &lt;&lt; <span class="stringliteral">&quot; unknown value: &quot;</span> &lt;&lt; ::testing::PrintToString(actual);</div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;}</div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;</div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;</div>
+<div class="line"><a name="l00354"></a><span class="lineno"><a class="line" href="stout_2include_2stout_2gtest_8hpp.html#af182a83b056fb6a40855d939c7a98443">  354</a></span>&#160;<span class="preprocessor">#define ASSERT_SIGNALED(expected, actual)               \</span></div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;<span class="preprocessor">  ASSERT_PRED_FORMAT2(AssertSignaled, expected, actual)</span></div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;</div>
+<div class="line"><a name="l00358"></a><span class="lineno"><a class="line" href="stout_2include_2stout_2gtest_8hpp.html#a2e14e8db6cbc03003e3b37b02fa754e2">  358</a></span>&#160;<span class="preprocessor">#define EXPECT_SIGNALED(expected, actual)               \</span></div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;<span class="preprocessor">  EXPECT_PRED_FORMAT2(AssertSignaled, expected, actual)</span></div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;</div>
+<div class="line"><a name="l00362"></a><span class="lineno"><a class="line" href="stout_2include_2stout_2gtest_8hpp.html#a5e399531eaa0ff53ca397cadd739fe33">  362</a></span>&#160;inline ::testing::AssertionResult <a class="code" href="stout_2include_2stout_2gtest_8hpp.html#a5e399531eaa0ff53ca397cadd739fe33">AssertTermSigEq</a>(</div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* expectedExpr,</div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* actualExpr,</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> expected,</div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> actual)</div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;{</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;  const ::testing::AssertionResult result = <a class="code" href="stout_2include_2stout_2gtest_8hpp.html#a799901963033736968a8328d9aa63b38">AssertSignaled</a>(actualExpr, actual);</div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;</div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;  <span class="keywordflow">if</span> (result) {</div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#aeba4d421572a9d681c73c347f24ad348">WTERMSIG</a>(actual) == expected) {</div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;      return ::testing::AssertionSuccess();</div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;      return ::testing::AssertionFailure()</div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;        &lt;&lt; <span class="stringliteral">&quot;Value of: WTERMSIG(&quot;</span> &lt;&lt; actualExpr &lt;&lt; <span class="stringliteral">&quot;)\n&quot;</span></div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;        &lt;&lt; <span class="stringliteral">&quot;  Actual: &quot;</span> &lt;&lt; <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a3858fc90369448097210e69437ca7c66">strsignal</a>(<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#aeba4d421572a9d681c73c347f24ad348">WTERMSIG</a>(actual)) &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;        &lt;&lt; <span class="stringliteral">&quot;Expected: &quot;</span> &lt;&lt; expectedExpr &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;        &lt;&lt; <span class="stringliteral">&quot;Which is: &quot;</span> &lt;&lt; <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a3858fc90369448097210e69437ca7c66">strsignal</a>(expected);</div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;    }</div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;  }</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;</div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;  <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;}</div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;</div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;</div>
+<div class="line"><a name="l00386"></a><span class="lineno"><a class="line" href="stout_2include_2stout_2gtest_8hpp.html#ad80789c9ee764b85fbfee97683e1dae7">  386</a></span>&#160;<span class="preprocessor">#define ASSERT_WTERMSIG_EQ(expected, actual)                    \</span></div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;<span class="preprocessor">  ASSERT_PRED_FORMAT2(AssertTermSigEq, expected, actual)</span></div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;</div>
+<div class="line"><a name="l00390"></a><span class="lineno"><a class="line" href="stout_2include_2stout_2gtest_8hpp.html#a6bf2b8705fa80981a718bf55ba14db11">  390</a></span>&#160;<span class="preprocessor">#define EXPECT_WTERMSIG_EQ(expected, actual)                    \</span></div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;<span class="preprocessor">  EXPECT_PRED_FORMAT2(AssertTermSigEq, expected, actual)</span></div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;</div>
+<div class="line"><a name="l00394"></a><span class="lineno"><a class="line" href="stout_2include_2stout_2gtest_8hpp.html#a4af6af348abe6fc830763329ae961e5f">  394</a></span>&#160;inline ::testing::AssertionResult <a class="code" href="stout_2include_2stout_2gtest_8hpp.html#a4af6af348abe6fc830763329ae961e5f">AssertTermSigNe</a>(</div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* expectedExpr,</div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* actualExpr,</div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> expected,</div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> actual)</div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;{</div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;  const ::testing::AssertionResult result = <a class="code" href="stout_2include_2stout_2gtest_8hpp.html#a799901963033736968a8328d9aa63b38">AssertSignaled</a>(actualExpr, actual);</div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;</div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;  <span class="keywordflow">if</span> (result) {</div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#aeba4d421572a9d681c73c347f24ad348">WTERMSIG</a>(actual) != expected) {</div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;      return ::testing::AssertionSuccess();</div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;      return ::testing::AssertionFailure()</div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;        &lt;&lt; <span class="stringliteral">&quot;Value of: WTERMSIG(&quot;</span> &lt;&lt; actualExpr &lt;&lt; <span class="stringliteral">&quot;)\n&quot;</span></div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;        &lt;&lt; <span class="stringliteral">&quot;  Actual: &quot;</span> &lt;&lt; <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a3858fc90369448097210e69437ca7c66">strsignal</a>(<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#aeba4d421572a9d681c73c347f24ad348">WTERMSIG</a>(actual)) &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;        &lt;&lt; <span class="stringliteral">&quot;Expected: &quot;</span> &lt;&lt; expectedExpr &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;        &lt;&lt; <span class="stringliteral">&quot;Which is: &quot;</span> &lt;&lt; <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a3858fc90369448097210e69437ca7c66">strsignal</a>(expected);</div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;    }</div>
+<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;  }</div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;</div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;  <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;}</div>
+<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;</div>
+<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;</div>
+<div class="line"><a name="l00418"></a><span class="lineno"><a class="line" href="stout_2include_2stout_2gtest_8hpp.html#a62cb0011a53d50333095f035e0283de1">  418</a></span>&#160;<span class="preprocessor">#define ASSERT_WTERMSIG_NE(expected, actual)                    \</span></div>
+<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;<span class="preprocessor">  ASSERT_PRED_FORMAT2(AssertTermSigNe, expected, actual)</span></div>
+<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;</div>
+<div class="line"><a name="l00422"></a><span class="lineno"><a class="line" href="stout_2include_2stout_2gtest_8hpp.html#ae522965b91bc36ce90dd3a91c269a28e">  422</a></span>&#160;<span class="preprocessor">#define EXPECT_WTERMSIG_NE(expected, actual)                    \</span></div>
+<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;<span class="preprocessor">  EXPECT_PRED_FORMAT2(AssertTermSigNe, expected, actual)</span></div>
+<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;<span class="preprocessor">#endif // __STOUT_GTEST_HPP__</span></div>
+<div class="ttc" id="stout_2include_2stout_2gtest_8hpp_html_a0eee39affc289ff372336ce8bbeef40a"><div class="ttname"><a href="stout_2include_2stout_2gtest_8hpp.html#a0eee39affc289ff372336ce8bbeef40a">AssertExitStatusNe</a></div><div class="ttdeci">inline::testing::AssertionResult AssertExitStatusNe(const char *expectedExpr, const char *actualExpr, const int expected, const int actual)</div><div class="ttdef"><b>Definition:</b> gtest.hpp:298</div></div>
 <div class="ttc" id="classResult_html_ac2cdc0db9f9d29a5bb2f1cf19c29da49"><div class="ttname"><a href="classResult.html#ac2cdc0db9f9d29a5bb2f1cf19c29da49">Result::isNone</a></div><div class="ttdeci">bool isNone() const </div><div class="ttdef"><b>Definition:</b> result.hpp:109</div></div>
 <div class="ttc" id="classOption_html"><div class="ttname"><a href="classOption.html">Option</a></div><div class="ttdef"><b>Definition:</b> option.hpp:24</div></div>
 <div class="ttc" id="stout_2include_2stout_2gtest_8hpp_html_adb152f87a157c905d17af2d051098df9"><div class="ttname"><a href="stout_2include_2stout_2gtest_8hpp.html#adb152f87a157c905d17af2d051098df9">AssertSomeEq</a></div><div class="ttdeci">::testing::AssertionResult AssertSomeEq(const char *expectedExpr, const char *actualExpr, const T1 &amp;expected, const T2 &amp;actual)</div><div class="ttdef"><b>Definition:</b> gtest.hpp:79</div></div>
 <div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
 <div class="ttc" id="classResult_html_a521adf96f5c27d26d6b1d580aae8aaee"><div class="ttname"><a href="classResult.html#a521adf96f5c27d26d6b1d580aae8aaee">Result::error</a></div><div class="ttdeci">static Result&lt; T &gt; error(const std::string &amp;message)</div><div class="ttdef"><b>Definition:</b> result.hpp:53</div></div>
-<div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_a3858fc90369448097210e69437ca7c66"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a3858fc90369448097210e69437ca7c66">strsignal</a></div><div class="ttdeci">const char * strsignal(int signum)</div><div class="ttdef"><b>Definition:</b> windows.hpp:407</div></div>
+<div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_a3858fc90369448097210e69437ca7c66"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a3858fc90369448097210e69437ca7c66">strsignal</a></div><div class="ttdeci">const char * strsignal(int signum)</div><div class="ttdef"><b>Definition:</b> windows.hpp:413</div></div>
 <div class="ttc" id="result_8hpp_html"><div class="ttname"><a href="result_8hpp.html">result.hpp</a></div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html">windows.hpp</a></div></div>
 <div class="ttc" id="classResult_html"><div class="ttname"><a href="classResult.html">Result</a></div><div class="ttdef"><b>Definition:</b> result.hpp:40</div></div>
 <div class="ttc" id="stout_2include_2stout_2gtest_8hpp_html_a132f4728e0e7ebab8dd069db7539cec5"><div class="ttname"><a href="stout_2include_2stout_2gtest_8hpp.html#a132f4728e0e7ebab8dd069db7539cec5">AssertSome</a></div><div class="ttdeci">::testing::AssertionResult AssertSome(const char *expr, const Option&lt; T &gt; &amp;actual)</div><div class="ttdef"><b>Definition:</b> gtest.hpp:34</div></div>
-<div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_a2c6d84ce222454bb6387fc20d930f5b7"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a2c6d84ce222454bb6387fc20d930f5b7">WSTOPSIG</a></div><div class="ttdeci">#define WSTOPSIG(x)</div><div class="ttdef"><b>Definition:</b> windows.hpp:449</div></div>
-<div class="ttc" id="stout_2include_2stout_2gtest_8hpp_html_a9f0924a7f42c846a34589d10d60d7538"><div class="ttname"><a href="stout_2include_2stout_2gtest_8hpp.html#a9f0924a7f42c846a34589d10d60d7538">AssertExitStatusEq</a></div><div class="ttdeci">inline::testing::AssertionResult AssertExitStatusEq(const char *expectedExpr, const char *actualExpr, const int expected, const int actual)</div><div class="ttdef"><b>Definition:</b> gtest.hpp:272</div></div>
-<div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_a6953e62fd0dec274a397678d31c344b4"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a6953e62fd0dec274a397678d31c344b4">WIFSIGNALED</a></div><div class="ttdeci">#define WIFSIGNALED(x)</div><div class="ttdef"><b>Definition:</b> windows.hpp:428</div></div>
-<div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_ae2b610235f988f4f3109f02a2f395727"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ae2b610235f988f4f3109f02a2f395727">WIFSTOPPED</a></div><div class="ttdeci">#define WIFSTOPPED(x)</div><div class="ttdef"><b>Definition:</b> windows.hpp:444</div></div>
+<div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_a2c6d84ce222454bb6387fc20d930f5b7"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a2c6d84ce222454bb6387fc20d930f5b7">WSTOPSIG</a></div><div class="ttdeci">#define WSTOPSIG(x)</div><div class="ttdef"><b>Definition:</b> windows.hpp:455</div></div>
+<div class="ttc" id="stout_2include_2stout_2gtest_8hpp_html_a9f0924a7f42c846a34589d10d60d7538"><div class="ttname"><a href="stout_2include_2stout_2gtest_8hpp.html#a9f0924a7f42c846a34589d10d60d7538">AssertExitStatusEq</a></div><div class="ttdeci">inline::testing::AssertionResult AssertExitStatusEq(const char *expectedExpr, const char *actualExpr, const int expected, const int actual)</div><div class="ttdef"><b>Definition:</b> gtest.hpp:265</div></div>
+<div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_a6953e62fd0dec274a397678d31c344b4"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a6953e62fd0dec274a397678d31c344b4">WIFSIGNALED</a></div><div class="ttdeci">#define WIFSIGNALED(x)</div><div class="ttdef"><b>Definition:</b> windows.hpp:434</div></div>
+<div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_ae2b610235f988f4f3109f02a2f395727"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ae2b610235f988f4f3109f02a2f395727">WIFSTOPPED</a></div><div class="ttdeci">#define WIFSTOPPED(x)</div><div class="ttdef"><b>Definition:</b> windows.hpp:450</div></div>
 <div class="ttc" id="option_8hpp_html"><div class="ttname"><a href="option_8hpp.html">option.hpp</a></div></div>
-<div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_ae0c8840076dd63d5e2367fff4f7f46f3"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ae0c8840076dd63d5e2367fff4f7f46f3">WEXITSTATUS</a></div><div class="ttdeci">#define WEXITSTATUS(x)</div><div class="ttdef"><b>Definition:</b> windows.hpp:424</div></div>
-<div class="ttc" id="stout_2include_2stout_2gtest_8hpp_html_a4af6af348abe6fc830763329ae961e5f"><div class="ttname"><a href="stout_2include_2stout_2gtest_8hpp.html#a4af6af348abe6fc830763329ae961e5f">AssertTermSigNe</a></div><div class="ttdeci">inline::testing::AssertionResult AssertTermSigNe(const char *expectedExpr, const char *actualExpr, const int expected, const int actual)</div><div class="ttdef"><b>Definition:</b> gtest.hpp:401</div></div>
+<div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_ae0c8840076dd63d5e2367fff4f7f46f3"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ae0c8840076dd63d5e2367fff4f7f46f3">WEXITSTATUS</a></div><div class="ttdeci">#define WEXITSTATUS(x)</div><div class="ttdef"><b>Definition:</b> windows.hpp:430</div></div>
+<div class="ttc" id="stout_2include_2stout_2gtest_8hpp_html_a4af6af348abe6fc830763329ae961e5f"><div class="ttname"><a href="stout_2include_2stout_2gtest_8hpp.html#a4af6af348abe6fc830763329ae961e5f">AssertTermSigNe</a></div><div class="ttdeci">inline::testing::AssertionResult AssertTermSigNe(const char *expectedExpr, const char *actualExpr, const int expected, const int actual)</div><div class="ttdef"><b>Definition:</b> gtest.hpp:394</div></div>
 <div class="ttc" id="classTry_html_aec4a11ddd3c036e889d90b7eb6258ba7"><div class="ttname"><a href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">Try::error</a></div><div class="ttdeci">static Try error(const E &amp;e)</div><div class="ttdef"><b>Definition:</b> try.hpp:42</div></div>
-<div class="ttc" id="stout_2include_2stout_2gtest_8hpp_html_a77ba763e4f61cbbb251f94cb55a3ac43"><div class="ttname"><a href="stout_2include_2stout_2gtest_8hpp.html#a77ba763e4f61cbbb251f94cb55a3ac43">TRUE_COMMAND</a></div><div class="ttdeci">constexpr char TRUE_COMMAND[]</div><div class="ttdef"><b>Definition:</b> gtest.hpp:234</div></div>
-<div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_af9a4ddf9eee6c4a3bc9be070d59b7ccf"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#af9a4ddf9eee6c4a3bc9be070d59b7ccf">WIFEXITED</a></div><div class="ttdeci">#define WIFEXITED(x)</div><div class="ttdef"><b>Definition:</b> windows.hpp:419</div></div>
+<div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_af9a4ddf9eee6c4a3bc9be070d59b7ccf"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#af9a4ddf9eee6c4a3bc9be070d59b7ccf">WIFEXITED</a></div><div class="ttdeci">#define WIFEXITED(x)</div><div class="ttdef"><b>Definition:</b> windows.hpp:425</div></div>
 <div class="ttc" id="classTry_html_a0b98f95163b8a38daafd1651b043a276"><div class="ttname"><a href="classTry.html#a0b98f95163b8a38daafd1651b043a276">Try::isError</a></div><div class="ttdeci">bool isError() const </div><div class="ttdef"><b>Definition:</b> try.hpp:71</div></div>
 <div class="ttc" id="try_8hpp_html"><div class="ttname"><a href="try_8hpp.html">try.hpp</a></div></div>
-<div class="ttc" id="stout_2include_2stout_2gtest_8hpp_html_a5e399531eaa0ff53ca397cadd739fe33"><div class="ttname"><a href="stout_2include_2stout_2gtest_8hpp.html#a5e399531eaa0ff53ca397cadd739fe33">AssertTermSigEq</a></div><div class="ttdeci">inline::testing::AssertionResult AssertTermSigEq(const char *expectedExpr, const char *actualExpr, const int expected, const int actual)</div><div class="ttdef"><b>Definition:</b> gtest.hpp:369</div></div>
-<div class="ttc" id="stout_2include_2stout_2gtest_8hpp_html_a799901963033736968a8328d9aa63b38"><div class="ttname"><a href="stout_2include_2stout_2gtest_8hpp.html#a799901963033736968a8328d9aa63b38">AssertSignaled</a></div><div class="ttdeci">inline::testing::AssertionResult AssertSignaled(const char *actualExpr, const int actual)</div><div class="ttdef"><b>Definition:</b> gtest.hpp:337</div></div>
+<div class="ttc" id="stout_2include_2stout_2gtest_8hpp_html_a5e399531eaa0ff53ca397cadd739fe33"><div class="ttname"><a href="stout_2include_2stout_2gtest_8hpp.html#a5e399531eaa0ff53ca397cadd739fe33">AssertTermSigEq</a></div><div class="ttdeci">inline::testing::AssertionResult AssertTermSigEq(const char *expectedExpr, const char *actualExpr, const int expected, const int actual)</div><div class="ttdef"><b>Definition:</b> gtest.hpp:362</div></div>
+<div class="ttc" id="stout_2include_2stout_2gtest_8hpp_html_a799901963033736968a8328d9aa63b38"><div class="ttname"><a href="stout_2include_2stout_2gtest_8hpp.html#a799901963033736968a8328d9aa63b38">AssertSignaled</a></div><div class="ttdeci">inline::testing::AssertionResult AssertSignaled(const char *actualExpr, const int actual)</div><div class="ttdef"><b>Definition:</b> gtest.hpp:330</div></div>
 <div class="ttc" id="classOption_html_a06eab791122ebc1f8af4ad310e5e7d7e"><div class="ttname"><a href="classOption.html#a06eab791122ebc1f8af4ad310e5e7d7e">Option::isNone</a></div><div class="ttdeci">bool isNone() const </div><div class="ttdef"><b>Definition:</b> option.hpp:109</div></div>
-<div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_aeba4d421572a9d681c73c347f24ad348"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#aeba4d421572a9d681c73c347f24ad348">WTERMSIG</a></div><div class="ttdeci">#define WTERMSIG(x)</div><div class="ttdef"><b>Definition:</b> windows.hpp:434</div></div>
+<div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_aeba4d421572a9d681c73c347f24ad348"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#aeba4d421572a9d681c73c347f24ad348">WTERMSIG</a></div><div class="ttdeci">#define WTERMSIG(x)</div><div class="ttdef"><b>Definition:</b> windows.hpp:440</div></div>
 <div class="ttc" id="classResult_html_aeca16ad17d299ad885c9b46c83b12a3d"><div class="ttname"><a href="classResult.html#aeca16ad17d299ad885c9b46c83b12a3d">Result::isError</a></div><div class="ttdeci">bool isError() const </div><div class="ttdef"><b>Definition:</b> result.hpp:110</div></div>
-<div class="ttc" id="stout_2include_2stout_2gtest_8hpp_html_a35ffb1309cac5b5df236add23d5582a4"><div class="ttname"><a href="stout_2include_2stout_2gtest_8hpp.html#a35ffb1309cac5b5df236add23d5582a4">AssertExited</a></div><div class="ttdeci">inline::testing::AssertionResult AssertExited(const char *actualExpr, const int actual)</div><div class="ttdef"><b>Definition:</b> gtest.hpp:240</div></div>
+<div class="ttc" id="stout_2include_2stout_2gtest_8hpp_html_a35ffb1309cac5b5df236add23d5582a4"><div class="ttname"><a href="stout_2include_2stout_2gtest_8hpp.html#a35ffb1309cac5b5df236add23d5582a4">AssertExited</a></div><div class="ttdeci">inline::testing::AssertionResult AssertExited(const char *actualExpr, const int actual)</div><div class="ttdef"><b>Definition:</b> gtest.hpp:233</div></div>
 <div class="ttc" id="stout_2include_2stout_2gtest_8hpp_html_a0be5869f812d3562577316398e04271c"><div class="ttname"><a href="stout_2include_2stout_2gtest_8hpp.html#a0be5869f812d3562577316398e04271c">AssertSomeNe</a></div><div class="ttdeci">::testing::AssertionResult AssertSomeNe(const char *notExpectedExpr, const char *actualExpr, const T1 &amp;notExpected, const T2 &amp;actual)</div><div class="ttdef"><b>Definition:</b> gtest.hpp:104</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

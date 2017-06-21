@@ -153,10 +153,24 @@
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code" href="namespacemesos_1_1modules.html#a70163bdea2fe39ef5b798a7d7ee0c220">kind</a>();</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;} <span class="comment">// namespace modules {</span></div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;} <span class="comment">// namespace mesos {</span></div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="preprocessor">#endif // __MESOS_MODULE_HPP__</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="comment">// Each module &quot;kind&quot; specialization extends ModuleBase to provide a `create()`</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="comment">// method that returns a pointer to an object of the given module &quot;kind&quot;.</span></div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="comment">//   template &lt;&gt; struct Module&lt;mesos::SecretResolver&gt; : ModuleBase {</span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="comment">//     Module(..., T* (*_create)(const Parameters&amp;))</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="comment">//       : ModuleBase(...), create(_create) {...}</span></div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="comment">//     T* (*create)(const Parameters&amp;);</span></div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="comment">//   };</span></div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="comment">// TODO(kapil): Update module interface to return a managed pointer instead of</span></div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="comment">// returning raw pointers. This would allow the caller to manage the lifecycle</span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="comment">// of the dynamically-allocated object. We should also allow passing</span></div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="comment">// master/agent flags during module initialization. E.g.,</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="comment">//   unique_ptr&lt;T&gt; (*create)(const Parameters&amp;, const Flags&amp;);</span></div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;} <span class="comment">// namespace modules {</span></div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;} <span class="comment">// namespace mesos {</span></div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="preprocessor">#endif // __MESOS_MODULE_HPP__</span></div>
 <div class="ttc" id="structmesos_1_1modules_1_1ModuleBase_html_a6e0d636098dbb6bb0fbdaa9c6cb1b5e8"><div class="ttname"><a href="structmesos_1_1modules_1_1ModuleBase.html#a6e0d636098dbb6bb0fbdaa9c6cb1b5e8">mesos::modules::ModuleBase::ModuleBase</a></div><div class="ttdeci">ModuleBase(const char *_moduleApiVersion, const char *_mesosVersion, const char *_kind, const char *_authorName, const char *_authorEmail, const char *_description, bool(*_compatible)())</div><div class="ttdef"><b>Definition:</b> module.hpp:58</div></div>
 <div class="ttc" id="structmesos_1_1modules_1_1ModuleBase_html_a344f574a53177b987a00d2c83abc2587"><div class="ttname"><a href="structmesos_1_1modules_1_1ModuleBase.html#a344f574a53177b987a00d2c83abc2587">mesos::modules::ModuleBase::compatible</a></div><div class="ttdeci">bool(* compatible)()</div><div class="ttdef"><b>Definition:</b> module.hpp:90</div></div>
 <div class="ttc" id="structmesos_1_1modules_1_1ModuleBase_html_a3ca69335b900f0e95dca883c512df95a"><div class="ttname"><a href="structmesos_1_1modules_1_1ModuleBase.html#a3ca69335b900f0e95dca883c512df95a">mesos::modules::ModuleBase::mesosVersion</a></div><div class="ttdeci">const char * mesosVersion</div><div class="ttdef"><b>Definition:</b> module.hpp:75</div></div>

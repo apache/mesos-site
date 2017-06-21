@@ -84,50 +84,58 @@
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="include_2mesos_2uri_2fetcher_8hpp.html">mesos/uri/fetcher.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="src_2slave_2flags_8hpp.html">slave/flags.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="resolver_8hpp.html">mesos/secret/resolver.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">namespace </span>mesos {</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keyword">namespace </span>internal {</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">namespace </span>slave {</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">namespace </span>docker {</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1slave_1_1docker_1_1Puller.html">   40</a></span>&#160;<span class="keyword">class </span><a class="code" href="classmesos_1_1internal_1_1slave_1_1docker_1_1Puller.html">Puller</a></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;{</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <span class="keyword">static</span> <a class="code" href="classTry.html">Try&lt;process::Owned&lt;Puller&gt;</a>&gt; <a class="code" href="classmesos_1_1internal_1_1slave_1_1docker_1_1Puller.html#a4f485f32482048e1f59a334651979c0b">create</a>(</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;      <span class="keyword">const</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Flags.html">Flags</a>&amp; <a class="code" href="namespacemesos_1_1internal_1_1tests.html#af8289f648a916c3f66923867452c7b1b">flags</a>,</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;      <span class="keyword">const</span> <a class="code" href="classprocess_1_1Shared.html">process::Shared&lt;uri::Fetcher&gt;</a>&amp; fetcher);</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
-<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1slave_1_1docker_1_1Puller.html#ae04e34e28e166c39a4ded9c81548b97f">   47</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1docker_1_1Puller.html#ae04e34e28e166c39a4ded9c81548b97f">~Puller</a>() {}</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;std::vector&lt;std::string&gt;</a>&gt; <a class="code" href="classmesos_1_1internal_1_1slave_1_1docker_1_1Puller.html#acd971f57d4915d26f78f4e45f088533b">pull</a>(</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;      const ::docker::spec::ImageReference&amp; reference,</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;      <span class="keyword">const</span> std::string&amp; directory,</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;      <span class="keyword">const</span> std::string&amp; backend) = 0;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;};</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;} <span class="comment">// namespace docker {</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;} <span class="comment">// namespace slave {</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;} <span class="comment">// namespace internal {</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;} <span class="comment">// namespace mesos {</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor">#endif // __PROVISIONER_DOCKER_PULLER_HPP__</span></div>
-<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1docker_1_1Puller_html"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1docker_1_1Puller.html">mesos::internal::slave::docker::Puller</a></div><div class="ttdef"><b>Definition:</b> puller.hpp:40</div></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="src_2slave_2flags_8hpp.html">slave/flags.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">namespace </span>mesos {</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">namespace </span>internal {</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keyword">namespace </span>slave {</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keyword">namespace </span>docker {</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
+<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1slave_1_1docker_1_1Puller.html">   42</a></span>&#160;<span class="keyword">class </span><a class="code" href="classmesos_1_1internal_1_1slave_1_1docker_1_1Puller.html">Puller</a></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;{</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <span class="keyword">static</span> <a class="code" href="classTry.html">Try&lt;process::Owned&lt;Puller&gt;</a>&gt; <a class="code" href="classmesos_1_1internal_1_1slave_1_1docker_1_1Puller.html#a28550d1962a9fa4cd700634a559a399f">create</a>(</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;      <span class="keyword">const</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Flags.html">Flags</a>&amp; <a class="code" href="decoder_8hpp.html#abb0829cce9dd20a40ae0d86890ae85c6">flags</a>,</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;      <span class="keyword">const</span> <a class="code" href="classprocess_1_1Shared.html">process::Shared&lt;uri::Fetcher&gt;</a>&amp; fetcher,</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;      <a class="code" href="classmesos_1_1SecretResolver.html">SecretResolver</a>* secretResolver = <span class="keyword">nullptr</span>);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1slave_1_1docker_1_1Puller.html#ae04e34e28e166c39a4ded9c81548b97f">   50</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1docker_1_1Puller.html#ae04e34e28e166c39a4ded9c81548b97f">~Puller</a>() {}</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;std::vector&lt;std::string&gt;</a>&gt; <a class="code" href="classmesos_1_1internal_1_1slave_1_1docker_1_1Puller.html#ac32648fd850bed4d306a21d1ceece9bb">pull</a>(</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;      const ::docker::spec::ImageReference&amp; reference,</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;      <span class="keyword">const</span> std::string&amp; directory,</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;      <span class="keyword">const</span> std::string&amp; backend,</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;      <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;Secret&gt;</a>&amp; config = <a class="code" href="structNone.html">None</a>()) = 0;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;};</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;} <span class="comment">// namespace docker {</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;} <span class="comment">// namespace slave {</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;} <span class="comment">// namespace internal {</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;} <span class="comment">// namespace mesos {</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="preprocessor">#endif // __PROVISIONER_DOCKER_PULLER_HPP__</span></div>
+<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1docker_1_1Puller_html"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1docker_1_1Puller.html">mesos::internal::slave::docker::Puller</a></div><div class="ttdef"><b>Definition:</b> puller.hpp:42</div></div>
+<div class="ttc" id="resolver_8hpp_html"><div class="ttname"><a href="resolver_8hpp.html">resolver.hpp</a></div></div>
+<div class="ttc" id="classOption_html"><div class="ttname"><a href="classOption.html">Option</a></div><div class="ttdef"><b>Definition:</b> option.hpp:24</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1docker_1_1Puller_html_a28550d1962a9fa4cd700634a559a399f"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1docker_1_1Puller.html#a28550d1962a9fa4cd700634a559a399f">mesos::internal::slave::docker::Puller::create</a></div><div class="ttdeci">static Try&lt; process::Owned&lt; Puller &gt; &gt; create(const Flags &amp;flags, const process::Shared&lt; uri::Fetcher &gt; &amp;fetcher, SecretResolver *secretResolver=nullptr)</div></div>
 <div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1docker_1_1Puller_html_ae04e34e28e166c39a4ded9c81548b97f"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1docker_1_1Puller.html#ae04e34e28e166c39a4ded9c81548b97f">mesos::internal::slave::docker::Puller::~Puller</a></div><div class="ttdeci">virtual ~Puller()</div><div class="ttdef"><b>Definition:</b> puller.hpp:47</div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1docker_1_1Puller_html_acd971f57d4915d26f78f4e45f088533b"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1docker_1_1Puller.html#acd971f57d4915d26f78f4e45f088533b">mesos::internal::slave::docker::Puller::pull</a></div><div class="ttdeci">virtual process::Future&lt; std::vector&lt; std::string &gt; &gt; pull(const ::docker::spec::ImageReference &amp;reference, const std::string &amp;directory, const std::string &amp;backend)=0</div><div class="ttdoc">Pull a Docker image layers into the specified directory, and return the list of layer ids in that ima...</div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1Flags_html"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1Flags.html">mesos::internal::slave::Flags</a></div><div class="ttdef"><b>Definition:</b> flags.hpp:38</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1docker_1_1Puller_html_ac32648fd850bed4d306a21d1ceece9bb"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1docker_1_1Puller.html#ac32648fd850bed4d306a21d1ceece9bb">mesos::internal::slave::docker::Puller::pull</a></div><div class="ttdeci">virtual process::Future&lt; std::vector&lt; std::string &gt; &gt; pull(const ::docker::spec::ImageReference &amp;reference, const std::string &amp;directory, const std::string &amp;backend, const Option&lt; Secret &gt; &amp;config=None())=0</div><div class="ttdoc">Pull a Docker image layers into the specified directory, and return the list of layer ids in that ima...</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1docker_1_1Puller_html_ae04e34e28e166c39a4ded9c81548b97f"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1docker_1_1Puller.html#ae04e34e28e166c39a4ded9c81548b97f">mesos::internal::slave::docker::Puller::~Puller</a></div><div class="ttdeci">virtual ~Puller()</div><div class="ttdef"><b>Definition:</b> puller.hpp:50</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1Flags_html"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1Flags.html">mesos::internal::slave::Flags</a></div><div class="ttdef"><b>Definition:</b> flags.hpp:39</div></div>
 <div class="ttc" id="3rdparty_2libprocess_2include_2process_2shared_8hpp_html"><div class="ttname"><a href="3rdparty_2libprocess_2include_2process_2shared_8hpp.html">shared.hpp</a></div></div>
 <div class="ttc" id="include_2mesos_2docker_2spec_8hpp_html"><div class="ttname"><a href="include_2mesos_2docker_2spec_8hpp.html">spec.hpp</a></div></div>
 <div class="ttc" id="classprocess_1_1Shared_html"><div class="ttname"><a href="classprocess_1_1Shared.html">process::Shared</a></div><div class="ttdef"><b>Definition:</b> owned.hpp:25</div></div>
 <div class="ttc" id="include_2mesos_2uri_2fetcher_8hpp_html"><div class="ttname"><a href="include_2mesos_2uri_2fetcher_8hpp.html">fetcher.hpp</a></div></div>
 <div class="ttc" id="future_8hpp_html"><div class="ttname"><a href="future_8hpp.html">future.hpp</a></div></div>
+<div class="ttc" id="decoder_8hpp_html_abb0829cce9dd20a40ae0d86890ae85c6"><div class="ttname"><a href="decoder_8hpp.html#abb0829cce9dd20a40ae0d86890ae85c6">flags</a></div><div class="ttdeci">#define flags</div><div class="ttdef"><b>Definition:</b> decoder.hpp:18</div></div>
+<div class="ttc" id="structNone_html"><div class="ttname"><a href="structNone.html">None</a></div><div class="ttdef"><b>Definition:</b> none.hpp:27</div></div>
 <div class="ttc" id="try_8hpp_html"><div class="ttname"><a href="try_8hpp.html">try.hpp</a></div></div>
 <div class="ttc" id="src_2slave_2flags_8hpp_html"><div class="ttname"><a href="src_2slave_2flags_8hpp.html">flags.hpp</a></div></div>
 <div class="ttc" id="owned_8hpp_html"><div class="ttname"><a href="owned_8hpp.html">owned.hpp</a></div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1docker_1_1Puller_html_a4f485f32482048e1f59a334651979c0b"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1docker_1_1Puller.html#a4f485f32482048e1f59a334651979c0b">mesos::internal::slave::docker::Puller::create</a></div><div class="ttdeci">static Try&lt; process::Owned&lt; Puller &gt; &gt; create(const Flags &amp;flags, const process::Shared&lt; uri::Fetcher &gt; &amp;fetcher)</div></div>
-<div class="ttc" id="namespacemesos_1_1internal_1_1tests_html_af8289f648a916c3f66923867452c7b1b"><div class="ttname"><a href="namespacemesos_1_1internal_1_1tests.html#af8289f648a916c3f66923867452c7b1b">mesos::internal::tests::flags</a></div><div class="ttdeci">Flags flags</div></div>
+<div class="ttc" id="classmesos_1_1SecretResolver_html"><div class="ttname"><a href="classmesos_1_1SecretResolver.html">mesos::SecretResolver</a></div><div class="ttdef"><b>Definition:</b> resolver.hpp:34</div></div>
 <div class="ttc" id="classprocess_1_1Future_html"><div class="ttname"><a href="classprocess_1_1Future.html">process::Future</a></div><div class="ttdef"><b>Definition:</b> future.hpp:56</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

@@ -167,8 +167,17 @@ install any necessary nvidia GPU drivers on your machine.</p>
 <p>The following isolation flags are required to enable Nvidia GPU
 support on an agent.</p>
 
-<pre><code>--isolation="cgroups/devices,gpu/nvidia"
+<pre><code>--isolation="filesystem/linux,cgroups/devices,gpu/nvidia"
 </code></pre>
+
+<p>The <code>filesystem/linux</code> flag tells the agent to use linux-specific
+commands to prepare the root filesystem and volumes (e.g., persistent
+volumes) for containers that require them. Specifically, it relies on
+Linux mount namespaces to prevent the mounts of a container from being
+propagated to the host mount table. In the case of GPUs, we require
+this flag to properly mount certain Nvidia binaries (e.g.
+<code>nvidia-smi</code>) and libraries (e.g. <code>libnvidia-ml.so</code>) into a container
+when necessary.</p>
 
 <p>The <code>cgroups/devices</code> flag tells the agent to restrict access to a
 specific set of devices for each task that it launches (i.e. a subset

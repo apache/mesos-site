@@ -122,54 +122,66 @@
 <h3>System Requirements</h3>
 
 <ol>
-<li>Install the latest version of <a href="https://www.visualstudio.com/post-download-vs?sku=community">Visual Studio Community 2015</a>.
-Make sure to select the Common Tools for Visual C++ and the Windows 10 SDK.
-Start Visual Studio Community to complete the setup and configuration.</li>
-<li>Install <a href="https://cmake.org/files/v3.6/cmake-3.6.3-win32-x86.msi">CMake 3.6.3 or later</a>.
-Do not run CMake before finishing the Visual Studio Community setup.</li>
-<li>Install <a href="http://downloads.sourceforge.net/project/gnuwin32/patch/2.5.9-7/patch-2.5.9-7-setup.exe">Gnu Patch 2.5.9-7 or later</a>.</li>
-<li>If building from git, make sure you have Windows-style line endings.
-i.e. <code>git config core.autocrlf true</code>.</li>
-<li>Make sure there are no spaces in your build directory.
-For example, <code>C:/Program Files (x86)/mesos</code> is an invalid build directory.</li>
-<li><strong>Optional</strong>: Install <a href="https://www.python.org/downloads/windows/"><code>python 2.6+</code></a> and <a href="https://pypi.python.org/pypi/virtualenv"><code>virtualenv</code></a>
-This is only necessary when developing Mesos on Windows (specifically for automated linting of python files).</li>
+<li><p>Install the latest <a href="https://www.visualstudio.com/downloads/">Visual Studio 2017</a>:
+The &ldquo;Community&rdquo; edition is sufficient (and free).
+During installation, you install either the &ldquo;Desktop development with C++&rdquo;
+workload or choose the following &ldquo;Individual components&rdquo;:</p>
+
+<ul>
+<li>VC++ 2017 v141 toolset</li>
+<li>Windows 10 SDK (10.0.15036.0, currently) for Desktop C++</li>
+<li>Windows Universal CRT SDK</li>
+<li>Windows Universal C Runtime</li>
+<li>C++ profiling tools (optional, for profiling)</li>
+<li>Visual Studio C++ core features (optional, for IDE)</li>
+</ul>
+</li>
+<li><p>Install <a href="https://cmake.org/download/">CMake 3.8.0</a> or later.
+During installation, choose to &ldquo;Add CMake to the system PATH for all users&rdquo;.</p></li>
+<li><p>Install <a href="http://gnuwin32.sourceforge.net/packages/patch.htm">GNU patch for Windows</a>.</p></li>
+<li><p>If building from source, install <a href="https://git-scm.com/download/win">Git</a>.
+During installation, keep the defaults to &ldquo;Use Git from the Windows
+Command Prompt&rdquo;, and &ldquo;Checkout Windows-style, commit Unix-style
+line endings&rdquo; (i.e. <code>git config core.autocrlf true</code>).</p></li>
+<li><p>Enable filesystem long path support by running the following
+in an administrative PowerShell prompt:
+<code>Set-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem -Name LongPathsEnabled -Value 1</code>
+And then reboot.  Alternatively this can be set manually through <code>regedit</code>.
+For more details, see this
+<a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa365247(v=vs.85">MSDN article</a>.aspx).
+NOTE: This requirement is in the process of being deprecated!</p></li>
+<li><p>Make sure there are no spaces in your build directory.
+For example, <code>C:/Program Files (x86)/mesos</code> is an invalid build directory.</p></li>
+<li><p>If developing Mesos, install <a href="https://www.python.org/downloads/">Python 2</a>
+(not Python 3), in order to use our support scripts (e.g. to post and apply
+patches, or lint source code).</p></li>
 </ol>
 
 
 <h3>Build Instructions</h3>
 
-<p>Following are the instructions for stock Windows 10 and Windows Server 2012 or newer.</p>
+<p>Following are the instructions for Windows 10.</p>
 
-<pre><code># Start a VS2015 x64 Native Tool command prompt.
-# This can be found by opening VS2015 and looking under the "tools"
-# menu for "Visual Studio Command Prompt".
+<pre><code># Start an administrative session of PowerShell
+# (required for creating symlinks).
 
-# Change working directory.
-$ cd mesos
+# Clone (or extract) Mesos.
+git clone https://git-wip-us.apache.org/repos/asf/mesos.git
+cd mesos
 
-# If you are developing on Windows, we recommend running the bootstrap.
-# This requires administrator privileges.
-$ .\bootstrap.bat
+# Configure using CMake for an out-of-tree build.
+mkdir build
+cd build
+cmake .. -G "Visual Studio 15 2017 Win64" -T "host=x64" -DENABLE_LIBEVENT=1 -DHAS_AUTHENTICATION=0
 
-# Generate the solution and build.
-$ .\support\windows-build.bat
-
-# Set the `PreferredToolArchitecture` environment variable to `x64`.
-# NOTE: `PreferredToolArchitecture` can be set system-wide via Control Panel.
-$ SET PreferredToolArchitecture=x64
-
-# After generating the Visual Studio solution you can use the IDE to open
-# the project and skip this step.
-$ msbuild Mesos.sln /m
-
-# mesos-agent.exe can be found in the &lt;repository&gt;\build\src folder.
-$ cd src
+# Build Mesos.
+# To build just the Mesos agent, add `--target mesos-agent`.
+cmake --build .
 
 # The Windows agent exposes new isolators that must be used as with
 # the `--isolation` flag. To get started point the agent to a working
 # master, using eiher an IP address or zookeeper information.
-$ mesos-agent.exe --master=&lt;master&gt; --work_dir=&lt;work folder&gt; --launcher_dir=&lt;repository&gt;\build\src
+src\mesos-agent.exe --master=&lt;master&gt; --work_dir=&lt;work folder&gt; --launcher_dir=&lt;repository&gt;\build\src
 </code></pre>
 
 <h2>Known Limitations</h2>
@@ -177,22 +189,14 @@ $ mesos-agent.exe --master=&lt;master&gt; --work_dir=&lt;work folder&gt; --launc
 <p>The current implementation is known to have the following limitations:</p>
 
 <ul>
-<li>At this point, only the agent is capable of running on Windows,
-the Mesos master must run on a Posix machine.</li>
+<li>Only the agent should be run on Windows.  The Mesos master can be
+launched, but only for testing as the master does not support
+high-availability setups on Windows.</li>
 <li>Due to the 260 character <code>MAX_PATH</code> limitation on Windows,
-it is required to set the configuration option <code>--launcher_dir</code>
-to be a root path, e.g. <code>C:\</code>.
-In addition, the <code>TASK_ID</code> that is passed to Mesos should be short,
-up to about 40 characters. <strong>NOTE</strong>: If you schedule tasks via Marathon,
-your Marathon task id should be up to four characters long since Marathon
-generates Mesos <code>TASK_ID</code> by appending a UUID (36 characters) onto
-the Marathon task id.</li>
-<li>Currently runs as Administrator (mainly due to symlinks).</li>
-<li>Only the <code>MesosContainerizer</code> is currently supported,
-which does not provide resource isolation on Windows.
-Resource isolation will be provided via the <code>DockerContainerizer</code>
-(e.g. Windows Containers) in the future.</li>
-<li>Most of the tests are not ported to Windows.</li>
+it is required to enable the NTFS long path support.</li>
+<li>The Mesos agent must be run as Administrator, mainly due to symlinks.</li>
+<li>The <code>MesosContainerizer</code> currently does not provide any actual
+resource isolation (similar to running the Mesos agent on POSIX).</li>
 </ul>
 
 

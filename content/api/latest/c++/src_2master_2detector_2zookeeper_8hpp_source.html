@@ -100,28 +100,30 @@
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <span class="comment">// Creates a detector which uses ZooKeeper to determine (i.e.,</span></div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <span class="comment">// elect) a leading master.</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="classmesos_1_1master_1_1detector_1_1ZooKeeperMasterDetector.html#a0bfae726ef220e59054ae756d974d906">ZooKeeperMasterDetector</a>(<span class="keyword">const</span> <a class="code" href="classzookeeper_1_1URL.html">zookeeper::URL</a>&amp; url);</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <span class="comment">// Used for testing purposes.</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="classmesos_1_1master_1_1detector_1_1ZooKeeperMasterDetector.html#a0bfae726ef220e59054ae756d974d906">ZooKeeperMasterDetector</a>(<a class="code" href="classprocess_1_1Owned.html">process::Owned&lt;zookeeper::Group&gt;</a> <a class="code" href="structgroup.html">group</a>);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classmesos_1_1master_1_1detector_1_1ZooKeeperMasterDetector.html#a9fb60946428c41b08933b2b84686a557">~ZooKeeperMasterDetector</a>();</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="comment">// MasterDetector implementation.</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <span class="comment">// The detector transparently tries to recover from retryable</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="comment">// errors until the group session expires, in which case the Future</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="comment">// returns None.</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;Option&lt;MasterInfo&gt;</a>&gt; <a class="code" href="classmesos_1_1master_1_1detector_1_1ZooKeeperMasterDetector.html#a96fca42d7f0f6dbbede765e17f169209">detect</a>(</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;      <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;MasterInfo&gt;</a>&amp; previous = <a class="code" href="structNone.html">None</a>());</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  ZooKeeperMasterDetectorProcess* process;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;};</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;} <span class="comment">// namespace detector {</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;} <span class="comment">// namespace master {</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;} <span class="comment">// namespace mesos {</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor">#endif // __MASTER_DETECTOR_ZOOKEEPER_HPP__</span></div>
-<div class="ttc" id="classmesos_1_1master_1_1detector_1_1ZooKeeperMasterDetector_html_a0bfae726ef220e59054ae756d974d906"><div class="ttname"><a href="classmesos_1_1master_1_1detector_1_1ZooKeeperMasterDetector.html#a0bfae726ef220e59054ae756d974d906">mesos::master::detector::ZooKeeperMasterDetector::ZooKeeperMasterDetector</a></div><div class="ttdeci">ZooKeeperMasterDetector(const zookeeper::URL &amp;url)</div></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="classmesos_1_1master_1_1detector_1_1ZooKeeperMasterDetector.html#a53ea98f40c982b833ec8b379e6db6473">ZooKeeperMasterDetector</a>(</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;      <span class="keyword">const</span> <a class="code" href="classzookeeper_1_1URL.html">zookeeper::URL</a>&amp; url,</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;      <span class="keyword">const</span> <a class="code" href="classDuration.html">Duration</a>&amp; sessionTimeout = <a class="code" href="namespacemesos_1_1master_1_1detector.html#a42e59ca43e0215f79aab7bc1eb0e2a0e">MASTER_DETECTOR_ZK_SESSION_TIMEOUT</a>);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <span class="comment">// Used for testing purposes.</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="classmesos_1_1master_1_1detector_1_1ZooKeeperMasterDetector.html#a53ea98f40c982b833ec8b379e6db6473">ZooKeeperMasterDetector</a>(<a class="code" href="classprocess_1_1Owned.html">process::Owned&lt;zookeeper::Group&gt;</a> <a class="code" href="structgroup.html">group</a>);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classmesos_1_1master_1_1detector_1_1ZooKeeperMasterDetector.html#a9fb60946428c41b08933b2b84686a557">~ZooKeeperMasterDetector</a>();</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="comment">// MasterDetector implementation.</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="comment">// The detector transparently tries to recover from retryable</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <span class="comment">// errors until the group session expires, in which case the Future</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="comment">// returns None.</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;Option&lt;MasterInfo&gt;</a>&gt; <a class="code" href="classmesos_1_1master_1_1detector_1_1ZooKeeperMasterDetector.html#a96fca42d7f0f6dbbede765e17f169209">detect</a>(</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;      <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;MasterInfo&gt;</a>&amp; previous = <a class="code" href="structNone.html">None</a>());</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  ZooKeeperMasterDetectorProcess* process;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;};</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;} <span class="comment">// namespace detector {</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;} <span class="comment">// namespace master {</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;} <span class="comment">// namespace mesos {</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor">#endif // __MASTER_DETECTOR_ZOOKEEPER_HPP__</span></div>
 <div class="ttc" id="classmesos_1_1master_1_1detector_1_1ZooKeeperMasterDetector_html_a9fb60946428c41b08933b2b84686a557"><div class="ttname"><a href="classmesos_1_1master_1_1detector_1_1ZooKeeperMasterDetector.html#a9fb60946428c41b08933b2b84686a557">mesos::master::detector::ZooKeeperMasterDetector::~ZooKeeperMasterDetector</a></div><div class="ttdeci">virtual ~ZooKeeperMasterDetector()</div></div>
 <div class="ttc" id="classOption_html"><div class="ttname"><a href="classOption.html">Option&lt; MasterInfo &gt;</a></div></div>
 <div class="ttc" id="classmesos_1_1master_1_1detector_1_1ZooKeeperMasterDetector_html_a96fca42d7f0f6dbbede765e17f169209"><div class="ttname"><a href="classmesos_1_1master_1_1detector_1_1ZooKeeperMasterDetector.html#a96fca42d7f0f6dbbede765e17f169209">mesos::master::detector::ZooKeeperMasterDetector::detect</a></div><div class="ttdeci">virtual process::Future&lt; Option&lt; MasterInfo &gt; &gt; detect(const Option&lt; MasterInfo &gt; &amp;previous=None())</div><div class="ttdoc">Returns MasterInfo after an election has occurred and the elected master is different than that speci...</div></div>
@@ -136,9 +138,10 @@
 <div class="ttc" id="structgroup_html"><div class="ttname"><a href="structgroup.html">group</a></div><div class="ttdef"><b>Definition:</b> grp.hpp:26</div></div>
 <div class="ttc" id="structNone_html"><div class="ttname"><a href="structNone.html">None</a></div><div class="ttdef"><b>Definition:</b> none.hpp:27</div></div>
 <div class="ttc" id="classzookeeper_1_1URL_html"><div class="ttname"><a href="classzookeeper_1_1URL.html">zookeeper::URL</a></div><div class="ttdef"><b>Definition:</b> url.hpp:46</div></div>
-<div class="ttc" id="classmesos_1_1master_1_1detector_1_1MasterDetector_html"><div class="ttname"><a href="classmesos_1_1master_1_1detector_1_1MasterDetector.html">mesos::master::detector::MasterDetector</a></div><div class="ttdoc">An abstraction of a Master detector which can be used to detect the leading master from a group...</div><div class="ttdef"><b>Definition:</b> detector.hpp:37</div></div>
+<div class="ttc" id="classmesos_1_1master_1_1detector_1_1MasterDetector_html"><div class="ttname"><a href="classmesos_1_1master_1_1detector_1_1MasterDetector.html">mesos::master::detector::MasterDetector</a></div><div class="ttdoc">An abstraction of a Master detector which can be used to detect the leading master from a group...</div><div class="ttdef"><b>Definition:</b> detector.hpp:38</div></div>
 <div class="ttc" id="owned_8hpp_html"><div class="ttname"><a href="owned_8hpp.html">owned.hpp</a></div></div>
 <div class="ttc" id="group_8hpp_html"><div class="ttname"><a href="group_8hpp.html">group.hpp</a></div></div>
+<div class="ttc" id="classmesos_1_1master_1_1detector_1_1ZooKeeperMasterDetector_html_a53ea98f40c982b833ec8b379e6db6473"><div class="ttname"><a href="classmesos_1_1master_1_1detector_1_1ZooKeeperMasterDetector.html#a53ea98f40c982b833ec8b379e6db6473">mesos::master::detector::ZooKeeperMasterDetector::ZooKeeperMasterDetector</a></div><div class="ttdeci">ZooKeeperMasterDetector(const zookeeper::URL &amp;url, const Duration &amp;sessionTimeout=MASTER_DETECTOR_ZK_SESSION_TIMEOUT)</div></div>
 <div class="ttc" id="classprocess_1_1Owned_html"><div class="ttname"><a href="classprocess_1_1Owned.html">process::Owned</a></div><div class="ttdef"><b>Definition:</b> owned.hpp:35</div></div>
 <div class="ttc" id="classprocess_1_1Future_html"><div class="ttname"><a href="classprocess_1_1Future.html">process::Future</a></div><div class="ttdef"><b>Definition:</b> future.hpp:56</div></div>
 </div><!-- fragment --></div><!-- contents -->

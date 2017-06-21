@@ -118,8 +118,8 @@
 <p>In Mesos, the authorization subsystem allows the operator to configure the
 actions that certain principals are allowed to perform. For example, the
 operator can use authorization to ensure that principal <code>foo</code> can only register
-frameworks in role <code>bar</code>, and no other principals can register frameworks in
-any role.</p>
+frameworks subscribed to role <code>bar</code>, and no other principals can register
+frameworks subscribed to any roles.</p>
 
 <p>A reference implementation <em>local authorizer</em> provides basic security for most
 use cases. This authorizer is configured using Access Control Lists (ACLs).
@@ -134,6 +134,26 @@ concepts necessary to successfully configure the local authorizer. The second
 briefly discusses how to implement a custom authorizer; this section is not
 directed at operators but at engineers who wish to build their own authorizer
 back end.</p>
+
+<h2>HTTP Executor Authorization</h2>
+
+<p>When the agent&rsquo;s <code>--authenticate_http_executors</code> flag is set, HTTP executors are
+required to authenticate with the HTTP executor API. When they do so, a simple
+implicit authorization rule is applied. In plain language, the rule states that
+executors can only perform actions on themselves. More specifically, an
+executor&rsquo;s authenticated principal must contain claims with keys <code>fid</code>, <code>eid</code>,
+and <code>cid</code>, with values equal to the currently-running executor&rsquo;s framework ID,
+executor ID, and container ID, respectively. By default, an authentication token
+containing these claims is injected into the executor&rsquo;s environment (see the
+<a href="/documentation/latest/./authentication/">authentication documentation</a> for more information).</p>
+
+<p>Similarly, when the agent&rsquo;s <code>--authenticate_http_readwrite</code> flag is set, HTTP
+executor&rsquo;s are required to authenticate with the HTTP operator API when making
+calls such as <code>LAUNCH_NESTED_CONTAINER</code>. In this case, executor authorization is
+performed via the loaded authorizer module, if present. The default Mesos local
+authorizer applies a simple implicit authorization rule, requiring that the
+executor&rsquo;s principal contain a claim with key <code>cid</code> and a value equal to the
+currently-running executor&rsquo;s container ID.</p>
 
 <h2>Local Authorizer</h2>
 
@@ -161,19 +181,19 @@ master using its <code>principal</code> and <code>secret</code>. Here, let the f
 be <code>payroll-framework</code>; this principal represents the trusted identity of the
 framework.</li>
 <li>The framework now sends a registration message to the master. This message
-includes a <code>FrameworkInfo</code> object containing a <code>principal</code> and a <code>role</code>; in
-this case, it will use the role <code>accounting</code>. The principal in this message
-must be <code>payroll-framework</code>, to match the one used by the framework for
-authentication.</li>
+includes a <code>FrameworkInfo</code> object containing a <code>principal</code> and <code>roles</code>; in
+this case, it will use a single role named <code>accounting</code>. The principal in
+this message must be <code>payroll-framework</code>, to match the one used by the
+framework for authentication.</li>
 <li>The master consults the local authorizer, which in turn looks through its ACLs
 to see if it has a <code>RegisterFramework</code> ACL which authorizes the principal
 <code>payroll-framework</code> to register with the <code>accounting</code> role. It does find such
-an ACL, the framework registers successfully. Now that the framework belongs
-to the <code>accounting</code> role, any <a href="/documentation/latest/./roles/">weights</a>,
+an ACL, the framework registers successfully. Now that the framework is
+subscribed to the <code>accounting</code> role, any <a href="/documentation/latest/./weights/">weights</a>,
 <a href="/documentation/latest/./reservation/">reservations</a>, <a href="/documentation/latest/./persistent-volume/">persistent volumes</a>,
 or <a href="/documentation/latest/./quota/">quota</a> associated with the accounting department&rsquo;s role will
-apply. This allows operators to control the resource consumption of this
-department.</li>
+apply when allocating resources to this role within the framework. This
+allows operators to control the resource consumption of this department.</li>
 <li>Suppose the framework has created a persistent volume on an agent which it
 now wishes to destroy. The framework sends an <code>ACCEPT</code> call containing an
 offer operation which will <code>DESTROY</code> the persistent volume.</li>
@@ -368,6 +388,56 @@ entries, each representing an authorizable action:</p>
   </td>
   <td>Access Mesos logs.</td>
 </tr>
+<tr>
+  <td><code>register_agents</code></td>
+  <td>Agent principal.</td>
+  <td>Implicitly given. A user should only use types ANY and NONE to allow/deny
+      agent (re-)registration.
+  </td>
+  <td>(Re-)registration of agents.</td>
+</tr>
+<tr>
+  <td><code>get_maintenance_schedules</code></td>
+  <td>Operator username.</td>
+  <td>Implicitly given. A user should only use types ANY and NONE to allow/deny
+      access to the log.
+  </td>
+  <td>View the maintenance schedule of the machines used by Mesos.</td>
+</tr>
+<tr>
+  <td><code>update_maintenance_schedules</code></td>
+  <td>Operator username.</td>
+  <td>Implicitly given. A user should only use types ANY and NONE to allow/deny
+      access to the log.
+  </td>
+  <td>Modify the maintenance schedule of the machines used by Mesos.</td>
+</tr>
+<tr>
+  <td><code>start_maintenances</code></td>
+  <td>Operator username.</td>
+  <td>Implicitly given. A user should only use types ANY and NONE to allow/deny
+      access to the log.
+  </td>
+  <td>Starts maintenance on a machine. This will make a machine and its agents
+      unavailable.
+  </td>
+</tr>
+<tr>
+  <td><code>stop_maintenances</code></td>
+  <td>Operator username.</td>
+  <td>Implicitly given. A user should only use the types ANY and NONE to
+      allow/deny access to the log.
+  </td>
+  <td>Ends maintenance on a machine.</td>
+</tr>
+<tr>
+  <td><code>get_maintenance_statuses</code></td>
+  <td>Operator username.</td>
+  <td>Implicitly given. A user should only use the types ANY and NONE to
+      allow/deny access to the log.
+  </td>
+  <td>View if a machine is in maintenance or not.</td>
+</tr>
 </tbody>
 </table>
 
@@ -388,9 +458,9 @@ entries, each representing an authorizable action:</p>
 <h3>Examples</h3>
 
 <p>Consider for example the following ACL: Only principal <code>foo</code> can register
-frameworks within the <code>analytics</code> role. All principals can register to any
-other role (including the principal <code>foo</code> since permissive is the default
-behavior).</p>
+frameworks subscribed to the <code>analytics</code> role. All principals can register
+frameworks subscribing to any other roles (including the principal <code>foo</code>
+since permissive is the default behavior).</p>
 
 <pre><code class="json">{
   "register_frameworks": [
@@ -414,9 +484,9 @@ behavior).</p>
 }
 </code></pre>
 
-<p>Principal <code>foo</code> can register frameworks with the <code>analytics</code> and <code>ads</code> roles
-and no other role. Any other principal (or framework without a principal) can
-register frameworks with any role.</p>
+<p>Principal <code>foo</code> can register frameworks subscribed to the <code>analytics</code> and
+<code>ads</code> roles and no other role. Any other principal (or framework without
+a principal) can register frameworks subscribed to any roles.</p>
 
 <pre><code class="json">{
   "register_frameworks": [
@@ -440,9 +510,9 @@ register frameworks with any role.</p>
 }
 </code></pre>
 
-<p>Only principal <code>foo</code> and no one else can register frameworks with the
+<p>Only principal <code>foo</code> and no one else can register frameworks subscribed to the
 <code>analytics</code> role. Any other principal (or framework without a principal) can
-register frameworks with any other role.</p>
+register frameworks subscribed to any other roles.</p>
 
 <pre><code class="json">{
   "register_frameworks": [
@@ -466,8 +536,9 @@ register frameworks with any other role.</p>
 }
 </code></pre>
 
-<p>Principal <code>foo</code> can register frameworks with the <code>analytics</code> role and no other
-role. No other principal can register frameworks with any role, including <code>*</code>.</p>
+<p>Principal <code>foo</code> can register frameworks subscribed to the <code>analytics</code> role
+and no other roles. No other principal can register frameworks subscribed to
+any roles, including <code>*</code>.</p>
 
 <pre><code class="json">{
   "permissive": false,
@@ -879,6 +950,7 @@ message Object {
   optional Task task = 3;
   optional TaskInfo task_info = 4;
   optional ExecutorInfo executor_info = 5;
+  optional MachineID machine_id = 11;
 }
 </code></pre>
 
@@ -914,6 +986,7 @@ structure of the <code>Request::Object</code> above.</p>
   const Task* task;
   const TaskInfo* task_info;
   const ExecutorInfo* executor_info;
+  const MachineID* machine_id;
 };
 </code></pre>
 

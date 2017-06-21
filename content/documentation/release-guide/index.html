@@ -124,12 +124,18 @@
 <li><p>Add your GPG public key to the Apache Mesos dist repository in the KEYS file.</p>
 
 <ul>
-<li><p>Fetch the svn repository:<br>
-<code>svn co https://dist.apache.org/repos/dist/release/mesos</code></p></li>
-<li><p>Append your public key using one of methods described in KEYS, e.g.:<br>
-<code>(gpg --list-sigs &lt;your name&gt; &amp;&amp; gpg --armor --export &lt;your name&gt;) &gt;&gt; KEYS</code>.</p></li>
-<li><p>Push the commit:<br>
-<code>svn ci</code></p></li>
+<li><p>Fetch the svn repository:</p>
+
+<pre><code> $ svn co https://dist.apache.org/repos/dist/release/mesos
+</code></pre></li>
+<li><p>Append your public key using one of methods described in KEYS, e.g.:</p>
+
+<pre><code> $ (gpg --list-sigs &lt;your name&gt; &amp;&amp; gpg --armor --export &lt;your name&gt;) &gt;&gt; KEYS
+</code></pre></li>
+<li><p>Push the commit:</p>
+
+<pre><code> $ svn ci
+</code></pre></li>
 </ul>
 </li>
 <li><p>Submit your GPG public key to a keyserver, e.g.,
@@ -158,7 +164,10 @@ you can get from running <code>mvn --encrypt-password</code>.</p>
    &lt;/servers&gt;
  &lt;/settings&gt;
 </code></pre></li>
-<li><p>Use <code>gpg-agent</code> to avoid typing your passphrase repeatedly.</p></li>
+<li><p>Use <code>gpg-agent</code> to avoid typing your passphrase repeatedly:</p>
+
+<pre><code> $ export GPG_TTY="$(tty)" &amp;&amp; eval $(gpg-agent --daemon)
+</code></pre></li>
 </ol>
 
 
@@ -218,7 +227,8 @@ or <code>Duplicate</code>/<code>Invalid</code> tickets that incorrectly set the 
 <p>For patch releases update the <code>CHANGELOG</code> on master branch and then cherry
 pick onto the release branch.</p></li>
 <li><p>Ensure version in <code>configure.ac</code> and <code>CMakeLists.txt</code> is correctly set for
-the release.</p></li>
+the release. Do not forget to remove &ldquo;(WIP)&rdquo; suffix from the release notes'
+title.</p></li>
 <li><p>Run <code>make &amp;&amp; support/generate-endpoint-help.py</code> and commit any resulting
 changes.</p></li>
 <li><p>Update and commit <code>docs/configuration.md</code> to reflect the current state of

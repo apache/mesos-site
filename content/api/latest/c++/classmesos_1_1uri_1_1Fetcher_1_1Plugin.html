@@ -85,9 +85,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a202f7d2793b8ea5a31e85d11f9c4a299"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1uri_1_1Fetcher_1_1Plugin.html#a202f7d2793b8ea5a31e85d11f9c4a299">name</a> () const =0</td></tr>
 <tr class="memdesc:a202f7d2793b8ea5a31e85d11f9c4a299"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the name that this plugin registered with.  <a href="#a202f7d2793b8ea5a31e85d11f9c4a299">More...</a><br/></td></tr>
 <tr class="separator:a202f7d2793b8ea5a31e85d11f9c4a299"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad1d7e9ce4ccdfc102e2e164dcf257d79"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt; <a class="el" href="structNothing.html">Nothing</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1uri_1_1Fetcher_1_1Plugin.html#ad1d7e9ce4ccdfc102e2e164dcf257d79">fetch</a> (const URI &amp;uri, const std::string &amp;directory) const =0</td></tr>
-<tr class="memdesc:ad1d7e9ce4ccdfc102e2e164dcf257d79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fetches a URI to the given directory.  <a href="#ad1d7e9ce4ccdfc102e2e164dcf257d79">More...</a><br/></td></tr>
-<tr class="separator:ad1d7e9ce4ccdfc102e2e164dcf257d79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea787faf7c9bab041b71dc71b54b8109"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt; <a class="el" href="structNothing.html">Nothing</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1uri_1_1Fetcher_1_1Plugin.html#aea787faf7c9bab041b71dc71b54b8109">fetch</a> (const URI &amp;uri, const std::string &amp;directory, const <a class="el" href="classOption.html">Option</a>&lt; std::string &gt; &amp;data=<a class="el" href="structNone.html">None</a>()) const =0</td></tr>
+<tr class="memdesc:aea787faf7c9bab041b71dc71b54b8109"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fetches a URI to the given directory.  <a href="#aea787faf7c9bab041b71dc71b54b8109">More...</a><br/></td></tr>
+<tr class="separator:aea787faf7c9bab041b71dc71b54b8109"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Represents a fetcher plugin that handles one or more URI schemes. </p>
@@ -116,7 +116,7 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="ad1d7e9ce4ccdfc102e2e164dcf257d79"></a>
+<a class="anchor" id="aea787faf7c9bab041b71dc71b54b8109"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -133,7 +133,13 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>directory</em>&#160;</td>
+          <td class="paramname"><em>directory</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classOption.html">Option</a>&lt; std::string &gt; &amp;&#160;</td>
+          <td class="paramname"><em>data</em> = <code><a class="el" href="structNone.html">None</a>()</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -154,11 +160,12 @@ Public Member Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">uri</td><td>the URI to fetch </td></tr>
     <tr><td class="paramname">directory</td><td>the directory the URI will be downloaded to </td></tr>
+    <tr><td class="paramname">data</td><td>the optional user defined data </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="classmesos_1_1uri_1_1HadoopFetcherPlugin.html#ac1335e0c347f6b7ffc8639159a5ee43d">mesos::uri::HadoopFetcherPlugin</a>, <a class="el" href="classmesos_1_1uri_1_1DockerFetcherPlugin.html#a0cfed9fc3ca85964e70b83776bd9e245">mesos::uri::DockerFetcherPlugin</a>, <a class="el" href="classmesos_1_1uri_1_1CopyFetcherPlugin.html#aeb85c4f3d0b2ad6fa18488fbd88afeb1">mesos::uri::CopyFetcherPlugin</a>, and <a class="el" href="classmesos_1_1uri_1_1CurlFetcherPlugin.html#a83fe7a47e27a2684661888e2f49dc9fa">mesos::uri::CurlFetcherPlugin</a>.</p>
+<p>Implemented in <a class="el" href="classmesos_1_1uri_1_1HadoopFetcherPlugin.html#ae99fe8ce4a6c885fb969f3e634e62b6e">mesos::uri::HadoopFetcherPlugin</a>, <a class="el" href="classmesos_1_1uri_1_1DockerFetcherPlugin.html#ae9b78e1fba3a1037d4f942f1fd1db9cb">mesos::uri::DockerFetcherPlugin</a>, <a class="el" href="classmesos_1_1uri_1_1CopyFetcherPlugin.html#a9368886c7a36ebbba1c0cec75b93c2ed">mesos::uri::CopyFetcherPlugin</a>, and <a class="el" href="classmesos_1_1uri_1_1CurlFetcherPlugin.html#a5fb63c5ef191901d35d9a0fc3f0d8efc">mesos::uri::CurlFetcherPlugin</a>.</p>
 
 </div>
 </div>

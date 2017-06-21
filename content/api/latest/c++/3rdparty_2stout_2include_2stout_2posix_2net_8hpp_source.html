@@ -69,34 +69,56 @@
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &lt;unistd.h&gt;</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="error_8hpp.html">stout/error.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="nothing_8hpp.html">stout/nothing.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="try_8hpp.html">stout/try.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;set&gt;</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="error_8hpp.html">stout/error.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="nothing_8hpp.html">stout/nothing.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="try_8hpp.html">stout/try.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">namespace </span>net {</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">// Returns a `Try` of the result of attempting to set the `hostname`.</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="namespacenet.html#a804670c0d91cb5433d021ede36dfc341">   28</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;Nothing&gt;</a> <a class="code" href="namespacenet.html#a804670c0d91cb5433d021ede36dfc341">setHostname</a>(<span class="keyword">const</span> std::string&amp; <a class="code" href="namespacenet.html#a18b188d54e864e4cdd1f7cac6fb140e4">hostname</a>)</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;{</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;  <span class="keywordflow">if</span> (sethostname(hostname.c_str(), hostname.size()) != 0) {</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classErrnoError.html">ErrnoError</a>();</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  }</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="structNothing.html">Nothing</a>();</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;}</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;} <span class="comment">// namespace net {</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#endif // __STOUT_POSIX_NET_HPP__</span></div>
-<div class="ttc" id="namespacenet_html_a804670c0d91cb5433d021ede36dfc341"><div class="ttname"><a href="namespacenet.html#a804670c0d91cb5433d021ede36dfc341">net::setHostname</a></div><div class="ttdeci">Try&lt; Nothing &gt; setHostname(const std::string &amp;hostname)</div><div class="ttdef"><b>Definition:</b> net.hpp:28</div></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">namespace </span>net {</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment">// Returns the names of all the link devices in the system.</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="namespacenet.html#a308dd33768b3b5ce01dc7a5e4fa1f2d1">   29</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;std::set&lt;std::string&gt;</a>&gt; <a class="code" href="namespacenet.html#a308dd33768b3b5ce01dc7a5e4fa1f2d1">links</a>()</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;{</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  <span class="keyword">struct </span>ifaddrs* ifaddr = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <span class="keywordflow">if</span> (getifaddrs(&amp;ifaddr) == -1) {</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classErrnoError.html">ErrnoError</a>();</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  }</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  std::set&lt;std::string&gt; names;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <span class="keywordflow">for</span> (<span class="keyword">struct</span> ifaddrs* ifa = ifaddr; ifa != <span class="keyword">nullptr</span>; ifa = ifa-&gt;ifa_next) {</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keywordflow">if</span> (ifa-&gt;ifa_name != <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;      names.insert(ifa-&gt;ifa_name);</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    }</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  }</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  freeifaddrs(ifaddr);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <span class="keywordflow">return</span> names;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;}</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">// Returns a `Try` of the result of attempting to set the `hostname`.</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="namespacenet.html#a804670c0d91cb5433d021ede36dfc341">   49</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;Nothing&gt;</a> <a class="code" href="namespacenet.html#a804670c0d91cb5433d021ede36dfc341">setHostname</a>(<span class="keyword">const</span> std::string&amp; <a class="code" href="namespacenet.html#a18b188d54e864e4cdd1f7cac6fb140e4">hostname</a>)</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;{</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <span class="keywordflow">if</span> (sethostname(hostname.c_str(), hostname.size()) != 0) {</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classErrnoError.html">ErrnoError</a>();</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  }</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="structNothing.html">Nothing</a>();</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;}</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;} <span class="comment">// namespace net {</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="preprocessor">#endif // __STOUT_POSIX_NET_HPP__</span></div>
+<div class="ttc" id="namespacenet_html_a804670c0d91cb5433d021ede36dfc341"><div class="ttname"><a href="namespacenet.html#a804670c0d91cb5433d021ede36dfc341">net::setHostname</a></div><div class="ttdeci">Try&lt; Nothing &gt; setHostname(const std::string &amp;hostname)</div><div class="ttdef"><b>Definition:</b> net.hpp:49</div></div>
 <div class="ttc" id="structNothing_html"><div class="ttname"><a href="structNothing.html">Nothing</a></div><div class="ttdef"><b>Definition:</b> nothing.hpp:16</div></div>
 <div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
 <div class="ttc" id="classErrnoError_html"><div class="ttname"><a href="classErrnoError.html">ErrnoError</a></div><div class="ttdef"><b>Definition:</b> errorbase.hpp:44</div></div>
 <div class="ttc" id="nothing_8hpp_html"><div class="ttname"><a href="nothing_8hpp.html">nothing.hpp</a></div></div>
-<div class="ttc" id="namespacenet_html_a18b188d54e864e4cdd1f7cac6fb140e4"><div class="ttname"><a href="namespacenet.html#a18b188d54e864e4cdd1f7cac6fb140e4">net::hostname</a></div><div class="ttdeci">Try&lt; std::string &gt; hostname()</div><div class="ttdef"><b>Definition:</b> net.hpp:208</div></div>
+<div class="ttc" id="namespacenet_html_a308dd33768b3b5ce01dc7a5e4fa1f2d1"><div class="ttname"><a href="namespacenet.html#a308dd33768b3b5ce01dc7a5e4fa1f2d1">net::links</a></div><div class="ttdeci">Try&lt; std::set&lt; std::string &gt; &gt; links()</div><div class="ttdef"><b>Definition:</b> net.hpp:29</div></div>
+<div class="ttc" id="namespacenet_html_a18b188d54e864e4cdd1f7cac6fb140e4"><div class="ttname"><a href="namespacenet.html#a18b188d54e864e4cdd1f7cac6fb140e4">net::hostname</a></div><div class="ttdeci">Try&lt; std::string &gt; hostname()</div><div class="ttdef"><b>Definition:</b> net.hpp:209</div></div>
 <div class="ttc" id="error_8hpp_html"><div class="ttname"><a href="error_8hpp.html">error.hpp</a></div></div>
 <div class="ttc" id="try_8hpp_html"><div class="ttname"><a href="try_8hpp.html">try.hpp</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
