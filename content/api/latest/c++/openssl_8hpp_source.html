@@ -99,35 +99,36 @@
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">//    LIBPROCESS_SSL_ENABLE_TLS_V1_0=(false|0,true|1)</span></div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="comment">//    LIBPROCESS_SSL_ENABLE_TLS_V1_1=(false|0,true|1)</span></div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment">//    LIBPROCESS_SSL_ENABLE_TLS_V1_2=(false|0,true|1)</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">// TODO(benh): When/If we need to support multiple contexts in the</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">// same process, for example for Server Name Indication (SNI), then</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment">// we&#39;ll add other functions for initializing an SSL_CTX based on</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">// these environment variables.</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment">// TODO(nneilsen): Support certification revocation.</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="keywordtype">void</span> <a class="code" href="namespaceprocess_1_1network_1_1openssl.html#a65e51dfe9ceb18ebbce4e14e2a4fae78">initialize</a>();</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment">// Returns the _global_ OpenSSL context.</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;SSL_CTX* <a class="code" href="namespaceprocess_1_1network_1_1openssl.html#a9ea7f1e144d9731d6fb4e4a0d80a7c56">context</a>();</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">// Verify that the hostname is properly associated with the peer</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment">// certificate associated with the specified SSL connection.</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<a class="code" href="classTry.html">Try&lt;Nothing&gt;</a> <a class="code" href="namespaceprocess_1_1network_1_1openssl.html#ab3f1f55b3c3d85018b68e649fbb0bc8a">verify</a>(</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keyword">const</span> SSL* <span class="keyword">const</span> ssl,</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;std::string&gt;</a>&amp; <a class="code" href="namespacenet.html#a18b188d54e864e4cdd1f7cac6fb140e4">hostname</a> = <a class="code" href="structNone.html">None</a>(),</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;net::IP&gt;</a>&amp; ip = <a class="code" href="structNone.html">None</a>());</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;} <span class="comment">// namespace openssl {</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;} <span class="comment">// namespace network {</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;} <span class="comment">// namespace process {</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor">#endif // __OPENSSL_HPP__</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">//    LIBPROCESS_SSL_ECDH_CURVES=(auto|list of curves separated by &#39;:&#39;)</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">// TODO(benh): When/If we need to support multiple contexts in the</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment">// same process, for example for Server Name Indication (SNI), then</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">// we&#39;ll add other functions for initializing an SSL_CTX based on</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment">// these environment variables.</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">// TODO(nneilsen): Support certification revocation.</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keywordtype">void</span> <a class="code" href="namespaceprocess_1_1network_1_1openssl.html#a65e51dfe9ceb18ebbce4e14e2a4fae78">initialize</a>();</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment">// Returns the _global_ OpenSSL context.</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;SSL_CTX* <a class="code" href="namespaceprocess_1_1network_1_1openssl.html#a9ea7f1e144d9731d6fb4e4a0d80a7c56">context</a>();</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment">// Verify that the hostname is properly associated with the peer</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="comment">// certificate associated with the specified SSL connection.</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<a class="code" href="classTry.html">Try&lt;Nothing&gt;</a> <a class="code" href="namespaceprocess_1_1network_1_1openssl.html#ab3f1f55b3c3d85018b68e649fbb0bc8a">verify</a>(</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keyword">const</span> SSL* <span class="keyword">const</span> ssl,</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;std::string&gt;</a>&amp; <a class="code" href="namespacenet.html#a28018530986e91a179ea6239fdf0a447">hostname</a> = <a class="code" href="structNone.html">None</a>(),</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;net::IP&gt;</a>&amp; ip = <a class="code" href="structNone.html">None</a>());</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;} <span class="comment">// namespace openssl {</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;} <span class="comment">// namespace network {</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;} <span class="comment">// namespace process {</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">#endif // __OPENSSL_HPP__</span></div>
 <div class="ttc" id="classOption_html"><div class="ttname"><a href="classOption.html">Option&lt; std::string &gt;</a></div></div>
 <div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2ip_8hpp_html"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2ip_8hpp.html">ip.hpp</a></div></div>
 <div class="ttc" id="namespaceprocess_1_1network_1_1openssl_html_a9ea7f1e144d9731d6fb4e4a0d80a7c56"><div class="ttname"><a href="namespaceprocess_1_1network_1_1openssl.html#a9ea7f1e144d9731d6fb4e4a0d80a7c56">process::network::openssl::context</a></div><div class="ttdeci">SSL_CTX * context()</div></div>
 <div class="ttc" id="nothing_8hpp_html"><div class="ttname"><a href="nothing_8hpp.html">nothing.hpp</a></div></div>
-<div class="ttc" id="namespacenet_html_a18b188d54e864e4cdd1f7cac6fb140e4"><div class="ttname"><a href="namespacenet.html#a18b188d54e864e4cdd1f7cac6fb140e4">net::hostname</a></div><div class="ttdeci">Try&lt; std::string &gt; hostname()</div><div class="ttdef"><b>Definition:</b> net.hpp:209</div></div>
+<div class="ttc" id="namespacenet_html_a28018530986e91a179ea6239fdf0a447"><div class="ttname"><a href="namespacenet.html#a28018530986e91a179ea6239fdf0a447">net::hostname</a></div><div class="ttdeci">Try&lt; std::string &gt; hostname()</div><div class="ttdef"><b>Definition:</b> net.hpp:154</div></div>
 <div class="ttc" id="option_8hpp_html"><div class="ttname"><a href="option_8hpp.html">option.hpp</a></div></div>
 <div class="ttc" id="namespaceos_html_ae19e4161a51b86a1f330f3bf1dc75389"><div class="ttname"><a href="namespaceos.html#ae19e4161a51b86a1f330f3bf1dc75389">os::process</a></div><div class="ttdeci">Result&lt; Process &gt; process(pid_t pid)</div><div class="ttdef"><b>Definition:</b> freebsd.hpp:30</div></div>
 <div class="ttc" id="structNone_html"><div class="ttname"><a href="structNone.html">None</a></div><div class="ttdef"><b>Definition:</b> none.hpp:27</div></div>

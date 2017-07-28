@@ -199,6 +199,11 @@ openssl req -new -x509 -passin pass:some_password -days 365 -key key.pem -out ce
 
 <h1><a name="Dependencies"></a>Dependencies</h1>
 
+<h4>LIBPROCESS_SSL_ECDH_CURVE=(auto|list of curves separated by &lsquo;:&rsquo;) [default=auto]</h4>
+
+<p>List of elliptic curves which should be used for ECDHE-based cipher suites, in preferred order. Available values depend on the OpenSSL version used. Default value <code>auto</code> allows OpenSSL to pick the curve automatically.
+OpenSSL versions prior to <code>1.0.2</code> allow for the use of only one curve; in those cases, <code>auto</code> defaults to <code>prime256v1</code>.</p>
+
 <h3>libevent</h3>
 
 <p>We require the OpenSSL support from libevent. The suggested version of libevent is <a href="https://github.com/libevent/libevent/releases/tag/release-2.0.22-stable"><code>2.0.22-stable</code></a>. As new releases come out we will try to maintain compatibility.</p>

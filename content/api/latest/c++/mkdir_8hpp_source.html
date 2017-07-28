@@ -67,73 +67,19 @@
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#ifndef __STOUT_OS_MKDIR_HPP__</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define __STOUT_OS_MKDIR_HPP__</span></div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#ifndef __WINDOWS__</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &lt;sys/stat.h&gt;</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#endif // __WINDOWS__</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="error_8hpp.html">stout/error.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="nothing_8hpp.html">stout/nothing.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="strings_8hpp.html">stout/strings.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="try_8hpp.html">stout/try.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="3rdparty_2stout_2include_2stout_2os_2constants_8hpp.html">stout/os/constants.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#ifdef __WINDOWS__</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &lt;<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html">stout/windows.hpp</a>&gt;</span> <span class="comment">// To be certain we&#39;re using the right `mkdir`.</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#endif // __WINDOWS__</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">namespace </span>os {</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="namespaceos.html#ac93da0e90cdbecd6efea0e300b013328">   37</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;Nothing&gt;</a> <a class="code" href="namespaceos.html#ac93da0e90cdbecd6efea0e300b013328">mkdir</a>(<span class="keyword">const</span> std::string&amp; directory, <span class="keywordtype">bool</span> recursive = <span class="keyword">true</span>)</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;{</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <span class="keywordflow">if</span> (!recursive) {</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keywordflow">if</span> (::<a class="code" href="namespaceos.html#ac93da0e90cdbecd6efea0e300b013328">mkdir</a>(directory.c_str(), 0755) &lt; 0) {</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="classErrnoError.html">ErrnoError</a>();</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    }</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    std::vector&lt;std::string&gt; tokens =</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;      <a class="code" href="namespacestrings.html#afffe11c8ecce961981653358520d6a04">strings::tokenize</a>(directory, <a class="code" href="namespacens.html#a28116b46e6543597a11733424cd1aa20">stringify</a>(<a class="code" href="namespaceos.html#a493d7d8775f0ed778ad3b52ec19bbaab">os::PATH_SEPARATOR</a>));</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    std::string path;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="comment">// We got an absolute path, so keep the leading slash.</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keywordflow">if</span> (directory.find_first_of(<a class="code" href="namespacens.html#a28116b46e6543597a11733424cd1aa20">stringify</a>(<a class="code" href="namespaceos.html#a493d7d8775f0ed778ad3b52ec19bbaab">os::PATH_SEPARATOR</a>)) == 0) {</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;      path = <a class="code" href="namespaceos.html#a493d7d8775f0ed778ad3b52ec19bbaab">os::PATH_SEPARATOR</a>;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    }</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keywordflow">foreach</span> (<span class="keyword">const</span> std::string&amp; token, tokens) {</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;      path += token;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;      <span class="keywordflow">if</span> (::<a class="code" href="namespaceos.html#ac93da0e90cdbecd6efea0e300b013328">mkdir</a>(path.c_str(), 0755) &lt; 0 &amp;&amp; errno != EEXIST) {</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classErrnoError.html">ErrnoError</a>();</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;      }</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;      path += <a class="code" href="namespaceos.html#a493d7d8775f0ed778ad3b52ec19bbaab">os::PATH_SEPARATOR</a>;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    }</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  }</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="structNothing.html">Nothing</a>();</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;}</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;} <span class="comment">// namespace os {</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor">#endif // __STOUT_OS_MKDIR_HPP__</span></div>
-<div class="ttc" id="structNothing_html"><div class="ttname"><a href="structNothing.html">Nothing</a></div><div class="ttdef"><b>Definition:</b> nothing.hpp:16</div></div>
-<div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
-<div class="ttc" id="classErrnoError_html"><div class="ttname"><a href="classErrnoError.html">ErrnoError</a></div><div class="ttdef"><b>Definition:</b> errorbase.hpp:44</div></div>
-<div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html">windows.hpp</a></div></div>
-<div class="ttc" id="namespacestrings_html_afffe11c8ecce961981653358520d6a04"><div class="ttname"><a href="namespacestrings.html#afffe11c8ecce961981653358520d6a04">strings::tokenize</a></div><div class="ttdeci">std::vector&lt; std::string &gt; tokenize(const std::string &amp;s, const std::string &amp;delims, const Option&lt; size_t &gt; &amp;maxTokens=None())</div><div class="ttdef"><b>Definition:</b> strings.hpp:138</div></div>
-<div class="ttc" id="nothing_8hpp_html"><div class="ttname"><a href="nothing_8hpp.html">nothing.hpp</a></div></div>
-<div class="ttc" id="namespaceos_html_ac93da0e90cdbecd6efea0e300b013328"><div class="ttname"><a href="namespaceos.html#ac93da0e90cdbecd6efea0e300b013328">os::mkdir</a></div><div class="ttdeci">Try&lt; Nothing &gt; mkdir(const std::string &amp;directory, bool recursive=true)</div><div class="ttdef"><b>Definition:</b> mkdir.hpp:37</div></div>
-<div class="ttc" id="error_8hpp_html"><div class="ttname"><a href="error_8hpp.html">error.hpp</a></div></div>
-<div class="ttc" id="try_8hpp_html"><div class="ttname"><a href="try_8hpp.html">try.hpp</a></div></div>
-<div class="ttc" id="namespacens_html_a28116b46e6543597a11733424cd1aa20"><div class="ttname"><a href="namespacens.html#a28116b46e6543597a11733424cd1aa20">ns::stringify</a></div><div class="ttdeci">std::string stringify(int flags)</div><div class="ttdef"><b>Definition:</b> ns.hpp:688</div></div>
-<div class="ttc" id="namespaceos_html_a493d7d8775f0ed778ad3b52ec19bbaab"><div class="ttname"><a href="namespaceos.html#a493d7d8775f0ed778ad3b52ec19bbaab">os::PATH_SEPARATOR</a></div><div class="ttdeci">constexpr char PATH_SEPARATOR</div><div class="ttdef"><b>Definition:</b> constants.hpp:24</div></div>
-<div class="ttc" id="strings_8hpp_html"><div class="ttname"><a href="strings_8hpp.html">strings.hpp</a></div></div>
-<div class="ttc" id="3rdparty_2stout_2include_2stout_2os_2constants_8hpp_html"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2os_2constants_8hpp.html">constants.hpp</a></div></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">// For readability, we minimize the number of #ifdef blocks in the code by</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">// splitting platform specific system calls into separate directories.</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#ifdef __WINDOWS__</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &lt;<a class="code" href="windows_2mkdir_8hpp.html">stout/os/windows/mkdir.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &lt;<a class="code" href="posix_2mkdir_8hpp.html">stout/os/posix/mkdir.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#endif // __WINDOWS__</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#endif // __STOUT_OS_MKDIR_HPP__</span></div>
+<div class="ttc" id="windows_2mkdir_8hpp_html"><div class="ttname"><a href="windows_2mkdir_8hpp.html">mkdir.hpp</a></div></div>
+<div class="ttc" id="posix_2mkdir_8hpp_html"><div class="ttname"><a href="posix_2mkdir_8hpp.html">mkdir.hpp</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

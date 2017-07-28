@@ -83,34 +83,34 @@
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="lambda_8hpp.html">stout/lambda.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="option_8hpp.html">stout/option.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="checker__process_8hpp.html">checker_process.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="messages_8hpp.html">messages/messages.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="messages_8hpp.html">messages/messages.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keyword">namespace </span>mesos {</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">namespace </span>internal {</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">namespace </span>checks {</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">namespace </span>mesos {</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">namespace </span>internal {</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keyword">namespace </span>checks {</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">class </span>CheckerProcess;</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1checks_1_1HealthChecker.html">   40</a></span>&#160;<span class="keyword">class </span><a class="code" href="classmesos_1_1internal_1_1checks_1_1HealthChecker.html">HealthChecker</a></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;{</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <span class="keyword">static</span> <a class="code" href="classTry.html">Try&lt;process::Owned&lt;HealthChecker&gt;</a>&gt; <a class="code" href="classmesos_1_1internal_1_1checks_1_1HealthChecker.html#a5448d70f9c4722c334a0da679ef5c194">create</a>(</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;      <span class="keyword">const</span> HealthCheck&amp; healthCheck,</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;      <span class="keyword">const</span> std::string&amp; launcherDir,</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;      <span class="keyword">const</span> lambda::function&lt;<span class="keywordtype">void</span>(<span class="keyword">const</span> TaskHealthStatus&amp;)&gt;&amp; callback,</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;      <span class="keyword">const</span> TaskID&amp; taskId,</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;      <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;pid_t&gt;</a>&amp; taskPid,</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;      <span class="keyword">const</span> std::vector&lt;std::string&gt;&amp; <a class="code" href="namespacens.html#aab01ae26d9da2efc741aa838c69db6e2">namespaces</a>);</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  <span class="keyword">static</span> <a class="code" href="classTry.html">Try&lt;process::Owned&lt;HealthChecker&gt;</a>&gt; <a class="code" href="classmesos_1_1internal_1_1checks_1_1HealthChecker.html#a5448d70f9c4722c334a0da679ef5c194">create</a>(</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;      <span class="keyword">const</span> HealthCheck&amp; healthCheck,</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;      <span class="keyword">const</span> std::string&amp; launcherDir,</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;      <span class="keyword">const</span> lambda::function&lt;<span class="keywordtype">void</span>(<span class="keyword">const</span> TaskHealthStatus&amp;)&gt;&amp; callback,</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;      <span class="keyword">const</span> TaskID&amp; taskId,</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;      <span class="keyword">const</span> ContainerID&amp; taskContainerId,</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;      <span class="keyword">const</span> <a class="code" href="structprocess_1_1http_1_1URL.html">process::http::URL</a>&amp; agentURL,</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;      <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;std::string&gt;</a>&amp; authorizationHeader);</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1checks_1_1HealthChecker.html">   41</a></span>&#160;<span class="keyword">class </span><a class="code" href="classmesos_1_1internal_1_1checks_1_1HealthChecker.html">HealthChecker</a></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;{</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keyword">static</span> <a class="code" href="classTry.html">Try&lt;process::Owned&lt;HealthChecker&gt;</a>&gt; <a class="code" href="classmesos_1_1internal_1_1checks_1_1HealthChecker.html#a5448d70f9c4722c334a0da679ef5c194">create</a>(</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;      <span class="keyword">const</span> HealthCheck&amp; healthCheck,</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;      <span class="keyword">const</span> std::string&amp; launcherDir,</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;      <span class="keyword">const</span> lambda::function&lt;<span class="keywordtype">void</span>(<span class="keyword">const</span> TaskHealthStatus&amp;)&gt;&amp; callback,</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;      <span class="keyword">const</span> TaskID&amp; taskId,</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;      <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;pid_t&gt;</a>&amp; taskPid,</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;      <span class="keyword">const</span> std::vector&lt;std::string&gt;&amp; <a class="code" href="namespacens.html#aab01ae26d9da2efc741aa838c69db6e2">namespaces</a>);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  <span class="keyword">static</span> <a class="code" href="classTry.html">Try&lt;process::Owned&lt;HealthChecker&gt;</a>&gt; <a class="code" href="classmesos_1_1internal_1_1checks_1_1HealthChecker.html#a5448d70f9c4722c334a0da679ef5c194">create</a>(</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;      <span class="keyword">const</span> HealthCheck&amp; healthCheck,</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;      <span class="keyword">const</span> std::string&amp; launcherDir,</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;      <span class="keyword">const</span> lambda::function&lt;<span class="keywordtype">void</span>(<span class="keyword">const</span> TaskHealthStatus&amp;)&gt;&amp; callback,</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;      <span class="keyword">const</span> TaskID&amp; taskId,</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;      <span class="keyword">const</span> ContainerID&amp; taskContainerId,</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;      <span class="keyword">const</span> <a class="code" href="structprocess_1_1http_1_1URL.html">process::http::URL</a>&amp; agentURL,</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;      <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;std::string&gt;</a>&amp; authorizationHeader);</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;  <a class="code" href="classmesos_1_1internal_1_1checks_1_1HealthChecker.html#a0b8dffb78c37dafcec2bba0b3e9c7f12">~HealthChecker</a>();</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div>
@@ -165,7 +165,6 @@
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;<span class="preprocessor">#endif // __HEALTH_CHECKER_HPP__</span></div>
 <div class="ttc" id="classOption_html"><div class="ttname"><a href="classOption.html">Option&lt; pid_t &gt;</a></div></div>
 <div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
-<div class="ttc" id="checker__process_8hpp_html"><div class="ttname"><a href="checker__process_8hpp.html">checker_process.hpp</a></div></div>
 <div class="ttc" id="include_2mesos_2mesos_8hpp_html"><div class="ttname"><a href="include_2mesos_2mesos_8hpp.html">mesos.hpp</a></div></div>
 <div class="ttc" id="namespacerouting_html_a22848f0fc9ff46d29ce5df25acd1be2e"><div class="ttname"><a href="namespacerouting.html#a22848f0fc9ff46d29ce5df25acd1be2e">routing::check</a></div><div class="ttdeci">Try&lt; Nothing &gt; check()</div></div>
 <div class="ttc" id="classDuration_html"><div class="ttname"><a href="classDuration.html">Duration</a></div><div class="ttdef"><b>Definition:</b> duration.hpp:32</div></div>
@@ -183,7 +182,7 @@
 <div class="ttc" id="classprocess_1_1Owned_html"><div class="ttname"><a href="classprocess_1_1Owned.html">process::Owned</a></div><div class="ttdef"><b>Definition:</b> owned.hpp:35</div></div>
 <div class="ttc" id="3rdparty_2libprocess_2include_2process_2http_8hpp_html"><div class="ttname"><a href="3rdparty_2libprocess_2include_2process_2http_8hpp.html">http.hpp</a></div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1checks_1_1HealthChecker_html_a5448d70f9c4722c334a0da679ef5c194"><div class="ttname"><a href="classmesos_1_1internal_1_1checks_1_1HealthChecker.html#a5448d70f9c4722c334a0da679ef5c194">mesos::internal::checks::HealthChecker::create</a></div><div class="ttdeci">static Try&lt; process::Owned&lt; HealthChecker &gt; &gt; create(const HealthCheck &amp;healthCheck, const std::string &amp;launcherDir, const lambda::function&lt; void(const TaskHealthStatus &amp;)&gt; &amp;callback, const TaskID &amp;taskId, const Option&lt; pid_t &gt; &amp;taskPid, const std::vector&lt; std::string &gt; &amp;namespaces)</div><div class="ttdoc">Attempts to create a HealthChecker object. </div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1checks_1_1HealthChecker_html"><div class="ttname"><a href="classmesos_1_1internal_1_1checks_1_1HealthChecker.html">mesos::internal::checks::HealthChecker</a></div><div class="ttdef"><b>Definition:</b> health_checker.hpp:40</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1checks_1_1HealthChecker_html"><div class="ttname"><a href="classmesos_1_1internal_1_1checks_1_1HealthChecker.html">mesos::internal::checks::HealthChecker</a></div><div class="ttdef"><b>Definition:</b> health_checker.hpp:41</div></div>
 <div class="ttc" id="messages_8hpp_html"><div class="ttname"><a href="messages_8hpp.html">messages.hpp</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

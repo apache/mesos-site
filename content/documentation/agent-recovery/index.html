@@ -144,6 +144,10 @@ executors that are still running.</p>
 tasks running on the host are killed and are not automatically restarted when
 the host comes back up.</p>
 
+<p>However the agent is allowed to recover its agent ID post a host reboot.
+In case the agent&rsquo;s recovery runs into agent info mismatch which may happen due to resource change associated with reboot, it&rsquo;ll fall back to recovering as a new agent (existing behavior).
+In other cases such as checkpointed resources (e.g. persistent volumes) being incompatible with the agent&rsquo;s resources the recovery will still fail (existing behavior).</p>
+
 <h2>Framework Configuration</h2>
 
 <p>A framework can control whether its executors will be recovered by setting the <code>checkpoint</code> flag in its <code>FrameworkInfo</code> when registering with the master. Enabling this feature results in increased I/O overhead at each agent that runs tasks launched by the framework. By default, frameworks do <strong>not</strong> checkpoint their state.</p>

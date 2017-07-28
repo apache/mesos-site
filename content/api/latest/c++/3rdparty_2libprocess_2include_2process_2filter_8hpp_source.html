@@ -78,28 +78,68 @@
 <div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="classprocess_1_1Filter.html#a6d55030f6e192c35bdc354a799a1d34e">   24</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classprocess_1_1Filter.html#a6d55030f6e192c35bdc354a799a1d34e">filter</a>(<span class="keyword">const</span> <a class="code" href="structprocess_1_1DispatchEvent.html">DispatchEvent</a>&amp;) { <span class="keywordflow">return</span> <span class="keyword">false</span>; }</div>
 <div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="classprocess_1_1Filter.html#af5ffca93749dd368a7089d9082d386d7">   25</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classprocess_1_1Filter.html#af5ffca93749dd368a7089d9082d386d7">filter</a>(<span class="keyword">const</span> <a class="code" href="structprocess_1_1HttpEvent.html">HttpEvent</a>&amp;) { <span class="keywordflow">return</span> <span class="keyword">false</span>; }</div>
 <div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="classprocess_1_1Filter.html#ad4d4913663d15fde5885253344c6ea9a">   26</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classprocess_1_1Filter.html#ad4d4913663d15fde5885253344c6ea9a">filter</a>(<span class="keyword">const</span> <a class="code" href="structprocess_1_1ExitedEvent.html">ExitedEvent</a>&amp;) { <span class="keywordflow">return</span> <span class="keyword">false</span>; }</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;};</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">// Use the specified filter on messages that get enqueued (note,</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">// however, that you cannot filter timeout messages).</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keywordtype">void</span> <a class="code" href="namespaceprocess.html#a3054d5443603436a6315f210a412cbbc">filter</a>(Filter* <a class="code" href="namespaceprocess.html#a3054d5443603436a6315f210a412cbbc">filter</a>);</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;} <span class="comment">// namespace process {</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
+<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="classprocess_1_1Filter.html#a07aeb097828837ae84197403a72d383c">   28</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classprocess_1_1Filter.html#a07aeb097828837ae84197403a72d383c">filter</a>(<a class="code" href="structprocess_1_1Event.html">Event</a>* event)</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  {</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keywordtype">bool</span> result = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keyword">struct </span>FilterVisitor : <a class="code" href="structprocess_1_1EventVisitor.html">EventVisitor</a></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    {</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;      <span class="keyword">explicit</span> FilterVisitor(<a class="code" href="classprocess_1_1Filter.html">Filter</a>* _filter, <span class="keywordtype">bool</span>* _result)</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        : <a class="code" href="classprocess_1_1Filter.html#a161f1f8af3d9e20304d8efac6f82769e">filter</a>(_filter), result(_result) {}</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#endif // __PROCESS_FILTER_HPP__</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;      <span class="keyword">virtual</span> <span class="keywordtype">void</span> visit(<span class="keyword">const</span> <a class="code" href="structprocess_1_1MessageEvent.html">MessageEvent</a>&amp; event)</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;      {</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        *result = <a class="code" href="classprocess_1_1Filter.html#a161f1f8af3d9e20304d8efac6f82769e">filter</a>-&gt;filter(event);</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;      }</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;      <span class="keyword">virtual</span> <span class="keywordtype">void</span> visit(<span class="keyword">const</span> <a class="code" href="structprocess_1_1DispatchEvent.html">DispatchEvent</a>&amp; event)</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;      {</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        *result = <a class="code" href="classprocess_1_1Filter.html#a161f1f8af3d9e20304d8efac6f82769e">filter</a>-&gt;filter(event);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;      }</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;      <span class="keyword">virtual</span> <span class="keywordtype">void</span> visit(<span class="keyword">const</span> <a class="code" href="structprocess_1_1HttpEvent.html">HttpEvent</a>&amp; event)</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;      {</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        *result = <a class="code" href="classprocess_1_1Filter.html#a161f1f8af3d9e20304d8efac6f82769e">filter</a>-&gt;filter(event);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;      }</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;      <span class="keyword">virtual</span> <span class="keywordtype">void</span> visit(<span class="keyword">const</span> <a class="code" href="structprocess_1_1ExitedEvent.html">ExitedEvent</a>&amp; event)</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;      {</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        *result = <a class="code" href="classprocess_1_1Filter.html#a161f1f8af3d9e20304d8efac6f82769e">filter</a>-&gt;filter(event);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;      }</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;      <a class="code" href="classprocess_1_1Filter.html">Filter</a>* <a class="code" href="classprocess_1_1Filter.html#a161f1f8af3d9e20304d8efac6f82769e">filter</a>;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;      <span class="keywordtype">bool</span>* result;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    } visitor(<span class="keyword">this</span>, &amp;result);</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keyword">event</span>-&gt;visit(&amp;visitor);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  }</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;};</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="comment">// Use the specified filter on messages that get enqueued (note,</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="comment">// however, that you cannot filter timeout messages).</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="keywordtype">void</span> <a class="code" href="namespaceprocess.html#a3054d5443603436a6315f210a412cbbc">filter</a>(Filter* <a class="code" href="namespaceprocess.html#a3054d5443603436a6315f210a412cbbc">filter</a>);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;} <span class="comment">// namespace process {</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="preprocessor">#endif // __PROCESS_FILTER_HPP__</span></div>
 <div class="ttc" id="classprocess_1_1Filter_html"><div class="ttname"><a href="classprocess_1_1Filter.html">process::Filter</a></div><div class="ttdef"><b>Definition:</b> filter.hpp:20</div></div>
-<div class="ttc" id="structprocess_1_1HttpEvent_html"><div class="ttname"><a href="structprocess_1_1HttpEvent.html">process::HttpEvent</a></div><div class="ttdef"><b>Definition:</b> event.hpp:116</div></div>
-<div class="ttc" id="structprocess_1_1DispatchEvent_html"><div class="ttname"><a href="structprocess_1_1DispatchEvent.html">process::DispatchEvent</a></div><div class="ttdef"><b>Definition:</b> event.hpp:148</div></div>
-<div class="ttc" id="structprocess_1_1ExitedEvent_html"><div class="ttname"><a href="structprocess_1_1ExitedEvent.html">process::ExitedEvent</a></div><div class="ttdef"><b>Definition:</b> event.hpp:179</div></div>
+<div class="ttc" id="structprocess_1_1HttpEvent_html"><div class="ttname"><a href="structprocess_1_1HttpEvent.html">process::HttpEvent</a></div><div class="ttdef"><b>Definition:</b> event.hpp:111</div></div>
+<div class="ttc" id="structprocess_1_1DispatchEvent_html"><div class="ttname"><a href="structprocess_1_1DispatchEvent.html">process::DispatchEvent</a></div><div class="ttdef"><b>Definition:</b> event.hpp:143</div></div>
+<div class="ttc" id="structprocess_1_1ExitedEvent_html"><div class="ttname"><a href="structprocess_1_1ExitedEvent.html">process::ExitedEvent</a></div><div class="ttdef"><b>Definition:</b> event.hpp:174</div></div>
 <div class="ttc" id="classprocess_1_1Filter_html_af5ffca93749dd368a7089d9082d386d7"><div class="ttname"><a href="classprocess_1_1Filter.html#af5ffca93749dd368a7089d9082d386d7">process::Filter::filter</a></div><div class="ttdeci">virtual bool filter(const HttpEvent &amp;)</div><div class="ttdef"><b>Definition:</b> filter.hpp:25</div></div>
 <div class="ttc" id="classprocess_1_1Filter_html_af337696567c45148ae5d6a7a2d298227"><div class="ttname"><a href="classprocess_1_1Filter.html#af337696567c45148ae5d6a7a2d298227">process::Filter::~Filter</a></div><div class="ttdeci">virtual ~Filter()</div><div class="ttdef"><b>Definition:</b> filter.hpp:22</div></div>
+<div class="ttc" id="classprocess_1_1Filter_html_a07aeb097828837ae84197403a72d383c"><div class="ttname"><a href="classprocess_1_1Filter.html#a07aeb097828837ae84197403a72d383c">process::Filter::filter</a></div><div class="ttdeci">virtual bool filter(Event *event)</div><div class="ttdef"><b>Definition:</b> filter.hpp:28</div></div>
 <div class="ttc" id="classprocess_1_1Filter_html_a161f1f8af3d9e20304d8efac6f82769e"><div class="ttname"><a href="classprocess_1_1Filter.html#a161f1f8af3d9e20304d8efac6f82769e">process::Filter::filter</a></div><div class="ttdeci">virtual bool filter(const MessageEvent &amp;)</div><div class="ttdef"><b>Definition:</b> filter.hpp:23</div></div>
 <div class="ttc" id="namespaceos_html_ae19e4161a51b86a1f330f3bf1dc75389"><div class="ttname"><a href="namespaceos.html#ae19e4161a51b86a1f330f3bf1dc75389">os::process</a></div><div class="ttdeci">Result&lt; Process &gt; process(pid_t pid)</div><div class="ttdef"><b>Definition:</b> freebsd.hpp:30</div></div>
+<div class="ttc" id="structprocess_1_1EventVisitor_html"><div class="ttname"><a href="structprocess_1_1EventVisitor.html">process::EventVisitor</a></div><div class="ttdef"><b>Definition:</b> event.hpp:37</div></div>
 <div class="ttc" id="event_8hpp_html"><div class="ttname"><a href="event_8hpp.html">event.hpp</a></div></div>
 <div class="ttc" id="structprocess_1_1MessageEvent_html"><div class="ttname"><a href="structprocess_1_1MessageEvent.html">process::MessageEvent</a></div><div class="ttdef"><b>Definition:</b> event.hpp:87</div></div>
 <div class="ttc" id="classprocess_1_1Filter_html_a6d55030f6e192c35bdc354a799a1d34e"><div class="ttname"><a href="classprocess_1_1Filter.html#a6d55030f6e192c35bdc354a799a1d34e">process::Filter::filter</a></div><div class="ttdeci">virtual bool filter(const DispatchEvent &amp;)</div><div class="ttdef"><b>Definition:</b> filter.hpp:24</div></div>
 <div class="ttc" id="classprocess_1_1Filter_html_ad4d4913663d15fde5885253344c6ea9a"><div class="ttname"><a href="classprocess_1_1Filter.html#ad4d4913663d15fde5885253344c6ea9a">process::Filter::filter</a></div><div class="ttdeci">virtual bool filter(const ExitedEvent &amp;)</div><div class="ttdef"><b>Definition:</b> filter.hpp:26</div></div>
+<div class="ttc" id="structprocess_1_1Event_html"><div class="ttname"><a href="structprocess_1_1Event.html">process::Event</a></div><div class="ttdef"><b>Definition:</b> event.hpp:48</div></div>
 <div class="ttc" id="namespaceprocess_html_a3054d5443603436a6315f210a412cbbc"><div class="ttname"><a href="namespaceprocess.html#a3054d5443603436a6315f210a412cbbc">process::filter</a></div><div class="ttdeci">void filter(Filter *filter)</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

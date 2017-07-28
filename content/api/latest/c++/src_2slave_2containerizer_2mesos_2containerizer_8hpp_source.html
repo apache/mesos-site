@@ -411,25 +411,28 @@
 <div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;</div>
 <div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;  <a class="code" href="classhashmap.html">hashmap&lt;ContainerID, process::Owned&lt;Container&gt;</a>&gt; containers_;</div>
 <div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;</div>
-<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;  <span class="keyword">struct </span><a class="code" href="namespacemesos_1_1internal_1_1tests.html#ace210c8852d8ef1f0f67ec3af06281f6">Metrics</a></div>
-<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;  {</div>
-<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;    <a class="code" href="namespacemesos_1_1internal_1_1tests.html#ace210c8852d8ef1f0f67ec3af06281f6">Metrics</a>();</div>
-<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;    ~<a class="code" href="namespacemesos_1_1internal_1_1tests.html#ace210c8852d8ef1f0f67ec3af06281f6">Metrics</a>();</div>
-<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;</div>
-<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;    <a class="code" href="classprocess_1_1metrics_1_1Counter.html">process::metrics::Counter</a> container_destroy_errors;</div>
-<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;  } metrics;</div>
-<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;};</div>
-<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;</div>
-<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;</div>
-<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;std::ostream&amp; <a class="code" href="namespacemesos_1_1internal_1_1slave.html#acc816a5f127bb40e7d5464befda0a0a9">operator&lt;&lt;</a>(</div>
-<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;    std::ostream&amp; stream,</div>
-<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;    <span class="keyword">const</span> MesosContainerizerProcess::State&amp; state);</div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;</div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;} <span class="comment">// namespace slave {</span></div>
-<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;} <span class="comment">// namespace internal {</span></div>
-<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;} <span class="comment">// namespace mesos {</span></div>
-<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;</div>
-<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;<span class="preprocessor">#endif // __MESOS_CONTAINERIZER_HPP__</span></div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;  <span class="comment">// Helper to transition container state.</span></div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;  <span class="keywordtype">void</span> transition(<span class="keyword">const</span> ContainerID&amp; containerId, <span class="keyword">const</span> State&amp; state);</div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;</div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;  <span class="keyword">struct </span><a class="code" href="namespacemesos_1_1internal_1_1tests.html#ace210c8852d8ef1f0f67ec3af06281f6">Metrics</a></div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;  {</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;    <a class="code" href="namespacemesos_1_1internal_1_1tests.html#ace210c8852d8ef1f0f67ec3af06281f6">Metrics</a>();</div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;    ~<a class="code" href="namespacemesos_1_1internal_1_1tests.html#ace210c8852d8ef1f0f67ec3af06281f6">Metrics</a>();</div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;    <a class="code" href="classprocess_1_1metrics_1_1Counter.html">process::metrics::Counter</a> container_destroy_errors;</div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;  } metrics;</div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;};</div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;</div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;</div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;std::ostream&amp; <a class="code" href="namespacemesos_1_1internal_1_1slave.html#acc816a5f127bb40e7d5464befda0a0a9">operator&lt;&lt;</a>(</div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;    std::ostream&amp; stream,</div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;    <span class="keyword">const</span> MesosContainerizerProcess::State&amp; state);</div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;</div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;} <span class="comment">// namespace slave {</span></div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;} <span class="comment">// namespace internal {</span></div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;} <span class="comment">// namespace mesos {</span></div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;<span class="preprocessor">#endif // __MESOS_CONTAINERIZER_HPP__</span></div>
 <div class="ttc" id="classmesos_1_1internal_1_1slave_1_1MesosContainerizerProcess_html_ab958e69479ed18b226831413745b89ab"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1MesosContainerizerProcess.html#ab958e69479ed18b226831413745b89ab">mesos::internal::slave::MesosContainerizerProcess::launch</a></div><div class="ttdeci">virtual process::Future&lt; bool &gt; launch(const ContainerID &amp;containerId, const mesos::slave::ContainerConfig &amp;containerConfig, const std::map&lt; std::string, std::string &gt; &amp;environment, const Option&lt; std::string &gt; &amp;pidCheckpointPath)</div></div>
 <div class="ttc" id="namespaceprocess_1_1ID_html_aeb11a48c9def1da169d8455a30d0ee39"><div class="ttname"><a href="namespaceprocess_1_1ID.html#aeb11a48c9def1da169d8455a30d0ee39">process::ID::generate</a></div><div class="ttdeci">std::string generate(const std::string &amp;prefix=&quot;&quot;)</div><div class="ttdoc">Returns &amp;#39;prefix(N)&amp;#39; where N represents the number of instances where the same prefix (wrt...</div></div>
 <div class="ttc" id="resolver_8hpp_html"><div class="ttname"><a href="resolver_8hpp.html">resolver.hpp</a></div></div>
@@ -441,7 +444,7 @@
 <div class="ttc" id="classmesos_1_1internal_1_1slave_1_1MesosContainerizerProcess_html_a4a62062f62daa92ee7fb8fff3a93c167"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1MesosContainerizerProcess.html#a4a62062f62daa92ee7fb8fff3a93c167">mesos::internal::slave::MesosContainerizerProcess::~MesosContainerizerProcess</a></div><div class="ttdeci">virtual ~MesosContainerizerProcess()</div><div class="ttdef"><b>Definition:</b> containerizer.hpp:137</div></div>
 <div class="ttc" id="nvidia_8hpp_html"><div class="ttname"><a href="nvidia_8hpp.html">nvidia.hpp</a></div></div>
 <div class="ttc" id="namespacemesos_1_1internal_1_1slave_html_acc816a5f127bb40e7d5464befda0a0a9"><div class="ttname"><a href="namespacemesos_1_1internal_1_1slave.html#acc816a5f127bb40e7d5464befda0a0a9">mesos::internal::slave::operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;stream, const MesosContainerizerProcess::State &amp;state)</div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1Fetcher_html"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1Fetcher.html">mesos::internal::slave::Fetcher</a></div><div class="ttdef"><b>Definition:</b> fetcher.hpp:57</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1Fetcher_html"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1Fetcher.html">mesos::internal::slave::Fetcher</a></div><div class="ttdef"><b>Definition:</b> fetcher.hpp:49</div></div>
 <div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1slave_1_1MesosContainerizerProcess_html_aab78fd4ccff9c0bf50bb8b036e113c8e"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1MesosContainerizerProcess.html#aab78fd4ccff9c0bf50bb8b036e113c8e">mesos::internal::slave::MesosContainerizerProcess::destroy</a></div><div class="ttdeci">virtual process::Future&lt; bool &gt; destroy(const ContainerID &amp;containerId)</div></div>
 <div class="ttc" id="classhashset_html"><div class="ttname"><a href="classhashset.html">hashset&lt; ContainerID &gt;</a></div></div>
@@ -457,7 +460,7 @@
 <div class="ttc" id="classhashmap_html"><div class="ttname"><a href="classhashmap.html">hashmap</a></div><div class="ttdef"><b>Definition:</b> hashmap.hpp:36</div></div>
 <div class="ttc" id="provisioner_8hpp_html"><div class="ttname"><a href="provisioner_8hpp.html">provisioner.hpp</a></div></div>
 <div class="ttc" id="namespacemesos_1_1internal_1_1tests_html_a1396c5e3b0a179220de2792d74770ec2"><div class="ttname"><a href="namespacemesos_1_1internal_1_1tests.html#a1396c5e3b0a179220de2792d74770ec2">mesos::internal::tests::environment</a></div><div class="ttdeci">Environment * environment</div></div>
-<div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_ab03ced250ed239bc3b50b669493997f9"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ab03ced250ed239bc3b50b669493997f9">pid_t</a></div><div class="ttdeci">DWORD pid_t</div><div class="ttdef"><b>Definition:</b> windows.hpp:171</div></div>
+<div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_ab03ced250ed239bc3b50b669493997f9"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ab03ced250ed239bc3b50b669493997f9">pid_t</a></div><div class="ttdeci">DWORD pid_t</div><div class="ttdef"><b>Definition:</b> windows.hpp:185</div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1slave_1_1Containerizer_html"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1Containerizer.html">mesos::internal::slave::Containerizer</a></div><div class="ttdef"><b>Definition:</b> containerizer.hpp:57</div></div>
 <div class="ttc" id="classprocess_1_1Shared_html"><div class="ttname"><a href="classprocess_1_1Shared.html">process::Shared</a></div><div class="ttdef"><b>Definition:</b> owned.hpp:25</div></div>
 <div class="ttc" id="sequence_8hpp_html"><div class="ttname"><a href="sequence_8hpp.html">sequence.hpp</a></div></div>
@@ -496,7 +499,7 @@
 <div class="ttc" id="id_8hpp_html"><div class="ttname"><a href="id_8hpp.html">id.hpp</a></div></div>
 <div class="ttc" id="multihashmap_8hpp_html"><div class="ttname"><a href="multihashmap_8hpp.html">multihashmap.hpp</a></div></div>
 <div class="ttc" id="3rdparty_2libprocess_2include_2process_2http_8hpp_html"><div class="ttname"><a href="3rdparty_2libprocess_2include_2process_2http_8hpp.html">http.hpp</a></div></div>
-<div class="ttc" id="classprocess_1_1Process_html"><div class="ttname"><a href="classprocess_1_1Process.html">process::Process</a></div><div class="ttdef"><b>Definition:</b> process.hpp:489</div></div>
+<div class="ttc" id="classprocess_1_1Process_html"><div class="ttname"><a href="classprocess_1_1Process.html">process::Process</a></div><div class="ttdef"><b>Definition:</b> process.hpp:490</div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1slave_1_1MesosContainerizer_html_a9b8cbaadc6ec688e6de806d64b731ad0"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1MesosContainerizer.html#a9b8cbaadc6ec688e6de806d64b731ad0">mesos::internal::slave::MesosContainerizer::status</a></div><div class="ttdeci">virtual process::Future&lt; ContainerStatus &gt; status(const ContainerID &amp;containerId)</div></div>
 <div class="ttc" id="hashmap_8hpp_html"><div class="ttname"><a href="hashmap_8hpp.html">hashmap.hpp</a></div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1slave_1_1MesosContainerizerProcess_html_acf6d422ed7139f6e0398f0c875e68ccf"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1MesosContainerizerProcess.html#acf6d422ed7139f6e0398f0c875e68ccf">mesos::internal::slave::MesosContainerizerProcess::operator&lt;&lt;</a></div><div class="ttdeci">friend std::ostream &amp; operator&lt;&lt;(std::ostream &amp;stream, const State &amp;state)</div></div>

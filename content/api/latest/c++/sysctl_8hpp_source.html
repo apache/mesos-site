@@ -242,7 +242,7 @@
 <div class="line"><a name="l00188"></a><span class="lineno"><a class="line" href="structos_1_1sysctl.html#af54897c91536ccd5d829daabbac64266">  188</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;std::string&gt;</a> <a class="code" href="structos_1_1sysctl.html#af54897c91536ccd5d829daabbac64266">sysctl::string</a>()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;<span class="keyword"></span>{</div>
 <div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;  <span class="comment">// First determine the size of the string.</span></div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;  <span class="keywordtype">size_t</span> <a class="code" href="namespaceos_1_1stat.html#aac17a91dd3f91341b8c4021025e89b04">size</a> = 0;</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;  <span class="keywordtype">size_t</span> <a class="code" href="namespaceos_1_1stat.html#a7a116891923bc8b5d8c50f78da8657be">size</a> = 0;</div>
 <div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;  <span class="keywordflow">if</span> (::<a class="code" href="structos_1_1sysctl.html#a670413ae2850bb31a74f552672accf40">sysctl</a>(name, levels, <span class="keyword">nullptr</span>, &amp;size, <span class="keyword">nullptr</span>, 0) == -1) {</div>
 <div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classErrnoError.html">ErrnoError</a>();</div>
 <div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;  }</div>
@@ -272,7 +272,7 @@
 <div class="line"><a name="l00218"></a><span class="lineno"><a class="line" href="structos_1_1sysctl.html#aa0170ffd9e615f415e5cef7126831728">  218</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;timeval&gt;</a> <a class="code" href="structos_1_1sysctl.html#aa0170ffd9e615f415e5cef7126831728">sysctl::time</a>()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;<span class="keyword"></span>{</div>
 <div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;  timeval result;</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;  <span class="keywordtype">size_t</span> <a class="code" href="namespaceos_1_1stat.html#aac17a91dd3f91341b8c4021025e89b04">size</a> = <span class="keyword">sizeof</span>(result);</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;  <span class="keywordtype">size_t</span> <a class="code" href="namespaceos_1_1stat.html#a7a116891923bc8b5d8c50f78da8657be">size</a> = <span class="keyword">sizeof</span>(result);</div>
 <div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;  <span class="keywordflow">if</span> (::<a class="code" href="structos_1_1sysctl.html#a670413ae2850bb31a74f552672accf40">sysctl</a>(name, levels, &amp;result, &amp;size, <span class="keyword">nullptr</span>, 0) == -1) {</div>
 <div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classErrnoError.html">ErrnoError</a>();</div>
 <div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;  }</div>
@@ -298,7 +298,7 @@
 <div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;sysctl::Integer::operator <a class="code" href="classTry.html">Try&lt;T&gt;</a>()</div>
 <div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;{</div>
 <div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;  T i;</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;  <span class="keywordtype">size_t</span> <a class="code" href="namespaceos_1_1stat.html#aac17a91dd3f91341b8c4021025e89b04">size</a> = <span class="keyword">sizeof</span>(i);</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;  <span class="keywordtype">size_t</span> <a class="code" href="namespaceos_1_1stat.html#a7a116891923bc8b5d8c50f78da8657be">size</a> = <span class="keyword">sizeof</span>(i);</div>
 <div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;  <span class="keywordflow">if</span> (::sysctl(<a class="code" href="namespaceos_1_1Shell.html#acfe16ef2b1146ad49a8651c0a457ce46">name</a>, levels, &amp;i, &amp;size, <span class="keyword">nullptr</span>, 0) == -1) {</div>
 <div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classErrnoError.html">ErrnoError</a>();</div>
 <div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;  }</div>
@@ -360,6 +360,7 @@
 <div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;<span class="preprocessor">#endif // __STOUT_OS_SYSCTL_HPP__</span></div>
 <div class="ttc" id="classError_html"><div class="ttname"><a href="classError.html">Error</a></div><div class="ttdef"><b>Definition:</b> errorbase.hpp:35</div></div>
 <div class="ttc" id="classOption_html"><div class="ttname"><a href="classOption.html">Option&lt; size_t &gt;</a></div></div>
+<div class="ttc" id="namespaceos_1_1stat_html_a7a116891923bc8b5d8c50f78da8657be"><div class="ttname"><a href="namespaceos_1_1stat.html#a7a116891923bc8b5d8c50f78da8657be">os::stat::size</a></div><div class="ttdeci">Try&lt; Bytes &gt; size(const std::string &amp;path, const FollowSymlink follow=FollowSymlink::FOLLOW_SYMLINK)</div><div class="ttdef"><b>Definition:</b> stat.hpp:100</div></div>
 <div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
 <div class="ttc" id="none_8hpp_html"><div class="ttname"><a href="none_8hpp.html">none.hpp</a></div></div>
 <div class="ttc" id="classErrnoError_html"><div class="ttname"><a href="classErrnoError.html">ErrnoError</a></div><div class="ttdef"><b>Definition:</b> errorbase.hpp:44</div></div>
@@ -368,7 +369,6 @@
 <div class="ttc" id="structos_1_1sysctl_html_a670413ae2850bb31a74f552672accf40"><div class="ttname"><a href="structos_1_1sysctl.html#a670413ae2850bb31a74f552672accf40">os::sysctl::sysctl</a></div><div class="ttdeci">sysctl(int level1)</div><div class="ttdef"><b>Definition:</b> sysctl.hpp:126</div></div>
 <div class="ttc" id="structos_1_1sysctl_html_a8bad8be3072cd46efeacdf4e9fc7c2b8"><div class="ttname"><a href="structos_1_1sysctl.html#a8bad8be3072cd46efeacdf4e9fc7c2b8">os::sysctl::~sysctl</a></div><div class="ttdeci">~sysctl()</div><div class="ttdef"><b>Definition:</b> sysctl.hpp:176</div></div>
 <div class="ttc" id="option_8hpp_html"><div class="ttname"><a href="option_8hpp.html">option.hpp</a></div></div>
-<div class="ttc" id="namespaceos_1_1stat_html_aac17a91dd3f91341b8c4021025e89b04"><div class="ttname"><a href="namespaceos_1_1stat.html#aac17a91dd3f91341b8c4021025e89b04">os::stat::size</a></div><div class="ttdeci">Try&lt; Bytes &gt; size(const std::string &amp;path, const FollowSymlink follow=FOLLOW_SYMLINK)</div><div class="ttdef"><b>Definition:</b> stat.hpp:88</div></div>
 <div class="ttc" id="structos_1_1sysctl_html_ae4fa1e9a1934a5f694a83ba10b008764"><div class="ttname"><a href="structos_1_1sysctl.html#ae4fa1e9a1934a5f694a83ba10b008764">os::sysctl::integer</a></div><div class="ttdeci">Integer integer() const </div><div class="ttdef"><b>Definition:</b> sysctl.hpp:182</div></div>
 <div class="ttc" id="error_8hpp_html"><div class="ttname"><a href="error_8hpp.html">error.hpp</a></div></div>
 <div class="ttc" id="structNone_html"><div class="ttname"><a href="structNone.html">None</a></div><div class="ttdef"><b>Definition:</b> none.hpp:27</div></div>

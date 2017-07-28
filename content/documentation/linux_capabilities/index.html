@@ -149,10 +149,12 @@ be explicitly dropped.  If the <code>--effective_capabilities</code> flag is not
 present, the task will be launched with the default capabilities of the
 task user but the ambient capabilities will not be set.</p>
 
-<p>The <code>--bounding_capabilities</code> flag specifies an upper bound on the the
-capabilities a task is allowed to acquire or be granted.  Schedulers are
-not allowed to launch tasks with capabilities outside the set specified
-by the <code>--bounding_capabilities</code> flag.</p>
+<p>The <code>--bounding_capabilities</code> flag specifies an upper bound on the
+the capabilities a task is allowed to acquire or be granted.
+Schedulers are not allowed to launch tasks with capabilities outside
+the set specified by the <code>--bounding_capabilities</code> flag, but may
+specify effective or bounding capabilities that are within this
+set.</p>
 
 <p>An empty list for <code>--bounding_capabilities</code> signifies that no capabilities
 are allowed, while an absent <code>--bounding_capabilities</code> flag signifies
@@ -169,21 +171,22 @@ that all capabilities are allowed.</p>
 
 <h2>Task setup</h2>
 
-<p>In order for a Mesos task to acquire effective capabilities it should
-declare the required capabilities in the <code>LinuxInfo</code> element of its
-<code>ContainerInfo</code>.</p>
+<p>In order for a Mesos task to acquire specific effective capabilities
+or limit its bounding capabilities it should declare the required
+capabilities in the <code>LinuxInfo</code> element of its <code>ContainerInfo</code>.</p>
 
 <p>A Mesos task can only request capabilities which are allowed according
 to the <code>--bounding_capabilities</code> flag of the agent; a task requesting
 other capabilities will be rejected. When the <code>--bounding_capabilities</code>
-flag is not present, all capability request will be granted.</p>
+flag is not present, all capability requests will be granted.</p>
 
-<p>If the optional <code>capability_info</code> field is not set, the value of the
-<code>--effective_capabilities</code> flag will be used to populate the task
-capabilities. If an empty list of capabilities is given, the Mesos task
-will drop all capabilities.  Note that the task will be unable to acquire
-capabilities not specified in the final <code>capability_info</code> even if the
-<code>--bounding_capabilities</code> flag would otherwise allow them.</p>
+<p>If the optional <code>effective_capabilities</code> field is not set, the value
+of the <code>--effective_capabilities</code> flag will be used to populate the
+task capabilities. If the optional <code>bounding_capabilities</code> field
+is not set, the value of the <code>--bounding_capabilities</code> flag will
+be used to populate the task capabilities. In both case, if an empty
+list of capabilities is given, the Mesos task will drop all
+capabilities in the corresponding set.</p>
 
   </div>
 </div>

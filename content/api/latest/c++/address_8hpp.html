@@ -62,10 +62,12 @@
 <code>#include &lt;glog/logging.h&gt;</code><br/>
 <code>#include &lt;sys/un.h&gt;</code><br/>
 <code>#include &lt;ostream&gt;</code><br/>
+<code>#include &lt;boost/variant.hpp&gt;</code><br/>
 <code>#include &lt;boost/functional/hash.hpp&gt;</code><br/>
 <code>#include &lt;<a class="el" href="abort_8hpp_source.html">stout/abort.hpp</a>&gt;</code><br/>
 <code>#include &lt;<a class="el" href="stout_2include_2stout_2check_8hpp_source.html">stout/check.hpp</a>&gt;</code><br/>
 <code>#include &lt;<a class="el" href="3rdparty_2stout_2include_2stout_2ip_8hpp_source.html">stout/ip.hpp</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="variant_8hpp_source.html">stout/variant.hpp</a>&gt;</code><br/>
 <code>#include &lt;<a class="el" href="3rdparty_2stout_2include_2stout_2net_8hpp_source.html">stout/net.hpp</a>&gt;</code><br/>
 <code>#include &lt;<a class="el" href="stringify_8hpp_source.html">stout/stringify.hpp</a>&gt;</code><br/>
 <code>#include &lt;<a class="el" href="unreachable_8hpp_source.html">stout/unreachable.hpp</a>&gt;</code><br/>
@@ -74,13 +76,21 @@
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprocess_1_1network_1_1Address.html">process::network::Address</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprocess_1_1network_1_1inet_1_1Address.html">process::network::inet::Address</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprocess_1_1network_1_1inet4_1_1Address.html">process::network::inet4::Address</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprocess_1_1network_1_1inet6_1_1Address.html">process::network::inet6::Address</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprocess_1_1network_1_1unix_1_1Address.html">process::network::unix::Address</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprocess_1_1network_1_1Address.html">process::network::Address</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstd_1_1hash_3_01process_1_1network_1_1inet_1_1Address_01_4.html">std::hash&lt; process::network::inet::Address &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstd_1_1hash_3_01process_1_1network_1_1inet4_1_1Address_01_4.html">std::hash&lt; process::network::inet4::Address &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstd_1_1hash_3_01process_1_1network_1_1inet6_1_1Address_01_4.html">std::hash&lt; process::network::inet6::Address &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
@@ -91,6 +101,10 @@ Namespaces</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespaceprocess_1_1network_1_1inet"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceprocess_1_1network_1_1inet.html">process::network::inet</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespaceprocess_1_1network_1_1inet4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceprocess_1_1network_1_1inet4.html">process::network::inet4</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespaceprocess_1_1network_1_1inet6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceprocess_1_1network_1_1inet6.html">process::network::inet6</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespaceprocess_1_1network_1_1unix"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceprocess_1_1network_1_1unix.html">process::network::unix</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacestd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestd.html">std</a></td></tr>
@@ -98,24 +112,28 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:aeeb98511a7f2ae5797a252cab8c15679"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceprocess_1_1network_1_1inet.html#aeeb98511a7f2ae5797a252cab8c15679">process::network::inet::operator&lt;&lt;</a> (std::ostream &amp;stream, const Address &amp;address)</td></tr>
+<tr class="separator:aeeb98511a7f2ae5797a252cab8c15679"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adeefcd3b3ee2108ee5edfa1b0833141f"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceprocess_1_1network_1_1unix.html#adeefcd3b3ee2108ee5edfa1b0833141f">process::network::unix::operator&lt;&lt;</a> (std::ostream &amp;stream, const Address &amp;address)</td></tr>
+<tr class="separator:adeefcd3b3ee2108ee5edfa1b0833141f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9feb5b1e8c5dcbed7a790c68abb97a78"><td class="memTemplParams" colspan="2">template&lt;typename AddressType &gt; </td></tr>
 <tr class="memitem:a9feb5b1e8c5dcbed7a790c68abb97a78"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classTry.html">Try</a>&lt; AddressType &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceprocess_1_1network.html#a9feb5b1e8c5dcbed7a790c68abb97a78">process::network::convert</a> (<a class="el" href="classTry.html">Try</a>&lt; Address &gt; &amp;&amp;address)</td></tr>
 <tr class="separator:a9feb5b1e8c5dcbed7a790c68abb97a78"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adfcc874cc7e06d1cc808b2e554bf1843"><td class="memTemplParams" colspan="2">template&lt;&gt; </td></tr>
-<tr class="memitem:adfcc874cc7e06d1cc808b2e554bf1843"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classTry.html">Try</a>&lt; Address &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceprocess_1_1network.html#adfcc874cc7e06d1cc808b2e554bf1843">process::network::convert</a> (<a class="el" href="classTry.html">Try</a>&lt; Address &gt; &amp;&amp;address)</td></tr>
-<tr class="separator:adfcc874cc7e06d1cc808b2e554bf1843"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeeb98511a7f2ae5797a252cab8c15679"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceprocess_1_1network_1_1inet.html#aeeb98511a7f2ae5797a252cab8c15679">process::network::inet::operator&lt;&lt;</a> (std::ostream &amp;stream, const Address &amp;address)</td></tr>
-<tr class="separator:aeeb98511a7f2ae5797a252cab8c15679"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a01e367136f97a794190645860e586eb9"><td class="memTemplParams" colspan="2">template&lt;&gt; </td></tr>
-<tr class="memitem:a01e367136f97a794190645860e586eb9"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classTry.html">Try</a>&lt; inet::Address &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceprocess_1_1network.html#a01e367136f97a794190645860e586eb9">process::network::convert</a> (<a class="el" href="classTry.html">Try</a>&lt; Address &gt; &amp;&amp;address)</td></tr>
-<tr class="separator:a01e367136f97a794190645860e586eb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adeefcd3b3ee2108ee5edfa1b0833141f"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceprocess_1_1network_1_1unix.html#adeefcd3b3ee2108ee5edfa1b0833141f">process::network::unix::operator&lt;&lt;</a> (std::ostream &amp;stream, const Address &amp;address)</td></tr>
-<tr class="separator:adeefcd3b3ee2108ee5edfa1b0833141f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6257bdb56540143b296a6fd578d5feb8"><td class="memTemplParams" colspan="2">template&lt;&gt; </td></tr>
 <tr class="memitem:a6257bdb56540143b296a6fd578d5feb8"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classTry.html">Try</a>&lt; unix::Address &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceprocess_1_1network.html#a6257bdb56540143b296a6fd578d5feb8">process::network::convert</a> (<a class="el" href="classTry.html">Try</a>&lt; Address &gt; &amp;&amp;address)</td></tr>
 <tr class="separator:a6257bdb56540143b296a6fd578d5feb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5272e0e693dc5fa8c9dd5cf610a5a213"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceprocess_1_1network.html#a5272e0e693dc5fa8c9dd5cf610a5a213">process::network::operator&lt;&lt;</a> (std::ostream &amp;stream, const Address &amp;address)</td></tr>
-<tr class="separator:a5272e0e693dc5fa8c9dd5cf610a5a213"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2726d3029f0fc3ed396914f5ec745247"><td class="memTemplParams" colspan="2">template&lt;&gt; </td></tr>
+<tr class="memitem:a2726d3029f0fc3ed396914f5ec745247"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classTry.html">Try</a>&lt; inet4::Address &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceprocess_1_1network.html#a2726d3029f0fc3ed396914f5ec745247">process::network::convert</a> (<a class="el" href="classTry.html">Try</a>&lt; Address &gt; &amp;&amp;address)</td></tr>
+<tr class="separator:a2726d3029f0fc3ed396914f5ec745247"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19ab7c0c080c4603d58aa569a890e882"><td class="memTemplParams" colspan="2">template&lt;&gt; </td></tr>
+<tr class="memitem:a19ab7c0c080c4603d58aa569a890e882"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classTry.html">Try</a>&lt; inet6::Address &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceprocess_1_1network.html#a19ab7c0c080c4603d58aa569a890e882">process::network::convert</a> (<a class="el" href="classTry.html">Try</a>&lt; Address &gt; &amp;&amp;address)</td></tr>
+<tr class="separator:a19ab7c0c080c4603d58aa569a890e882"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a01e367136f97a794190645860e586eb9"><td class="memTemplParams" colspan="2">template&lt;&gt; </td></tr>
+<tr class="memitem:a01e367136f97a794190645860e586eb9"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classTry.html">Try</a>&lt; inet::Address &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceprocess_1_1network.html#a01e367136f97a794190645860e586eb9">process::network::convert</a> (<a class="el" href="classTry.html">Try</a>&lt; Address &gt; &amp;&amp;address)</td></tr>
+<tr class="separator:a01e367136f97a794190645860e586eb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adfcc874cc7e06d1cc808b2e554bf1843"><td class="memTemplParams" colspan="2">template&lt;&gt; </td></tr>
+<tr class="memitem:adfcc874cc7e06d1cc808b2e554bf1843"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classTry.html">Try</a>&lt; Address &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceprocess_1_1network.html#adfcc874cc7e06d1cc808b2e554bf1843">process::network::convert</a> (<a class="el" href="classTry.html">Try</a>&lt; Address &gt; &amp;&amp;address)</td></tr>
+<tr class="separator:adfcc874cc7e06d1cc808b2e554bf1843"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->

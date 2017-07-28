@@ -86,9 +86,18 @@
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor"></span>constexpr <span class="keywordtype">char</span> <a class="code" href="namespaceos.html#a8d90278daa51c4fe9fcb9e54757187b5">DEV_NULL</a>[] = <span class="stringliteral">&quot;NUL&quot;</span>;</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#endif // __WINDOWS__</span></div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;} <span class="comment">// namespace os {</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#endif // __STOUT_OS_CONSTANTS_HPP__</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#ifdef __WINDOWS__</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor"></span><span class="comment">// This prefix is prepended to absolute paths on Windows to indicate the path</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">// may be greater than 255 characters.</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">// NOTE: We do not use a R&quot;raw string&quot; here because syntax highlighters do not</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">// handle mismatched backslashes well.</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;constexpr <span class="keywordtype">char</span> LONGPATH_PREFIX[] = <span class="stringliteral">&quot;\\\\?\\&quot;</span>;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#endif // __WINDOWS__</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;} <span class="comment">// namespace os {</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#endif // __STOUT_OS_CONSTANTS_HPP__</span></div>
 <div class="ttc" id="namespaceos_html_ae86289c0463a69de1a4aa97ba9203e57"><div class="ttname"><a href="namespaceos.html#ae86289c0463a69de1a4aa97ba9203e57">os::WINDOWS_PATH_SEPARATOR</a></div><div class="ttdeci">constexpr char WINDOWS_PATH_SEPARATOR</div><div class="ttdef"><b>Definition:</b> constants.hpp:20</div></div>
 <div class="ttc" id="namespaceos_html_a647be66325aca2685aa58780bbdb8e9a"><div class="ttname"><a href="namespaceos.html#a647be66325aca2685aa58780bbdb8e9a">os::POSIX_PATH_SEPARATOR</a></div><div class="ttdeci">constexpr char POSIX_PATH_SEPARATOR</div><div class="ttdef"><b>Definition:</b> constants.hpp:21</div></div>
 <div class="ttc" id="namespaceos_html_a8d90278daa51c4fe9fcb9e54757187b5"><div class="ttname"><a href="namespaceos.html#a8d90278daa51c4fe9fcb9e54757187b5">os::DEV_NULL</a></div><div class="ttdeci">constexpr char DEV_NULL[]</div><div class="ttdef"><b>Definition:</b> constants.hpp:30</div></div>

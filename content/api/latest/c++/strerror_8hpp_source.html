@@ -86,14 +86,14 @@
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">    ((_POSIX_C_SOURCE &gt;= 200112L || _XOPEN_SOURCE &gt;= 600) &amp;&amp; \</span></div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">     !defined(_GNU_SOURCE))</span></div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor"></span>  <span class="comment">// (1) We have the XSI-compliant version which returns an error code.</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <span class="keywordtype">size_t</span> <a class="code" href="namespaceos_1_1stat.html#aac17a91dd3f91341b8c4021025e89b04">size</a> = 1024;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <span class="keywordtype">char</span>* buffer = <span class="keyword">new</span> <span class="keywordtype">char</span>[<a class="code" href="namespaceos_1_1stat.html#aac17a91dd3f91341b8c4021025e89b04">size</a>];</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <span class="keywordtype">size_t</span> <a class="code" href="namespaceos_1_1stat.html#a7a116891923bc8b5d8c50f78da8657be">size</a> = 1024;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <span class="keywordtype">char</span>* buffer = <span class="keyword">new</span> <span class="keywordtype">char</span>[<a class="code" href="namespaceos_1_1stat.html#a7a116891923bc8b5d8c50f78da8657be">size</a>];</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <span class="keywordflow">while</span> (<span class="keyword">true</span>) {</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keywordflow">if</span> (::<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a62c88b2ce7fd7f9c5dfa981befe35c48">strerror_r</a>(errno_, buffer, size) == ERANGE) {</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;      <span class="keyword">delete</span>[] buffer;</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;      size *= 2;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;      buffer = <span class="keyword">new</span> <span class="keywordtype">char</span>[<a class="code" href="namespaceos_1_1stat.html#aac17a91dd3f91341b8c4021025e89b04">size</a>];</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;      buffer = <span class="keyword">new</span> <span class="keywordtype">char</span>[<a class="code" href="namespaceos_1_1stat.html#a7a116891923bc8b5d8c50f78da8657be">size</a>];</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    } <span class="keywordflow">else</span> {</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;      <span class="keyword">const</span> std::string message = buffer;</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;      <span class="keyword">delete</span>[] buffer;</div>
@@ -117,9 +117,9 @@
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;} <span class="comment">// namespace os {</span></div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor">#endif // __STOUT_OS_STRERROR_HPP__</span></div>
 <div class="ttc" id="namespaceos_html_aa9ac22b4028f187826a9861373006abf"><div class="ttname"><a href="namespaceos.html#aa9ac22b4028f187826a9861373006abf">os::strerror</a></div><div class="ttdeci">std::string strerror(int errno_)</div><div class="ttdoc">A thread-safe version of strerror. </div><div class="ttdef"><b>Definition:</b> strerror.hpp:30</div></div>
+<div class="ttc" id="namespaceos_1_1stat_html_a7a116891923bc8b5d8c50f78da8657be"><div class="ttname"><a href="namespaceos_1_1stat.html#a7a116891923bc8b5d8c50f78da8657be">os::stat::size</a></div><div class="ttdeci">Try&lt; Bytes &gt; size(const std::string &amp;path, const FollowSymlink follow=FollowSymlink::FOLLOW_SYMLINK)</div><div class="ttdef"><b>Definition:</b> stat.hpp:100</div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html">windows.hpp</a></div></div>
-<div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_a62c88b2ce7fd7f9c5dfa981befe35c48"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a62c88b2ce7fd7f9c5dfa981befe35c48">strerror_r</a></div><div class="ttdeci">auto strerror_r(int errnum, char *buffer, size_t length) -&gt;</div><div class="ttdef"><b>Definition:</b> windows.hpp:334</div></div>
-<div class="ttc" id="namespaceos_1_1stat_html_aac17a91dd3f91341b8c4021025e89b04"><div class="ttname"><a href="namespaceos_1_1stat.html#aac17a91dd3f91341b8c4021025e89b04">os::stat::size</a></div><div class="ttdeci">Try&lt; Bytes &gt; size(const std::string &amp;path, const FollowSymlink follow=FOLLOW_SYMLINK)</div><div class="ttdef"><b>Definition:</b> stat.hpp:88</div></div>
+<div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_a62c88b2ce7fd7f9c5dfa981befe35c48"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a62c88b2ce7fd7f9c5dfa981befe35c48">strerror_r</a></div><div class="ttdeci">auto strerror_r(int errnum, char *buffer, size_t length) -&gt;</div><div class="ttdef"><b>Definition:</b> windows.hpp:348</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

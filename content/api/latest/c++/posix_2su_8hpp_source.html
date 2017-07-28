@@ -98,7 +98,7 @@
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <a class="code" href="namespaceos.html#ab20654c3bd05280d32833e654c61b1e4">return ::getuid</a>();</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  }</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <span class="keywordtype">int</span> <a class="code" href="namespaceos_1_1stat.html#aac17a91dd3f91341b8c4021025e89b04">size</a> = sysconf(_SC_GETPW_R_SIZE_MAX);</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <span class="keywordtype">int</span> <a class="code" href="namespaceos_1_1stat.html#a7a116891923bc8b5d8c50f78da8657be">size</a> = sysconf(_SC_GETPW_R_SIZE_MAX);</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <span class="keywordflow">if</span> (size == -1) {</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="comment">// Initial value for buffer size.</span></div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    size = 1024;</div>
@@ -107,9 +107,9 @@
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <span class="keywordflow">while</span> (<span class="keyword">true</span>) {</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keyword">struct </span><a class="code" href="structpasswd.html">passwd</a> pwd;</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keyword">struct </span><a class="code" href="structpasswd.html">passwd</a>* result;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordtype">char</span>* buffer = <span class="keyword">new</span> <span class="keywordtype">char</span>[<a class="code" href="namespaceos_1_1stat.html#aac17a91dd3f91341b8c4021025e89b04">size</a>];</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordtype">char</span>* buffer = <span class="keyword">new</span> <span class="keywordtype">char</span>[<a class="code" href="namespaceos_1_1stat.html#a7a116891923bc8b5d8c50f78da8657be">size</a>];</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordflow">if</span> (getpwnam_r(<a class="code" href="namespaceos.html#a698aa27e5ea6b1dc1c190b978c2f7960">user</a>-&gt;c_str(), &amp;pwd, buffer, <a class="code" href="namespaceos_1_1stat.html#aac17a91dd3f91341b8c4021025e89b04">size</a>, &amp;result) == 0) {</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordflow">if</span> (getpwnam_r(<a class="code" href="namespaceos.html#a698aa27e5ea6b1dc1c190b978c2f7960">user</a>-&gt;c_str(), &amp;pwd, buffer, <a class="code" href="namespaceos_1_1stat.html#a7a116891923bc8b5d8c50f78da8657be">size</a>, &amp;result) == 0) {</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;      <span class="comment">// Per POSIX, if the user name is not found, `getpwnam_r` returns</span></div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;      <span class="comment">// zero and sets `result` to the null pointer. (Linux behaves</span></div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;      <span class="comment">// differently for invalid user names; see below).</span></div>
@@ -119,9 +119,9 @@
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;      }</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;      <span class="comment">// Entry found.</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;      <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#afc544433253791fc5f87b8203c9b6e63">uid_t</a> <a class="code" href="namespaceos_1_1stat.html#ac2b3167963d5e471301e1ace772b67f6">uid</a> = pwd.<a class="code" href="structpasswd.html#aa6e0e62ee3cf5152f2697a0104f627c1">pw_uid</a>;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;      <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#afc544433253791fc5f87b8203c9b6e63">uid_t</a> <a class="code" href="namespaceos_1_1stat.html#a96066cfc01f1f62fc25b56f6915800eb">uid</a> = pwd.<a class="code" href="structpasswd.html#aa6e0e62ee3cf5152f2697a0104f627c1">pw_uid</a>;</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;      <span class="keyword">delete</span>[] buffer;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="namespaceos_1_1stat.html#ac2b3167963d5e471301e1ace772b67f6">uid</a>;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="namespaceos_1_1stat.html#a96066cfc01f1f62fc25b56f6915800eb">uid</a>;</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    } <span class="keywordflow">else</span> {</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;      <span class="keyword">delete</span>[] buffer;</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
@@ -159,7 +159,7 @@
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;}</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
-<div class="line"><a name="l00108"></a><span class="lineno"><a class="line" href="namespaceos.html#ae4b3b2f098e140e75c4bcc5dc15abf30">  108</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;Nothing&gt;</a> <a class="code" href="namespaceos.html#ae4b3b2f098e140e75c4bcc5dc15abf30">setuid</a>(<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#afc544433253791fc5f87b8203c9b6e63">uid_t</a> <a class="code" href="namespaceos_1_1stat.html#ac2b3167963d5e471301e1ace772b67f6">uid</a>)</div>
+<div class="line"><a name="l00108"></a><span class="lineno"><a class="line" href="namespaceos.html#ae4b3b2f098e140e75c4bcc5dc15abf30">  108</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;Nothing&gt;</a> <a class="code" href="namespaceos.html#ae4b3b2f098e140e75c4bcc5dc15abf30">setuid</a>(<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#afc544433253791fc5f87b8203c9b6e63">uid_t</a> <a class="code" href="namespaceos_1_1stat.html#a96066cfc01f1f62fc25b56f6915800eb">uid</a>)</div>
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;{</div>
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  <span class="keywordflow">if</span> (::<a class="code" href="namespaceos.html#ae4b3b2f098e140e75c4bcc5dc15abf30">setuid</a>(uid) == -1) {</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classErrnoError.html">ErrnoError</a>();</div>
@@ -175,7 +175,7 @@
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    <a class="code" href="namespaceos.html#a3d46f808886a786c2daab6eb1d81b206">return ::getgid</a>();</div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;  }</div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;  <span class="keywordtype">int</span> <a class="code" href="namespaceos_1_1stat.html#aac17a91dd3f91341b8c4021025e89b04">size</a> = sysconf(_SC_GETPW_R_SIZE_MAX);</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;  <span class="keywordtype">int</span> <a class="code" href="namespaceos_1_1stat.html#a7a116891923bc8b5d8c50f78da8657be">size</a> = sysconf(_SC_GETPW_R_SIZE_MAX);</div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;  <span class="keywordflow">if</span> (size == -1) {</div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="comment">// Initial value for buffer size.</span></div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    size = 1024;</div>
@@ -184,9 +184,9 @@
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;  <span class="keywordflow">while</span> (<span class="keyword">true</span>) {</div>
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    <span class="keyword">struct </span><a class="code" href="structpasswd.html">passwd</a> pwd;</div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    <span class="keyword">struct </span><a class="code" href="structpasswd.html">passwd</a>* result;</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    <span class="keywordtype">char</span>* buffer = <span class="keyword">new</span> <span class="keywordtype">char</span>[<a class="code" href="namespaceos_1_1stat.html#aac17a91dd3f91341b8c4021025e89b04">size</a>];</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    <span class="keywordtype">char</span>* buffer = <span class="keyword">new</span> <span class="keywordtype">char</span>[<a class="code" href="namespaceos_1_1stat.html#a7a116891923bc8b5d8c50f78da8657be">size</a>];</div>
 <div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    <span class="keywordflow">if</span> (getpwnam_r(<a class="code" href="namespaceos.html#a698aa27e5ea6b1dc1c190b978c2f7960">user</a>-&gt;c_str(), &amp;pwd, buffer, <a class="code" href="namespaceos_1_1stat.html#aac17a91dd3f91341b8c4021025e89b04">size</a>, &amp;result) == 0) {</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    <span class="keywordflow">if</span> (getpwnam_r(<a class="code" href="namespaceos.html#a698aa27e5ea6b1dc1c190b978c2f7960">user</a>-&gt;c_str(), &amp;pwd, buffer, <a class="code" href="namespaceos_1_1stat.html#a7a116891923bc8b5d8c50f78da8657be">size</a>, &amp;result) == 0) {</div>
 <div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;      <span class="comment">// Per POSIX, if the user name is not found, `getpwnam_r` returns</span></div>
 <div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;      <span class="comment">// zero and sets `result` to the null pointer. (Linux behaves</span></div>
 <div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;      <span class="comment">// differently for invalid user names; see below).</span></div>
@@ -278,7 +278,7 @@
 <div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;</div>
 <div class="line"><a name="l00225"></a><span class="lineno"><a class="line" href="namespaceos.html#a84b1082a4cacbb147c1ded91d860b4b5">  225</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;Nothing&gt;</a> <a class="code" href="namespaceos.html#a84b1082a4cacbb147c1ded91d860b4b5">setgroups</a>(</div>
 <div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    <span class="keyword">const</span> std::vector&lt;gid_t&gt;&amp; gids,</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;uid_t&gt;</a>&amp; <a class="code" href="namespaceos_1_1stat.html#ac2b3167963d5e471301e1ace772b67f6">uid</a> = <a class="code" href="structNone.html">None</a>())</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;uid_t&gt;</a>&amp; <a class="code" href="namespaceos_1_1stat.html#a96066cfc01f1f62fc25b56f6915800eb">uid</a> = <a class="code" href="structNone.html">None</a>())</div>
 <div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;{</div>
 <div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;  <span class="keywordtype">int</span> ngroups = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(gids.size());</div>
 <div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;  <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a78ecefd3a9f3f0c110b9f6f038b690eb">gid_t</a> _gids[ngroups];</div>
@@ -303,7 +303,7 @@
 <div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    ngroups = maxgroups;</div>
 <div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;  }</div>
 <div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="namespaceos_1_1stat.html#ac2b3167963d5e471301e1ace772b67f6">uid</a>.isNone()) {</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="namespaceos_1_1stat.html#a96066cfc01f1f62fc25b56f6915800eb">uid</a>.isNone()) {</div>
 <div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(</div>
 <div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;        <span class="stringliteral">&quot;The uid of the user who is associated with the group &quot;</span></div>
 <div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;        <span class="stringliteral">&quot;list we are setting is missing&quot;</span>);</div>
@@ -315,7 +315,7 @@
 <div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;  <span class="comment">// kernel cache, while the rest would still be performed</span></div>
 <div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;  <span class="comment">// correctly by the kernel (asking Directory Service to resolve</span></div>
 <div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;  <span class="comment">// the groups membership).</span></div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;  <span class="keywordflow">if</span> (::syscall(SYS_initgroups, ngroups, _gids, <a class="code" href="namespaceos_1_1stat.html#ac2b3167963d5e471301e1ace772b67f6">uid</a>.get()) == -1) {</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;  <span class="keywordflow">if</span> (::syscall(SYS_initgroups, ngroups, _gids, <a class="code" href="namespaceos_1_1stat.html#a96066cfc01f1f62fc25b56f6915800eb">uid</a>.get()) == -1) {</div>
 <div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classErrnoError.html">ErrnoError</a>();</div>
 <div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;  }</div>
 <div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;<span class="preprocessor">#else</span></div>
@@ -328,13 +328,13 @@
 <div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;}</div>
 <div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;</div>
 <div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;</div>
-<div class="line"><a name="l00277"></a><span class="lineno"><a class="line" href="namespaceos.html#a698aa27e5ea6b1dc1c190b978c2f7960">  277</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classResult.html">Result&lt;std::string&gt;</a> <a class="code" href="namespaceos.html#a698aa27e5ea6b1dc1c190b978c2f7960">user</a>(<a class="code" href="classOption.html">Option&lt;uid_t&gt;</a> <a class="code" href="namespaceos_1_1stat.html#ac2b3167963d5e471301e1ace772b67f6">uid</a> = <a class="code" href="structNone.html">None</a>())</div>
+<div class="line"><a name="l00277"></a><span class="lineno"><a class="line" href="namespaceos.html#a698aa27e5ea6b1dc1c190b978c2f7960">  277</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classResult.html">Result&lt;std::string&gt;</a> <a class="code" href="namespaceos.html#a698aa27e5ea6b1dc1c190b978c2f7960">user</a>(<a class="code" href="classOption.html">Option&lt;uid_t&gt;</a> <a class="code" href="namespaceos_1_1stat.html#a96066cfc01f1f62fc25b56f6915800eb">uid</a> = <a class="code" href="structNone.html">None</a>())</div>
 <div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;{</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="namespaceos_1_1stat.html#ac2b3167963d5e471301e1ace772b67f6">uid</a>.isNone()) {</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;    <a class="code" href="namespaceos_1_1stat.html#ac2b3167963d5e471301e1ace772b67f6">uid</a> = <a class="code" href="namespaceos.html#ab20654c3bd05280d32833e654c61b1e4">::getuid</a>();</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="namespaceos_1_1stat.html#a96066cfc01f1f62fc25b56f6915800eb">uid</a>.isNone()) {</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;    <a class="code" href="namespaceos_1_1stat.html#a96066cfc01f1f62fc25b56f6915800eb">uid</a> = <a class="code" href="namespaceos.html#ab20654c3bd05280d32833e654c61b1e4">::getuid</a>();</div>
 <div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;  }</div>
 <div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;  <span class="keywordtype">int</span> <a class="code" href="namespaceos_1_1stat.html#aac17a91dd3f91341b8c4021025e89b04">size</a> = sysconf(_SC_GETPW_R_SIZE_MAX);</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;  <span class="keywordtype">int</span> <a class="code" href="namespaceos_1_1stat.html#a7a116891923bc8b5d8c50f78da8657be">size</a> = sysconf(_SC_GETPW_R_SIZE_MAX);</div>
 <div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;  <span class="keywordflow">if</span> (size == -1) {</div>
 <div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;    <span class="comment">// Initial value for buffer size.</span></div>
 <div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;    size = 1024;</div>
@@ -343,9 +343,9 @@
 <div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;  <span class="keywordflow">while</span> (<span class="keyword">true</span>) {</div>
 <div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    <span class="keyword">struct </span><a class="code" href="structpasswd.html">passwd</a> pwd;</div>
 <div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;    <span class="keyword">struct </span><a class="code" href="structpasswd.html">passwd</a>* result;</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;    <span class="keywordtype">char</span>* buffer = <span class="keyword">new</span> <span class="keywordtype">char</span>[<a class="code" href="namespaceos_1_1stat.html#aac17a91dd3f91341b8c4021025e89b04">size</a>];</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;    <span class="keywordtype">char</span>* buffer = <span class="keyword">new</span> <span class="keywordtype">char</span>[<a class="code" href="namespaceos_1_1stat.html#a7a116891923bc8b5d8c50f78da8657be">size</a>];</div>
 <div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;    <span class="keywordflow">if</span> (getpwuid_r(<a class="code" href="namespaceos_1_1stat.html#ac2b3167963d5e471301e1ace772b67f6">uid</a>.get(), &amp;pwd, buffer, <a class="code" href="namespaceos_1_1stat.html#aac17a91dd3f91341b8c4021025e89b04">size</a>, &amp;result) == 0) {</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;    <span class="keywordflow">if</span> (getpwuid_r(<a class="code" href="namespaceos_1_1stat.html#a96066cfc01f1f62fc25b56f6915800eb">uid</a>.get(), &amp;pwd, buffer, <a class="code" href="namespaceos_1_1stat.html#a7a116891923bc8b5d8c50f78da8657be">size</a>, &amp;result) == 0) {</div>
 <div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;      <span class="comment">// getpwuid_r will return 0 but set result == nullptr if the uid is</span></div>
 <div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;      <span class="comment">// not found.</span></div>
 <div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;      <span class="keywordflow">if</span> (result == <span class="keyword">nullptr</span>) {</div>
@@ -387,7 +387,7 @@
 <div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classErrnoError.html">ErrnoError</a>(<span class="stringliteral">&quot;Failed to set supplementary groups&quot;</span>);</div>
 <div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;  }</div>
 <div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;</div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;  <a class="code" href="classResult.html">Result&lt;uid_t&gt;</a> <a class="code" href="namespaceos_1_1stat.html#ac2b3167963d5e471301e1ace772b67f6">uid</a> = <a class="code" href="namespaceos.html#ab20654c3bd05280d32833e654c61b1e4">os::getuid</a>(user);</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;  <a class="code" href="classResult.html">Result&lt;uid_t&gt;</a> <a class="code" href="namespaceos_1_1stat.html#a96066cfc01f1f62fc25b56f6915800eb">uid</a> = <a class="code" href="namespaceos.html#ab20654c3bd05280d32833e654c61b1e4">os::getuid</a>(user);</div>
 <div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;  <span class="keywordflow">if</span> (uid.<a class="code" href="classResult.html#aeca16ad17d299ad885c9b46c83b12a3d">isError</a>() || uid.<a class="code" href="classResult.html#ac2cdc0db9f9d29a5bb2f1cf19c29da49">isNone</a>()) {</div>
 <div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(<span class="stringliteral">&quot;Failed to getuid: &quot;</span> +</div>
 <div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;        (uid.<a class="code" href="classResult.html#aeca16ad17d299ad885c9b46c83b12a3d">isError</a>() ? uid.<a class="code" href="classResult.html#a521adf96f5c27d26d6b1d580aae8aaee">error</a>() : <span class="stringliteral">&quot;unknown user&quot;</span>));</div>
@@ -402,10 +402,11 @@
 <div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;</div>
 <div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;<span class="preprocessor">#endif // __STOUT_OS_POSIX_SU_HPP__</span></div>
 <div class="ttc" id="classResult_html_ac2cdc0db9f9d29a5bb2f1cf19c29da49"><div class="ttname"><a href="classResult.html#ac2cdc0db9f9d29a5bb2f1cf19c29da49">Result::isNone</a></div><div class="ttdeci">bool isNone() const </div><div class="ttdef"><b>Definition:</b> result.hpp:109</div></div>
-<div class="ttc" id="namespaceos_1_1stat_html_ac2b3167963d5e471301e1ace772b67f6"><div class="ttname"><a href="namespaceos_1_1stat.html#ac2b3167963d5e471301e1ace772b67f6">os::stat::uid</a></div><div class="ttdeci">Try&lt; uid_t &gt; uid(const std::string &amp;path, const FollowSymlink follow=FOLLOW_SYMLINK)</div><div class="ttdef"><b>Definition:</b> stat.hpp:170</div></div>
+<div class="ttc" id="namespaceos_1_1stat_html_a96066cfc01f1f62fc25b56f6915800eb"><div class="ttname"><a href="namespaceos_1_1stat.html#a96066cfc01f1f62fc25b56f6915800eb">os::stat::uid</a></div><div class="ttdeci">Try&lt; uid_t &gt; uid(const std::string &amp;path, const FollowSymlink follow=FollowSymlink::FOLLOW_SYMLINK)</div><div class="ttdef"><b>Definition:</b> stat.hpp:182</div></div>
 <div class="ttc" id="structNothing_html"><div class="ttname"><a href="structNothing.html">Nothing</a></div><div class="ttdef"><b>Definition:</b> nothing.hpp:16</div></div>
 <div class="ttc" id="classError_html"><div class="ttname"><a href="classError.html">Error</a></div><div class="ttdef"><b>Definition:</b> errorbase.hpp:35</div></div>
 <div class="ttc" id="classOption_html"><div class="ttname"><a href="classOption.html">Option&lt; std::string &gt;</a></div></div>
+<div class="ttc" id="namespaceos_1_1stat_html_a7a116891923bc8b5d8c50f78da8657be"><div class="ttname"><a href="namespaceos_1_1stat.html#a7a116891923bc8b5d8c50f78da8657be">os::stat::size</a></div><div class="ttdeci">Try&lt; Bytes &gt; size(const std::string &amp;path, const FollowSymlink follow=FollowSymlink::FOLLOW_SYMLINK)</div><div class="ttdef"><b>Definition:</b> stat.hpp:100</div></div>
 <div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
 <div class="ttc" id="classResult_html_a521adf96f5c27d26d6b1d580aae8aaee"><div class="ttname"><a href="classResult.html#a521adf96f5c27d26d6b1d580aae8aaee">Result::error</a></div><div class="ttdeci">static Result&lt; T &gt; error(const std::string &amp;message)</div><div class="ttdef"><b>Definition:</b> result.hpp:53</div></div>
 <div class="ttc" id="namespaceos_html_a698aa27e5ea6b1dc1c190b978c2f7960"><div class="ttname"><a href="namespaceos.html#a698aa27e5ea6b1dc1c190b978c2f7960">os::user</a></div><div class="ttdeci">Result&lt; std::string &gt; user(Option&lt; uid_t &gt; uid=None())</div><div class="ttdef"><b>Definition:</b> su.hpp:277</div></div>
@@ -422,11 +423,10 @@
 <div class="ttc" id="nothing_8hpp_html"><div class="ttname"><a href="nothing_8hpp.html">nothing.hpp</a></div></div>
 <div class="ttc" id="namespaceos_html_a34d621fcc9ff30cfe4869b40644a3b2b"><div class="ttname"><a href="namespaceos.html#a34d621fcc9ff30cfe4869b40644a3b2b">os::setgid</a></div><div class="ttdeci">Try&lt; Nothing &gt; setgid(gid_t gid)</div><div class="ttdef"><b>Definition:</b> su.hpp:185</div></div>
 <div class="ttc" id="structpasswd_html_aa6e0e62ee3cf5152f2697a0104f627c1"><div class="ttname"><a href="structpasswd.html#aa6e0e62ee3cf5152f2697a0104f627c1">passwd::pw_uid</a></div><div class="ttdeci">uid_t pw_uid</div><div class="ttdef"><b>Definition:</b> pwd.hpp:29</div></div>
-<div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_afc544433253791fc5f87b8203c9b6e63"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#afc544433253791fc5f87b8203c9b6e63">uid_t</a></div><div class="ttdeci">int uid_t</div><div class="ttdef"><b>Definition:</b> windows.hpp:173</div></div>
+<div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_afc544433253791fc5f87b8203c9b6e63"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#afc544433253791fc5f87b8203c9b6e63">uid_t</a></div><div class="ttdeci">int uid_t</div><div class="ttdef"><b>Definition:</b> windows.hpp:187</div></div>
 <div class="ttc" id="namespaceos_html_acae67fc8bd809c609bf1ffb281d921c6"><div class="ttname"><a href="namespaceos.html#acae67fc8bd809c609bf1ffb281d921c6">os::su</a></div><div class="ttdeci">Try&lt; Nothing &gt; su(const std::string &amp;user)</div><div class="ttdef"><b>Definition:</b> su.hpp:319</div></div>
 <div class="ttc" id="classResult_html_aedf79f3b14dcda5791b84a64ada4d412"><div class="ttname"><a href="classResult.html#aedf79f3b14dcda5791b84a64ada4d412">Result::get</a></div><div class="ttdeci">const T &amp; get() const </div><div class="ttdef"><b>Definition:</b> result.hpp:112</div></div>
 <div class="ttc" id="option_8hpp_html"><div class="ttname"><a href="option_8hpp.html">option.hpp</a></div></div>
-<div class="ttc" id="namespaceos_1_1stat_html_aac17a91dd3f91341b8c4021025e89b04"><div class="ttname"><a href="namespaceos_1_1stat.html#aac17a91dd3f91341b8c4021025e89b04">os::stat::size</a></div><div class="ttdeci">Try&lt; Bytes &gt; size(const std::string &amp;path, const FollowSymlink follow=FOLLOW_SYMLINK)</div><div class="ttdef"><b>Definition:</b> stat.hpp:88</div></div>
 <div class="ttc" id="unreachable_8hpp_html_a0bc63b24b654ca433be7b97a3edde132"><div class="ttname"><a href="unreachable_8hpp.html#a0bc63b24b654ca433be7b97a3edde132">UNREACHABLE</a></div><div class="ttdeci">#define UNREACHABLE()</div><div class="ttdef"><b>Definition:</b> unreachable.hpp:22</div></div>
 <div class="ttc" id="structpasswd_html"><div class="ttname"><a href="structpasswd.html">passwd</a></div><div class="ttdef"><b>Definition:</b> pwd.hpp:26</div></div>
 <div class="ttc" id="error_8hpp_html"><div class="ttname"><a href="error_8hpp.html">error.hpp</a></div></div>
@@ -434,7 +434,7 @@
 <div class="ttc" id="try_8hpp_html"><div class="ttname"><a href="try_8hpp.html">try.hpp</a></div></div>
 <div class="ttc" id="classResult_html_a85eaa52037223d71092e65701c166562"><div class="ttname"><a href="classResult.html#a85eaa52037223d71092e65701c166562">Result::isSome</a></div><div class="ttdeci">bool isSome() const </div><div class="ttdef"><b>Definition:</b> result.hpp:108</div></div>
 <div class="ttc" id="classResult_html_aeca16ad17d299ad885c9b46c83b12a3d"><div class="ttname"><a href="classResult.html#aeca16ad17d299ad885c9b46c83b12a3d">Result::isError</a></div><div class="ttdeci">bool isError() const </div><div class="ttdef"><b>Definition:</b> result.hpp:110</div></div>
-<div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_a78ecefd3a9f3f0c110b9f6f038b690eb"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a78ecefd3a9f3f0c110b9f6f038b690eb">gid_t</a></div><div class="ttdeci">int gid_t</div><div class="ttdef"><b>Definition:</b> windows.hpp:174</div></div>
+<div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_a78ecefd3a9f3f0c110b9f6f038b690eb"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a78ecefd3a9f3f0c110b9f6f038b690eb">gid_t</a></div><div class="ttdeci">int gid_t</div><div class="ttdef"><b>Definition:</b> windows.hpp:188</div></div>
 <div class="ttc" id="unreachable_8hpp_html"><div class="ttname"><a href="unreachable_8hpp.html">unreachable.hpp</a></div></div>
 <div class="ttc" id="namespaceos_html_ae4b3b2f098e140e75c4bcc5dc15abf30"><div class="ttname"><a href="namespaceos.html#ae4b3b2f098e140e75c4bcc5dc15abf30">os::setuid</a></div><div class="ttdeci">Try&lt; Nothing &gt; setuid(uid_t uid)</div><div class="ttdef"><b>Definition:</b> su.hpp:108</div></div>
 </div><!-- fragment --></div><!-- contents -->

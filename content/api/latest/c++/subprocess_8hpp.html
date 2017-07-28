@@ -48,14 +48,72 @@
 </div>
 </div><!-- top -->
 <div class="header">
+  <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">subprocess.hpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;<a class="el" href="subprocess__base_8hpp_source.html">process/subprocess_base.hpp</a>&gt;</code><br/>
-<code>#include &lt;<a class="el" href="posix_2subprocess_8hpp_source.html">process/posix/subprocess.hpp</a>&gt;</code><br/>
+<div class="textblock"><code>#include &lt;map&gt;</code><br/>
+<code>#include &lt;memory&gt;</code><br/>
+<code>#include &lt;string&gt;</code><br/>
+<code>#include &lt;vector&gt;</code><br/>
+<code>#include &lt;<a class="el" href="future_8hpp_source.html">process/future.hpp</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="3rdparty_2stout_2include_2stout_2flags_8hpp_source.html">stout/flags.hpp</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="lambda_8hpp_source.html">stout/lambda.hpp</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="none_8hpp_source.html">stout/none.hpp</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="option_8hpp_source.html">stout/option.hpp</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="try_8hpp_source.html">stout/try.hpp</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="shell_8hpp_source.html">stout/os/shell.hpp</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="int__fd_8hpp_source.html">stout/os/int_fd.hpp</a>&gt;</code><br/>
 </div>
 <p><a href="subprocess_8hpp_source.html">Go to the source code of this file.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprocess_1_1Subprocess.html">process::Subprocess</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents a fork() exec()ed subprocess.  <a href="classprocess_1_1Subprocess.html#details">More...</a><br/></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprocess_1_1Subprocess_1_1IO.html">process::Subprocess::IO</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Describes how the I/O is redirected for stdin/stdout/stderr.  <a href="classprocess_1_1Subprocess_1_1IO.html#details">More...</a><br/></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structprocess_1_1Subprocess_1_1IO_1_1InputFileDescriptors.html">process::Subprocess::IO::InputFileDescriptors</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">For input file descriptors a child reads from the <code>read</code> file descriptor and a parent may write to the <code>write</code> file descriptor if one is present.  <a href="structprocess_1_1Subprocess_1_1IO_1_1InputFileDescriptors.html#details">More...</a><br/></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structprocess_1_1Subprocess_1_1IO_1_1OutputFileDescriptors.html">process::Subprocess::IO::OutputFileDescriptors</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">For output file descriptors a child writes to the <code>write</code> file descriptor and a parent may read from the <code>read</code> file descriptor if one is present.  <a href="structprocess_1_1Subprocess_1_1IO_1_1OutputFileDescriptors.html#details">More...</a><br/></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structprocess_1_1Subprocess_1_1ParentHook.html">process::Subprocess::ParentHook</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A hook can be passed to a <code>subprocess</code> call.  <a href="structprocess_1_1Subprocess_1_1ParentHook.html#details">More...</a><br/></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprocess_1_1Subprocess_1_1ChildHook.html">process::Subprocess::ChildHook</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <code><a class="el" href="classprocess_1_1Subprocess_1_1ChildHook.html" title="A ChildHook can be passed to a subprocess call. ">ChildHook</a></code> can be passed to a <code>subprocess</code> call.  <a href="classprocess_1_1Subprocess_1_1ChildHook.html#details">More...</a><br/></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:namespaceprocess"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceprocess.html">process</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:afc6611c4913642642277b44447a16e55"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceprocess.html#afc6611c4913642642277b44447a16e55">process::InputFileDescriptors</a> = Subprocess::IO::InputFileDescriptors</td></tr>
+<tr class="separator:afc6611c4913642642277b44447a16e55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a882829822afa4f33b90aafc9c4ffa9af"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceprocess.html#a882829822afa4f33b90aafc9c4ffa9af">process::OutputFileDescriptors</a> = Subprocess::IO::OutputFileDescriptors</td></tr>
+<tr class="separator:a882829822afa4f33b90aafc9c4ffa9af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:aabc8d31889b5a325275d13d7bcef6a9c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTry.html">Try</a>&lt; Subprocess &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceprocess.html#aabc8d31889b5a325275d13d7bcef6a9c">process::subprocess</a> (const std::string &amp;path, std::vector&lt; std::string &gt; argv, const Subprocess::IO &amp;in=Subprocess::FD(<a class="el" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#afcf80a6d91178952d107ad00b165752b">STDIN_FILENO</a>), const Subprocess::IO &amp;out=Subprocess::FD(<a class="el" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#abd165ee6474b5b75bf075842fff13a04">STDOUT_FILENO</a>), const Subprocess::IO &amp;err=Subprocess::FD(<a class="el" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ae2fe1725bb5e9823d089c46b9ed5266e">STDERR_FILENO</a>), const <a class="el" href="classflags_1_1FlagsBase.html">flags::FlagsBase</a> *<a class="el" href="decoder_8hpp.html#abb0829cce9dd20a40ae0d86890ae85c6">flags</a>=nullptr, const <a class="el" href="classOption.html">Option</a>&lt; std::map&lt; std::string, std::string &gt;&gt; &amp;environment=<a class="el" href="structNone.html">None</a>(), const <a class="el" href="classOption.html">Option</a>&lt; lambda::function&lt; <a class="el" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ab03ced250ed239bc3b50b669493997f9">pid_t</a>(const lambda::function&lt; int()&gt; &amp;)&gt;&gt; &amp;clone=<a class="el" href="structNone.html">None</a>(), const std::vector&lt; Subprocess::ParentHook &gt; &amp;parent_hooks={}, const std::vector&lt; Subprocess::ChildHook &gt; &amp;child_hooks={})</td></tr>
+<tr class="memdesc:aabc8d31889b5a325275d13d7bcef6a9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forks a subprocess and execs the specified 'path' with the specified 'argv', redirecting stdin, stdout, and stderr as specified by 'in', 'out', and 'err' respectively.  <a href="#aabc8d31889b5a325275d13d7bcef6a9c">More...</a><br/></td></tr>
+<tr class="separator:aabc8d31889b5a325275d13d7bcef6a9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd3d31ab4db7e39286a689b69ff8be3e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTry.html">Try</a>&lt; Subprocess &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceprocess.html#acd3d31ab4db7e39286a689b69ff8be3e">process::subprocess</a> (const std::string &amp;command, const Subprocess::IO &amp;in=Subprocess::FD(<a class="el" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#afcf80a6d91178952d107ad00b165752b">STDIN_FILENO</a>), const Subprocess::IO &amp;out=Subprocess::FD(<a class="el" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#abd165ee6474b5b75bf075842fff13a04">STDOUT_FILENO</a>), const Subprocess::IO &amp;err=Subprocess::FD(<a class="el" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ae2fe1725bb5e9823d089c46b9ed5266e">STDERR_FILENO</a>), const <a class="el" href="classOption.html">Option</a>&lt; std::map&lt; std::string, std::string &gt;&gt; &amp;environment=<a class="el" href="structNone.html">None</a>(), const <a class="el" href="classOption.html">Option</a>&lt; lambda::function&lt; <a class="el" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ab03ced250ed239bc3b50b669493997f9">pid_t</a>(const lambda::function&lt; int()&gt; &amp;)&gt;&gt; &amp;clone=<a class="el" href="structNone.html">None</a>(), const std::vector&lt; Subprocess::ParentHook &gt; &amp;parent_hooks={}, const std::vector&lt; Subprocess::ChildHook &gt; &amp;child_hooks={})</td></tr>
+<tr class="memdesc:acd3d31ab4db7e39286a689b69ff8be3e"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structOverload.html">Overload</a> of 'subprocess' for launching a shell command, i.e., 'sh -c command'.  <a href="#acd3d31ab4db7e39286a689b69ff8be3e">More...</a><br/></td></tr>
+<tr class="separator:acd3d31ab4db7e39286a689b69ff8be3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
