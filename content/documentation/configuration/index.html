@@ -1446,6 +1446,52 @@ Example:
 </tr>
 <tr>
   <td>
+    --default_container_dns=VALUE
+  </td>
+  <td>
+JSON-formatted DNS information for CNI networks (Mesos containerizer)
+and CNM networks (Docker containerizer). For CNI networks, this flag
+can be used to configure `nameservers`, `domain`, `search` and
+`options`, and its priority is lower than the DNS information returned
+by a CNI plugin, but higher than the DNS information in agent host's
+/etc/resolv.conf. For CNM networks, this flag can be used to configure
+`nameservers`, `search` and `options`, it will only be used if there
+is no DNS information provided in the ContainerInfo.docker.parameters
+message.
+<p/>
+See the ContainerDNS message in `flags.proto` for the expected format.
+<p/>
+Example:
+<pre><code>{
+  "mesos": [
+    {
+      "network_mode": "CNI",
+      "network_name": "net1",
+      "dns": {
+        "nameservers": [ "8.8.8.8", "8.8.4.4" ]
+      }
+    }
+  ],
+  "docker": [
+    {
+      "network_mode": "BRIDGE",
+      "dns": {
+        "nameservers": [ "8.8.8.8", "8.8.4.4" ]
+      }
+    },
+    {
+      "network_mode": "USER",
+      "network_name": "net2",
+      "dns": {
+        "nameservers": [ "8.8.8.8", "8.8.4.4" ]
+      }
+    }
+  ]
+}</code></pre>
+  </td>
+</tr>
+<tr>
+  <td>
     --default_container_info=VALUE
   </td>
   <td>
@@ -1657,7 +1703,32 @@ master until this timeout has elapsed (see MESOS-7539). (default: 2secs)
 </tr>
 <tr>
   <td>
-    --max_completed_executors_per_framework
+    --executor_reregistration_retry_interval=VALUE
+  </td>
+  <td>
+For PID-based executors, how long the agent waits before retrying
+the reconnect message sent to the executor during recovery.
+NOTE: Do not use this unless you understand the following
+(see MESOS-5332): PID-based executors using Mesos libraries &gt;= 1.1.2
+always re-link with the agent upon receiving the reconnect message.
+This avoids the executor replying on a half-open TCP connection to
+the old agent (possible if netfilter is dropping packets,
+see: MESOS-7057). However, PID-based executors using Mesos
+libraries &lt; 1.1.2 do not re-link and are therefore prone to
+replying on a half-open connection after the agent restarts. If we
+only send a single reconnect message, these "old" executors will
+reply on their half-open connection and receive a RST; without any
+retries, they will fail to reconnect and be killed by the agent once
+the executor re-registration timeout elapses. To ensure these "old"
+executors can reconnect in the presence of netfilter dropping
+packets, we introduced optional retries of the reconnect message.
+This results in "old" executors correctly establishing a link
+when processing the second reconnect message. (default: no retries)
+  </td>
+</tr>
+<tr>
+  <td>
+    --max_completed_executors_per_framework=VALUE
   </td>
   <td>
 Maximum number of completed executors per framework to store
@@ -2620,6 +2691,15 @@ quotas for container sandbox directories. Valid project IDs range from
     <td>
       Disables zlib compression, which means the webui will be far less
       responsive; not recommended.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      --enable-lock-free-event-queue
+    </td>
+    <td>
+      Enables the lock-free event queue to be used in libprocess which
+      greatly improves message passing performance!
     </td>
   </tr>
 </table>

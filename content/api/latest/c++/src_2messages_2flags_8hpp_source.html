@@ -99,22 +99,43 @@
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <span class="keywordflow">return</span> protobuf::parse&lt;mesos::internal::Firewall&gt;(json.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>());</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;}</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;} <span class="comment">// namespace flags {</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="keyword">namespace </span>mesos {</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword">namespace </span>internal {</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="namespacemesos_1_1internal.html#a1a4e1e51f2c90c7d3e3385712e52bf2e">   53</a></span>&#160;<span class="keyword">inline</span> std::ostream&amp; <a class="code" href="namespacemesos_1_1internal.html#a1a4e1e51f2c90c7d3e3385712e52bf2e">operator&lt;&lt;</a>(</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    std::ostream&amp; stream,</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keyword">const</span> Firewall&amp; rules)</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;{</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="keywordflow">return</span> stream &lt;&lt; rules.DebugString();</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;}</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;} <span class="comment">// namespace internal {</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;} <span class="comment">// namespace mesos {</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="namespaceflags.html#a5067dd2ba73c0d0c3d5c2d8aab4c1768">   50</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;mesos::internal::ContainerDNSInfo&gt;</a> <a class="code" href="namespaceflags.html#af30eac14fca1a6fd93863545a0666e0c">parse</a>(<span class="keyword">const</span> std::string&amp; value)</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;{</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <span class="comment">// Convert from string or file to JSON.</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <a class="code" href="classTry.html">Try&lt;JSON::Object&gt;</a> <a class="code" href="namespacemesos_1_1internal.html#a3752d85ef726065c6c1b946eef1ba87a">json</a> = parse&lt;JSON::Object&gt;(value);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="keywordflow">if</span> (json.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(json.<a class="code" href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">error</a>());</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  }</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="keywordflow">return</span> protobuf::parse&lt;mesos::internal::ContainerDNSInfo&gt;(json.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>());</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;}</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;} <span class="comment">// namespace flags {</span></div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor">#endif // __MESSAGES_FLAGS_HPP__</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="keyword">namespace </span>mesos {</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="keyword">namespace </span>internal {</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
+<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="namespacemesos_1_1internal.html#a1a4e1e51f2c90c7d3e3385712e52bf2e">   66</a></span>&#160;<span class="keyword">inline</span> std::ostream&amp; <a class="code" href="namespacemesos_1_1internal.html#a1a4e1e51f2c90c7d3e3385712e52bf2e">operator&lt;&lt;</a>(</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    std::ostream&amp; stream,</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keyword">const</span> Firewall&amp; rules)</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;{</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="keywordflow">return</span> stream &lt;&lt; rules.DebugString();</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;}</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
+<div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="namespacemesos_1_1internal.html#acba82bfc2a4fa6397a9809d7f1b5eb66">   74</a></span>&#160;<span class="keyword">inline</span> std::ostream&amp; <a class="code" href="namespacemesos_1_1internal.html#a1a4e1e51f2c90c7d3e3385712e52bf2e">operator&lt;&lt;</a>(</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    std::ostream&amp; stream,</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keyword">const</span> ContainerDNSInfo&amp; dns)</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;{</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="keywordflow">return</span> stream &lt;&lt; dns.DebugString();</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;}</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;} <span class="comment">// namespace internal {</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;} <span class="comment">// namespace mesos {</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="preprocessor">#endif // __MESSAGES_FLAGS_HPP__</span></div>
 <div class="ttc" id="classError_html"><div class="ttname"><a href="classError.html">Error</a></div><div class="ttdef"><b>Definition:</b> errorbase.hpp:35</div></div>
 <div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2flags_2parse_8hpp_html"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2flags_2parse_8hpp.html">parse.hpp</a></div></div>
@@ -124,7 +145,7 @@
 <div class="ttc" id="namespacemesos_1_1internal_html_a3752d85ef726065c6c1b946eef1ba87a"><div class="ttname"><a href="namespacemesos_1_1internal.html#a3752d85ef726065c6c1b946eef1ba87a">mesos::internal::json</a></div><div class="ttdeci">void json(JSON::ObjectWriter *writer, const Task &amp;task)</div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2protobuf_8hpp_html"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2protobuf_8hpp.html">protobuf.hpp</a></div></div>
 <div class="ttc" id="classTry_html_aec4a11ddd3c036e889d90b7eb6258ba7"><div class="ttname"><a href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">Try::error</a></div><div class="ttdeci">static Try error(const E &amp;e)</div><div class="ttdef"><b>Definition:</b> try.hpp:42</div></div>
-<div class="ttc" id="namespacemesos_1_1internal_html_a1a4e1e51f2c90c7d3e3385712e52bf2e"><div class="ttname"><a href="namespacemesos_1_1internal.html#a1a4e1e51f2c90c7d3e3385712e52bf2e">mesos::internal::operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;stream, const Firewall &amp;rules)</div><div class="ttdef"><b>Definition:</b> flags.hpp:53</div></div>
+<div class="ttc" id="namespacemesos_1_1internal_html_a1a4e1e51f2c90c7d3e3385712e52bf2e"><div class="ttname"><a href="namespacemesos_1_1internal.html#a1a4e1e51f2c90c7d3e3385712e52bf2e">mesos::internal::operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;stream, const Firewall &amp;rules)</div><div class="ttdef"><b>Definition:</b> flags.hpp:66</div></div>
 <div class="ttc" id="decoder_8hpp_html_abb0829cce9dd20a40ae0d86890ae85c6"><div class="ttname"><a href="decoder_8hpp.html#abb0829cce9dd20a40ae0d86890ae85c6">flags</a></div><div class="ttdeci">#define flags</div><div class="ttdef"><b>Definition:</b> decoder.hpp:18</div></div>
 <div class="ttc" id="error_8hpp_html"><div class="ttname"><a href="error_8hpp.html">error.hpp</a></div></div>
 <div class="ttc" id="classTry_html_a0b98f95163b8a38daafd1651b043a276"><div class="ttname"><a href="classTry.html#a0b98f95163b8a38daafd1651b043a276">Try::isError</a></div><div class="ttdeci">bool isError() const </div><div class="ttdef"><b>Definition:</b> try.hpp:71</div></div>

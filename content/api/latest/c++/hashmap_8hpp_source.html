@@ -98,7 +98,7 @@
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <span class="comment">//</span></div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <span class="comment">// TODO(benh): Allow any arbitrary type that supports &#39;begin()&#39; and</span></div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  <span class="comment">// &#39;end()&#39; passed into the specified &#39;emplace&#39;?</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="classhashmap.html#aa476ed6fd38e1ce41c483d31b41f305b">   47</a></span>&#160;  <a class="code" href="classhashmap.html#aa476ed6fd38e1ce41c483d31b41f305b">hashmap</a>(<span class="keyword">const</span> std::map&lt;Key, Value&gt;&amp; map)</div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="classhashmap.html#aa476ed6fd38e1ce41c483d31b41f305b">   47</a></span>&#160;  <a class="code" href="classhashmap.html#aa476ed6fd38e1ce41c483d31b41f305b">hashmap</a>(<span class="keyword">const</span> std::map&lt;Key, Value&gt;&amp; <a class="code" href="namespacelambda.html#a06b886570c1bad3d7684e863a83e0b0e">map</a>)</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  {</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    std::unordered_map&lt;Key, Value, Hash, Equal&gt;::reserve(map.size());</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
@@ -113,13 +113,13 @@
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <span class="comment">//</span></div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="comment">// TODO(benh): Allow any arbitrary type that supports &#39;begin()&#39; and</span></div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="comment">// &#39;end()&#39; passed into the specified &#39;insert&#39;?</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="classhashmap.html#a1ec44226a5228ef9104099166cc4a1af">   62</a></span>&#160;  <a class="code" href="classhashmap.html#a1ec44226a5228ef9104099166cc4a1af">hashmap</a>(std::map&lt;Key, Value&gt;&amp;&amp; map)</div>
+<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="classhashmap.html#a1ec44226a5228ef9104099166cc4a1af">   62</a></span>&#160;  <a class="code" href="classhashmap.html#a1ec44226a5228ef9104099166cc4a1af">hashmap</a>(std::map&lt;Key, Value&gt;&amp;&amp; <a class="code" href="namespacelambda.html#a06b886570c1bad3d7684e863a83e0b0e">map</a>)</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  {</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="comment">// NOTE: We&#39;re using &#39;insert&#39; here with a move iterator in order</span></div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="comment">// to avoid copies because we know we have an r-value paramater.</span></div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    std::unordered_map&lt;Key, Value, Hash, Equal&gt;::insert(</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        std::make_move_iterator(map.begin()),</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        std::make_move_iterator(map.end()));</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        std::make_move_iterator(<a class="code" href="namespacelambda.html#a06b886570c1bad3d7684e863a83e0b0e">map</a>.begin()),</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        std::make_move_iterator(<a class="code" href="namespacelambda.html#a06b886570c1bad3d7684e863a83e0b0e">map</a>.end()));</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  }</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="comment">// Allow simple construction via initializer list.</span></div>
@@ -201,6 +201,7 @@
 <div class="ttc" id="classhashmap_html_a350788fe2e70ba05fee66adbb5026d84"><div class="ttname"><a href="classhashmap.html#a350788fe2e70ba05fee66adbb5026d84">hashmap::hashmap</a></div><div class="ttdeci">hashmap()</div><div class="ttdef"><b>Definition:</b> hashmap.hpp:41</div></div>
 <div class="ttc" id="classhashmap_html"><div class="ttname"><a href="classhashmap.html">hashmap</a></div><div class="ttdef"><b>Definition:</b> hashmap.hpp:36</div></div>
 <div class="ttc" id="classhashmap_html_a721a01cb0a0abdc3686b195cb9600a95"><div class="ttname"><a href="classhashmap.html#a721a01cb0a0abdc3686b195cb9600a95">hashmap::hashmap</a></div><div class="ttdeci">hashmap(std::initializer_list&lt; std::pair&lt; Key, Value &gt;&gt; list)</div><div class="ttdef"><b>Definition:</b> hashmap.hpp:72</div></div>
+<div class="ttc" id="namespacelambda_html_a06b886570c1bad3d7684e863a83e0b0e"><div class="ttname"><a href="namespacelambda.html#a06b886570c1bad3d7684e863a83e0b0e">lambda::map</a></div><div class="ttdeci">Iterable&lt; V &gt; map(F &amp;&amp;f, const Iterable&lt; U &gt; &amp;input)</div><div class="ttdef"><b>Definition:</b> lambda.hpp:35</div></div>
 <div class="ttc" id="classhashmap_html_a040f93efd556981326f0809e0f24f9ef"><div class="ttname"><a href="classhashmap.html#a040f93efd556981326f0809e0f24f9ef">hashmap::put</a></div><div class="ttdeci">void put(const Key &amp;key, const Value &amp;value)</div><div class="ttdef"><b>Definition:</b> hashmap.hpp:102</div></div>
 <div class="ttc" id="foreach_8hpp_html_a28670619e64a84270d76f07b0f6eb3b6"><div class="ttname"><a href="foreach_8hpp.html#a28670619e64a84270d76f07b0f6eb3b6">foreachvalue</a></div><div class="ttdeci">#define foreachvalue(VALUE, ELEMS)</div><div class="ttdef"><b>Definition:</b> foreach.hpp:77</div></div>
 <div class="ttc" id="option_8hpp_html"><div class="ttname"><a href="option_8hpp.html">option.hpp</a></div></div>

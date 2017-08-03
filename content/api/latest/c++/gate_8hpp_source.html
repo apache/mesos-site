@@ -72,102 +72,55 @@
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="synchronized_8hpp.html">stout/synchronized.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
-<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="classGate.html">   21</a></span>&#160;<span class="keyword">class </span><a class="code" href="classGate.html">Gate</a></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;{</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="classGate.html#ae8751315ab0d2e1b9f4e2d27a85ef4d3">   24</a></span>&#160;  <span class="keyword">typedef</span> intptr_t <a class="code" href="classGate.html#ae8751315ab0d2e1b9f4e2d27a85ef4d3">state_t</a>;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;  <span class="keywordtype">int</span> waiters;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;  <a class="code" href="classGate.html#ae8751315ab0d2e1b9f4e2d27a85ef4d3">state_t</a> state;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  std::mutex mutex;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;  std::condition_variable cond;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="classGate.html#a4fc24ecebc0ca8252bf7ab96a705e58a">   33</a></span>&#160;  <a class="code" href="classGate.html#a4fc24ecebc0ca8252bf7ab96a705e58a">Gate</a>() : waiters(0), state(0) {}</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <a class="code" href="classGate.html#a3c54ba5a6b3b356886e873cc4ab132f0">~Gate</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <span class="comment">// Signals the state change of the gate to any (at least one) or</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <span class="comment">// all (if &#39;all&#39; is true) of the threads waiting on it.</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="classGate.html#ae62ae49bc12b6f3d0268f9c424a053a9">   39</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classGate.html#ae62ae49bc12b6f3d0268f9c424a053a9">open</a>(<span class="keywordtype">bool</span> all = <span class="keyword">true</span>)</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  {</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keyword">synchronized</span> (mutex) {</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;      state++;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;      <span class="keywordflow">if</span> (all) {</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        cond.notify_all();</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;      } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        cond.notify_one();</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;      }</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    }</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  }</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <span class="comment">// Blocks the current thread until the gate&#39;s state changes from</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <span class="comment">// the current state.</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="classGate.html#a9f100fda6d08dad6be9cead83317431c">   53</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classGate.html#a9f100fda6d08dad6be9cead83317431c">wait</a>()</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  {</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keyword">synchronized</span> (mutex) {</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;      waiters++;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;      <a class="code" href="classGate.html#ae8751315ab0d2e1b9f4e2d27a85ef4d3">state_t</a> old = state;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;      <span class="keywordflow">while</span> (old == state) {</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        <a class="code" href="synchronized_8hpp.html#a9d854e5436a64744a231418cde397b05">synchronized_wait</a>(&amp;cond, &amp;mutex);</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;      }</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;      waiters--;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    }</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  }</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="comment">// Gets the current state of the gate and notifies the gate about</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <span class="comment">// the intention to wait for its state change.</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <span class="comment">// Call &#39;leave()&#39; if no longer interested in the state change.</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="classGate.html#ae811ed55cecd966053c05cf013ca3944">   68</a></span>&#160;  <a class="code" href="classGate.html#ae8751315ab0d2e1b9f4e2d27a85ef4d3">state_t</a> <a class="code" href="classGate.html#ae811ed55cecd966053c05cf013ca3944">approach</a>()</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  {</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keyword">synchronized</span> (mutex) {</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;      waiters++;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;      <span class="keywordflow">return</span> state;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    }</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  }</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="comment">// Blocks the current thread until the gate&#39;s state changes from</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="comment">// the specified &#39;old&#39; state. The &#39;old&#39; state can be obtained by</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="comment">// calling &#39;approach()&#39;. Returns the number of remaining waiters.</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="classGate.html#a44685e5f462ed1d4769b495c101c8aef">   79</a></span>&#160;  <span class="keywordtype">int</span> <a class="code" href="classGate.html#a44685e5f462ed1d4769b495c101c8aef">arrive</a>(<a class="code" href="classGate.html#ae8751315ab0d2e1b9f4e2d27a85ef4d3">state_t</a> old)</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  {</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keywordtype">int</span> remaining;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keyword">synchronized</span> (mutex) {</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;      <span class="keywordflow">while</span> (old == state) {</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <a class="code" href="synchronized_8hpp.html#a9d854e5436a64744a231418cde397b05">synchronized_wait</a>(&amp;cond, &amp;mutex);</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;      }</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;      waiters--;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;      remaining = waiters;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    }</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="keywordflow">return</span> remaining;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  }</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  <span class="comment">// Notifies the gate that a waiter (the current thread) is no</span></div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  <span class="comment">// longer waiting for the gate&#39;s state change.</span></div>
-<div class="line"><a name="l00097"></a><span class="lineno"><a class="line" href="classGate.html#ade174d090850666e22c4c3483bef2701">   97</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classGate.html#ade174d090850666e22c4c3483bef2701">leave</a>()</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  {</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="keyword">synchronized</span> (mutex) {</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;      waiters--;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    }</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  }</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;};</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="preprocessor">#endif // __GATE_HPP__</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceos.html#ae19e4161a51b86a1f330f3bf1dc75389">process</a> {</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">// A Gate abstracts the concept of something that can &quot;only happen</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">// once and every one else needs to queue up and wait until that thing</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">// happens&quot; ... kind of like a gate that can only ever open.</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">// NOTE: historically a gate could be opened and _closed_ allowing but</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment">// those semantics are no longer needed so they have been removed in</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">// order to simplify the implementation.</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">// TODO(benh): Consider removing this entirely and using `Once` for</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">// cleanup of a `ProcessBase` instead of a `Gate`.</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="classprocess_1_1Gate.html">   33</a></span>&#160;<span class="keyword">class </span><a class="code" href="classprocess_1_1Gate.html">Gate</a></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;{</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <span class="comment">// Opens the gate and notifies all the waiters.</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="classprocess_1_1Gate.html#a2ec0ae8665a50429966834836e9a104f">   37</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classprocess_1_1Gate.html#a2ec0ae8665a50429966834836e9a104f">open</a>()</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  {</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keyword">synchronized</span> (mutex) {</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;      opened = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;      cond.notify_all();</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    }</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  }</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <span class="comment">// Blocks the current thread until the gate has been opened.</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="classprocess_1_1Gate.html#a20705932bb6b30c0d8e7ca52df526605">   46</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classprocess_1_1Gate.html#a20705932bb6b30c0d8e7ca52df526605">wait</a>()</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  {</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keyword">synchronized</span> (mutex) {</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;      <span class="keywordflow">while</span> (!opened) {</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <a class="code" href="synchronized_8hpp.html#a9d854e5436a64744a231418cde397b05">synchronized_wait</a>(&amp;cond, &amp;mutex);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;      }</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    }</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  }</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="keywordtype">bool</span> opened = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  std::mutex mutex;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  std::condition_variable cond;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;};</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;} <span class="comment">// namespace process {</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor">#endif // __GATE_HPP__</span></div>
 <div class="ttc" id="synchronized_8hpp_html"><div class="ttname"><a href="synchronized_8hpp.html">synchronized.hpp</a></div></div>
-<div class="ttc" id="classGate_html_ade174d090850666e22c4c3483bef2701"><div class="ttname"><a href="classGate.html#ade174d090850666e22c4c3483bef2701">Gate::leave</a></div><div class="ttdeci">void leave()</div><div class="ttdef"><b>Definition:</b> gate.hpp:97</div></div>
-<div class="ttc" id="classGate_html_a3c54ba5a6b3b356886e873cc4ab132f0"><div class="ttname"><a href="classGate.html#a3c54ba5a6b3b356886e873cc4ab132f0">Gate::~Gate</a></div><div class="ttdeci">~Gate()=default</div></div>
-<div class="ttc" id="classGate_html_ae8751315ab0d2e1b9f4e2d27a85ef4d3"><div class="ttname"><a href="classGate.html#ae8751315ab0d2e1b9f4e2d27a85ef4d3">Gate::state_t</a></div><div class="ttdeci">intptr_t state_t</div><div class="ttdef"><b>Definition:</b> gate.hpp:24</div></div>
-<div class="ttc" id="classGate_html"><div class="ttname"><a href="classGate.html">Gate</a></div><div class="ttdef"><b>Definition:</b> gate.hpp:21</div></div>
 <div class="ttc" id="synchronized_8hpp_html_a9d854e5436a64744a231418cde397b05"><div class="ttname"><a href="synchronized_8hpp.html#a9d854e5436a64744a231418cde397b05">synchronized_wait</a></div><div class="ttdeci">void synchronized_wait(CV *cv, Lock *lock)</div><div class="ttdoc">Waits on the condition variable associated with &amp;#39;lock&amp;#39; which has already been synchronized. </div></div>
-<div class="ttc" id="classGate_html_a9f100fda6d08dad6be9cead83317431c"><div class="ttname"><a href="classGate.html#a9f100fda6d08dad6be9cead83317431c">Gate::wait</a></div><div class="ttdeci">void wait()</div><div class="ttdef"><b>Definition:</b> gate.hpp:53</div></div>
-<div class="ttc" id="classGate_html_ae62ae49bc12b6f3d0268f9c424a053a9"><div class="ttname"><a href="classGate.html#ae62ae49bc12b6f3d0268f9c424a053a9">Gate::open</a></div><div class="ttdeci">void open(bool all=true)</div><div class="ttdef"><b>Definition:</b> gate.hpp:39</div></div>
-<div class="ttc" id="classGate_html_a44685e5f462ed1d4769b495c101c8aef"><div class="ttname"><a href="classGate.html#a44685e5f462ed1d4769b495c101c8aef">Gate::arrive</a></div><div class="ttdeci">int arrive(state_t old)</div><div class="ttdef"><b>Definition:</b> gate.hpp:79</div></div>
-<div class="ttc" id="classGate_html_ae811ed55cecd966053c05cf013ca3944"><div class="ttname"><a href="classGate.html#ae811ed55cecd966053c05cf013ca3944">Gate::approach</a></div><div class="ttdeci">state_t approach()</div><div class="ttdef"><b>Definition:</b> gate.hpp:68</div></div>
-<div class="ttc" id="classGate_html_a4fc24ecebc0ca8252bf7ab96a705e58a"><div class="ttname"><a href="classGate.html#a4fc24ecebc0ca8252bf7ab96a705e58a">Gate::Gate</a></div><div class="ttdeci">Gate()</div><div class="ttdef"><b>Definition:</b> gate.hpp:33</div></div>
+<div class="ttc" id="classprocess_1_1Gate_html_a20705932bb6b30c0d8e7ca52df526605"><div class="ttname"><a href="classprocess_1_1Gate.html#a20705932bb6b30c0d8e7ca52df526605">process::Gate::wait</a></div><div class="ttdeci">void wait()</div><div class="ttdef"><b>Definition:</b> gate.hpp:46</div></div>
+<div class="ttc" id="classprocess_1_1Gate_html"><div class="ttname"><a href="classprocess_1_1Gate.html">process::Gate</a></div><div class="ttdef"><b>Definition:</b> gate.hpp:33</div></div>
+<div class="ttc" id="classprocess_1_1Gate_html_a2ec0ae8665a50429966834836e9a104f"><div class="ttname"><a href="classprocess_1_1Gate.html#a2ec0ae8665a50429966834836e9a104f">process::Gate::open</a></div><div class="ttdeci">void open()</div><div class="ttdef"><b>Definition:</b> gate.hpp:37</div></div>
+<div class="ttc" id="namespaceos_html_ae19e4161a51b86a1f330f3bf1dc75389"><div class="ttname"><a href="namespaceos.html#ae19e4161a51b86a1f330f3bf1dc75389">os::process</a></div><div class="ttdeci">Result&lt; Process &gt; process(pid_t pid)</div><div class="ttdef"><b>Definition:</b> freebsd.hpp:30</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

@@ -319,21 +319,29 @@
 <div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;    <span class="keyword">const</span> <a class="code" href="classprocess_1_1Owned.html">process::Owned&lt;ObjectApprover&gt;</a>&amp; rolesApprover,</div>
 <div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;    <span class="keyword">const</span> std::string&amp; role);</div>
 <div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;<a class="code" href="classTry.html">Try&lt;Nothing&gt;</a> <a class="code" href="namespacemesos.html#a57a72ea74fb1eec10e0ff21d412bbb85">initializeHttpAuthenticators</a>(</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;    <span class="keyword">const</span> std::string&amp; realm,</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;    <span class="keyword">const</span> std::vector&lt;std::string&gt;&amp; httpAuthenticatorNames,</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;    <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;Credentials&gt;</a>&amp; credentials = <a class="code" href="structNone.html">None</a>(),</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;std::string&gt;</a>&amp; secretKey = <a class="code" href="structNone.html">None</a>());</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;<span class="comment">// Logs the request. Route handlers can compose this with the</span></div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;<span class="comment">// desired request handler to get consistent request logging.</span></div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;<span class="keywordtype">void</span> <a class="code" href="namespacemesos.html#a56097aacde65fff7639195601e5624ae">logRequest</a>(<span class="keyword">const</span> <a class="code" href="structprocess_1_1http_1_1Request.html">process::http::Request</a>&amp; <a class="code" href="namespaceprocess_1_1http.html#ad8f400b5e54038df7e5662ec35da05fa">request</a>);</div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;} <span class="comment">// namespace mesos {</span></div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;</div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;<span class="preprocessor">#endif // __COMMON_HTTP_HPP__</span></div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;<span class="comment">// Authorizes resources in either the pre- or the post-reservation-refinement</span></div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;<span class="comment">// formats.</span></div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;<span class="comment">// TODO(arojas): Update this helper to only accept the</span></div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;<span class="comment">// post-reservation-refinement format once MESOS-7851 is resolved.</span></div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;<span class="keywordtype">bool</span> <a class="code" href="namespacemesos.html#ae17da17ee0b8c22416e3e7f4fa416a49">authorizeResource</a>(</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;    <span class="keyword">const</span> Resource&amp; resource,</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;    <span class="keyword">const</span> <a class="code" href="classOption.html">Option</a>&lt;<a class="code" href="classprocess_1_1Owned.html">process::Owned&lt;AuthorizationAcceptor&gt;</a>&gt;&amp; acceptor);</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;<a class="code" href="classTry.html">Try&lt;Nothing&gt;</a> <a class="code" href="namespacemesos.html#a57a72ea74fb1eec10e0ff21d412bbb85">initializeHttpAuthenticators</a>(</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;    <span class="keyword">const</span> std::string&amp; realm,</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;    <span class="keyword">const</span> std::vector&lt;std::string&gt;&amp; httpAuthenticatorNames,</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;    <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;Credentials&gt;</a>&amp; credentials = <a class="code" href="structNone.html">None</a>(),</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;    <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;std::string&gt;</a>&amp; secretKey = <a class="code" href="structNone.html">None</a>());</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;<span class="comment">// Logs the request. Route handlers can compose this with the</span></div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;<span class="comment">// desired request handler to get consistent request logging.</span></div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;<span class="keywordtype">void</span> <a class="code" href="namespacemesos.html#a56097aacde65fff7639195601e5624ae">logRequest</a>(<span class="keyword">const</span> <a class="code" href="structprocess_1_1http_1_1Request.html">process::http::Request</a>&amp; <a class="code" href="namespaceprocess_1_1http.html#ad8f400b5e54038df7e5662ec35da05fa">request</a>);</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;} <span class="comment">// namespace mesos {</span></div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;<span class="preprocessor">#endif // __COMMON_HTTP_HPP__</span></div>
 <div class="ttc" id="include_2mesos_2http_8hpp_html"><div class="ttname"><a href="include_2mesos_2http_8hpp.html">http.hpp</a></div></div>
 <div class="ttc" id="namespacemesos_html_a9a61d1410b2000856aef4427ab9d03e4"><div class="ttname"><a href="namespacemesos.html#a9a61d1410b2000856aef4427ab9d03e4">mesos::approveViewTask</a></div><div class="ttdeci">bool approveViewTask(const process::Owned&lt; ObjectApprover &gt; &amp;tasksApprover, const Task &amp;task, const FrameworkInfo &amp;frameworkInfo)</div></div>
 <div class="ttc" id="classmesos_1_1AcceptingObjectApprover_html"><div class="ttname"><a href="classmesos_1_1AcceptingObjectApprover.html">mesos::AcceptingObjectApprover</a></div><div class="ttdef"><b>Definition:</b> http.hpp:153</div></div>
@@ -386,6 +394,7 @@
 <div class="ttc" id="namespacemesos_html_a13035ce0cc66cca4a467787b4716039ead938347008a2e932aaa4a568a3c3f2e7"><div class="ttname"><a href="namespacemesos.html#a13035ce0cc66cca4a467787b4716039ead938347008a2e932aaa4a568a3c3f2e7">mesos::ContentType::PROTOBUF</a></div></div>
 <div class="ttc" id="namespacemesos_html_a4b83a9b4d6d4952f6b687add145a96d1"><div class="ttname"><a href="namespacemesos.html#a4b83a9b4d6d4952f6b687add145a96d1">mesos::createAuthorizationCallbacks</a></div><div class="ttdeci">const process::http::authorization::AuthorizationCallbacks createAuthorizationCallbacks(Authorizer *authorizer)</div></div>
 <div class="ttc" id="namespacemesos_1_1internal_html_a66ee37f247f1d9e5dee80c41ba9a7966"><div class="ttname"><a href="namespacemesos_1_1internal.html#a66ee37f247f1d9e5dee80c41ba9a7966">mesos::internal::DEFAULT_BASIC_HTTP_AUTHENTICATOR</a></div><div class="ttdeci">constexpr char DEFAULT_BASIC_HTTP_AUTHENTICATOR[]</div><div class="ttdef"><b>Definition:</b> http.hpp:49</div></div>
+<div class="ttc" id="namespacemesos_html_ae17da17ee0b8c22416e3e7f4fa416a49"><div class="ttname"><a href="namespacemesos.html#ae17da17ee0b8c22416e3e7f4fa416a49">mesos::authorizeResource</a></div><div class="ttdeci">bool authorizeResource(const Resource &amp;resource, const Option&lt; process::Owned&lt; AuthorizationAcceptor &gt;&gt; &amp;acceptor)</div></div>
 <div class="ttc" id="namespacemesos_html_a8a04bc4b7d18b08c608828cac2b3004a"><div class="ttname"><a href="namespacemesos.html#a8a04bc4b7d18b08c608828cac2b3004a">mesos::approveViewFrameworkInfo</a></div><div class="ttdeci">bool approveViewFrameworkInfo(const process::Owned&lt; ObjectApprover &gt; &amp;frameworksApprover, const FrameworkInfo &amp;frameworkInfo)</div></div>
 <div class="ttc" id="structNone_html"><div class="ttname"><a href="structNone.html">None</a></div><div class="ttdef"><b>Definition:</b> none.hpp:27</div></div>
 <div class="ttc" id="classTry_html_a0b98f95163b8a38daafd1651b043a276"><div class="ttname"><a href="classTry.html#a0b98f95163b8a38daafd1651b043a276">Try::isError</a></div><div class="ttdeci">bool isError() const </div><div class="ttdef"><b>Definition:</b> try.hpp:71</div></div>
