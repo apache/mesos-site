@@ -76,17 +76,17 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#error &quot;linux/ns.hpp is only available on Linux systems.&quot;</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;assert.h&gt;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;sched.h&gt;</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;unistd.h&gt;</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;sys/syscall.h&gt;</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;sys/wait.h&gt;</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;set&gt;</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;sched.h&gt;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;unistd.h&gt;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;sys/syscall.h&gt;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;sys/wait.h&gt;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;set&gt;</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="assert_8hpp.html">stout/assert.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="error_8hpp.html">stout/error.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="hashmap_8hpp.html">stout/hashmap.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="nothing_8hpp.html">stout/nothing.hpp</a>&gt;</span></div>
@@ -537,7 +537,7 @@
 <div class="line"><a name="l00521"></a><span class="lineno">  521</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; NAMESPACES; i++) {</div>
 <div class="line"><a name="l00522"></a><span class="lineno">  522</span>&#160;      <a class="code" href="classOption.html">Option&lt;int&gt;</a> fd = fds.<a class="code" href="classhashmap.html#a41f14039c11b5a1ab6c81add74192c9a">get</a>(<a class="code" href="namespacens.html#aab01ae26d9da2efc741aa838c69db6e2">namespaces</a>[i].<a class="code" href="namespacens.html#a1c4fd4fd04bde294d2d7477dfee8427e">nstype</a>);</div>
 <div class="line"><a name="l00523"></a><span class="lineno">  523</span>&#160;      <span class="keywordflow">if</span> (fd.<a class="code" href="classOption.html#a4e3bf8416d95246f43c91f1b5c309323">isSome</a>()) {</div>
-<div class="line"><a name="l00524"></a><span class="lineno">  524</span>&#160;        assert(<a class="code" href="namespacens.html#aab01ae26d9da2efc741aa838c69db6e2">namespaces</a>[i].nstype &amp; nstypes);</div>
+<div class="line"><a name="l00524"></a><span class="lineno">  524</span>&#160;        <a class="code" href="assert_8hpp.html#a50e38365f7c0d3cb938af8a5002640b2">ASSERT</a>(<a class="code" href="namespacens.html#aab01ae26d9da2efc741aa838c69db6e2">namespaces</a>[i].nstype &amp; nstypes);</div>
 <div class="line"><a name="l00525"></a><span class="lineno">  525</span>&#160;        <span class="keywordflow">if</span> (::<a class="code" href="namespacens.html#aff4db8d452eb5c8f07fba2ceeb5a7d83">setns</a>(fd.<a class="code" href="classOption.html#a21358442c0fac1cc978a67a9a9089a79">get</a>(), <a class="code" href="namespacens.html#aab01ae26d9da2efc741aa838c69db6e2">namespaces</a>[i].nstype) &lt; 0) {</div>
 <div class="line"><a name="l00526"></a><span class="lineno">  526</span>&#160;          close(fds.<a class="code" href="classhashmap.html#a3e6a1fdf47dc2216eb8c0900e0bc969e">values</a>());</div>
 <div class="line"><a name="l00527"></a><span class="lineno">  527</span>&#160;          ::close(sockets[1]);</div>
@@ -548,184 +548,128 @@
 <div class="line"><a name="l00532"></a><span class="lineno">  532</span>&#160;</div>
 <div class="line"><a name="l00533"></a><span class="lineno">  533</span>&#160;    close(fds.<a class="code" href="classhashmap.html#a3e6a1fdf47dc2216eb8c0900e0bc969e">values</a>());</div>
 <div class="line"><a name="l00534"></a><span class="lineno">  534</span>&#160;</div>
-<div class="line"><a name="l00535"></a><span class="lineno">  535</span>&#160;    <span class="comment">// Fork again to make sure we&#39;re actually in those namespaces</span></div>
-<div class="line"><a name="l00536"></a><span class="lineno">  536</span>&#160;    <span class="comment">// (required for the pid namespace at least).</span></div>
-<div class="line"><a name="l00537"></a><span class="lineno">  537</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l00538"></a><span class="lineno">  538</span>&#160;    <span class="comment">// TODO(benh): Don&#39;t do a fork if we&#39;re not actually entering the</span></div>
-<div class="line"><a name="l00539"></a><span class="lineno">  539</span>&#160;    <span class="comment">// PID namespace since the extra fork is unnecessary.</span></div>
-<div class="line"><a name="l00540"></a><span class="lineno">  540</span>&#160;    <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ab03ced250ed239bc3b50b669493997f9">pid_t</a> grandchild = fork();</div>
-<div class="line"><a name="l00541"></a><span class="lineno">  541</span>&#160;    <span class="keywordflow">if</span> (grandchild &lt; 0) {</div>
-<div class="line"><a name="l00542"></a><span class="lineno">  542</span>&#160;      <span class="comment">// TODO(benh): Exit with `errno` in order to capture `fork` error?</span></div>
-<div class="line"><a name="l00543"></a><span class="lineno">  543</span>&#160;      ::close(sockets[1]);</div>
-<div class="line"><a name="l00544"></a><span class="lineno">  544</span>&#160;      _exit(EXIT_FAILURE);</div>
-<div class="line"><a name="l00545"></a><span class="lineno">  545</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (grandchild &gt; 0) {</div>
-<div class="line"><a name="l00546"></a><span class="lineno">  546</span>&#160;      <span class="comment">// Still the (first) child.</span></div>
-<div class="line"><a name="l00547"></a><span class="lineno">  547</span>&#160;      ::close(sockets[1]);</div>
-<div class="line"><a name="l00548"></a><span class="lineno">  548</span>&#160;</div>
-<div class="line"><a name="l00549"></a><span class="lineno">  549</span>&#160;      <span class="comment">// Need to reap the grandchild and then just exit since we&#39;re no</span></div>
-<div class="line"><a name="l00550"></a><span class="lineno">  550</span>&#160;      <span class="comment">// longer necessary. Technically when the grandchild exits it&#39;ll</span></div>
-<div class="line"><a name="l00551"></a><span class="lineno">  551</span>&#160;      <span class="comment">// be reaped but by doing a `waitpid` we can better propagate</span></div>
-<div class="line"><a name="l00552"></a><span class="lineno">  552</span>&#160;      <span class="comment">// back any errors that might have occurred with the grandchild.</span></div>
-<div class="line"><a name="l00553"></a><span class="lineno">  553</span>&#160;      <span class="keywordtype">int</span> <a class="code" href="namespaceproc.html#a34396c6140a28f583dc13fee3c3c35d4">status</a>;</div>
-<div class="line"><a name="l00554"></a><span class="lineno">  554</span>&#160;      <span class="keywordflow">while</span> (<span class="keyword">true</span>) {</div>
-<div class="line"><a name="l00555"></a><span class="lineno">  555</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="namespaceos.html#a48c86262928f59c5c54d0cb0012e2aba">waitpid</a>(grandchild, &amp;status, 0) == -1) {</div>
-<div class="line"><a name="l00556"></a><span class="lineno">  556</span>&#160;          <span class="keywordflow">if</span> (errno == EINTR) {</div>
-<div class="line"><a name="l00557"></a><span class="lineno">  557</span>&#160;            <span class="keywordflow">continue</span>;</div>
-<div class="line"><a name="l00558"></a><span class="lineno">  558</span>&#160;          } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00559"></a><span class="lineno">  559</span>&#160;            _exit(1);</div>
-<div class="line"><a name="l00560"></a><span class="lineno">  560</span>&#160;          }</div>
-<div class="line"><a name="l00561"></a><span class="lineno">  561</span>&#160;        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ae2b610235f988f4f3109f02a2f395727">WIFSTOPPED</a>(status)) {</div>
-<div class="line"><a name="l00562"></a><span class="lineno">  562</span>&#160;          <span class="keywordflow">continue</span>;</div>
-<div class="line"><a name="l00563"></a><span class="lineno">  563</span>&#160;        } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00564"></a><span class="lineno">  564</span>&#160;          <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00565"></a><span class="lineno">  565</span>&#160;        }</div>
-<div class="line"><a name="l00566"></a><span class="lineno">  566</span>&#160;      }</div>
-<div class="line"><a name="l00567"></a><span class="lineno">  567</span>&#160;</div>
-<div class="line"><a name="l00568"></a><span class="lineno">  568</span>&#160;      assert(<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#af9a4ddf9eee6c4a3bc9be070d59b7ccf">WIFEXITED</a>(status) || <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a6953e62fd0dec274a397678d31c344b4">WIFSIGNALED</a>(status));</div>
-<div class="line"><a name="l00569"></a><span class="lineno">  569</span>&#160;</div>
-<div class="line"><a name="l00570"></a><span class="lineno">  570</span>&#160;      <span class="keywordflow">if</span> (<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#af9a4ddf9eee6c4a3bc9be070d59b7ccf">WIFEXITED</a>(status)) {</div>
-<div class="line"><a name="l00571"></a><span class="lineno">  571</span>&#160;        _exit(<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ae0c8840076dd63d5e2367fff4f7f46f3">WEXITSTATUS</a>(status));</div>
-<div class="line"><a name="l00572"></a><span class="lineno">  572</span>&#160;      }</div>
-<div class="line"><a name="l00573"></a><span class="lineno">  573</span>&#160;</div>
-<div class="line"><a name="l00574"></a><span class="lineno">  574</span>&#160;      assert(<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a6953e62fd0dec274a397678d31c344b4">WIFSIGNALED</a>(status));</div>
-<div class="line"><a name="l00575"></a><span class="lineno">  575</span>&#160;      <span class="keyword">raise</span>(<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#aeba4d421572a9d681c73c347f24ad348">WTERMSIG</a>(status));</div>
-<div class="line"><a name="l00576"></a><span class="lineno">  576</span>&#160;    }</div>
-<div class="line"><a name="l00577"></a><span class="lineno">  577</span>&#160;</div>
-<div class="line"><a name="l00578"></a><span class="lineno">  578</span>&#160;    <span class="comment">// Grandchild (second child, now completely entered in the</span></div>
-<div class="line"><a name="l00579"></a><span class="lineno">  579</span>&#160;    <span class="comment">// namespaces of the target).</span></div>
-<div class="line"><a name="l00580"></a><span class="lineno">  580</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l00581"></a><span class="lineno">  581</span>&#160;    <span class="comment">// Now clone with the specified flags, close the unused socket,</span></div>
-<div class="line"><a name="l00582"></a><span class="lineno">  582</span>&#160;    <span class="comment">// and execute the specified function.</span></div>
-<div class="line"><a name="l00583"></a><span class="lineno">  583</span>&#160;    <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ab03ced250ed239bc3b50b669493997f9">pid_t</a> pid = <a class="code" href="namespaceos.html#a06b5d831710f3993abe32fbb3ff69f12">os::clone</a>([=]() {</div>
-<div class="line"><a name="l00584"></a><span class="lineno">  584</span>&#160;      <span class="comment">// Now send back the pid and have it be translated appropriately</span></div>
-<div class="line"><a name="l00585"></a><span class="lineno">  585</span>&#160;      <span class="comment">// by the kernel to the enclosing pid namespace.</span></div>
-<div class="line"><a name="l00586"></a><span class="lineno">  586</span>&#160;      <span class="comment">//</span></div>
-<div class="line"><a name="l00587"></a><span class="lineno">  587</span>&#160;      <span class="comment">// NOTE: sending back the pid is best effort because we&#39;re going</span></div>
-<div class="line"><a name="l00588"></a><span class="lineno">  588</span>&#160;      <span class="comment">// to exit no matter what.</span></div>
-<div class="line"><a name="l00589"></a><span class="lineno">  589</span>&#160;      ((<span class="keyword">struct </span>ucred*) CMSG_DATA(CMSG_FIRSTHDR(&amp;message)))-&gt;pid = ::getpid();</div>
-<div class="line"><a name="l00590"></a><span class="lineno">  590</span>&#160;      ((<span class="keyword">struct </span>ucred*) CMSG_DATA(CMSG_FIRSTHDR(&amp;message)))-&gt;uid = <a class="code" href="namespaceos.html#ab20654c3bd05280d32833e654c61b1e4">::getuid</a>();</div>
-<div class="line"><a name="l00591"></a><span class="lineno">  591</span>&#160;      ((<span class="keyword">struct </span>ucred*) CMSG_DATA(CMSG_FIRSTHDR(&amp;message)))-&gt;gid = <a class="code" href="namespaceos.html#a3d46f808886a786c2daab6eb1d81b206">::getgid</a>();</div>
-<div class="line"><a name="l00592"></a><span class="lineno">  592</span>&#160;</div>
-<div class="line"><a name="l00593"></a><span class="lineno">  593</span>&#160;      <span class="keywordflow">if</span> (sendmsg(sockets[1], &amp;message, 0) == -1) {</div>
-<div class="line"><a name="l00594"></a><span class="lineno">  594</span>&#160;        <span class="comment">// Failed to send the pid back to the parent!</span></div>
-<div class="line"><a name="l00595"></a><span class="lineno">  595</span>&#160;        _exit(EXIT_FAILURE);</div>
-<div class="line"><a name="l00596"></a><span class="lineno">  596</span>&#160;      }</div>
-<div class="line"><a name="l00597"></a><span class="lineno">  597</span>&#160;</div>
-<div class="line"><a name="l00598"></a><span class="lineno">  598</span>&#160;      ::close(sockets[1]);</div>
-<div class="line"><a name="l00599"></a><span class="lineno">  599</span>&#160;</div>
-<div class="line"><a name="l00600"></a><span class="lineno">  600</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="namespaceprocess.html#a62d5333e8ec1817c249cf83e15d568b4">f</a>();</div>
-<div class="line"><a name="l00601"></a><span class="lineno">  601</span>&#160;    },</div>
-<div class="line"><a name="l00602"></a><span class="lineno">  602</span>&#160;    <a class="code" href="decoder_8hpp.html#abb0829cce9dd20a40ae0d86890ae85c6">flags</a>,</div>
-<div class="line"><a name="l00603"></a><span class="lineno">  603</span>&#160;    stack.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>());</div>
-<div class="line"><a name="l00604"></a><span class="lineno">  604</span>&#160;</div>
-<div class="line"><a name="l00605"></a><span class="lineno">  605</span>&#160;    ::close(sockets[1]);</div>
-<div class="line"><a name="l00606"></a><span class="lineno">  606</span>&#160;</div>
-<div class="line"><a name="l00607"></a><span class="lineno">  607</span>&#160;    <span class="comment">// TODO(benh): Kill ourselves with an exit status that we can</span></div>
-<div class="line"><a name="l00608"></a><span class="lineno">  608</span>&#160;    <span class="comment">// decode above to determine why `clone` failed.</span></div>
-<div class="line"><a name="l00609"></a><span class="lineno">  609</span>&#160;    _exit(pid &lt; 0 ? EXIT_FAILURE : EXIT_SUCCESS);</div>
-<div class="line"><a name="l00610"></a><span class="lineno">  610</span>&#160;  }</div>
-<div class="line"><a name="l00611"></a><span class="lineno">  611</span>&#160;  <a class="code" href="unreachable_8hpp.html#a0bc63b24b654ca433be7b97a3edde132">UNREACHABLE</a>();</div>
-<div class="line"><a name="l00612"></a><span class="lineno">  612</span>&#160;}</div>
-<div class="line"><a name="l00613"></a><span class="lineno">  613</span>&#160;</div>
-<div class="line"><a name="l00614"></a><span class="lineno">  614</span>&#160;</div>
-<div class="line"><a name="l00615"></a><span class="lineno"><a class="line" href="namespacens_1_1pid.html">  615</a></span>&#160;<span class="keyword">namespace </span>pid {</div>
-<div class="line"><a name="l00616"></a><span class="lineno">  616</span>&#160;</div>
-<div class="line"><a name="l00617"></a><span class="lineno"><a class="line" href="namespacens_1_1pid.html#accb661a0624f57c7dddf1d1252bff780">  617</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;Nothing&gt;</a> <a class="code" href="namespacens_1_1pid.html#accb661a0624f57c7dddf1d1252bff780">destroy</a>(ino_t <a class="code" href="namespaceos_1_1stat.html#ac48383be68af20ef17fe5b87177636b8">inode</a>)</div>
-<div class="line"><a name="l00618"></a><span class="lineno">  618</span>&#160;{</div>
-<div class="line"><a name="l00619"></a><span class="lineno">  619</span>&#160;  <span class="comment">// Check we&#39;re not trying to kill the root namespace.</span></div>
-<div class="line"><a name="l00620"></a><span class="lineno">  620</span>&#160;  <a class="code" href="classTry.html">Try&lt;ino_t&gt;</a> ns = <a class="code" href="namespacens.html#a0f104f8776ccb934a05efeaeeebab328">ns::getns</a>(1, <span class="stringliteral">&quot;pid&quot;</span>);</div>
-<div class="line"><a name="l00621"></a><span class="lineno">  621</span>&#160;  <span class="keywordflow">if</span> (ns.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
-<div class="line"><a name="l00622"></a><span class="lineno">  622</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="structprocess_1_1Failure.html">process::Failure</a>(ns.<a class="code" href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">error</a>());</div>
-<div class="line"><a name="l00623"></a><span class="lineno">  623</span>&#160;  }</div>
-<div class="line"><a name="l00624"></a><span class="lineno">  624</span>&#160;</div>
-<div class="line"><a name="l00625"></a><span class="lineno">  625</span>&#160;  <span class="keywordflow">if</span> (ns.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>() == <a class="code" href="namespaceos_1_1stat.html#ac48383be68af20ef17fe5b87177636b8">inode</a>) {</div>
-<div class="line"><a name="l00626"></a><span class="lineno">  626</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="structprocess_1_1Failure.html">process::Failure</a>(<span class="stringliteral">&quot;Cannot destroy root pid namespace&quot;</span>);</div>
-<div class="line"><a name="l00627"></a><span class="lineno">  627</span>&#160;  }</div>
+<div class="line"><a name="l00535"></a><span class="lineno">  535</span>&#160;    <span class="keyword">auto</span> grandchildMain = [=]() -&gt; <span class="keywordtype">int</span> {</div>
+<div class="line"><a name="l00536"></a><span class="lineno">  536</span>&#160;      <span class="comment">// Grandchild (second child, now completely entered in the</span></div>
+<div class="line"><a name="l00537"></a><span class="lineno">  537</span>&#160;      <span class="comment">// namespaces of the target).</span></div>
+<div class="line"><a name="l00538"></a><span class="lineno">  538</span>&#160;      <span class="comment">//</span></div>
+<div class="line"><a name="l00539"></a><span class="lineno">  539</span>&#160;      <span class="comment">// Now clone with the specified flags, close the unused socket,</span></div>
+<div class="line"><a name="l00540"></a><span class="lineno">  540</span>&#160;      <span class="comment">// and execute the specified function.</span></div>
+<div class="line"><a name="l00541"></a><span class="lineno">  541</span>&#160;      <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ab03ced250ed239bc3b50b669493997f9">pid_t</a> pid = <a class="code" href="namespaceos.html#a06b5d831710f3993abe32fbb3ff69f12">os::clone</a>([=]() {</div>
+<div class="line"><a name="l00542"></a><span class="lineno">  542</span>&#160;        <span class="comment">// Now send back the pid and have it be translated appropriately</span></div>
+<div class="line"><a name="l00543"></a><span class="lineno">  543</span>&#160;        <span class="comment">// by the kernel to the enclosing pid namespace.</span></div>
+<div class="line"><a name="l00544"></a><span class="lineno">  544</span>&#160;        <span class="comment">//</span></div>
+<div class="line"><a name="l00545"></a><span class="lineno">  545</span>&#160;        <span class="comment">// NOTE: sending back the pid is best effort because we&#39;re going</span></div>
+<div class="line"><a name="l00546"></a><span class="lineno">  546</span>&#160;        <span class="comment">// to exit no matter what.</span></div>
+<div class="line"><a name="l00547"></a><span class="lineno">  547</span>&#160;        ((<span class="keyword">struct </span>ucred*) CMSG_DATA(CMSG_FIRSTHDR(&amp;message)))-&gt;pid = ::getpid();</div>
+<div class="line"><a name="l00548"></a><span class="lineno">  548</span>&#160;        ((<span class="keyword">struct </span>ucred*) CMSG_DATA(CMSG_FIRSTHDR(&amp;message)))-&gt;uid = <a class="code" href="namespaceos.html#ab20654c3bd05280d32833e654c61b1e4">::getuid</a>();</div>
+<div class="line"><a name="l00549"></a><span class="lineno">  549</span>&#160;        ((<span class="keyword">struct </span>ucred*) CMSG_DATA(CMSG_FIRSTHDR(&amp;message)))-&gt;gid = <a class="code" href="namespaceos.html#a3d46f808886a786c2daab6eb1d81b206">::getgid</a>();</div>
+<div class="line"><a name="l00550"></a><span class="lineno">  550</span>&#160;</div>
+<div class="line"><a name="l00551"></a><span class="lineno">  551</span>&#160;        <span class="keywordflow">if</span> (sendmsg(sockets[1], &amp;message, 0) == -1) {</div>
+<div class="line"><a name="l00552"></a><span class="lineno">  552</span>&#160;          <span class="comment">// Failed to send the pid back to the parent!</span></div>
+<div class="line"><a name="l00553"></a><span class="lineno">  553</span>&#160;          _exit(EXIT_FAILURE);</div>
+<div class="line"><a name="l00554"></a><span class="lineno">  554</span>&#160;        }</div>
+<div class="line"><a name="l00555"></a><span class="lineno">  555</span>&#160;</div>
+<div class="line"><a name="l00556"></a><span class="lineno">  556</span>&#160;        ::close(sockets[1]);</div>
+<div class="line"><a name="l00557"></a><span class="lineno">  557</span>&#160;</div>
+<div class="line"><a name="l00558"></a><span class="lineno">  558</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="namespaceprocess.html#a62d5333e8ec1817c249cf83e15d568b4">f</a>();</div>
+<div class="line"><a name="l00559"></a><span class="lineno">  559</span>&#160;      },</div>
+<div class="line"><a name="l00560"></a><span class="lineno">  560</span>&#160;      <a class="code" href="decoder_8hpp.html#abb0829cce9dd20a40ae0d86890ae85c6">flags</a>,</div>
+<div class="line"><a name="l00561"></a><span class="lineno">  561</span>&#160;      stack.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>());</div>
+<div class="line"><a name="l00562"></a><span class="lineno">  562</span>&#160;</div>
+<div class="line"><a name="l00563"></a><span class="lineno">  563</span>&#160;      ::close(sockets[1]);</div>
+<div class="line"><a name="l00564"></a><span class="lineno">  564</span>&#160;</div>
+<div class="line"><a name="l00565"></a><span class="lineno">  565</span>&#160;      <span class="comment">// TODO(benh): Kill ourselves with an exit status that we can</span></div>
+<div class="line"><a name="l00566"></a><span class="lineno">  566</span>&#160;      <span class="comment">// decode above to determine why `clone` failed.</span></div>
+<div class="line"><a name="l00567"></a><span class="lineno">  567</span>&#160;      _exit(pid &lt; 0 ? EXIT_FAILURE : EXIT_SUCCESS);</div>
+<div class="line"><a name="l00568"></a><span class="lineno">  568</span>&#160;      <a class="code" href="unreachable_8hpp.html#a0bc63b24b654ca433be7b97a3edde132">UNREACHABLE</a>();</div>
+<div class="line"><a name="l00569"></a><span class="lineno">  569</span>&#160;    };</div>
+<div class="line"><a name="l00570"></a><span class="lineno">  570</span>&#160;</div>
+<div class="line"><a name="l00571"></a><span class="lineno">  571</span>&#160;    <span class="comment">// Fork again to make sure we&#39;re actually in those namespaces</span></div>
+<div class="line"><a name="l00572"></a><span class="lineno">  572</span>&#160;    <span class="comment">// (required for the pid namespace at least).</span></div>
+<div class="line"><a name="l00573"></a><span class="lineno">  573</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00574"></a><span class="lineno">  574</span>&#160;    <span class="comment">// NOTE: We use clone instead of fork here because of a glibc bug.</span></div>
+<div class="line"><a name="l00575"></a><span class="lineno">  575</span>&#160;    <span class="comment">// glibc version &lt; 2.25 has an assertion in &#39;fork()&#39; which checks</span></div>
+<div class="line"><a name="l00576"></a><span class="lineno">  576</span>&#160;    <span class="comment">// if the child process&#39;s pid is not the same as the parent. This</span></div>
+<div class="line"><a name="l00577"></a><span class="lineno">  577</span>&#160;    <span class="comment">// invariant is no longer true with pid namespaces being</span></div>
+<div class="line"><a name="l00578"></a><span class="lineno">  578</span>&#160;    <span class="comment">// introduced. See more details in MESOS-7858.</span></div>
+<div class="line"><a name="l00579"></a><span class="lineno">  579</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00580"></a><span class="lineno">  580</span>&#160;    <span class="comment">// NOTE: glibc &#39;fork()&#39; also specifies &#39;CLONE_CHILD_SETTID&#39; and</span></div>
+<div class="line"><a name="l00581"></a><span class="lineno">  581</span>&#160;    <span class="comment">// &#39;CLONE_CHILD_CLEARTID&#39; for the clone flags. However, since we</span></div>
+<div class="line"><a name="l00582"></a><span class="lineno">  582</span>&#160;    <span class="comment">// are not using any pthread library in the grandchild, we don&#39;t</span></div>
+<div class="line"><a name="l00583"></a><span class="lineno">  583</span>&#160;    <span class="comment">// need those flags.</span></div>
+<div class="line"><a name="l00584"></a><span class="lineno">  584</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00585"></a><span class="lineno">  585</span>&#160;    <span class="comment">// TODO(benh): Don&#39;t do a fork if we&#39;re not actually entering the</span></div>
+<div class="line"><a name="l00586"></a><span class="lineno">  586</span>&#160;    <span class="comment">// PID namespace since the extra fork is unnecessary.</span></div>
+<div class="line"><a name="l00587"></a><span class="lineno">  587</span>&#160;    <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ab03ced250ed239bc3b50b669493997f9">pid_t</a> grandchild = <a class="code" href="namespaceos.html#a06b5d831710f3993abe32fbb3ff69f12">os::clone</a>(grandchildMain, SIGCHLD);</div>
+<div class="line"><a name="l00588"></a><span class="lineno">  588</span>&#160;</div>
+<div class="line"><a name="l00589"></a><span class="lineno">  589</span>&#160;    <span class="keywordflow">if</span> (grandchild &lt; 0) {</div>
+<div class="line"><a name="l00590"></a><span class="lineno">  590</span>&#160;      <span class="comment">// TODO(benh): Exit with `errno` in order to capture `fork` error?</span></div>
+<div class="line"><a name="l00591"></a><span class="lineno">  591</span>&#160;      ::close(sockets[1]);</div>
+<div class="line"><a name="l00592"></a><span class="lineno">  592</span>&#160;      _exit(EXIT_FAILURE);</div>
+<div class="line"><a name="l00593"></a><span class="lineno">  593</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (grandchild &gt; 0) {</div>
+<div class="line"><a name="l00594"></a><span class="lineno">  594</span>&#160;      <span class="comment">// Still the (first) child.</span></div>
+<div class="line"><a name="l00595"></a><span class="lineno">  595</span>&#160;      ::close(sockets[1]);</div>
+<div class="line"><a name="l00596"></a><span class="lineno">  596</span>&#160;</div>
+<div class="line"><a name="l00597"></a><span class="lineno">  597</span>&#160;      <span class="comment">// Need to reap the grandchild and then just exit since we&#39;re no</span></div>
+<div class="line"><a name="l00598"></a><span class="lineno">  598</span>&#160;      <span class="comment">// longer necessary. Technically when the grandchild exits it&#39;ll</span></div>
+<div class="line"><a name="l00599"></a><span class="lineno">  599</span>&#160;      <span class="comment">// be reaped but by doing a `waitpid` we can better propagate</span></div>
+<div class="line"><a name="l00600"></a><span class="lineno">  600</span>&#160;      <span class="comment">// back any errors that might have occurred with the grandchild.</span></div>
+<div class="line"><a name="l00601"></a><span class="lineno">  601</span>&#160;      <span class="keywordtype">int</span> <a class="code" href="namespaceproc.html#a34396c6140a28f583dc13fee3c3c35d4">status</a>;</div>
+<div class="line"><a name="l00602"></a><span class="lineno">  602</span>&#160;      <span class="keywordflow">while</span> (<span class="keyword">true</span>) {</div>
+<div class="line"><a name="l00603"></a><span class="lineno">  603</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="namespaceos.html#a48c86262928f59c5c54d0cb0012e2aba">waitpid</a>(grandchild, &amp;status, 0) == -1) {</div>
+<div class="line"><a name="l00604"></a><span class="lineno">  604</span>&#160;          <span class="keywordflow">if</span> (errno == EINTR) {</div>
+<div class="line"><a name="l00605"></a><span class="lineno">  605</span>&#160;            <span class="keywordflow">continue</span>;</div>
+<div class="line"><a name="l00606"></a><span class="lineno">  606</span>&#160;          } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00607"></a><span class="lineno">  607</span>&#160;            _exit(1);</div>
+<div class="line"><a name="l00608"></a><span class="lineno">  608</span>&#160;          }</div>
+<div class="line"><a name="l00609"></a><span class="lineno">  609</span>&#160;        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ae2b610235f988f4f3109f02a2f395727">WIFSTOPPED</a>(status)) {</div>
+<div class="line"><a name="l00610"></a><span class="lineno">  610</span>&#160;          <span class="keywordflow">continue</span>;</div>
+<div class="line"><a name="l00611"></a><span class="lineno">  611</span>&#160;        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00612"></a><span class="lineno">  612</span>&#160;          <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00613"></a><span class="lineno">  613</span>&#160;        }</div>
+<div class="line"><a name="l00614"></a><span class="lineno">  614</span>&#160;      }</div>
+<div class="line"><a name="l00615"></a><span class="lineno">  615</span>&#160;</div>
+<div class="line"><a name="l00616"></a><span class="lineno">  616</span>&#160;      <a class="code" href="assert_8hpp.html#a50e38365f7c0d3cb938af8a5002640b2">ASSERT</a>(<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#af9a4ddf9eee6c4a3bc9be070d59b7ccf">WIFEXITED</a>(status) || <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a6953e62fd0dec274a397678d31c344b4">WIFSIGNALED</a>(status));</div>
+<div class="line"><a name="l00617"></a><span class="lineno">  617</span>&#160;</div>
+<div class="line"><a name="l00618"></a><span class="lineno">  618</span>&#160;      <span class="keywordflow">if</span> (<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#af9a4ddf9eee6c4a3bc9be070d59b7ccf">WIFEXITED</a>(status)) {</div>
+<div class="line"><a name="l00619"></a><span class="lineno">  619</span>&#160;        _exit(<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ae0c8840076dd63d5e2367fff4f7f46f3">WEXITSTATUS</a>(status));</div>
+<div class="line"><a name="l00620"></a><span class="lineno">  620</span>&#160;      }</div>
+<div class="line"><a name="l00621"></a><span class="lineno">  621</span>&#160;</div>
+<div class="line"><a name="l00622"></a><span class="lineno">  622</span>&#160;      <a class="code" href="assert_8hpp.html#a50e38365f7c0d3cb938af8a5002640b2">ASSERT</a>(<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a6953e62fd0dec274a397678d31c344b4">WIFSIGNALED</a>(status));</div>
+<div class="line"><a name="l00623"></a><span class="lineno">  623</span>&#160;      <span class="keyword">raise</span>(<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#aeba4d421572a9d681c73c347f24ad348">WTERMSIG</a>(status));</div>
+<div class="line"><a name="l00624"></a><span class="lineno">  624</span>&#160;    }</div>
+<div class="line"><a name="l00625"></a><span class="lineno">  625</span>&#160;  }</div>
+<div class="line"><a name="l00626"></a><span class="lineno">  626</span>&#160;  <a class="code" href="unreachable_8hpp.html#a0bc63b24b654ca433be7b97a3edde132">UNREACHABLE</a>();</div>
+<div class="line"><a name="l00627"></a><span class="lineno">  627</span>&#160;}</div>
 <div class="line"><a name="l00628"></a><span class="lineno">  628</span>&#160;</div>
-<div class="line"><a name="l00629"></a><span class="lineno">  629</span>&#160;  <span class="comment">// Or ourselves.</span></div>
-<div class="line"><a name="l00630"></a><span class="lineno">  630</span>&#160;  ns = <a class="code" href="namespacens.html#a0f104f8776ccb934a05efeaeeebab328">ns::getns</a>(::getpid(), <span class="stringliteral">&quot;pid&quot;</span>);</div>
-<div class="line"><a name="l00631"></a><span class="lineno">  631</span>&#160;  <span class="keywordflow">if</span> (ns.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
-<div class="line"><a name="l00632"></a><span class="lineno">  632</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="structprocess_1_1Failure.html">process::Failure</a>(ns.<a class="code" href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">error</a>());</div>
-<div class="line"><a name="l00633"></a><span class="lineno">  633</span>&#160;  }</div>
-<div class="line"><a name="l00634"></a><span class="lineno">  634</span>&#160;</div>
-<div class="line"><a name="l00635"></a><span class="lineno">  635</span>&#160;  <span class="keywordflow">if</span> (ns.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>() == <a class="code" href="namespaceos_1_1stat.html#ac48383be68af20ef17fe5b87177636b8">inode</a>) {</div>
-<div class="line"><a name="l00636"></a><span class="lineno">  636</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="structprocess_1_1Failure.html">process::Failure</a>(<span class="stringliteral">&quot;Cannot destroy own pid namespace&quot;</span>);</div>
-<div class="line"><a name="l00637"></a><span class="lineno">  637</span>&#160;  }</div>
-<div class="line"><a name="l00638"></a><span class="lineno">  638</span>&#160;</div>
-<div class="line"><a name="l00639"></a><span class="lineno">  639</span>&#160;  <span class="comment">// Signal all pids in the namespace, including the init pid if it&#39;s</span></div>
-<div class="line"><a name="l00640"></a><span class="lineno">  640</span>&#160;  <span class="comment">// still running. Once the init pid has been signalled the kernel</span></div>
-<div class="line"><a name="l00641"></a><span class="lineno">  641</span>&#160;  <span class="comment">// will prevent any new children forking in the namespace and will</span></div>
-<div class="line"><a name="l00642"></a><span class="lineno">  642</span>&#160;  <span class="comment">// also signal all other pids in the namespace.</span></div>
-<div class="line"><a name="l00643"></a><span class="lineno">  643</span>&#160;  <a class="code" href="classTry.html">Try&lt;std::set&lt;pid_t&gt;</a>&gt; <a class="code" href="namespaceos.html#a42af1cab63434cedf2b698cd6f49f073">pids</a> = <a class="code" href="namespaceos.html#a42af1cab63434cedf2b698cd6f49f073">os::pids</a>();</div>
-<div class="line"><a name="l00644"></a><span class="lineno">  644</span>&#160;  <span class="keywordflow">if</span> (pids.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
-<div class="line"><a name="l00645"></a><span class="lineno">  645</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="structprocess_1_1Failure.html">process::Failure</a>(<span class="stringliteral">&quot;Failed to list of processes&quot;</span>);</div>
-<div class="line"><a name="l00646"></a><span class="lineno">  646</span>&#160;  }</div>
-<div class="line"><a name="l00647"></a><span class="lineno">  647</span>&#160;</div>
-<div class="line"><a name="l00648"></a><span class="lineno">  648</span>&#160;  <span class="keywordflow">foreach</span> (<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ab03ced250ed239bc3b50b669493997f9">pid_t</a> pid, pids.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>()) {</div>
-<div class="line"><a name="l00649"></a><span class="lineno">  649</span>&#160;    <span class="comment">// Ignore any errors, probably because the process no longer</span></div>
-<div class="line"><a name="l00650"></a><span class="lineno">  650</span>&#160;    <span class="comment">// exists, and ignorable otherwise.</span></div>
-<div class="line"><a name="l00651"></a><span class="lineno">  651</span>&#160;    <a class="code" href="classTry.html">Try&lt;ino_t&gt;</a> ns = <a class="code" href="namespacens.html#a0f104f8776ccb934a05efeaeeebab328">ns::getns</a>(pid, <span class="stringliteral">&quot;pid&quot;</span>);</div>
-<div class="line"><a name="l00652"></a><span class="lineno">  652</span>&#160;    <span class="keywordflow">if</span> (ns.<a class="code" href="classTry.html#a6543d7d5db4f298bcd673bf3cd509acc">isSome</a>() &amp;&amp; ns.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>() == <a class="code" href="namespaceos_1_1stat.html#ac48383be68af20ef17fe5b87177636b8">inode</a>) {</div>
-<div class="line"><a name="l00653"></a><span class="lineno">  653</span>&#160;      <a class="code" href="namespacecgroups.html#ab75e1e2d1be63eec907bf12306a7c8a7">kill</a>(pid, <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a1c2b5693161bbc9d516ef5d16c7b54f5">SIGKILL</a>);</div>
-<div class="line"><a name="l00654"></a><span class="lineno">  654</span>&#160;    }</div>
-<div class="line"><a name="l00655"></a><span class="lineno">  655</span>&#160;  }</div>
-<div class="line"><a name="l00656"></a><span class="lineno">  656</span>&#160;</div>
-<div class="line"><a name="l00657"></a><span class="lineno">  657</span>&#160;  <span class="comment">// Get a new snapshot and do a second pass of the pids to capture</span></div>
-<div class="line"><a name="l00658"></a><span class="lineno">  658</span>&#160;  <span class="comment">// any pids that are dying so we can reap them.</span></div>
-<div class="line"><a name="l00659"></a><span class="lineno">  659</span>&#160;  pids = <a class="code" href="namespaceos.html#a42af1cab63434cedf2b698cd6f49f073">os::pids</a>();</div>
-<div class="line"><a name="l00660"></a><span class="lineno">  660</span>&#160;  <span class="keywordflow">if</span> (pids.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
-<div class="line"><a name="l00661"></a><span class="lineno">  661</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="structprocess_1_1Failure.html">process::Failure</a>(<span class="stringliteral">&quot;Failed to list of processes&quot;</span>);</div>
-<div class="line"><a name="l00662"></a><span class="lineno">  662</span>&#160;  }</div>
-<div class="line"><a name="l00663"></a><span class="lineno">  663</span>&#160;</div>
-<div class="line"><a name="l00664"></a><span class="lineno">  664</span>&#160;  std::list&lt;process::Future&lt;Option&lt;int&gt;&gt;&gt; futures;</div>
-<div class="line"><a name="l00665"></a><span class="lineno">  665</span>&#160;</div>
-<div class="line"><a name="l00666"></a><span class="lineno">  666</span>&#160;  <span class="keywordflow">foreach</span> (<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ab03ced250ed239bc3b50b669493997f9">pid_t</a> pid, pids.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>()) {</div>
-<div class="line"><a name="l00667"></a><span class="lineno">  667</span>&#160;    <a class="code" href="classTry.html">Try&lt;ino_t&gt;</a> ns = <a class="code" href="namespacens.html#a0f104f8776ccb934a05efeaeeebab328">ns::getns</a>(pid, <span class="stringliteral">&quot;pid&quot;</span>);</div>
-<div class="line"><a name="l00668"></a><span class="lineno">  668</span>&#160;    <span class="keywordflow">if</span> (ns.<a class="code" href="classTry.html#a6543d7d5db4f298bcd673bf3cd509acc">isSome</a>() &amp;&amp; ns.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>() == <a class="code" href="namespaceos_1_1stat.html#ac48383be68af20ef17fe5b87177636b8">inode</a>) {</div>
-<div class="line"><a name="l00669"></a><span class="lineno">  669</span>&#160;      futures.push_back(<a class="code" href="namespaceprocess.html#a8225ae5aa1b4963bb8413312282a91be">process::reap</a>(pid));</div>
-<div class="line"><a name="l00670"></a><span class="lineno">  670</span>&#160;    }</div>
-<div class="line"><a name="l00671"></a><span class="lineno">  671</span>&#160;</div>
-<div class="line"><a name="l00672"></a><span class="lineno">  672</span>&#160;    <span class="comment">// Ignore any errors, probably because the process no longer</span></div>
-<div class="line"><a name="l00673"></a><span class="lineno">  673</span>&#160;    <span class="comment">// exists, and ignorable otherwise.</span></div>
-<div class="line"><a name="l00674"></a><span class="lineno">  674</span>&#160;  }</div>
-<div class="line"><a name="l00675"></a><span class="lineno">  675</span>&#160;</div>
-<div class="line"><a name="l00676"></a><span class="lineno">  676</span>&#160;  <span class="comment">// Wait for all the signalled processes to terminate. The pid</span></div>
-<div class="line"><a name="l00677"></a><span class="lineno">  677</span>&#160;  <span class="comment">// namespace will then be empty and will be released by the kernel</span></div>
-<div class="line"><a name="l00678"></a><span class="lineno">  678</span>&#160;  <span class="comment">// (unless there are additional references).</span></div>
-<div class="line"><a name="l00679"></a><span class="lineno">  679</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="namespaceprocess.html#a0f89a937c1caa20e3048e16aeb0c9736">process::collect</a>(futures)</div>
-<div class="line"><a name="l00680"></a><span class="lineno">  680</span>&#160;    .<a class="code" href="classprocess_1_1Future.html#a08f6977c10f9f5d9e918ef8fd91f0a5f">then</a>([]() { <span class="keywordflow">return</span> <a class="code" href="structNothing.html">Nothing</a>(); });</div>
-<div class="line"><a name="l00681"></a><span class="lineno">  681</span>&#160;}</div>
-<div class="line"><a name="l00682"></a><span class="lineno">  682</span>&#160;</div>
-<div class="line"><a name="l00683"></a><span class="lineno">  683</span>&#160;} <span class="comment">// namespace pid {</span></div>
-<div class="line"><a name="l00684"></a><span class="lineno">  684</span>&#160;</div>
-<div class="line"><a name="l00685"></a><span class="lineno">  685</span>&#160;</div>
-<div class="line"><a name="l00686"></a><span class="lineno">  686</span>&#160;<span class="comment">// Returns the namespace flags in the string form of bitwise-ORing the</span></div>
-<div class="line"><a name="l00687"></a><span class="lineno">  687</span>&#160;<span class="comment">// flags, e.g., CLONE_NEWNS | CLONE_NEWNET.</span></div>
-<div class="line"><a name="l00688"></a><span class="lineno"><a class="line" href="namespacens.html#a28116b46e6543597a11733424cd1aa20">  688</a></span>&#160;<span class="keyword">inline</span> std::string <a class="code" href="namespacens.html#a28116b46e6543597a11733424cd1aa20">stringify</a>(<span class="keywordtype">int</span> <a class="code" href="decoder_8hpp.html#abb0829cce9dd20a40ae0d86890ae85c6">flags</a>)</div>
-<div class="line"><a name="l00689"></a><span class="lineno">  689</span>&#160;{</div>
-<div class="line"><a name="l00690"></a><span class="lineno">  690</span>&#160;  <a class="code" href="classhashmap.html">hashmap&lt;unsigned int, std::string&gt;</a> names = {</div>
-<div class="line"><a name="l00691"></a><span class="lineno">  691</span>&#160;    {<a class="code" href="ns_8hpp.html#aab02ccd05c3d9fa806d974e38a8debc4">CLONE_NEWNS</a>,   <span class="stringliteral">&quot;CLONE_NEWNS&quot;</span>},</div>
-<div class="line"><a name="l00692"></a><span class="lineno">  692</span>&#160;    {<a class="code" href="ns_8hpp.html#afaf1addd4b1e90196d1876896c1a53c3">CLONE_NEWUTS</a>,  <span class="stringliteral">&quot;CLONE_NEWUTS&quot;</span>},</div>
-<div class="line"><a name="l00693"></a><span class="lineno">  693</span>&#160;    {<a class="code" href="ns_8hpp.html#a1f702bf1b80ed7a8cef30e363a87e3e3">CLONE_NEWIPC</a>,  <span class="stringliteral">&quot;CLONE_NEWIPC&quot;</span>},</div>
-<div class="line"><a name="l00694"></a><span class="lineno">  694</span>&#160;    {<a class="code" href="ns_8hpp.html#a2fa6801173606dd3492ca9061d1c4ad4">CLONE_NEWPID</a>,  <span class="stringliteral">&quot;CLONE_NEWPID&quot;</span>},</div>
-<div class="line"><a name="l00695"></a><span class="lineno">  695</span>&#160;    {<a class="code" href="ns_8hpp.html#a2ba1673aa7423b46a7bcfa8f68cd2bce">CLONE_NEWNET</a>,  <span class="stringliteral">&quot;CLONE_NEWNET&quot;</span>},</div>
-<div class="line"><a name="l00696"></a><span class="lineno">  696</span>&#160;    {<a class="code" href="ns_8hpp.html#a5d697cae6f0156524a1bd7d77bcf8e87">CLONE_NEWUSER</a>, <span class="stringliteral">&quot;CLONE_NEWUSER&quot;</span>},</div>
-<div class="line"><a name="l00697"></a><span class="lineno">  697</span>&#160;    {<a class="code" href="ns_8hpp.html#a9d5d88148a26086567c3731e2e5e110a">CLONE_NEWCGROUP</a>, <span class="stringliteral">&quot;CLONE_NEWCGROUP&quot;</span>}</div>
-<div class="line"><a name="l00698"></a><span class="lineno">  698</span>&#160;  };</div>
-<div class="line"><a name="l00699"></a><span class="lineno">  699</span>&#160;</div>
-<div class="line"><a name="l00700"></a><span class="lineno">  700</span>&#160;  std::vector&lt;std::string&gt; <a class="code" href="namespacens.html#aab01ae26d9da2efc741aa838c69db6e2">namespaces</a>;</div>
-<div class="line"><a name="l00701"></a><span class="lineno">  701</span>&#160;  <a class="code" href="foreach_8hpp.html#a66900b166526abe66464d6597536b111">foreachpair</a> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> flag, <span class="keyword">const</span> std::string&amp; <a class="code" href="namespaceos_1_1Shell.html#acfe16ef2b1146ad49a8651c0a457ce46">name</a>, names) {</div>
-<div class="line"><a name="l00702"></a><span class="lineno">  702</span>&#160;    <span class="keywordflow">if</span> (flags &amp; flag) {</div>
-<div class="line"><a name="l00703"></a><span class="lineno">  703</span>&#160;      namespaces.push_back(name);</div>
-<div class="line"><a name="l00704"></a><span class="lineno">  704</span>&#160;    }</div>
-<div class="line"><a name="l00705"></a><span class="lineno">  705</span>&#160;  }</div>
-<div class="line"><a name="l00706"></a><span class="lineno">  706</span>&#160;</div>
-<div class="line"><a name="l00707"></a><span class="lineno">  707</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="namespacestrings.html#ac315a6174f56cba0d8295f84da265416">strings::join</a>(<span class="stringliteral">&quot; | &quot;</span>, namespaces);</div>
-<div class="line"><a name="l00708"></a><span class="lineno">  708</span>&#160;}</div>
-<div class="line"><a name="l00709"></a><span class="lineno">  709</span>&#160;</div>
-<div class="line"><a name="l00710"></a><span class="lineno">  710</span>&#160;} <span class="comment">// namespace ns {</span></div>
-<div class="line"><a name="l00711"></a><span class="lineno">  711</span>&#160;</div>
-<div class="line"><a name="l00712"></a><span class="lineno">  712</span>&#160;<span class="preprocessor">#endif // __LINUX_NS_HPP__</span></div>
+<div class="line"><a name="l00629"></a><span class="lineno">  629</span>&#160;</div>
+<div class="line"><a name="l00630"></a><span class="lineno">  630</span>&#160;<span class="comment">// Returns the namespace flags in the string form of bitwise-ORing the</span></div>
+<div class="line"><a name="l00631"></a><span class="lineno">  631</span>&#160;<span class="comment">// flags, e.g., CLONE_NEWNS | CLONE_NEWNET.</span></div>
+<div class="line"><a name="l00632"></a><span class="lineno"><a class="line" href="namespacens.html#a28116b46e6543597a11733424cd1aa20">  632</a></span>&#160;<span class="keyword">inline</span> std::string <a class="code" href="namespacens.html#a28116b46e6543597a11733424cd1aa20">stringify</a>(<span class="keywordtype">int</span> <a class="code" href="decoder_8hpp.html#abb0829cce9dd20a40ae0d86890ae85c6">flags</a>)</div>
+<div class="line"><a name="l00633"></a><span class="lineno">  633</span>&#160;{</div>
+<div class="line"><a name="l00634"></a><span class="lineno">  634</span>&#160;  <a class="code" href="classhashmap.html">hashmap&lt;unsigned int, std::string&gt;</a> names = {</div>
+<div class="line"><a name="l00635"></a><span class="lineno">  635</span>&#160;    {<a class="code" href="ns_8hpp.html#aab02ccd05c3d9fa806d974e38a8debc4">CLONE_NEWNS</a>,   <span class="stringliteral">&quot;CLONE_NEWNS&quot;</span>},</div>
+<div class="line"><a name="l00636"></a><span class="lineno">  636</span>&#160;    {<a class="code" href="ns_8hpp.html#afaf1addd4b1e90196d1876896c1a53c3">CLONE_NEWUTS</a>,  <span class="stringliteral">&quot;CLONE_NEWUTS&quot;</span>},</div>
+<div class="line"><a name="l00637"></a><span class="lineno">  637</span>&#160;    {<a class="code" href="ns_8hpp.html#a1f702bf1b80ed7a8cef30e363a87e3e3">CLONE_NEWIPC</a>,  <span class="stringliteral">&quot;CLONE_NEWIPC&quot;</span>},</div>
+<div class="line"><a name="l00638"></a><span class="lineno">  638</span>&#160;    {<a class="code" href="ns_8hpp.html#a2fa6801173606dd3492ca9061d1c4ad4">CLONE_NEWPID</a>,  <span class="stringliteral">&quot;CLONE_NEWPID&quot;</span>},</div>
+<div class="line"><a name="l00639"></a><span class="lineno">  639</span>&#160;    {<a class="code" href="ns_8hpp.html#a2ba1673aa7423b46a7bcfa8f68cd2bce">CLONE_NEWNET</a>,  <span class="stringliteral">&quot;CLONE_NEWNET&quot;</span>},</div>
+<div class="line"><a name="l00640"></a><span class="lineno">  640</span>&#160;    {<a class="code" href="ns_8hpp.html#a5d697cae6f0156524a1bd7d77bcf8e87">CLONE_NEWUSER</a>, <span class="stringliteral">&quot;CLONE_NEWUSER&quot;</span>},</div>
+<div class="line"><a name="l00641"></a><span class="lineno">  641</span>&#160;    {<a class="code" href="ns_8hpp.html#a9d5d88148a26086567c3731e2e5e110a">CLONE_NEWCGROUP</a>, <span class="stringliteral">&quot;CLONE_NEWCGROUP&quot;</span>}</div>
+<div class="line"><a name="l00642"></a><span class="lineno">  642</span>&#160;  };</div>
+<div class="line"><a name="l00643"></a><span class="lineno">  643</span>&#160;</div>
+<div class="line"><a name="l00644"></a><span class="lineno">  644</span>&#160;  std::vector&lt;std::string&gt; <a class="code" href="namespacens.html#aab01ae26d9da2efc741aa838c69db6e2">namespaces</a>;</div>
+<div class="line"><a name="l00645"></a><span class="lineno">  645</span>&#160;  <a class="code" href="foreach_8hpp.html#a66900b166526abe66464d6597536b111">foreachpair</a> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> flag, <span class="keyword">const</span> std::string&amp; <a class="code" href="namespaceos_1_1Shell.html#acfe16ef2b1146ad49a8651c0a457ce46">name</a>, names) {</div>
+<div class="line"><a name="l00646"></a><span class="lineno">  646</span>&#160;    <span class="keywordflow">if</span> (flags &amp; flag) {</div>
+<div class="line"><a name="l00647"></a><span class="lineno">  647</span>&#160;      namespaces.push_back(name);</div>
+<div class="line"><a name="l00648"></a><span class="lineno">  648</span>&#160;    }</div>
+<div class="line"><a name="l00649"></a><span class="lineno">  649</span>&#160;  }</div>
+<div class="line"><a name="l00650"></a><span class="lineno">  650</span>&#160;</div>
+<div class="line"><a name="l00651"></a><span class="lineno">  651</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="namespacestrings.html#ac315a6174f56cba0d8295f84da265416">strings::join</a>(<span class="stringliteral">&quot; | &quot;</span>, namespaces);</div>
+<div class="line"><a name="l00652"></a><span class="lineno">  652</span>&#160;}</div>
+<div class="line"><a name="l00653"></a><span class="lineno">  653</span>&#160;</div>
+<div class="line"><a name="l00654"></a><span class="lineno">  654</span>&#160;} <span class="comment">// namespace ns {</span></div>
+<div class="line"><a name="l00655"></a><span class="lineno">  655</span>&#160;</div>
+<div class="line"><a name="l00656"></a><span class="lineno">  656</span>&#160;<span class="preprocessor">#endif // __LINUX_NS_HPP__</span></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_a894c4d58faeee7675b9e7e8244de1386"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a894c4d58faeee7675b9e7e8244de1386">ssize_t</a></div><div class="ttdeci">SSIZE_T ssize_t</div><div class="ttdef"><b>Definition:</b> windows.hpp:190</div></div>
 <div class="ttc" id="namespaceos_html_a69b3969276ffa4cb698b9431ee43bd7c"><div class="ttname"><a href="namespaceos.html#a69b3969276ffa4cb698b9431ee43bd7c">os::exists</a></div><div class="ttdeci">bool exists(const std::string &amp;path)</div><div class="ttdef"><b>Definition:</b> exists.hpp:26</div></div>
 <div class="ttc" id="structNothing_html"><div class="ttname"><a href="structNothing.html">Nothing</a></div><div class="ttdef"><b>Definition:</b> nothing.hpp:16</div></div>
@@ -741,16 +685,13 @@
 <div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
 <div class="ttc" id="ns_8hpp_html_a9aa5c2738ac9781ed9cd8202d87fb089"><div class="ttname"><a href="ns_8hpp.html#a9aa5c2738ac9781ed9cd8202d87fb089">setns</a></div><div class="ttdeci">int setns(int fd, int nstype)</div><div class="ttdef"><b>Definition:</b> ns.hpp:85</div></div>
 <div class="ttc" id="ns_8hpp_html_a9d5d88148a26086567c3731e2e5e110a"><div class="ttname"><a href="ns_8hpp.html#a9d5d88148a26086567c3731e2e5e110a">CLONE_NEWCGROUP</a></div><div class="ttdeci">#define CLONE_NEWCGROUP</div><div class="ttdef"><b>Definition:</b> ns.hpp:80</div></div>
-<div class="ttc" id="structprocess_1_1Failure_html"><div class="ttname"><a href="structprocess_1_1Failure.html">process::Failure</a></div><div class="ttdef"><b>Definition:</b> future.hpp:546</div></div>
 <div class="ttc" id="os_8hpp_html"><div class="ttname"><a href="os_8hpp.html">os.hpp</a></div></div>
 <div class="ttc" id="namespaceproc_html_a34396c6140a28f583dc13fee3c3c35d4"><div class="ttname"><a href="namespaceproc.html#a34396c6140a28f583dc13fee3c3c35d4">proc::status</a></div><div class="ttdeci">Result&lt; ProcessStatus &gt; status(pid_t pid)</div><div class="ttdef"><b>Definition:</b> proc.hpp:166</div></div>
 <div class="ttc" id="classErrnoError_html"><div class="ttname"><a href="classErrnoError.html">ErrnoError</a></div><div class="ttdef"><b>Definition:</b> errorbase.hpp:44</div></div>
 <div class="ttc" id="namespacens_html_aff4db8d452eb5c8f07fba2ceeb5a7d83"><div class="ttname"><a href="namespacens.html#aff4db8d452eb5c8f07fba2ceeb5a7d83">ns::setns</a></div><div class="ttdeci">Try&lt; Nothing &gt; setns(const std::string &amp;path, const std::string &amp;ns, bool checkMultithreaded=true)</div><div class="ttdef"><b>Definition:</b> ns.hpp:159</div></div>
-<div class="ttc" id="namespaceos_1_1stat_html_ac48383be68af20ef17fe5b87177636b8"><div class="ttname"><a href="namespaceos_1_1stat.html#ac48383be68af20ef17fe5b87177636b8">os::stat::inode</a></div><div class="ttdeci">Try&lt; ino_t &gt; inode(const std::string &amp;path, const FollowSymlink follow=FollowSymlink::FOLLOW_SYMLINK)</div><div class="ttdef"><b>Definition:</b> stat.hpp:169</div></div>
 <div class="ttc" id="namespaceprocess_html_a373bd5e2bd8f2694e4589293af477854"><div class="ttname"><a href="namespaceprocess.html#a373bd5e2bd8f2694e4589293af477854">process::base</a></div><div class="ttdeci">event_base * base</div></div>
 <div class="ttc" id="status__utils_8hpp_html"><div class="ttname"><a href="status__utils_8hpp.html">status_utils.hpp</a></div></div>
 <div class="ttc" id="namespacepath_html_aa86b16a2171cec90bb3337930513ef0f"><div class="ttname"><a href="namespacepath.html#aa86b16a2171cec90bb3337930513ef0f">path::join</a></div><div class="ttdeci">std::string join(const std::string &amp;path1, const std::string &amp;path2, const char _separator=os::PATH_SEPARATOR)</div><div class="ttdef"><b>Definition:</b> path.hpp:29</div></div>
-<div class="ttc" id="namespaceprocess_html_a8225ae5aa1b4963bb8413312282a91be"><div class="ttname"><a href="namespaceprocess.html#a8225ae5aa1b4963bb8413312282a91be">process::reap</a></div><div class="ttdeci">Future&lt; Option&lt; int &gt; &gt; reap(pid_t pid)</div></div>
 <div class="ttc" id="classOption_html_a4e3bf8416d95246f43c91f1b5c309323"><div class="ttname"><a href="classOption.html#a4e3bf8416d95246f43c91f1b5c309323">Option::isSome</a></div><div class="ttdeci">bool isSome() const </div><div class="ttdef"><b>Definition:</b> option.hpp:108</div></div>
 <div class="ttc" id="namespacens_html_ae308e5fb79986971a85717365f2258d4"><div class="ttname"><a href="namespacens.html#ae308e5fb79986971a85717365f2258d4">ns::nstypes</a></div><div class="ttdeci">std::set&lt; int &gt; nstypes()</div><div class="ttdef"><b>Definition:</b> ns.hpp:140</div></div>
 <div class="ttc" id="ns_8hpp_html_a2ba1673aa7423b46a7bcfa8f68cd2bce"><div class="ttname"><a href="ns_8hpp.html#a2ba1673aa7423b46a7bcfa8f68cd2bce">CLONE_NEWNET</a></div><div class="ttdeci">#define CLONE_NEWNET</div><div class="ttdef"><b>Definition:</b> ns.hpp:72</div></div>
@@ -758,7 +699,6 @@
 <div class="ttc" id="classhashmap_html"><div class="ttname"><a href="classhashmap.html">hashmap</a></div><div class="ttdef"><b>Definition:</b> hashmap.hpp:36</div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_ab03ced250ed239bc3b50b669493997f9"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ab03ced250ed239bc3b50b669493997f9">pid_t</a></div><div class="ttdeci">DWORD pid_t</div><div class="ttdef"><b>Definition:</b> windows.hpp:185</div></div>
 <div class="ttc" id="namespaceos_html_a06b5d831710f3993abe32fbb3ff69f12"><div class="ttname"><a href="namespaceos.html#a06b5d831710f3993abe32fbb3ff69f12">os::clone</a></div><div class="ttdeci">pid_t clone(const lambda::function&lt; int()&gt; &amp;func, int flags, Option&lt; Stack &gt; stack=None())</div><div class="ttdef"><b>Definition:</b> linux.hpp:103</div></div>
-<div class="ttc" id="namespacens_1_1pid_html_accb661a0624f57c7dddf1d1252bff780"><div class="ttname"><a href="namespacens_1_1pid.html#accb661a0624f57c7dddf1d1252bff780">ns::pid::destroy</a></div><div class="ttdeci">process::Future&lt; Nothing &gt; destroy(ino_t inode)</div><div class="ttdef"><b>Definition:</b> ns.hpp:617</div></div>
 <div class="ttc" id="ns_8hpp_html_aab02ccd05c3d9fa806d974e38a8debc4"><div class="ttname"><a href="ns_8hpp.html#aab02ccd05c3d9fa806d974e38a8debc4">CLONE_NEWNS</a></div><div class="ttdeci">#define CLONE_NEWNS</div><div class="ttdef"><b>Definition:</b> ns.hpp:56</div></div>
 <div class="ttc" id="namespaceos_html_a3d46f808886a786c2daab6eb1d81b206"><div class="ttname"><a href="namespaceos.html#a3d46f808886a786c2daab6eb1d81b206">os::getgid</a></div><div class="ttdeci">Result&lt; gid_t &gt; getgid(const Option&lt; std::string &gt; &amp;user=None())</div><div class="ttdef"><b>Definition:</b> su.hpp:118</div></div>
 <div class="ttc" id="nothing_8hpp_html"><div class="ttname"><a href="nothing_8hpp.html">nothing.hpp</a></div></div>
@@ -798,7 +738,8 @@
 <div class="ttc" id="try_8hpp_html"><div class="ttname"><a href="try_8hpp.html">try.hpp</a></div></div>
 <div class="ttc" id="classos_1_1Stack_html_a248fb0d3d52e903c887890d0155f70b7"><div class="ttname"><a href="classos_1_1Stack.html#a248fb0d3d52e903c887890d0155f70b7">os::Stack::create</a></div><div class="ttdeci">static Try&lt; Stack &gt; create(size_t size)</div><div class="ttdef"><b>Definition:</b> linux.hpp:61</div></div>
 <div class="ttc" id="namespacens_html_a1c4fd4fd04bde294d2d7477dfee8427e"><div class="ttname"><a href="namespacens.html#a1c4fd4fd04bde294d2d7477dfee8427e">ns::nstype</a></div><div class="ttdeci">Try&lt; int &gt; nstype(const std::string &amp;ns)</div><div class="ttdef"><b>Definition:</b> ns.hpp:103</div></div>
-<div class="ttc" id="classprocess_1_1Future_html_a08f6977c10f9f5d9e918ef8fd91f0a5f"><div class="ttname"><a href="classprocess_1_1Future.html#a08f6977c10f9f5d9e918ef8fd91f0a5f">process::Future::then</a></div><div class="ttdeci">Future&lt; X &gt; then(const lambda::function&lt; Future&lt; X &gt;(const T &amp;)&gt; &amp;f) const </div><div class="ttdef"><b>Definition:</b> future.hpp:1399</div></div>
+<div class="ttc" id="assert_8hpp_html_a50e38365f7c0d3cb938af8a5002640b2"><div class="ttname"><a href="assert_8hpp.html#a50e38365f7c0d3cb938af8a5002640b2">ASSERT</a></div><div class="ttdeci">#define ASSERT(e)</div><div class="ttdef"><b>Definition:</b> assert.hpp:23</div></div>
+<div class="ttc" id="assert_8hpp_html"><div class="ttname"><a href="assert_8hpp.html">assert.hpp</a></div></div>
 <div class="ttc" id="namespacemesos_1_1internal_1_1fs_html_a2343e2642db514496ba8380776487fba"><div class="ttname"><a href="namespacemesos_1_1internal_1_1fs.html#a2343e2642db514496ba8380776487fba">mesos::internal::fs::type</a></div><div class="ttdeci">Try&lt; uint32_t &gt; type(const std::string &amp;path)</div></div>
 <div class="ttc" id="status__utils_8hpp_html_a9e2998a6c0ec36d796adcec49131a5db"><div class="ttname"><a href="status__utils_8hpp.html#a9e2998a6c0ec36d796adcec49131a5db">WSUCCEEDED</a></div><div class="ttdeci">bool WSUCCEEDED(int status)</div><div class="ttdef"><b>Definition:</b> status_utils.hpp:26</div></div>
 <div class="ttc" id="classOption_html_a06eab791122ebc1f8af4ad310e5e7d7e"><div class="ttname"><a href="classOption.html#a06eab791122ebc1f8af4ad310e5e7d7e">Option::isNone</a></div><div class="ttdeci">bool isNone() const </div><div class="ttdef"><b>Definition:</b> option.hpp:109</div></div>
@@ -807,8 +748,7 @@
 <div class="ttc" id="namespacecgroups_html_ab75e1e2d1be63eec907bf12306a7c8a7"><div class="ttname"><a href="namespacecgroups.html#ab75e1e2d1be63eec907bf12306a7c8a7">cgroups::kill</a></div><div class="ttdeci">Try&lt; Nothing &gt; kill(const std::string &amp;hierarchy, const std::string &amp;cgroup, int signal)</div></div>
 <div class="ttc" id="classhashmap_html_a3e6a1fdf47dc2216eb8c0900e0bc969e"><div class="ttname"><a href="classhashmap.html#a3e6a1fdf47dc2216eb8c0900e0bc969e">hashmap::values</a></div><div class="ttdeci">std::list&lt; Value &gt; values() const </div><div class="ttdef"><b>Definition:</b> hashmap.hpp:131</div></div>
 <div class="ttc" id="ns_8hpp_html_afaf1addd4b1e90196d1876896c1a53c3"><div class="ttname"><a href="ns_8hpp.html#afaf1addd4b1e90196d1876896c1a53c3">CLONE_NEWUTS</a></div><div class="ttdeci">#define CLONE_NEWUTS</div><div class="ttdef"><b>Definition:</b> ns.hpp:60</div></div>
-<div class="ttc" id="namespacens_html_a28116b46e6543597a11733424cd1aa20"><div class="ttname"><a href="namespacens.html#a28116b46e6543597a11733424cd1aa20">ns::stringify</a></div><div class="ttdeci">std::string stringify(int flags)</div><div class="ttdef"><b>Definition:</b> ns.hpp:688</div></div>
-<div class="ttc" id="namespaceos_html_a42af1cab63434cedf2b698cd6f49f073"><div class="ttname"><a href="namespaceos.html#a42af1cab63434cedf2b698cd6f49f073">os::pids</a></div><div class="ttdeci">Try&lt; std::set&lt; pid_t &gt; &gt; pids()</div><div class="ttdef"><b>Definition:</b> freebsd.hpp:62</div></div>
+<div class="ttc" id="namespacens_html_a28116b46e6543597a11733424cd1aa20"><div class="ttname"><a href="namespacens.html#a28116b46e6543597a11733424cd1aa20">ns::stringify</a></div><div class="ttdeci">std::string stringify(int flags)</div><div class="ttdef"><b>Definition:</b> ns.hpp:632</div></div>
 <div class="ttc" id="namespacecgroups_html_a9fb61299862484ab2d1bd382ea109ca9"><div class="ttname"><a href="namespacecgroups.html#a9fb61299862484ab2d1bd382ea109ca9">cgroups::threads</a></div><div class="ttdeci">Try&lt; std::set&lt; pid_t &gt; &gt; threads(const std::string &amp;hierarchy, const std::string &amp;cgroup)</div></div>
 <div class="ttc" id="classTry_html_a7be0768038e0628632492edf6cc1515a"><div class="ttname"><a href="classTry.html#a7be0768038e0628632492edf6cc1515a">Try::get</a></div><div class="ttdeci">const T &amp; get() const </div><div class="ttdef"><b>Definition:</b> try.hpp:73</div></div>
 <div class="ttc" id="namespaceos_1_1Shell_html_acfe16ef2b1146ad49a8651c0a457ce46"><div class="ttname"><a href="namespaceos_1_1Shell.html#acfe16ef2b1146ad49a8651c0a457ce46">os::Shell::name</a></div><div class="ttdeci">constexpr const char * name</div><div class="ttdef"><b>Definition:</b> shell.hpp:41</div></div>
@@ -816,8 +756,6 @@
 <div class="ttc" id="hashmap_8hpp_html"><div class="ttname"><a href="hashmap_8hpp.html">hashmap.hpp</a></div></div>
 <div class="ttc" id="strings_8hpp_html"><div class="ttname"><a href="strings_8hpp.html">strings.hpp</a></div></div>
 <div class="ttc" id="namespaceos_html_a5effa5ea3568d8c18e5c66039702dfa0"><div class="ttname"><a href="namespaceos.html#a5effa5ea3568d8c18e5c66039702dfa0">os::ls</a></div><div class="ttdeci">Try&lt; std::list&lt; std::string &gt; &gt; ls(const std::string &amp;directory)</div><div class="ttdef"><b>Definition:</b> ls.hpp:29</div></div>
-<div class="ttc" id="classprocess_1_1Future_html"><div class="ttname"><a href="classprocess_1_1Future.html">process::Future&lt; Nothing &gt;</a></div></div>
-<div class="ttc" id="namespaceprocess_html_a0f89a937c1caa20e3048e16aeb0c9736"><div class="ttname"><a href="namespaceprocess.html#a0f89a937c1caa20e3048e16aeb0c9736">process::collect</a></div><div class="ttdeci">Future&lt; std::list&lt; T &gt; &gt; collect(const std::list&lt; Future&lt; T &gt;&gt; &amp;futures)</div><div class="ttdef"><b>Definition:</b> collect.hpp:189</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
