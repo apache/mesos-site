@@ -81,6 +81,8 @@ Macros</h2></td></tr>
 <tr class="separator:a659a0f3373b1b8ed3e348bc4332657e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a659a0f3373b1b8ed3e348bc4332657e2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="deferred_8hpp.html#a659a0f3373b1b8ed3e348bc4332657e2">TEMPLATE</a>(Z, N, DATA)</td></tr>
 <tr class="separator:a659a0f3373b1b8ed3e348bc4332657e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae76028dfc9fdd64cb568444c99e1dc1a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="deferred_8hpp.html#ae76028dfc9fdd64cb568444c99e1dc1a">FORWARD</a>(Z, N, DATA)&#160;&#160;&#160;std::forward&lt;A ## N&gt;(a ## N)</td></tr>
+<tr class="separator:ae76028dfc9fdd64cb568444c99e1dc1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a659a0f3373b1b8ed3e348bc4332657e2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="deferred_8hpp.html#a659a0f3373b1b8ed3e348bc4332657e2">TEMPLATE</a>(Z, N, DATA)</td></tr>
 <tr class="separator:a659a0f3373b1b8ed3e348bc4332657e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a659a0f3373b1b8ed3e348bc4332657e2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="deferred_8hpp.html#a659a0f3373b1b8ed3e348bc4332657e2">TEMPLATE</a>(Z, N, DATA)</td></tr>
@@ -89,12 +91,12 @@ Macros</h2></td></tr>
 <tr class="separator:a659a0f3373b1b8ed3e348bc4332657e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
-<a class="anchor" id="a659a0f3373b1b8ed3e348bc4332657e2"></a>
+<a class="anchor" id="ae76028dfc9fdd64cb568444c99e1dc1a"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define TEMPLATE</td>
+          <td class="memname">#define FORWARD</td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname">Z, </td>
@@ -114,7 +116,7 @@ Macros</h2></td></tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td></td>
+          <td></td><td>&#160;&#160;&#160;std::forward&lt;A ## N&gt;(a ## N)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -182,15 +184,54 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T,                                                 <a class="code" href="preprocessor_8hpp.html#a40870bee0160b00ad1caa741a2a2ef95">\</a></div>
-<div class="line"><a class="code" href="preprocessor_8hpp.html#a40870bee0160b00ad1caa741a2a2ef95">            ENUM_PARAMS</a>(N, <span class="keyword">typename</span> P),                                 <a class="code" href="preprocessor_8hpp.html#a40870bee0160b00ad1caa741a2a2ef95">\</a></div>
-<div class="line"><a class="code" href="preprocessor_8hpp.html#a40870bee0160b00ad1caa741a2a2ef95">            ENUM_PARAMS</a>(N, <span class="keyword">typename</span> A)&gt;                                 \</div>
-<div class="line">  friend <span class="keyword">auto</span> <a class="code" href="namespaceprocess.html#a8b27a2ef76eb133bf0ce7a5eea4fb77c">defer</a>(<span class="keyword">const</span> PID&lt;T&gt;&amp; pid,                                  \</div>
-<div class="line">             <span class="keywordtype">void</span> (T::*method)(<a class="code" href="preprocessor_8hpp.html#a40870bee0160b00ad1caa741a2a2ef95">ENUM_PARAMS</a>(N, P)),                      \</div>
-<div class="line">             <a class="code" href="preprocessor_8hpp.html#a136ead90127dc77a956b32b74056d6b6">ENUM_BINARY_PARAMS</a>(N, A, a))                               \</div>
-<div class="line">    -&gt; _Deferred&lt;decltype(std::bind(&amp;std::function&lt;void(ENUM_PARAMS(N, P))&gt;::operator(), std::function&lt;<span class="keywordtype">void</span>(<a class="code" href="preprocessor_8hpp.html#a40870bee0160b00ad1caa741a2a2ef95">ENUM_PARAMS</a>(N, P))&gt;(), <a class="code" href="preprocessor_8hpp.html#a40870bee0160b00ad1caa741a2a2ef95">ENUM_PARAMS</a>(N, a)))&gt;;</div>
+
+</div>
+</div>
+<a class="anchor" id="a659a0f3373b1b8ed3e348bc4332657e2"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TEMPLATE</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">Z, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">N, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">DATA&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T,                                                  <a class="code" href="preprocessor_8hpp.html#a40870bee0160b00ad1caa741a2a2ef95">\</a></div>
+<div class="line"><a class="code" href="preprocessor_8hpp.html#a40870bee0160b00ad1caa741a2a2ef95">            ENUM_PARAMS</a>(N, <span class="keyword">typename</span> P),                                  <a class="code" href="preprocessor_8hpp.html#a40870bee0160b00ad1caa741a2a2ef95">\</a></div>
+<div class="line"><a class="code" href="preprocessor_8hpp.html#a40870bee0160b00ad1caa741a2a2ef95">            ENUM_PARAMS</a>(N, <span class="keyword">typename</span> A)&gt;                                  \</div>
+<div class="line">  friend <span class="keyword">auto</span> <a class="code" href="namespaceprocess.html#a8b27a2ef76eb133bf0ce7a5eea4fb77c">defer</a>(<span class="keyword">const</span> PID&lt;T&gt;&amp; pid,                                   \</div>
+<div class="line">                    <span class="keywordtype">void</span> (T::*method)(<a class="code" href="preprocessor_8hpp.html#a40870bee0160b00ad1caa741a2a2ef95">ENUM_PARAMS</a>(N, P)),                \</div>
+<div class="line">                    <a class="code" href="preprocessor_8hpp.html#a136ead90127dc77a956b32b74056d6b6">ENUM_BINARY_PARAMS</a>(N, A, &amp;&amp;a))                       \</div>
+<div class="line">    -&gt; _Deferred&lt;decltype(                                               \</div>
+<div class="line">           <a class="code" href="namespaceprocess_1_1network.html#ad067110a4b38cc83785a43f49bf6c8e2">std::bind</a>(                                                    \</div>
+<div class="line">               &amp;std::function&lt;<span class="keywordtype">void</span>(<a class="code" href="preprocessor_8hpp.html#a40870bee0160b00ad1caa741a2a2ef95">ENUM_PARAMS</a>(N, P))&gt;::<span class="keyword">operator</span>(),      \</div>
+<div class="line">               std::function&lt;<span class="keywordtype">void</span>(<a class="code" href="preprocessor_8hpp.html#a40870bee0160b00ad1caa741a2a2ef95">ENUM_PARAMS</a>(N, P))&gt;(),                 \</div>
+<div class="line">               <a class="code" href="preprocessor_8hpp.html#a378181c29a641d58f55d647b5a9599f2">ENUM</a>(N, <a class="code" href="deferred_8hpp.html#ae76028dfc9fdd64cb568444c99e1dc1a">FORWARD</a>, _)))&gt;;</div>
+<div class="ttc" id="deferred_8hpp_html_ae76028dfc9fdd64cb568444c99e1dc1a"><div class="ttname"><a href="deferred_8hpp.html#ae76028dfc9fdd64cb568444c99e1dc1a">FORWARD</a></div><div class="ttdeci">#define FORWARD(Z, N, DATA)</div><div class="ttdef"><b>Definition:</b> deferred.hpp:237</div></div>
 <div class="ttc" id="preprocessor_8hpp_html_a136ead90127dc77a956b32b74056d6b6"><div class="ttname"><a href="preprocessor_8hpp.html#a136ead90127dc77a956b32b74056d6b6">ENUM_BINARY_PARAMS</a></div><div class="ttdeci">#define ENUM_BINARY_PARAMS</div><div class="ttdef"><b>Definition:</b> preprocessor.hpp:36</div></div>
+<div class="ttc" id="namespaceprocess_1_1network_html_ad067110a4b38cc83785a43f49bf6c8e2"><div class="ttname"><a href="namespaceprocess_1_1network.html#ad067110a4b38cc83785a43f49bf6c8e2">process::network::bind</a></div><div class="ttdeci">Try&lt; Nothing &gt; bind(int_fd s, const Address &amp;address)</div><div class="ttdef"><b>Definition:</b> network.hpp:46</div></div>
 <div class="ttc" id="preprocessor_8hpp_html_a40870bee0160b00ad1caa741a2a2ef95"><div class="ttname"><a href="preprocessor_8hpp.html#a40870bee0160b00ad1caa741a2a2ef95">ENUM_PARAMS</a></div><div class="ttdeci">#define ENUM_PARAMS</div><div class="ttdef"><b>Definition:</b> preprocessor.hpp:35</div></div>
+<div class="ttc" id="preprocessor_8hpp_html_a378181c29a641d58f55d647b5a9599f2"><div class="ttname"><a href="preprocessor_8hpp.html#a378181c29a641d58f55d647b5a9599f2">ENUM</a></div><div class="ttdeci">#define ENUM</div><div class="ttdef"><b>Definition:</b> preprocessor.hpp:37</div></div>
 <div class="ttc" id="namespaceprocess_html_a8b27a2ef76eb133bf0ce7a5eea4fb77c"><div class="ttname"><a href="namespaceprocess.html#a8b27a2ef76eb133bf0ce7a5eea4fb77c">process::defer</a></div><div class="ttdeci">Deferred&lt; void()&gt; defer(const PID&lt; T &gt; &amp;pid, void(T::*method)())</div><div class="ttdef"><b>Definition:</b> defer.hpp:35</div></div>
 </div><!-- fragment -->
 </div>
@@ -224,16 +265,23 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> R,                                                 \</div>
-<div class="line">            typename T,                                                 <a class="code" href="preprocessor_8hpp.html#a40870bee0160b00ad1caa741a2a2ef95">\</a></div>
-<div class="line"><a class="code" href="preprocessor_8hpp.html#a40870bee0160b00ad1caa741a2a2ef95">            ENUM_PARAMS</a>(N, <span class="keyword">typename</span> P),                                 <a class="code" href="preprocessor_8hpp.html#a40870bee0160b00ad1caa741a2a2ef95">\</a></div>
-<div class="line"><a class="code" href="preprocessor_8hpp.html#a40870bee0160b00ad1caa741a2a2ef95">            ENUM_PARAMS</a>(N, <span class="keyword">typename</span> A)&gt;                                 \</div>
-<div class="line">  friend <span class="keyword">auto</span> <a class="code" href="namespaceprocess.html#a8b27a2ef76eb133bf0ce7a5eea4fb77c">defer</a>(<span class="keyword">const</span> PID&lt;T&gt;&amp; pid,                                  \</div>
-<div class="line">             Future&lt;R&gt; (T::*method)(<a class="code" href="preprocessor_8hpp.html#a40870bee0160b00ad1caa741a2a2ef95">ENUM_PARAMS</a>(N, P)),                 \</div>
-<div class="line">             <a class="code" href="preprocessor_8hpp.html#a136ead90127dc77a956b32b74056d6b6">ENUM_BINARY_PARAMS</a>(N, A, a))                               \</div>
-<div class="line">    -&gt; _Deferred&lt;decltype(std::bind(&amp;std::function&lt;Future&lt;R&gt;(<a class="code" href="preprocessor_8hpp.html#a40870bee0160b00ad1caa741a2a2ef95">ENUM_PARAMS</a>(N, P))&gt;::<span class="keyword">operator</span>(), std::function&lt;Future&lt;R&gt;(<a class="code" href="preprocessor_8hpp.html#a40870bee0160b00ad1caa741a2a2ef95">ENUM_PARAMS</a>(N, P))&gt;(), <a class="code" href="preprocessor_8hpp.html#a40870bee0160b00ad1caa741a2a2ef95">ENUM_PARAMS</a>(N, a)))&gt;;</div>
+<b>Value:</b><div class="fragment"><div class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> R,                                                  \</div>
+<div class="line">            typename T,                                                  <a class="code" href="preprocessor_8hpp.html#a40870bee0160b00ad1caa741a2a2ef95">\</a></div>
+<div class="line"><a class="code" href="preprocessor_8hpp.html#a40870bee0160b00ad1caa741a2a2ef95">            ENUM_PARAMS</a>(N, <span class="keyword">typename</span> P),                                  <a class="code" href="preprocessor_8hpp.html#a40870bee0160b00ad1caa741a2a2ef95">\</a></div>
+<div class="line"><a class="code" href="preprocessor_8hpp.html#a40870bee0160b00ad1caa741a2a2ef95">            ENUM_PARAMS</a>(N, <span class="keyword">typename</span> A)&gt;                                  \</div>
+<div class="line">  friend <span class="keyword">auto</span> <a class="code" href="namespaceprocess.html#a8b27a2ef76eb133bf0ce7a5eea4fb77c">defer</a>(<span class="keyword">const</span> PID&lt;T&gt;&amp; pid,                                   \</div>
+<div class="line">                    Future&lt;R&gt; (T::*method)(<a class="code" href="preprocessor_8hpp.html#a40870bee0160b00ad1caa741a2a2ef95">ENUM_PARAMS</a>(N, P)),           \</div>
+<div class="line">                    <a class="code" href="preprocessor_8hpp.html#a136ead90127dc77a956b32b74056d6b6">ENUM_BINARY_PARAMS</a>(N, A, &amp;&amp;a))                       \</div>
+<div class="line">    -&gt; _Deferred&lt;decltype(                                               \</div>
+<div class="line">           <a class="code" href="namespaceprocess_1_1network.html#ad067110a4b38cc83785a43f49bf6c8e2">std::bind</a>(                                                    \</div>
+<div class="line">               &amp;std::function&lt;Future&lt;R&gt;(<a class="code" href="preprocessor_8hpp.html#a40870bee0160b00ad1caa741a2a2ef95">ENUM_PARAMS</a>(N, P))&gt;::<span class="keyword">operator</span>(), \</div>
+<div class="line">               std::function&lt;Future&lt;R&gt;(<a class="code" href="preprocessor_8hpp.html#a40870bee0160b00ad1caa741a2a2ef95">ENUM_PARAMS</a>(N, P))&gt;(),            \</div>
+<div class="line">               <a class="code" href="preprocessor_8hpp.html#a378181c29a641d58f55d647b5a9599f2">ENUM</a>(N, <a class="code" href="deferred_8hpp.html#ae76028dfc9fdd64cb568444c99e1dc1a">FORWARD</a>, _)))&gt;;</div>
+<div class="ttc" id="deferred_8hpp_html_ae76028dfc9fdd64cb568444c99e1dc1a"><div class="ttname"><a href="deferred_8hpp.html#ae76028dfc9fdd64cb568444c99e1dc1a">FORWARD</a></div><div class="ttdeci">#define FORWARD(Z, N, DATA)</div><div class="ttdef"><b>Definition:</b> deferred.hpp:237</div></div>
 <div class="ttc" id="preprocessor_8hpp_html_a136ead90127dc77a956b32b74056d6b6"><div class="ttname"><a href="preprocessor_8hpp.html#a136ead90127dc77a956b32b74056d6b6">ENUM_BINARY_PARAMS</a></div><div class="ttdeci">#define ENUM_BINARY_PARAMS</div><div class="ttdef"><b>Definition:</b> preprocessor.hpp:36</div></div>
+<div class="ttc" id="namespaceprocess_1_1network_html_ad067110a4b38cc83785a43f49bf6c8e2"><div class="ttname"><a href="namespaceprocess_1_1network.html#ad067110a4b38cc83785a43f49bf6c8e2">process::network::bind</a></div><div class="ttdeci">Try&lt; Nothing &gt; bind(int_fd s, const Address &amp;address)</div><div class="ttdef"><b>Definition:</b> network.hpp:46</div></div>
 <div class="ttc" id="preprocessor_8hpp_html_a40870bee0160b00ad1caa741a2a2ef95"><div class="ttname"><a href="preprocessor_8hpp.html#a40870bee0160b00ad1caa741a2a2ef95">ENUM_PARAMS</a></div><div class="ttdeci">#define ENUM_PARAMS</div><div class="ttdef"><b>Definition:</b> preprocessor.hpp:35</div></div>
+<div class="ttc" id="preprocessor_8hpp_html_a378181c29a641d58f55d647b5a9599f2"><div class="ttname"><a href="preprocessor_8hpp.html#a378181c29a641d58f55d647b5a9599f2">ENUM</a></div><div class="ttdeci">#define ENUM</div><div class="ttdef"><b>Definition:</b> preprocessor.hpp:37</div></div>
 <div class="ttc" id="namespaceprocess_html_a8b27a2ef76eb133bf0ce7a5eea4fb77c"><div class="ttname"><a href="namespaceprocess.html#a8b27a2ef76eb133bf0ce7a5eea4fb77c">process::defer</a></div><div class="ttdeci">Deferred&lt; void()&gt; defer(const PID&lt; T &gt; &amp;pid, void(T::*method)())</div><div class="ttdef"><b>Definition:</b> defer.hpp:35</div></div>
 </div><!-- fragment -->
 </div>
@@ -267,16 +315,23 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> R,                                                 \</div>
-<div class="line">            typename T,                                                 <a class="code" href="preprocessor_8hpp.html#a40870bee0160b00ad1caa741a2a2ef95">\</a></div>
-<div class="line"><a class="code" href="preprocessor_8hpp.html#a40870bee0160b00ad1caa741a2a2ef95">            ENUM_PARAMS</a>(N, <span class="keyword">typename</span> P),                                 <a class="code" href="preprocessor_8hpp.html#a40870bee0160b00ad1caa741a2a2ef95">\</a></div>
-<div class="line"><a class="code" href="preprocessor_8hpp.html#a40870bee0160b00ad1caa741a2a2ef95">            ENUM_PARAMS</a>(N, <span class="keyword">typename</span> A)&gt;                                 \</div>
-<div class="line">  friend <span class="keyword">auto</span> <a class="code" href="namespaceprocess.html#a8b27a2ef76eb133bf0ce7a5eea4fb77c">defer</a>(<span class="keyword">const</span> PID&lt;T&gt;&amp; pid,                                  \</div>
-<div class="line">             R (T::*method)(<a class="code" href="preprocessor_8hpp.html#a40870bee0160b00ad1caa741a2a2ef95">ENUM_PARAMS</a>(N, P)),                         \</div>
-<div class="line">             <a class="code" href="preprocessor_8hpp.html#a136ead90127dc77a956b32b74056d6b6">ENUM_BINARY_PARAMS</a>(N, A, a))                               \</div>
-<div class="line">    -&gt; _Deferred&lt;decltype(std::bind(&amp;std::function&lt;Future&lt;R&gt;(<a class="code" href="preprocessor_8hpp.html#a40870bee0160b00ad1caa741a2a2ef95">ENUM_PARAMS</a>(N, P))&gt;::<span class="keyword">operator</span>(), std::function&lt;Future&lt;R&gt;(<a class="code" href="preprocessor_8hpp.html#a40870bee0160b00ad1caa741a2a2ef95">ENUM_PARAMS</a>(N, P))&gt;(), <a class="code" href="preprocessor_8hpp.html#a40870bee0160b00ad1caa741a2a2ef95">ENUM_PARAMS</a>(N, a)))&gt;;</div>
+<b>Value:</b><div class="fragment"><div class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> R,                                                  \</div>
+<div class="line">            typename T,                                                  <a class="code" href="preprocessor_8hpp.html#a40870bee0160b00ad1caa741a2a2ef95">\</a></div>
+<div class="line"><a class="code" href="preprocessor_8hpp.html#a40870bee0160b00ad1caa741a2a2ef95">            ENUM_PARAMS</a>(N, <span class="keyword">typename</span> P),                                  <a class="code" href="preprocessor_8hpp.html#a40870bee0160b00ad1caa741a2a2ef95">\</a></div>
+<div class="line"><a class="code" href="preprocessor_8hpp.html#a40870bee0160b00ad1caa741a2a2ef95">            ENUM_PARAMS</a>(N, <span class="keyword">typename</span> A)&gt;                                  \</div>
+<div class="line">  friend <span class="keyword">auto</span> <a class="code" href="namespaceprocess.html#a8b27a2ef76eb133bf0ce7a5eea4fb77c">defer</a>(<span class="keyword">const</span> PID&lt;T&gt;&amp; pid,                                   \</div>
+<div class="line">                    R (T::*method)(<a class="code" href="preprocessor_8hpp.html#a40870bee0160b00ad1caa741a2a2ef95">ENUM_PARAMS</a>(N, P)),                   \</div>
+<div class="line">                    <a class="code" href="preprocessor_8hpp.html#a136ead90127dc77a956b32b74056d6b6">ENUM_BINARY_PARAMS</a>(N, A, &amp;&amp;a))                       \</div>
+<div class="line">    -&gt; _Deferred&lt;decltype(                                               \</div>
+<div class="line">         <a class="code" href="namespaceprocess_1_1network.html#ad067110a4b38cc83785a43f49bf6c8e2">std::bind</a>(                                                      \</div>
+<div class="line">           &amp;std::function&lt;Future&lt;R&gt;(<a class="code" href="preprocessor_8hpp.html#a40870bee0160b00ad1caa741a2a2ef95">ENUM_PARAMS</a>(N, P))&gt;::<span class="keyword">operator</span>(),     \</div>
+<div class="line">           std::function&lt;Future&lt;R&gt;(<a class="code" href="preprocessor_8hpp.html#a40870bee0160b00ad1caa741a2a2ef95">ENUM_PARAMS</a>(N, P))&gt;(),                \</div>
+<div class="line">           <a class="code" href="preprocessor_8hpp.html#a378181c29a641d58f55d647b5a9599f2">ENUM</a>(N, <a class="code" href="deferred_8hpp.html#ae76028dfc9fdd64cb568444c99e1dc1a">FORWARD</a>, _)))&gt;;</div>
+<div class="ttc" id="deferred_8hpp_html_ae76028dfc9fdd64cb568444c99e1dc1a"><div class="ttname"><a href="deferred_8hpp.html#ae76028dfc9fdd64cb568444c99e1dc1a">FORWARD</a></div><div class="ttdeci">#define FORWARD(Z, N, DATA)</div><div class="ttdef"><b>Definition:</b> deferred.hpp:237</div></div>
 <div class="ttc" id="preprocessor_8hpp_html_a136ead90127dc77a956b32b74056d6b6"><div class="ttname"><a href="preprocessor_8hpp.html#a136ead90127dc77a956b32b74056d6b6">ENUM_BINARY_PARAMS</a></div><div class="ttdeci">#define ENUM_BINARY_PARAMS</div><div class="ttdef"><b>Definition:</b> preprocessor.hpp:36</div></div>
+<div class="ttc" id="namespaceprocess_1_1network_html_ad067110a4b38cc83785a43f49bf6c8e2"><div class="ttname"><a href="namespaceprocess_1_1network.html#ad067110a4b38cc83785a43f49bf6c8e2">process::network::bind</a></div><div class="ttdeci">Try&lt; Nothing &gt; bind(int_fd s, const Address &amp;address)</div><div class="ttdef"><b>Definition:</b> network.hpp:46</div></div>
 <div class="ttc" id="preprocessor_8hpp_html_a40870bee0160b00ad1caa741a2a2ef95"><div class="ttname"><a href="preprocessor_8hpp.html#a40870bee0160b00ad1caa741a2a2ef95">ENUM_PARAMS</a></div><div class="ttdeci">#define ENUM_PARAMS</div><div class="ttdef"><b>Definition:</b> preprocessor.hpp:35</div></div>
+<div class="ttc" id="preprocessor_8hpp_html_a378181c29a641d58f55d647b5a9599f2"><div class="ttname"><a href="preprocessor_8hpp.html#a378181c29a641d58f55d647b5a9599f2">ENUM</a></div><div class="ttdeci">#define ENUM</div><div class="ttdef"><b>Definition:</b> preprocessor.hpp:37</div></div>
 <div class="ttc" id="namespaceprocess_html_a8b27a2ef76eb133bf0ce7a5eea4fb77c"><div class="ttname"><a href="namespaceprocess.html#a8b27a2ef76eb133bf0ce7a5eea4fb77c">process::defer</a></div><div class="ttdeci">Deferred&lt; void()&gt; defer(const PID&lt; T &gt; &amp;pid, void(T::*method)())</div><div class="ttdef"><b>Definition:</b> defer.hpp:35</div></div>
 </div><!-- fragment -->
 </div>
