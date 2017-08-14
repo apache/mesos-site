@@ -272,7 +272,11 @@ HTTP/1.1 202 Accepted
 
 <h3>ACCEPT</h3>
 
-<p>Sent by the scheduler when it accepts offer(s) sent by the master. The <code>ACCEPT</code> request includes the type of operations (e.g., launch task, launch task group, reserve resources, create volumes) that the scheduler wants to perform on the offers. Note that until the scheduler replies (accepts or declines) to an offer, the offer&rsquo;s resources are considered allocated to the offer&rsquo;s role and to the framework. Also, any of the offer&rsquo;s resources not used in the <code>ACCEPT</code> call (e.g., to launch a task or task group) are considered declined and might be reoffered to other frameworks. In other words, the same <code>OfferID</code> cannot be used in more than one <code>ACCEPT</code> call. These semantics might change when we add new features to Mesos (e.g., persistence, reservations, optimistic offers, resizeTask, etc.).</p>
+<p>Sent by the scheduler when it accepts offer(s) sent by the master. The <code>ACCEPT</code> request includes the type of operations (e.g., launch task, launch task group, reserve resources, create volumes) that the scheduler wants to perform on the offers. Note that until the scheduler replies (accepts or declines) to an offer, the offer&rsquo;s resources are considered allocated to the offer&rsquo;s role and to the framework. Also, any of the offer&rsquo;s resources not used in the <code>ACCEPT</code> call (e.g., to launch a task or task group) are considered declined and might be reoffered to other frameworks, meaning that they will not be reoffered to the scheduler for the amount of time defined by the filter. The same <code>OfferID</code> cannot be used in more than one <code>ACCEPT</code> call. These semantics might change when we add new features to Mesos (e.g., persistence, reservations, optimistic offers, resizeTask, etc.).</p>
+
+<p>The scheduler API uses <code>Filters.refuse_seconds</code> to specify the duration for which resources are considered declined. If <code>filters</code> is not set, then the default value defined in <a href="https://github.com/apache/mesos/blob/master/include/mesos/v1/mesos.proto">mesos.proto</a> will be used.</p>
+
+<p>NOTE: Mesos will cap <code>Filters.refuse_seconds</code> at 31536000 seconds (365 days).</p>
 
 <pre><code>ACCEPT Request (JSON):
 POST /api/v1/scheduler  HTTP/1.1
