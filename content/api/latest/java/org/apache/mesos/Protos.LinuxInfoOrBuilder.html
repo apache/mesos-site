@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":6,"i1":6,"i2":38,"i3":38,"i4":6,"i5":6,"i6":6,"i7":38,"i8":6};
+var methods = {"i0":6,"i1":6,"i2":38,"i3":38,"i4":6,"i5":6,"i6":6,"i7":6,"i8":38,"i9":6,"i10":6};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"],32:["t6","Deprecated Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -171,24 +171,40 @@ var activeTableTab = "activeTableTab";
 </tr>
 <tr id="i6" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.LinuxInfoOrBuilder.html#getSharePidNamespace--">getSharePidNamespace</a></span>()</code>
+<div class="block">
+ If set as 'true', the container shares the pid namespace with
+ its parent.</div>
+</td>
+</tr>
+<tr id="i7" class="rowColor">
+<td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.LinuxInfoOrBuilder.html#hasBoundingCapabilities--">hasBoundingCapabilities</a></span>()</code>
 <div class="block">
  The set of capabilities that are allowed but not initially
  granted to tasks.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.LinuxInfoOrBuilder.html#hasCapabilityInfo--">hasCapabilityInfo</a></span>()</code>
 <div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.LinuxInfoOrBuilder.html#hasEffectiveCapabilities--">hasEffectiveCapabilities</a></span>()</code>
 <div class="block">
  Represents the set of capabilities that the task will
  be executed with.</div>
+</td>
+</tr>
+<tr id="i10" class="altColor">
+<td class="colFirst"><code>boolean</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.LinuxInfoOrBuilder.html#hasSharePidNamespace--">hasSharePidNamespace</a></span>()</code>
+<div class="block">
+ If set as 'true', the container shares the pid namespace with
+ its parent.</div>
 </td>
 </tr>
 </table>
@@ -332,7 +348,7 @@ boolean&nbsp;hasCapabilityInfo()</pre>
 <a name="getEffectiveCapabilitiesOrBuilder--">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>getEffectiveCapabilitiesOrBuilder</h4>
 <pre><a href="../../../org/apache/mesos/Protos.CapabilityInfoOrBuilder.html" title="interface in org.apache.mesos">Protos.CapabilityInfoOrBuilder</a>&nbsp;getEffectiveCapabilitiesOrBuilder()</pre>
@@ -342,6 +358,44 @@ boolean&nbsp;hasCapabilityInfo()</pre>
  </pre>
 
  <code>optional .mesos.CapabilityInfo effective_capabilities = 3;</code></div>
+</li>
+</ul>
+<a name="hasSharePidNamespace--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>hasSharePidNamespace</h4>
+<pre>boolean&nbsp;hasSharePidNamespace()</pre>
+<div class="block"><pre>
+ If set as 'true', the container shares the pid namespace with
+ its parent. If the container is a top level container, it will
+ share the pid namespace with the agent. If the container is a
+ nested container, it will share the pid namespace with its
+ parent container. This field will be ignored if 'namespaces/pid'
+ isolator is not enabled.
+ </pre>
+
+ <code>optional bool share_pid_namespace = 4;</code></div>
+</li>
+</ul>
+<a name="getSharePidNamespace--">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>getSharePidNamespace</h4>
+<pre>boolean&nbsp;getSharePidNamespace()</pre>
+<div class="block"><pre>
+ If set as 'true', the container shares the pid namespace with
+ its parent. If the container is a top level container, it will
+ share the pid namespace with the agent. If the container is a
+ nested container, it will share the pid namespace with its
+ parent container. This field will be ignored if 'namespaces/pid'
+ isolator is not enabled.
+ </pre>
+
+ <code>optional bool share_pid_namespace = 4;</code></div>
 </li>
 </ul>
 </li>
