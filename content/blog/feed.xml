@@ -4,7 +4,61 @@
   <id>http://mesos.apache.org/blog</id>
   <link href="http://mesos.apache.org/blog" />
   <link href="http://mesos.apache.org/blog/feed.xml" rel="self"/>
-  <updated>2017-08-11T00:00:00Z</updated>
+  <updated>2017-08-15T00:00:00Z</updated>
+  
+  <entry>
+    <id>http://mesos.apache.org/blog/mesos-1-3-1-released/</id>
+    <link href="/blog/mesos-1-3-1-released/" />
+    <title>
+      Apache Mesos 1.3.1 Released
+    </title>
+    <updated>2017-08-15T00:00:00Z</updated>
+    <author>
+      <name>Michael Park</name>
+    </author>
+    <content type="html">
+      &lt;p&gt;The latest Mesos 1.3.x release, 1.3.1, is now available for &lt;a href=&quot;http://mesos.apache.org/downloads&quot;&gt;download&lt;/a&gt;. This release includes important bug fixes and improvements on top of 1.3.0. It is recommended to use this version if you are considering using Mesos 1.3. More specifically, this release includes the following:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-5187&quot;&gt;MESOS-5187&lt;/a&gt; - The filesystem/linux isolator does not set the permissions of the host_path.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-7252&quot;&gt;MESOS-7252&lt;/a&gt; - Need to fix resource check in long-lived framework.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-7429&quot;&gt;MESOS-7429&lt;/a&gt; - Allow isolators to inject task-specific environment variables.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-7540&quot;&gt;MESOS-7540&lt;/a&gt; - Add an agent flag for executor re-registration timeout.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-7546&quot;&gt;MESOS-7546&lt;/a&gt; - &lt;code&gt;WAIT_NESTED_CONTAINER&lt;/code&gt; sometimes returns 404.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-7569&quot;&gt;MESOS-7569&lt;/a&gt; - Allow &amp;ldquo;old&amp;rdquo; executors with half-open connections to be preserved during agent upgrade / restart.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-7581&quot;&gt;MESOS-7581&lt;/a&gt; - Fix interference of external Boost installations when using some unbundled dependencies.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-7689&quot;&gt;MESOS-7689&lt;/a&gt; - Libprocess can crash on malformed request paths for libprocess messages.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-7690&quot;&gt;MESOS-7690&lt;/a&gt; - The agent can crash when an unknown executor tries to register.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-7692&quot;&gt;MESOS-7692&lt;/a&gt; - Default environment variables defined in Docker image are not available in Mesos containerizer.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-7703&quot;&gt;MESOS-7703&lt;/a&gt; - Mesos fails to exec a custom executor when no shell is used.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-7728&quot;&gt;MESOS-7728&lt;/a&gt; - Java HTTP adapter crashes JVM when leading master disconnects.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-7770&quot;&gt;MESOS-7770&lt;/a&gt; - Persistent volume might not be mounted if there is a sandbox volume whose source is the same as the target of the persistent volume.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-7777&quot;&gt;MESOS-7777&lt;/a&gt; - Agent failed to recover due to mount namespace leakage in Docker 1.12/1.13.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-7796&quot;&gt;MESOS-7796&lt;/a&gt; - &lt;code&gt;LIBPROCESS_IP&lt;/code&gt; isn&amp;rsquo;t passed on to the fetcher.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-7830&quot;&gt;MESOS-7830&lt;/a&gt; - Sandbox_path volume does not have ownership set correctly.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;Full release notes are available in the release &lt;a href=&quot;https://git-wip-us.apache.org/repos/asf?p=mesos.git;a=blob_plain;f=CHANGELOG;hb=1.3.1&quot;&gt;CHANGELOG&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3&gt;Upgrades&lt;/h3&gt;
+
+&lt;p&gt;Rolling upgrades from a Mesos 1.3.1 cluster to Mesos 1.3.1 are straightforward.
+Please refer to the &lt;a href=&quot;http://mesos.apache.org/documentation/latest/upgrades/&quot;&gt;upgrade
+guide&lt;/a&gt; for detailed information on upgrading to Mesos 1.3.1 from 1.2.x, 1.1.x or 1.0.x.&lt;/p&gt;
+
+&lt;h3&gt;Try it out&lt;/h3&gt;
+
+&lt;p&gt;Please try out this release and let us know what you think. If you run into any issues, let us know on the &lt;a href=&quot;https://mesos.apache.org/community&quot;&gt;user mailing list and/or Slack/IRC&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3&gt;Thanks!&lt;/h3&gt;
+
+&lt;p&gt;Thanks to the 52 contributors who made 1.3.1 possible:&lt;/p&gt;
+
+&lt;p&gt;Aaron Wood, Adam B, Alexander Rojas, Alexander Rukletsov, Anand Mazumdar, Andrei Budnik, Andrew Schwartzmeyer, Anindya Sinha, Armand Grillet, Avinash sridharan, Benjamin Bannier, Benjamin Hindman, Benjamin Mahler, Benno Evers, Chun-Hung Hsiao, Conrad Kleinespel, Dmitry Zhuk, Eric Chung, Gastón Kleiman, Gilbert Song, Greg Mann, Haosdent Huang, Jacob Janco, James Peach, Jan Schlicht, Jay Guo, Jeff Coffler, Jiang Yan Xu, Jie Yu, John Kordich, Joseph Wu, Kapil Arya, Kevin Klues, Li Li, Mao Geng, Megha Sharma, Michael Park, Neil Conway, Olivier Sallou, Qian Zhang, Quinn Leng, Shingo Kitayama, Silas Snider, Till Toenshoff, Tim Hansen, TobiLG, Vinod Kone, Zhitao Li, Zhongbo Tian, haosdent huang, hardy.jung, huangwenpeng&lt;/p&gt;
+
+	</content>
+  </entry>
   
   <entry>
     <id>http://mesos.apache.org/blog/mesos-1-2-2-released/</id>
