@@ -74,55 +74,83 @@
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;functional&gt;</span></div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;queue&gt;</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="owned_8hpp.html">process/owned.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="include_2mesos_2http_8hpp.html">mesos/http.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="future_8hpp.html">process/future.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="3rdparty_2libprocess_2include_2process_2http_8hpp.html">process/http.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="owned_8hpp.html">process/owned.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="v1_2resource__provider_2resource__provider_8hpp.html">mesos/v1/resource_provider/resource_provider.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="include_2mesos_2http_8hpp.html">mesos/http.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">namespace </span>mesos {</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">namespace </span>v1 {</div>
-<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="namespacemesos_1_1v1_1_1resource__provider.html">   31</a></span>&#160;<span class="keyword">namespace </span>resource_provider {</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="include_2mesos_2v1_2mesos_8hpp.html">mesos/v1/mesos.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="v1_2resource__provider_2resource__provider_8hpp.html">mesos/v1/resource_provider/resource_provider.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">// Forward declarations.</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">class </span>DriverProcess;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="nothing_8hpp.html">stout/nothing.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="option_8hpp.html">stout/option.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="classmesos_1_1v1_1_1resource__provider_1_1Driver.html">   40</a></span>&#160;<span class="keyword">class </span><a class="code" href="classmesos_1_1v1_1_1resource__provider_1_1Driver.html">Driver</a></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;{</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <a class="code" href="classmesos_1_1v1_1_1resource__provider_1_1Driver.html#a8ab495625e30e30d2ac6feb4d1acd5df">Driver</a>(<a class="code" href="namespacemesos.html#a13035ce0cc66cca4a467787b4716039e">ContentType</a> contentType,</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;         <span class="keyword">const</span> std::function&lt;<span class="keywordtype">void</span>(<span class="keywordtype">void</span>)&gt;&amp; connected,</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;         <span class="keyword">const</span> std::function&lt;<span class="keywordtype">void</span>(<span class="keywordtype">void</span>)&gt;&amp; disconnected,</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;         <span class="keyword">const</span> std::function&lt;<span class="keywordtype">void</span>(<span class="keyword">const</span> std::queue&lt;Event&gt;&amp;)&gt;&amp; received);</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <a class="code" href="classmesos_1_1v1_1_1resource__provider_1_1Driver.html#a3ef038684cbea611eaa0a618f629a18c">~Driver</a>();</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <a class="code" href="classmesos_1_1v1_1_1resource__provider_1_1Driver.html#a8ab495625e30e30d2ac6feb4d1acd5df">Driver</a>(<span class="keyword">const</span> <a class="code" href="classmesos_1_1v1_1_1resource__provider_1_1Driver.html">Driver</a>&amp; other) = <span class="keyword">delete</span>;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <a class="code" href="classmesos_1_1v1_1_1resource__provider_1_1Driver.html">Driver</a>&amp; <a class="code" href="classmesos_1_1v1_1_1resource__provider_1_1Driver.html#a3426f43a0802df9e61b1500038137172">operator=</a>(<span class="keyword">const</span> <a class="code" href="classmesos_1_1v1_1_1resource__provider_1_1Driver.html">Driver</a>&amp; other) = <span class="keyword">delete</span>;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="classmesos_1_1v1_1_1resource__provider_1_1Driver.html#a0b6201ba67d0aadf7abcd196665cf8d3">   71</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classmesos_1_1v1_1_1resource__provider_1_1Driver.html#a0b6201ba67d0aadf7abcd196665cf8d3">send</a>(<span class="keyword">const</span> <a class="code" href="namespacemesos_1_1internal_1_1tests_1_1v1_1_1scheduler.html#acb18ceaa5f6f2338f2a9727af398eb79">Call</a>&amp; call) {}</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <a class="code" href="classprocess_1_1Owned.html">process::Owned&lt;DriverProcess&gt;</a> process;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;};</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;} <span class="comment">// namespace resource_provider {</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;} <span class="comment">// namespace v1 {</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;} <span class="comment">// namespace mesos {</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="preprocessor">#endif // __MESOS_V1_RESOURCE_PROVIDER_HPP__</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keyword">namespace </span>mesos {</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">namespace </span>internal {</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">// Forward declarations.</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> Call, <span class="keyword">typename</span> Event&gt;</div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1HttpConnectionProcess.html">   41</a></span>&#160;<span class="keyword">class </span><a class="code" href="classmesos_1_1internal_1_1HttpConnectionProcess.html">HttpConnectionProcess</a>;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword">class </span><a class="code" href="classmesos_1_1internal_1_1EndpointDetector.html">EndpointDetector</a>;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;} <span class="comment">// namespace internal {</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keyword">namespace </span>v1 {</div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="namespacemesos_1_1v1_1_1resource__provider.html">   48</a></span>&#160;<span class="keyword">namespace </span>resource_provider {</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="namespacemesos_1_1v1_1_1resource__provider.html#a8979cd8b1f8485e283620cf6827d21fc">   50</a></span>&#160;typedef ::mesos::internal::HttpConnectionProcess&lt;Call, Event&gt; <a class="code" href="namespacemesos_1_1v1_1_1resource__provider.html#a8979cd8b1f8485e283620cf6827d21fc">DriverProcess</a>;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="classmesos_1_1v1_1_1resource__provider_1_1Driver.html">   56</a></span>&#160;<span class="keyword">class </span><a class="code" href="classmesos_1_1v1_1_1resource__provider_1_1Driver.html">Driver</a></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;{</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <a class="code" href="classmesos_1_1v1_1_1resource__provider_1_1Driver.html#a6c7b9bebc0bd4fe22c6b830312633403">Driver</a>(<a class="code" href="classprocess_1_1Owned.html">process::Owned&lt;mesos::internal::EndpointDetector&gt;</a> detector,</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;         <a class="code" href="namespacemesos.html#a13035ce0cc66cca4a467787b4716039e">ContentType</a> contentType,</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;         <span class="keyword">const</span> std::function&lt;<span class="keywordtype">void</span>(<span class="keywordtype">void</span>)&gt;&amp; connected,</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;         <span class="keyword">const</span> std::function&lt;<span class="keywordtype">void</span>(<span class="keywordtype">void</span>)&gt;&amp; disconnected,</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;         <span class="keyword">const</span> std::function&lt;<span class="keywordtype">void</span>(<span class="keyword">const</span> std::queue&lt;Event&gt;&amp;)&gt;&amp; received,</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;         <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;Credential&gt;</a>&amp; credential);</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  <a class="code" href="classmesos_1_1v1_1_1resource__provider_1_1Driver.html#a3ef038684cbea611eaa0a618f629a18c">~Driver</a>();</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <a class="code" href="classmesos_1_1v1_1_1resource__provider_1_1Driver.html#a6c7b9bebc0bd4fe22c6b830312633403">Driver</a>(<span class="keyword">const</span> <a class="code" href="classmesos_1_1v1_1_1resource__provider_1_1Driver.html">Driver</a>&amp; other) = <span class="keyword">delete</span>;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  <a class="code" href="classmesos_1_1v1_1_1resource__provider_1_1Driver.html">Driver</a>&amp; <a class="code" href="classmesos_1_1v1_1_1resource__provider_1_1Driver.html#a3426f43a0802df9e61b1500038137172">operator=</a>(<span class="keyword">const</span> <a class="code" href="classmesos_1_1v1_1_1resource__provider_1_1Driver.html">Driver</a>&amp; other) = <span class="keyword">delete</span>;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  <a class="code" href="classprocess_1_1Future.html">process::Future&lt;Nothing&gt;</a> <a class="code" href="classmesos_1_1v1_1_1resource__provider_1_1Driver.html#a3f4e21e44721710eeed0ced2db518d37">send</a>(<span class="keyword">const</span> <a class="code" href="namespacemesos_1_1internal_1_1tests_1_1v1_1_1scheduler.html#acb18ceaa5f6f2338f2a9727af398eb79">Call</a>&amp; call);</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <a class="code" href="classprocess_1_1Owned.html">process::Owned&lt;DriverProcess&gt;</a> process;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;};</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;} <span class="comment">// namespace resource_provider {</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;} <span class="comment">// namespace v1 {</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;} <span class="comment">// namespace mesos {</span></div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="preprocessor">#endif // __MESOS_V1_RESOURCE_PROVIDER_HPP__</span></div>
+<div class="ttc" id="classmesos_1_1v1_1_1resource__provider_1_1Driver_html_a3f4e21e44721710eeed0ced2db518d37"><div class="ttname"><a href="classmesos_1_1v1_1_1resource__provider_1_1Driver.html#a3f4e21e44721710eeed0ced2db518d37">mesos::v1::resource_provider::Driver::send</a></div><div class="ttdeci">process::Future&lt; Nothing &gt; send(const Call &amp;call)</div></div>
 <div class="ttc" id="include_2mesos_2http_8hpp_html"><div class="ttname"><a href="include_2mesos_2http_8hpp.html">http.hpp</a></div></div>
 <div class="ttc" id="namespacemesos_html_a13035ce0cc66cca4a467787b4716039e"><div class="ttname"><a href="namespacemesos.html#a13035ce0cc66cca4a467787b4716039e">mesos::ContentType</a></div><div class="ttdeci">ContentType</div><div class="ttdef"><b>Definition:</b> http.hpp:43</div></div>
+<div class="ttc" id="classOption_html"><div class="ttname"><a href="classOption.html">Option&lt; Credential &gt;</a></div></div>
 <div class="ttc" id="classmesos_1_1v1_1_1resource__provider_1_1Driver_html_a3426f43a0802df9e61b1500038137172"><div class="ttname"><a href="classmesos_1_1v1_1_1resource__provider_1_1Driver.html#a3426f43a0802df9e61b1500038137172">mesos::v1::resource_provider::Driver::operator=</a></div><div class="ttdeci">Driver &amp; operator=(const Driver &amp;other)=delete</div></div>
-<div class="ttc" id="namespacemesos_1_1internal_1_1tests_1_1v1_1_1scheduler_html_acb18ceaa5f6f2338f2a9727af398eb79"><div class="ttname"><a href="namespacemesos_1_1internal_1_1tests_1_1v1_1_1scheduler.html#acb18ceaa5f6f2338f2a9727af398eb79">mesos::internal::tests::v1::scheduler::Call</a></div><div class="ttdeci">mesos::v1::scheduler::Call Call</div><div class="ttdef"><b>Definition:</b> mesos.hpp:2029</div></div>
+<div class="ttc" id="namespacemesos_1_1internal_1_1tests_1_1v1_1_1scheduler_html_acb18ceaa5f6f2338f2a9727af398eb79"><div class="ttname"><a href="namespacemesos_1_1internal_1_1tests_1_1v1_1_1scheduler.html#acb18ceaa5f6f2338f2a9727af398eb79">mesos::internal::tests::v1::scheduler::Call</a></div><div class="ttdeci">mesos::v1::scheduler::Call Call</div><div class="ttdef"><b>Definition:</b> mesos.hpp:2032</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1HttpConnectionProcess_html"><div class="ttname"><a href="classmesos_1_1internal_1_1HttpConnectionProcess.html">mesos::internal::HttpConnectionProcess</a></div><div class="ttdoc">HTTP connection handler. </div><div class="ttdef"><b>Definition:</b> resource_provider.hpp:41</div></div>
 <div class="ttc" id="v1_2resource__provider_2resource__provider_8hpp_html"><div class="ttname"><a href="v1_2resource__provider_2resource__provider_8hpp.html">resource_provider.hpp</a></div></div>
-<div class="ttc" id="classmesos_1_1v1_1_1resource__provider_1_1Driver_html"><div class="ttname"><a href="classmesos_1_1v1_1_1resource__provider_1_1Driver.html">mesos::v1::resource_provider::Driver</a></div><div class="ttdoc">Resource provider driver. </div><div class="ttdef"><b>Definition:</b> resource_provider.hpp:40</div></div>
-<div class="ttc" id="classmesos_1_1v1_1_1resource__provider_1_1Driver_html_a0b6201ba67d0aadf7abcd196665cf8d3"><div class="ttname"><a href="classmesos_1_1v1_1_1resource__provider_1_1Driver.html#a0b6201ba67d0aadf7abcd196665cf8d3">mesos::v1::resource_provider::Driver::send</a></div><div class="ttdeci">void send(const Call &amp;call)</div><div class="ttdef"><b>Definition:</b> resource_provider.hpp:71</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1EndpointDetector_html"><div class="ttname"><a href="classmesos_1_1internal_1_1EndpointDetector.html">mesos::internal::EndpointDetector</a></div><div class="ttdef"><b>Definition:</b> detector.hpp:26</div></div>
+<div class="ttc" id="namespacemesos_1_1v1_1_1resource__provider_html_a8979cd8b1f8485e283620cf6827d21fc"><div class="ttname"><a href="namespacemesos_1_1v1_1_1resource__provider.html#a8979cd8b1f8485e283620cf6827d21fc">mesos::v1::resource_provider::DriverProcess</a></div><div class="ttdeci">::mesos::internal::HttpConnectionProcess&lt; Call, Event &gt; DriverProcess</div><div class="ttdef"><b>Definition:</b> resource_provider.hpp:50</div></div>
+<div class="ttc" id="classmesos_1_1v1_1_1resource__provider_1_1Driver_html"><div class="ttname"><a href="classmesos_1_1v1_1_1resource__provider_1_1Driver.html">mesos::v1::resource_provider::Driver</a></div><div class="ttdoc">Resource provider driver. </div><div class="ttdef"><b>Definition:</b> resource_provider.hpp:56</div></div>
+<div class="ttc" id="nothing_8hpp_html"><div class="ttname"><a href="nothing_8hpp.html">nothing.hpp</a></div></div>
+<div class="ttc" id="classmesos_1_1v1_1_1resource__provider_1_1Driver_html_a6c7b9bebc0bd4fe22c6b830312633403"><div class="ttname"><a href="classmesos_1_1v1_1_1resource__provider_1_1Driver.html#a6c7b9bebc0bd4fe22c6b830312633403">mesos::v1::resource_provider::Driver::Driver</a></div><div class="ttdeci">Driver(process::Owned&lt; mesos::internal::EndpointDetector &gt; detector, ContentType contentType, const std::function&lt; void(void)&gt; &amp;connected, const std::function&lt; void(void)&gt; &amp;disconnected, const std::function&lt; void(const std::queue&lt; Event &gt; &amp;)&gt; &amp;received, const Option&lt; Credential &gt; &amp;credential)</div><div class="ttdoc">Construct a Driver. </div></div>
+<div class="ttc" id="option_8hpp_html"><div class="ttname"><a href="option_8hpp.html">option.hpp</a></div></div>
+<div class="ttc" id="future_8hpp_html"><div class="ttname"><a href="future_8hpp.html">future.hpp</a></div></div>
 <div class="ttc" id="classmesos_1_1v1_1_1resource__provider_1_1Driver_html_a3ef038684cbea611eaa0a618f629a18c"><div class="ttname"><a href="classmesos_1_1v1_1_1resource__provider_1_1Driver.html#a3ef038684cbea611eaa0a618f629a18c">mesos::v1::resource_provider::Driver::~Driver</a></div><div class="ttdeci">~Driver()</div></div>
 <div class="ttc" id="owned_8hpp_html"><div class="ttname"><a href="owned_8hpp.html">owned.hpp</a></div></div>
-<div class="ttc" id="classprocess_1_1Owned_html"><div class="ttname"><a href="classprocess_1_1Owned.html">process::Owned&lt; DriverProcess &gt;</a></div></div>
-<div class="ttc" id="classmesos_1_1v1_1_1resource__provider_1_1Driver_html_a8ab495625e30e30d2ac6feb4d1acd5df"><div class="ttname"><a href="classmesos_1_1v1_1_1resource__provider_1_1Driver.html#a8ab495625e30e30d2ac6feb4d1acd5df">mesos::v1::resource_provider::Driver::Driver</a></div><div class="ttdeci">Driver(ContentType contentType, const std::function&lt; void(void)&gt; &amp;connected, const std::function&lt; void(void)&gt; &amp;disconnected, const std::function&lt; void(const std::queue&lt; Event &gt; &amp;)&gt; &amp;received)</div><div class="ttdoc">Construct a Driver. </div></div>
+<div class="ttc" id="include_2mesos_2v1_2mesos_8hpp_html"><div class="ttname"><a href="include_2mesos_2v1_2mesos_8hpp.html">mesos.hpp</a></div></div>
+<div class="ttc" id="classprocess_1_1Owned_html"><div class="ttname"><a href="classprocess_1_1Owned.html">process::Owned&lt; mesos::internal::EndpointDetector &gt;</a></div></div>
+<div class="ttc" id="3rdparty_2libprocess_2include_2process_2http_8hpp_html"><div class="ttname"><a href="3rdparty_2libprocess_2include_2process_2http_8hpp.html">http.hpp</a></div></div>
+<div class="ttc" id="classprocess_1_1Future_html"><div class="ttname"><a href="classprocess_1_1Future.html">process::Future&lt; Nothing &gt;</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
