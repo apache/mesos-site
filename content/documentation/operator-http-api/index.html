@@ -2416,6 +2416,18 @@ Transfer-Encoding: chunked
 
 <p>The first event sent by the master when a client sends a <code>SUBSCRIBE</code> request on the persistent connection. This includes a snapshot of the cluster state. See <code>SUBSCRIBE</code> above for details. Subsequent changes to the cluster state can result in more events (currently only <code>TASK_ADDED</code> and <code>TASK_UPDATED</code> are supported).</p>
 
+<h3>HEARTBEAT</h3>
+
+<p>Periodically sent by the master to the subscriber according to &lsquo;Subscribed.heartbeat_interval_seconds&rsquo;. If the subscriber does not receive any events (including heartbeats) for an extended period of time (e.g., 5 x heartbeat_interval_seconds), it is likely that the connection is lost or there is a network partition. In that case, the subscriber should close the existing subscription connection and resubscribe using a backoff strategy.</p>
+
+<pre><code>HEARTBEAT Event (JSON)
+
+&lt;event-length&gt;
+{
+  "type": "HEARTBEAT",
+}
+</code></pre>
+
 <h3>TASK_ADDED</h3>
 
 <p>Sent whenever a task has been added to the master. This can happen either when a new task launch is processed by the master or when an agent re-registers with a failed over master.</p>
