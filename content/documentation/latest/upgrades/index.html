@@ -162,6 +162,7 @@ R Removed feature/behavior
       <li>A <a href="#1-4-x-ambient-capabilities">Container capabilities are made ambient if supported</a></li>
       <li>A <a href="#1-4-x-bounding-capabilities">Support for explicit bounding capabilities</a></li>
       <li>C <a href="#1-4-x-agent-recovery">Agent recovery post reboot</a></li>
+      <li>C <a href="#1-4-x-xfs-no-enforce">XFS disk isolator support for not enforcing disk limits</a></li>
     </ul>
   </td>
 
@@ -481,6 +482,13 @@ R Removed feature/behavior
 
 <ul>
 <li>The semantics of the optional resource argument passed in <code>Allocator::updateSlave</code> was change. While previously the passed value denoted a new amount of oversubscribed (revocable) resources on the agent, it now denotes the new amount of total resources on the agent. This requires custom allocator implementations to update their interpretation of the passed value.</li>
+</ul>
+
+
+<p><a name="1-4-x-xfs-no-enforce"></a></p>
+
+<ul>
+<li>The XFS Disk Isolator now supports the <code>--no-enforce_container_disk_quota</code> option to efficiently measure disk resource usage without enforcing any usage limits.</li>
 </ul>
 
 
