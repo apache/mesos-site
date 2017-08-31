@@ -4,7 +4,68 @@
   <id>http://mesos.apache.org/blog</id>
   <link href="http://mesos.apache.org/blog" />
   <link href="http://mesos.apache.org/blog/feed.xml" rel="self"/>
-  <updated>2017-08-15T00:00:00Z</updated>
+  <updated>2017-08-31T00:00:00Z</updated>
+  
+  <entry>
+    <id>http://mesos.apache.org/blog/mesos-1-1-3-released/</id>
+    <link href="/blog/mesos-1-1-3-released/" />
+    <title>
+      Apache Mesos 1.1.3 Released
+    </title>
+    <updated>2017-08-31T00:00:00Z</updated>
+    <author>
+      <name>AlexR</name>
+    </author>
+    <content type="html">
+      &lt;p&gt;The latest Mesos release, 1.1.3, is now available for
+&lt;a href=&quot;http://mesos.apache.org/downloads&quot;&gt;download&lt;/a&gt;. This release includes some
+important bug fixes and improvements on top of 1.1.2. It is highly recommended
+that users use this version if you are considering using Mesos 1.1. More
+specifically, this release includes the following major fixes and improvements:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-5187&quot;&gt;MESOS-5187&lt;/a&gt; - The filesystem/linux isolator does not set the permissions of the host_path.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-6743&quot;&gt;MESOS-6743&lt;/a&gt; - Docker executor hangs forever if &lt;code&gt;docker stop&lt;/code&gt; fails.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-6950&quot;&gt;MESOS-6950&lt;/a&gt; - Launching two tasks with the same Docker image simultaneously may cause a staging dir never cleaned up.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-7540&quot;&gt;MESOS-7540&lt;/a&gt; - Add an agent flag for executor re-registration timeout.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-7569&quot;&gt;MESOS-7569&lt;/a&gt; - Allow &amp;ldquo;old&amp;rdquo; executors with half-open connections to be preserved during agent upgrade / restart.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-7689&quot;&gt;MESOS-7689&lt;/a&gt; - Libprocess can crash on malformed request paths for libprocess messages.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-7690&quot;&gt;MESOS-7690&lt;/a&gt; - The agent can crash when an unknown executor tries to register.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-7581&quot;&gt;MESOS-7581&lt;/a&gt; - Fix interference of external Boost installations when using some unbundled dependencies.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-7703&quot;&gt;MESOS-7703&lt;/a&gt; - Mesos fails to exec a custom executor when no shell is used.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-7728&quot;&gt;MESOS-7728&lt;/a&gt; - Java HTTP adapter crashes JVM when leading master disconnects.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-7770&quot;&gt;MESOS-7770&lt;/a&gt; - Persistent volume might not be mounted if there is a sandbox volume whose source is the same as the target of the persistent volume.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-7777&quot;&gt;MESOS-7777&lt;/a&gt; - Agent failed to recover due to mount namespace leakage in Docker 1.12/1.13.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-7796&quot;&gt;MESOS-7796&lt;/a&gt; - LIBPROCESS_IP isn&amp;rsquo;t passed on to the fetcher.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-7830&quot;&gt;MESOS-7830&lt;/a&gt; - Sandbox_path volume does not have ownership set correctly.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-7863&quot;&gt;MESOS-7863&lt;/a&gt; - Agent may drop pending kill task status updates.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-7865&quot;&gt;MESOS-7865&lt;/a&gt; - Agent may process a kill task and still launch the task.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;Full release notes are available in the release
+&lt;a href=&quot;https://git-wip-us.apache.org/repos/asf?p=mesos.git;a=blob_plain;f=CHANGELOG;hb=1.1.3&quot;&gt;CHANGELOG&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3&gt;Upgrades&lt;/h3&gt;
+
+&lt;p&gt;Rolling upgrades from a Mesos 1.1.2 cluster to Mesos 1.1.3 are straightforward.
+Please refer to the &lt;a href=&quot;http://mesos.apache.org/documentation/latest/upgrades/&quot;&gt;upgrade guide&lt;/a&gt;
+for detailed information on upgrading to Mesos 1.1.3.&lt;/p&gt;
+
+&lt;h3&gt;Try it out&lt;/h3&gt;
+
+&lt;p&gt;We encourage you to try out this release and let us know what you think. If you
+run into any issues, please let us know on the
+&lt;a href=&quot;https://mesos.apache.org/community&quot;&gt;user mailing list and IRC&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3&gt;Thanks!&lt;/h3&gt;
+
+&lt;p&gt;Thanks to the 11 contributors who made 1.1.3 possible:&lt;/p&gt;
+
+&lt;p&gt;Aaron Wood, Alexander Rukletsov, Andrei Budnik, Benjamin Bannier, Benjamin Mahler, Chun-Hung Hsiao, Gastón Kleiman, Gilbert Song, Greg Mann, Jie Yu, and Qian Zhang.&lt;/p&gt;
+
+	</content>
+  </entry>
   
   <entry>
     <id>http://mesos.apache.org/blog/mesos-1-3-1-released/</id>
