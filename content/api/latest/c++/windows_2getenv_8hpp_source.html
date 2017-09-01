@@ -92,28 +92,35 @@
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <span class="comment">// that.</span></div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  DWORD buffer_size = ::GetEnvironmentVariableW(wide_key.data(), <span class="keyword">nullptr</span>, 0);</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  <span class="keywordflow">if</span> (buffer_size == 0) {</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="structNone.html">None</a>();</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  }</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  std::vector&lt;wchar_t&gt; <a class="code" href="namespaceos.html#a00a73ff5de812b0d6e1ffbbb16fc1f27">environment</a>;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  environment.reserve(static_cast&lt;size_t&gt;(buffer_size));</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  DWORD value_size =</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    ::GetEnvironmentVariableW(wide_key.data(), environment.data(), buffer_size);</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <span class="keywordflow">if</span> (value_size == 0) {</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="comment">// If `value_size == 0` here, that probably means the environment variable</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="comment">// was deleted between when we checked and when we allocated the buffer. We</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="comment">// report `None` to indicate the environment variable was not found.</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="structNone.html">None</a>();</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  }</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="namespacens.html#a28116b46e6543597a11733424cd1aa20">stringify</a>(std::wstring(environment.data()));</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;}</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;} <span class="comment">// namespace os {</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="preprocessor">#endif // __STOUT_OS_WINDOWS_GETENV_HPP__</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keywordflow">if</span> (::GetLastError() == ERROR_ENVVAR_NOT_FOUND) {</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="structNone.html">None</a>();</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    }</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  }</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  std::vector&lt;wchar_t&gt; <a class="code" href="namespaceos.html#a00a73ff5de812b0d6e1ffbbb16fc1f27">environment</a>;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  environment.reserve(static_cast&lt;size_t&gt;(buffer_size));</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  DWORD value_size =</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    ::GetEnvironmentVariableW(wide_key.data(), environment.data(), buffer_size);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="keywordflow">if</span> (value_size == 0) {</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="comment">// If `value_size == 0` here, that probably means the environment variable</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="comment">// was deleted between when we checked and when we allocated the buffer.</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordflow">if</span> (::GetLastError() == ERROR_ENVVAR_NOT_FOUND) {</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="structNone.html">None</a>();</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    }</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  }</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="namespacens.html#a28116b46e6543597a11733424cd1aa20">stringify</a>(std::wstring(environment.data()));</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;}</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;} <span class="comment">// namespace os {</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor">#endif // __STOUT_OS_WINDOWS_GETENV_HPP__</span></div>
 <div class="ttc" id="classOption_html"><div class="ttname"><a href="classOption.html">Option&lt; std::string &gt;</a></div></div>
 <div class="ttc" id="none_8hpp_html"><div class="ttname"><a href="none_8hpp.html">none.hpp</a></div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html">windows.hpp</a></div></div>
