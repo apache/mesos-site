@@ -120,6 +120,8 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structprocess_1_1ErrnoFailure.html">ErrnoFailure</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structprocess_1_1UndiscardableDecorator.html">UndiscardableDecorator</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprocess_1_1GarbageCollector.html">GarbageCollector</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprocess_1_1MockFilter.html">MockFilter</a></td></tr>
@@ -344,6 +346,14 @@ Functions</h2></td></tr>
 <tr class="memitem:afb9858d1610b80846d170d49b5abd03a"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:afb9858d1610b80846d170d49b5abd03a"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceprocess.html#afb9858d1610b80846d170d49b5abd03a">discardPromises</a> (std::set&lt; <a class="el" href="classprocess_1_1Promise.html">Promise</a>&lt; T &gt; * &gt; *promises, const <a class="el" href="classprocess_1_1Future.html">Future</a>&lt; T &gt; &amp;future)</td></tr>
 <tr class="separator:afb9858d1610b80846d170d49b5abd03a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3bf988425025cc1f778727e61bc6d523"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a3bf988425025cc1f778727e61bc6d523"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classprocess_1_1Future.html">Future</a>&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceprocess.html#a3bf988425025cc1f778727e61bc6d523">undiscardable</a> (const <a class="el" href="classprocess_1_1Future.html">Future</a>&lt; T &gt; &amp;future)</td></tr>
+<tr class="separator:a3bf988425025cc1f778727e61bc6d523"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75a00f108c8067c629ad5c587a92eb55"><td class="memTemplParams" colspan="2">template&lt;typename F , typename std::enable_if&lt; !is_specialization_of&lt; Future, typename std::decay&lt; F &gt;::type &gt;::value, int &gt;::type  = 0&gt; </td></tr>
+<tr class="memitem:a75a00f108c8067c629ad5c587a92eb55"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structprocess_1_1UndiscardableDecorator.html">UndiscardableDecorator</a><br class="typebreak"/>
+&lt; typename std::decay&lt; F &gt;<br class="typebreak"/>
+::type &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceprocess.html#a75a00f108c8067c629ad5c587a92eb55">undiscardable</a> (F &amp;&amp;<a class="el" href="namespaceprocess.html#a62d5333e8ec1817c249cf83e15d568b4">f</a>)</td></tr>
+<tr class="separator:a75a00f108c8067c629ad5c587a92eb55"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a88b387087fa848e2f29b5521757628a3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceprocess.html#a88b387087fa848e2f29b5521757628a3">MATCHER_P3</a> (MessageMatcher, name, from, to,&quot;&quot;)</td></tr>
 <tr class="separator:a88b387087fa848e2f29b5521757628a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a19d199db8ae65c3bbb4775cf4d429b49"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceprocess.html#a19d199db8ae65c3bbb4775cf4d429b49">MATCHER_P4</a> (UnionMessageMatcher, message, unionType, from, to,&quot;&quot;)</td></tr>
@@ -3896,6 +3906,42 @@ template&lt;typename T &gt; </div>
 <span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a3bf988425025cc1f778727e61bc6d523"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classprocess_1_1Future.html">Future</a>&lt;T&gt; process::undiscardable </td>
+          <td>(</td>
+          <td class="paramtype">const Future&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>future</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a75a00f108c8067c629ad5c587a92eb55"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename F , typename std::enable_if&lt; !is_specialization_of&lt; Future, typename std::decay&lt; F &gt;::type &gt;::value, int &gt;::type  = 0&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structprocess_1_1UndiscardableDecorator.html">UndiscardableDecorator</a>&lt;typename std::decay&lt;F&gt;::type&gt; process::undiscardable </td>
+          <td>(</td>
+          <td class="paramtype">F &amp;&amp;&#160;</td>
+          <td class="paramname"><em>f</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
 </div><div class="memdoc">
 
 </div>
