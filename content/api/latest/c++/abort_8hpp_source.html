@@ -113,29 +113,31 @@
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <span class="comment">// In fact, it is highly unlikely that strlen would be</span></div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="comment">// implemented in an unsafe manner:</span></div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="comment">// http://austingroupbugs.net/view.php?id=692</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keywordflow">while</span> (::<a class="code" href="namespacemesos_1_1internal_1_1log_1_1protocol.html#a66ff2d5af4db53227f787281c0765d8d">write</a>(<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ae2fe1725bb5e9823d089c46b9ed5266e">STDERR_FILENO</a>, prefix, prefix_len) == -1 &amp;&amp;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;         errno == EINTR);</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keywordflow">while</span> (message != <span class="keyword">nullptr</span> &amp;&amp;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;         ::<a class="code" href="namespacemesos_1_1internal_1_1log_1_1protocol.html#a66ff2d5af4db53227f787281c0765d8d">write</a>(<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ae2fe1725bb5e9823d089c46b9ed5266e">STDERR_FILENO</a>, message, message_len) == -1 &amp;&amp;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;         errno == EINTR);</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="comment">// NOTE: Since `1` can be interpreted as either an `unsigned int` or a</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="comment">// `size_t`, removing the `static_cast` here makes this call ambiguous</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="comment">// between the `write` in windows.hpp and the (deprecated) `write` in the</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="comment">// Windows CRT headers.</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="keywordflow">while</span> (::<a class="code" href="namespacemesos_1_1internal_1_1log_1_1protocol.html#a66ff2d5af4db53227f787281c0765d8d">write</a>(<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ae2fe1725bb5e9823d089c46b9ed5266e">STDERR_FILENO</a>, <span class="stringliteral">&quot;\n&quot;</span>, static_cast&lt;size_t&gt;(1)) == -1 &amp;&amp;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;         errno == EINTR);</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  abort();</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;}</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
-<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="abort_8hpp.html#a457890827a8d73811ef519dcc2e4bfa3">   78</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="3rdparty_2stout_2include_2stout_2attributes_8hpp.html#aa1728270d73c5d1598de1fd691762eb1">NORETURN</a> <span class="keywordtype">void</span> <a class="code" href="abort_8hpp.html#a68192f16dd111e07a5033be6ba5c6f94">_Abort</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code" href="namespaceos_1_1libraries_1_1Library.html#ab0e1a0e311049b6d685de1068e8f4690">prefix</a>, <span class="keyword">const</span> std::string&amp; message)</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;{</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <a class="code" href="abort_8hpp.html#a68192f16dd111e07a5033be6ba5c6f94">_Abort</a>(prefix, message.c_str());</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;}</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="preprocessor">#endif // __STOUT_ABORT_HPP__</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="comment">// NOTE: we can&#39;t use `signal_safe::write`, because it&#39;s defined in the header</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <span class="comment">// which can&#39;t be included due to circular dependency of headers.</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keywordflow">while</span> (::<a class="code" href="namespacemesos_1_1internal_1_1log_1_1protocol.html#a66ff2d5af4db53227f787281c0765d8d">write</a>(<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ae2fe1725bb5e9823d089c46b9ed5266e">STDERR_FILENO</a>, prefix, prefix_len) == -1 &amp;&amp;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;         errno == EINTR);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <span class="keywordflow">while</span> (message != <span class="keyword">nullptr</span> &amp;&amp;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;         ::<a class="code" href="namespacemesos_1_1internal_1_1log_1_1protocol.html#a66ff2d5af4db53227f787281c0765d8d">write</a>(<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ae2fe1725bb5e9823d089c46b9ed5266e">STDERR_FILENO</a>, message, message_len) == -1 &amp;&amp;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;         errno == EINTR);</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="comment">// NOTE: Since `1` can be interpreted as either an `unsigned int` or a</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="comment">// `size_t`, removing the `static_cast` here makes this call ambiguous</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="comment">// between the `write` in windows.hpp and the (deprecated) `write` in the</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="comment">// Windows CRT headers.</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="keywordflow">while</span> (::<a class="code" href="namespacemesos_1_1internal_1_1log_1_1protocol.html#a66ff2d5af4db53227f787281c0765d8d">write</a>(<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ae2fe1725bb5e9823d089c46b9ed5266e">STDERR_FILENO</a>, <span class="stringliteral">&quot;\n&quot;</span>, static_cast&lt;size_t&gt;(1)) == -1 &amp;&amp;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;         errno == EINTR);</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  abort();</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;}</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
+<div class="line"><a name="l00080"></a><span class="lineno"><a class="line" href="abort_8hpp.html#a457890827a8d73811ef519dcc2e4bfa3">   80</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="3rdparty_2stout_2include_2stout_2attributes_8hpp.html#aa1728270d73c5d1598de1fd691762eb1">NORETURN</a> <span class="keywordtype">void</span> <a class="code" href="abort_8hpp.html#a68192f16dd111e07a5033be6ba5c6f94">_Abort</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code" href="namespaceos_1_1libraries_1_1Library.html#ab0e1a0e311049b6d685de1068e8f4690">prefix</a>, <span class="keyword">const</span> std::string&amp; message)</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;{</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <a class="code" href="abort_8hpp.html#a68192f16dd111e07a5033be6ba5c6f94">_Abort</a>(prefix, message.c_str());</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;}</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="preprocessor">#endif // __STOUT_ABORT_HPP__</span></div>
 <div class="ttc" id="namespaceos_1_1libraries_1_1Library_html_ab0e1a0e311049b6d685de1068e8f4690"><div class="ttname"><a href="namespaceos_1_1libraries_1_1Library.html#ab0e1a0e311049b6d685de1068e8f4690">os::libraries::Library::prefix</a></div><div class="ttdeci">constexpr const char * prefix</div><div class="ttdef"><b>Definition:</b> os.hpp:94</div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html">windows.hpp</a></div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_ae2fe1725bb5e9823d089c46b9ed5266e"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ae2fe1725bb5e9823d089c46b9ed5266e">STDERR_FILENO</a></div><div class="ttdeci">#define STDERR_FILENO</div><div class="ttdef"><b>Definition:</b> windows.hpp:152</div></div>

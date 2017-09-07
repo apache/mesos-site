@@ -58,6 +58,7 @@
 <div class="textblock"><code>#include &lt;stdlib.h&gt;</code><br/>
 <code>#include &lt;ostream&gt;</code><br/>
 <code>#include &lt;glog/logging.h&gt;</code><br/>
+<code>#include &lt;glog/raw_logging.h&gt;</code><br/>
 <code>#include &lt;<a class="el" href="3rdparty_2stout_2include_2stout_2attributes_8hpp_source.html">stout/attributes.hpp</a>&gt;</code><br/>
 </div>
 <p><a href="exit_8hpp_source.html">Go to the source code of this file.</a></p>
@@ -71,6 +72,8 @@ Classes</h2></td></tr>
 Macros</h2></td></tr>
 <tr class="memitem:a536432347f1ad965e8116c2940fbf110"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="exit_8hpp.html#a536432347f1ad965e8116c2940fbf110">EXIT</a>(status)&#160;&#160;&#160;<a class="el" href="struct____Exit.html">__Exit</a>(__FILE__, __LINE__, status).stream()</td></tr>
 <tr class="separator:a536432347f1ad965e8116c2940fbf110"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a637cd32ee4af0a5a1d1aea8a0d7f7564"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="exit_8hpp.html#a637cd32ee4af0a5a1d1aea8a0d7f7564">SAFE_EXIT</a>(status, fmt,...)</td></tr>
+<tr class="separator:a637cd32ee4af0a5a1d1aea8a0d7f7564"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a class="anchor" id="a536432347f1ad965e8116c2940fbf110"></a>
@@ -87,6 +90,47 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+</div>
+</div>
+<a class="anchor" id="a637cd32ee4af0a5a1d1aea8a0d7f7564"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SAFE_EXIT</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">status, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">fmt, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line"><span class="keywordflow">do</span> {                                                                    \</div>
+<div class="line">    if (<a class="code" href="namespaceproc.html#a34396c6140a28f583dc13fee3c3c35d4">status</a>) {                                                         \</div>
+<div class="line">      RAW_LOG(ERROR, <span class="stringliteral">&quot;EXIT with status %d: &quot;</span> fmt, <a class="code" href="namespaceproc.html#a34396c6140a28f583dc13fee3c3c35d4">status</a>, ##__VA_ARGS__); \</div>
+<div class="line">    } <span class="keywordflow">else</span> {                                                              \</div>
+<div class="line">      RAW_LOG(INFO, <span class="stringliteral">&quot;EXIT with status %d: &quot;</span> fmt, <a class="code" href="namespaceproc.html#a34396c6140a28f583dc13fee3c3c35d4">status</a>, ##__VA_ARGS__);  \</div>
+<div class="line">    }                                                                     \</div>
+<div class="line">    ::_exit(<a class="code" href="namespaceproc.html#a34396c6140a28f583dc13fee3c3c35d4">status</a>);                                                      \</div>
+<div class="line">  } <span class="keywordflow">while</span> (0)</div>
+<div class="ttc" id="namespaceproc_html_a34396c6140a28f583dc13fee3c3c35d4"><div class="ttname"><a href="namespaceproc.html#a34396c6140a28f583dc13fee3c3c35d4">proc::status</a></div><div class="ttdeci">Result&lt; ProcessStatus &gt; status(pid_t pid)</div><div class="ttdef"><b>Definition:</b> proc.hpp:166</div></div>
+</div><!-- fragment -->
 </div>
 </div>
 </div><!-- contents -->
