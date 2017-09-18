@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Apache Mesos - Mesos Containerizer</title>
+    <title>Apache Mesos - Shared Filesystem Isolator in Mesos Containerizer</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <meta property="og:locale" content="en_US"/>
@@ -27,7 +27,7 @@
 
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
-    <link href="../../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="../../../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
 
     
 
@@ -113,65 +113,41 @@
     <p>See our <a href="/community/">community</a> page for more details.</p>
   </div>
   <div class="col-md-8">
-    <h1>Mesos Containerizer</h1>
+    <h1>Shared Filesystem Isolator in Mesos Containerizer</h1>
 
-<p>The Mesos Containerizer provides lightweight containerization and
-resource isolation of executors using Linux-specific functionality
-such as control cgroups and namespaces. It is composable so operators
-can selectively enable different <a href="#isolators">isolators</a>.</p>
+<p>This document describes the <code>filesystem/shared</code> isolator. You can turn
+on this isolator by specifying the <code>--isolation</code> agent flag (i.e.,
+<code>--isolation=filesystem/shared,...</code>).</p>
 
-<p>It also provides basic support for POSIX systems (e.g., OSX) but
-without any actual isolation, only resource usage reporting.</p>
+<p>NOTE: This isolator has been deprecated in favor of using
+<code>filesytem/linux</code> isolator.</p>
 
-<h2>Isolators</h2>
+<p>The <code>filesystem/shared</code> isolator can optionally be used on Linux hosts
+to enable modifications to each container&rsquo;s view of the shared
+filesystem.</p>
 
-<p>Isolators are components that each define an aspect of how a tasks
-execution environment (or container) is constructed. Isolators can
-control how containers are isolated from each other, how task resource
-limits are enforced, how networking is configured, how security
-policies are applied.</p>
+<p>The modifications are specified in the ContainerInfo included in the
+ExecutorInfo, either by a framework or by using the
+<code>--default_container_info</code> agent flag.</p>
 
-<p>Since the isolator interface is <a href="/documentation/latest/./modules/">modularized</a>, operators
-can write modules that implement custom isolators.</p>
+<p>ContainerInfo specifies Volumes which map parts of the shared
+filesystem (host_path) into the container&rsquo;s view of the filesystem
+(container_path), as read-write or read-only. The host_path can be
+absolute, in which case it will make the filesystem subtree rooted at
+host_path also accessible under container_path for each container.
+If host_path is relative then it is considered as a directory
+relative to the executor&rsquo;s work directory. The directory will be
+created and permissions copied from the corresponding directory (which
+must exist) in the shared filesystem.</p>
 
-<p>Mesos supports the following built-in isolators.</p>
-
-<ul>
-<li>environment_secret</li>
-<li>appc/runtime</li>
-<li>cgroups/blkio</li>
-<li>cgroups/cpu</li>
-<li>cgroups/cpuset</li>
-<li>cgroups/devices</li>
-<li>cgroups/hugetlb</li>
-<li>cgroups/mem</li>
-<li><a href="/documentation/latest/./isolators/cgroups-net-cls/">cgroups/net_cls</a></li>
-<li>cgroups/net_prio</li>
-<li>cgroups/perf_event</li>
-<li>cgroups/pids</li>
-<li><a href="/documentation/latest/./isolators/disk-du/">disk/du</a></li>
-<li><a href="/documentation/latest/./isolators/disk-xfs/">disk/xfs</a></li>
-<li><a href="/documentation/latest/./isolators/docker-runtime/">docker/runtime</a></li>
-<li><a href="/documentation/latest/./isolators/docker-volume/">docker/volume</a></li>
-<li>filesystem/linux</li>
-<li>filesystem/posix</li>
-<li><a href="/documentation/latest/./isolators/filesystem-shared/">filesystem/shared</a></li>
-<li>filesystem/windows</li>
-<li><a href="/documentation/latest/./gpu-support/">gpu/nvidia</a></li>
-<li><a href="/documentation/latest/./isolators/linux-capabilities/">linux/capabilities</a></li>
-<li><a href="/documentation/latest/./isolators/namespaces-ipc/">namespaces/ipc</a></li>
-<li><a href="/documentation/latest/./isolators/namespaces-pid/">namespaces/pid</a></li>
-<li><a href="/documentation/latest/./cni/">network/cni</a></li>
-<li><a href="/documentation/latest/./isolators/network-port-mapping/">network/port_mapping</a></li>
-<li>posix/cpu</li>
-<li>posix/mem</li>
-<li><a href="/documentation/latest/./isolators/posix-rlimits/">posix/rlimits</a></li>
-<li><a href="/documentation/latest/./container-volume/#host_path-volume-source">volume/host_path</a></li>
-<li>volume/image</li>
-<li><a href="/documentation/latest/./container-volume/#sandbox_path-volume-source">volume/sandbox_path</a></li>
-<li>volume/secret</li>
-</ul>
-
+<p>The primary use-case for this isolator is to selectively make parts of
+the shared filesystem private to each container. For example, a
+private &ldquo;/tmp&rdquo; directory can be achieved with <code>host_path="tmp"</code> and
+<code>container_path="/tmp"</code> which will create a directory &ldquo;tmp&rdquo; inside the
+executor&rsquo;s work directory (mode 1777) and simultaneously mount it as
+/tmp inside the container. This is transparent to processes running
+inside the container. Containers will not be able to see the host&rsquo;s
+/tmp or any other container&rsquo;s /tmp.</p>
 
   </div>
 </div>

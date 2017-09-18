@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>Apache Mesos - Disk Isolator Based on 'du' in Mesos Containerizer</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <meta property="og:locale" content="en_US"/>
@@ -27,7 +27,7 @@
 
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
-    <link href="../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="../../../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
 
     
 
@@ -113,80 +113,28 @@
     <p>See our <a href="/community/">community</a> page for more details.</p>
   </div>
   <div class="col-md-8">
-    <h1>Linux Capabilities Support in Mesos Containerizer</h1>
+    <h1>Disk Isolator Based on &lsquo;du&rsquo; in Mesos Containerizer</h1>
 
-<p>This document describes the <code>linux/capabilities</code> isolator. The
-isolator adds support for controlling <a href="http://man7.org/linux/man-pages/man7/capabilities.7.html">Linux
-Capabilities</a>
-of containers launched using the
-<a href="/documentation/latest/./mesos-containerizer/">MesosContainerizer</a></p>
+<p>The <code>disk/du</code> (previously <code>posix/disk</code>) isolator provides basic disk
+isolation. It is able to report the disk usage for each sandbox and
+optionally enforce the disk quota. It can be used on both Linux and OS
+X.</p>
 
-<p>The Linux capabilities isolator allows operators to control which
-privileged operations Mesos tasks may perform. Operators can specify
-which capabilities to allow for containers executing on an agent;
-containers on the other hand can expose which capabilities they need.</p>
+<p>To enable the <code>disk/du</code> isolator, append <code>disk/du</code> to the
+<code>--isolation</code> flag when starting the agent.</p>
 
-<p>See the protobuf definition of <code>CapabilityInfo::Capability</code> for the
-list of currently exposed capabilities.</p>
+<p>By default, the disk quota enforcement is disabled. To enable it,
+specify <code>--enforce_container_disk_quota</code> when starting the agent.</p>
 
-<h2>Agent setup</h2>
+<p>The <code>disk/du</code> isolator reports disk usage for each sandbox by
+periodically running the <code>du</code> command. The disk usage can be retrieved
+from the resource statistics endpoint
+(<a href="/documentation/latest/isolators/../endpoints/slave/monitor/statistics/">/monitor/statistics</a>).</p>
 
-<p>The Linux capabilities isolator is loaded when <code>linux/capabilities</code> is
-present in the agent&rsquo;s <code>--isolation</code> flag.  This isolator requires the
-<code>CAP_SETPCAP</code> capability so agent processes typically need to be started
-as root.</p>
-
-<p>The <code>--effective_capabilities</code> flag specifies a set of capabilities that
-are always granted to tasks. If the running kernel (Linux 4.3 or later)
-supports ambient capabilities, these capabilities will be added to the
-effective capability set of the task when it is launched. Otherwise
-they must be re-acquired by arranging for the task to execute a file
-with the relevant file-based capabilities enabled.</p>
-
-<p>In the absence of capabilities specified by the scheduler, an empty list
-for <code>--effective_capabilities</code> signifies that all capabilities will
-be explicitly dropped.  If the <code>--effective_capabilities</code> flag is not
-present, the task will be launched with the default capabilities of the
-task user but the ambient capabilities will not be set.</p>
-
-<p>The <code>--bounding_capabilities</code> flag specifies an upper bound on the
-the capabilities a task is allowed to acquire or be granted.
-Schedulers are not allowed to launch tasks with capabilities outside
-the set specified by the <code>--bounding_capabilities</code> flag, but may
-specify effective or bounding capabilities that are within this
-set.</p>
-
-<p>An empty list for <code>--bounding_capabilities</code> signifies that no capabilities
-are allowed, while an absent <code>--bounding_capabilities</code> flag signifies
-that all capabilities are allowed.</p>
-
-<p>A possible agent startup invocation could be</p>
-
-<pre><code class="{.console}">sudo mesos-agent --master=&lt;master ip&gt; --ip=&lt;agent ip&gt;
-  --work_dir=/var/lib/mesos
-  --isolation=linux/capabilities[,other isolation flags]
-  --effective_capabilities='{"capabilities":[NET_RAW,MKNOD]}'
-  --bounding_capabilities='{"capabilities":[NET_RAW,MKNOD,SYSLOG]}'
-</code></pre>
-
-<h2>Task setup</h2>
-
-<p>In order for a Mesos task to acquire specific effective capabilities
-or limit its bounding capabilities it should declare the required
-capabilities in the <code>LinuxInfo</code> element of its <code>ContainerInfo</code>.</p>
-
-<p>A Mesos task can only request capabilities which are allowed according
-to the <code>--bounding_capabilities</code> flag of the agent; a task requesting
-other capabilities will be rejected. When the <code>--bounding_capabilities</code>
-flag is not present, all capability requests will be granted.</p>
-
-<p>If the optional <code>effective_capabilities</code> field is not set, the value
-of the <code>--effective_capabilities</code> flag will be used to populate the
-task capabilities. If the optional <code>bounding_capabilities</code> field
-is not set, the value of the <code>--bounding_capabilities</code> flag will
-be used to populate the task capabilities. In both case, if an empty
-list of capabilities is given, the Mesos task will drop all
-capabilities in the corresponding set.</p>
+<p>The interval between two <code>du</code>s can be controlled by the agent flag
+<code>--container_disk_watch_interval</code>. For example,
+<code>--container_disk_watch_interval=1mins</code> sets the interval to be 1
+minute. The default interval is 15 seconds.</p>
 
   </div>
 </div>

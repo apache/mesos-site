@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Apache Mesos - Mesos Containerizer</title>
+    <title>Apache Mesos - Cgroups 'net_cls' Subsystem Support in Mesos Containerizer</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <meta property="og:locale" content="en_US"/>
@@ -27,7 +27,7 @@
 
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
-    <link href="../../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="../../../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
 
     
 
@@ -113,65 +113,50 @@
     <p>See our <a href="/community/">community</a> page for more details.</p>
   </div>
   <div class="col-md-8">
-    <h1>Mesos Containerizer</h1>
+    <h1>Cgroups &lsquo;net_cls&rsquo; Subsystem Support in Mesos Containerizer</h1>
 
-<p>The Mesos Containerizer provides lightweight containerization and
-resource isolation of executors using Linux-specific functionality
-such as control cgroups and namespaces. It is composable so operators
-can selectively enable different <a href="#isolators">isolators</a>.</p>
+<p>The <code>cgroups/net_cls</code> isolator allows operators to provide network
+performance isolation and network segmentation for containers within a
+Mesos cluster. To enable the <code>cgroups/net_cls</code> isolator, append
+<code>cgroups/net_cls</code> to the <code>--isolation</code> flag when starting the agent.</p>
 
-<p>It also provides basic support for POSIX systems (e.g., OSX) but
-without any actual isolation, only resource usage reporting.</p>
+<p>As the name suggests, the isolator enables the <code>net_cls</code> subsystem for
+Linux cgroups and assigns a <code>net_cls</code> cgroup to each container
+launched by the Mesos Containerizer. The objective of the <code>net_cls</code>
+subsystem is to allow the kernel to tag packets originating from a
+container with a 32-bit handle. These handles can be used by kernel
+modules such as <code>qdisc</code> (for traffic engineering) and <code>net-filter</code>
+(for firewall) to enforce network performance and security policies
+specified by the operators.  The policies, based on the <code>net_cls</code>
+handles, can be specified by the operators through user-space tools
+such as
+<a href="http://tldp.org/HOWTO/Traffic-Control-HOWTO/software.html#s-iproute2-tc">tc</a>
+and <a href="http://linux.die.net/man/8/iptables">iptables</a>.</p>
 
-<h2>Isolators</h2>
+<p>The 32-bit handle associated with a <code>net_cls</code> cgroup can be specified
+by writing the handle to the <code>net_cls.classid</code> file, present within
+the <code>net_cls</code> cgroup. The 32-bit handle is of the form <code>0xAAAABBBB</code>,
+and consists of a 16-bit primary handle 0xAAAA and a 16-bit secondary
+handle 0xBBBB. You can read more about the use cases for the primary
+and secondary handles in the <a href="https://www.kernel.org/doc/Documentation/cgroup-v1/net_cls.txt">Linux kernel documentation for
+net_cls</a>.</p>
 
-<p>Isolators are components that each define an aspect of how a tasks
-execution environment (or container) is constructed. Isolators can
-control how containers are isolated from each other, how task resource
-limits are enforced, how networking is configured, how security
-policies are applied.</p>
+<p>By default, the <code>cgroups/net_cls</code> isolator does not manage the
+<code>net_cls</code> handles, and assumes the operator is going to manage/assign
+these handles. To enable the management of <code>net_cls</code> handles by the
+<code>cgroups/net_cls</code> isolator you need to specify a 16-bit primary
+handle, of the form 0xAAAA, using the
+<code>--cgroups_net_cls_primary_handle</code> flag at agent startup.</p>
 
-<p>Since the isolator interface is <a href="/documentation/latest/./modules/">modularized</a>, operators
-can write modules that implement custom isolators.</p>
-
-<p>Mesos supports the following built-in isolators.</p>
-
-<ul>
-<li>environment_secret</li>
-<li>appc/runtime</li>
-<li>cgroups/blkio</li>
-<li>cgroups/cpu</li>
-<li>cgroups/cpuset</li>
-<li>cgroups/devices</li>
-<li>cgroups/hugetlb</li>
-<li>cgroups/mem</li>
-<li><a href="/documentation/latest/./isolators/cgroups-net-cls/">cgroups/net_cls</a></li>
-<li>cgroups/net_prio</li>
-<li>cgroups/perf_event</li>
-<li>cgroups/pids</li>
-<li><a href="/documentation/latest/./isolators/disk-du/">disk/du</a></li>
-<li><a href="/documentation/latest/./isolators/disk-xfs/">disk/xfs</a></li>
-<li><a href="/documentation/latest/./isolators/docker-runtime/">docker/runtime</a></li>
-<li><a href="/documentation/latest/./isolators/docker-volume/">docker/volume</a></li>
-<li>filesystem/linux</li>
-<li>filesystem/posix</li>
-<li><a href="/documentation/latest/./isolators/filesystem-shared/">filesystem/shared</a></li>
-<li>filesystem/windows</li>
-<li><a href="/documentation/latest/./gpu-support/">gpu/nvidia</a></li>
-<li><a href="/documentation/latest/./isolators/linux-capabilities/">linux/capabilities</a></li>
-<li><a href="/documentation/latest/./isolators/namespaces-ipc/">namespaces/ipc</a></li>
-<li><a href="/documentation/latest/./isolators/namespaces-pid/">namespaces/pid</a></li>
-<li><a href="/documentation/latest/./cni/">network/cni</a></li>
-<li><a href="/documentation/latest/./isolators/network-port-mapping/">network/port_mapping</a></li>
-<li>posix/cpu</li>
-<li>posix/mem</li>
-<li><a href="/documentation/latest/./isolators/posix-rlimits/">posix/rlimits</a></li>
-<li><a href="/documentation/latest/./container-volume/#host_path-volume-source">volume/host_path</a></li>
-<li>volume/image</li>
-<li><a href="/documentation/latest/./container-volume/#sandbox_path-volume-source">volume/sandbox_path</a></li>
-<li>volume/secret</li>
-</ul>
-
+<p>Once a primary handle has been specified for an agent, for each
+container the <code>cgroups/net_cls</code> isolator allocates a 16-bit secondary
+handle. It then assigns the 32-bit combination of the primary and
+secondary handle to the <code>net_cls</code> cgroup associated with the container
+by writing to <code>net_cls.classid</code>. The <code>cgroups/net_cls</code> isolator
+exposes the assigned <code>net_cls</code> handle to operators by exposing the
+handle as part of the <code>ContainerStatus</code> &mdash;associated with any
+task running within the container&mdash; in the agent&rsquo;s
+<a href="/documentation/latest/isolators/../endpoints/slave/state/">/state</a> endpoint.</p>
 
   </div>
 </div>

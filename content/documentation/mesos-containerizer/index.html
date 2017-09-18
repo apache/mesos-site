@@ -115,295 +115,63 @@
   <div class="col-md-8">
     <h1>Mesos Containerizer</h1>
 
-<p>The MesosContainerizer provides lightweight containerization and
+<p>The Mesos Containerizer provides lightweight containerization and
 resource isolation of executors using Linux-specific functionality
 such as control cgroups and namespaces. It is composable so operators
-can selectively enable different isolators.</p>
+can selectively enable different <a href="#isolators">isolators</a>.</p>
 
 <p>It also provides basic support for POSIX systems (e.g., OSX) but
 without any actual isolation, only resource usage reporting.</p>
 
-<h3>Shared Filesystem</h3>
+<h2>Isolators</h2>
 
-<p>The SharedFilesystem isolator can optionally be used on Linux hosts to
-enable modifications to each container&rsquo;s view of the shared
-filesystem.</p>
+<p>Isolators are components that each define an aspect of how a tasks
+execution environment (or container) is constructed. Isolators can
+control how containers are isolated from each other, how task resource
+limits are enforced, how networking is configured, how security
+policies are applied.</p>
 
-<p>The modifications are specified in the ContainerInfo included in the
-ExecutorInfo, either by a framework or by using the
-<code>--default_container_info</code> agent flag.</p>
+<p>Since the isolator interface is <a href="/documentation/latest/./modules/">modularized</a>, operators
+can write modules that implement custom isolators.</p>
 
-<p>ContainerInfo specifies Volumes which map parts of the shared
-filesystem (host_path) into the container&rsquo;s view of the filesystem
-(container_path), as read-write or read-only. The host_path can be
-absolute, in which case it will make the filesystem subtree rooted at
-host_path also accessible under container_path for each container.
-If host_path is relative then it is considered as a directory
-relative to the executor&rsquo;s work directory. The directory will be
-created and permissions copied from the corresponding directory (which
-must exist) in the shared filesystem.</p>
+<p>Mesos supports the following built-in isolators.</p>
 
-<p>The primary use-case for this isolator is to selectively make parts of
-the shared filesystem private to each container. For example, a
-private &ldquo;/tmp&rdquo; directory can be achieved with <code>host_path="tmp"</code> and
-<code>container_path="/tmp"</code> which will create a directory &ldquo;tmp&rdquo; inside the
-executor&rsquo;s work directory (mode 1777) and simultaneously mount it as
-/tmp inside the container. This is transparent to processes running
-inside the container. Containers will not be able to see the host&rsquo;s
-/tmp or any other container&rsquo;s /tmp.</p>
+<ul>
+<li>environment_secret</li>
+<li>appc/runtime</li>
+<li>cgroups/blkio</li>
+<li>cgroups/cpu</li>
+<li>cgroups/cpuset</li>
+<li>cgroups/devices</li>
+<li>cgroups/hugetlb</li>
+<li>cgroups/mem</li>
+<li><a href="/documentation/latest/./isolators/cgroups-net-cls/">cgroups/net_cls</a></li>
+<li>cgroups/net_prio</li>
+<li>cgroups/perf_event</li>
+<li>cgroups/pids</li>
+<li><a href="/documentation/latest/./isolators/disk-du/">disk/du</a></li>
+<li><a href="/documentation/latest/./isolators/disk-xfs/">disk/xfs</a></li>
+<li><a href="/documentation/latest/./isolators/docker-runtime/">docker/runtime</a></li>
+<li><a href="/documentation/latest/./isolators/docker-volume/">docker/volume</a></li>
+<li>filesystem/linux</li>
+<li>filesystem/posix</li>
+<li><a href="/documentation/latest/./isolators/filesystem-shared/">filesystem/shared</a></li>
+<li>filesystem/windows</li>
+<li><a href="/documentation/latest/./gpu-support/">gpu/nvidia</a></li>
+<li><a href="/documentation/latest/./isolators/linux-capabilities/">linux/capabilities</a></li>
+<li><a href="/documentation/latest/./isolators/namespaces-ipc/">namespaces/ipc</a></li>
+<li><a href="/documentation/latest/./isolators/namespaces-pid/">namespaces/pid</a></li>
+<li><a href="/documentation/latest/./cni/">network/cni</a></li>
+<li><a href="/documentation/latest/./isolators/network-port-mapping/">network/port_mapping</a></li>
+<li>posix/cpu</li>
+<li>posix/mem</li>
+<li><a href="/documentation/latest/./isolators/posix-rlimits/">posix/rlimits</a></li>
+<li><a href="/documentation/latest/./container-volume/#host_path-volume-source">volume/host_path</a></li>
+<li>volume/image</li>
+<li><a href="/documentation/latest/./container-volume/#sandbox_path-volume-source">volume/sandbox_path</a></li>
+<li>volume/secret</li>
+</ul>
 
-<h3>Pid Namespace</h3>
-
-<p>The Pid Namespace isolator can be used to isolate each container in
-a separate pid namespace with two main benefits:</p>
-
-<ol>
-<li><p>Visibility: Processes running in the container (executor and
-descendants) are unable to see or signal processes outside the
-namespace.</p></li>
-<li><p>Clean termination: Termination of the leading process in a pid
-namespace will result in the kernel terminating all other processes
-in the namespace.</p></li>
-</ol>
-
-
-<p>The Launcher will use (2) during destruction of a container in
-preference to the freezer cgroup, avoiding known kernel issues related
-to freezing cgroups under OOM conditions.</p>
-
-<p>/proc will be mounted for containers so tools such as &lsquo;ps&rsquo; will work
-correctly.</p>
-
-<h3>Posix Disk Isolator</h3>
-
-<p>The Posix Disk isolator provides basic disk isolation. It is able to
-report the disk usage for each sandbox and optionally enforce the disk
-quota. It can be used on both Linux and OS X.</p>
-
-<p>To enable the Posix Disk isolator, append <code>disk/du</code> to the <code>--isolation</code>
-flag when starting the agent.</p>
-
-<p>By default, the disk quota enforcement is disabled. To enable it,
-specify <code>--enforce_container_disk_quota</code> when starting the agent.</p>
-
-<p>The Posix Disk isolator reports disk usage for each sandbox by
-periodically running the <code>du</code> command. The disk usage can be retrieved
-from the resource statistics endpoint (<a href="/documentation/latest/./endpoints/slave/monitor/statistics/">/monitor/statistics</a>).</p>
-
-<p>The interval between two <code>du</code>s can be controlled by the agent flag
-<code>--container_disk_watch_interval</code>. For example,
-<code>--container_disk_watch_interval=1mins</code> sets the interval to be 1
-minute. The default interval is 15 seconds.</p>
-
-<h3>XFS Disk Isolator</h3>
-
-<p>The XFS Disk isolator uses XFS project quotas to track the disk space
-used by each container sandbox and to enforce the corresponding disk
-space allocation. When quota enforcement is enabled, write operations
-performed by tasks exceeding their disk allocation will fail with an
-<code>EDQUOT</code> error. The task will not be terminated by the containerizer.</p>
-
-<p>To enable the XFS Disk isolator, append <code>disk/xfs</code> to the <code>--isolation</code>
-flag when starting the agent.</p>
-
-<p>The XFS Disk isolator supports the <code>--enforce_container_disk_quota</code> flag.
-If enforcement is enabled, the isolator will set both the hard and soft
-quota limit. Otherwise, no limits will be set, Disk usage accounting
-will be performed but the task will be allowed to exceed its allocation.</p>
-
-<p>The XFS Disk isolator requires the sandbox directory to be located
-on an XFS filesystem that is mounted with the <code>pquota</code> option. There
-is no need to configure
-<a href="http://man7.org/linux/man-pages/man5/projects.5.html">projects</a>
-or <a href="http://man7.org/linux/man-pages/man5/projid.5.html">projid</a>
-files. The range of project IDs given to the <code>--xfs_project_range</code>
-must not overlap any project IDs allocated for other uses.</p>
-
-<p>The <a href="http://man7.org/linux/man-pages/man8/xfs_quota.8.html">xfs_quota</a>
-command can be used to show the current allocation of project IDs
-and quota. For example:</p>
-
-<pre><code>$ xfs_quota -x -c "report -a -n -L 5000 -U 10000"
-</code></pre>
-
-<p>To show which project a file belongs to, use the
-<a href="http://man7.org/linux/man-pages/man8/xfs_io.8.html">xfs_io</a> command
-to display the <code>fsxattr.projid</code> field. For example:</p>
-
-<pre><code>$ xfs_io -r -c stat /mnt/mesos/
-</code></pre>
-
-<p>Note that the Posix Disk isolator <code>--container_disk_watch_interval</code>
-does not apply to the XFS Disk isolator.</p>
-
-<h3>Docker Runtime Isolator</h3>
-
-<p>The Docker Runtime isolator is used for supporting runtime
-configurations from the docker image (e.g., Entrypoint/Cmd, Env,
-etc.). This isolator is tied with <code>--image_providers=docker</code>. If
-<code>--image_providers</code> contains <code>docker</code>, this isolator must be used.
-Otherwise, the agent will refuse to start.</p>
-
-<p>To enable the Docker Runtime isolator, append <code>docker/runtime</code> to the
-<code>--isolation</code> flag when starting the agent.</p>
-
-<p>Currently, docker image default <code>Entrypoint</code>, <code>Cmd</code>, <code>Env</code>, and <code>WorkingDir</code> are
-supported with docker runtime isolator. Users can specify <code>CommandInfo</code> to
-override the default <code>Entrypoint</code> and <code>Cmd</code> in the image (see below for
-details). The <code>CommandInfo</code> should be inside of either <code>TaskInfo</code> or
-<code>ExecutorInfo</code> (depending on whether the task is a command task or uses a custom
-executor, respectively).</p>
-
-<h4>Determine the Launch Command</h4>
-
-<p>If the user specifies a command in <code>CommandInfo</code>, that will override the
-default Entrypoint/Cmd in the docker image. Otherwise, we will use the
-default Entrypoint/Cmd and append arguments specified in <code>CommandInfo</code>
-accordingly. The details are explained in the following table.</p>
-
-<p>Users can specify <code>CommandInfo</code> including <code>shell</code>, <code>value</code> and
-<code>arguments</code>, which are represented in the first column of the table
-below. <code>0</code> represents <code>not specified</code>, while <code>1</code> represents
-<code>specified</code>. The first row is how <code>Entrypoint</code> and <code>Cmd</code> defined in
-the docker image. All cells in the table, except the first column and
-row, as well as cells labeled as <code>Error</code>, have the first element
-(i.e., <code>/Entrypt[0]</code>) as executable, and the rest as appending
-arguments.</p>
-
-<table class="table table-striped">
-  <tr>
-    <th></th>
-    <th>Entrypoint=0<br>Cmd=0</th>
-    <th>Entrypoint=0<br>Cmd=1</th>
-    <th>Entrypoint=1<br>Cmd=0</th>
-    <th>Entrypoint=1<br>Cmd=1</th>
-  </tr>
-  <tr>
-    <td>sh=0<br>value=0<br>argv=0</td>
-    <td>Error</td>
-    <td>/Cmd[0]<br>Cmd[1]..</td>
-    <td>/Entrypt[0]<br>Entrypt[1]..</td>
-    <td>/Entrypt[0]<br>Entrypt[1]..<br>Cmd..</td>
-  </tr>
-  <tr>
-    <td>sh=0<br>value=0<br>argv=1</td>
-    <td>Error</td>
-    <td>/Cmd[0]<br>argv</td>
-    <td>/Entrypt[0]<br>Entrypt[1]..<br>argv</td>
-    <td>/Entrypt[0]<br>Entrypt[1]..<br>argv</td>
-  </tr>
-  <tr>
-    <td>sh=0<br>value=1<br>argv=0</td>
-    <td>/value</td>
-    <td>/value</td>
-    <td>/value</td>
-    <td>/value</td>
-  </tr>
-  <tr>
-    <td>sh=0<br>value=1<br>argv=1</td>
-    <td>/value<br>argv</td>
-    <td>/value<br>argv</td>
-    <td>/value<br>argv</td>
-    <td>/value<br>argv</td>
-  </tr>
-  <tr>
-    <td>sh=1<br>value=0<br>argv=0</td>
-    <td>Error</td>
-    <td>Error</td>
-    <td>Error</td>
-    <td>Error</td>
-  </tr>
-  <tr>
-    <td>sh=1<br>value=0<br>argv=1</td>
-    <td>Error</td>
-    <td>Error</td>
-    <td>Error</td>
-    <td>Error</td>
-  </tr>
-  <tr>
-    <td>sh=1<br>value=1<br>argv=0</td>
-    <td>/bin/sh -c<br>value</td>
-    <td>/bin/sh -c<br>value</td>
-    <td>/bin/sh -c<br>value</td>
-    <td>/bin/sh -c<br>value</td>
-  </tr>
-  <tr>
-    <td>sh=1<br>value=1<br>argv=1</td>
-    <td>/bin/sh -c<br>value</td>
-    <td>/bin/sh -c<br>value</td>
-    <td>/bin/sh -c<br>value</td>
-    <td>/bin/sh -c<br>value</td>
-  </tr>
-</table>
-
-
-<h3>The <code>cgroups/net_cls</code> Isolator</h3>
-
-<p>The cgroups/net_cls isolator allows operators to provide network
-performance isolation and network segmentation for containers within
-a Mesos cluster. To enable the cgroups/net_cls isolator, append
-<code>cgroups/net_cls</code> to the <code>--isolation</code> flag when starting the agent.</p>
-
-<p>As the name suggests, the isolator enables the net_cls subsystem for
-Linux cgroups and assigns a net_cls cgroup to each container launched
-by the <code>MesosContainerizer</code>.  The objective of the net_cls subsystem
-is to allow the kernel to tag packets originating from a container
-with a 32-bit handle. These handles can be used by kernel modules such
-as <code>qdisc</code> (for traffic engineering) and <code>net-filter</code> (for
-firewall) to enforce network performance and security policies
-specified by the operators.  The policies, based on the net_cls
-handles, can be specified by the operators through user-space tools
-such as
-<a href="http://tldp.org/HOWTO/Traffic-Control-HOWTO/software.html#s-iproute2-tc">tc</a>
-and <a href="http://linux.die.net/man/8/iptables">iptables</a>.</p>
-
-<p>The 32-bit handle associated with a net_cls cgroup can be specified by
-writing the handle to the <code>net_cls.classid</code> file, present within the
-net_cls cgroup. The 32-bit handle is of the form <code>0xAAAABBBB</code>, and
-consists of a 16-bit primary handle 0xAAAA and a 16-bit secondary
-handle 0xBBBB. You can read more about the use cases for the primary
-and secondary handles in the <a href="https://www.kernel.org/doc/Documentation/cgroup-v1/net_cls.txt">Linux kernel documentation for
-net_cls</a>.</p>
-
-<p>By default, the cgroups/net_cls isolator does not manage the net_cls
-handles, and assumes the operator is going to manage/assign these
-handles. To enable the management of net_cls handles by the
-cgroups/net_cls isolator you need to specify a 16-bit primary handle,
-of the form 0xAAAA, using the <code>--cgroups_net_cls_primary_handle</code> flag at
-agent startup.</p>
-
-<p>Once a primary handle has been specified for an agent, for each
-container the cgroups/net_cls isolator allocates a 16-bit secondary
-handle. It then assigns the 32-bit combination of the primary and
-secondary handle to the net_cls cgroup associated with the container
-by writing to <code>net_cls.classid</code>. The cgroups/net_cls isolator exposes
-the assigned net_cls handle to operators by exposing the handle as
-part of the <code>ContainerStatus</code> &mdash;associated with any task running within
-the container&mdash; in the agent&rsquo;s <a href="/documentation/latest/./endpoints/slave/state/">/state</a> endpoint.</p>
-
-<h3>The <code>docker/volume</code> Isolator</h3>
-
-<p>This is described in a <a href="/documentation/latest/./docker-volume/">separate document</a>.</p>
-
-<h3>The <code>namespaces/ipc</code> Isolator</h3>
-
-<p>The IPC Namespace isolator can be used on Linux to place tasks
-in a distinct IPC namespace. The benefit of this is that any
-<a href="http://man7.org/linux/man-pages/man7/svipc.7.html">IPC objects</a> created
-in the container will be automatically removed when the container is
-destroyed.</p>
-
-<h3>The <code>network/cni</code> Isolator</h3>
-
-<p>This is described in a <a href="/documentation/latest/./cni/">separate document</a>.</p>
-
-<h3>The <code>linux/capabilities</code> Isolator</h3>
-
-<p>This is described in a <a href="/documentation/latest/./linux_capabilities/">separate document</a>.</p>
-
-<h3>The <code>posix/rlimits</code> Isolator</h3>
-
-<p>This is described in a <a href="/documentation/latest/./posix_rlimits/">separate document</a>.</p>
 
   </div>
 </div>

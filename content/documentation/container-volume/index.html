@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>Apache Mesos - Container Volumes</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <meta property="og:locale" content="en_US"/>
@@ -113,149 +113,133 @@
     <p>See our <a href="/community/">community</a> page for more details.</p>
   </div>
   <div class="col-md-8">
-    <h2>Networking support in Mesos</h2>
+    <h1>Container Volumes</h1>
 
-<h3>Table of contents</h3>
-
-<ul>
-<li><a href="#introduction">Introduction</a></li>
-<li><a href="#attaching-containers">Attaching containers to IP networks</a>
+<p>For each volume a container specifies (i.e., <code>ContainerInfo.volumes</code>),
+the following fields must be specified:</p>
 
 <ul>
-<li><a href="#attaching-containers-mesos">Mesos containerizer</a></li>
-<li><a href="#attaching-containers-docker">Docker containerizer</a></li>
-<li><a href="#limitations-docker">Limitations of Docker containerizer</a></li>
-</ul>
-</li>
-<li><a href="#retrieve-network-info">Retrieving network information for a container</a></li>
+<li><p><code>container_path</code>: Path in the container filesystem at which the
+volume will be mounted. If the path is a relative path, it is
+relative to the container&rsquo;s sandbox.</p></li>
+<li><p><code>mode</code>: If the volume is read-only or read-write.</p></li>
+<li><p><code>source</code>: Describe where the volume originates from. See more
+details in the following section.</p></li>
 </ul>
 
 
-<h3><a name="introduction"></a>Introduction</h3>
+<h2><code>HOST_PATH</code> Volume Source</h2>
 
-<p>Mesos supports two container runtime engines, the <code>MesosContainerizer</code>
-and the <code>DockerContainerizer</code>. Both the container run time engines
-provide IP-per-container support allowing containers to be attached to
-different types of IP networks.  However, the two container run time
-engines differ in the way IP-per-container support is implemented. The
-<code>MesosContainerizer</code> uses the <code>network/cni</code> isolator to implement the
-<a href="https://github.com/containernetworking/cni/blob/master/SPEC.md">Container Network Interface (CNI)</a>
-to provide networking support for Mesos containers, while the
-<code>DockerContainerizer</code> relies on the Docker daemon to provide
-networking support using Docker&rsquo;s <a href="https://github.com/docker/libnetwork">Container Network
-Model</a>.</p>
+<p>This volume source represents a path on the host filesystem. The path
+can either point to a directory or a file (either a regular file or a
+device file).</p>
 
-<p>Note that while IP-per-container is one way to achieve network
-isolation between containers, there are other alternatives to
-implement network isolation within <code>MesosContainerizer</code>, e.g.,  using
-the <a href="/documentation/latest/./isolators/network-port-mapping/">port-mapping network isolator</a>.</p>
+<p>The following example shows a <code>HOST_PATH</code> volume that mounts
+<code>/var/lib/mysql</code> on the host filesystem to the same location in the
+container.</p>
 
-<p>While the two container run-time engines use different mechanisms to
-provide networking support for containers, the interface to specify
-the network that a container needs to join, and the interface to
-retrieve networking information for a container remain the same.</p>
-
-<p>The <code>NetworkInfo</code> protobuf, described below, is the interface provided
-by Mesos to specify network related information for a container and to
-learn network information associated with a container.</p>
-
-<pre><code class="{.proto}">message NetworkInfo {
-  enum Protocol {
-    IPv4 = 1;
-    IPv6 = 2;
+<pre><code class="json">{
+  "container_path": "/var/lib/mysql",
+  "mode": "RW",
+  "source": {
+    "type": "HOST_PATH",
+    "host_path": {
+      "path": "/var/lib/mysql"
+    }
   }
-
-  message IPAddress {
-    optional Protocol protocol = 1;
-    optional string ip_address = 2;
-  }
-
-  repeated IPAddress ip_addresses = 5;
-  optional string name = 6;
-  repeated string groups = 3;
-  optional Labels labels = 4;
-};
+}
 </code></pre>
 
-<p>This document describes the usage of the <code>NetworkInfo</code> protobuf, by
-frameworks, to attach containers to IP networks. It also describes the
-interfaces provided to retrieve IP address and other network related
-information for a container, once the container has been attached to
-an IP network.</p>
+<p>The mode and ownership of the volume will be the same as that on the
+host filesystem.</p>
 
-<h3><a name="attaching-containers"></a>Attaching containers to IP networks</h3>
+<p>If you are using the <a href="/documentation/latest/./mesos-containerizer/">Mesos Containerizer</a>,
+<code>HOST_PATH</code> volumes are handled by the <code>volume/host_path</code> isolator. To
+enable this isolator, append <code>volume/host_path</code> to the <code>--isolation</code>
+flag when starting the agent. This isolator depends on
+<code>filesystem/linux</code> isolator.</p>
 
-<h4><a name="attaching-containers-mesos"></a>Mesos containerizer</h4>
+<p><a href="/documentation/latest/./docker-containerizer/">Docker Containerizer</a> supports <code>HOST_PATH</code>
+volume as well.</p>
 
-<p><code>MesosContainerizer</code> has the <a href="/documentation/latest/./cni/"><code>network/cni</code></a> isolator enabled
-by default, which implements CNI (Container Network Interface). The
-<code>network/cni</code> isolator identifies CNI networks by using canonical
-names. When frameworks want to associate containers to a specific CNI
-network they specify a network name in the <code>name</code> field of the <code>
-NetworkInfo</code> protobuf. Details about the configuration and interaction
-of Mesos containers with CNI networks can be found in the
-documentation describing <a href="/documentation/latest/./cni/">&ldquo;CNI support for Mesos containers&rdquo;</a>.</p>
+<h2><code>SANDBOX_PATH</code> Volume Source</h2>
 
-<h4><a name="attaching-containers-docker"></a>Docker containerizer</h4>
+<p>There are currently two types of <code>SANDBOX_PATH</code> volume sources:
+<a href="#self-type"><code>SELF</code></a> and <a href="#parent-type"><code>PARENT</code></a>.</p>
 
-<p>Starting docker 1.9, there are four networking modes available in
-Docker: NONE, HOST, BRIDGE and USER. <a href="https://docs.docker.com/engine/userguide/networking/dockernetworks/">&ldquo;Docker container
-networks&rdquo;</a>
-provides more details about the various networking modes available in
-docker. Mesos supports all the four networking modes provided by
-Docker. To connect a docker container using a specific mode the
-framework needs to specify the network mode in the <code>DockerInfo</code>
-protobuf.</p>
+<p>If you are using <a href="/documentation/latest/./mesos-containerizer/">Mesos Containerizer</a>,
+<code>SANDBOX_PATH</code> volumes are handled by the <code>volume/sandbox_path</code>
+isolator.  To enable this isolator, append <code>volume/sandbox_path</code> to
+the <code>--isolation</code> flag when starting the agent.</p>
 
-<pre><code class="{.proto}">message DockerInfo {
-  // The docker image that is going to be passed to the registry.
-  required string image = 1;
+<p>The <a href="/documentation/latest/./docker-containerizer/">Docker Containerizer</a> only supports
+<code>SELF</code> type <code>SANDBOX_PATH</code> volumes currently.</p>
 
-  // Network options.
-  enum Network {
-    HOST = 1;
-    BRIDGE = 2;
-    NONE = 3;
-    USER = 4;
+<h3><code>SELF</code> Type</h3>
+
+<p>This represents a path in the container&rsquo;s own sandbox. The path can
+point to either a directory or a file in the sandbox of the container.</p>
+
+<p>The following example shows a <code>SANDBOX_PATH</code> volume from the
+container&rsquo;s own sandbox that mount the subdirectory <code>tmp</code> in the
+sandbox to <code>/tmp</code> in the container root filesystem. This will be
+useful to cap the <code>/tmp</code> usage in the container (if disk isolator is
+used and <code>--enforce_container_disk_quota</code> is turned on).</p>
+
+<pre><code class="json">{
+  "container_path": "/tmp",
+  "mode": "RW",
+  "source": {
+    "type": "SANDBOX_PATH",
+    "sandbox_path": {
+      "type": "SELF",
+      "path": "tmp"
+    }
   }
-
-  optional Network network = 2 [default = HOST];
- };
+}
 </code></pre>
 
-<p>For <code>NONE</code>, <code>HOST</code> and <code>BRIDGE</code> network mode the framework only needs
-to specify the network mode in the <code>DockerInfo</code> protobuf. However, for
-the USER mode, since a user-defined docker network is identified by a
-canonical network name (similar to CNI networks) apart from setting
-the network mode in <code>DockerInfo</code> the framework also needs to specify
-the <code>name</code> field in the <code>NetworkInfo</code> protobuf corresponding to the
-name of the user-defined docker network.</p>
+<p>The ownership of the volume will be the same as that of the sandbox of
+the container.</p>
 
-<h4><a name="limitations-docker"></a>Limitations of Docker containerizer</h4>
+<p>Note that <code>container_path</code> has to be an absolute path in this case. If
+<code>container_path</code> is relative, that means it&rsquo;s a volume from a
+subdirectory in the container sandbox to another subdirectory in the
+container sandbox. In that case, the user can just create a symlink,
+instead of using a volume.</p>
 
-<p>One limitation that the <code>DockerContainerizer</code> imposes on the
-containers using the USER network mode is that these containers cannot
-be attached to multiple docker networks. The reason this limitation
-exists is that to connect a container to multiple Docker networks,
-Docker requires the container to be created first and then attached to
-the different networks. This model of orchestration does not fit the
-current implementation of the <code>DockerContainerizer</code> and hence the
-restriction of limiting docker container to a single network.</p>
+<h3><code>PARENT</code> Type</h3>
 
-<h3><a name="retrieve-network-info"></a>Retrieving network information for a container</h3>
+<p>This represents a path in the sandbox of the parent container. The
+path can point to either a directory or a file in the sandbox of the
+parent container. See the <a href="/documentation/latest/./nested-container-and-task-group/">nested container
+doc</a> for more details about what a
+parent container is.</p>
 
-<p>Whenever a task runs on a Mesos agent, the executor associated with
-the task returns a <code>TaskStatus</code> protobuf associated with the task.
-Containerizers (Mesos or Docker) responsible for the container will
-populate the <code>ContainerStatus</code> protobuf associated with the
-<code>TaskStatus</code>. The <code>ContainerStatus</code> will contain multiple
-<code>NetworkInfo</code> protobuf instances, one each for the interfaces
-associated with the container. Any IP address associated with the
-container will be reflected in the <code>NetworkInfo</code> protobuf instances.</p>
+<p>The following example shows a <code>SANDBOX_PATH</code> volume from the sandbox
+of the parent container that mounts the subdirectory <code>shared_volume</code> in
+the sandbox of the parent container to subdirectory <code>volume</code> in the
+sandbox of the container.</p>
 
-<p>The <code>TaskStatus</code> associated with each task can be accessed at the
-Agent&rsquo;s <code>state</code> endpoint on which the task is running or it can be
-accessed in the Master&rsquo;s <code>state</code> endpoint.</p>
+<pre><code class="json">{
+  "container_path": "volume",
+  "mode": "RW",
+  "source": {
+    "type": "SANDBOX_PATH",
+    "sandbox_path": {
+      "type": "PARENT",
+      "path": "shared_volume"
+    }
+  }
+}
+</code></pre>
+
+<p>The ownership of the volume will be the same as that of the sandbox of
+the parent container.</p>
+
+<h2><code>DOCKER_VOLUME</code> Volume Source</h2>
+
+<p>See more details in this <a href="/documentation/latest/./isolators/docker-volume/">doc</a>.</p>
 
   </div>
 </div>

@@ -27,7 +27,7 @@
 
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
-    <link href="../../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="../../../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
 
     
 
@@ -116,7 +116,7 @@
     <h1>Docker Volume Support in Mesos Containerizer</h1>
 
 <p>Mesos 1.0 adds Docker volume support to the
-<a href="/documentation/latest/./mesos-containerizer/">MesosContainerizer</a> (a.k.a., the universal
+<a href="/documentation/latest/isolators/../mesos-containerizer/">MesosContainerizer</a> (a.k.a., the universal
 containerizer) by introducing the new <code>docker/volume</code> isolator.</p>
 
 <p>This document describes the motivation, overall architecture, configuration
@@ -149,7 +149,7 @@ steps for enabling Docker volume isolator, and required framework changes.</p>
 <h2><a name="motivation"></a>Motivation</h2>
 
 <p>The integration of external storage in Mesos is an attractive feature.  The
-Mesos <a href="/documentation/latest/./persistent-volume/">persistent volume</a> primitives allow stateful
+Mesos <a href="/documentation/latest/isolators/../persistent-volume/">persistent volume</a> primitives allow stateful
 services to persist data on an agent&rsquo;s local storage. However, the amount of
 storage capacity that can be directly attached to a single agent is
 limited&mdash;certain applications (e.g., databases) would like to access more data
@@ -173,7 +173,7 @@ orchestrate containers on a wide variety of external storage technologies.</p>
 
 <h2><a name="how-does-it-work"></a>How does it work?</h2>
 
-<p><img src="/assets/img/documentation/docker-volume-isolator.png" alt="Docker Volume Isolator Architecture" /></p>
+<p><img src="../images/docker-volume-isolator.png" alt="Docker Volume Isolator Architecture" /></p>
 
 <p>The <code>docker/volume</code> isolator interacts with Docker volume plugins using
 <a href="https://github.com/emccode/dvdcli">dvdcli</a>, an open-source command line tool
@@ -407,12 +407,13 @@ volumes with the same <code>driver</code> and <code>name</code>.</p>
 
 <h2><a name="limitations"></a>Limitations</h2>
 
-<p>Using the same Docker volume in both the
-<a href="/documentation/latest/./docker-containerizer/">DockerContainerizer</a> and the MesosContainerizer
-simultaneously is <strong>strongly discouraged</strong>, because the MesosContainerizer has its
-own reference counting to decide when to unmount a Docker volume. Otherwise, it
-would be problematic if a Docker volume is unmounted by MesosContainerizer but
-the DockerContainerizer is still using it.</p>
+<p>Using the same Docker volume in both the <a href="/documentation/latest/isolators/../docker-containerizer/">Docker
+Containerizer</a> and the <a href="/documentation/latest/isolators/../mesos-containerizer/">Mesos
+Containerizer</a> simultaneously is <strong>strongly
+discouraged</strong>, because the MesosContainerizer has its own reference
+counting to decide when to unmount a Docker volume. Otherwise, it
+would be problematic if a Docker volume is unmounted by
+MesosContainerizer but the DockerContainerizer is still using it.</p>
 
 <h2><a name="test-it-out"></a>Test it out!</h2>
 
@@ -479,7 +480,7 @@ as the Docker volume driver.</p>
     --volumes=&lt;path&gt;/myvolume.json
 </code></pre>
 
-<p>Check the <a href="/documentation/latest/./sandbox/#where-is-it">sandbox</a>
+<p>Check the <a href="/documentation/latest/isolators/../sandbox/#where-is-it">sandbox</a>
 for the second task to check the file <code>myfile</code> was created successfully.</p>
 
 <pre><code class="{.console}">  $ cat stdout

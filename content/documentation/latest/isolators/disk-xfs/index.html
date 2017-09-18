@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Apache Mesos - POSIX Resource Limits Support in Mesos Containerizer</title>
+    <title>Apache Mesos - XFS Disk Isolator in Mesos Containerizer</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <meta property="og:locale" content="en_US"/>
@@ -27,7 +27,7 @@
 
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
-    <link href="../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="../../../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
 
     
 
@@ -113,154 +113,46 @@
     <p>See our <a href="/community/">community</a> page for more details.</p>
   </div>
   <div class="col-md-8">
-    <h1>POSIX Resource Limits Support in Mesos Containerizer</h1>
+    <h1>XFS Disk Isolator in Mesos Containerizer</h1>
 
-<p>This document describes the <code>posix/rlimits</code> isolator. The isolator adds support
-for setting POSIX resource limits (rlimits) for containers launched using the
-<a href="/documentation/latest/./mesos-containerizer/">Mesos containerizer</a>.</p>
+<p>The <code>disk/xfs</code> isolator uses XFS project quotas to track the disk space
+used by each container sandbox and to enforce the corresponding disk
+space allocation. When quota enforcement is enabled, write operations
+performed by tasks exceeding their disk allocation will fail with an
+<code>EDQUOT</code> error. The task will not be terminated by the containerizer.</p>
 
-<h2>POSIX Resource Limits</h2>
+<p>To enable the XFS Disk isolator, append <code>disk/xfs</code> to the <code>--isolation</code>
+flag when starting the agent.</p>
 
-<p>POSIX rlimits can be used control the resources a process can consume. Resource
-limits are typically set at boot time and inherited when a child process is
-forked from a parent process; resource limits can also be modified via
-<code>setrlimit(2)</code>. In many interactive shells, resource limits can be inspected or
-modified with the <code>ulimit</code> shell built-in.</p>
+<p>The XFS Disk isolator supports the <code>--enforce_container_disk_quota</code> flag.
+If enforcement is enabled, the isolator will set both the hard and soft
+quota limit. Otherwise, no limits will be set, Disk usage accounting
+will be performed but the task will be allowed to exceed its allocation.</p>
 
-<p>A POSIX resource limit consist of a <em>soft</em> and a <em>hard</em> limit. The soft limit
-specifies the effective resource limit for the current and forked process, while
-the hard limit gives the value up to which processes may increase their
-effective limit; increasing the hard limit is a privileged action. It is
-required that the soft limit is less than or equal to the hard limit.
-System administrators can use a hard resource limit to define the maximum amount
-of resources that can be consumed by a user; users can employ soft resource
-limits to ensure that one of their tasks only consumes a limited amount of the
-global hard resource limit.</p>
+<p>The XFS Disk isolator requires the sandbox directory to be located
+on an XFS filesystem that is mounted with the <code>pquota</code> option. There
+is no need to configure
+<a href="http://man7.org/linux/man-pages/man5/projects.5.html">projects</a>
+or <a href="http://man7.org/linux/man-pages/man5/projid.5.html">projid</a>
+files. The range of project IDs given to the <code>--xfs_project_range</code>
+must not overlap any project IDs allocated for other uses.</p>
 
-<h2>Setting POSIX Resource Limits for Tasks</h2>
+<p>The <a href="http://man7.org/linux/man-pages/man8/xfs_quota.8.html">xfs_quota</a>
+command can be used to show the current allocation of project IDs
+and quota. For example:</p>
 
-<p>This isolator permits setting per-task resource limits. This isolator interprets
-rlimits specified as part of a task&rsquo;s <code>ContainerInfo</code> for the Mesos
-containerizer, e.g.,</p>
-
-<pre><code class="{.json}">{
-  "container": {
-    "type": "MESOS",
-    "rlimit_info": {
-      "rlimits": [
-        {
-          "type": "RLMT_CORE"
-        },
-        {
-          "type": "RLMT_STACK",
-          "soft": 8192,
-          "hard": 32768
-        }
-      ]
-    }
-  }
-}
+<pre><code>$ xfs_quota -x -c "report -a -n -L 5000 -U 10000"
 </code></pre>
 
-<p>To enable interpretation of rlimits, agents need to
-be started with <code>posix/rlimits</code> in its <code>--isolation</code> flag, e.g.,</p>
+<p>To show which project a file belongs to, use the
+<a href="http://man7.org/linux/man-pages/man8/xfs_io.8.html">xfs_io</a> command
+to display the <code>fsxattr.projid</code> field. For example:</p>
 
-<pre><code class="{.console}">mesos-agent --master=&lt;master ip&gt; --ip=&lt;agent ip&gt;
-  --work_dir=/var/lib/mesos
-  --isolation=posix/rlimits[,other isolation flags]
+<pre><code>$ xfs_io -r -c stat /mnt/mesos/
 </code></pre>
 
-<p>To set a hard limit for a task larger than the current value of the hard limit,
-the agent process needs to be under a privileged user (with the
-<code>CAP_SYS_RESOURCE</code> capability), typically <code>root</code>.</p>
-
-<p>POSIX currently defines a base set of resources, see
-<a href="http://pubs.opengroup.org/onlinepubs/009695399/functions/getrlimit.html">the documentation</a>;
-Linux defines additional resource limits, see e.g., the documentation of
-<code>setrlimit(2)</code>.</p>
-
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>Resource</th>
-      <th>Comment</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>RLIMIT_CORE</code></td>
-      <td><em>POSIX</em>: This is the maximum size of a core file, in bytes, that may be created by a process.</td>
-    </tr>
-    <tr>
-      <td><code>RLIMIT_CPU</code></td>
-      <td><em>POSIX</em>: This is the maximum amount of CPU time, in seconds, used by a process.</td>
-    </tr>
-    <tr>
-      <td><code>RLIMIT_DATA</code></td>
-      <td><em>POSIX</em>: This is the maximum size of a process' data segment, in bytes.</td>
-    </tr>
-    <tr>
-      <td><code>RLIMIT_FSIZE</code></td>
-      <td><em>POSIX</em>: This is the maximum size of a file, in bytes, that may be created by a process.</td>
-    </tr>
-    <tr>
-      <td><code>RLIMIT_NOFILE</code></td>
-      <td><em>POSIX</em>: This is a number one greater than the maximum value that the system may assign to a newly-created descriptor.</td>
-    </tr>
-    <tr>
-      <td><code>RLIMIT_STACK</code></td>
-      <td><em>POSIX</em>: This is the maximum size of the initial thread's stack, in bytes.</td>
-    </tr>
-    <tr>
-      <td><code>RLIMIT_AS</code></td>
-      <td><em>POSIX</em>: This is the maximum size of a process' total available memory, in bytes.</td>
-    </tr>
-    <tr>
-      <td><code>RLMT_LOCKS</code></td>
-      <td><em>Linux</em>: (Early Linux 2.4 only) A limit on the combined number of <code>flock(2)</code> locks and <code>fcntl(2)</code> leases that this process may establish.</td>
-    </tr>
-    <tr>
-      <td><code>RLMT_MEMLOCK</code></td>
-      <td><em>Linux</em>: The maximum number of bytes of memory that may be locked into RAM.</td>
-    </tr>
-    <tr>
-      <td><code>RLMT_MSGQUEUE</code></td>
-      <td><em>Linux</em>: Specifies the limit on the number of bytes that can be allocated for POSIX message queues for the real user ID of the calling process.</td>
-    </tr>
-    <tr>
-      <td><code>RLMT_NICE</code></td>
-      <td><em>Linux</em>: (Since Linux 2.6.12) Specifies a ceiling to which the process's nice value can be raised using <code>setpriority(2)</code> or <code>nice(2)</code>.</td>
-    </tr>
-    <tr>
-      <td><code>RLMT_NPROC</code></td>
-      <td><em>Linux</em>: The maximum number of processes (or, more precisely on Linux, threads) that can be created for the real user ID of the calling process.</td>
-    </tr>
-    <tr>
-      <td><code>RLMT_RSS</code></td>
-      <td><em>Linux</em>: Specifies the limit (in pages) of the process's resident set (the number of virtual pages resident in RAM).</td>
-    </tr>
-    <tr>
-      <td><code>RLMT_RTPRIO</code></td>
-      <td><em>Linux</em>: (Since Linux 2.6.12) Specifies a ceiling on the real-time priority that may be set for this process using sched_setscheduler(2) and sched_setparam(2).</td>
-    </tr>
-    <tr>
-      <td><code>RLMT_RTTIME</code></td>
-      <td><em>Linux</em>: (Since Linux 2.6.25) Specifies a limit (in microseconds) on the amount of CPU time that a process scheduled under a real-time scheduling policy may consume without making a blocking system call.</td>
-    </tr>
-    <tr>
-      <td><code>RLMT_SIGPENDING</code></td>
-      <td><em>Linux</em>: (Since Linux 2.6.8) Specifies the limit on the number of signals that may be queued for the real user ID of the calling process.</td>
-    </tr>
-  </tbody>
-</table>
-
-
-<p>Mesos maps these resource types onto <code>RLimit</code> types, where by convention the
-prefix <code>RLMT_</code> is used in place of <code>RLIMIT_</code> above. Not all limits types are
-supported on all platforms.</p>
-
-<p>We require either both the soft and hard <code>RLimit</code> value, or none to be
-set; the latter case is interpreted as the absence of an explicit limit.</p>
+<p>Note that the Posix Disk isolator <code>--container_disk_watch_interval</code>
+does not apply to the XFS Disk isolator.</p>
 
   </div>
 </div>

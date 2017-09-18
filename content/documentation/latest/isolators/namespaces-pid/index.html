@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>Apache Mesos - Pid Namespace Isolator in Mesos Containerizer</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <meta property="og:locale" content="en_US"/>
@@ -27,7 +27,7 @@
 
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
-    <link href="../../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="../../../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
 
     
 
@@ -113,80 +113,32 @@
     <p>See our <a href="/community/">community</a> page for more details.</p>
   </div>
   <div class="col-md-8">
-    <h1>Linux Capabilities Support in Mesos Containerizer</h1>
+    <h1>Pid Namespace Isolator in Mesos Containerizer</h1>
 
-<p>This document describes the <code>linux/capabilities</code> isolator. The
-isolator adds support for controlling <a href="http://man7.org/linux/man-pages/man7/capabilities.7.html">Linux
-Capabilities</a>
-of containers launched using the
-<a href="/documentation/latest/./mesos-containerizer/">MesosContainerizer</a></p>
+<p>The <code>namespaces/pid</code> isolator can be used to isolate each container in
+a separate pid namespace with two main benefits:</p>
 
-<p>The Linux capabilities isolator allows operators to control which
-privileged operations Mesos tasks may perform. Operators can specify
-which capabilities to allow for containers executing on an agent;
-containers on the other hand can expose which capabilities they need.</p>
+<ol>
+<li><p>Visibility: Processes running in the container (executor and
+descendants) are unable to see or signal processes outside the
+namespace.</p></li>
+<li><p>Clean termination: Termination of the leading process in a pid
+namespace will result in the kernel terminating all other processes
+in the namespace.</p></li>
+</ol>
 
-<p>See the protobuf definition of <code>CapabilityInfo::Capability</code> for the
-list of currently exposed capabilities.</p>
 
-<h2>Agent setup</h2>
+<p>You can turn on this isolator by specifying the <code>--isolation</code> agent
+flag (i.e., <code>--isolation=namespaces/pid,...</code>). Note that
+<code>filesystem/linux</code> isolator is required for turning on pid namespace
+isolator.</p>
 
-<p>The Linux capabilities isolator is loaded when <code>linux/capabilities</code> is
-present in the agent&rsquo;s <code>--isolation</code> flag.  This isolator requires the
-<code>CAP_SETPCAP</code> capability so agent processes typically need to be started
-as root.</p>
+<p>The Launcher will use (2) during destruction of a container in
+preference to the freezer cgroup, avoiding known kernel issues related
+to freezing cgroups under OOM conditions.</p>
 
-<p>The <code>--effective_capabilities</code> flag specifies a set of capabilities that
-are always granted to tasks. If the running kernel (Linux 4.3 or later)
-supports ambient capabilities, these capabilities will be added to the
-effective capability set of the task when it is launched. Otherwise
-they must be re-acquired by arranging for the task to execute a file
-with the relevant file-based capabilities enabled.</p>
-
-<p>In the absence of capabilities specified by the scheduler, an empty list
-for <code>--effective_capabilities</code> signifies that all capabilities will
-be explicitly dropped.  If the <code>--effective_capabilities</code> flag is not
-present, the task will be launched with the default capabilities of the
-task user but the ambient capabilities will not be set.</p>
-
-<p>The <code>--bounding_capabilities</code> flag specifies an upper bound on the
-the capabilities a task is allowed to acquire or be granted.
-Schedulers are not allowed to launch tasks with capabilities outside
-the set specified by the <code>--bounding_capabilities</code> flag, but may
-specify effective or bounding capabilities that are within this
-set.</p>
-
-<p>An empty list for <code>--bounding_capabilities</code> signifies that no capabilities
-are allowed, while an absent <code>--bounding_capabilities</code> flag signifies
-that all capabilities are allowed.</p>
-
-<p>A possible agent startup invocation could be</p>
-
-<pre><code class="{.console}">sudo mesos-agent --master=&lt;master ip&gt; --ip=&lt;agent ip&gt;
-  --work_dir=/var/lib/mesos
-  --isolation=linux/capabilities[,other isolation flags]
-  --effective_capabilities='{"capabilities":[NET_RAW,MKNOD]}'
-  --bounding_capabilities='{"capabilities":[NET_RAW,MKNOD,SYSLOG]}'
-</code></pre>
-
-<h2>Task setup</h2>
-
-<p>In order for a Mesos task to acquire specific effective capabilities
-or limit its bounding capabilities it should declare the required
-capabilities in the <code>LinuxInfo</code> element of its <code>ContainerInfo</code>.</p>
-
-<p>A Mesos task can only request capabilities which are allowed according
-to the <code>--bounding_capabilities</code> flag of the agent; a task requesting
-other capabilities will be rejected. When the <code>--bounding_capabilities</code>
-flag is not present, all capability requests will be granted.</p>
-
-<p>If the optional <code>effective_capabilities</code> field is not set, the value
-of the <code>--effective_capabilities</code> flag will be used to populate the
-task capabilities. If the optional <code>bounding_capabilities</code> field
-is not set, the value of the <code>--bounding_capabilities</code> flag will
-be used to populate the task capabilities. In both case, if an empty
-list of capabilities is given, the Mesos task will drop all
-capabilities in the corresponding set.</p>
+<p><code>/proc</code> will be mounted for containers so tools such as <code>ps</code> will work
+correctly.</p>
 
   </div>
 </div>
