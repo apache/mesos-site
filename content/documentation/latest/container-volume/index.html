@@ -128,7 +128,17 @@ details in the following section.</p></li>
 </ul>
 
 
-<h2><code>HOST_PATH</code> Volume Source</h2>
+<h2>Volume Source Types</h2>
+
+<ul>
+<li><a href="#host_path-volume-source">HOST_PATH</a></li>
+<li><a href="#sandbox_path-volume-source">SANDBOX_PATH</a></li>
+<li><a href="#docker_volume-volume-source">DOCKER_VOLUME</a></li>
+<li><a href="#secret-volume-source">SECRET</a></li>
+</ul>
+
+
+<h3>HOST_PATH Volume Source</h3>
 
 <p>This volume source represents a path on the host filesystem. The path
 can either point to a directory or a file (either a regular file or a
@@ -162,7 +172,7 @@ flag when starting the agent. This isolator depends on
 <p><a href="/documentation/latest/./docker-containerizer/">Docker Containerizer</a> supports <code>HOST_PATH</code>
 volume as well.</p>
 
-<h2><code>SANDBOX_PATH</code> Volume Source</h2>
+<h3>SANDBOX_PATH Volume Source</h3>
 
 <p>There are currently two types of <code>SANDBOX_PATH</code> volume sources:
 <a href="#self-type"><code>SELF</code></a> and <a href="#parent-type"><code>PARENT</code></a>.</p>
@@ -175,7 +185,7 @@ the <code>--isolation</code> flag when starting the agent.</p>
 <p>The <a href="/documentation/latest/./docker-containerizer/">Docker Containerizer</a> only supports
 <code>SELF</code> type <code>SANDBOX_PATH</code> volumes currently.</p>
 
-<h3><code>SELF</code> Type</h3>
+<h4><code>SELF</code> Type</h4>
 
 <p>This represents a path in the container&rsquo;s own sandbox. The path can
 point to either a directory or a file in the sandbox of the container.</p>
@@ -208,7 +218,7 @@ subdirectory in the container sandbox to another subdirectory in the
 container sandbox. In that case, the user can just create a symlink,
 instead of using a volume.</p>
 
-<h3><code>PARENT</code> Type</h3>
+<h4>PARENT Type</h4>
 
 <p>This represents a path in the sandbox of the parent container. The
 path can point to either a directory or a file in the sandbox of the
@@ -237,11 +247,11 @@ sandbox of the container.</p>
 <p>The ownership of the volume will be the same as that of the sandbox of
 the parent container.</p>
 
-<h2><code>DOCKER_VOLUME</code> Volume Source</h2>
+<h3>DOCKER_VOLUME Volume Source</h3>
 
 <p>See more details in this <a href="/documentation/latest/./isolators/docker-volume/">doc</a>.</p>
 
-<h2><code>SECRET</code> Volume Source</h2>
+<h3>SECRET Volume Source</h3>
 
 <p>See more details in this <a href="/documentation/latest/./secrets/#file-based-secrets">doc</a>.</p>
 
