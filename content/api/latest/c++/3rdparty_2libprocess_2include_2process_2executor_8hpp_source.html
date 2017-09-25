@@ -71,80 +71,127 @@
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="id_8hpp.html">process/id.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="libprocess_2include_2process_2process_8hpp.html">process/process.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceos.html#ae19e4161a51b86a1f330f3bf1dc75389">process</a> {</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">// Provides an abstraction that can take a standard function object</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">// and defer it without needing a process. Each converted function</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">// object will get execute serially with respect to one another when</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">// invoked.</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="classprocess_1_1Executor.html">   26</a></span>&#160;<span class="keyword">class </span><a class="code" href="classprocess_1_1Executor.html">Executor</a></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;{</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="classprocess_1_1Executor.html#a06c30cb0a50b9c129ab2eec111d75da9">   29</a></span>&#160;  <a class="code" href="classprocess_1_1Executor.html#a06c30cb0a50b9c129ab2eec111d75da9">Executor</a>() : process(ID::<a class="code" href="namespaceprocess_1_1ID.html#aeb11a48c9def1da169d8455a30d0ee39">generate</a>(<span class="stringliteral">&quot;__executor__&quot;</span>))</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;  {</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <a class="code" href="namespaceprocess.html#aff22904a83567125d3b4d0d88e5a2270">spawn</a>(process);</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  }</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="classprocess_1_1Executor.html#a478fbabdcc0832b3e7520fbaaa390d2c">   34</a></span>&#160;  <a class="code" href="classprocess_1_1Executor.html#a478fbabdcc0832b3e7520fbaaa390d2c">~Executor</a>()</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  {</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <a class="code" href="namespaceprocess.html#a20443908afa3212215166e26065349e5">terminate</a>(process);</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <a class="code" href="namespaceprocess.html#a07833fb41a8b0c1f18fa5485ca8c18d4">wait</a>(process);</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  }</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="classprocess_1_1Executor.html#a43a9df131ecc0e5fb3c3015c118407da">   40</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classprocess_1_1Executor.html#a43a9df131ecc0e5fb3c3015c118407da">stop</a>()</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  {</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <a class="code" href="namespaceprocess.html#a20443908afa3212215166e26065349e5">terminate</a>(&amp;process);</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="comment">// TODO(benh): Note that this doesn&#39;t wait because that could</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="comment">// cause a deadlock ... thus, the semantics here are that no more</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="comment">// dispatches will occur after this function returns but one may</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="comment">// be occurring concurrently.</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  }</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> F&gt;</div>
-<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="classprocess_1_1Executor.html#aa129606e06f0a2cf30f5b198ad826400">   51</a></span>&#160;  <a class="code" href="structprocess_1_1__Deferred.html">_Deferred&lt;F&gt;</a> <a class="code" href="classprocess_1_1Executor.html#aa129606e06f0a2cf30f5b198ad826400">defer</a>(F&amp;&amp; <a class="code" href="namespaceprocess.html#a62d5333e8ec1817c249cf83e15d568b4">f</a>)</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  {</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="structprocess_1_1__Deferred.html">_Deferred&lt;F&gt;</a>(process.<a class="code" href="classprocess_1_1ProcessBase.html#a7ff87364baa79991901b8d73dc5c5fca">self</a>(), std::forward&lt;F&gt;(<a class="code" href="namespaceprocess.html#a62d5333e8ec1817c249cf83e15d568b4">f</a>));</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  }</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="comment">// Not copyable, not assignable.</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <a class="code" href="classprocess_1_1Executor.html#a06c30cb0a50b9c129ab2eec111d75da9">Executor</a>(<span class="keyword">const</span> <a class="code" href="classprocess_1_1Executor.html">Executor</a>&amp;);</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <a class="code" href="classprocess_1_1Executor.html">Executor</a>&amp; operator=(<span class="keyword">const</span> <a class="code" href="classprocess_1_1Executor.html">Executor</a>&amp;);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <a class="code" href="classprocess_1_1ProcessBase.html">ProcessBase</a> process;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;};</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="nothing_8hpp.html">stout/nothing.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="result__of_8hpp.html">stout/result_of.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceos.html#ae19e4161a51b86a1f330f3bf1dc75389">process</a> {</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">// Provides an abstraction that can take a standard function object</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment">// and defer or asynchronously execute it without needing a process.</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">// Each converted function object will get execute serially with respect</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment">// to one another when invoked.</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="classprocess_1_1Executor.html">   29</a></span>&#160;<span class="keyword">class </span><a class="code" href="classprocess_1_1Executor.html">Executor</a></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;{</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="classprocess_1_1Executor.html#a06c30cb0a50b9c129ab2eec111d75da9">   32</a></span>&#160;  <a class="code" href="classprocess_1_1Executor.html#a06c30cb0a50b9c129ab2eec111d75da9">Executor</a>() : process(ID::<a class="code" href="namespaceprocess_1_1ID.html#aeb11a48c9def1da169d8455a30d0ee39">generate</a>(<span class="stringliteral">&quot;__executor__&quot;</span>))</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  {</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <a class="code" href="namespaceprocess.html#aff22904a83567125d3b4d0d88e5a2270">spawn</a>(process);</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  }</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
+<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="classprocess_1_1Executor.html#a478fbabdcc0832b3e7520fbaaa390d2c">   37</a></span>&#160;  <a class="code" href="classprocess_1_1Executor.html#a478fbabdcc0832b3e7520fbaaa390d2c">~Executor</a>()</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  {</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <a class="code" href="namespaceprocess.html#a20443908afa3212215166e26065349e5">terminate</a>(process);</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <a class="code" href="namespaceprocess.html#a07833fb41a8b0c1f18fa5485ca8c18d4">wait</a>(process);</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  }</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="classprocess_1_1Executor.html#a43a9df131ecc0e5fb3c3015c118407da">   43</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classprocess_1_1Executor.html#a43a9df131ecc0e5fb3c3015c118407da">stop</a>()</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  {</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <a class="code" href="namespaceprocess.html#a20443908afa3212215166e26065349e5">terminate</a>(process);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="comment">// TODO(benh): Note that this doesn&#39;t wait because that could</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="comment">// cause a deadlock ... thus, the semantics here are that no more</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="comment">// dispatches will occur after this function returns but one may</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="comment">// be occurring concurrently.</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  }</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> F&gt;</div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="classprocess_1_1Executor.html#aa129606e06f0a2cf30f5b198ad826400">   54</a></span>&#160;  <a class="code" href="structprocess_1_1__Deferred.html">_Deferred&lt;F&gt;</a> <a class="code" href="classprocess_1_1Executor.html#aa129606e06f0a2cf30f5b198ad826400">defer</a>(F&amp;&amp; <a class="code" href="namespaceprocess.html#a62d5333e8ec1817c249cf83e15d568b4">f</a>)</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  {</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="structprocess_1_1__Deferred.html">_Deferred&lt;F&gt;</a>(process.<a class="code" href="classprocess_1_1ProcessBase.html#a7ff87364baa79991901b8d73dc5c5fca">self</a>(), std::forward&lt;F&gt;(<a class="code" href="namespaceprocess.html#a62d5333e8ec1817c249cf83e15d568b4">f</a>));</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  }</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="comment">// Not copyable, not assignable.</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <a class="code" href="classprocess_1_1Executor.html#a06c30cb0a50b9c129ab2eec111d75da9">Executor</a>(<span class="keyword">const</span> <a class="code" href="classprocess_1_1Executor.html">Executor</a>&amp;);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <a class="code" href="classprocess_1_1Executor.html">Executor</a>&amp; operator=(<span class="keyword">const</span> <a class="code" href="classprocess_1_1Executor.html">Executor</a>&amp;);</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment">// Per thread executor pointer. We use a pointer to lazily construct the</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="comment">// actual executor.</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="keyword">extern</span> thread_local Executor* <a class="code" href="namespaceprocess.html#acc4b906a124113aa046e200c2ad1f7bc">_executor_</a>;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="3rdparty_2libprocess_2include_2process_2executor_8hpp.html#a4c307fc4c2f22e9a9a1a01fe059e1979">   70</a></span>&#160;<span class="preprocessor">#define __executor__                                                    \</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">  (_executor_ == nullptr ? _executor_ = new Executor() : _executor_)</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;} <span class="comment">// namespace process {</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="preprocessor">#endif // __PROCESS_EXECUTOR_HPP__</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <a class="code" href="classprocess_1_1ProcessBase.html">ProcessBase</a> process;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="keyword">template</span> &lt;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;      <span class="keyword">typename</span> F,</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;      <span class="keyword">typename</span> R = <span class="keyword">typename</span> <a class="code" href="namespacemesos_1_1internal_1_1fs.html#a2343e2642db514496ba8380776487fba">result_of&lt;F()&gt;::type</a>,</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;      <span class="keyword">typename</span> std::enable_if&lt;!std::is_void&lt;R&gt;::value, <span class="keywordtype">int</span>&gt;<a class="code" href="namespacemesos_1_1internal_1_1fs.html#a2343e2642db514496ba8380776487fba">::type</a> = 0&gt;</div>
+<div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="classprocess_1_1Executor.html#a0d97332e1230d508ac2a4cbb0cc656df">   73</a></span>&#160;  <span class="keyword">auto</span> <a class="code" href="classprocess_1_1Executor.html#a0d97332e1230d508ac2a4cbb0cc656df">execute</a>(F&amp;&amp; <a class="code" href="namespaceprocess.html#a62d5333e8ec1817c249cf83e15d568b4">f</a>)</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    -&gt; decltype(<a class="code" href="namespaceprocess.html#acfbc29404bc653268289691b0dd59e22">dispatch</a>(process, std::function&lt;R()&gt;(std::forward&lt;F&gt;(<a class="code" href="namespaceprocess.html#a62d5333e8ec1817c249cf83e15d568b4">f</a>))))</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  {</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="comment">// NOTE: Currently we cannot pass a mutable lambda into `dispatch()`</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="comment">// because it would be captured by copy, so we convert `f` into a</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="comment">// `std::function` to bypass this restriction.</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespaceprocess.html#acfbc29404bc653268289691b0dd59e22">dispatch</a>(process, std::function&lt;R()&gt;(std::forward&lt;F&gt;(<a class="code" href="namespaceprocess.html#a62d5333e8ec1817c249cf83e15d568b4">f</a>)));</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  }</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <span class="comment">// NOTE: This overload for `void` returns `Future&lt;Nothing&gt;` so we can</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="comment">// chain. This follows the same behavior as `async()`.</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <span class="keyword">template</span> &lt;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;      <span class="keyword">typename</span> F,</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;      <span class="keyword">typename</span> R = <span class="keyword">typename</span> <a class="code" href="namespacemesos_1_1internal_1_1fs.html#a2343e2642db514496ba8380776487fba">result_of&lt;F()&gt;::type</a>,</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;      <span class="keyword">typename</span> std::enable_if&lt;std::is_void&lt;R&gt;::value, <span class="keywordtype">int</span>&gt;<a class="code" href="namespacemesos_1_1internal_1_1fs.html#a2343e2642db514496ba8380776487fba">::type</a> = 0&gt;</div>
+<div class="line"><a name="l00088"></a><span class="lineno"><a class="line" href="classprocess_1_1Executor.html#a3337b5798c4a8f67f96e7ba6062d6f29">   88</a></span>&#160;  <a class="code" href="classprocess_1_1Future.html">Future&lt;Nothing&gt;</a> <a class="code" href="classprocess_1_1Executor.html#a3337b5798c4a8f67f96e7ba6062d6f29">execute</a>(F&amp;&amp; <a class="code" href="namespaceprocess.html#a62d5333e8ec1817c249cf83e15d568b4">f</a>)</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  {</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="comment">// NOTE: Currently we cannot pass a mutable lambda into `dispatch()`</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="comment">// because it would be captured by copy, so we convert `f` into a</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="comment">// `std::function` to bypass this restriction. This wrapper also</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="comment">// avoids `f` being evaluated when it is a nested bind.</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="comment">// TODO(chhsiao): Capture `f` by forwarding once we switch to C++14.</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespaceprocess.html#acfbc29404bc653268289691b0dd59e22">dispatch</a>(</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        process,</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        <a class="code" href="namespaceprocess_1_1network.html#ad067110a4b38cc83785a43f49bf6c8e2">std::bind</a>(</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            [](<span class="keyword">const</span> std::function&lt;R()&gt;&amp; f_) { f_(); <span class="keywordflow">return</span> <a class="code" href="structNothing.html">Nothing</a>(); },</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            std::function&lt;R()&gt;(std::forward&lt;F&gt;(<a class="code" href="namespaceprocess.html#a62d5333e8ec1817c249cf83e15d568b4">f</a>))));</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  }</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;};</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="comment">// Per thread executor pointer. We use a pointer to lazily construct the</span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="comment">// actual executor.</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="keyword">extern</span> thread_local Executor* <a class="code" href="namespaceprocess.html#acc4b906a124113aa046e200c2ad1f7bc">_executor_</a>;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
+<div class="line"><a name="l00108"></a><span class="lineno"><a class="line" href="3rdparty_2libprocess_2include_2process_2executor_8hpp.html#a4c307fc4c2f22e9a9a1a01fe059e1979">  108</a></span>&#160;<span class="preprocessor">#define __executor__                                                    \</span></div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="preprocessor">  (_executor_ == nullptr ? _executor_ = new Executor() : _executor_)</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;} <span class="comment">// namespace process {</span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="preprocessor">#endif // __PROCESS_EXECUTOR_HPP__</span></div>
 <div class="ttc" id="namespaceprocess_1_1ID_html_aeb11a48c9def1da169d8455a30d0ee39"><div class="ttname"><a href="namespaceprocess_1_1ID.html#aeb11a48c9def1da169d8455a30d0ee39">process::ID::generate</a></div><div class="ttdeci">std::string generate(const std::string &amp;prefix=&quot;&quot;)</div><div class="ttdoc">Returns &amp;#39;prefix(N)&amp;#39; where N represents the number of instances where the same prefix (wrt...</div></div>
+<div class="ttc" id="structNothing_html"><div class="ttname"><a href="structNothing.html">Nothing</a></div><div class="ttdef"><b>Definition:</b> nothing.hpp:16</div></div>
 <div class="ttc" id="namespaceprocess_html_a62d5333e8ec1817c249cf83e15d568b4"><div class="ttname"><a href="namespaceprocess.html#a62d5333e8ec1817c249cf83e15d568b4">process::f</a></div><div class="ttdeci">F &amp;&amp; f</div><div class="ttdef"><b>Definition:</b> defer.hpp:266</div></div>
 <div class="ttc" id="classprocess_1_1ProcessBase_html"><div class="ttname"><a href="classprocess_1_1ProcessBase.html">process::ProcessBase</a></div><div class="ttdef"><b>Definition:</b> process.hpp:72</div></div>
 <div class="ttc" id="namespaceprocess_html_aff22904a83567125d3b4d0d88e5a2270"><div class="ttname"><a href="namespaceprocess.html#aff22904a83567125d3b4d0d88e5a2270">process::spawn</a></div><div class="ttdeci">UPID spawn(ProcessBase *process, bool manage=false)</div><div class="ttdoc">Spawn a new process. </div></div>
 <div class="ttc" id="namespaceprocess_html_a20443908afa3212215166e26065349e5"><div class="ttname"><a href="namespaceprocess.html#a20443908afa3212215166e26065349e5">process::terminate</a></div><div class="ttdeci">void terminate(const UPID &amp;pid, bool inject=true)</div><div class="ttdoc">Sends a TerminateEvent to the given process. </div></div>
 <div class="ttc" id="namespaceprocess_html_acc4b906a124113aa046e200c2ad1f7bc"><div class="ttname"><a href="namespaceprocess.html#acc4b906a124113aa046e200c2ad1f7bc">process::_executor_</a></div><div class="ttdeci">thread_local Executor * _executor_</div></div>
-<div class="ttc" id="classprocess_1_1Executor_html_aa129606e06f0a2cf30f5b198ad826400"><div class="ttname"><a href="classprocess_1_1Executor.html#aa129606e06f0a2cf30f5b198ad826400">process::Executor::defer</a></div><div class="ttdeci">_Deferred&lt; F &gt; defer(F &amp;&amp;f)</div><div class="ttdef"><b>Definition:</b> executor.hpp:51</div></div>
+<div class="ttc" id="classprocess_1_1Executor_html_a3337b5798c4a8f67f96e7ba6062d6f29"><div class="ttname"><a href="classprocess_1_1Executor.html#a3337b5798c4a8f67f96e7ba6062d6f29">process::Executor::execute</a></div><div class="ttdeci">Future&lt; Nothing &gt; execute(F &amp;&amp;f)</div><div class="ttdef"><b>Definition:</b> executor.hpp:88</div></div>
+<div class="ttc" id="classprocess_1_1Executor_html_aa129606e06f0a2cf30f5b198ad826400"><div class="ttname"><a href="classprocess_1_1Executor.html#aa129606e06f0a2cf30f5b198ad826400">process::Executor::defer</a></div><div class="ttdeci">_Deferred&lt; F &gt; defer(F &amp;&amp;f)</div><div class="ttdef"><b>Definition:</b> executor.hpp:54</div></div>
+<div class="ttc" id="namespaceprocess_html_acfbc29404bc653268289691b0dd59e22"><div class="ttname"><a href="namespaceprocess.html#acfbc29404bc653268289691b0dd59e22">process::dispatch</a></div><div class="ttdeci">void dispatch(const PID&lt; T &gt; &amp;pid, void(T::*method)())</div><div class="ttdef"><b>Definition:</b> dispatch.hpp:158</div></div>
+<div class="ttc" id="nothing_8hpp_html"><div class="ttname"><a href="nothing_8hpp.html">nothing.hpp</a></div></div>
+<div class="ttc" id="classprocess_1_1Executor_html_a0d97332e1230d508ac2a4cbb0cc656df"><div class="ttname"><a href="classprocess_1_1Executor.html#a0d97332e1230d508ac2a4cbb0cc656df">process::Executor::execute</a></div><div class="ttdeci">auto execute(F &amp;&amp;f) -&gt; decltype(dispatch(process, std::function&lt; R()&gt;(std::forward&lt; F &gt;(f))))</div><div class="ttdef"><b>Definition:</b> executor.hpp:73</div></div>
 <div class="ttc" id="structprocess_1_1__Deferred_html"><div class="ttname"><a href="structprocess_1_1__Deferred.html">process::_Deferred</a></div><div class="ttdef"><b>Definition:</b> deferred.hpp:64</div></div>
 <div class="ttc" id="namespaceprocess_html_a07833fb41a8b0c1f18fa5485ca8c18d4"><div class="ttname"><a href="namespaceprocess.html#a07833fb41a8b0c1f18fa5485ca8c18d4">process::wait</a></div><div class="ttdeci">bool wait(const UPID &amp;pid, const Duration &amp;duration=Seconds(-1))</div><div class="ttdoc">Wait for the process to exit for no more than the specified seconds. </div></div>
-<div class="ttc" id="classprocess_1_1Executor_html_a06c30cb0a50b9c129ab2eec111d75da9"><div class="ttname"><a href="classprocess_1_1Executor.html#a06c30cb0a50b9c129ab2eec111d75da9">process::Executor::Executor</a></div><div class="ttdeci">Executor()</div><div class="ttdef"><b>Definition:</b> executor.hpp:29</div></div>
-<div class="ttc" id="classprocess_1_1Executor_html_a43a9df131ecc0e5fb3c3015c118407da"><div class="ttname"><a href="classprocess_1_1Executor.html#a43a9df131ecc0e5fb3c3015c118407da">process::Executor::stop</a></div><div class="ttdeci">void stop()</div><div class="ttdef"><b>Definition:</b> executor.hpp:40</div></div>
+<div class="ttc" id="classprocess_1_1Executor_html_a06c30cb0a50b9c129ab2eec111d75da9"><div class="ttname"><a href="classprocess_1_1Executor.html#a06c30cb0a50b9c129ab2eec111d75da9">process::Executor::Executor</a></div><div class="ttdeci">Executor()</div><div class="ttdef"><b>Definition:</b> executor.hpp:32</div></div>
+<div class="ttc" id="classprocess_1_1Executor_html_a43a9df131ecc0e5fb3c3015c118407da"><div class="ttname"><a href="classprocess_1_1Executor.html#a43a9df131ecc0e5fb3c3015c118407da">process::Executor::stop</a></div><div class="ttdeci">void stop()</div><div class="ttdef"><b>Definition:</b> executor.hpp:43</div></div>
 <div class="ttc" id="namespaceos_html_ae19e4161a51b86a1f330f3bf1dc75389"><div class="ttname"><a href="namespaceos.html#ae19e4161a51b86a1f330f3bf1dc75389">os::process</a></div><div class="ttdeci">Result&lt; Process &gt; process(pid_t pid)</div><div class="ttdef"><b>Definition:</b> freebsd.hpp:30</div></div>
+<div class="ttc" id="namespacemesos_1_1internal_1_1fs_html_a2343e2642db514496ba8380776487fba"><div class="ttname"><a href="namespacemesos_1_1internal_1_1fs.html#a2343e2642db514496ba8380776487fba">mesos::internal::fs::type</a></div><div class="ttdeci">Try&lt; uint32_t &gt; type(const std::string &amp;path)</div></div>
 <div class="ttc" id="deferred_8hpp_html"><div class="ttname"><a href="deferred_8hpp.html">deferred.hpp</a></div></div>
+<div class="ttc" id="namespaceprocess_1_1network_html_ad067110a4b38cc83785a43f49bf6c8e2"><div class="ttname"><a href="namespaceprocess_1_1network.html#ad067110a4b38cc83785a43f49bf6c8e2">process::network::bind</a></div><div class="ttdeci">Try&lt; Nothing &gt; bind(int_fd s, const Address &amp;address)</div><div class="ttdef"><b>Definition:</b> network.hpp:46</div></div>
 <div class="ttc" id="id_8hpp_html"><div class="ttname"><a href="id_8hpp.html">id.hpp</a></div></div>
-<div class="ttc" id="classprocess_1_1Executor_html"><div class="ttname"><a href="classprocess_1_1Executor.html">process::Executor</a></div><div class="ttdef"><b>Definition:</b> executor.hpp:26</div></div>
+<div class="ttc" id="classprocess_1_1Executor_html"><div class="ttname"><a href="classprocess_1_1Executor.html">process::Executor</a></div><div class="ttdef"><b>Definition:</b> executor.hpp:29</div></div>
 <div class="ttc" id="classprocess_1_1ProcessBase_html_a7ff87364baa79991901b8d73dc5c5fca"><div class="ttname"><a href="classprocess_1_1ProcessBase.html#a7ff87364baa79991901b8d73dc5c5fca">process::ProcessBase::self</a></div><div class="ttdeci">const UPID &amp; self() const </div><div class="ttdef"><b>Definition:</b> process.hpp:79</div></div>
+<div class="ttc" id="result__of_8hpp_html"><div class="ttname"><a href="result__of_8hpp.html">result_of.hpp</a></div></div>
 <div class="ttc" id="libprocess_2include_2process_2process_8hpp_html"><div class="ttname"><a href="libprocess_2include_2process_2process_8hpp.html">process.hpp</a></div></div>
-<div class="ttc" id="classprocess_1_1Executor_html_a478fbabdcc0832b3e7520fbaaa390d2c"><div class="ttname"><a href="classprocess_1_1Executor.html#a478fbabdcc0832b3e7520fbaaa390d2c">process::Executor::~Executor</a></div><div class="ttdeci">~Executor()</div><div class="ttdef"><b>Definition:</b> executor.hpp:34</div></div>
+<div class="ttc" id="classprocess_1_1Executor_html_a478fbabdcc0832b3e7520fbaaa390d2c"><div class="ttname"><a href="classprocess_1_1Executor.html#a478fbabdcc0832b3e7520fbaaa390d2c">process::Executor::~Executor</a></div><div class="ttdeci">~Executor()</div><div class="ttdef"><b>Definition:</b> executor.hpp:37</div></div>
+<div class="ttc" id="classprocess_1_1Future_html"><div class="ttname"><a href="classprocess_1_1Future.html">process::Future&lt; Nothing &gt;</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

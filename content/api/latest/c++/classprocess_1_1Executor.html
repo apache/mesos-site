@@ -71,6 +71,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa129606e06f0a2cf30f5b198ad826400"><td class="memTemplParams" colspan="2">template&lt;typename F &gt; </td></tr>
 <tr class="memitem:aa129606e06f0a2cf30f5b198ad826400"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structprocess_1_1__Deferred.html">_Deferred</a>&lt; F &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classprocess_1_1Executor.html#aa129606e06f0a2cf30f5b198ad826400">defer</a> (F &amp;&amp;<a class="el" href="namespaceprocess.html#a62d5333e8ec1817c249cf83e15d568b4">f</a>)</td></tr>
 <tr class="separator:aa129606e06f0a2cf30f5b198ad826400"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d97332e1230d508ac2a4cbb0cc656df"><td class="memTemplParams" colspan="2">template&lt;typename F , typename R  = typename result_of&lt;F()&gt;::type, typename std::enable_if&lt;!std::is_void&lt; R &gt;::value, int &gt;::type  = 0&gt; </td></tr>
+<tr class="memitem:a0d97332e1230d508ac2a4cbb0cc656df"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classprocess_1_1Executor.html#a0d97332e1230d508ac2a4cbb0cc656df">execute</a> (F &amp;&amp;<a class="el" href="namespaceprocess.html#a62d5333e8ec1817c249cf83e15d568b4">f</a>) -&gt; decltype(<a class="el" href="namespaceprocess.html#acfbc29404bc653268289691b0dd59e22">dispatch</a>(process, std::function&lt; R()&gt;(std::forward&lt; F &gt;(<a class="el" href="namespaceprocess.html#a62d5333e8ec1817c249cf83e15d568b4">f</a>))))</td></tr>
+<tr class="separator:a0d97332e1230d508ac2a4cbb0cc656df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3337b5798c4a8f67f96e7ba6062d6f29"><td class="memTemplParams" colspan="2">template&lt;typename F , typename R  = typename result_of&lt;F()&gt;::type, typename std::enable_if&lt; std::is_void&lt; R &gt;::value, int &gt;::type  = 0&gt; </td></tr>
+<tr class="memitem:a3337b5798c4a8f67f96e7ba6062d6f29"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classprocess_1_1Future.html">Future</a>&lt; <a class="el" href="structNothing.html">Nothing</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classprocess_1_1Executor.html#a3337b5798c4a8f67f96e7ba6062d6f29">execute</a> (F &amp;&amp;<a class="el" href="namespaceprocess.html#a62d5333e8ec1817c249cf83e15d568b4">f</a>)</td></tr>
+<tr class="separator:a3337b5798c4a8f67f96e7ba6062d6f29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a06c30cb0a50b9c129ab2eec111d75da9"></a>
@@ -131,6 +137,59 @@ template&lt;typename F &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="structprocess_1_1__Deferred.html">_Deferred</a>&lt;F&gt; process::Executor::defer </td>
+          <td>(</td>
+          <td class="paramtype">F &amp;&amp;&#160;</td>
+          <td class="paramname"><em>f</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a0d97332e1230d508ac2a4cbb0cc656df"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename F , typename R  = typename result_of&lt;F()&gt;::type, typename std::enable_if&lt;!std::is_void&lt; R &gt;::value, int &gt;::type  = 0&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto process::Executor::execute </td>
+          <td>(</td>
+          <td class="paramtype">F &amp;&amp;&#160;</td>
+          <td class="paramname"><em>f</em></td><td>)</td>
+          <td> -&gt; decltype(<a class="el" href="namespaceprocess.html#acfbc29404bc653268289691b0dd59e22">dispatch</a>(process, std::function&lt;R()&gt;(std::forward&lt;F&gt;(<a class="el" href="namespaceprocess.html#a62d5333e8ec1817c249cf83e15d568b4">f</a>))))
+  </td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a3337b5798c4a8f67f96e7ba6062d6f29"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename F , typename R  = typename result_of&lt;F()&gt;::type, typename std::enable_if&lt; std::is_void&lt; R &gt;::value, int &gt;::type  = 0&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classprocess_1_1Future.html">Future</a>&lt;<a class="el" href="structNothing.html">Nothing</a>&gt; process::Executor::execute </td>
           <td>(</td>
           <td class="paramtype">F &amp;&amp;&#160;</td>
           <td class="paramname"><em>f</em></td><td>)</td>
