@@ -123,6 +123,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a2bcd31ff91d60fac0172aaeab69bae93"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2902390a0abb83ed2cb6734e214dd4d1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1master_1_1Master.html#a2902390a0abb83ed2cb6734e214dd4d1">markUnreachable</a> (const SlaveID &amp;slaveId, const std::string &amp;message)</td></tr>
 <tr class="separator:a2902390a0abb83ed2cb6734e214dd4d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5e5d5f093291a247de88a5ca4c8ecf4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1master_1_1Master.html#af5e5d5f093291a247de88a5ca4c8ecf4">markGone</a> (<a class="el" href="structmesos_1_1internal_1_1master_1_1Slave.html">Slave</a> *slave, const TimeInfo &amp;goneTime)</td></tr>
+<tr class="separator:af5e5d5f093291a247de88a5ca4c8ecf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae047b5e48e3fc0606959c09049350e9c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1master_1_1Master.html#ae047b5e48e3fc0606959c09049350e9c">authenticate</a> (const <a class="el" href="structprocess_1_1UPID.html">process::UPID</a> &amp;from, const <a class="el" href="structprocess_1_1UPID.html">process::UPID</a> &amp;pid)</td></tr>
 <tr class="separator:ae047b5e48e3fc0606959c09049350e9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a97d4aab61e2bc12096641fcd18bbce6a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1master_1_1Master.html#a97d4aab61e2bc12096641fcd18bbce6a">frameworkFailoverTimeout</a> (const FrameworkID &amp;frameworkId, const <a class="el" href="classprocess_1_1Time.html">process::Time</a> &amp;reregisteredTime)</td></tr>
@@ -258,6 +260,8 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:a5d8be0eddccff3542156d3499570f04b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ce208687ecf654ebd24406ceb99c3d2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1master_1_1Master.html#a4ce208687ecf654ebd24406ceb99c3d2">_removeSlave</a> (<a class="el" href="structmesos_1_1internal_1_1master_1_1Slave.html">Slave</a> *slave, const <a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt; bool &gt; &amp;registrarResult, const std::string &amp;removalCause, <a class="el" href="classOption.html">Option</a>&lt; <a class="el" href="classprocess_1_1metrics_1_1Counter.html">process::metrics::Counter</a> &gt; reason=<a class="el" href="structNone.html">None</a>())</td></tr>
 <tr class="separator:a4ce208687ecf654ebd24406ceb99c3d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e69bade1f48cf7ff9245e4624d51be7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1master_1_1Master.html#a7e69bade1f48cf7ff9245e4624d51be7">__removeSlave</a> (<a class="el" href="structmesos_1_1internal_1_1master_1_1Slave.html">Slave</a> *slave, const std::string &amp;message, const <a class="el" href="classOption.html">Option</a>&lt; TimeInfo &gt; &amp;unreachableTime)</td></tr>
+<tr class="separator:a7e69bade1f48cf7ff9245e4624d51be7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a526495e4fb02447a99ce99b8342ae9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classOption.html">Option</a>&lt; <a class="el" href="classError.html">Error</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1master_1_1Master.html#a9a526495e4fb02447a99ce99b8342ae9">validateFrameworkAuthentication</a> (const FrameworkInfo &amp;frameworkInfo, const <a class="el" href="structprocess_1_1UPID.html">process::UPID</a> &amp;from)</td></tr>
 <tr class="separator:a9a526495e4fb02447a99ce99b8342ae9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e681b1f2c827a85d66a207cfdedf5c3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1master_1_1Master.html#a2e681b1f2c827a85d66a207cfdedf5c3">authorizeFramework</a> (const FrameworkInfo &amp;frameworkInfo)</td></tr>
@@ -619,6 +623,46 @@ const <a class="el" href="structprocess_1_1http_1_1Request.html">http::Request</
           <td></td>
           <td class="paramtype">const <a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt; bool &gt; &amp;&#160;</td>
           <td class="paramname"><em>admit</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a7e69bade1f48cf7ff9245e4624d51be7"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void mesos::internal::master::Master::__removeSlave </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structmesos_1_1internal_1_1master_1_1Slave.html">Slave</a> *&#160;</td>
+          <td class="paramname"><em>slave</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>message</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classOption.html">Option</a>&lt; TimeInfo &gt; &amp;&#160;</td>
+          <td class="paramname"><em>unreachableTime</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -2602,6 +2646,32 @@ const <a class="el" href="structprocess_1_1http_1_1Request.html">http::Request</
           <td class="paramtype">const <a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt; <a class="el" href="structNothing.html">Nothing</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>lost</em></td><td>)</td>
           <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="af5e5d5f093291a247de88a5ca4c8ecf4"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void mesos::internal::master::Master::markGone </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structmesos_1_1internal_1_1master_1_1Slave.html">Slave</a> *&#160;</td>
+          <td class="paramname"><em>slave</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const TimeInfo &amp;&#160;</td>
+          <td class="paramname"><em>goneTime</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
