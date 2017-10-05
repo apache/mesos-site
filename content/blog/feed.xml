@@ -4,7 +4,80 @@
   <id>http://mesos.apache.org/blog</id>
   <link href="http://mesos.apache.org/blog" />
   <link href="http://mesos.apache.org/blog/feed.xml" rel="self"/>
-  <updated>2017-08-31T00:00:00Z</updated>
+  <updated>2017-09-18T00:00:00Z</updated>
+  
+  <entry>
+    <id>http://mesos.apache.org/blog/mesos-1-4-0-released/</id>
+    <link href="/blog/mesos-1-4-0-released/" />
+    <title>
+      Apache Mesos 1.4.0 Released
+    </title>
+    <updated>2017-09-18T00:00:00Z</updated>
+    <author>
+      <name>Kapil Arya</name>
+    </author>
+    <content type="html">
+      &lt;p&gt;The latest Mesos release, 1.4.0, is now available for &lt;a href=&quot;/downloads&quot;&gt;download&lt;/a&gt;. This release includes the following features and improvements:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-5116&quot;&gt;MESOS-5116&lt;/a&gt; -
+The &lt;code&gt;disk/xfs&lt;/code&gt; isolator now supports the &lt;code&gt;--enforce_container_disk_quota&lt;/code&gt; flag
+to efficiently measure disk usage without enforcing usage constraints. The
+previous implementation always enforced the quota even if the operator might
+not have wanted it.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-6223&quot;&gt;MESOS-6223&lt;/a&gt; -
+With partition awareness, the agents are now allowed to re-register after they
+have been marked Unreachable. Thus, they can recover their agent ID after a
+host reboot. See docs/upgrades.md for details.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-6375&quot;&gt;MESOS-6375&lt;/a&gt; -
+&lt;em&gt;Experimental&lt;/em&gt; Support for hierarchical resource
+allocation roles. Hierarchical roles allows delegation of resource
+allocation policies (i.e. fair sharing and quota) further down the
+hierarchy. For example, the &amp;ldquo;engineering&amp;rdquo; organization gets a 75%
+share of the resources, but it&amp;rsquo;s up to the operators within the
+&amp;ldquo;engineering&amp;rdquo; organization to figure out how to fairly share between
+the &amp;ldquo;engineering/backend&amp;rdquo; team and the &amp;ldquo;engineering/frontend&amp;rdquo; team.
+The same delegation applies for quota. NOTE: There are known issues
+related to hierarchical roles (e.g. hierarchical quota allocation
+is not implemented and quota will be over-allocated if used with
+hierarchical roles, see: MESOS-7402) and thus it is not recommended
+for production usage at this time.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-7418&quot;&gt;MESOS-7418&lt;/a&gt;,
+&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-7088&quot;&gt;MESOS-7088&lt;/a&gt; -
+File-based secrets are now supported for Mesos and Universal containerizer.
+A new SecretResolver module kind is introduced to fetch and resolve any
+secrets before they are made available to the tasks. Image-pull secrets are
+also supported for Docker registry credentials.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-7477&quot;&gt;MESOS-7477&lt;/a&gt; -
+Linux ambient capabilites are now supported, so frameworks can run tasks that
+use ambient capabilites to grant limited additional privileged to tasks
+without the requirement for matching file-based capabilities.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-7476&quot;&gt;MESOS-7476&lt;/a&gt;,
+&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-7671&quot;&gt;MESOS-7671&lt;/a&gt; -
+Support for frameworks and operators specifying Linux bounding capabilities in
+order to limit the maximum privileges that a task may acquire.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;More than 200 other bug fixes and improvements made it into this release. For full release notes with all features and bug fixes, please refer to the &lt;a href=&quot;https://git-wip-us.apache.org/repos/asf?p=mesos.git;a=blob_plain;f=CHANGELOG;hb=1.4.0&quot;&gt;CHANGELOG&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3&gt;Upgrades&lt;/h3&gt;
+
+&lt;p&gt;Rolling upgrades from a Mesos 1.3.0 cluster to Mesos 1.4.0 are straightforward. Please refer to the &lt;a href=&quot;/documentation/latest/upgrades/&quot;&gt;upgrade guide&lt;/a&gt; for detailed information on upgrading to Mesos 1.4.0.&lt;/p&gt;
+
+&lt;h3&gt;Try it out&lt;/h3&gt;
+
+&lt;p&gt;We encourage you to try out this release and let us know what you think.
+If you run into any issues, please let us know on the &lt;a href=&quot;/community&quot;&gt;user mailing list, IRC, or Slack&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3&gt;Thanks!&lt;/h3&gt;
+
+&lt;p&gt;Thanks to the 53 contributors who made Mesos 1.4.0 possible:&lt;/p&gt;
+
+&lt;p&gt;Aaron Wood, Adam B, Alastair Montgomery, Alexander Rojas, Alexander Rukletsov, Anand Mazumdar, Andrei Budnik, Andrew Schwartzmeyer, Anindya Sinha, Armand Grillet, Avinash sridharan, Benjamin Bannier, Benjamin Hindman, Benjamin Mahler, Benno Evers, Chun-Hung Hsiao, Conrad Kleinespel, Dmitry Zhuk, Eric Chung, Gastón Kleiman, Gilbert Song, Greg Mann, haosdent huang, Haosdent Huang, hardy.jung, huangwenpeng, Jacob Janco, James Peach, Jan Schlicht, Jay Guo, Jeff Coffler, Jiang Yan Xu, Jie Yu, John Kordich, Joseph Wu, Kapil Arya, Kevin Klues, Li Li, Mao Geng, Megha Sharma, Michael Park, Neil Conway, Olivier Sallou, Qian Zhang, Quinn Leng, Shingo Kitayama, Silas Snider, Till Toenshoff, Tim Hansen, TobiLG, Vinod Kone, Zhitao Li, Zhongbo Tian&lt;/p&gt;
+
+	</content>
+  </entry>
   
   <entry>
     <id>http://mesos.apache.org/blog/mesos-1-1-3-released/</id>
