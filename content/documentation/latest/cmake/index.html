@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Apache Mesos - CMake</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta property="og:locale" content="en_US"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:title" content="Apache Mesos"/>
+    <meta property="og:site_name" content="Apache Mesos"/>
+    <meta property="og:url" content="http://mesos.apache.org/"/>
+    <meta property="og:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta property="og:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
+
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:site" content="@ApacheMesos"/>
+    <meta name="twitter:title" content="Apache Mesos"/>
+    <meta name="twitter:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta name="twitter:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
+
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
+    <link href="../../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+
+    
+
+    <!-- Google Analytics Magic -->
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-20226872-1']);
+    _gaq.push(['_setDomainName', 'apache.org']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+    
+  </head>
+  <body>
+    <!-- magical breadcrumbs -->
+    <div class="topnav">
+      <div class="container">
+        <ul class="breadcrumb">
+          <li>
+            <div class="dropdown">
+              <a data-toggle="dropdown" href="#">Apache Software Foundation <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                <li><a href="http://www.apache.org">Apache Homepage</a></li>
+                <li><a href="http://www.apache.org/licenses/">License</a></li>
+                <li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>
+                <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                <li><a href="http://www.apache.org/security/">Security</a></li>
+              </ul>
+            </div>
+          </li>
+
+          <li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+          
+          
+          <li><a href="/documentation
+/">Documentation
+</a></li>
+          
+          
+        </ul><!-- /.breadcrumb -->
+      </div><!-- /.container -->
+    </div><!-- /.topnav -->
+
+    <!-- navbar excitement -->
+<div class="navbar navbar-default navbar-static-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#mesos-menu" aria-expanded="false">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo"/></a>
+    </div><!-- /.navbar-header -->
+
+    <div class="navbar-collapse collapse" id="mesos-menu">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/gettingstarted/">Getting Started</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/documentation/latest/">Documentation</a></li>
+        <li><a href="/downloads/">Downloads</a></li>
+        <li><a href="/community/">Community</a></li>
+      </ul>
+    </div><!-- /#mesos-menu -->
+  </div><!-- /.container -->
+</div><!-- /.navbar -->
+
+<div class="content">
+  <div class="container">
+    <div class="row-fluid">
+  <div class="col-md-4">
+    <h4>If you're new to Mesos</h4>
+    <p>See the <a href="/gettingstarted/">getting started</a> page for more
+       information about downloading, building, and deploying Mesos.</p>
+
+    <h4>If you'd like to get involved or you're looking for support</h4>
+    <p>See our <a href="/community/">community</a> page for more details.</p>
+  </div>
+  <div class="col-md-8">
+    <h1>Install CMake 3.7+</h1>
+
+<h2>Linux</h2>
+
+<p>Install the latest version of CMake from <a href="https://cmake.org/download/">CMake.org</a>.
+A self-extracting tarball is available to make this process painless.</p>
+
+<p>Currently, few of the common Linux flavors package a sufficient CMake
+version. Ubuntu versions 12.04 and 14.04 package CMake 2;
+Ubuntu 16.04 packages CMake 3.5. If you already installed cmake from packages,
+you may remove it via: <code>apt-get purge cmake</code>.</p>
+
+<p>The standard CentOS package is CMake 2, and unfortunately even the <code>cmake3</code>
+package in EPEL is only CMake 3.6, you may remove them via:
+<code>yum remove cmake cmake3</code>.</p>
+
+<h2>Mac OS X</h2>
+
+<p>HomeBrew&rsquo;s CMake version is sufficient: <code>brew install cmake</code>.</p>
+
+<h2>Windows</h2>
+
+<p>Download and install the MSI from <a href="https://cmake.org/download/">CMake.org</a>.</p>
+
+<p><strong>NOTE:</strong> Windows needs CMake 3.8+, rather than 3.7+.</p>
+
+<h1>Supported options</h1>
+
+<p>See <a href="/documentation/latest/./configuration/cmake/">configuration options</a>.</p>
+
+<h1>Examples</h1>
+
+<p>See <a href="/documentation/latest/./cmake-examples/">CMake By Example</a>.</p>
+
+<h1>Documentation</h1>
+
+<p>The <a href="https://cmake.org/cmake/help/latest/">CMake documentation</a> is written as a reference module. The most commonly
+used sections are:</p>
+
+<ul>
+<li><a href="https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html">buildsystem overview</a></li>
+<li><a href="https://cmake.org/cmake/help/latest/manual/cmake-commands.7.html">commands</a></li>
+<li><a href="https://cmake.org/cmake/help/latest/manual/cmake-properties.7.html">properties</a></li>
+<li><a href="https://cmake.org/cmake/help/latest/manual/cmake-variables.7.html">variables</a></li>
+</ul>
+
+
+<p>The wiki also has a set of <a href="https://cmake.org/Wiki/CMake_Useful_Variables">useful variables</a>.</p>
+
+<h1>Dependency graph</h1>
+
+<p>Like any build system, CMake has a dependency graph. The difference is
+that targets in CMake&rsquo;s dependency graph are <em>much richer</em> compared to other
+build systems. CMake targets have the notion of &lsquo;interfaces&rsquo;, where build
+properties are saved as part of the target, and these properties can be
+inherited transitively within the graph.</p>
+
+<p>For example, say there is a library <code>mylib</code>, and anything which links it must
+include its headers, located in <code>mylib/include</code>. When building the library, some
+private headers must also be included, but not when linking to it. When
+compiling the executable <code>myprogram</code>, <code>mylib</code>&rsquo;s public headers must be included,
+but not its private headers. There is no manual step to add <code>mylib/include</code> to
+<code>myprogram</code> (and any other program which links to <code>mylib</code>), it is instead
+deduced from the public interface property of <code>mylib</code>. This is represented by
+the following code:</p>
+
+<pre><code># A new library with a single source file (headers are found automatically).
+add_library(mylib mylib.cpp)
+
+# The folder of private headers, not exposed to consumers of `mylib`.
+target_include_directories(mylib PRIVATE mylib/private)
+
+# The folder of public headers, added to the compilation of any consumer.
+target_include_directories(mylib PUBLIC mylib/include)
+
+# A new exectuable with a single source file.
+add_executable(myprogram main.cpp)
+
+# The creation of the link dependency `myprogram` -&gt; `mylib`.
+target_link_libraries(myprogram mylib)
+
+# There is no additional step to add `mylib/include` to `myprogram`.
+</code></pre>
+
+<p>This same notion applies to practically every build property:
+compile definitions via <a href="https://cmake.org/cmake/help/latest/command/target_compile_definitions.html"><code>target_compile_definitions</code></a>,
+include directories via <a href="https://cmake.org/cmake/help/latest/command/target_include_directories.html"><code>target_include_directories</code></a>,
+link libraries via <a href="https://cmake.org/cmake/help/latest/command/target_link_libraries.html"><code>target_link_libraries</code></a>,
+compile options via <a href="https://cmake.org/cmake/help/latest/command/target_compile_options.html"><code>target_compile_options</code></a>,
+and compile features via <a href="https://cmake.org/cmake/help/latest/command/target_compile_features.html"><code>target_compile_features</code></a>.</p>
+
+<p>All of these commands also take an optional argument of
+<code>&lt;INTERFACE|PUBLIC|PRIVATE&gt;</code>, which constrains their transitivity in the graph.
+That is, a <code>PRIVATE</code> include directory is recorded for the target, but not
+shared transitively to anything depending on the target, <code>PUBLIC</code> is used
+for both the target and dependencies on it, and <code>INTERFACE</code> is used only
+for dependencies.</p>
+
+<p>Notably missing from this list are link directories. CMake explicitly prefers
+finding and using the absolute paths to libraries, obsoleting link directories.</p>
+
+<h1>Common mistakes</h1>
+
+<h2>Booleans</h2>
+
+<p>CMake treats <code>ON</code>, <code>OFF</code>, <code>TRUE</code>, <code>FALSE</code>, <code>1</code>, and <code>0</code> all as true/false
+booleans. Furthermore, variables of the form <code>&lt;target&gt;-NOTFOUND</code> are also
+treated as false (this is used for finding packages).</p>
+
+<p>In Mesos, we prefer the boolean types <code>TRUE</code> and <code>FALSE</code>.</p>
+
+<p>See <a href="https://cmake.org/cmake/help/latest/command/if.html"><code>if</code></a> for more info.</p>
+
+<h2>Conditionals</h2>
+
+<p>For historical reasons, CMake conditionals such as <code>if</code> and <code>elseif</code>
+automatically interpolate variable names. It is therefore dangerous to
+interpolate them manually, because if <code>${FOO}</code> evaluates to <code>BAR</code>, and <code>BAR</code> is
+another variable name, then <code>if (${FOO})</code> becomes <code>if (BAR)</code>, and <code>BAR</code> is then
+evaluated again by the <code>if</code>. Stick to <code>if (FOO)</code> to check the value of <code>${FOO}</code>.
+Do not use <code>if (${FOO})</code>.</p>
+
+<p>Also see the CMake policies
+<a href="https://cmake.org/cmake/help/latest/policy/CMP0012.html">CMP0012</a> and
+<a href="https://cmake.org/cmake/help/latest/policy/CMP0054.html">CMP0054</a>.</p>
+
+<h2>Definitions</h2>
+
+<p>When using <code>add_definitions()</code> (which should be used rarely, as it is for
+&ldquo;global&rdquo; compile definitions), the flags must be prefixed with <code>-D</code> to be
+treated as preprocessor definitions. However, when using
+<code>target_compile_definitions()</code> (which should be preferred, as it is
+for specific targets), the flags do not need the prefix.</p>
+
+<h1>Style</h1>
+
+<p>In general, wrap at 80 lines, and use a two-space indent. When wrapping
+arguments, put the command on a separate line and arguments on subsequent lines:</p>
+
+<pre><code>target_link_libraries(
+  program PRIVATE
+  alpha
+  beta
+  gamma)
+</code></pre>
+
+<p>Otherwise keep it together:</p>
+
+<pre><code>target_link_libraries(program PUBLIC library)
+</code></pre>
+
+<p>Always keep the trailing parenthesis with the last argument.</p>
+
+<p>Use a single space between conditionals and their open parenthesis, e.g.
+<code>if (FOO)</code>, but not for commands, e.g. <code>add_executable(program)</code>.</p>
+
+<p>CAPITALIZE the declaration and use of custom functions and macros (e.g.
+<code>EXTERNAL</code> and <code>PATCH_CMD</code>), and do not capitalize the use of CMake built-in
+(including modules) functions and macros. CAPITALIZE variables.</p>
+
+<h1>CMake anti-patterns</h1>
+
+<p>Because CMake handles much more of the grunt work for you than other build
+systems, there are unfortunately a lot of CMake <a href="http://voices.canonical.com/jussi.pakkanen/2013/03/26/a-list-of-common-cmake-antipatterns/">anti-patterns</a> you should
+look out for when writing new CMake code. These are some common problems
+that should be avoided when writing new CMake code:</p>
+
+<h2>Superfluous use of <code>add_dependencies</code></h2>
+
+<p>When you&rsquo;ve linked library <code>a</code> to library <code>b</code> with <code>target_link_libraries(a b)</code>,
+the CMake graph is already updated with the dependency information. It is
+redundant to use <code>add_dependencies(a b)</code> to (re)specify the dependency. In fact,
+this command should <em>rarely</em> be used.</p>
+
+<p>The exceptions to this are:</p>
+
+<ol>
+<li> Setting a dependency from an imported library to a target added via
+ <code>ExternalProject_Add</code>.</li>
+<li> Setting a dependency on Mesos modules since no explicit linking is done.</li>
+<li> Setting a dependency between executables (e.g. the <code>mesos-agent</code> requiring the
+ <code>mesos-containerizer</code> executable). In general, runtime dependencies need
+ to be setup with <code>add_dependency</code>, but never link dependencies.</li>
+</ol>
+
+
+<h2>Use of <code>link_libraries</code> or <code>link_directories</code></h2>
+
+<p>Neither of these commands should ever be used. The only appropriate command used
+to link libraries is <a href="https://cmake.org/cmake/help/latest/command/target_link_libraries.html"><code>target_link_libraries</code></a>, which records the information
+in the CMake dependency graph. Furthermore, imported third-party libraries
+should have correct locations recorded in their respective targets, so the use
+of <code>link_directories</code> should never be necessary. The
+<a href="https://cmake.org/cmake/help/latest/command/link_directories.html">official documentation</a> states:</p>
+
+<blockquote><p>Note that this command is rarely necessary. Library locations returned by
+<code>find_package()</code> and <code>find_library()</code> are absolute paths. Pass these absolute
+library file paths directly to the <code>target_link_libraries()</code> command. CMake
+will ensure the linker finds them.</p></blockquote>
+
+<p>The difference is that the former sets global (or directory level) side effects,
+and the latter sets specific target information stored in the graph.</p>
+
+<h2>Use of <code>include_directories</code></h2>
+
+<p>This is similar to the above: the <a href="https://cmake.org/cmake/help/latest/command/target_include_directories.html"><code>target_include_directories</code></a> should always
+be preferred so that the include directory information remains localized to the
+appropriate targets.</p>
+
+<h2>Adding anything to <code>endif ()</code></h2>
+
+<p>Old versions of CMake expected the style <code>if (FOO) ... endif (FOO)</code>, where the
+<code>endif</code> contained the same expression as the <code>if</code> command. However, this is
+tortuously redundant, so leave the parentheses in <code>endif ()</code> empty. This goes
+for other endings too, such as <code>endforeach ()</code>, <code>endwhile ()</code>, <code>endmacro ()</code> and
+<code>endfunction ()</code>.</p>
+
+<h2>Specifying header files superfluously</h2>
+
+<p>One of the distinct advantages of using CMake for C and C++ projects is that
+adding header files to the source list for a target is unnecessary. CMake is
+designed to parse the source files (<code>.c</code>, <code>.cpp</code>, etc.) and determine their
+required headers automatically. The exception to this is headers generated as
+part of the build (such as protobuf or the JNI headers).</p>
+
+<h2>Checking <code>CMAKE_BUILD_TYPE</code></h2>
+
+<p>See the <a href="cmake-examples.md#building-debug-or-release-configurations">&ldquo;Building debug or release configurations&rdquo;</a> example for more
+information. In short, not all generators respect the variable
+<code>CMAKE_BUILD_TYPE</code> at configuration time, and thus it must not be used in CMake
+logic. A usable alternative (where supported) is a <a href="https://cmake.org/cmake/help/latest/manual/cmake-generator-expressions.7.html#logical-expressions">generator expression</a> such
+as <code>$&lt;$&lt;CONFIG:Debug&gt;:DEBUG_MODE&gt;</code>.</p>
+
+<h1>Remaining hacks</h1>
+
+<h2><code>3RDPARTY_DEPENDENCIES</code></h2>
+
+<p>Until Mesos on Windows is stable, we keep some dependencies in an external
+repository, <a href="https://github.com/3rdparty/mesos-3rdparty">mesos-3rdparty</a>. When
+all dependencies are bundled with Mesos, this extra repository will no longer be
+necessary. Until then, the CMake variable <code>3RDPARTY_DEPENDENCIES</code> points by
+default to this URL, but it can also point to the on-disk location of a local
+clone of the repo. With this option you can avoid pulling from GitHub for every
+clean build.</p>
+
+<h2><code>EXTERNAL</code></h2>
+
+<p>The CMake function <code>EXTERNAL</code> defines a few variables that make it easy for us
+to track the directory structure of a dependency. In particular, if our
+library&rsquo;s name is <code>boost</code>, we invoke:</p>
+
+<pre><code>EXTERNAL(boost ${BOOST_VERSION} ${CMAKE_CURRENT_BINARY_DIR})
+</code></pre>
+
+<p>Which will define the following variables as side-effects in the current scope:</p>
+
+<ul>
+<li><code>BOOST_TARGET</code>     (a target folder name to put dep in e.g., <code>boost-1.53.0</code>)</li>
+<li><code>BOOST_CMAKE_ROOT</code> (where to have CMake put the uncompressed source, e.g.,
+                   <code>build/3rdparty/boost-1.53.0</code>)</li>
+<li><code>BOOST_ROOT</code>       (where the code goes in various stages of build, e.g.,
+                   <code>build/.../boost-1.53.0/src</code>, which might contain folders
+                   <code>build-1.53.0-build</code>, <code>-lib</code>, and so on, for each build
+                   step that dependency has)</li>
+</ul>
+
+
+<p>The implementation is in <code>3rdparty/cmake/External.cmake</code>.</p>
+
+<p>This is not to be confused with the CMake module <a href="https://cmake.org/cmake/help/latest/module/ExternalProject.html">ExternalProject</a>, from which
+we use <code>ExternalProject_Add</code> to download, extract, configure, and build our
+dependencies.</p>
+
+<h2><code>CMAKE_NOOP</code></h2>
+
+<p>This is a CMake variable we define in <code>3rdparty/CMakeLists.txt</code> so that we can
+cancel steps of <code>ExternalProject</code>. <code>ExternalProject</code>&rsquo;s default behavior is to
+attempt to configure, build, and install a project using CMake. So when one of
+these steps must be skipped, we use set it to <code>CMAKE_NOOP</code> so that nothing
+is run instead.</p>
+
+<h2><code>CMAKE_FORWARD_ARGS</code></h2>
+
+<p>The <code>CMAKE_FORWARD_ARGS</code> variable defined in <code>3rdparty/CMakeLists.txt</code> is sent
+as the <code>CMAKE_ARGS</code> argument to the <code>ExternalProject_Add</code> macro (along with any
+per-project arguments), and is used when the external project is configured as a
+CMake project. If either the <code>CONFIGURE_COMMAND</code> or <code>BUILD_COMMAND</code> arguments of
+<code>ExternalProject_Add</code> are used, then the <code>CMAKE_ARGS</code> argument will be ignored.
+This variable ensures that compilation configurations are properly propagated to
+third-party dependencies, such as compiler flags.</p>
+
+<h2><code>LIBRARY_LINKAGE</code></h2>
+
+<p>This variable is a shortcut used in <code>3rdparty/CMakeLists.txt</code>. It is set to
+<code>SHARED</code> when <code>BUILD_SHARED_LIBS</code> is true, and otherwise it is set to <code>STATIC</code>.
+The <code>SHARED</code> and <code>STATIC</code> keywords are used to declare how a library should be
+built; however, if left out then the type is deduced automatically from
+<code>BUILD_SHARED_LIBS</code>.</p>
+
+<h2><code>MAKE_INCLUDE_DIR</code></h2>
+
+<p>This function works around a <a href="https://gitlab.kitware.com/cmake/cmake/issues/15052">CMake issue</a> with setting include
+directories of imported libraries built with <code>ExternalProject_Add</code>. We have to
+call this for each <code>IMPORTED</code> third-party dependency which has set
+<code>INTERFACE_INCLUDE_DIRECTORIES</code>, just to make CMake happy. An example is Glog:</p>
+
+<pre><code>MAKE_INCLUDE_DIR(glog)
+</code></pre>
+
+<h2><code>GET_BYPRODUCTS</code></h2>
+
+<p>This function works around a <a href="https://cmake.org/pipermail/cmake/2015-April/060234.html">CMake issue</a> with the Ninja
+generator where it does not understand imported libraries, and instead needs
+<code>BUILD_BYPRODUCTS</code> explicitly set. This simply allows us to use
+<code>ExternalProject_Add</code> and Ninja. For Glog, it looks like this:</p>
+
+<pre><code>GET_BYPRODUCTS(glog)
+</code></pre>
+
+<p>Also see the CMake policy <a href="https://cmake.org/cmake/help/latest/policy/CMP0058.html">CMP0058</a>.</p>
+
+<h2><code>PATCH_CMD</code></h2>
+
+<p>The CMake function <code>PATCH_CMD</code> generates a patch command given a patch file.
+If the path is not absolute, it&rsquo;s resolved to the current source directory.
+It stores the command in the variable name supplied. This is used to easily
+patch third-party dependencies. For Glog, it looks like this:</p>
+
+<pre><code>PATCH_CMD(GLOG_PATCH_CMD glog-${GLOG_VERSION}.patch)
+ExternalProject_Add(
+  ${GLOG_TARGET}
+  ...
+  PATCH_COMMAND     ${GLOG_PATCH_CMD})
+</code></pre>
+
+<p>The implementation is in <code>3rdparty/cmake/PatchCommand.cmake</code>.</p>
+
+<h3>Windows <code>patch.exe</code></h3>
+
+<p>While using <code>patch</code> on Linux is straightforward, doing the same on Windows takes
+a bit of work. <code>PATH_CMD</code> encapsulates this:</p>
+
+<ul>
+<li>Checks the cache variable <code>PATCHEXE_PATH</code> for <code>patch.exe</code>.</li>
+<li>Searches for <code>patch.exe</code> in its default locations.</li>
+<li>Copies <code>patch.exe</code> and a custom manifest to the temporary directory.</li>
+<li>Applies the manifest to avoid the UAC prompt.</li>
+<li>Uses the patched <code>patch.exe</code>.</li>
+</ul>
+
+
+<p>As such, <code>PATCH_CMD</code> lets us apply patches as we do on Linux, without requiring
+an administrative prompt.</p>
+
+<p>Note that on Windows, the patch file must have CRLF line endings. A file with LF
+line endings will cause the error: &ldquo;Assertion failed, hunk, file patch.c, line
+343&rdquo;. For this reason, it is required to checkout the Mesos repo with <code>git
+config core.autocrlf true</code>.</p>
+
+  </div>
+</div>
+
+  </div><!-- /.container -->
+</div><!-- /.content -->
+
+<hr>
+
+
+
+    <!-- footer -->
+    <div class="footer">
+      <div class="container">
+        <div class="col-md-4 social-blk">
+          <span class="social">
+            <a href="https://twitter.com/ApacheMesos"
+              class="twitter-follow-button"
+              data-show-count="false" data-size="large">Follow @ApacheMesos</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+            <a href="https://twitter.com/intent/tweet?button_hashtag=mesos"
+              class="twitter-hashtag-button"
+              data-size="large"
+              data-related="ApacheMesos">Tweet #mesos</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+          </span>
+        </div>
+
+        <div class="col-md-8 trademark">
+          <p>&copy; 2012-2017 <a href="http://apache.org">The Apache Software Foundation</a>.
+            Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.
+          <p>
+        </div>
+      </div><!-- /.container -->
+    </div><!-- /.footer -->
+
+    <!-- JS -->
+    <script src="//code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="text/javascript"></script>
+  </body>
+</html>
