@@ -309,10 +309,11 @@ initial state and several possible terminal states:</p>
 master has received the framework&rsquo;s request to launch the task but the task
 has not yet started to run. In this state, the task&rsquo;s dependencies are
 fetched&mdash;for example, using the <a href="/documentation/latest/./fetcher/">Mesos fetcher cache</a>.</p></li>
-<li><p>The <code>TASK_STARTING</code> state is optional and intended primarily for use by
-custom executors. It can be used to describe the fact that a custom executor
-has learned about the task (and maybe started fetching its dependencies) but has
-not yet started to run it.</p></li>
+<li><p>The <code>TASK_STARTING</code> state is optional. It can be used to describe the fact
+that an executor has learned about the task (and maybe started fetching its
+dependencies) but has not yet started to run it. Custom executors are
+encouraged to send it, to provide a more detailed description of the current
+task state to outside observers.</p></li>
 <li><p>A task transitions to the <code>TASK_RUNNING</code> state after it has begun running
 successfully (if the task fails to start, it transitions to one of the
 terminal states listed below).</p>
