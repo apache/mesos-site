@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Apache Mesos - Mesos Containerizer</title>
+    <title>Apache Mesos - Cgroups 'cpu' Subsystem Support in Mesos Containerizer</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <meta property="og:locale" content="en_US"/>
@@ -27,7 +27,7 @@
 
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
-    <link href="../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="../../../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
 
     
 
@@ -113,64 +113,110 @@
     <p>See our <a href="/community/">community</a> page for more details.</p>
   </div>
   <div class="col-md-8">
-    <h1>Mesos Containerizer</h1>
+    <h1>Cgroups &lsquo;cpu&rsquo; and &lsquo;cpuacct&rsquo; Subsystems Support in Mesos Containerizer</h1>
 
-<p>The Mesos Containerizer provides lightweight containerization and
-resource isolation of executors using Linux-specific functionality
-such as control cgroups and namespaces. It is composable so operators
-can selectively enable different <a href="#isolators">isolators</a>.</p>
+<p>The <code>cgroups/cpu</code> isolator allows operators to provide CPU isolation
+and CPU usage accounting for containers within a Mesos cluster. To
+enable the <code>cgroups/cpu</code> isolator, append <code>cgroups/cpu</code> to the
+<code>--isolation</code> flag when starting the Mesos agent.</p>
 
-<p>It also provides basic support for POSIX systems (e.g., OSX) but
-without any actual isolation, only resource usage reporting.</p>
+<h2>Subsystems</h2>
 
-<h2>Isolators</h2>
+<p>The isolator enables <code>cpu</code> and <code>cpuacct</code> subsystems for Linux cgroups
+and assigns <code>cpu</code> and <code>cpuacct</code> cgroups to each container launched by
+Mesos Containerizer.</p>
 
-<p>Isolators are components that each define an aspect of how a tasks
-execution environment (or container) is constructed. Isolators can
-control how containers are isolated from each other, how task resource
-limits are enforced, how networking is configured, how security
-policies are applied.</p>
+<p>Cgroups <code>cpu</code> subsystem provides 2 mechanisms of limiting the amount
+of CPU time used by cgroups: <a href="https://github.com/torvalds/linux/blob/master/Documentation/scheduler/sched-design-CFS.txt">CFS shares</a>
+and <a href="https://github.com/torvalds/linux/blob/master/Documentation/scheduler/sched-bwc.txt">CFS bandwidth</a>
+control. The first one can guarantee some minimum number of CPU
+“shares” to a cgroup when the system is under heavy load. It, however,
+does not limit the amount of CPU time available to a cgroup when the
+system is not busy. This mechanism is always enabled when you turn on
+this isolator.</p>
 
-<p>Since the isolator interface is <a href="/documentation/latest/./modules/">modularized</a>, operators
-can write modules that implement custom isolators.</p>
+<p>The second mechanism introduces a way to define the upper limit of CPU
+time used by a cgroup within every scheduling period. Additionally it
+exports bandwidth statistics in <code>cpu.stat</code> file. CFS bandwidth
+mechanism can be enabled with <code>--cgroups_enable_cfs</code> agent flag.</p>
 
-<p>Mesos supports the following built-in isolators.</p>
+<p>Cgroups <code>cpuacct</code> subsystem provides accounting for CPU usage by
+cgroup’s tasks. Currently it only provides statistics in
+<code>cpuacct.stat</code> that show time spent by tasks of the cgroup in user
+mode and kernel mode respectively</p>
+
+<p>Additionally the isolator provides accounting for the number of
+processes and threads inside a container based on the information from
+<code>cgroups.procs</code> and <code>tasks</code> files.</p>
+
+<h2>Effects on application when using CFS Bandwidth Limiting</h2>
+
+<p>CPU usage is monitored during a scheduling period, which is currently
+set to 100ms. A task can use its requested CPU time before that period
+ends. For example, if a task is allocated 1 CPUs, it can use 2 CPU
+cores for 50ms thus consuming 100ms of CPU time, and be throttled for
+the remaining 50ms. Applications that are latency sensitive may suffer
+from effectively being stalled for 50ms.</p>
+
+<h2>Statistics</h2>
+
+<p>This isolator exports several valuable per-container CPU usage metrics
+that are available from agent&rsquo;s <code>monitor/statistics</code>
+<a href="/documentation/latest/isolators/../endpoints/slave/monitor/statistics/">endpoint</a>.</p>
 
 <ul>
-<li><a href="/documentation/latest/./secrets/#environment-based-secrets">environment_secret</a></li>
-<li>appc/runtime</li>
-<li>cgroups/blkio</li>
-<li><a href="/documentation/latest/./isolators/cgroups-cpu/">cgroups/cpu</a></li>
-<li>cgroups/cpuset</li>
-<li>cgroups/devices</li>
-<li>cgroups/hugetlb</li>
-<li>cgroups/mem</li>
-<li><a href="/documentation/latest/./isolators/cgroups-net-cls/">cgroups/net_cls</a></li>
-<li>cgroups/net_prio</li>
-<li>cgroups/perf_event</li>
-<li>cgroups/pids</li>
-<li><a href="/documentation/latest/./isolators/disk-du/">disk/du</a></li>
-<li><a href="/documentation/latest/./isolators/disk-xfs/">disk/xfs</a></li>
-<li><a href="/documentation/latest/./isolators/docker-runtime/">docker/runtime</a></li>
-<li><a href="/documentation/latest/./isolators/docker-volume/">docker/volume</a></li>
-<li>filesystem/linux</li>
-<li>filesystem/posix</li>
-<li><a href="/documentation/latest/./isolators/filesystem-shared/">filesystem/shared</a></li>
-<li>filesystem/windows</li>
-<li><a href="/documentation/latest/./gpu-support/">gpu/nvidia</a></li>
-<li><a href="/documentation/latest/./isolators/linux-capabilities/">linux/capabilities</a></li>
-<li><a href="/documentation/latest/./isolators/namespaces-ipc/">namespaces/ipc</a></li>
-<li><a href="/documentation/latest/./isolators/namespaces-pid/">namespaces/pid</a></li>
-<li><a href="/documentation/latest/./cni/">network/cni</a></li>
-<li><a href="/documentation/latest/./isolators/network-port-mapping/">network/port_mapping</a></li>
-<li>posix/cpu</li>
-<li>posix/mem</li>
-<li><a href="/documentation/latest/./isolators/posix-rlimits/">posix/rlimits</a></li>
-<li><a href="/documentation/latest/./container-volume/#host_path-volume-source">volume/host_path</a></li>
-<li>volume/image</li>
-<li><a href="/documentation/latest/./container-volume/#sandbox_path-volume-source">volume/sandbox_path</a></li>
-<li><a href="/documentation/latest/./secrets/#file-based-secrets">volume/secret</a></li>
+<li><code>processes</code> - number of processes in the cgroup;</li>
+<li><code>threads</code> - number of threads in the cgroup;</li>
+<li><code>cpus_user_time_secs</code> - time spent by tasks of the cgroup in user
+mode;</li>
+<li><code>cpus_system_time_secs</code> - time spent by tasks of the cgroup in
+kernel mode;</li>
+<li><code>cpus_nr_periods</code> - number of enforcement intervals that have
+elapsed;</li>
+<li><code>cpus_nr_throttled</code> - number of times the cgroup has been
+throttled;</li>
+<li><code>cpus_throttled_time</code> - total time for which tasks in the cgroup
+have been throttled.</li>
 </ul>
+
+
+<h2>Configuration</h2>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Flag</th>
+      <th>Explanation</th>
+    </tr>
+  </thead>
+  <tr>
+    <td>
+      --[no]-cgroups_cpu_enable_pids_and_tids_count
+    </td>
+    <td>
+Cgroups feature flag to enable counting of processes and threads
+inside a container. (default: false)
+  </td>
+  </tr>
+  <tr>
+    <td>
+      --[no]-cgroups_enable_cfs
+    </td>
+    <td>
+Cgroups feature flag to enable hard limits on CPU resources via the
+CFS bandwidth limiting subfeature. (default: false)
+    </td>
+  </tr>
+  <tr>
+    <td>
+      --[no-]revocable_cpu_low_priority
+    </td>
+    <td>
+Run containers with revocable CPU at a lower priority than normal
+containers (non-revocable CPU). (default: true)
+    </td>
+  </tr>
+</table>
 
 
   </div>
