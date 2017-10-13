@@ -248,15 +248,67 @@ character to the write end of the pipe in the parent process.</li>
 </ul>
 
 
+<p>Starting from Mesos 1.1.0, <a href="/documentation/latest/./nested-container-and-task-group/">nested container</a>
+is supported. The Linux Launcher is responsible to fork the subprocess
+for the nested container with appropriate Linux namespaces being
+cloned. The following is the table for Linux namespaces that
+are supported for top level and nested containers.</p>
+
+<h6>Linux Namespaces</h6>
+
+<table class="table table-striped">
+  <tr>
+    <th>Linux Namespaces</th>
+    <th>Top Level Container</th>
+    <th>Nested Container</th>
+  </tr>
+  <tr>
+    <td>Mount</td>
+    <td>Not shared</td>
+    <td>Not shared</td>
+  </tr>
+  <tr>
+    <td>PID</td>
+    <td>Configurable</td>
+    <td>Configurable</td>
+  </tr>
+  <tr>
+    <td>Network & UTS</td>
+    <td>Configurable</td>
+    <td>Shared w/ parent</td>
+  </tr>
+  <tr>
+    <td>IPC</td>
+    <td>Not shared -> configurable (TBD)</td>
+    <td>Not shared -> configurable (TBD)</td>
+  </tr>
+  <tr>
+    <td>Cgroup</td>
+    <td>Shared w/ agent -> Not shared (TBD)</td>
+    <td>Shared w/ parent -> Not shared (TBD)</td>
+  </tr>
+  <tr>
+    <td>User (not supported)</td>
+    <td>Shared w/ agent</td>
+    <td>Shared w/ parent</td>
+  </tr>
+</table>
+
+
+<p>*Note: For the top level container, <code>shared</code> means that the container
+shares the namespace from the agent. For the nested container, <code>shared</code>
+means that the nested container shares the namespace from its parent
+container.</p>
+
 <h6>Posix launcher (TBD)</h6>
 
 <p><a name="Isolators"></a></p>
 
-<h5>Isolators</h5>
+<h5><a href="/documentation/latest/./mesos-containerizer/#isolators">Isolators</a></h5>
 
-<p>Isolators are responsible for creating an environment for the
-containers where resources like cpu, network, storage and memory can
-be isolated from other containers.</p>
+<p><a href="/documentation/latest/./mesos-containerizer/#isolators">Isolators</a> are responsible for creating
+an environment for the containers where resources like cpu, network,
+storage and memory can be isolated from other containers.</p>
 
 <h3>Containerizer states</h3>
 
