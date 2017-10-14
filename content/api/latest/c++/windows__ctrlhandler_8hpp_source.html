@@ -68,66 +68,74 @@
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define __WINDOWS_CTRLHANDLER_HPP__</span></div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &lt;functional&gt;</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">namespace </span>os {</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keyword">namespace </span>internal {</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &lt;mutex&gt;</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="synchronized_8hpp.html">stout/synchronized.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
-<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="windows__ctrlhandler_8hpp.html#a944a8250e34bfd7991123abd3436d8c0">   21</a></span>&#160;<span class="preprocessor">#define SIGUSR1 100</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">// Not using extern as this is used only by the executable. The signal</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">// handler should be configured once. Configuring it multiple times will</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">// overwrite any previous handlers. Configuring from multiple threads</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment">// simultaneously has undefined behavior.</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">static</span> std::function&lt;void(int, int)&gt;* <a class="code" href="namespaceos_1_1internal.html#a637592b0315b2f8c779ab681177f911a">signaledWrapper</a> = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="namespaceos_1_1internal.html#ac1800b02743fa15a31bca2760186715d">   29</a></span>&#160;<span class="keyword">inline</span> BOOL WINAPI <a class="code" href="namespaceos_1_1internal.html#ac1800b02743fa15a31bca2760186715d">CtrlHandler</a>(DWORD fdwCtrlType)</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;{</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  <span class="keywordflow">switch</span> (fdwCtrlType) {</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <span class="comment">// Handle the CTRL-C signal.</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  <span class="keywordflow">case</span> CTRL_C_EVENT:</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  <span class="keywordflow">case</span> CTRL_CLOSE_EVENT:</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <span class="keywordflow">case</span> CTRL_BREAK_EVENT:</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <span class="keywordflow">case</span> CTRL_LOGOFF_EVENT:</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <span class="keywordflow">case</span> CTRL_SHUTDOWN_EVENT: {</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="namespaceos_1_1internal.html#a637592b0315b2f8c779ab681177f911a">signaledWrapper</a> != <span class="keyword">nullptr</span>) {</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;      (*signaledWrapper)(<a class="code" href="windows__ctrlhandler_8hpp.html#a944a8250e34bfd7991123abd3436d8c0">SIGUSR1</a>, 0);</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;      <span class="keywordflow">return</span> TRUE;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    }</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  }</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <span class="keywordflow">default</span>: {</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keywordflow">return</span> FALSE;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    }</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  }</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;}</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
-<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="namespaceos_1_1internal.html#ace5f4de8be55fb15325b23b99d819054">   50</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">int</span> <a class="code" href="namespaceos_1_1internal.html#ace5f4de8be55fb15325b23b99d819054">installCtrlHandler</a>(<span class="keyword">const</span> std::function&lt;<span class="keywordtype">void</span>(<span class="keywordtype">int</span>, <span class="keywordtype">int</span>)&gt;* signal)</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;{</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <span class="comment">// NOTE: We only expect this function to be called called multiple</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <span class="comment">// times inside tests and `mesos-local`.</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="namespaceos_1_1internal.html#a637592b0315b2f8c779ab681177f911a">signaledWrapper</a> != <span class="keyword">nullptr</span>) {</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keyword">delete</span> <a class="code" href="namespaceos_1_1internal.html#a637592b0315b2f8c779ab681177f911a">signaledWrapper</a>;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  }</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="keywordflow">if</span> (signal != <span class="keyword">nullptr</span>) {</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <a class="code" href="namespaceos_1_1internal.html#a637592b0315b2f8c779ab681177f911a">signaledWrapper</a> = <span class="keyword">new</span> std::function&lt;void(int, int)&gt;(*signal);</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordflow">return</span> SetConsoleCtrlHandler(<a class="code" href="namespaceos_1_1internal.html#ac1800b02743fa15a31bca2760186715d">CtrlHandler</a>, TRUE);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keyword">delete</span> <a class="code" href="namespaceos_1_1internal.html#a637592b0315b2f8c779ab681177f911a">signaledWrapper</a>;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <a class="code" href="namespaceos_1_1internal.html#a637592b0315b2f8c779ab681177f911a">signaledWrapper</a> = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordflow">return</span> SetConsoleCtrlHandler(<a class="code" href="namespaceos_1_1internal.html#ac1800b02743fa15a31bca2760186715d">CtrlHandler</a>, FALSE);</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  }</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;}</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;} <span class="comment">// namespace internal {</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;} <span class="comment">// namespace os {</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor">#endif // __WINDOWS_CTRLHANDLER_HPP__</span></div>
-<div class="ttc" id="namespaceos_1_1internal_html_ac1800b02743fa15a31bca2760186715d"><div class="ttname"><a href="namespaceos_1_1internal.html#ac1800b02743fa15a31bca2760186715d">os::internal::CtrlHandler</a></div><div class="ttdeci">BOOL WINAPI CtrlHandler(DWORD fdwCtrlType)</div><div class="ttdef"><b>Definition:</b> windows_ctrlhandler.hpp:29</div></div>
-<div class="ttc" id="namespaceos_1_1internal_html_a637592b0315b2f8c779ab681177f911a"><div class="ttname"><a href="namespaceos_1_1internal.html#a637592b0315b2f8c779ab681177f911a">os::internal::signaledWrapper</a></div><div class="ttdeci">std::function&lt; void(int, int)&gt; * signaledWrapper</div><div class="ttdef"><b>Definition:</b> posix_signalhandler.hpp:25</div></div>
-<div class="ttc" id="windows__ctrlhandler_8hpp_html_a944a8250e34bfd7991123abd3436d8c0"><div class="ttname"><a href="windows__ctrlhandler_8hpp.html#a944a8250e34bfd7991123abd3436d8c0">SIGUSR1</a></div><div class="ttdeci">#define SIGUSR1</div><div class="ttdef"><b>Definition:</b> windows_ctrlhandler.hpp:21</div></div>
-<div class="ttc" id="namespaceos_1_1internal_html_ace5f4de8be55fb15325b23b99d819054"><div class="ttname"><a href="namespaceos_1_1internal.html#ace5f4de8be55fb15325b23b99d819054">os::internal::installCtrlHandler</a></div><div class="ttdeci">int installCtrlHandler(const std::function&lt; void(int, int)&gt; *signal)</div><div class="ttdef"><b>Definition:</b> windows_ctrlhandler.hpp:50</div></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keyword">namespace </span>os {</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keyword">namespace </span>internal {</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
+<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="windows__ctrlhandler_8hpp.html#a944a8250e34bfd7991123abd3436d8c0">   24</a></span>&#160;<span class="preprocessor">#define SIGUSR1 100</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment">// Not using extern as this is used only by the executable. The signal</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">// handler should be configured once. Configuring it multiple times will</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment">// overwrite any previous handlers.</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">static</span> std::function&lt;void(int, int)&gt;* <a class="code" href="namespaceos_1_1internal.html#a637592b0315b2f8c779ab681177f911a">signaledWrapper</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
+<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="namespaceos_1_1internal.html#ac1800b02743fa15a31bca2760186715d">   31</a></span>&#160;<span class="keyword">inline</span> BOOL WINAPI <a class="code" href="namespaceos_1_1internal.html#ac1800b02743fa15a31bca2760186715d">CtrlHandler</a>(DWORD fdwCtrlType)</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;{</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  <span class="keywordflow">switch</span> (fdwCtrlType) {</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  <span class="comment">// Handle the CTRL-C signal.</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <span class="keywordflow">case</span> CTRL_C_EVENT:</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <span class="keywordflow">case</span> CTRL_CLOSE_EVENT:</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <span class="keywordflow">case</span> CTRL_BREAK_EVENT:</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <span class="keywordflow">case</span> CTRL_LOGOFF_EVENT:</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <span class="keywordflow">case</span> CTRL_SHUTDOWN_EVENT: {</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="namespaceos_1_1internal.html#a637592b0315b2f8c779ab681177f911a">signaledWrapper</a> != <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;      (*signaledWrapper)(<a class="code" href="windows__ctrlhandler_8hpp.html#a944a8250e34bfd7991123abd3436d8c0">SIGUSR1</a>, 0);</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;      <span class="keywordflow">return</span> TRUE;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    }</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  }</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <span class="keywordflow">default</span>: {</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keywordflow">return</span> FALSE;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    }</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  }</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;}</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="namespaceos_1_1internal.html#ace5f4de8be55fb15325b23b99d819054">   52</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">int</span> <a class="code" href="namespaceos_1_1internal.html#ace5f4de8be55fb15325b23b99d819054">installCtrlHandler</a>(<span class="keyword">const</span> std::function&lt;<span class="keywordtype">void</span>(<span class="keywordtype">int</span>, <span class="keywordtype">int</span>)&gt;* signal)</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;{</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="comment">// NOTE: We only expect this function to be called multiple</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <span class="comment">// times inside tests and `mesos-local`.</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="keyword">static</span> std::mutex mutex;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <span class="keyword">synchronized</span> (mutex) {</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="namespaceos_1_1internal.html#a637592b0315b2f8c779ab681177f911a">signaledWrapper</a> != <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;      <span class="keyword">delete</span> <a class="code" href="namespaceos_1_1internal.html#a637592b0315b2f8c779ab681177f911a">signaledWrapper</a>;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    }</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordflow">if</span> (signal != <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;      <a class="code" href="namespaceos_1_1internal.html#a637592b0315b2f8c779ab681177f911a">signaledWrapper</a> = <span class="keyword">new</span> std::function&lt;void(int, int)&gt;(*signal);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;      <span class="keywordflow">return</span> SetConsoleCtrlHandler(<a class="code" href="namespaceos_1_1internal.html#ac1800b02743fa15a31bca2760186715d">CtrlHandler</a>, TRUE);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;      <span class="keyword">delete</span> <a class="code" href="namespaceos_1_1internal.html#a637592b0315b2f8c779ab681177f911a">signaledWrapper</a>;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;      <a class="code" href="namespaceos_1_1internal.html#a637592b0315b2f8c779ab681177f911a">signaledWrapper</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;      <span class="keywordflow">return</span> SetConsoleCtrlHandler(<a class="code" href="namespaceos_1_1internal.html#ac1800b02743fa15a31bca2760186715d">CtrlHandler</a>, FALSE);</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    }</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  }</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;}</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;} <span class="comment">// namespace internal {</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;} <span class="comment">// namespace os {</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="preprocessor">#endif // __WINDOWS_CTRLHANDLER_HPP__</span></div>
+<div class="ttc" id="synchronized_8hpp_html"><div class="ttname"><a href="synchronized_8hpp.html">synchronized.hpp</a></div></div>
+<div class="ttc" id="namespaceos_1_1internal_html_ac1800b02743fa15a31bca2760186715d"><div class="ttname"><a href="namespaceos_1_1internal.html#ac1800b02743fa15a31bca2760186715d">os::internal::CtrlHandler</a></div><div class="ttdeci">BOOL WINAPI CtrlHandler(DWORD fdwCtrlType)</div><div class="ttdef"><b>Definition:</b> windows_ctrlhandler.hpp:31</div></div>
+<div class="ttc" id="namespaceos_1_1internal_html_a637592b0315b2f8c779ab681177f911a"><div class="ttname"><a href="namespaceos_1_1internal.html#a637592b0315b2f8c779ab681177f911a">os::internal::signaledWrapper</a></div><div class="ttdeci">std::function&lt; void(int, int)&gt; * signaledWrapper</div><div class="ttdef"><b>Definition:</b> posix_signalhandler.hpp:29</div></div>
+<div class="ttc" id="windows__ctrlhandler_8hpp_html_a944a8250e34bfd7991123abd3436d8c0"><div class="ttname"><a href="windows__ctrlhandler_8hpp.html#a944a8250e34bfd7991123abd3436d8c0">SIGUSR1</a></div><div class="ttdeci">#define SIGUSR1</div><div class="ttdef"><b>Definition:</b> windows_ctrlhandler.hpp:24</div></div>
+<div class="ttc" id="namespaceos_1_1internal_html_ace5f4de8be55fb15325b23b99d819054"><div class="ttname"><a href="namespaceos_1_1internal.html#ace5f4de8be55fb15325b23b99d819054">os::internal::installCtrlHandler</a></div><div class="ttdeci">int installCtrlHandler(const std::function&lt; void(int, int)&gt; *signal)</div><div class="ttdef"><b>Definition:</b> windows_ctrlhandler.hpp:52</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
