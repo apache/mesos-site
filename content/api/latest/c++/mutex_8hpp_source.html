@@ -92,9 +92,9 @@
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;      <span class="keywordflow">if</span> (!data-&gt;locked) {</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        data-&gt;locked = <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;      } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <a class="code" href="classprocess_1_1Owned.html">Owned&lt;Promise&lt;Nothing&gt;</a>&gt; <a class="code" href="namespacemesos_1_1internal_1_1log_1_1protocol.html#a3b1f8bd7b18c51af9d1f58842950b545">promise</a>(<span class="keyword">new</span> <a class="code" href="classprocess_1_1Promise.html">Promise&lt;Nothing&gt;</a>());</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        data-&gt;promises.push(promise);</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        future = promise-&gt;future();</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <a class="code" href="classprocess_1_1Promise.html">Promise&lt;Nothing&gt;</a> waiter;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        future = waiter.<a class="code" href="classprocess_1_1Promise.html#a8aef752d6c90cb11e58e3166b7592ef1">future</a>();</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        data-&gt;waiters.push(std::move(waiter));</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;      }</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    }</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
@@ -106,20 +106,20 @@
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="comment">// NOTE: We need to grab the promise &#39;date-&gt;promises.front()&#39; but</span></div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="comment">// set it outside of the critical section because setting it might</span></div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="comment">// trigger callbacks that try to reacquire the lock.</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <a class="code" href="classprocess_1_1Owned.html">Owned&lt;Promise&lt;Nothing&gt;</a>&gt; <a class="code" href="namespacemesos_1_1internal_1_1log_1_1protocol.html#a3b1f8bd7b18c51af9d1f58842950b545">promise</a>;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <a class="code" href="classOption.html">Option&lt;Promise&lt;Nothing&gt;</a>&gt; waiter;</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keyword">synchronized</span> (data-&gt;lock) {</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;      <span class="keywordflow">if</span> (!data-&gt;promises.empty()) {</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;      <span class="keywordflow">if</span> (!data-&gt;waiters.empty()) {</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        <span class="comment">// TODO(benh): Skip a future that has been discarded?</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        promise = data-&gt;promises.front();</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        data-&gt;promises.pop();</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        waiter = std::move(data-&gt;waiters.front());</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        data-&gt;waiters.pop();</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;      } <span class="keywordflow">else</span> {</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        data-&gt;locked = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;      }</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    }</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keywordflow">if</span> (promise.<a class="code" href="classprocess_1_1Owned.html#a2f64ec02eea2321e25611175edf776aa">get</a>() != <span class="keyword">nullptr</span>) {</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;      promise-&gt;set(<a class="code" href="structNothing.html">Nothing</a>());</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keywordflow">if</span> (waiter.<a class="code" href="classOption.html#a4e3bf8416d95246f43c91f1b5c309323">isSome</a>()) {</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;      waiter-&gt;set(<a class="code" href="structNothing.html">Nothing</a>());</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    }</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  }</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
@@ -141,7 +141,7 @@
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keywordtype">bool</span> locked;</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="comment">// Represents &quot;waiters&quot; for this lock.</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    std::queue&lt;Owned&lt;Promise&lt;Nothing&gt;&gt;&gt; promises;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    std::queue&lt;Promise&lt;Nothing&gt;&gt; waiters;</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  };</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  std::shared_ptr&lt;Data&gt; data;</div>
@@ -153,17 +153,17 @@
 <div class="ttc" id="synchronized_8hpp_html"><div class="ttname"><a href="synchronized_8hpp.html">synchronized.hpp</a></div></div>
 <div class="ttc" id="structNothing_html"><div class="ttname"><a href="structNothing.html">Nothing</a></div><div class="ttdef"><b>Definition:</b> nothing.hpp:16</div></div>
 <div class="ttc" id="classprocess_1_1Mutex_html_a3edf9d92fb6c54646f968ece8d50d30b"><div class="ttname"><a href="classprocess_1_1Mutex.html#a3edf9d92fb6c54646f968ece8d50d30b">process::Mutex::unlock</a></div><div class="ttdeci">void unlock()</div><div class="ttdef"><b>Definition:</b> mutex.hpp:50</div></div>
-<div class="ttc" id="classprocess_1_1Owned_html_a2f64ec02eea2321e25611175edf776aa"><div class="ttname"><a href="classprocess_1_1Owned.html#a2f64ec02eea2321e25611175edf776aa">process::Owned::get</a></div><div class="ttdeci">T * get() const </div><div class="ttdef"><b>Definition:</b> owned.hpp:115</div></div>
+<div class="ttc" id="classOption_html"><div class="ttname"><a href="classOption.html">Option</a></div><div class="ttdef"><b>Definition:</b> option.hpp:24</div></div>
+<div class="ttc" id="classOption_html_a4e3bf8416d95246f43c91f1b5c309323"><div class="ttname"><a href="classOption.html#a4e3bf8416d95246f43c91f1b5c309323">Option::isSome</a></div><div class="ttdeci">bool isSome() const </div><div class="ttdef"><b>Definition:</b> option.hpp:108</div></div>
 <div class="ttc" id="classprocess_1_1Mutex_html_a49bf029c7e026b0bf07ace6c61e6d45d"><div class="ttname"><a href="classprocess_1_1Mutex.html#a49bf029c7e026b0bf07ace6c61e6d45d">process::Mutex::Mutex</a></div><div class="ttdeci">Mutex()</div><div class="ttdef"><b>Definition:</b> mutex.hpp:31</div></div>
 <div class="ttc" id="nothing_8hpp_html"><div class="ttname"><a href="nothing_8hpp.html">nothing.hpp</a></div></div>
 <div class="ttc" id="classprocess_1_1Promise_html"><div class="ttname"><a href="classprocess_1_1Promise.html">process::Promise&lt; Nothing &gt;</a></div></div>
-<div class="ttc" id="namespacemesos_1_1internal_1_1log_1_1protocol_html_a3b1f8bd7b18c51af9d1f58842950b545"><div class="ttname"><a href="namespacemesos_1_1internal_1_1log_1_1protocol.html#a3b1f8bd7b18c51af9d1f58842950b545">mesos::internal::log::protocol::promise</a></div><div class="ttdeci">Protocol&lt; PromiseRequest, PromiseResponse &gt; promise</div></div>
 <div class="ttc" id="future_8hpp_html"><div class="ttname"><a href="future_8hpp.html">future.hpp</a></div></div>
 <div class="ttc" id="classprocess_1_1Mutex_html_a2983b29453c623f58b843d924598793b"><div class="ttname"><a href="classprocess_1_1Mutex.html#a2983b29453c623f58b843d924598793b">process::Mutex::lock</a></div><div class="ttdeci">Future&lt; Nothing &gt; lock()</div><div class="ttdef"><b>Definition:</b> mutex.hpp:33</div></div>
 <div class="ttc" id="namespaceos_html_ae19e4161a51b86a1f330f3bf1dc75389"><div class="ttname"><a href="namespaceos.html#ae19e4161a51b86a1f330f3bf1dc75389">os::process</a></div><div class="ttdeci">Result&lt; Process &gt; process(pid_t pid)</div><div class="ttdef"><b>Definition:</b> freebsd.hpp:30</div></div>
+<div class="ttc" id="classprocess_1_1Promise_html_a8aef752d6c90cb11e58e3166b7592ef1"><div class="ttname"><a href="classprocess_1_1Promise.html#a8aef752d6c90cb11e58e3166b7592ef1">process::Promise::future</a></div><div class="ttdeci">Future&lt; T &gt; future() const </div><div class="ttdef"><b>Definition:</b> future.hpp:785</div></div>
 <div class="ttc" id="owned_8hpp_html"><div class="ttname"><a href="owned_8hpp.html">owned.hpp</a></div></div>
 <div class="ttc" id="classprocess_1_1Mutex_html"><div class="ttname"><a href="classprocess_1_1Mutex.html">process::Mutex</a></div><div class="ttdef"><b>Definition:</b> mutex.hpp:28</div></div>
-<div class="ttc" id="classprocess_1_1Owned_html"><div class="ttname"><a href="classprocess_1_1Owned.html">process::Owned</a></div><div class="ttdef"><b>Definition:</b> owned.hpp:35</div></div>
 <div class="ttc" id="classprocess_1_1Future_html"><div class="ttname"><a href="classprocess_1_1Future.html">process::Future&lt; Nothing &gt;</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
