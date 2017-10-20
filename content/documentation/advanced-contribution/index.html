@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Apache Mesos - Submitting a Patch</title>
+    <title>Apache Mesos - Advanced Contribution Guidelines</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <meta property="og:locale" content="en_US"/>
@@ -91,7 +91,7 @@
 
     <div class="navbar-collapse collapse" id="mesos-menu">
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="/gettingstarted/">Getting Started</a></li>
+        <li><a href="/getting-started/">Getting Started</a></li>
         <li><a href="/blog/">Blog</a></li>
         <li><a href="/documentation/latest/">Documentation</a></li>
         <li><a href="/downloads/">Downloads</a></li>
@@ -106,19 +106,47 @@
     <div class="row-fluid">
   <div class="col-md-4">
     <h4>If you're new to Mesos</h4>
-    <p>See the <a href="/gettingstarted/">getting started</a> page for more
+    <p>See the <a href="/getting-started/">getting started</a> page for more
        information about downloading, building, and deploying Mesos.</p>
 
     <h4>If you'd like to get involved or you're looking for support</h4>
     <p>See our <a href="/community/">community</a> page for more details.</p>
   </div>
   <div class="col-md-8">
-    <h1>Submitting a Patch</h1>
+    <h1>Advanced Contribution Guidelines</h1>
+
+<h2>Prerequisites</h2>
+
+<p>If you&rsquo;d like to make significant contributions to Mesos, then you&rsquo;ll want to become familiar with the standard Mesos development workflow. In addition to the dependencies needed to build Mesos (detailed in <a href="/documentation/latest/./getting-started/">Getting Started</a>), a couple other things are necessary:</p>
 
 <ul>
-<li>You&rsquo;ve fixed a bug or added a feature and want to contribute it. AWESOME!</li>
+<li>Required account authorizations
+
+<ul>
+<li>Apache Review Board Account</li>
+<li>Apache JIRA Account
+<br/><br/></li>
+</ul>
+</li>
+<li>Required installations
+
+<ul>
+<li>RBtools</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>Issue Tracking, Code Review, and Mailing Lists</h2>
+
+<ul>
 <li>We use <a href="https://issues.apache.org/jira/browse/mesos/">Apache Software Foundation JIRA</a> to track and manage issues. If you don&rsquo;t already have an account, you&rsquo;ll need to create one.</li>
-<li>We use <a href="https://reviews.apache.org">Apache Review Board</a> for code reviews. If you don&rsquo;t already have an account, you&rsquo;ll need to create one (it&rsquo;s separate from your Apache JIRA account).</li>
+<li>We use <a href="https://reviews.apache.org">Apache Review Board</a> for code reviews. If you don&rsquo;t already have an account, you&rsquo;ll need to create one (it&rsquo;s separate from your Apache JIRA account).
+
+<ul>
+<li>A code review request should be created for every JIRA that involves a change to the codebase.</li>
+</ul>
+</li>
 <li>Once your JIRA and Review Board accounts are in place please go ahead and create a review or GitHub pull request with an entry for yourself in <a href="https://github.com/apache/mesos/blob/master/docs/contributors.yaml">contributors.yaml</a> file.
 
 <ul>
@@ -127,37 +155,41 @@
 <li>In the <code>email</code> field please specify the email that your local git client is setup with.</li>
 </ul>
 </li>
-<li>A code review request should be created for every JIRA that involves a change to the codebase.</li>
+<li>Joining the following mailing lists will help you stay up-to-date on Mesos development:
+
+<ul>
+<li>Developer list: <a href="mailto:dev-subscribe@mesos.apache.org">dev-subscribe@mesos.apache.org</a></li>
+<li>Issue list: <a href="mailto:issues-subscribe@mesos.apache.org">issues-subscribe@mesos.apache.org</a></li>
+<li>Review list: <a href="mailto:reviews-subscribe@mesos.apache.org">reviews-subscribe@mesos.apache.org</a></li>
+<li>Build list: <a href="mailto:builds-subscribe@mesos.apache.org">builds-subscribe@mesos.apache.org</a> respectively.</li>
+</ul>
+</li>
 </ul>
 
 
-<h3>Before you start writing code</h3>
+<h2>The Contribution Process</h2>
+
+<p>Here is the standard procedure for proposing and making changes to Mesos:</p>
+
+<h3>Before Coding Starts</h3>
 
 <ol>
-<li><p>Check out the code from the Apache repository via Git. Instructions are on the <a href="http://mesos.apache.org/gettingstarted/">Getting Started</a> page.</p></li>
-<li><p>Join the dev, issues, reviews and builds mailing lists by sending emails to <a href="mailto:dev-subscribe@mesos.apache.org">dev-subscribe@mesos.apache.org</a>, <a href="mailto:issues-subscribe@mesos.apache.org">issues-subscribe@mesos.apache.org</a>, <a href="mailto:reviews-subscribe@mesos.apache.org">reviews-subscribe@mesos.apache.org</a> and <a href="mailto:builds-subscribe@mesos.apache.org">builds-subscribe@mesos.apache.org</a> respectively.</p></li>
-<li><p>Find a JIRA issue that is currently unassigned that you want to work on at <a href="https://issues.apache.org/jira/browse/MESOS">JIRA issue tracker</a>, or create your own (you&rsquo;ll need a JIRA account for this, see below)!</p>
-
-<ol>
-<li>This could be a JIRA representing a bug (possibly a bug that you encountered and reported, e.g. when trying to build) or a new feature.</li>
-<li>Prefer working on issues marked as &ldquo;<a href="https://issues.apache.org/jira/browse/MESOS-1?jql=project%20%3D%20MESOS%20AND%20status%20%3D%20Accepted">Accepted</a>&rdquo;, rather than merely &ldquo;Open&rdquo;. If an issue has been accepted, it means at least one Mesos developer thought that the ideas proposed in the issue are worth pursuing further.</li>
-<li>Issues marked with the &ldquo;<a href="https://issues.apache.org/jira/browse/MESOS-1?jql=project%20%3D%20MESOS%20AND%20status%20%3D%20Accepted%20AND%20labels%20%3D%20newbie">newbie</a>&rdquo; label can be good candidates for &ldquo;starter&rdquo; projects.</li>
-</ol>
-</li>
-<li><p>Assign the JIRA to yourself.</p>
-
-<ol>
-<li>You will be able to assign the JIRA to yourself as soon as your pull request with additions to the contributors.yaml file is merged.</li>
-</ol>
-</li>
-<li><p>Formulate a plan for resolving the issue. Propose your plan via comments in the JIRA.</p></li>
-<li><p>Find a <strong>shepherd</strong> to collaborate on your patch. A shepherd is a Mesos committer that will work with you to give you feedback on your proposed design, and to eventually commit your change into the Mesos source tree.</p>
-
-<ol>
-<li>To find a shepherd, email the dev mailing list (include a link to your JIRA issue). You can also try asking by adding a comment to your JIRA issue.</li>
-<li>You can also find a shepherd by asking the developers on IRC (in the <a href="irc://irc.freenode.net/mesos">mesos channel</a> on <a href="https://freenode.net">Freenode</a>). You can find the current list of committers <a href="/documentation/latest/./committers/">here</a>: a developer that has previously worked on the component you are modifying might be a good candidate shepherd.</li>
-</ol>
-</li>
+<li>Find a JIRA issue that is currently unassigned that you want to work on at <a href="https://issues.apache.org/jira/browse/MESOS">JIRA issue tracker</a>, or create your own (you&rsquo;ll need a JIRA account for this, see above)!</li>
+<li> This could be a JIRA representing a bug (possibly a bug that you encountered and reported, e.g. when trying to build) or a new feature.</li>
+<li> Prefer working on issues marked as &ldquo;<a href="https://issues.apache.org/jira/browse/MESOS-1?jql=project%20%3D%20MESOS%20AND%20status%20%3D%20Accepted">Accepted</a>&rdquo;, rather than merely &ldquo;Open&rdquo;. If an issue has been accepted, it means at least one Mesos developer thought that the ideas proposed in the issue are worth pursuing further.</li>
+<li> Issues marked with the &ldquo;<a href="https://issues.apache.org/jira/browse/MESOS-1?jql=project%20%3D%20MESOS%20AND%20status%20%3D%20Accepted%20AND%20labels%20%3D%20newbie">newbie</a>&rdquo; label can be good candidates for &ldquo;starter&rdquo; projects. You can also look for the labels &ldquo;newbie++&rdquo;, &ldquo;beginner&rdquo;, and &ldquo;beginners&rdquo;.</li>
+<li><p> When identifying a JIRA issue to work on, it is recommended to work on items that are relevant to the next release. Selecting work items important for the next release increases the priority for reviewers during the contribution process. See the tracking ticket for the release to figure out the high priority projects or ask the release manager to guide you.</p></li>
+<li><p>Assign the JIRA to yourself.</p></li>
+<li><p> You will be able to assign the JIRA to yourself as soon as your pull request with additions to the contributors.yaml file is merged.</p></li>
+<li><p>Formulate a plan for resolving the issue. Guidelines to consider when designing a solution can be found in the <a href="/documentation/latest/./effective-code-reviewing/">effective-code-reviewing</a> document. It is important to discuss your proposed solution within the JIRA ticket early in the resolution process in order to get feedback from reviewers. Early discussions will help:</p></li>
+<li> ensure the solution will be scoped in a consumable fashion;</li>
+<li> eliminate duplicate work with other contributions; and</li>
+<li><p> alert anyone interested in following the activity and progress of the ticket.</p></li>
+<li><p>Find a <strong>shepherd</strong> to collaborate on your patch. A shepherd is a Mesos committer that will work with you to give you feedback on your proposed design, and to eventually commit your change into the Mesos source tree. To find a shepherd, you can do one or more of the following:</p></li>
+<li> Email the dev mailing list (include a link to your JIRA issue).</li>
+<li> Add a comment to your JIRA issue, referencing by username one or more Mesos <a href="/documentation/latest/./committers/">committers</a> whom you believe would be interested in shepherding. The listed maintainers of the portion of the codebase you&rsquo;re working on are good candidates to reach out to.</li>
+<li> Email potential shepherds directly.</li>
+<li> Ask the developers on Mesos Slack or on IRC (in the <a href="irc://irc.freenode.net/mesos">mesos channel</a> on <a href="https://freenode.net">Freenode</a>).</li>
 </ol>
 
 
@@ -192,8 +224,11 @@
 <ol>
 <li>To build all tests without executing them, use something like: <code>make tests</code>.</li>
 <li>To execute a single unit test (helpful when trying to debug a test case failure), use something like: <code>make check GTEST_FILTER="HTTPTest.Delete"</code>.</li>
+<li>If you added new tests, make sure you run them repeatedly in order to catch inconsistent failures. A command like the following can be used to run an individual test 1000 times:</li>
 </ol>
-</li>
+
+
+<p> sudo GLOG_v=1 ./bin/mesos-tests.sh &ndash;verbose &ndash;gtest_filter=&ldquo;<em>DOCKER</em>&rdquo; &ndash;gtest_break_on_failure &ndash;gtest_repeat=1000</p></li>
 <li><p>Divide your change into one or more Git commits. Each commit should represent a single logical (atomic) change to the Mesos source code: this makes your changes easier to review. For more information, see the <a href="/documentation/latest/./effective-code-reviewing/">reviewer guidelines</a>.</p>
 
 <ol>
@@ -248,12 +283,24 @@
 </ol>
 
 
+<h2>Advanced JIRA Tickets</h2>
+
+<p>As you gain experience contributing to Mesos you may want to tackle more advanced JIRA tickets. These items may touch multiple components within Mesos and/or may have a significant impact on the developer or user community. In these cases, a working group of stakeholders is formed to develop a design document. The initial formation of this working group will be part of the community communication resources, e.g. the re-occurring developer sync meetings, the developer email list, the IRC channel, etc. For reference, a contributor new to an advanced level work item can refer to the work done for the <a href="https://issues.apache.org/jira/browse/MESOS-1592">inverse offer</a> project.</p>
+
 <h2>Style Guides</h2>
 
 <ul>
 <li>For patches to the core, we ask that you follow the <a href="/documentation/latest/./c++-style-guide/">Mesos C++ Style Guide</a>.</li>
 </ul>
 
+
+<h2>Additional Guidance</h2>
+
+<p>The following links provide additional guidance as you get started contributing to Apache Mesos.</p>
+
+<h2>Core Libraries</h2>
+
+<p>There are two core libraries in Mesos: <em>stout</em> and <em>libprocess</em>. <em>stout</em> is the low level operating system abstraction tooling that should be used in place of writing your own low level tools. <em>libprocess</em> is a library used to support building compatible concurrent components (see <a href="https://www.youtube.com/watch?v=5EIiU6R_6KE">video</a> for an introduction to the <em>libprocess</em> library). New contributors to Mesos should become familiar with these libraries and utilize them where appropriate. Additional documentation can be found in the following two README files: <a href="https://github.com/apache/mesos/blob/master/3rdparty/libprocess/README.md">3rdparty/libprocess/README.md</a> and <a href="https://github.com/apache/mesos/blob/master/3rdparty/stout/README.md">3rdparty/stout/README.md</a>.</p>
 
   </div>
 </div>

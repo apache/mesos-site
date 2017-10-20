@@ -81,18 +81,18 @@
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">namespace </span>windows {</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">// This function idempotently prepends &quot;\\?\&quot; to the given path iff:</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">// (1) The path&#39;s length is greater than 248, the minimum Windows API limit.</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">//     This limit is neither `NAME_MAX` nor `PATH_MAX`; it is an arbitrary</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">//     limit of `CreateDirectory` and is the smallest such limit.</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">// (1) The path&#39;s length is greater than or equal to 248, the minimum Windows</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">//     API limit. This limit is neither `NAME_MAX` nor `PATH_MAX`; it is an</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">//     arbitrary limit of `CreateDirectoryW` and is the smallest such limit.</span></div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">// (2) The path is absolute (otherwise the marker is meaningless).</span></div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="comment">// (3) The path does not already have the marker (idempotent).</span></div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">// It then converts the path to UTF-16, appropriate for use in Uniode versions</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">// It then converts the path to UTF-16, appropriate for use in Unicode versions</span></div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">// of Windows filesystem APIs which support lengths greater than NAME_MAX.</span></div>
 <div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="namespaceinternal_1_1windows.html#abd7dbdbc8d95626d0c66455078380aa1">   38</a></span>&#160;<span class="keyword">inline</span> std::wstring <a class="code" href="namespaceinternal_1_1windows.html#abd7dbdbc8d95626d0c66455078380aa1">longpath</a>(<span class="keyword">const</span> std::string&amp; path)</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;{</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">size_t</span> max_path_length = 248;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <span class="keywordflow">if</span> (path.size() &gt; max_path_length &amp;&amp;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <span class="keywordflow">if</span> (path.size() &gt;= max_path_length &amp;&amp;</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;      <a class="code" href="namespacepath.html#a09c4941618b3a4ea2dbfccf5fe9d3687">path::absolute</a>(path) &amp;&amp;</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;      !<a class="code" href="namespacestrings.html#aa5513faacb213c7e097c0d43af43d9c7">strings::startsWith</a>(path, os::LONGPATH_PREFIX)) {</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keywordflow">return</span> wide_stringify(os::LONGPATH_PREFIX + path);</div>

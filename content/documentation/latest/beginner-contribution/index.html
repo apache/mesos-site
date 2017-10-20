@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Apache Mesos - Beginner Contribution Guide</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta property="og:locale" content="en_US"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:title" content="Apache Mesos"/>
+    <meta property="og:site_name" content="Apache Mesos"/>
+    <meta property="og:url" content="http://mesos.apache.org/"/>
+    <meta property="og:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta property="og:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
+
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:site" content="@ApacheMesos"/>
+    <meta name="twitter:title" content="Apache Mesos"/>
+    <meta name="twitter:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta name="twitter:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
+
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
+    <link href="../../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+
+    
+
+    <!-- Google Analytics Magic -->
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-20226872-1']);
+    _gaq.push(['_setDomainName', 'apache.org']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+    
+  </head>
+  <body>
+    <!-- magical breadcrumbs -->
+    <div class="topnav">
+      <div class="container">
+        <ul class="breadcrumb">
+          <li>
+            <div class="dropdown">
+              <a data-toggle="dropdown" href="#">Apache Software Foundation <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                <li><a href="http://www.apache.org">Apache Homepage</a></li>
+                <li><a href="http://www.apache.org/licenses/">License</a></li>
+                <li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>
+                <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                <li><a href="http://www.apache.org/security/">Security</a></li>
+              </ul>
+            </div>
+          </li>
+
+          <li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+          
+          
+          <li><a href="/documentation
+/">Documentation
+</a></li>
+          
+          
+        </ul><!-- /.breadcrumb -->
+      </div><!-- /.container -->
+    </div><!-- /.topnav -->
+
+    <!-- navbar excitement -->
+<div class="navbar navbar-default navbar-static-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#mesos-menu" aria-expanded="false">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo"/></a>
+    </div><!-- /.navbar-header -->
+
+    <div class="navbar-collapse collapse" id="mesos-menu">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/getting-started/">Getting Started</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/documentation/latest/">Documentation</a></li>
+        <li><a href="/downloads/">Downloads</a></li>
+        <li><a href="/community/">Community</a></li>
+      </ul>
+    </div><!-- /#mesos-menu -->
+  </div><!-- /.container -->
+</div><!-- /.navbar -->
+
+<div class="content">
+  <div class="container">
+    <div class="row-fluid">
+  <div class="col-md-4">
+    <h4>If you're new to Mesos</h4>
+    <p>See the <a href="/getting-started/">getting started</a> page for more
+       information about downloading, building, and deploying Mesos.</p>
+
+    <h4>If you'd like to get involved or you're looking for support</h4>
+    <p>See our <a href="/community/">community</a> page for more details.</p>
+  </div>
+  <div class="col-md-8">
+    <h1>Beginner Contributor Guide</h1>
+
+<h2>Introduction</h2>
+
+<p>The purpose of this document is to provide a first-time introduction to the process of contributing to Mesos. It focuses on submitting small documentation-only patches or trivial fixes via GitHub pull requests. If you&rsquo;d like an introduction to the standard day-to-day workflow for advanced Mesos contributors, see our <a href="/documentation/latest/./advanced-contribution/">advanced contribution guide</a>.</p>
+
+<h2>Quick Summary</h2>
+
+<p>To propose a small change to Mesos, simply open a PR against our public GitHub mirror at <a href="https://github.com/apache/mesos">https://github.com/apache/mesos</a>. Further instructions can be found below if needed.</p>
+
+<h2>Download the Mesos Repository</h2>
+
+<p>First, download the latest development version of the Mesos codebase. In order to submit changes via GitHub pull requests, you need to fork the <a href="https://github.com/apache/mesos">Apache Mesos GitHub mirror</a>. Once you have your own fork, clone it to your local machine using Git.</p>
+
+<p>If you&rsquo;re proposing a documentation-only change, then you don&rsquo;t need to build Mesos to get started.</p>
+
+<p>If you&rsquo;re making a functional change to the code, then you should build Mesos first. Once you have the Mesos source code on your local machine, you can install the necessary dependencies and build it. Instructions for this process can be found in the <a href="/documentation/latest/./getting-started/">Getting Started</a> page. Note that the <code>bootstrap</code> script in the repository&rsquo;s root directory will install git hooks which will help you adhere to Mesos style when committing.</p>
+
+<h2>Find a Problem to Solve</h2>
+
+<p>If you already have a specific issue in mind which you want to address in the codebase, that&rsquo;s great! Reach out to some of the <a href="/documentation/latest/./committers/">committers</a> on <a href="/community">Mesos Slack</a> or on the developer mailing list to discuss the improvement you&rsquo;d like to make. If you want to contribute but aren&rsquo;t sure what to work on, you can find open issues in <a href="http://issues.apache.org/jira/browse/MESOS">JIRA</a>, our issue tracker. Asking on <a href="/community">Mesos Slack</a> or on the developer mailing list is a great way to find out what you might work on that could have a high impact on the community.</p>
+
+<p>From past experience, we have found that it&rsquo;s best if contributors talk to committers about their fix before writing code. This ensures that the contributor has the context necessary to make the change in a way consistent with the rest of the codebase, and helps avoid time spent on solutions which need major edits in order to get merged. Please chat with us before writing code, we&rsquo;ll help you design a solution!</p>
+
+<p>This GitHub workflow is most appropriate for documentation-only changes and small, trivial fixes. For more significant changes, please use the <a href="/documentation/latest/./advanced-contribution/">advanced contribution workflow</a>.</p>
+
+<h2>Make Modifications</h2>
+
+<p>Once you know what you&rsquo;re going to change, you can make your intended modifications to the codebase and then commit the changes to your local build repository. When making changes, also consider the following:</p>
+
+<ul>
+<li>Does documentation need to be updated to accommodate this change? (see the <code>docs/</code> folder in the repository)</li>
+<li>Do tests need to be added or updated? (see the <code>src/tests/</code> folder in the repository)</li>
+</ul>
+
+
+<h2>Build and Test</h2>
+
+<p>If your changes are documentation-only, then you should view them with a markdown viewer to verify their appearance when rendered.</p>
+
+<p>If you are changing any code in Mesos, then you should build and run the tests before opening a PR. You should run <code>make check</code> and ensure that all tests pass before opening a PR.</p>
+
+<h2>Open a PR</h2>
+
+<p>Once changes are completed and tested, it&rsquo;s time to open a PR so that they can be reviewed. When your local branch is clean and ready to submit, push it to your Mesos fork. You can then open a PR against the Apache Mesos GitHub repository. Once your PR is open, you can notify the community on <a href="/community">Mesos Slack</a> or on the developer mailing list.</p>
+
+<h1>Getting Started Guidance</h1>
+
+<p>The following links provide additional guidance as you get started contributing to Apache Mesos.</p>
+
+<h2>JIRA</h2>
+
+<p><a href="http://issues.apache.org/jira/browse/MESOS">JIRA</a> is the issue tracking system for all bug fixes and feature additions in Mesos. When contributing to Mesos, all assignments, discussions, and resolution proposals for a specific issue should be documented as comments within the JIRA item. If you contribute something which is more than a trivial fix, it should probably be tracked in JIRA.</p>
+
+<h2>Identifying a JIRA Issue</h2>
+
+<p>If you&rsquo;d like to find an existing issue to work on yourself, identify a Mesos JIRA ticket that is currently unassigned. It is highly recommended to start contributing to beginner-level issues and move to more advanced issues over time. The JIRA issue-tracking system can be filtered based on labels. The following labels can be used to identify beginner-level JIRA tickets:</p>
+
+<ul>
+<li>newbie</li>
+<li>newbie++</li>
+<li>beginner</li>
+<li>beginners</li>
+</ul>
+
+
+<p>If you&rsquo;d like to work on existing issues in Mesos, this will likely require the submission of patches large enough that you should use the <a href="/documentation/latest/./advanced-contribution/">advanced contribution workflow</a>.</p>
+
+  </div>
+</div>
+
+  </div><!-- /.container -->
+</div><!-- /.content -->
+
+<hr>
+
+
+
+    <!-- footer -->
+    <div class="footer">
+      <div class="container">
+        <div class="col-md-4 social-blk">
+          <span class="social">
+            <a href="https://twitter.com/ApacheMesos"
+              class="twitter-follow-button"
+              data-show-count="false" data-size="large">Follow @ApacheMesos</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+            <a href="https://twitter.com/intent/tweet?button_hashtag=mesos"
+              class="twitter-hashtag-button"
+              data-size="large"
+              data-related="ApacheMesos">Tweet #mesos</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+          </span>
+        </div>
+
+        <div class="col-md-8 trademark">
+          <p>&copy; 2012-2017 <a href="http://apache.org">The Apache Software Foundation</a>.
+            Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.
+          <p>
+        </div>
+      </div><!-- /.container -->
+    </div><!-- /.footer -->
+
+    <!-- JS -->
+    <script src="//code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" type="text/javascript"></script>
+
+    <!-- Inject anchors for all headings on the page, see https://www.bryanbraun.com/anchorjs. -->
+    <script type="text/javascript">
+    anchors.options = {
+      placement: 'right',
+      ariaLabel: 'Permalink',
+    };
+
+    // The default is to not add anchors to h1, but we have pages with multiple h1 headers,
+    // and we do want to put anchors on those.
+    anchors.add('h1, h2, h3, h4, h5, h6');
+    </script>
+  </body>
+</html>
