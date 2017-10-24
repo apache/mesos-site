@@ -117,7 +117,7 @@
 
 <h2>Prerequisites</h2>
 
-<p>If you&rsquo;d like to make significant contributions to Mesos, then you&rsquo;ll want to become familiar with the standard Mesos development workflow. In addition to the dependencies needed to build Mesos (detailed in <a href="/documentation/latest/./getting-started/">Getting Started</a>), a couple other things are necessary:</p>
+<p>If you&rsquo;d like to make significant contributions to Mesos, then you&rsquo;ll want to become familiar with the standard Mesos development workflow. In addition to the dependencies needed to build Mesos (detailed in <a href="/documentation/latest/./building/">building</a>), a couple other things are necessary:</p>
 
 <ul>
 <li>Required account authorizations
@@ -174,35 +174,51 @@
 <h3>Before Coding Starts</h3>
 
 <ol>
-<li>Find a JIRA issue that is currently unassigned that you want to work on at <a href="https://issues.apache.org/jira/browse/MESOS">JIRA issue tracker</a>, or create your own (you&rsquo;ll need a JIRA account for this, see above)!</li>
-<li> This could be a JIRA representing a bug (possibly a bug that you encountered and reported, e.g. when trying to build) or a new feature.</li>
-<li> Prefer working on issues marked as &ldquo;<a href="https://issues.apache.org/jira/browse/MESOS-1?jql=project%20%3D%20MESOS%20AND%20status%20%3D%20Accepted">Accepted</a>&rdquo;, rather than merely &ldquo;Open&rdquo;. If an issue has been accepted, it means at least one Mesos developer thought that the ideas proposed in the issue are worth pursuing further.</li>
-<li> Issues marked with the &ldquo;<a href="https://issues.apache.org/jira/browse/MESOS-1?jql=project%20%3D%20MESOS%20AND%20status%20%3D%20Accepted%20AND%20labels%20%3D%20newbie">newbie</a>&rdquo; label can be good candidates for &ldquo;starter&rdquo; projects. You can also look for the labels &ldquo;newbie++&rdquo;, &ldquo;beginner&rdquo;, and &ldquo;beginners&rdquo;.</li>
-<li><p> When identifying a JIRA issue to work on, it is recommended to work on items that are relevant to the next release. Selecting work items important for the next release increases the priority for reviewers during the contribution process. See the tracking ticket for the release to figure out the high priority projects or ask the release manager to guide you.</p></li>
-<li><p>Assign the JIRA to yourself.</p></li>
-<li><p> You will be able to assign the JIRA to yourself as soon as your pull request with additions to the contributors.yaml file is merged.</p></li>
-<li><p>Formulate a plan for resolving the issue. Guidelines to consider when designing a solution can be found in the <a href="/documentation/latest/./effective-code-reviewing/">effective-code-reviewing</a> document. It is important to discuss your proposed solution within the JIRA ticket early in the resolution process in order to get feedback from reviewers. Early discussions will help:</p></li>
-<li> ensure the solution will be scoped in a consumable fashion;</li>
-<li> eliminate duplicate work with other contributions; and</li>
-<li><p> alert anyone interested in following the activity and progress of the ticket.</p></li>
-<li><p>Find a <strong>shepherd</strong> to collaborate on your patch. A shepherd is a Mesos committer that will work with you to give you feedback on your proposed design, and to eventually commit your change into the Mesos source tree. To find a shepherd, you can do one or more of the following:</p></li>
-<li> Email the dev mailing list (include a link to your JIRA issue).</li>
-<li> Add a comment to your JIRA issue, referencing by username one or more Mesos <a href="/documentation/latest/./committers/">committers</a> whom you believe would be interested in shepherding. The listed maintainers of the portion of the codebase you&rsquo;re working on are good candidates to reach out to.</li>
-<li> Email potential shepherds directly.</li>
-<li> Ask the developers on Mesos Slack or on IRC (in the <a href="irc://irc.freenode.net/mesos">mesos channel</a> on <a href="https://freenode.net">Freenode</a>).</li>
+<li>Find a JIRA issue that is currently unassigned that you want to work on at <a href="https://issues.apache.org/jira/browse/MESOS">JIRA issue tracker</a>, or create your own (you&rsquo;ll need a JIRA account for this, see above)!
+
+<ol>
+<li>This could be a JIRA representing a bug (possibly a bug that you encountered and reported, e.g. when trying to build) or a new feature.</li>
+<li>Prefer working on issues marked as &ldquo;<a href="https://issues.apache.org/jira/browse/MESOS-1?jql=project%20%3D%20MESOS%20AND%20status%20%3D%20Accepted">Accepted</a>&rdquo;, rather than merely &ldquo;Open&rdquo;. If an issue has been accepted, it means at least one Mesos developer thought that the ideas proposed in the issue are worth pursuing further.</li>
+<li>Issues marked with the &ldquo;<a href="https://issues.apache.org/jira/browse/MESOS-1?jql=project%20%3D%20MESOS%20AND%20status%20%3D%20Accepted%20AND%20labels%20%3D%20newbie">newbie</a>&rdquo; label can be good candidates for &ldquo;starter&rdquo; projects. You can also look for the labels &ldquo;newbie++&rdquo;, &ldquo;beginner&rdquo;, and &ldquo;beginners&rdquo;.</li>
+<li>When identifying a JIRA issue to work on, it is recommended to work on items that are relevant to the next release. Selecting work items important for the next release increases the priority for reviewers during the contribution process. See the tracking ticket for the release to figure out the high priority projects or ask the release manager to guide you.</li>
+</ol>
+</li>
+<li>Assign the JIRA to yourself.
+
+<ol>
+<li>You will be able to assign the JIRA to yourself as soon as your pull request with additions to the contributors.yaml file is merged.</li>
+</ol>
+</li>
+<li>Formulate a plan for resolving the issue. Guidelines to consider when designing a solution can be found in the <a href="/documentation/latest/./effective-code-reviewing/">effective-code-reviewing</a> document. It is important to discuss your proposed solution within the JIRA ticket early in the resolution process in order to get feedback from reviewers. Early discussions will help:
+
+<ol>
+<li>ensure the solution will be scoped in a consumable fashion;</li>
+<li>eliminate duplicate work with other contributions; and</li>
+<li>alert anyone interested in following the activity and progress of the ticket.</li>
+</ol>
+</li>
+<li>Find a <strong>shepherd</strong> to collaborate on your patch. A shepherd is a Mesos committer that will work with you to give you feedback on your proposed design, and to eventually commit your change into the Mesos source tree. To find a shepherd, you can do one or more of the following:
+
+<ol>
+<li>Email the dev mailing list (include a link to your JIRA issue).</li>
+<li>Add a comment to your JIRA issue, referencing by username one or more Mesos <a href="/documentation/latest/./committers/">committers</a> whom you believe would be interested in shepherding. The listed maintainers of the portion of the codebase you&rsquo;re working on are good candidates to reach out to.</li>
+<li>Email potential shepherds directly.</li>
+<li>Ask the developers on Mesos Slack or on IRC (in the <a href="irc://irc.freenode.net/mesos">mesos channel</a> on <a href="https://freenode.net">Freenode</a>).</li>
+</ol>
+</li>
 </ol>
 
 
 <h3>Create your patch</h3>
 
 <ol>
-<li><p>Create one or more test cases to exercise the bug or the feature (the Mesos team uses <a href="http://en.wikipedia.org/wiki/Test-driven_development">test-driven development</a>). Before you start coding, make sure these test cases all fail.</p>
+<li>Create one or more test cases to exercise the bug or the feature (the Mesos team uses <a href="http://en.wikipedia.org/wiki/Test-driven_development">test-driven development</a>). Before you start coding, make sure these test cases all fail.
 
 <ol>
 <li>The <a href="/documentation/latest/./testing-patterns/">testing patterns</a> page has some suggestions for writing test cases.</li>
 </ol>
 </li>
-<li><p>Make your changes to the code (using whatever IDE/editor you choose) to actually fix the bug or implement the feature.</p>
+<li>Make your changes to the code (using whatever IDE/editor you choose) to actually fix the bug or implement the feature.
 
 <ol>
 <li>Before beginning, please read the <a href="/documentation/latest/./c++-style-guide/">Mesos C++ Style Guide</a>. It is recommended to use the git pre-commit hook (<code>support/hooks/pre-commit</code>) to automatically check for style errors. See the hook script for instructions to enable it.</li>
@@ -219,17 +235,18 @@
 </li>
 </ol>
 </li>
-<li><p>Make sure that all of the unit tests pass, including the new test cases you have added: <code>make check</code>.</p>
+<li>Make sure that all of the unit tests pass, including the new test cases you have added: <code>make check</code>.
 
 <ol>
 <li>To build all tests without executing them, use something like: <code>make tests</code>.</li>
 <li>To execute a single unit test (helpful when trying to debug a test case failure), use something like: <code>make check GTEST_FILTER="HTTPTest.Delete"</code>.</li>
-<li>If you added new tests, make sure you run them repeatedly in order to catch inconsistent failures. A command like the following can be used to run an individual test 1000 times:</li>
+<li>If you added new tests, make sure you run them repeatedly in order to catch inconsistent failures. A command like the following can be used to run an individual test 1000 times:
+<code>
+sudo GLOG_v=1 ./bin/mesos-tests.sh --verbose --gtest_filter="*DOCKER*" --gtest_break_on_failure --gtest_repeat=1000
+</code></li>
 </ol>
-
-
-<p> sudo GLOG_v=1 ./bin/mesos-tests.sh &ndash;verbose &ndash;gtest_filter=&ldquo;<em>DOCKER</em>&rdquo; &ndash;gtest_break_on_failure &ndash;gtest_repeat=1000</p></li>
-<li><p>Divide your change into one or more Git commits. Each commit should represent a single logical (atomic) change to the Mesos source code: this makes your changes easier to review. For more information, see the <a href="/documentation/latest/./effective-code-reviewing/">reviewer guidelines</a>.</p>
+</li>
+<li>Divide your change into one or more Git commits. Each commit should represent a single logical (atomic) change to the Mesos source code: this makes your changes easier to review. For more information, see the <a href="/documentation/latest/./effective-code-reviewing/">reviewer guidelines</a>.
 
 <ol>
 <li>Try to avoid including other, unrelated cleanups (e.g., typo fixes or style nits) in the same commit that makes functional changes. While typo fixes are great, including them in the same commit as functional changes makes the commit history harder to read.</li>
@@ -237,7 +254,7 @@
 <li>Commit messages should be in past tense. The first sentence should summarize the change; it should start with a capital letter, not exceed 72 characters and end in a period.</li>
 </ol>
 </li>
-<li><p>Make sure to pull in any changes that have been committed to master branch. Using Git, do this via something like:</p>
+<li>Make sure to pull in any changes that have been committed to master branch. Using Git, do this via something like:
 
 <ol>
 <li><code>git checkout master</code></li>
@@ -252,7 +269,7 @@
 <h3>Submit your patch</h3>
 
 <ol>
-<li><p>You&rsquo;re ready to submit your patch for review!</p>
+<li>You&rsquo;re ready to submit your patch for review!
 
 <ol>
 <li>Log in or create an account at <a href="http://reviews.apache.org">Apache Review Board</a>.</li>
@@ -268,7 +285,7 @@
 <li> Under &ldquo;Testing Done&rdquo;, explain what new tests you have created, what tests were modified, and what procedures you went through to test your changes.</li>
 </ol>
 </li>
-<li><p>Wait for a code review from another Mesos developer via Review Board, address their feedback and upload updated patches until you receive a &ldquo;Ship It&rdquo; from a Mesos committer.</p>
+<li>Wait for a code review from another Mesos developer via Review Board, address their feedback and upload updated patches until you receive a &ldquo;Ship It&rdquo; from a Mesos committer.
 
 <ol>
 <li>If you don&rsquo;t receive any feedback, contact your shepherd to remind them. While the committers try their best to provide prompt feedback on proposed changes, they are busy and sometimes a patch gets overlooked.</li>
@@ -278,8 +295,8 @@
 <li>If an issue has been raised in the review, please resolve the issue as &ldquo;Fixed&rdquo; or &ldquo;Dropped&rdquo;. If &ldquo;Dropped&rdquo; please add a comment explaining the reason. Also, if your fix warrants a comment (e.g., fixed differently than suggested by the reviewer) please add a comment.</li>
 </ol>
 </li>
-<li><p>After consensus is reached on your JIRA/patch, you&rsquo;re review request will receive a &ldquo;Ship It!&rdquo; from a committer, and then a committer will commit your patch to the git repository. Congratulations and thanks for participating in our community!</p></li>
-<li><p>The last step is to ensure that the necessary documentation gets created or updated so the whole world knows about your new feature or bug fix.</p></li>
+<li>After consensus is reached on your JIRA/patch, you&rsquo;re review request will receive a &ldquo;Ship It!&rdquo; from a committer, and then a committer will commit your patch to the git repository. Congratulations and thanks for participating in our community!</li>
+<li>The last step is to ensure that the necessary documentation gets created or updated so the whole world knows about your new feature or bug fix.</li>
 </ol>
 
 
@@ -289,10 +306,7 @@
 
 <h2>Style Guides</h2>
 
-<ul>
-<li>For patches to the core, we ask that you follow the <a href="/documentation/latest/./c++-style-guide/">Mesos C++ Style Guide</a>.</li>
-</ul>
-
+<p>For patches to the core, we ask that you follow the <a href="/documentation/latest/./c++-style-guide/">Mesos C++ Style Guide</a>.</p>
 
 <h2>Additional Guidance</h2>
 
