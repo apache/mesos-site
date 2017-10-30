@@ -110,6 +110,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a3a6ff7632d43e249ac5c0d33b69f15fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0984d983c592e277dbbdbce6b1250da0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmesos_1_1internal_1_1master_1_1Framework.html#a0984d983c592e277dbbdbce6b1250da0">removeExecutor</a> (const SlaveID &amp;slaveId, const ExecutorID &amp;executorId)</td></tr>
 <tr class="separator:a0984d983c592e277dbbdbce6b1250da0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1adeef84e4a4c91ecbb5da9b41627f1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmesos_1_1internal_1_1master_1_1Framework.html#ad1adeef84e4a4c91ecbb5da9b41627f1">addOfferOperation</a> (<a class="el" href="classprocess_1_1Owned.html">process::Owned</a>&lt; OfferOperation &gt; operation)</td></tr>
+<tr class="separator:ad1adeef84e4a4c91ecbb5da9b41627f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac971d54c3567de6411c6aa7e998c5417"><td class="memItemLeft" align="right" valign="top">const FrameworkID&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmesos_1_1internal_1_1master_1_1Framework.html#ac971d54c3567de6411c6aa7e998c5417">id</a> () const </td></tr>
 <tr class="separator:ac971d54c3567de6411c6aa7e998c5417"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f5f1a0e7c16c0e7750373c1146dc3a1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmesos_1_1internal_1_1master_1_1Framework.html#a8f5f1a0e7c16c0e7750373c1146dc3a1">update</a> (const FrameworkInfo &amp;newInfo)</td></tr>
@@ -174,6 +176,11 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a1e784cda7e5c31ad19ec72b6a7b6fdee"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classhashmap.html">hashmap</a>&lt; SlaveID, <a class="el" href="classhashmap.html">hashmap</a><br class="typebreak"/>
 &lt; ExecutorID, ExecutorInfo &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmesos_1_1internal_1_1master_1_1Framework.html#a1e784cda7e5c31ad19ec72b6a7b6fdee">executors</a></td></tr>
 <tr class="separator:a1e784cda7e5c31ad19ec72b6a7b6fdee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73efe6c7ec93af36a580f1d6134e24ff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classhashmap.html">hashmap</a>&lt; <a class="el" href="structid_1_1UUID.html">UUID</a>, <a class="el" href="classprocess_1_1Owned.html">process::Owned</a><br class="typebreak"/>
+&lt; OfferOperation &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmesos_1_1internal_1_1master_1_1Framework.html#a73efe6c7ec93af36a580f1d6134e24ff">offerOperations</a></td></tr>
+<tr class="separator:a73efe6c7ec93af36a580f1d6134e24ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d211f2b6fca34349126f16bc2cef3e0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classhashmap.html">hashmap</a>&lt; OfferOperationID, <a class="el" href="structid_1_1UUID.html">UUID</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmesos_1_1internal_1_1master_1_1Framework.html#a4d211f2b6fca34349126f16bc2cef3e0">offerOperationUUIDs</a></td></tr>
+<tr class="separator:a4d211f2b6fca34349126f16bc2cef3e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a35847f2388d25e0cb9b3a9d0a722fbdd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmesos_1_1Resources.html">Resources</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmesos_1_1internal_1_1master_1_1Framework.html#a35847f2388d25e0cb9b3a9d0a722fbdd">totalUsedResources</a></td></tr>
 <tr class="separator:a35847f2388d25e0cb9b3a9d0a722fbdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9085d3f2c156a7772cbd243776a62491"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classhashmap.html">hashmap</a>&lt; SlaveID, <a class="el" href="classmesos_1_1Resources.html">Resources</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmesos_1_1internal_1_1master_1_1Framework.html#a9085d3f2c156a7772cbd243776a62491">usedResources</a></td></tr>
@@ -497,6 +504,30 @@ v1::scheduler::Event &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="b
           <td>(</td>
           <td class="paramtype">Offer *&#160;</td>
           <td class="paramname"><em>offer</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ad1adeef84e4a4c91ecbb5da9b41627f1"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void mesos::internal::master::Framework::addOfferOperation </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classprocess_1_1Owned.html">process::Owned</a>&lt; OfferOperation &gt;&#160;</td>
+          <td class="paramname"><em>operation</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -1109,6 +1140,30 @@ template&lt;typename Message &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="classhashmap.html">hashmap</a>&lt;SlaveID, <a class="el" href="classmesos_1_1Resources.html">Resources</a>&gt; mesos::internal::master::Framework::offeredResources</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a73efe6c7ec93af36a580f1d6134e24ff"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classhashmap.html">hashmap</a>&lt;<a class="el" href="structid_1_1UUID.html">UUID</a>, <a class="el" href="classprocess_1_1Owned.html">process::Owned</a>&lt;OfferOperation&gt; &gt; mesos::internal::master::Framework::offerOperations</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a4d211f2b6fca34349126f16bc2cef3e0"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classhashmap.html">hashmap</a>&lt;OfferOperationID, <a class="el" href="structid_1_1UUID.html">UUID</a>&gt; mesos::internal::master::Framework::offerOperationUUIDs</td>
         </tr>
       </table>
 </div><div class="memdoc">
