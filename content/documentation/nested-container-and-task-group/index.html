@@ -217,21 +217,37 @@ offer operation <code>LaunchGroup</code> when accepting an offer. The
 the <code>TaskGroupInfo</code> includes the group of tasks to be launched
 atomically.</p>
 
-<p>To use the default executor for launching the task group, the framework should:
-* Set <code>ExecutorInfo.type</code> as <code>DEFAULT</code>.
-* Set <code>ExecutorInfo.resources</code> for the resources needed for the executor.</p>
+<p>To use the default executor for launching the task group, the framework should:</p>
 
-<p>Please note that the following fields in the <code>ExecutorInfo</code> are not allowed to set when using the default executor:
-* <code>ExecutorInfo.command</code>.
-* <code>ExecutorInfo.container.type</code>, <code>ExecutorInfo.container.docker</code> and <code>ExecutorInfo.container.mesos</code>.</p>
+<ul>
+<li>Set <code>ExecutorInfo.type</code> as <code>DEFAULT</code>.</li>
+<li>Set <code>ExecutorInfo.resources</code> for the resources needed for the executor.</li>
+</ul>
 
-<p>To allow containers to share a network namespace:
-* Set <code>ExecutorInfo.container.network</code>.</p>
 
-<p>To allow containers to share an ephemeral volume:
-Specify the <code>volume/sandbox_path</code> isolator.
-* Set <code>TaskGroupInfo.tasks.container.volumes.source.type</code> as <code>SANDBOX_PATH</code>.
-* Set <code>TaskGroupInfo.tasks.container.volumes.source.sandbox_path.type</code> as <code>PARENT</code> and the path relative to the parent container&rsquo;s sandbox.</p>
+<p>Please note that the following fields in the <code>ExecutorInfo</code> are not allowed to set when using the default executor:</p>
+
+<ul>
+<li><code>ExecutorInfo.command</code>.</li>
+<li><code>ExecutorInfo.container.type</code>, <code>ExecutorInfo.container.docker</code> and <code>ExecutorInfo.container.mesos</code>.</li>
+</ul>
+
+
+<p>To allow containers to share a network namespace:</p>
+
+<ul>
+<li>Set <code>ExecutorInfo.container.network</code>.</li>
+</ul>
+
+
+<p>To allow containers to share an ephemeral volume:</p>
+
+<ul>
+<li>Specify the <code>volume/sandbox_path</code> isolator.</li>
+<li>Set <code>TaskGroupInfo.tasks.container.volumes.source.type</code> as <code>SANDBOX_PATH</code>.</li>
+<li>Set <code>TaskGroupInfo.tasks.container.volumes.source.sandbox_path.type</code> as <code>PARENT</code> and the path relative to the parent container&rsquo;s sandbox.</li>
+</ul>
+
 
 <h2>Executor API</h2>
 
