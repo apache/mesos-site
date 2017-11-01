@@ -159,17 +159,21 @@ R Removed feature/behavior
 
   <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Mesos Core-->
     <ul style="padding-left:10px;">
-      <li>C <a href="#1-5-x-task-starting">Built-int executors send a TASK_STARTING update</a></li>
+      <li>C <a href="#1-5-x-task-starting">Built-in executors send a TASK_STARTING update</a></li>
+      <li>A <a href="#1-5-x-network-ports-isolator">Network ports isolator</a></li>
     </ul>
   </td>
 
   <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Flags-->
     <ul style="padding-left:10px;">
+      <li>A <a href="#1-5-x-network-ports-isolator">container_ports_watch_interval</a></li>
+      <li>A <a href="#1-5-x-network-ports-isolator">check_agent_port_range_only</a></li>
     </ul>
   </td>
 
   <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Framework API-->
     <ul style="padding-left:10px;">
+      <li>A <a href="#1-5-x-task-resource-limitation">Added the TaskStatus.limitation message</a></li>
     </ul>
   </td>
 
@@ -473,6 +477,28 @@ the beginning of Mesos, but prior to this version the built-in executors did
 not actually send it. This means that all schedulers using one of the built-in
 executors must be upgraded to expect <code>TASK_STARTING</code> updates before upgrading
 Mesos itself.</li>
+</ul>
+
+
+<p><a name="1-5-x-task-resource-limitation"></a></p>
+
+<ul>
+<li>A new field, <code>limitation</code>, was added to the <code>TaskStatus</code> message. This
+field is a <code>TaskResourceLimitation</code> message that describes the resources
+that caused a task to fail with a resource limitation reason.</li>
+</ul>
+
+
+<p><a name="1-5-x-network-ports-isolator"></a></p>
+
+<ul>
+<li>A new <a href="/documentation/latest/./isolators/network-ports/"><code>network/ports</code></a> isolator has been added. The isolator supports the following new agent flags:
+
+<ul>
+<li><code>--container_ports_watch_interval</code> specifies the interval at which the isolator reconciles port assignments.</li>
+<li><code>--check_agent_port_range_only</code> excludes ports outside the agent&rsquo;s range from port reconcilation.</li>
+</ul>
+</li>
 </ul>
 
 
