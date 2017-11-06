@@ -89,8 +89,12 @@ Functions</h2></td></tr>
 <tr class="separator:a5cd00b9f2bf518fb5cea40dccf4188ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae2c95da054d42be4ebf9eb6156db1841"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classOption.html">Option</a>&lt; ContainerStatus &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1internal_1_1protobuf.html#ae2c95da054d42be4ebf9eb6156db1841">getTaskContainerStatus</a> (const Task &amp;task)</td></tr>
 <tr class="separator:ae2c95da054d42be4ebf9eb6156db1841"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a171fb0158aea7478b0550021cc828cc6"><td class="memItemLeft" align="right" valign="top">OfferOperation&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1internal_1_1protobuf.html#a171fb0158aea7478b0550021cc828cc6">createOfferOperation</a> (const Offer::Operation &amp;info, const FrameworkID &amp;frameworkId)</td></tr>
-<tr class="separator:a171fb0158aea7478b0550021cc828cc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7bc75e85139d03fe24919888bc5bb9db"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1internal_1_1protobuf.html#a7bc75e85139d03fe24919888bc5bb9db">isTerminalState</a> (const OfferOperationState &amp;state)</td></tr>
+<tr class="separator:a7bc75e85139d03fe24919888bc5bb9db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6acf3a252607f5f76cb50bdbdccee0a"><td class="memItemLeft" align="right" valign="top">OfferOperationStatus&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1internal_1_1protobuf.html#ab6acf3a252607f5f76cb50bdbdccee0a">createOfferOperationStatus</a> (const OfferOperationState &amp;state, const <a class="el" href="classOption.html">Option</a>&lt; OfferOperationID &gt; &amp;operationId=<a class="el" href="structNone.html">None</a>(), const <a class="el" href="classOption.html">Option</a>&lt; std::string &gt; &amp;message=<a class="el" href="structNone.html">None</a>(), const <a class="el" href="classOption.html">Option</a>&lt; <a class="el" href="classmesos_1_1Resources.html">Resources</a> &gt; &amp;convertedResources=<a class="el" href="structNone.html">None</a>(), const <a class="el" href="classOption.html">Option</a>&lt; <a class="el" href="structid_1_1UUID.html">UUID</a> &gt; &amp;statusUUID=<a class="el" href="structNone.html">None</a>())</td></tr>
+<tr class="separator:ab6acf3a252607f5f76cb50bdbdccee0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67fecbfe97e8e69ad904c1b1419d5e0a"><td class="memItemLeft" align="right" valign="top">OfferOperation&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1internal_1_1protobuf.html#a67fecbfe97e8e69ad904c1b1419d5e0a">createOfferOperation</a> (const Offer::Operation &amp;info, const OfferOperationStatus &amp;latestStatus, const FrameworkID &amp;frameworkId, const SlaveID &amp;slaveId)</td></tr>
+<tr class="separator:a67fecbfe97e8e69ad904c1b1419d5e0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a638bffc6be26057ab5f2054bd5d467e3"><td class="memItemLeft" align="right" valign="top">MasterInfo&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1internal_1_1protobuf.html#a638bffc6be26057ab5f2054bd5d467e3">createMasterInfo</a> (const <a class="el" href="structprocess_1_1UPID.html">process::UPID</a> &amp;pid)</td></tr>
 <tr class="separator:a638bffc6be26057ab5f2054bd5d467e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afbc28e67bfbbed45cad7350a47088229"><td class="memItemLeft" align="right" valign="top">Label&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1internal_1_1protobuf.html#afbc28e67bfbbed45cad7350a47088229">createLabel</a> (const std::string &amp;key, const <a class="el" href="classOption.html">Option</a>&lt; std::string &gt; &amp;value=<a class="el" href="structNone.html">None</a>())</td></tr>
@@ -175,7 +179,7 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a171fb0158aea7478b0550021cc828cc6"></a>
+<a class="anchor" id="a67fecbfe97e8e69ad904c1b1419d5e0a"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -188,8 +192,64 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const OfferOperationStatus &amp;&#160;</td>
+          <td class="paramname"><em>latestStatus</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">const FrameworkID &amp;&#160;</td>
-          <td class="paramname"><em>frameworkId</em>&#160;</td>
+          <td class="paramname"><em>frameworkId</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const SlaveID &amp;&#160;</td>
+          <td class="paramname"><em>slaveId</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ab6acf3a252607f5f76cb50bdbdccee0a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">OfferOperationStatus mesos::internal::protobuf::createOfferOperationStatus </td>
+          <td>(</td>
+          <td class="paramtype">const OfferOperationState &amp;&#160;</td>
+          <td class="paramname"><em>state</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classOption.html">Option</a>&lt; OfferOperationID &gt; &amp;&#160;</td>
+          <td class="paramname"><em>operationId</em> = <code><a class="el" href="structNone.html">None</a>()</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classOption.html">Option</a>&lt; std::string &gt; &amp;&#160;</td>
+          <td class="paramname"><em>message</em> = <code><a class="el" href="structNone.html">None</a>()</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classOption.html">Option</a>&lt; Resources &gt; &amp;&#160;</td>
+          <td class="paramname"><em>convertedResources</em> = <code><a class="el" href="structNone.html">None</a>()</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classOption.html">Option</a>&lt; <a class="el" href="structid_1_1UUID.html">UUID</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>statusUUID</em> = <code><a class="el" href="structNone.html">None</a>()</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -638,6 +698,22 @@ Functions</h2></td></tr>
           <td class="memname">bool mesos::internal::protobuf::isTerminalState </td>
           <td>(</td>
           <td class="paramtype">const TaskState &amp;&#160;</td>
+          <td class="paramname"><em>state</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a7bc75e85139d03fe24919888bc5bb9db"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mesos::internal::protobuf::isTerminalState </td>
+          <td>(</td>
+          <td class="paramtype">const OfferOperationState &amp;&#160;</td>
           <td class="paramname"><em>state</em></td><td>)</td>
           <td></td>
         </tr>

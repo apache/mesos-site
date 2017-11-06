@@ -77,44 +77,49 @@
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="owned_8hpp.html">process/owned.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="queue_8hpp.html">process/queue.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="src_2resource__provider_2message_8hpp.html">resource_provider/message.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="messages_8hpp.html">messages/messages.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">namespace </span>mesos {</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">namespace </span>internal {</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">// Forward declarations.</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">class </span>ResourceProviderManagerProcess;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1ResourceProviderManager.html">   35</a></span>&#160;<span class="keyword">class </span><a class="code" href="classmesos_1_1internal_1_1ResourceProviderManager.html">ResourceProviderManager</a></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;{</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <a class="code" href="classmesos_1_1internal_1_1ResourceProviderManager.html#a1ffa1498d0d30343c4311bdddf1e71ee">ResourceProviderManager</a>();</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <a class="code" href="classmesos_1_1internal_1_1ResourceProviderManager.html#ab051c5eaeed02d2f8a786c76f92ba19a">~ResourceProviderManager</a>();</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <a class="code" href="classmesos_1_1internal_1_1ResourceProviderManager.html#a1ffa1498d0d30343c4311bdddf1e71ee">ResourceProviderManager</a>(</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;      <span class="keyword">const</span> <a class="code" href="classmesos_1_1internal_1_1ResourceProviderManager.html">ResourceProviderManager</a>&amp; other) = <span class="keyword">delete</span>;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <a class="code" href="classmesos_1_1internal_1_1ResourceProviderManager.html">ResourceProviderManager</a>&amp; <a class="code" href="classmesos_1_1internal_1_1ResourceProviderManager.html#a7e3b37fe702c1f4c9a95eb4702806cbb">operator=</a>(</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;      <span class="keyword">const</span> <a class="code" href="classmesos_1_1internal_1_1ResourceProviderManager.html">ResourceProviderManager</a>&amp; other) = <span class="keyword">delete</span>;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <span class="comment">// The API endpoint handler.</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <a class="code" href="classprocess_1_1Future.html">process::Future&lt;process::http::Response&gt;</a> <a class="code" href="classmesos_1_1internal_1_1ResourceProviderManager.html#a6be2481700f40c542ee99992b463ca70">api</a>(</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;      <span class="keyword">const</span> <a class="code" href="structprocess_1_1http_1_1Request.html">process::http::Request</a>&amp; <a class="code" href="namespaceprocess_1_1http.html#ad8f400b5e54038df7e5662ec35da05fa">request</a>,</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;      <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;process::http::authentication::Principal&gt;</a>&amp; principal) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <span class="comment">// Returns a stream of messages from the resource provider manager.</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <a class="code" href="classprocess_1_1Queue.html">process::Queue&lt;ResourceProviderMessage&gt;</a> <a class="code" href="classmesos_1_1internal_1_1ResourceProviderManager.html#a99b78ea2c2adfa4b1459769d78cf5a2c">messages</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <a class="code" href="classprocess_1_1Owned.html">process::Owned&lt;ResourceProviderManagerProcess&gt;</a> process;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;};</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="src_2resource__provider_2message_8hpp.html">resource_provider/message.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">namespace </span>mesos {</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">namespace </span>internal {</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">// Forward declarations.</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">class </span>ResourceProviderManagerProcess;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
+<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1ResourceProviderManager.html">   37</a></span>&#160;<span class="keyword">class </span><a class="code" href="classmesos_1_1internal_1_1ResourceProviderManager.html">ResourceProviderManager</a></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;{</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  <a class="code" href="classmesos_1_1internal_1_1ResourceProviderManager.html#a1ffa1498d0d30343c4311bdddf1e71ee">ResourceProviderManager</a>();</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <a class="code" href="classmesos_1_1internal_1_1ResourceProviderManager.html#ab051c5eaeed02d2f8a786c76f92ba19a">~ResourceProviderManager</a>();</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <a class="code" href="classmesos_1_1internal_1_1ResourceProviderManager.html#a1ffa1498d0d30343c4311bdddf1e71ee">ResourceProviderManager</a>(</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;      <span class="keyword">const</span> <a class="code" href="classmesos_1_1internal_1_1ResourceProviderManager.html">ResourceProviderManager</a>&amp; other) = <span class="keyword">delete</span>;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  <a class="code" href="classmesos_1_1internal_1_1ResourceProviderManager.html">ResourceProviderManager</a>&amp; <a class="code" href="classmesos_1_1internal_1_1ResourceProviderManager.html#a7e3b37fe702c1f4c9a95eb4702806cbb">operator=</a>(</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;      <span class="keyword">const</span> <a class="code" href="classmesos_1_1internal_1_1ResourceProviderManager.html">ResourceProviderManager</a>&amp; other) = <span class="keyword">delete</span>;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <span class="comment">// The API endpoint handler.</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <a class="code" href="classprocess_1_1Future.html">process::Future&lt;process::http::Response&gt;</a> <a class="code" href="classmesos_1_1internal_1_1ResourceProviderManager.html#a6be2481700f40c542ee99992b463ca70">api</a>(</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;      <span class="keyword">const</span> <a class="code" href="structprocess_1_1http_1_1Request.html">process::http::Request</a>&amp; <a class="code" href="namespaceprocess_1_1http.html#ad8f400b5e54038df7e5662ec35da05fa">request</a>,</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;      <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;process::http::authentication::Principal&gt;</a>&amp; principal) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classmesos_1_1internal_1_1ResourceProviderManager.html#adb68dd35683bfcd8edc7e7f77da67fb4">applyOfferOperation</a>(<span class="keyword">const</span> ApplyOfferOperationMessage&amp; message) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="comment">// Returns a stream of messages from the resource provider manager.</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <a class="code" href="classprocess_1_1Queue.html">process::Queue&lt;ResourceProviderMessage&gt;</a> <a class="code" href="classmesos_1_1internal_1_1ResourceProviderManager.html#a99b78ea2c2adfa4b1459769d78cf5a2c">messages</a>() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;} <span class="comment">// namespace internal {</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;} <span class="comment">// namespace mesos {</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="preprocessor">#endif // __RESOURCE_PROVIDER_MANAGER_HPP__</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <a class="code" href="classprocess_1_1Owned.html">process::Owned&lt;ResourceProviderManagerProcess&gt;</a> process;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;};</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;} <span class="comment">// namespace internal {</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;} <span class="comment">// namespace mesos {</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="preprocessor">#endif // __RESOURCE_PROVIDER_MANAGER_HPP__</span></div>
 <div class="ttc" id="classOption_html"><div class="ttname"><a href="classOption.html">Option&lt; process::http::authentication::Principal &gt;</a></div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1ResourceProviderManager_html_adb68dd35683bfcd8edc7e7f77da67fb4"><div class="ttname"><a href="classmesos_1_1internal_1_1ResourceProviderManager.html#adb68dd35683bfcd8edc7e7f77da67fb4">mesos::internal::ResourceProviderManager::applyOfferOperation</a></div><div class="ttdeci">void applyOfferOperation(const ApplyOfferOperationMessage &amp;message) const </div></div>
 <div class="ttc" id="namespaceprocess_1_1http_html_ad8f400b5e54038df7e5662ec35da05fa"><div class="ttname"><a href="namespaceprocess_1_1http.html#ad8f400b5e54038df7e5662ec35da05fa">process::http::request</a></div><div class="ttdeci">Future&lt; Response &gt; request(const Request &amp;request, bool streamedResponse=false)</div><div class="ttdoc">Asynchronously sends an HTTP request to the process and returns the HTTP response once the entire res...</div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1ResourceProviderManager_html_a99b78ea2c2adfa4b1459769d78cf5a2c"><div class="ttname"><a href="classmesos_1_1internal_1_1ResourceProviderManager.html#a99b78ea2c2adfa4b1459769d78cf5a2c">mesos::internal::ResourceProviderManager::messages</a></div><div class="ttdeci">process::Queue&lt; ResourceProviderMessage &gt; messages() const </div></div>
 <div class="ttc" id="structprocess_1_1http_1_1Request_html"><div class="ttname"><a href="structprocess_1_1http_1_1Request.html">process::http::Request</a></div><div class="ttdef"><b>Definition:</b> http.hpp:518</div></div>
@@ -122,7 +127,7 @@
 <div class="ttc" id="src_2resource__provider_2message_8hpp_html"><div class="ttname"><a href="src_2resource__provider_2message_8hpp.html">message.hpp</a></div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1ResourceProviderManager_html_a1ffa1498d0d30343c4311bdddf1e71ee"><div class="ttname"><a href="classmesos_1_1internal_1_1ResourceProviderManager.html#a1ffa1498d0d30343c4311bdddf1e71ee">mesos::internal::ResourceProviderManager::ResourceProviderManager</a></div><div class="ttdeci">ResourceProviderManager()</div></div>
 <div class="ttc" id="future_8hpp_html"><div class="ttname"><a href="future_8hpp.html">future.hpp</a></div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1ResourceProviderManager_html"><div class="ttname"><a href="classmesos_1_1internal_1_1ResourceProviderManager.html">mesos::internal::ResourceProviderManager</a></div><div class="ttdef"><b>Definition:</b> manager.hpp:35</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1ResourceProviderManager_html"><div class="ttname"><a href="classmesos_1_1internal_1_1ResourceProviderManager.html">mesos::internal::ResourceProviderManager</a></div><div class="ttdef"><b>Definition:</b> manager.hpp:37</div></div>
 <div class="ttc" id="classprocess_1_1Queue_html"><div class="ttname"><a href="classprocess_1_1Queue.html">process::Queue</a></div><div class="ttdef"><b>Definition:</b> queue.hpp:29</div></div>
 <div class="ttc" id="3rdparty_2libprocess_2include_2process_2authenticator_8hpp_html"><div class="ttname"><a href="3rdparty_2libprocess_2include_2process_2authenticator_8hpp.html">authenticator.hpp</a></div></div>
 <div class="ttc" id="owned_8hpp_html"><div class="ttname"><a href="owned_8hpp.html">owned.hpp</a></div></div>
@@ -131,6 +136,7 @@
 <div class="ttc" id="3rdparty_2libprocess_2include_2process_2http_8hpp_html"><div class="ttname"><a href="3rdparty_2libprocess_2include_2process_2http_8hpp.html">http.hpp</a></div></div>
 <div class="ttc" id="queue_8hpp_html"><div class="ttname"><a href="queue_8hpp.html">queue.hpp</a></div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1ResourceProviderManager_html_a6be2481700f40c542ee99992b463ca70"><div class="ttname"><a href="classmesos_1_1internal_1_1ResourceProviderManager.html#a6be2481700f40c542ee99992b463ca70">mesos::internal::ResourceProviderManager::api</a></div><div class="ttdeci">process::Future&lt; process::http::Response &gt; api(const process::http::Request &amp;request, const Option&lt; process::http::authentication::Principal &gt; &amp;principal) const </div></div>
+<div class="ttc" id="messages_8hpp_html"><div class="ttname"><a href="messages_8hpp.html">messages.hpp</a></div></div>
 <div class="ttc" id="classprocess_1_1Future_html"><div class="ttname"><a href="classprocess_1_1Future.html">process::Future</a></div><div class="ttdef"><b>Definition:</b> future.hpp:56</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
