@@ -109,7 +109,7 @@
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="keyword">    </span>{</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;      <span class="keywordflow">switch</span> (type_) {</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        <span class="keywordflow">case</span> <a class="code" href="classmesos_1_1slave_1_1ContainerIO_1_1IO.html#a7c8f14a0efec6a09b957d5d24b8f9e99aa8fa6b553b655657f943cb8fd85859d1">Type::FD</a>:</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;          <span class="keywordflow">return</span> <a class="code" href="classprocess_1_1Subprocess.html#aaa6e1b76ef54ed6db34d595811122ce0">process::Subprocess::FD</a>(*fd_-&gt;<a class="code" href="classOption.html#a21358442c0fac1cc978a67a9a9089a79">get</a>());</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;          <span class="keywordflow">return</span> <a class="code" href="classprocess_1_1Subprocess.html#aaa6e1b76ef54ed6db34d595811122ce0">process::Subprocess::FD</a>(*fd_);</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        <span class="keywordflow">case</span> <a class="code" href="classmesos_1_1slave_1_1ContainerIO_1_1IO.html#a7c8f14a0efec6a09b957d5d24b8f9e99a5ffb5f0d0de78321df46fc7c93ca64a3">Type::PATH</a>:</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;          <span class="keywordflow">return</span> <a class="code" href="classprocess_1_1Subprocess.html#a54793e9c516257d68776f63f0872c3c7">process::Subprocess::PATH</a>(path_.<a class="code" href="classOption.html#a21358442c0fac1cc978a67a9a9089a79">get</a>());</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        <span class="keywordflow">default</span>:</div>
@@ -152,11 +152,11 @@
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;</div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    IO(<a class="code" href="classmesos_1_1slave_1_1ContainerIO_1_1IO.html#a7c8f14a0efec6a09b957d5d24b8f9e99">Type</a> _type, <span class="keyword">const</span> std::string&amp; _path)</div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;      : type_(_type),</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        fd_(<a class="code" href="structNone.html">None</a>()),</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        fd_(),</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        path_(_path) {}</div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;</div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    <a class="code" href="classmesos_1_1slave_1_1ContainerIO_1_1IO.html#a7c8f14a0efec6a09b957d5d24b8f9e99">Type</a> type_;</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    <a class="code" href="classOption.html">Option&lt;process::Shared&lt;FDWrapper&gt;</a>&gt; fd_;</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    <a class="code" href="classprocess_1_1Shared.html">process::Shared&lt;FDWrapper&gt;</a> fd_;</div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    <a class="code" href="classOption.html">Option&lt;std::string&gt;</a> path_;</div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;  };</div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;</div>
@@ -171,7 +171,7 @@
 <div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;} <span class="comment">// namespace mesos {</span></div>
 <div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;</div>
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;<span class="preprocessor">#endif // __MESOS_SLAVE_CONTAINERIZER_HPP__</span></div>
-<div class="ttc" id="classOption_html"><div class="ttname"><a href="classOption.html">Option</a></div><div class="ttdef"><b>Definition:</b> option.hpp:27</div></div>
+<div class="ttc" id="classOption_html"><div class="ttname"><a href="classOption.html">Option&lt; std::string &gt;</a></div></div>
 <div class="ttc" id="subprocess_8hpp_html"><div class="ttname"><a href="subprocess_8hpp.html">subprocess.hpp</a></div></div>
 <div class="ttc" id="classmesos_1_1slave_1_1ContainerIO_1_1IO_html"><div class="ttname"><a href="classmesos_1_1slave_1_1ContainerIO_1_1IO.html">mesos::slave::ContainerIO::IO</a></div><div class="ttdoc">Describes how the containerizer redirects I/O for stdin/stdout/stderr of a container. </div><div class="ttdef"><b>Definition:</b> containerizer.hpp:52</div></div>
 <div class="ttc" id="classprocess_1_1Subprocess_html_a54793e9c516257d68776f63f0872c3c7"><div class="ttname"><a href="classprocess_1_1Subprocess.html#a54793e9c516257d68776f63f0872c3c7">process::Subprocess::PATH</a></div><div class="ttdeci">static IO PATH(const std::string &amp;path)</div></div>
@@ -182,6 +182,7 @@
 <div class="ttc" id="classmesos_1_1slave_1_1ContainerIO_1_1IO_html_a7c8f14a0efec6a09b957d5d24b8f9e99a5ffb5f0d0de78321df46fc7c93ca64a3"><div class="ttname"><a href="classmesos_1_1slave_1_1ContainerIO_1_1IO.html#a7c8f14a0efec6a09b957d5d24b8f9e99a5ffb5f0d0de78321df46fc7c93ca64a3">mesos::slave::ContainerIO::IO::Type::PATH</a></div></div>
 <div class="ttc" id="3rdparty_2libprocess_2include_2process_2shared_8hpp_html"><div class="ttname"><a href="3rdparty_2libprocess_2include_2process_2shared_8hpp.html">shared.hpp</a></div></div>
 <div class="ttc" id="classprocess_1_1Subprocess_html_aaa6e1b76ef54ed6db34d595811122ce0"><div class="ttname"><a href="classprocess_1_1Subprocess.html#aaa6e1b76ef54ed6db34d595811122ce0">process::Subprocess::FD</a></div><div class="ttdeci">static IO FD(int_fd fd, IO::FDType type=IO::DUPLICATED)</div></div>
+<div class="ttc" id="classprocess_1_1Shared_html"><div class="ttname"><a href="classprocess_1_1Shared.html">process::Shared&lt; FDWrapper &gt;</a></div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_abd165ee6474b5b75bf075842fff13a04"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#abd165ee6474b5b75bf075842fff13a04">STDOUT_FILENO</a></div><div class="ttdeci">#define STDOUT_FILENO</div><div class="ttdef"><b>Definition:</b> windows.hpp:160</div></div>
 <div class="ttc" id="classprocess_1_1Subprocess_1_1IO_html"><div class="ttname"><a href="classprocess_1_1Subprocess_1_1IO.html">process::Subprocess::IO</a></div><div class="ttdoc">Describes how the I/O is redirected for stdin/stdout/stderr. </div><div class="ttdef"><b>Definition:</b> subprocess.hpp:61</div></div>
 <div class="ttc" id="classOption_html_a21358442c0fac1cc978a67a9a9089a79"><div class="ttname"><a href="classOption.html#a21358442c0fac1cc978a67a9a9089a79">Option::get</a></div><div class="ttdeci">const T &amp; get() const &amp;</div><div class="ttdef"><b>Definition:</b> option.hpp:114</div></div>
