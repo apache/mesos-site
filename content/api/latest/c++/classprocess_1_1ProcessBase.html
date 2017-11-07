@@ -179,8 +179,10 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:af90d581940120abfb787e46568e7a3af"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprocess_1_1ProcessBase.html#af90d581940120abfb787e46568e7a3af">send</a> (const <a class="el" href="structprocess_1_1UPID.html">UPID</a> &amp;to, const std::string &amp;name, const char *data=nullptr, size_t length=0)</td></tr>
 <tr class="memdesc:af90d581940120abfb787e46568e7a3af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends the message to the specified <code><a class="el" href="structprocess_1_1UPID.html" title="An &quot;untyped&quot; PID, used to encapsulate the process ID for lower-layer abstractions (eg...">UPID</a></code>.  <a href="#af90d581940120abfb787e46568e7a3af">More...</a><br/></td></tr>
 <tr class="separator:af90d581940120abfb787e46568e7a3af"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a98036cf5c9479ce92c8d4f1a83514cf8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprocess_1_1ProcessBase.html#a98036cf5c9479ce92c8d4f1a83514cf8">send</a> (const <a class="el" href="structprocess_1_1UPID.html">UPID</a> &amp;to, std::string &amp;&amp;name, const char *data=nullptr, size_t length=0)</td></tr>
-<tr class="separator:a98036cf5c9479ce92c8d4f1a83514cf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72621d5c290fc558dcffb62b7d05635b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprocess_1_1ProcessBase.html#a72621d5c290fc558dcffb62b7d05635b">send</a> (const <a class="el" href="structprocess_1_1UPID.html">UPID</a> &amp;to, std::string &amp;&amp;name)</td></tr>
+<tr class="separator:a72621d5c290fc558dcffb62b7d05635b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab60d5a19d749f9f140b5ede6800549a6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprocess_1_1ProcessBase.html#ab60d5a19d749f9f140b5ede6800549a6">send</a> (const <a class="el" href="structprocess_1_1UPID.html">UPID</a> &amp;to, std::string &amp;&amp;name, std::string &amp;&amp;data)</td></tr>
+<tr class="separator:ab60d5a19d749f9f140b5ede6800549a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae97b59a857843096aa219d0209837c42"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structprocess_1_1UPID.html">UPID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprocess_1_1ProcessBase.html#ae97b59a857843096aa219d0209837c42">link</a> (const <a class="el" href="structprocess_1_1UPID.html">UPID</a> &amp;pid, const <a class="el" href="classprocess_1_1ProcessBase.html#a39f8e327dc132dd4a3a95fee650458f8">RemoteConnection</a> remote=<a class="el" href="classprocess_1_1ProcessBase.html#a39f8e327dc132dd4a3a95fee650458f8a0a8e4fd54250dc259c749ebf914f6a5e">RemoteConnection::REUSE</a>)</td></tr>
 <tr class="memdesc:ae97b59a857843096aa219d0209837c42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Links with the specified <code><a class="el" href="structprocess_1_1UPID.html" title="An &quot;untyped&quot; PID, used to encapsulate the process ID for lower-layer abstractions (eg...">UPID</a></code>.  <a href="#ae97b59a857843096aa219d0209837c42">More...</a><br/></td></tr>
 <tr class="separator:ae97b59a857843096aa219d0209837c42"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1013,11 +1015,46 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p>Sends the message to the specified <code><a class="el" href="structprocess_1_1UPID.html" title="An &quot;untyped&quot; PID, used to encapsulate the process ID for lower-layer abstractions (eg...">UPID</a></code>. </p>
+<p>Prefer the rvalue reference overloads if the data can be moved in.</p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="structprocess_1_1Message.html">process::Message</a> </dd></dl>
 
 </div>
 </div>
-<a class="anchor" id="a98036cf5c9479ce92c8d4f1a83514cf8"></a>
+<a class="anchor" id="a72621d5c290fc558dcffb62b7d05635b"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void process::ProcessBase::send </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structprocess_1_1UPID.html">UPID</a> &amp;&#160;</td>
+          <td class="paramname"><em>to</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string &amp;&amp;&#160;</td>
+          <td class="paramname"><em>name</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ab60d5a19d749f9f140b5ede6800549a6"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -1039,14 +1076,8 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>data</em> = <code>nullptr</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>length</em> = <code>0</code>&#160;</td>
+          <td class="paramtype">std::string &amp;&amp;&#160;</td>
+          <td class="paramname"><em>data</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
