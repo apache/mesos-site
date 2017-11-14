@@ -248,7 +248,7 @@ identified.</p></li>
 </ol>
 
 
-<h2>Tagging the Release Candidate</h2>
+<h2>Tagging and Voting the Release Candidate</h2>
 
 <ol>
 <li><p>Ensure that you can build and pass all the tests.</p>
@@ -269,18 +269,21 @@ regressions:</p>
 scheme. <code>R</code> is release candidate version that starts with 1.</p></li>
 <li><p>Tag the release externally and deploy the corresponding JAR to the
 <a href="https://repository.apache.org">Apache maven repository</a>. It is recommended
-to use the <code>support/tag.sh</code> script to accomplish this.</p>
+to use the <code>support/vote.sh</code> script to accomplish this.</p>
 
-<pre><code> $ ./support/tag.sh X.Y.Z R
+<pre><code> $ ./support/vote.sh X.Y.Z R
 </code></pre>
 
 <p><strong>NOTE:</strong> This script assumes that you have the requisite permissions to
 deploy the JAR. For instructions on how to set it up, please refer to
-<code>src/java/MESOS-MAVEN-README</code>.</p>
+<code>src/java/MESOS-MAVEN-README</code>.</p></li>
+<li><p>The script also spits out an email template that you could use to
+send the vote email.</p>
 
-<p><strong>NOTE:</strong> gnu-sed (Linux) requires <code>-i''</code> instead of the <code>-i ''</code>
-(space-separated) that default OSX uses. You may need to modify your local
-copy of <code>tag.sh</code> for it to complete successfully.</p></li>
+<p><strong>NOTE:</strong> The <code>date -v+3d</code> command does not work on some platforms (e.g.
+Ubuntu), so you may need to fill in the vote end date manually. The vote
+should last for 3 business days instead of 3 calendar days anyway. Sometimes
+we allow a longer vote, to allow more time for integration testing.</p></li>
 <li><p>If this is a regular release, create a new release branch (<major>.<minor>.x)
 from this tag.</p>
 
@@ -291,27 +294,6 @@ from this tag.</p>
 change <code>AC_INIT([mesos], [X.Y.Z]))</code>, as well as in <code>CMakeLists.txt</code>:
 change <code>set(MESOS_MAJOR_VERSION X)</code>, <code>set(MESOS_MINOR_VERSION Y)</code>,
 <code>set(MESOS_PATCH_VERSION Z)</code> and then commit.</p></li>
-</ol>
-
-
-<h2>Voting the Release Candidate</h2>
-
-<ol>
-<li><p>Once a release candidate is deemed worthy to be officially released you
-should call a vote on the <code>dev@mesos.apache.org</code> (and optionally
-<code>user@mesos.apache.org</code>) mailing list.</p></li>
-<li><p>It is recommended to use the <code>support/vote.sh</code> script to vote the release
-candidate.</p>
-
-<pre><code> $ ./support/vote.sh X.Y.Z R
-</code></pre></li>
-<li><p>The release script also spits out an email template that you could use to
-send the vote email.</p>
-
-<p><strong>NOTE:</strong> The <code>date -v+3d</code> command does not work on some platforms (e.g.
-Ubuntu), so you may need to fill in the vote end date manually. The vote
-should last for 3 business days instead of 3 calendar days anyway. Sometimes
-we allow a longer vote, to allow more time for integration testing.</p></li>
 </ol>
 
 
