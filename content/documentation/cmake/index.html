@@ -139,6 +139,30 @@ package in EPEL is only CMake 3.6, you may remove them via:
 
 <p><strong>NOTE:</strong> Windows needs CMake 3.8+, rather than 3.7+.</p>
 
+<h1>Quick Start</h1>
+
+<p>The most basic way to build with CMake, with no configuration, is fairly
+straightforward:</p>
+
+<pre><code>mkdir build
+cd build
+cmake ..
+cmake --build .
+</code></pre>
+
+<p>The last step, <code>cmake --build .</code> can also take a <code>--target</code> command to build any
+particular target (e.g. <code>mesos-tests</code>, or <code>tests</code> to build <code>mesos-tests</code>,
+<code>libprocess-tests</code>, and <code>stout-tests</code>): <code>cmake --build . --target tests</code>. To
+send arbitrary flags to the native build system underneath (e.g. <code>make</code>), append
+the command with <code>-- &lt;flags to be passed&gt;</code>: <code>cmake --build . -- -j4</code>.</p>
+
+<p>Also, <code>cmake --build</code> can be substituted by your build system of choice. For
+instance, the default CMake generator on Linux produces GNU Makefiles, so after
+configuring with <code>cmake ..</code>, you can just run <code>make tests</code> in the <code>build</code> folder
+like usual. Similarly, if you configure with <code>-G Ninja</code> to use the Ninja
+generator, you can then run <code>ninja tests</code> to build the <code>tests</code> target with
+Ninja.</p>
+
 <h1>Supported options</h1>
 
 <p>See <a href="/documentation/latest/./configuration/cmake/">configuration options</a>.</p>
