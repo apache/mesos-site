@@ -373,157 +373,161 @@
 <div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;      <a class="code" href="namespaceprocess_1_1internal.html#af41e327161ef61c79f5eb864fc2af03d">dispatch</a>(pid.get(), [<span class="keyword">self</span>]() {</div>
 <div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;        <span class="keyword">self</span>-&gt;run(self-&gt;iterate());</div>
 <div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;      });</div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;      <a class="code" href="classprocess_1_1internal_1_1Loop.html#a11417f29be6ae721ee9331b0ccbf16e4">run</a>(iterate());</div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;    }</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;</div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;    <span class="keywordflow">return</span> promise.<a class="code" href="classprocess_1_1Promise.html#a8aef752d6c90cb11e58e3166b7592ef1">future</a>();</div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;  }</div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;</div>
-<div class="line"><a name="l00329"></a><span class="lineno"><a class="line" href="classprocess_1_1internal_1_1Loop.html#a11417f29be6ae721ee9331b0ccbf16e4">  329</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classprocess_1_1internal_1_1Loop.html#a11417f29be6ae721ee9331b0ccbf16e4">run</a>(<a class="code" href="classprocess_1_1Future.html">Future&lt;T&gt;</a> next)</div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;  {</div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;    <span class="keyword">auto</span> <span class="keyword">self</span> = <a class="code" href="classprocess_1_1internal_1_1Loop.html#a9923c05dd6d27f9ec0c61d28a5387641">shared</a>();</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;      <span class="comment">// TODO(benh): Link with `pid` so that we can discard or abandon</span></div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;      <span class="comment">// the promise in the event `pid` terminates and didn&#39;t discard</span></div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;      <span class="comment">// us so that we can avoid any leaks (memory or otherwise).</span></div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;      <a class="code" href="classprocess_1_1internal_1_1Loop.html#a11417f29be6ae721ee9331b0ccbf16e4">run</a>(iterate());</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;    }</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;    <span class="keywordflow">return</span> promise.<a class="code" href="classprocess_1_1Promise.html#a8aef752d6c90cb11e58e3166b7592ef1">future</a>();</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;  }</div>
 <div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;</div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;    <span class="comment">// Reset `discard` so that we&#39;re not delaying cleanup of any</span></div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;    <span class="comment">// captured futures longer than necessary.</span></div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;    <span class="comment">// TODO(benh): Use `WeakFuture` in `discard` functions instead.</span></div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;    <span class="keyword">synchronized</span> (mutex) {</div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;      discard = []() {};</div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;    }</div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;</div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;    <span class="keywordflow">while</span> (next.<a class="code" href="classprocess_1_1Future.html#a68f241961e700d0cecf982d9cc0043d7">isReady</a>()) {</div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;      <a class="code" href="classprocess_1_1Future.html">Future&lt;ControlFlow&lt;R&gt;</a>&gt; flow = body(next.<a class="code" href="classprocess_1_1Future.html#aa78977d3b585a5f5ccd682c1e9e2ddc4">get</a>());</div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;      <span class="keywordflow">if</span> (flow.<a class="code" href="classprocess_1_1Future.html#a68f241961e700d0cecf982d9cc0043d7">isReady</a>()) {</div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;        <span class="keywordflow">switch</span> (flow-&gt;statement()) {</div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;          <span class="keywordflow">case</span> <a class="code" href="classprocess_1_1ControlFlow.html">ControlFlow&lt;R&gt;::Statement::CONTINUE</a>: {</div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;            next = iterate();</div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;            <span class="keywordflow">continue</span>;</div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;          }</div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;          <span class="keywordflow">case</span> <a class="code" href="classprocess_1_1ControlFlow.html">ControlFlow&lt;R&gt;::Statement::BREAK</a>: {</div>
-<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;            promise.<a class="code" href="classprocess_1_1Promise.html#a989b8dfa7eb2633de3f0f25ac2b87943">set</a>(flow-&gt;value());</div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;            <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00333"></a><span class="lineno"><a class="line" href="classprocess_1_1internal_1_1Loop.html#a11417f29be6ae721ee9331b0ccbf16e4">  333</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classprocess_1_1internal_1_1Loop.html#a11417f29be6ae721ee9331b0ccbf16e4">run</a>(<a class="code" href="classprocess_1_1Future.html">Future&lt;T&gt;</a> next)</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;  {</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;    <span class="keyword">auto</span> <span class="keyword">self</span> = <a class="code" href="classprocess_1_1internal_1_1Loop.html#a9923c05dd6d27f9ec0c61d28a5387641">shared</a>();</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;    <span class="comment">// Reset `discard` so that we&#39;re not delaying cleanup of any</span></div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;    <span class="comment">// captured futures longer than necessary.</span></div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;    <span class="comment">// TODO(benh): Use `WeakFuture` in `discard` functions instead.</span></div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;    <span class="keyword">synchronized</span> (mutex) {</div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;      discard = []() {};</div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;    }</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;</div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;    <span class="keywordflow">while</span> (next.<a class="code" href="classprocess_1_1Future.html#a68f241961e700d0cecf982d9cc0043d7">isReady</a>()) {</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;      <a class="code" href="classprocess_1_1Future.html">Future&lt;ControlFlow&lt;R&gt;</a>&gt; flow = body(next.<a class="code" href="classprocess_1_1Future.html#aa78977d3b585a5f5ccd682c1e9e2ddc4">get</a>());</div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;      <span class="keywordflow">if</span> (flow.<a class="code" href="classprocess_1_1Future.html#a68f241961e700d0cecf982d9cc0043d7">isReady</a>()) {</div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;        <span class="keywordflow">switch</span> (flow-&gt;statement()) {</div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;          <span class="keywordflow">case</span> <a class="code" href="classprocess_1_1ControlFlow.html">ControlFlow&lt;R&gt;::Statement::CONTINUE</a>: {</div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;            next = iterate();</div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;            <span class="keywordflow">continue</span>;</div>
 <div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;          }</div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;        }</div>
-<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;      } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;        <span class="keyword">auto</span> continuation = [<span class="keyword">self</span>](<span class="keyword">const</span> <a class="code" href="classprocess_1_1Future.html">Future&lt;ControlFlow&lt;R&gt;</a>&gt;&amp; flow) {</div>
-<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;          <span class="keywordflow">if</span> (flow.<a class="code" href="classprocess_1_1Future.html#a68f241961e700d0cecf982d9cc0043d7">isReady</a>()) {</div>
-<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;            <span class="keywordflow">switch</span> (flow-&gt;statement()) {</div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;              <span class="keywordflow">case</span> <a class="code" href="classprocess_1_1ControlFlow.html">ControlFlow&lt;R&gt;::Statement::CONTINUE</a>: {</div>
-<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;                <span class="keyword">self</span>-&gt;run(self-&gt;iterate());</div>
-<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;                <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;              }</div>
-<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;              <span class="keywordflow">case</span> <a class="code" href="classprocess_1_1ControlFlow.html">ControlFlow&lt;R&gt;::Statement::BREAK</a>: {</div>
-<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;                <span class="keyword">self</span>-&gt;promise.set(flow-&gt;value());</div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;          <span class="keywordflow">case</span> <a class="code" href="classprocess_1_1ControlFlow.html">ControlFlow&lt;R&gt;::Statement::BREAK</a>: {</div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;            promise.<a class="code" href="classprocess_1_1Promise.html#a989b8dfa7eb2633de3f0f25ac2b87943">set</a>(flow-&gt;value());</div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;            <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;          }</div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;        }</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;      } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;        <span class="keyword">auto</span> continuation = [<span class="keyword">self</span>](<span class="keyword">const</span> <a class="code" href="classprocess_1_1Future.html">Future&lt;ControlFlow&lt;R&gt;</a>&gt;&amp; flow) {</div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;          <span class="keywordflow">if</span> (flow.<a class="code" href="classprocess_1_1Future.html#a68f241961e700d0cecf982d9cc0043d7">isReady</a>()) {</div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;            <span class="keywordflow">switch</span> (flow-&gt;statement()) {</div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;              <span class="keywordflow">case</span> <a class="code" href="classprocess_1_1ControlFlow.html">ControlFlow&lt;R&gt;::Statement::CONTINUE</a>: {</div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;                <span class="keyword">self</span>-&gt;run(self-&gt;iterate());</div>
 <div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;                <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;              }</div>
-<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;            }</div>
-<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;          } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (flow.<a class="code" href="classprocess_1_1Future.html#a493227e57f8848e37777b89c0f81e2ec">isFailed</a>()) {</div>
-<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;            <span class="keyword">self</span>-&gt;promise.fail(flow.<a class="code" href="classprocess_1_1Future.html#ae649c56b07f44c05e4b7aa3620133ff9">failure</a>());</div>
-<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;          } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (flow.<a class="code" href="classprocess_1_1Future.html#abc89036db733a417b7b383b091efaf3c">isDiscarded</a>()) {</div>
-<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;            <span class="keyword">self</span>-&gt;promise.discard();</div>
-<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;          }</div>
-<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;        };</div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;</div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;        <span class="keywordflow">if</span> (pid.isSome()) {</div>
-<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;          flow.<a class="code" href="classprocess_1_1Future.html#a71bde220aed3c725cef2040f63adf42a">onAny</a>(<a class="code" href="namespaceprocess.html#a8b27a2ef76eb133bf0ce7a5eea4fb77c">defer</a>(pid.get(), continuation));</div>
-<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;        } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;          flow.<a class="code" href="classprocess_1_1Future.html#a71bde220aed3c725cef2040f63adf42a">onAny</a>(continuation);</div>
-<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;        }</div>
-<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;</div>
-<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;        <span class="keywordflow">if</span> (!promise.<a class="code" href="classprocess_1_1Promise.html#a8aef752d6c90cb11e58e3166b7592ef1">future</a>().<a class="code" href="classprocess_1_1Future.html#a18f97963e0636071b54401b200fedfc2">hasDiscard</a>()) {</div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;          <span class="keyword">synchronized</span> (mutex) {</div>
-<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;            <span class="keyword">self</span>-&gt;discard = [=]() <span class="keyword">mutable</span> { flow.<a class="code" href="classprocess_1_1Future.html#a4012f3faa6191fc13874dca62c14ced0">discard</a>(); };</div>
-<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;          }</div>
-<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;        }</div>
-<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;</div>
-<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;        <span class="comment">// There&#39;s a race between when a discard occurs and the</span></div>
-<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;        <span class="comment">// `discard` function gets invoked and therefore we must</span></div>
-<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;        <span class="comment">// explicitly always do a discard. In addition, after a</span></div>
-<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;        <span class="comment">// discard occurs we&#39;ll need to explicitly do discards for</span></div>
-<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;        <span class="comment">// each new future that blocks.</span></div>
-<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;        <span class="keywordflow">if</span> (promise.<a class="code" href="classprocess_1_1Promise.html#a8aef752d6c90cb11e58e3166b7592ef1">future</a>().<a class="code" href="classprocess_1_1Future.html#a18f97963e0636071b54401b200fedfc2">hasDiscard</a>()) {</div>
-<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;          flow.<a class="code" href="classprocess_1_1Future.html#a4012f3faa6191fc13874dca62c14ced0">discard</a>();</div>
-<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;        }</div>
-<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;</div>
-<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;        <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;      }</div>
-<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;    }</div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;              <span class="keywordflow">case</span> <a class="code" href="classprocess_1_1ControlFlow.html">ControlFlow&lt;R&gt;::Statement::BREAK</a>: {</div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;                <span class="keyword">self</span>-&gt;promise.set(flow-&gt;value());</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;                <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;              }</div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;            }</div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;          } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (flow.<a class="code" href="classprocess_1_1Future.html#a493227e57f8848e37777b89c0f81e2ec">isFailed</a>()) {</div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;            <span class="keyword">self</span>-&gt;promise.fail(flow.<a class="code" href="classprocess_1_1Future.html#ae649c56b07f44c05e4b7aa3620133ff9">failure</a>());</div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;          } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (flow.<a class="code" href="classprocess_1_1Future.html#abc89036db733a417b7b383b091efaf3c">isDiscarded</a>()) {</div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;            <span class="keyword">self</span>-&gt;promise.discard();</div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;          }</div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;        };</div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;</div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;        <span class="keywordflow">if</span> (pid.isSome()) {</div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;          flow.<a class="code" href="classprocess_1_1Future.html#a71bde220aed3c725cef2040f63adf42a">onAny</a>(<a class="code" href="namespaceprocess.html#a8b27a2ef76eb133bf0ce7a5eea4fb77c">defer</a>(pid.get(), continuation));</div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;          flow.<a class="code" href="classprocess_1_1Future.html#a71bde220aed3c725cef2040f63adf42a">onAny</a>(continuation);</div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;        }</div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;</div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;        <span class="keywordflow">if</span> (!promise.<a class="code" href="classprocess_1_1Promise.html#a8aef752d6c90cb11e58e3166b7592ef1">future</a>().<a class="code" href="classprocess_1_1Future.html#a18f97963e0636071b54401b200fedfc2">hasDiscard</a>()) {</div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;          <span class="keyword">synchronized</span> (mutex) {</div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;            <span class="keyword">self</span>-&gt;discard = [=]() <span class="keyword">mutable</span> { flow.<a class="code" href="classprocess_1_1Future.html#a4012f3faa6191fc13874dca62c14ced0">discard</a>(); };</div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;          }</div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;        }</div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;</div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;        <span class="comment">// There&#39;s a race between when a discard occurs and the</span></div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;        <span class="comment">// `discard` function gets invoked and therefore we must</span></div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;        <span class="comment">// explicitly always do a discard. In addition, after a</span></div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;        <span class="comment">// discard occurs we&#39;ll need to explicitly do discards for</span></div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;        <span class="comment">// each new future that blocks.</span></div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;        <span class="keywordflow">if</span> (promise.<a class="code" href="classprocess_1_1Promise.html#a8aef752d6c90cb11e58e3166b7592ef1">future</a>().<a class="code" href="classprocess_1_1Future.html#a18f97963e0636071b54401b200fedfc2">hasDiscard</a>()) {</div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;          flow.<a class="code" href="classprocess_1_1Future.html#a4012f3faa6191fc13874dca62c14ced0">discard</a>();</div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;        }</div>
 <div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;</div>
-<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;    <span class="keyword">auto</span> continuation = [<span class="keyword">self</span>](<span class="keyword">const</span> <a class="code" href="classprocess_1_1Future.html">Future&lt;T&gt;</a>&amp; next) {</div>
-<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;      <span class="keywordflow">if</span> (next.<a class="code" href="classprocess_1_1Future.html#a68f241961e700d0cecf982d9cc0043d7">isReady</a>()) {</div>
-<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;        <span class="keyword">self</span>-&gt;run(next);</div>
-<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;      } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (next.<a class="code" href="classprocess_1_1Future.html#a493227e57f8848e37777b89c0f81e2ec">isFailed</a>()) {</div>
-<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;        <span class="keyword">self</span>-&gt;promise.fail(next.<a class="code" href="classprocess_1_1Future.html#ae649c56b07f44c05e4b7aa3620133ff9">failure</a>());</div>
-<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;      } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (next.<a class="code" href="classprocess_1_1Future.html#abc89036db733a417b7b383b091efaf3c">isDiscarded</a>()) {</div>
-<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;        <span class="keyword">self</span>-&gt;promise.discard();</div>
-<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;      }</div>
-<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;    };</div>
-<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;</div>
-<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;    <span class="keywordflow">if</span> (pid.isSome()) {</div>
-<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;      next.<a class="code" href="classprocess_1_1Future.html#a71bde220aed3c725cef2040f63adf42a">onAny</a>(<a class="code" href="namespaceprocess.html#a8b27a2ef76eb133bf0ce7a5eea4fb77c">defer</a>(pid.get(), continuation));</div>
-<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;      next.<a class="code" href="classprocess_1_1Future.html#a71bde220aed3c725cef2040f63adf42a">onAny</a>(continuation);</div>
-<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;    }</div>
-<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;</div>
-<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;    <span class="keywordflow">if</span> (!promise.<a class="code" href="classprocess_1_1Promise.html#a8aef752d6c90cb11e58e3166b7592ef1">future</a>().<a class="code" href="classprocess_1_1Future.html#a18f97963e0636071b54401b200fedfc2">hasDiscard</a>()) {</div>
-<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;      <span class="keyword">synchronized</span> (mutex) {</div>
-<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;        discard = [=]() <span class="keyword">mutable</span> { next.<a class="code" href="classprocess_1_1Future.html#a4012f3faa6191fc13874dca62c14ced0">discard</a>(); };</div>
-<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;      }</div>
-<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;    }</div>
-<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;</div>
-<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;    <span class="comment">// See comment above as to why we need to explicitly discard</span></div>
-<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;    <span class="comment">// regardless of the path the if statement took above.</span></div>
-<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;    <span class="keywordflow">if</span> (promise.<a class="code" href="classprocess_1_1Promise.html#a8aef752d6c90cb11e58e3166b7592ef1">future</a>().<a class="code" href="classprocess_1_1Future.html#a18f97963e0636071b54401b200fedfc2">hasDiscard</a>()) {</div>
-<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;      next.<a class="code" href="classprocess_1_1Future.html#a4012f3faa6191fc13874dca62c14ced0">discard</a>();</div>
-<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;    }</div>
-<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;  }</div>
-<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;</div>
-<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00429"></a><span class="lineno"><a class="line" href="classprocess_1_1internal_1_1Loop.html#a077dc66e82c758d8b82dda11fc530d72">  429</a></span>&#160;  <a class="code" href="classprocess_1_1internal_1_1Loop.html#a077dc66e82c758d8b82dda11fc530d72">Loop</a>(<span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;UPID&gt;</a>&amp; pid, <span class="keyword">const</span> Iterate&amp; iterate, <span class="keyword">const</span> Body&amp; body)</div>
-<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;    : pid(pid), iterate(iterate), body(body) {}</div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;        <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;      }</div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;    }</div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;</div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;    <span class="keyword">auto</span> continuation = [<span class="keyword">self</span>](<span class="keyword">const</span> <a class="code" href="classprocess_1_1Future.html">Future&lt;T&gt;</a>&amp; next) {</div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;      <span class="keywordflow">if</span> (next.<a class="code" href="classprocess_1_1Future.html#a68f241961e700d0cecf982d9cc0043d7">isReady</a>()) {</div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;        <span class="keyword">self</span>-&gt;run(next);</div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;      } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (next.<a class="code" href="classprocess_1_1Future.html#a493227e57f8848e37777b89c0f81e2ec">isFailed</a>()) {</div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;        <span class="keyword">self</span>-&gt;promise.fail(next.<a class="code" href="classprocess_1_1Future.html#ae649c56b07f44c05e4b7aa3620133ff9">failure</a>());</div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;      } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (next.<a class="code" href="classprocess_1_1Future.html#abc89036db733a417b7b383b091efaf3c">isDiscarded</a>()) {</div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;        <span class="keyword">self</span>-&gt;promise.discard();</div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;      }</div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;    };</div>
+<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;</div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;    <span class="keywordflow">if</span> (pid.isSome()) {</div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;      next.<a class="code" href="classprocess_1_1Future.html#a71bde220aed3c725cef2040f63adf42a">onAny</a>(<a class="code" href="namespaceprocess.html#a8b27a2ef76eb133bf0ce7a5eea4fb77c">defer</a>(pid.get(), continuation));</div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;      next.<a class="code" href="classprocess_1_1Future.html#a71bde220aed3c725cef2040f63adf42a">onAny</a>(continuation);</div>
+<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;    }</div>
+<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;</div>
+<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;    <span class="keywordflow">if</span> (!promise.<a class="code" href="classprocess_1_1Promise.html#a8aef752d6c90cb11e58e3166b7592ef1">future</a>().<a class="code" href="classprocess_1_1Future.html#a18f97963e0636071b54401b200fedfc2">hasDiscard</a>()) {</div>
+<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;      <span class="keyword">synchronized</span> (mutex) {</div>
+<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;        discard = [=]() <span class="keyword">mutable</span> { next.<a class="code" href="classprocess_1_1Future.html#a4012f3faa6191fc13874dca62c14ced0">discard</a>(); };</div>
+<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;      }</div>
+<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;    }</div>
+<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;</div>
+<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;    <span class="comment">// See comment above as to why we need to explicitly discard</span></div>
+<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;    <span class="comment">// regardless of the path the if statement took above.</span></div>
+<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;    <span class="keywordflow">if</span> (promise.<a class="code" href="classprocess_1_1Promise.html#a8aef752d6c90cb11e58e3166b7592ef1">future</a>().<a class="code" href="classprocess_1_1Future.html#a18f97963e0636071b54401b200fedfc2">hasDiscard</a>()) {</div>
+<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;      next.<a class="code" href="classprocess_1_1Future.html#a4012f3faa6191fc13874dca62c14ced0">discard</a>();</div>
+<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;    }</div>
+<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;  }</div>
 <div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;</div>
-<div class="line"><a name="l00432"></a><span class="lineno"><a class="line" href="classprocess_1_1internal_1_1Loop.html#a0c7b83e40e88e5d40ad29802be101dfd">  432</a></span>&#160;  <a class="code" href="classprocess_1_1internal_1_1Loop.html#a0c7b83e40e88e5d40ad29802be101dfd">Loop</a>(<span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;UPID&gt;</a>&amp; pid, Iterate&amp;&amp; iterate, Body&amp;&amp; body)</div>
-<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;    : pid(pid), iterate(std::move(iterate)), body(std::move(body)) {}</div>
-<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;</div>
-<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;  <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;UPID&gt;</a> pid;</div>
-<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;  Iterate iterate;</div>
-<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;  Body body;</div>
-<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;  <a class="code" href="classprocess_1_1Promise.html">Promise&lt;R&gt;</a> promise;</div>
-<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;</div>
-<div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;  <span class="comment">// In order to discard the loop safely we capture the future that</span></div>
-<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;  <span class="comment">// needs to be discarded within the `discard` function and reading</span></div>
-<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;  <span class="comment">// and writing that function with a mutex.</span></div>
-<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;  std::mutex mutex;</div>
-<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;  std::function&lt;void()&gt; discard = []() {};</div>
-<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;};</div>
-<div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;</div>
-<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;} <span class="comment">// namespace internal {</span></div>
-<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;</div>
-<div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;</div>
-<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> Iterate, <span class="keyword">typename</span> Body, <span class="keyword">typename</span> T, <span class="keyword">typename</span> CF, <span class="keyword">typename</span> V&gt;</div>
-<div class="line"><a name="l00452"></a><span class="lineno"><a class="line" href="namespaceprocess.html#a59c192ee8ea5abbbee1642957f47c92a">  452</a></span>&#160;<a class="code" href="classprocess_1_1Future.html">Future&lt;V&gt;</a> <a class="code" href="namespaceprocess.html#a59c192ee8ea5abbbee1642957f47c92a">loop</a>(<span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;UPID&gt;</a>&amp; pid, Iterate&amp;&amp; iterate, Body&amp;&amp; body)</div>
-<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;{</div>
-<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;  <span class="keyword">using</span> Loop = <a class="code" href="classprocess_1_1internal_1_1Loop.html">internal::Loop</a>&lt;</div>
-<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;    <span class="keyword">typename</span> <a class="code" href="namespacemesos_1_1internal_1_1fs.html#a2343e2642db514496ba8380776487fba">std::decay&lt;Iterate&gt;::type</a>,</div>
-<div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;    <span class="keyword">typename</span> <a class="code" href="namespacemesos_1_1internal_1_1fs.html#a2343e2642db514496ba8380776487fba">std::decay&lt;Body&gt;::type</a>,</div>
-<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;    T,</div>
-<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;    V&gt;;</div>
-<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;</div>
-<div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;  std::shared_ptr&lt;Loop&gt; <a class="code" href="namespaceprocess.html#a59c192ee8ea5abbbee1642957f47c92a">loop</a> = <a class="code" href="namespacecgroups.html#a2ecc89636706df947027a4c3c2100fbe">Loop::create</a>(</div>
-<div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;      pid,</div>
-<div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;      std::forward&lt;Iterate&gt;(iterate),</div>
-<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;      std::forward&lt;Body&gt;(body));</div>
-<div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;</div>
-<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;  <span class="keywordflow">return</span> loop-&gt;start();</div>
-<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;}</div>
-<div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;</div>
-<div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;} <span class="comment">// namespace process {</span></div>
-<div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;</div>
-<div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160;<span class="preprocessor">#endif // __PROCESS_LOOP_HPP__</span></div>
+<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00433"></a><span class="lineno"><a class="line" href="classprocess_1_1internal_1_1Loop.html#a077dc66e82c758d8b82dda11fc530d72">  433</a></span>&#160;  <a class="code" href="classprocess_1_1internal_1_1Loop.html#a077dc66e82c758d8b82dda11fc530d72">Loop</a>(<span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;UPID&gt;</a>&amp; pid, <span class="keyword">const</span> Iterate&amp; iterate, <span class="keyword">const</span> Body&amp; body)</div>
+<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;    : pid(pid), iterate(iterate), body(body) {}</div>
+<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;</div>
+<div class="line"><a name="l00436"></a><span class="lineno"><a class="line" href="classprocess_1_1internal_1_1Loop.html#a0c7b83e40e88e5d40ad29802be101dfd">  436</a></span>&#160;  <a class="code" href="classprocess_1_1internal_1_1Loop.html#a0c7b83e40e88e5d40ad29802be101dfd">Loop</a>(<span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;UPID&gt;</a>&amp; pid, Iterate&amp;&amp; iterate, Body&amp;&amp; body)</div>
+<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;    : pid(pid), iterate(std::move(iterate)), body(std::move(body)) {}</div>
+<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;</div>
+<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;  <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;UPID&gt;</a> pid;</div>
+<div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;  Iterate iterate;</div>
+<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;  Body body;</div>
+<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;  <a class="code" href="classprocess_1_1Promise.html">Promise&lt;R&gt;</a> promise;</div>
+<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;</div>
+<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;  <span class="comment">// In order to discard the loop safely we capture the future that</span></div>
+<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;  <span class="comment">// needs to be discarded within the `discard` function and reading</span></div>
+<div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;  <span class="comment">// and writing that function with a mutex.</span></div>
+<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;  std::mutex mutex;</div>
+<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;  std::function&lt;void()&gt; discard = []() {};</div>
+<div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;};</div>
+<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;</div>
+<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;} <span class="comment">// namespace internal {</span></div>
+<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;</div>
+<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;</div>
+<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> Iterate, <span class="keyword">typename</span> Body, <span class="keyword">typename</span> T, <span class="keyword">typename</span> CF, <span class="keyword">typename</span> V&gt;</div>
+<div class="line"><a name="l00456"></a><span class="lineno"><a class="line" href="namespaceprocess.html#a59c192ee8ea5abbbee1642957f47c92a">  456</a></span>&#160;<a class="code" href="classprocess_1_1Future.html">Future&lt;V&gt;</a> <a class="code" href="namespaceprocess.html#a59c192ee8ea5abbbee1642957f47c92a">loop</a>(<span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;UPID&gt;</a>&amp; pid, Iterate&amp;&amp; iterate, Body&amp;&amp; body)</div>
+<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;{</div>
+<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;  <span class="keyword">using</span> Loop = <a class="code" href="classprocess_1_1internal_1_1Loop.html">internal::Loop</a>&lt;</div>
+<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;    <span class="keyword">typename</span> <a class="code" href="namespacemesos_1_1internal_1_1fs.html#a2343e2642db514496ba8380776487fba">std::decay&lt;Iterate&gt;::type</a>,</div>
+<div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;    <span class="keyword">typename</span> <a class="code" href="namespacemesos_1_1internal_1_1fs.html#a2343e2642db514496ba8380776487fba">std::decay&lt;Body&gt;::type</a>,</div>
+<div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;    T,</div>
+<div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;    V&gt;;</div>
+<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;</div>
+<div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;  std::shared_ptr&lt;Loop&gt; <a class="code" href="namespaceprocess.html#a59c192ee8ea5abbbee1642957f47c92a">loop</a> = <a class="code" href="namespacecgroups.html#a2ecc89636706df947027a4c3c2100fbe">Loop::create</a>(</div>
+<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;      pid,</div>
+<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;      std::forward&lt;Iterate&gt;(iterate),</div>
+<div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;      std::forward&lt;Body&gt;(body));</div>
+<div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;</div>
+<div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;  <span class="keywordflow">return</span> loop-&gt;start();</div>
+<div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160;}</div>
+<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;</div>
+<div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;} <span class="comment">// namespace process {</span></div>
+<div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;</div>
+<div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;<span class="preprocessor">#endif // __PROCESS_LOOP_HPP__</span></div>
 <div class="ttc" id="classprocess_1_1ControlFlow_html_ad8f5968ae93a1c00cfd67964c7895260"><div class="ttname"><a href="classprocess_1_1ControlFlow.html#ad8f5968ae93a1c00cfd67964c7895260">process::ControlFlow::ControlFlow</a></div><div class="ttdeci">ControlFlow(Statement s, Option&lt; T &gt; t)</div><div class="ttdef"><b>Definition:</b> loop.hpp:207</div></div>
-<div class="ttc" id="classprocess_1_1Future_html_a68f241961e700d0cecf982d9cc0043d7"><div class="ttname"><a href="classprocess_1_1Future.html#a68f241961e700d0cecf982d9cc0043d7">process::Future::isReady</a></div><div class="ttdeci">bool isReady() const </div><div class="ttdef"><b>Definition:</b> future.hpp:1075</div></div>
+<div class="ttc" id="classprocess_1_1Future_html_a68f241961e700d0cecf982d9cc0043d7"><div class="ttname"><a href="classprocess_1_1Future.html#a68f241961e700d0cecf982d9cc0043d7">process::Future::isReady</a></div><div class="ttdeci">bool isReady() const </div><div class="ttdef"><b>Definition:</b> future.hpp:1201</div></div>
 <div class="ttc" id="classprocess_1_1ControlFlow_1_1Continue_html_a8713d1376ecc49068369632fdcee1b91"><div class="ttname"><a href="classprocess_1_1ControlFlow_1_1Continue.html#a8713d1376ecc49068369632fdcee1b91">process::ControlFlow::Continue::Continue</a></div><div class="ttdeci">Continue()=default</div></div>
 <div class="ttc" id="classprocess_1_1internal_1_1Loop_html"><div class="ttname"><a href="classprocess_1_1internal_1_1Loop.html">process::internal::Loop</a></div><div class="ttdef"><b>Definition:</b> loop.hpp:253</div></div>
 <div class="ttc" id="structNothing_html"><div class="ttname"><a href="structNothing.html">Nothing</a></div><div class="ttdef"><b>Definition:</b> nothing.hpp:16</div></div>
@@ -531,56 +535,56 @@
 <div class="ttc" id="classOption_html"><div class="ttname"><a href="classOption.html">Option</a></div><div class="ttdef"><b>Definition:</b> option.hpp:27</div></div>
 <div class="ttc" id="namespaceprocess_html_a62d5333e8ec1817c249cf83e15d568b4"><div class="ttname"><a href="namespaceprocess.html#a62d5333e8ec1817c249cf83e15d568b4">process::f</a></div><div class="ttdeci">F &amp;&amp; f</div><div class="ttdef"><b>Definition:</b> defer.hpp:266</div></div>
 <div class="ttc" id="classprocess_1_1internal_1_1Loop_html_a4067cc276cd8152074a7094acf9ca451"><div class="ttname"><a href="classprocess_1_1internal_1_1Loop.html#a4067cc276cd8152074a7094acf9ca451">process::internal::Loop::create</a></div><div class="ttdeci">static std::shared_ptr&lt; Loop &gt; create(const Option&lt; UPID &gt; &amp;pid, Iterate_ &amp;&amp;iterate, Body_ &amp;&amp;body)</div><div class="ttdef"><b>Definition:</b> loop.hpp:257</div></div>
-<div class="ttc" id="classprocess_1_1Future_html_aa78977d3b585a5f5ccd682c1e9e2ddc4"><div class="ttname"><a href="classprocess_1_1Future.html#aa78977d3b585a5f5ccd682c1e9e2ddc4">process::Future::get</a></div><div class="ttdeci">const T &amp; get() const </div><div class="ttdef"><b>Definition:</b> future.hpp:1147</div></div>
-<div class="ttc" id="classprocess_1_1Promise_html_a989b8dfa7eb2633de3f0f25ac2b87943"><div class="ttname"><a href="classprocess_1_1Promise.html#a989b8dfa7eb2633de3f0f25ac2b87943">process::Promise::set</a></div><div class="ttdeci">bool set(const T &amp;_t)</div><div class="ttdef"><b>Definition:</b> future.hpp:702</div></div>
+<div class="ttc" id="classprocess_1_1Future_html_aa78977d3b585a5f5ccd682c1e9e2ddc4"><div class="ttname"><a href="classprocess_1_1Future.html#aa78977d3b585a5f5ccd682c1e9e2ddc4">process::Future::get</a></div><div class="ttdeci">const T &amp; get() const </div><div class="ttdef"><b>Definition:</b> future.hpp:1280</div></div>
+<div class="ttc" id="classprocess_1_1Promise_html_a989b8dfa7eb2633de3f0f25ac2b87943"><div class="ttname"><a href="classprocess_1_1Promise.html#a989b8dfa7eb2633de3f0f25ac2b87943">process::Promise::set</a></div><div class="ttdeci">bool set(const T &amp;_t)</div><div class="ttdef"><b>Definition:</b> future.hpp:796</div></div>
 <div class="ttc" id="namespaceprocess_html_a4beae62da50c26c6cb8afd14e385d0c8"><div class="ttname"><a href="namespaceprocess.html#a4beae62da50c26c6cb8afd14e385d0c8">process::Break</a></div><div class="ttdeci">ControlFlow&lt; typename std::decay&lt; T &gt;::type &gt;::Break Break(T &amp;&amp;t)</div><div class="ttdef"><b>Definition:</b> loop.hpp:237</div></div>
 <div class="ttc" id="structprocess_1_1Continue_html_a961eaa662b867c93c185e9078d192112"><div class="ttname"><a href="structprocess_1_1Continue.html#a961eaa662b867c93c185e9078d192112">process::Continue::Continue</a></div><div class="ttdeci">Continue()=default</div></div>
 <div class="ttc" id="namespaceprocess_1_1internal_html_af41e327161ef61c79f5eb864fc2af03d"><div class="ttname"><a href="namespaceprocess_1_1internal.html#af41e327161ef61c79f5eb864fc2af03d">process::internal::dispatch</a></div><div class="ttdeci">void dispatch(const UPID &amp;pid, const std::shared_ptr&lt; std::function&lt; void(ProcessBase *)&gt;&gt; &amp;f, const Option&lt; const std::type_info * &gt; &amp;functionType=None())</div></div>
 <div class="ttc" id="classprocess_1_1ControlFlow_html_a34752a25284d038dc5d4d9e551424cfe"><div class="ttname"><a href="classprocess_1_1ControlFlow.html#a34752a25284d038dc5d4d9e551424cfe">process::ControlFlow::statement</a></div><div class="ttdeci">Statement statement() const </div><div class="ttdef"><b>Definition:</b> loop.hpp:209</div></div>
-<div class="ttc" id="classprocess_1_1Future_html_a1b80bf321358be44880d9c6bae5d9a2d"><div class="ttname"><a href="classprocess_1_1Future.html#a1b80bf321358be44880d9c6bae5d9a2d">process::Future::onDiscard</a></div><div class="ttdeci">const Future&lt; T &gt; &amp; onDiscard(DiscardCallback &amp;&amp;callback) const </div><div class="ttdef"><b>Definition:</b> future.hpp:1185</div></div>
+<div class="ttc" id="classprocess_1_1Future_html_a1b80bf321358be44880d9c6bae5d9a2d"><div class="ttname"><a href="classprocess_1_1Future.html#a1b80bf321358be44880d9c6bae5d9a2d">process::Future::onDiscard</a></div><div class="ttdeci">const Future&lt; T &gt; &amp; onDiscard(DiscardCallback &amp;&amp;callback) const </div><div class="ttdef"><b>Definition:</b> future.hpp:1340</div></div>
 <div class="ttc" id="classprocess_1_1internal_1_1Loop_html_a39870dcf4e2432a29569a658ec0e33be"><div class="ttname"><a href="classprocess_1_1internal_1_1Loop.html#a39870dcf4e2432a29569a658ec0e33be">process::internal::Loop::weak</a></div><div class="ttdeci">std::weak_ptr&lt; Loop &gt; weak()</div><div class="ttdef"><b>Definition:</b> loop.hpp:275</div></div>
 <div class="ttc" id="classprocess_1_1ControlFlow_html_af212ef291f73ba2e7b37586a577a794b"><div class="ttname"><a href="classprocess_1_1ControlFlow.html#af212ef291f73ba2e7b37586a577a794b">process::ControlFlow::Statement</a></div><div class="ttdeci">Statement</div><div class="ttdef"><b>Definition:</b> loop.hpp:168</div></div>
 <div class="ttc" id="classprocess_1_1ProcessBase_html"><div class="ttname"><a href="classprocess_1_1ProcessBase.html">process::ProcessBase</a></div><div class="ttdef"><b>Definition:</b> process.hpp:72</div></div>
-<div class="ttc" id="classprocess_1_1Future_html_a4012f3faa6191fc13874dca62c14ced0"><div class="ttname"><a href="classprocess_1_1Future.html#a4012f3faa6191fc13874dca62c14ced0">process::Future::discard</a></div><div class="ttdeci">bool discard()</div><div class="ttdef"><b>Definition:</b> future.hpp:1043</div></div>
+<div class="ttc" id="classprocess_1_1Future_html_a4012f3faa6191fc13874dca62c14ced0"><div class="ttname"><a href="classprocess_1_1Future.html#a4012f3faa6191fc13874dca62c14ced0">process::Future::discard</a></div><div class="ttdeci">bool discard()</div><div class="ttdef"><b>Definition:</b> future.hpp:1143</div></div>
 <div class="ttc" id="classprocess_1_1ControlFlow_html_a5ce1f085b8043fe8ac900ce9f63a0bde"><div class="ttname"><a href="classprocess_1_1ControlFlow.html#a5ce1f085b8043fe8ac900ce9f63a0bde">process::ControlFlow::ValueType</a></div><div class="ttdeci">T ValueType</div><div class="ttdef"><b>Definition:</b> loop.hpp:166</div></div>
 <div class="ttc" id="dispatch_8hpp_html"><div class="ttname"><a href="dispatch_8hpp.html">dispatch.hpp</a></div></div>
 <div class="ttc" id="namespaceprocess_html_aff22904a83567125d3b4d0d88e5a2270"><div class="ttname"><a href="namespaceprocess.html#aff22904a83567125d3b4d0d88e5a2270">process::spawn</a></div><div class="ttdeci">UPID spawn(ProcessBase *process, bool manage=false)</div><div class="ttdoc">Spawn a new process. </div></div>
 <div class="ttc" id="namespaceprocess_html_a20443908afa3212215166e26065349e5"><div class="ttname"><a href="namespaceprocess.html#a20443908afa3212215166e26065349e5">process::terminate</a></div><div class="ttdeci">void terminate(const UPID &amp;pid, bool inject=true)</div><div class="ttdoc">Sends a TerminateEvent to the given process. </div></div>
-<div class="ttc" id="classprocess_1_1Future_html_abc89036db733a417b7b383b091efaf3c"><div class="ttname"><a href="classprocess_1_1Future.html#abc89036db733a417b7b383b091efaf3c">process::Future::isDiscarded</a></div><div class="ttdeci">bool isDiscarded() const </div><div class="ttdef"><b>Definition:</b> future.hpp:1082</div></div>
+<div class="ttc" id="classprocess_1_1Future_html_abc89036db733a417b7b383b091efaf3c"><div class="ttname"><a href="classprocess_1_1Future.html#abc89036db733a417b7b383b091efaf3c">process::Future::isDiscarded</a></div><div class="ttdeci">bool isDiscarded() const </div><div class="ttdef"><b>Definition:</b> future.hpp:1208</div></div>
 <div class="ttc" id="structprocess_1_1UPID_html"><div class="ttname"><a href="structprocess_1_1UPID.html">process::UPID</a></div><div class="ttdoc">An &amp;quot;untyped&amp;quot; PID, used to encapsulate the process ID for lower-layer abstractions (eg...</div><div class="ttdef"><b>Definition:</b> pid.hpp:39</div></div>
-<div class="ttc" id="classprocess_1_1Future_html_a71bde220aed3c725cef2040f63adf42a"><div class="ttname"><a href="classprocess_1_1Future.html#a71bde220aed3c725cef2040f63adf42a">process::Future::onAny</a></div><div class="ttdeci">const Future&lt; T &gt; &amp; onAny(AnyCallback &amp;&amp;callback) const </div><div class="ttdef"><b>Definition:</b> future.hpp:1273</div></div>
+<div class="ttc" id="classprocess_1_1Future_html_a71bde220aed3c725cef2040f63adf42a"><div class="ttname"><a href="classprocess_1_1Future.html#a71bde220aed3c725cef2040f63adf42a">process::Future::onAny</a></div><div class="ttdeci">const Future&lt; T &gt; &amp; onAny(AnyCallback &amp;&amp;callback) const </div><div class="ttdef"><b>Definition:</b> future.hpp:1428</div></div>
 <div class="ttc" id="classprocess_1_1ControlFlow_html_ad0fbad53169fc7766d61a69393ac14bc"><div class="ttname"><a href="classprocess_1_1ControlFlow.html#ad0fbad53169fc7766d61a69393ac14bc">process::ControlFlow::value</a></div><div class="ttdeci">const T &amp; value() const &amp;</div><div class="ttdef"><b>Definition:</b> loop.hpp:212</div></div>
-<div class="ttc" id="classprocess_1_1internal_1_1Loop_html_a0c7b83e40e88e5d40ad29802be101dfd"><div class="ttname"><a href="classprocess_1_1internal_1_1Loop.html#a0c7b83e40e88e5d40ad29802be101dfd">process::internal::Loop::Loop</a></div><div class="ttdeci">Loop(const Option&lt; UPID &gt; &amp;pid, Iterate &amp;&amp;iterate, Body &amp;&amp;body)</div><div class="ttdef"><b>Definition:</b> loop.hpp:432</div></div>
+<div class="ttc" id="classprocess_1_1internal_1_1Loop_html_a0c7b83e40e88e5d40ad29802be101dfd"><div class="ttname"><a href="classprocess_1_1internal_1_1Loop.html#a0c7b83e40e88e5d40ad29802be101dfd">process::internal::Loop::Loop</a></div><div class="ttdeci">Loop(const Option&lt; UPID &gt; &amp;pid, Iterate &amp;&amp;iterate, Body &amp;&amp;body)</div><div class="ttdef"><b>Definition:</b> loop.hpp:436</div></div>
 <div class="ttc" id="classprocess_1_1Promise_html"><div class="ttname"><a href="classprocess_1_1Promise.html">process::Promise&lt; R &gt;</a></div></div>
 <div class="ttc" id="3rdparty_2libprocess_2include_2process_2pid_8hpp_html"><div class="ttname"><a href="3rdparty_2libprocess_2include_2process_2pid_8hpp.html">pid.hpp</a></div></div>
-<div class="ttc" id="namespaceprocess_html_a59c192ee8ea5abbbee1642957f47c92a"><div class="ttname"><a href="namespaceprocess.html#a59c192ee8ea5abbbee1642957f47c92a">process::loop</a></div><div class="ttdeci">struct ev_loop * loop</div><div class="ttdef"><b>Definition:</b> loop.hpp:452</div></div>
-<div class="ttc" id="classprocess_1_1internal_1_1Loop_html_a11417f29be6ae721ee9331b0ccbf16e4"><div class="ttname"><a href="classprocess_1_1internal_1_1Loop.html#a11417f29be6ae721ee9331b0ccbf16e4">process::internal::Loop::run</a></div><div class="ttdeci">void run(Future&lt; T &gt; next)</div><div class="ttdef"><b>Definition:</b> loop.hpp:329</div></div>
+<div class="ttc" id="namespaceprocess_html_a59c192ee8ea5abbbee1642957f47c92a"><div class="ttname"><a href="namespaceprocess.html#a59c192ee8ea5abbbee1642957f47c92a">process::loop</a></div><div class="ttdeci">struct ev_loop * loop</div><div class="ttdef"><b>Definition:</b> loop.hpp:456</div></div>
+<div class="ttc" id="classprocess_1_1internal_1_1Loop_html_a11417f29be6ae721ee9331b0ccbf16e4"><div class="ttname"><a href="classprocess_1_1internal_1_1Loop.html#a11417f29be6ae721ee9331b0ccbf16e4">process::internal::Loop::run</a></div><div class="ttdeci">void run(Future&lt; T &gt; next)</div><div class="ttdef"><b>Definition:</b> loop.hpp:333</div></div>
 <div class="ttc" id="future_8hpp_html"><div class="ttname"><a href="future_8hpp.html">future.hpp</a></div></div>
 <div class="ttc" id="classprocess_1_1ControlFlow_1_1Break_html"><div class="ttname"><a href="classprocess_1_1ControlFlow_1_1Break.html">process::ControlFlow::Break</a></div><div class="ttdef"><b>Definition:</b> loop.hpp:186</div></div>
 <div class="ttc" id="namespaceos_html_ae19e4161a51b86a1f330f3bf1dc75389"><div class="ttname"><a href="namespaceos.html#ae19e4161a51b86a1f330f3bf1dc75389">os::process</a></div><div class="ttdeci">Result&lt; Process &gt; process(pid_t pid)</div><div class="ttdef"><b>Definition:</b> freebsd.hpp:30</div></div>
 <div class="ttc" id="classprocess_1_1ControlFlow_1_1Continue_html"><div class="ttname"><a href="classprocess_1_1ControlFlow_1_1Continue.html">process::ControlFlow::Continue</a></div><div class="ttdef"><b>Definition:</b> loop.hpp:174</div></div>
 <div class="ttc" id="structNone_html"><div class="ttname"><a href="structNone.html">None</a></div><div class="ttdef"><b>Definition:</b> none.hpp:27</div></div>
 <div class="ttc" id="structprocess_1_1Continue_html"><div class="ttname"><a href="structprocess_1_1Continue.html">process::Continue</a></div><div class="ttdef"><b>Definition:</b> loop.hpp:223</div></div>
-<div class="ttc" id="classprocess_1_1Promise_html_a8aef752d6c90cb11e58e3166b7592ef1"><div class="ttname"><a href="classprocess_1_1Promise.html#a8aef752d6c90cb11e58e3166b7592ef1">process::Promise::future</a></div><div class="ttdeci">Future&lt; T &gt; future() const </div><div class="ttdef"><b>Definition:</b> future.hpp:787</div></div>
+<div class="ttc" id="classprocess_1_1Promise_html_a8aef752d6c90cb11e58e3166b7592ef1"><div class="ttname"><a href="classprocess_1_1Promise.html#a8aef752d6c90cb11e58e3166b7592ef1">process::Promise::future</a></div><div class="ttdeci">Future&lt; T &gt; future() const </div><div class="ttdef"><b>Definition:</b> future.hpp:882</div></div>
 <div class="ttc" id="classprocess_1_1ControlFlow_html_a9fa0744c29d7bffd54f10aea580ba187"><div class="ttname"><a href="classprocess_1_1ControlFlow.html#a9fa0744c29d7bffd54f10aea580ba187">process::ControlFlow::value</a></div><div class="ttdeci">const T &amp;&amp; value() const &amp;&amp;</div><div class="ttdef"><b>Definition:</b> loop.hpp:214</div></div>
 <div class="ttc" id="classprocess_1_1ControlFlow_html_af212ef291f73ba2e7b37586a577a794ba2f453cfe638e57e27bb0c9512436111e"><div class="ttname"><a href="classprocess_1_1ControlFlow.html#af212ef291f73ba2e7b37586a577a794ba2f453cfe638e57e27bb0c9512436111e">process::ControlFlow::Statement::CONTINUE</a></div></div>
 <div class="ttc" id="namespacemesos_1_1internal_1_1fs_html_a2343e2642db514496ba8380776487fba"><div class="ttname"><a href="namespacemesos_1_1internal_1_1fs.html#a2343e2642db514496ba8380776487fba">mesos::internal::fs::type</a></div><div class="ttdeci">Try&lt; uint32_t &gt; type(const std::string &amp;path)</div></div>
 <div class="ttc" id="classprocess_1_1ControlFlow_html_a3a15eba61473df457b0ac4cbaddd21ed"><div class="ttname"><a href="classprocess_1_1ControlFlow.html#a3a15eba61473df457b0ac4cbaddd21ed">process::ControlFlow::value</a></div><div class="ttdeci">T &amp;&amp; value()&amp;&amp;</div><div class="ttdef"><b>Definition:</b> loop.hpp:213</div></div>
-<div class="ttc" id="classprocess_1_1internal_1_1Loop_html_a077dc66e82c758d8b82dda11fc530d72"><div class="ttname"><a href="classprocess_1_1internal_1_1Loop.html#a077dc66e82c758d8b82dda11fc530d72">process::internal::Loop::Loop</a></div><div class="ttdeci">Loop(const Option&lt; UPID &gt; &amp;pid, const Iterate &amp;iterate, const Body &amp;body)</div><div class="ttdef"><b>Definition:</b> loop.hpp:429</div></div>
+<div class="ttc" id="classprocess_1_1internal_1_1Loop_html_a077dc66e82c758d8b82dda11fc530d72"><div class="ttname"><a href="classprocess_1_1internal_1_1Loop.html#a077dc66e82c758d8b82dda11fc530d72">process::internal::Loop::Loop</a></div><div class="ttdeci">Loop(const Option&lt; UPID &gt; &amp;pid, const Iterate &amp;iterate, const Body &amp;body)</div><div class="ttdef"><b>Definition:</b> loop.hpp:433</div></div>
 <div class="ttc" id="owned_8hpp_html"><div class="ttname"><a href="owned_8hpp.html">owned.hpp</a></div></div>
 <div class="ttc" id="namespacecgroups_html_a2ecc89636706df947027a4c3c2100fbe"><div class="ttname"><a href="namespacecgroups.html#a2ecc89636706df947027a4c3c2100fbe">cgroups::create</a></div><div class="ttdeci">Try&lt; Nothing &gt; create(const std::string &amp;hierarchy, const std::string &amp;cgroup, bool recursive=false)</div></div>
 <div class="ttc" id="classprocess_1_1internal_1_1Loop_html_a9923c05dd6d27f9ec0c61d28a5387641"><div class="ttname"><a href="classprocess_1_1internal_1_1Loop.html#a9923c05dd6d27f9ec0c61d28a5387641">process::internal::Loop::shared</a></div><div class="ttdeci">std::shared_ptr&lt; Loop &gt; shared()</div><div class="ttdef"><b>Definition:</b> loop.hpp:269</div></div>
-<div class="ttc" id="classprocess_1_1Future_html_ae649c56b07f44c05e4b7aa3620133ff9"><div class="ttname"><a href="classprocess_1_1Future.html#ae649c56b07f44c05e4b7aa3620133ff9">process::Future::failure</a></div><div class="ttdeci">const std::string &amp; failure() const </div><div class="ttdef"><b>Definition:</b> future.hpp:1173</div></div>
+<div class="ttc" id="classprocess_1_1Future_html_ae649c56b07f44c05e4b7aa3620133ff9"><div class="ttname"><a href="classprocess_1_1Future.html#ae649c56b07f44c05e4b7aa3620133ff9">process::Future::failure</a></div><div class="ttdeci">const std::string &amp; failure() const </div><div class="ttdef"><b>Definition:</b> future.hpp:1306</div></div>
 <div class="ttc" id="classprocess_1_1ControlFlow_1_1Break_html_af7fb2876b55483e08e446e4206695eca"><div class="ttname"><a href="classprocess_1_1ControlFlow_1_1Break.html#af7fb2876b55483e08e446e4206695eca">process::ControlFlow::Break::Break</a></div><div class="ttdeci">Break(T t)</div><div class="ttdef"><b>Definition:</b> loop.hpp:189</div></div>
 <div class="ttc" id="classprocess_1_1ControlFlow_html_a5c21809a15f9efe012e30d1a1cf05c3a"><div class="ttname"><a href="classprocess_1_1ControlFlow.html#a5c21809a15f9efe012e30d1a1cf05c3a">process::ControlFlow::value</a></div><div class="ttdeci">T &amp; value()&amp;</div><div class="ttdef"><b>Definition:</b> loop.hpp:211</div></div>
 <div class="ttc" id="defer_8hpp_html"><div class="ttname"><a href="defer_8hpp.html">defer.hpp</a></div></div>
 <div class="ttc" id="namespaceprocess_html_a8b27a2ef76eb133bf0ce7a5eea4fb77c"><div class="ttname"><a href="namespaceprocess.html#a8b27a2ef76eb133bf0ce7a5eea4fb77c">process::defer</a></div><div class="ttdeci">Deferred&lt; void()&gt; defer(const PID&lt; T &gt; &amp;pid, void(T::*method)())</div><div class="ttdef"><b>Definition:</b> defer.hpp:35</div></div>
-<div class="ttc" id="classprocess_1_1Future_html_a18f97963e0636071b54401b200fedfc2"><div class="ttname"><a href="classprocess_1_1Future.html#a18f97963e0636071b54401b200fedfc2">process::Future::hasDiscard</a></div><div class="ttdeci">bool hasDiscard() const </div><div class="ttdef"><b>Definition:</b> future.hpp:1096</div></div>
+<div class="ttc" id="classprocess_1_1Future_html_a18f97963e0636071b54401b200fedfc2"><div class="ttname"><a href="classprocess_1_1Future.html#a18f97963e0636071b54401b200fedfc2">process::Future::hasDiscard</a></div><div class="ttdeci">bool hasDiscard() const </div><div class="ttdef"><b>Definition:</b> future.hpp:1229</div></div>
 <div class="ttc" id="libprocess_2include_2process_2process_8hpp_html"><div class="ttname"><a href="libprocess_2include_2process_2process_8hpp.html">process.hpp</a></div></div>
 <div class="ttc" id="classprocess_1_1ControlFlow_html"><div class="ttname"><a href="classprocess_1_1ControlFlow.html">process::ControlFlow</a></div><div class="ttdef"><b>Definition:</b> loop.hpp:163</div></div>
 <div class="ttc" id="classprocess_1_1internal_1_1Loop_html_a4743d5b323d0d9923cd83fd1abeda9c3"><div class="ttname"><a href="classprocess_1_1internal_1_1Loop.html#a4743d5b323d0d9923cd83fd1abeda9c3">process::internal::Loop::start</a></div><div class="ttdeci">Future&lt; R &gt; start()</div><div class="ttdef"><b>Definition:</b> loop.hpp:280</div></div>
-<div class="ttc" id="classprocess_1_1Future_html_a493227e57f8848e37777b89c0f81e2ec"><div class="ttname"><a href="classprocess_1_1Future.html#a493227e57f8848e37777b89c0f81e2ec">process::Future::isFailed</a></div><div class="ttdeci">bool isFailed() const </div><div class="ttdef"><b>Definition:</b> future.hpp:1089</div></div>
-<div class="ttc" id="classprocess_1_1Future_html"><div class="ttname"><a href="classprocess_1_1Future.html">process::Future</a></div><div class="ttdef"><b>Definition:</b> future.hpp:56</div></div>
+<div class="ttc" id="classprocess_1_1Future_html_a493227e57f8848e37777b89c0f81e2ec"><div class="ttname"><a href="classprocess_1_1Future.html#a493227e57f8848e37777b89c0f81e2ec">process::Future::isFailed</a></div><div class="ttdeci">bool isFailed() const </div><div class="ttdef"><b>Definition:</b> future.hpp:1215</div></div>
+<div class="ttc" id="classprocess_1_1Future_html"><div class="ttname"><a href="classprocess_1_1Future.html">process::Future</a></div><div class="ttdef"><b>Definition:</b> future.hpp:57</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
