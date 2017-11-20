@@ -71,77 +71,96 @@
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#ifndef __PROVISIONER_DOCKER_PATHS_HPP__</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define __PROVISIONER_DOCKER_PATHS_HPP__</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keyword">namespace </span>mesos {</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">namespace </span>internal {</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keyword">namespace </span>slave {</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">namespace </span>docker {</div>
-<div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths.html">   26</a></span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceos_1_1libraries.html#a41b3cb8b32c32ab2abf7a7aa62de9f18">paths</a> {</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">// TODO(gilbert): Clean up any unused method after refactoring.</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;std::string <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths.html#a30892e08e25096e94eb34f77eb8d04c5">getStagingDir</a>(<span class="keyword">const</span> std::string&amp; storeDir);</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;std::string <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths.html#a83ef965f0d7c275de5e8c35262fcb9ab">getStagingTempDir</a>(<span class="keyword">const</span> std::string&amp; storeDir);</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;list&gt;</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="try_8hpp.html">stout/try.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">namespace </span>mesos {</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">namespace </span>internal {</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">namespace </span>slave {</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">namespace </span>docker {</div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths.html">   29</a></span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceos_1_1libraries.html#a41b3cb8b32c32ab2abf7a7aa62de9f18">paths</a> {</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">// TODO(gilbert): Clean up any unused method after refactoring.</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;std::string <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths.html#a30892e08e25096e94eb34f77eb8d04c5">getStagingDir</a>(<span class="keyword">const</span> std::string&amp; storeDir);</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;std::string <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths.html#a63e56a085326bea04d3f6ca6dfb6584c">getImageLayerPath</a>(</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keyword">const</span> std::string&amp; storeDir,</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keyword">const</span> std::string&amp; layerId);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;std::string <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths.html#a83ef965f0d7c275de5e8c35262fcb9ab">getStagingTempDir</a>(<span class="keyword">const</span> std::string&amp; storeDir);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;std::string <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths.html#aa77ccb0998796b4f33392fa61ed69220">getImageLayerManifestPath</a>(</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keyword">const</span> std::string&amp; layerPath);</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;std::string <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths.html#a63e56a085326bea04d3f6ca6dfb6584c">getImageLayerPath</a>(</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keyword">const</span> std::string&amp; storeDir,</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keyword">const</span> std::string&amp; layerId);</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;std::string <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths.html#aa77ccb0998796b4f33392fa61ed69220">getImageLayerManifestPath</a>(</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keyword">const</span> std::string&amp; storeDir,</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keyword">const</span> std::string&amp; layerId);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keyword">const</span> std::string&amp; layerPath);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;std::string <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths.html#a4ffa9af8a1cd80bbfb892e93908a2535">getImageLayerRootfsPath</a>(</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keyword">const</span> std::string&amp; layerPath,</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keyword">const</span> std::string&amp; backend);</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;std::string <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths.html#aa77ccb0998796b4f33392fa61ed69220">getImageLayerManifestPath</a>(</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keyword">const</span> std::string&amp; storeDir,</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keyword">const</span> std::string&amp; layerId);</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;std::string <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths.html#a4ffa9af8a1cd80bbfb892e93908a2535">getImageLayerRootfsPath</a>(</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keyword">const</span> std::string&amp; storeDir,</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keyword">const</span> std::string&amp; layerId,</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keyword">const</span> std::string&amp; backend);</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;std::string <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths.html#a998cb52d4f517cb7f96dbab1922fab50">getImageLayerTarPath</a>(</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keyword">const</span> std::string&amp; layerPath);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;std::string <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths.html#a4ffa9af8a1cd80bbfb892e93908a2535">getImageLayerRootfsPath</a>(</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keyword">const</span> std::string&amp; layerPath,</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keyword">const</span> std::string&amp; backend);</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;std::string <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths.html#a4ffa9af8a1cd80bbfb892e93908a2535">getImageLayerRootfsPath</a>(</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keyword">const</span> std::string&amp; storeDir,</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keyword">const</span> std::string&amp; layerId,</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keyword">const</span> std::string&amp; backend);</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;std::string <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths.html#a998cb52d4f517cb7f96dbab1922fab50">getImageLayerTarPath</a>(</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keyword">const</span> std::string&amp; storeDir,</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keyword">const</span> std::string&amp; layerId);</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keyword">const</span> std::string&amp; layerPath);</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;std::string <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths.html#aefa2bd8401071fee6142ede5de59cafe">getImageArchiveTarPath</a>(</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keyword">const</span> std::string&amp; discoveryDir,</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keyword">const</span> std::string&amp; <a class="code" href="namespaceos_1_1Shell.html#acfe16ef2b1146ad49a8651c0a457ce46">name</a>);</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;std::string <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths.html#a998cb52d4f517cb7f96dbab1922fab50">getImageLayerTarPath</a>(</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keyword">const</span> std::string&amp; storeDir,</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keyword">const</span> std::string&amp; layerId);</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;std::string <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths.html#a811697be6b966f9f7105340b47a2a7bc">getStoredImagesPath</a>(<span class="keyword">const</span> std::string&amp; storeDir);</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;} <span class="comment">// namespace paths {</span></div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;} <span class="comment">// namespace docker {</span></div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;} <span class="comment">// namespace slave {</span></div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;} <span class="comment">// namespace internal {</span></div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;} <span class="comment">// namespace mesos {</span></div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="preprocessor">#endif // __PROVISIONER_DOCKER_PATHS_HPP__</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;std::string <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths.html#aefa2bd8401071fee6142ede5de59cafe">getImageArchiveTarPath</a>(</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="keyword">const</span> std::string&amp; discoveryDir,</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="keyword">const</span> std::string&amp; <a class="code" href="namespaceos_1_1Shell.html#acfe16ef2b1146ad49a8651c0a457ce46">name</a>);</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;std::string <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths.html#a811697be6b966f9f7105340b47a2a7bc">getStoredImagesPath</a>(<span class="keyword">const</span> std::string&amp; storeDir);</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;std::string <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths.html#a22cde40bae83f8e696ed6eeedc2fd5a4">getGcDir</a>(<span class="keyword">const</span> std::string&amp; storeDir);</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;std::string <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths.html#a2ac536c81da5201e4b10e5a631c5f37e">getGcLayerPath</a>(</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keyword">const</span> std::string&amp; storeDir,</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    <span class="keyword">const</span> std::string&amp; layerId);</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<a class="code" href="classTry.html">Try&lt;std::list&lt;std::string&gt;</a>&gt; <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths.html#ae0eb8fe129f3e937caf2a2812cb83264">listLayers</a>(<span class="keyword">const</span> std::string&amp; storeDir);</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;} <span class="comment">// namespace paths {</span></div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;} <span class="comment">// namespace docker {</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;} <span class="comment">// namespace slave {</span></div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;} <span class="comment">// namespace internal {</span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;} <span class="comment">// namespace mesos {</span></div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="preprocessor">#endif // __PROVISIONER_DOCKER_PATHS_HPP__</span></div>
 <div class="ttc" id="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths_html_a30892e08e25096e94eb34f77eb8d04c5"><div class="ttname"><a href="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths.html#a30892e08e25096e94eb34f77eb8d04c5">mesos::internal::slave::docker::paths::getStagingDir</a></div><div class="ttdeci">std::string getStagingDir(const std::string &amp;storeDir)</div><div class="ttdoc">The Docker store file system layout is as follows: Image store dir (&amp;#39;–docker_store_dir&amp;#39; slave flag) |...</div></div>
 <div class="ttc" id="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths_html_a83ef965f0d7c275de5e8c35262fcb9ab"><div class="ttname"><a href="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths.html#a83ef965f0d7c275de5e8c35262fcb9ab">mesos::internal::slave::docker::paths::getStagingTempDir</a></div><div class="ttdeci">std::string getStagingTempDir(const std::string &amp;storeDir)</div></div>
+<div class="ttc" id="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths_html_a2ac536c81da5201e4b10e5a631c5f37e"><div class="ttname"><a href="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths.html#a2ac536c81da5201e4b10e5a631c5f37e">mesos::internal::slave::docker::paths::getGcLayerPath</a></div><div class="ttdeci">std::string getGcLayerPath(const std::string &amp;storeDir, const std::string &amp;layerId)</div></div>
+<div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
 <div class="ttc" id="namespaceos_1_1libraries_html_a41b3cb8b32c32ab2abf7a7aa62de9f18"><div class="ttname"><a href="namespaceos_1_1libraries.html#a41b3cb8b32c32ab2abf7a7aa62de9f18">os::libraries::paths</a></div><div class="ttdeci">std::string paths()</div><div class="ttdef"><b>Definition:</b> os.hpp:136</div></div>
+<div class="ttc" id="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths_html_ae0eb8fe129f3e937caf2a2812cb83264"><div class="ttname"><a href="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths.html#ae0eb8fe129f3e937caf2a2812cb83264">mesos::internal::slave::docker::paths::listLayers</a></div><div class="ttdeci">Try&lt; std::list&lt; std::string &gt; &gt; listLayers(const std::string &amp;storeDir)</div></div>
 <div class="ttc" id="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths_html_a998cb52d4f517cb7f96dbab1922fab50"><div class="ttname"><a href="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths.html#a998cb52d4f517cb7f96dbab1922fab50">mesos::internal::slave::docker::paths::getImageLayerTarPath</a></div><div class="ttdeci">std::string getImageLayerTarPath(const std::string &amp;layerPath)</div></div>
 <div class="ttc" id="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths_html_a4ffa9af8a1cd80bbfb892e93908a2535"><div class="ttname"><a href="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths.html#a4ffa9af8a1cd80bbfb892e93908a2535">mesos::internal::slave::docker::paths::getImageLayerRootfsPath</a></div><div class="ttdeci">std::string getImageLayerRootfsPath(const std::string &amp;layerPath, const std::string &amp;backend)</div></div>
 <div class="ttc" id="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths_html_a63e56a085326bea04d3f6ca6dfb6584c"><div class="ttname"><a href="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths.html#a63e56a085326bea04d3f6ca6dfb6584c">mesos::internal::slave::docker::paths::getImageLayerPath</a></div><div class="ttdeci">std::string getImageLayerPath(const std::string &amp;storeDir, const std::string &amp;layerId)</div></div>
 <div class="ttc" id="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths_html_aefa2bd8401071fee6142ede5de59cafe"><div class="ttname"><a href="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths.html#aefa2bd8401071fee6142ede5de59cafe">mesos::internal::slave::docker::paths::getImageArchiveTarPath</a></div><div class="ttdeci">std::string getImageArchiveTarPath(const std::string &amp;discoveryDir, const std::string &amp;name)</div></div>
 <div class="ttc" id="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths_html_a811697be6b966f9f7105340b47a2a7bc"><div class="ttname"><a href="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths.html#a811697be6b966f9f7105340b47a2a7bc">mesos::internal::slave::docker::paths::getStoredImagesPath</a></div><div class="ttdeci">std::string getStoredImagesPath(const std::string &amp;storeDir)</div></div>
+<div class="ttc" id="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths_html_a22cde40bae83f8e696ed6eeedc2fd5a4"><div class="ttname"><a href="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths.html#a22cde40bae83f8e696ed6eeedc2fd5a4">mesos::internal::slave::docker::paths::getGcDir</a></div><div class="ttdeci">std::string getGcDir(const std::string &amp;storeDir)</div></div>
+<div class="ttc" id="try_8hpp_html"><div class="ttname"><a href="try_8hpp.html">try.hpp</a></div></div>
 <div class="ttc" id="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths_html_aa77ccb0998796b4f33392fa61ed69220"><div class="ttname"><a href="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths.html#aa77ccb0998796b4f33392fa61ed69220">mesos::internal::slave::docker::paths::getImageLayerManifestPath</a></div><div class="ttdeci">std::string getImageLayerManifestPath(const std::string &amp;layerPath)</div></div>
 <div class="ttc" id="namespaceos_1_1Shell_html_acfe16ef2b1146ad49a8651c0a457ce46"><div class="ttname"><a href="namespaceos_1_1Shell.html#acfe16ef2b1146ad49a8651c0a457ce46">os::Shell::name</a></div><div class="ttdeci">constexpr const char * name</div><div class="ttdef"><b>Definition:</b> shell.hpp:41</div></div>
 </div><!-- fragment --></div><!-- contents -->

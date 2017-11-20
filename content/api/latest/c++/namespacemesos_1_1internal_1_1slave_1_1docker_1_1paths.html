@@ -58,7 +58,7 @@
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a30892e08e25096e94eb34f77eb8d04c5"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths.html#a30892e08e25096e94eb34f77eb8d04c5">getStagingDir</a> (const std::string &amp;storeDir)</td></tr>
-<tr class="memdesc:a30892e08e25096e94eb34f77eb8d04c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classDocker.html">Docker</a> store file system layout is as follows: Image store dir ('&ndash;docker_store_dir' slave flag) |&ndash;staging |&ndash; &lt;staging_tmp_dir_XXXXXX&gt; |&ndash; &lt;layer_id&gt; |&ndash; rootfs |&ndash; json(manifest) |&ndash; VERSION |&ndash;layers |&ndash;&lt;layer_id&gt; |&ndash; rootfs |&ndash; json(manifest) |&ndash; VERSION |&ndash;storedImages (file holding on cached images)  <a href="#a30892e08e25096e94eb34f77eb8d04c5">More...</a><br/></td></tr>
+<tr class="memdesc:a30892e08e25096e94eb34f77eb8d04c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classDocker.html">Docker</a> store file system layout is as follows: Image store dir ('&ndash;docker_store_dir' slave flag) |&ndash;staging |&ndash; &lt;staging_tmp_dir_XXXXXX&gt; |&ndash; &lt;layer_id&gt; |&ndash; rootfs |&ndash; json(manifest) |&ndash; VERSION |&ndash;layers |&ndash;&lt;layer_id&gt; |&ndash; rootfs |&ndash; json(manifest) |&ndash; VERSION |&ndash;storedImages (file holding on cached images) |&ndash;gc (dir holding marked layers to be sweeped)  <a href="#a30892e08e25096e94eb34f77eb8d04c5">More...</a><br/></td></tr>
 <tr class="separator:a30892e08e25096e94eb34f77eb8d04c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a83ef965f0d7c275de5e8c35262fcb9ab"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths.html#a83ef965f0d7c275de5e8c35262fcb9ab">getStagingTempDir</a> (const std::string &amp;storeDir)</td></tr>
 <tr class="separator:a83ef965f0d7c275de5e8c35262fcb9ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -80,8 +80,56 @@ Functions</h2></td></tr>
 <tr class="separator:aefa2bd8401071fee6142ede5de59cafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a811697be6b966f9f7105340b47a2a7bc"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths.html#a811697be6b966f9f7105340b47a2a7bc">getStoredImagesPath</a> (const std::string &amp;storeDir)</td></tr>
 <tr class="separator:a811697be6b966f9f7105340b47a2a7bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22cde40bae83f8e696ed6eeedc2fd5a4"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths.html#a22cde40bae83f8e696ed6eeedc2fd5a4">getGcDir</a> (const std::string &amp;storeDir)</td></tr>
+<tr class="separator:a22cde40bae83f8e696ed6eeedc2fd5a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ac536c81da5201e4b10e5a631c5f37e"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths.html#a2ac536c81da5201e4b10e5a631c5f37e">getGcLayerPath</a> (const std::string &amp;storeDir, const std::string &amp;layerId)</td></tr>
+<tr class="separator:a2ac536c81da5201e4b10e5a631c5f37e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0eb8fe129f3e937caf2a2812cb83264"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTry.html">Try</a>&lt; std::list&lt; std::string &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1internal_1_1slave_1_1docker_1_1paths.html#ae0eb8fe129f3e937caf2a2812cb83264">listLayers</a> (const std::string &amp;storeDir)</td></tr>
+<tr class="separator:ae0eb8fe129f3e937caf2a2812cb83264"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
+<a class="anchor" id="a22cde40bae83f8e696ed6eeedc2fd5a4"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string mesos::internal::slave::docker::paths::getGcDir </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>storeDir</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a2ac536c81da5201e4b10e5a631c5f37e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string mesos::internal::slave::docker::paths::getGcLayerPath </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>storeDir</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>layerId</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="aefa2bd8401071fee6142ede5de59cafe"></a>
 <div class="memitem">
 <div class="memproto">
@@ -290,7 +338,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>The <a class="el" href="classDocker.html">Docker</a> store file system layout is as follows: Image store dir ('&ndash;docker_store_dir' slave flag) |&ndash;staging |&ndash; &lt;staging_tmp_dir_XXXXXX&gt; |&ndash; &lt;layer_id&gt; |&ndash; rootfs |&ndash; json(manifest) |&ndash; VERSION |&ndash;layers |&ndash;&lt;layer_id&gt; |&ndash; rootfs |&ndash; json(manifest) |&ndash; VERSION |&ndash;storedImages (file holding on cached images) </p>
+<p>The <a class="el" href="classDocker.html">Docker</a> store file system layout is as follows: Image store dir ('&ndash;docker_store_dir' slave flag) |&ndash;staging |&ndash; &lt;staging_tmp_dir_XXXXXX&gt; |&ndash; &lt;layer_id&gt; |&ndash; rootfs |&ndash; json(manifest) |&ndash; VERSION |&ndash;layers |&ndash;&lt;layer_id&gt; |&ndash; rootfs |&ndash; json(manifest) |&ndash; VERSION |&ndash;storedImages (file holding on cached images) |&ndash;gc (dir holding marked layers to be sweeped) </p>
 
 </div>
 </div>
@@ -316,6 +364,22 @@ Functions</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">std::string mesos::internal::slave::docker::paths::getStoredImagesPath </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>storeDir</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ae0eb8fe129f3e937caf2a2812cb83264"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classTry.html">Try</a>&lt;std::list&lt;std::string&gt; &gt; mesos::internal::slave::docker::paths::listLayers </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>storeDir</em></td><td>)</td>

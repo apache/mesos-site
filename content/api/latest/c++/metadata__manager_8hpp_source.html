@@ -75,77 +75,83 @@
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="hashmap_8hpp.html">stout/hashmap.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="json_8hpp.html">stout/json.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="option_8hpp.html">stout/option.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="3rdparty_2stout_2include_2stout_2protobuf_8hpp.html">stout/protobuf.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="try_8hpp.html">stout/try.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="future_8hpp.html">process/future.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="owned_8hpp.html">process/owned.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="libprocess_2include_2process_2process_8hpp.html">process/process.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="include_2mesos_2docker_2spec_8hpp.html">mesos/docker/spec.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="provisioner_8hpp.html">slave/containerizer/mesos/provisioner/provisioner.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="src_2slave_2containerizer_2mesos_2provisioner_2docker_2message_8hpp.html">slave/containerizer/mesos/provisioner/docker/message.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="src_2slave_2flags_8hpp.html">slave/flags.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keyword">namespace </span>mesos {</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">namespace </span>internal {</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword">namespace </span>slave {</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keyword">namespace </span>docker {</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="comment">// Forward Declaration.</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keyword">class </span>MetadataManagerProcess;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1slave_1_1docker_1_1MetadataManager.html">   57</a></span>&#160;<span class="keyword">class </span><a class="code" href="classmesos_1_1internal_1_1slave_1_1docker_1_1MetadataManager.html">MetadataManager</a></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;{</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="keyword">static</span> <a class="code" href="classTry.html">Try&lt;process::Owned&lt;MetadataManager&gt;</a>&gt; <a class="code" href="classmesos_1_1internal_1_1slave_1_1docker_1_1MetadataManager.html#accd46bed2e7d2ed7db8fe8ad9876590c">create</a>(<span class="keyword">const</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Flags.html">Flags</a>&amp; <a class="code" href="decoder_8hpp.html#abb0829cce9dd20a40ae0d86890ae85c6">flags</a>);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <a class="code" href="classmesos_1_1internal_1_1slave_1_1docker_1_1MetadataManager.html#a3aa93e9468cdffb41d7bb91932a46acf">~MetadataManager</a>();</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <a class="code" href="classprocess_1_1Future.html">process::Future&lt;Nothing&gt;</a> <a class="code" href="classmesos_1_1internal_1_1slave_1_1docker_1_1MetadataManager.html#a4d9830dbfe3f78316ef1d6ee2eb1706b">recover</a>();</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <a class="code" href="classprocess_1_1Future.html">process::Future&lt;Image&gt;</a> <a class="code" href="classmesos_1_1internal_1_1slave_1_1docker_1_1MetadataManager.html#af672706fe637c9cdad8144233718198e">put</a>(</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;      const ::docker::spec::ImageReference&amp; reference,</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;      <span class="keyword">const</span> std::vector&lt;std::string&gt;&amp; layerIds);</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  <a class="code" href="classprocess_1_1Future.html">process::Future&lt;Option&lt;Image&gt;</a>&gt; <span class="keyword">get</span>(</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;      const ::docker::spec::ImageReference&amp; reference,</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;      <span class="keywordtype">bool</span> cached);</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1docker_1_1MetadataManager.html">MetadataManager</a>(<a class="code" href="classprocess_1_1Owned.html">process::Owned&lt;MetadataManagerProcess&gt;</a> process);</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  <a class="code" href="classmesos_1_1internal_1_1slave_1_1docker_1_1MetadataManager.html">MetadataManager</a>(<span class="keyword">const</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1docker_1_1MetadataManager.html">MetadataManager</a>&amp;); <span class="comment">// Not copyable.</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  <a class="code" href="classmesos_1_1internal_1_1slave_1_1docker_1_1MetadataManager.html">MetadataManager</a>&amp; operator=(<span class="keyword">const</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1docker_1_1MetadataManager.html">MetadataManager</a>&amp;); <span class="comment">// Not assignable.</span></div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  <a class="code" href="classprocess_1_1Owned.html">process::Owned&lt;MetadataManagerProcess&gt;</a> process;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;};</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;} <span class="comment">// namespace docker {</span></div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;} <span class="comment">// namespace slave {</span></div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;} <span class="comment">// namespace internal {</span></div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;} <span class="comment">// namespace mesos {</span></div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="preprocessor">#endif // __PROVISIONER_DOCKER_METADATA_MANAGER_HPP__</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="hashset_8hpp.html">stout/hashset.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="json_8hpp.html">stout/json.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="option_8hpp.html">stout/option.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="3rdparty_2stout_2include_2stout_2protobuf_8hpp.html">stout/protobuf.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="try_8hpp.html">stout/try.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="future_8hpp.html">process/future.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="owned_8hpp.html">process/owned.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="libprocess_2include_2process_2process_8hpp.html">process/process.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="include_2mesos_2docker_2spec_8hpp.html">mesos/docker/spec.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="provisioner_8hpp.html">slave/containerizer/mesos/provisioner/provisioner.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="src_2slave_2containerizer_2mesos_2provisioner_2docker_2message_8hpp.html">slave/containerizer/mesos/provisioner/docker/message.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="src_2slave_2flags_8hpp.html">slave/flags.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">namespace </span>mesos {</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword">namespace </span>internal {</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keyword">namespace </span>slave {</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keyword">namespace </span>docker {</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment">// Forward Declaration.</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keyword">class </span>MetadataManagerProcess;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1slave_1_1docker_1_1MetadataManager.html">   58</a></span>&#160;<span class="keyword">class </span><a class="code" href="classmesos_1_1internal_1_1slave_1_1docker_1_1MetadataManager.html">MetadataManager</a></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;{</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="keyword">static</span> <a class="code" href="classTry.html">Try&lt;process::Owned&lt;MetadataManager&gt;</a>&gt; <a class="code" href="classmesos_1_1internal_1_1slave_1_1docker_1_1MetadataManager.html#accd46bed2e7d2ed7db8fe8ad9876590c">create</a>(<span class="keyword">const</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Flags.html">Flags</a>&amp; <a class="code" href="decoder_8hpp.html#abb0829cce9dd20a40ae0d86890ae85c6">flags</a>);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <a class="code" href="classmesos_1_1internal_1_1slave_1_1docker_1_1MetadataManager.html#a3aa93e9468cdffb41d7bb91932a46acf">~MetadataManager</a>();</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <a class="code" href="classprocess_1_1Future.html">process::Future&lt;Nothing&gt;</a> <a class="code" href="classmesos_1_1internal_1_1slave_1_1docker_1_1MetadataManager.html#a4d9830dbfe3f78316ef1d6ee2eb1706b">recover</a>();</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <a class="code" href="classprocess_1_1Future.html">process::Future&lt;Image&gt;</a> <a class="code" href="classmesos_1_1internal_1_1slave_1_1docker_1_1MetadataManager.html#af672706fe637c9cdad8144233718198e">put</a>(</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;      const ::docker::spec::ImageReference&amp; reference,</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;      <span class="keyword">const</span> std::vector&lt;std::string&gt;&amp; layerIds);</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  <a class="code" href="classprocess_1_1Future.html">process::Future&lt;Option&lt;Image&gt;</a>&gt; <span class="keyword">get</span>(</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;      const ::docker::spec::ImageReference&amp; reference,</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;      <span class="keywordtype">bool</span> cached);</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  <a class="code" href="classprocess_1_1Future.html">process::Future&lt;hashset&lt;std::string&gt;</a>&gt; <a class="code" href="classmesos_1_1internal_1_1slave_1_1docker_1_1MetadataManager.html#a744456a000c23426fc878c3a927b3dab">prune</a>(</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;      <span class="keyword">const</span> std::vector&lt;::docker::spec::ImageReference&gt;&amp; excludedImages);</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1docker_1_1MetadataManager.html">MetadataManager</a>(<a class="code" href="classprocess_1_1Owned.html">process::Owned&lt;MetadataManagerProcess&gt;</a> process);</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;  <a class="code" href="classmesos_1_1internal_1_1slave_1_1docker_1_1MetadataManager.html">MetadataManager</a>(<span class="keyword">const</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1docker_1_1MetadataManager.html">MetadataManager</a>&amp;); <span class="comment">// Not copyable.</span></div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;  <a class="code" href="classmesos_1_1internal_1_1slave_1_1docker_1_1MetadataManager.html">MetadataManager</a>&amp; operator=(<span class="keyword">const</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1docker_1_1MetadataManager.html">MetadataManager</a>&amp;); <span class="comment">// Not assignable.</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;  <a class="code" href="classprocess_1_1Owned.html">process::Owned&lt;MetadataManagerProcess&gt;</a> process;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;};</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;} <span class="comment">// namespace docker {</span></div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;} <span class="comment">// namespace slave {</span></div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;} <span class="comment">// namespace internal {</span></div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;} <span class="comment">// namespace mesos {</span></div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="preprocessor">#endif // __PROVISIONER_DOCKER_METADATA_MANAGER_HPP__</span></div>
 <div class="ttc" id="classmesos_1_1internal_1_1slave_1_1docker_1_1MetadataManager_html_a3aa93e9468cdffb41d7bb91932a46acf"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1docker_1_1MetadataManager.html#a3aa93e9468cdffb41d7bb91932a46acf">mesos::internal::slave::docker::MetadataManager::~MetadataManager</a></div><div class="ttdeci">~MetadataManager()</div></div>
 <div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
 <div class="ttc" id="src_2slave_2containerizer_2mesos_2provisioner_2docker_2message_8hpp_html"><div class="ttname"><a href="src_2slave_2containerizer_2mesos_2provisioner_2docker_2message_8hpp.html">message.hpp</a></div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1docker_1_1MetadataManager_html_a744456a000c23426fc878c3a927b3dab"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1docker_1_1MetadataManager.html#a744456a000c23426fc878c3a927b3dab">mesos::internal::slave::docker::MetadataManager::prune</a></div><div class="ttdeci">process::Future&lt; hashset&lt; std::string &gt; &gt; prune(const std::vector&lt;::docker::spec::ImageReference &gt; &amp;excludedImages)</div><div class="ttdoc">Prune images from the metadata manager by comparing existing images with active images in use...</div></div>
 <div class="ttc" id="json_8hpp_html"><div class="ttname"><a href="json_8hpp.html">json.hpp</a></div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1slave_1_1Flags_html"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1Flags.html">mesos::internal::slave::Flags</a></div><div class="ttdef"><b>Definition:</b> flags.hpp:39</div></div>
 <div class="ttc" id="include_2mesos_2docker_2spec_8hpp_html"><div class="ttname"><a href="include_2mesos_2docker_2spec_8hpp.html">spec.hpp</a></div></div>
 <div class="ttc" id="provisioner_8hpp_html"><div class="ttname"><a href="provisioner_8hpp.html">provisioner.hpp</a></div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2protobuf_8hpp_html"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2protobuf_8hpp.html">protobuf.hpp</a></div></div>
 <div class="ttc" id="option_8hpp_html"><div class="ttname"><a href="option_8hpp.html">option.hpp</a></div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1docker_1_1MetadataManager_html"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1docker_1_1MetadataManager.html">mesos::internal::slave::docker::MetadataManager</a></div><div class="ttdoc">The MetadataManager tracks the Docker images cached by the provisioner that are stored on disk...</div><div class="ttdef"><b>Definition:</b> metadata_manager.hpp:57</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1docker_1_1MetadataManager_html"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1docker_1_1MetadataManager.html">mesos::internal::slave::docker::MetadataManager</a></div><div class="ttdoc">The MetadataManager tracks the Docker images cached by the provisioner that are stored on disk...</div><div class="ttdef"><b>Definition:</b> metadata_manager.hpp:58</div></div>
 <div class="ttc" id="future_8hpp_html"><div class="ttname"><a href="future_8hpp.html">future.hpp</a></div></div>
 <div class="ttc" id="decoder_8hpp_html_abb0829cce9dd20a40ae0d86890ae85c6"><div class="ttname"><a href="decoder_8hpp.html#abb0829cce9dd20a40ae0d86890ae85c6">flags</a></div><div class="ttdeci">#define flags</div><div class="ttdef"><b>Definition:</b> decoder.hpp:18</div></div>
 <div class="ttc" id="try_8hpp_html"><div class="ttname"><a href="try_8hpp.html">try.hpp</a></div></div>
+<div class="ttc" id="hashset_8hpp_html"><div class="ttname"><a href="hashset_8hpp.html">hashset.hpp</a></div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1slave_1_1docker_1_1MetadataManager_html_a4d9830dbfe3f78316ef1d6ee2eb1706b"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1docker_1_1MetadataManager.html#a4d9830dbfe3f78316ef1d6ee2eb1706b">mesos::internal::slave::docker::MetadataManager::recover</a></div><div class="ttdeci">process::Future&lt; Nothing &gt; recover()</div><div class="ttdoc">Recover all stored Image and its layer references. </div></div>
 <div class="ttc" id="src_2slave_2flags_8hpp_html"><div class="ttname"><a href="src_2slave_2flags_8hpp.html">flags.hpp</a></div></div>
 <div class="ttc" id="owned_8hpp_html"><div class="ttname"><a href="owned_8hpp.html">owned.hpp</a></div></div>

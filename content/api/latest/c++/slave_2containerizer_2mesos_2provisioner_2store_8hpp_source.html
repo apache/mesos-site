@@ -85,87 +85,108 @@
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="future_8hpp.html">process/future.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="owned_8hpp.html">process/owned.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="try_8hpp.html">stout/try.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="src_2slave_2flags_8hpp.html">slave/flags.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">namespace </span>mesos {</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keyword">namespace </span>internal {</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keyword">namespace </span>slave {</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">// Includes a vector of rootfs layers in topological order corresponding</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">// to a specific image, and its runtime configuration.</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="structmesos_1_1internal_1_1slave_1_1ImageInfo.html">   44</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structmesos_1_1internal_1_1slave_1_1ImageInfo.html">ImageInfo</a></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;{</div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="structmesos_1_1internal_1_1slave_1_1ImageInfo.html#a00b3bbd185c4191172c69aca4202529a">   46</a></span>&#160;  std::vector&lt;std::string&gt; <a class="code" href="structmesos_1_1internal_1_1slave_1_1ImageInfo.html#a00b3bbd185c4191172c69aca4202529a">layers</a>;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <span class="comment">// Docker v1 image manifest.</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="structmesos_1_1internal_1_1slave_1_1ImageInfo.html#ac76ec86a0a1eced6b58659a885e7c4f2">   49</a></span>&#160;  <a class="code" href="classOption.html">Option&lt;::docker::spec::v1::ImageManifest&gt;</a> <a class="code" href="structmesos_1_1internal_1_1slave_1_1ImageInfo.html#ac76ec86a0a1eced6b58659a885e7c4f2">dockerManifest</a>;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <span class="comment">// Appc image manifest.</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="structmesos_1_1internal_1_1slave_1_1ImageInfo.html#ab1d205fa6986d5da57f99a4fd69a1f13">   52</a></span>&#160;  <a class="code" href="classOption.html">Option&lt;::appc::spec::ImageManifest&gt;</a> <a class="code" href="structmesos_1_1internal_1_1slave_1_1ImageInfo.html#ab1d205fa6986d5da57f99a4fd69a1f13">appcManifest</a>;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;};</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="hashset_8hpp.html">stout/hashset.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="try_8hpp.html">stout/try.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="src_2slave_2flags_8hpp.html">slave/flags.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keyword">namespace </span>mesos {</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keyword">namespace </span>internal {</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keyword">namespace </span>slave {</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">// Includes a vector of rootfs layers in topological order corresponding</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">// to a specific image, and its runtime configuration.</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="structmesos_1_1internal_1_1slave_1_1ImageInfo.html">   45</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structmesos_1_1internal_1_1slave_1_1ImageInfo.html">ImageInfo</a></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;{</div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="structmesos_1_1internal_1_1slave_1_1ImageInfo.html#a00b3bbd185c4191172c69aca4202529a">   47</a></span>&#160;  std::vector&lt;std::string&gt; <a class="code" href="structmesos_1_1internal_1_1slave_1_1ImageInfo.html#a00b3bbd185c4191172c69aca4202529a">layers</a>;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <span class="comment">// Docker v1 image manifest.</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="structmesos_1_1internal_1_1slave_1_1ImageInfo.html#ac76ec86a0a1eced6b58659a885e7c4f2">   50</a></span>&#160;  <a class="code" href="classOption.html">Option&lt;::docker::spec::v1::ImageManifest&gt;</a> <a class="code" href="structmesos_1_1internal_1_1slave_1_1ImageInfo.html#ac76ec86a0a1eced6b58659a885e7c4f2">dockerManifest</a>;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <span class="comment">// Appc image manifest.</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="structmesos_1_1internal_1_1slave_1_1ImageInfo.html#ab1d205fa6986d5da57f99a4fd69a1f13">   53</a></span>&#160;  <a class="code" href="classOption.html">Option&lt;::appc::spec::ImageManifest&gt;</a> <a class="code" href="structmesos_1_1internal_1_1slave_1_1ImageInfo.html#ab1d205fa6986d5da57f99a4fd69a1f13">appcManifest</a>;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;};</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment">// An image store abstraction that &quot;stores&quot; images. It serves as a</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment">// read-through cache (cache misses are fetched remotely and</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">// transparently) for images.</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1slave_1_1Store.html">   59</a></span>&#160;<span class="keyword">class </span><a class="code" href="classmesos_1_1internal_1_1slave_1_1Store.html">Store</a></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;{</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keyword">static</span> <a class="code" href="classTry.html">Try&lt;hashmap&lt;Image::Type, process::Owned&lt;Store&gt;</a>&gt;&gt; <a class="code" href="classmesos_1_1internal_1_1slave_1_1Store.html#a956e1d5d123fbc2b6c1b1362247087e7">create</a>(</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;      <span class="keyword">const</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Flags.html">Flags</a>&amp; <a class="code" href="decoder_8hpp.html#abb0829cce9dd20a40ae0d86890ae85c6">flags</a>,</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;      <a class="code" href="classmesos_1_1SecretResolver.html">SecretResolver</a>* secretResolver = <span class="keyword">nullptr</span>);</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
-<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1slave_1_1Store.html#a2d72ec8de248c46be0fe4c16ccdc5a9a">   66</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Store.html#a2d72ec8de248c46be0fe4c16ccdc5a9a">~Store</a>() {}</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;Nothing&gt;</a> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Store.html#a3941ada48ffb0de68285fee5c0104d42">recover</a>() = 0;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="comment">// Get the specified image (and all its recursive dependencies) as a</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="comment">// list of rootfs layers in the topological order (dependencies go</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="comment">// before dependents in the list). The images required to build this</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="comment">// list are either retrieved from the local cache or fetched</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="comment">// remotely.</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="comment">//</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="comment">// NOTE: The returned list should not have duplicates. e.g., in the</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="comment">// following scenario the result should be [C, B, D, A] (B before D</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="comment">// in this example is decided by the order in which A specifies its</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="comment">// dependencies).</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <span class="comment">//</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="comment">// A --&gt; B --&gt; C</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <span class="comment">// |           ^</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="comment">// |---&gt; D ----|</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <span class="comment">//</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  <span class="comment">// The returned future fails if the requested image or any of its</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  <span class="comment">// dependencies cannot be found or failed to be fetched.</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;ImageInfo&gt;</a> <span class="keyword">get</span>(</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;      <span class="keyword">const</span> Image&amp; <a class="code" href="namespacemesos_1_1uri_1_1docker.html#abbd9f55734f0b832bc5a87c3ee5d449e">image</a>,</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;      <span class="keyword">const</span> std::string&amp; backend) = 0;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;};</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment">// An image store abstraction that &quot;stores&quot; images. It serves as a</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">// read-through cache (cache misses are fetched remotely and</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">// transparently) for images.</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1slave_1_1Store.html">   60</a></span>&#160;<span class="keyword">class </span><a class="code" href="classmesos_1_1internal_1_1slave_1_1Store.html">Store</a></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;{</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <span class="keyword">static</span> <a class="code" href="classTry.html">Try&lt;hashmap&lt;Image::Type, process::Owned&lt;Store&gt;</a>&gt;&gt; <a class="code" href="classmesos_1_1internal_1_1slave_1_1Store.html#a956e1d5d123fbc2b6c1b1362247087e7">create</a>(</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;      <span class="keyword">const</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Flags.html">Flags</a>&amp; <a class="code" href="decoder_8hpp.html#abb0829cce9dd20a40ae0d86890ae85c6">flags</a>,</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;      <a class="code" href="classmesos_1_1SecretResolver.html">SecretResolver</a>* secretResolver = <span class="keyword">nullptr</span>);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1slave_1_1Store.html#a2d72ec8de248c46be0fe4c16ccdc5a9a">   67</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Store.html#a2d72ec8de248c46be0fe4c16ccdc5a9a">~Store</a>() {}</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;Nothing&gt;</a> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Store.html#a3941ada48ffb0de68285fee5c0104d42">recover</a>() = 0;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="comment">// Get the specified image (and all its recursive dependencies) as a</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="comment">// list of rootfs layers in the topological order (dependencies go</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="comment">// before dependents in the list). The images required to build this</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="comment">// list are either retrieved from the local cache or fetched</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="comment">// remotely.</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="comment">//</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="comment">// NOTE: The returned list should not have duplicates. e.g., in the</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="comment">// following scenario the result should be [C, B, D, A] (B before D</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="comment">// in this example is decided by the order in which A specifies its</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <span class="comment">// dependencies).</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="comment">//</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <span class="comment">// A --&gt; B --&gt; C</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="comment">// |           ^</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <span class="comment">// |---&gt; D ----|</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  <span class="comment">//</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  <span class="comment">// The returned future fails if the requested image or any of its</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <span class="comment">// dependencies cannot be found or failed to be fetched.</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;ImageInfo&gt;</a> <span class="keyword">get</span>(</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;      <span class="keyword">const</span> Image&amp; <a class="code" href="namespacemesos_1_1uri_1_1docker.html#abbd9f55734f0b832bc5a87c3ee5d449e">image</a>,</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;      <span class="keyword">const</span> std::string&amp; backend) = 0;</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;} <span class="comment">// namespace slave {</span></div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;} <span class="comment">// namespace internal {</span></div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;} <span class="comment">// namespace mesos {</span></div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="preprocessor">#endif // __PROVISIONER_STORE_HPP__</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  <span class="comment">// Prune unused images from the given store. This is called within</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <span class="comment">// an exclusive lock from `provisioner`, which means any other</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  <span class="comment">// image provision or prune are blocked until the future is satsified,</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  <span class="comment">// so an implementation should minimize the blocking time.</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  <span class="comment">//</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  <span class="comment">// Any image specified in `excludedImages` should not be pruned if</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  <span class="comment">// it is already cached previously.</span></div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  <span class="comment">//</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  <span class="comment">// On top of this, all layer paths used to provisioner all active</span></div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  <span class="comment">// containers are also passed in `activeLayerPaths`, and these layers</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  <span class="comment">// should also be retained. Because in certain store (e.g, docker store)</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  <span class="comment">// the cache is not source of truth, and we need to not only keep the</span></div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  <span class="comment">// excluded images, but also maintain the cache.</span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;Nothing&gt;</a> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Store.html#afe92eaa2c105a23f9c1095eed9178914">prune</a>(</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;      <span class="keyword">const</span> std::vector&lt;Image&gt;&amp; excludedImages,</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;      <span class="keyword">const</span> <a class="code" href="classhashset.html">hashset&lt;std::string&gt;</a>&amp; activeLayerPaths);</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;};</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;} <span class="comment">// namespace slave {</span></div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;} <span class="comment">// namespace internal {</span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;} <span class="comment">// namespace mesos {</span></div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="preprocessor">#endif // __PROVISIONER_STORE_HPP__</span></div>
 <div class="ttc" id="resolver_8hpp_html"><div class="ttname"><a href="resolver_8hpp.html">resolver.hpp</a></div></div>
 <div class="ttc" id="classOption_html"><div class="ttname"><a href="classOption.html">Option&lt;::docker::spec::v1::ImageManifest &gt;</a></div></div>
 <div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1Store_html_a2d72ec8de248c46be0fe4c16ccdc5a9a"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1Store.html#a2d72ec8de248c46be0fe4c16ccdc5a9a">mesos::internal::slave::Store::~Store</a></div><div class="ttdeci">virtual ~Store()</div><div class="ttdef"><b>Definition:</b> store.hpp:66</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1Store_html_a2d72ec8de248c46be0fe4c16ccdc5a9a"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1Store.html#a2d72ec8de248c46be0fe4c16ccdc5a9a">mesos::internal::slave::Store::~Store</a></div><div class="ttdeci">virtual ~Store()</div><div class="ttdef"><b>Definition:</b> store.hpp:67</div></div>
+<div class="ttc" id="classhashset_html"><div class="ttname"><a href="classhashset.html">hashset&lt; std::string &gt;</a></div></div>
 <div class="ttc" id="include_2mesos_2mesos_8hpp_html"><div class="ttname"><a href="include_2mesos_2mesos_8hpp.html">mesos.hpp</a></div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1Store_html"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1Store.html">mesos::internal::slave::Store</a></div><div class="ttdef"><b>Definition:</b> store.hpp:59</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1Store_html"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1Store.html">mesos::internal::slave::Store</a></div><div class="ttdef"><b>Definition:</b> store.hpp:60</div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1slave_1_1Flags_html"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1Flags.html">mesos::internal::slave::Flags</a></div><div class="ttdef"><b>Definition:</b> flags.hpp:39</div></div>
-<div class="ttc" id="structmesos_1_1internal_1_1slave_1_1ImageInfo_html"><div class="ttname"><a href="structmesos_1_1internal_1_1slave_1_1ImageInfo.html">mesos::internal::slave::ImageInfo</a></div><div class="ttdef"><b>Definition:</b> store.hpp:44</div></div>
+<div class="ttc" id="structmesos_1_1internal_1_1slave_1_1ImageInfo_html"><div class="ttname"><a href="structmesos_1_1internal_1_1slave_1_1ImageInfo.html">mesos::internal::slave::ImageInfo</a></div><div class="ttdef"><b>Definition:</b> store.hpp:45</div></div>
 <div class="ttc" id="include_2mesos_2appc_2spec_8hpp_html"><div class="ttname"><a href="include_2mesos_2appc_2spec_8hpp.html">spec.hpp</a></div></div>
-<div class="ttc" id="structmesos_1_1internal_1_1slave_1_1ImageInfo_html_ab1d205fa6986d5da57f99a4fd69a1f13"><div class="ttname"><a href="structmesos_1_1internal_1_1slave_1_1ImageInfo.html#ab1d205fa6986d5da57f99a4fd69a1f13">mesos::internal::slave::ImageInfo::appcManifest</a></div><div class="ttdeci">Option&lt;::appc::spec::ImageManifest &gt; appcManifest</div><div class="ttdef"><b>Definition:</b> store.hpp:52</div></div>
-<div class="ttc" id="structmesos_1_1internal_1_1slave_1_1ImageInfo_html_ac76ec86a0a1eced6b58659a885e7c4f2"><div class="ttname"><a href="structmesos_1_1internal_1_1slave_1_1ImageInfo.html#ac76ec86a0a1eced6b58659a885e7c4f2">mesos::internal::slave::ImageInfo::dockerManifest</a></div><div class="ttdeci">Option&lt;::docker::spec::v1::ImageManifest &gt; dockerManifest</div><div class="ttdef"><b>Definition:</b> store.hpp:49</div></div>
+<div class="ttc" id="structmesos_1_1internal_1_1slave_1_1ImageInfo_html_ab1d205fa6986d5da57f99a4fd69a1f13"><div class="ttname"><a href="structmesos_1_1internal_1_1slave_1_1ImageInfo.html#ab1d205fa6986d5da57f99a4fd69a1f13">mesos::internal::slave::ImageInfo::appcManifest</a></div><div class="ttdeci">Option&lt;::appc::spec::ImageManifest &gt; appcManifest</div><div class="ttdef"><b>Definition:</b> store.hpp:53</div></div>
+<div class="ttc" id="structmesos_1_1internal_1_1slave_1_1ImageInfo_html_ac76ec86a0a1eced6b58659a885e7c4f2"><div class="ttname"><a href="structmesos_1_1internal_1_1slave_1_1ImageInfo.html#ac76ec86a0a1eced6b58659a885e7c4f2">mesos::internal::slave::ImageInfo::dockerManifest</a></div><div class="ttdeci">Option&lt;::docker::spec::v1::ImageManifest &gt; dockerManifest</div><div class="ttdef"><b>Definition:</b> store.hpp:50</div></div>
 <div class="ttc" id="future_8hpp_html"><div class="ttname"><a href="future_8hpp.html">future.hpp</a></div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1slave_1_1Store_html_a3941ada48ffb0de68285fee5c0104d42"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1Store.html#a3941ada48ffb0de68285fee5c0104d42">mesos::internal::slave::Store::recover</a></div><div class="ttdeci">virtual process::Future&lt; Nothing &gt; recover()=0</div></div>
 <div class="ttc" id="decoder_8hpp_html_abb0829cce9dd20a40ae0d86890ae85c6"><div class="ttname"><a href="decoder_8hpp.html#abb0829cce9dd20a40ae0d86890ae85c6">flags</a></div><div class="ttdeci">#define flags</div><div class="ttdef"><b>Definition:</b> decoder.hpp:18</div></div>
 <div class="ttc" id="namespacemesos_1_1uri_1_1docker_html_abbd9f55734f0b832bc5a87c3ee5d449e"><div class="ttname"><a href="namespacemesos_1_1uri_1_1docker.html#abbd9f55734f0b832bc5a87c3ee5d449e">mesos::uri::docker::image</a></div><div class="ttdeci">URI image(const std::string &amp;repository, const std::string &amp;reference, const std::string &amp;registry, const Option&lt; std::string &gt; &amp;scheme=None(), const Option&lt; int &gt; &amp;port=None())</div><div class="ttdef"><b>Definition:</b> docker.hpp:30</div></div>
 <div class="ttc" id="try_8hpp_html"><div class="ttname"><a href="try_8hpp.html">try.hpp</a></div></div>
 <div class="ttc" id="v1_8hpp_html"><div class="ttname"><a href="v1_8hpp.html">v1.hpp</a></div></div>
-<div class="ttc" id="structmesos_1_1internal_1_1slave_1_1ImageInfo_html_a00b3bbd185c4191172c69aca4202529a"><div class="ttname"><a href="structmesos_1_1internal_1_1slave_1_1ImageInfo.html#a00b3bbd185c4191172c69aca4202529a">mesos::internal::slave::ImageInfo::layers</a></div><div class="ttdeci">std::vector&lt; std::string &gt; layers</div><div class="ttdef"><b>Definition:</b> store.hpp:46</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1Store_html_afe92eaa2c105a23f9c1095eed9178914"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1Store.html#afe92eaa2c105a23f9c1095eed9178914">mesos::internal::slave::Store::prune</a></div><div class="ttdeci">virtual process::Future&lt; Nothing &gt; prune(const std::vector&lt; Image &gt; &amp;excludedImages, const hashset&lt; std::string &gt; &amp;activeLayerPaths)</div></div>
+<div class="ttc" id="hashset_8hpp_html"><div class="ttname"><a href="hashset_8hpp.html">hashset.hpp</a></div></div>
+<div class="ttc" id="structmesos_1_1internal_1_1slave_1_1ImageInfo_html_a00b3bbd185c4191172c69aca4202529a"><div class="ttname"><a href="structmesos_1_1internal_1_1slave_1_1ImageInfo.html#a00b3bbd185c4191172c69aca4202529a">mesos::internal::slave::ImageInfo::layers</a></div><div class="ttdeci">std::vector&lt; std::string &gt; layers</div><div class="ttdef"><b>Definition:</b> store.hpp:47</div></div>
 <div class="ttc" id="src_2slave_2flags_8hpp_html"><div class="ttname"><a href="src_2slave_2flags_8hpp.html">flags.hpp</a></div></div>
 <div class="ttc" id="owned_8hpp_html"><div class="ttname"><a href="owned_8hpp.html">owned.hpp</a></div></div>
 <div class="ttc" id="classmesos_1_1SecretResolver_html"><div class="ttname"><a href="classmesos_1_1SecretResolver.html">mesos::SecretResolver</a></div><div class="ttdef"><b>Definition:</b> resolver.hpp:34</div></div>
