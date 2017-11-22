@@ -140,9 +140,9 @@ Enumerations</h2></td></tr>
 Functions</h2></td></tr>
 <tr class="memitem:a64211e6e3428968c27b5753f05cbcf45"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceprocess_1_1http.html#a64211e6e3428968c27b5753f05cbcf45">operator&lt;&lt;</a> (std::ostream &amp;stream, const <a class="el" href="structprocess_1_1http_1_1URL.html">URL</a> &amp;url)</td></tr>
 <tr class="separator:a64211e6e3428968c27b5753f05cbcf45"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aad6e571ae51c5ea61289e3ab71fca7b6"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceprocess_1_1http.html#aad6e571ae51c5ea61289e3ab71fca7b6">encode</a> (const std::string &amp;s)</td></tr>
-<tr class="memdesc:aad6e571ae51c5ea61289e3ab71fca7b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encode a string to Base64 with the standard Base64 alphabet.  <a href="#aad6e571ae51c5ea61289e3ab71fca7b6">More...</a><br/></td></tr>
-<tr class="separator:aad6e571ae51c5ea61289e3ab71fca7b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4832f972e907d7d8de3a4e8bb23c23fc"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceprocess_1_1http.html#a4832f972e907d7d8de3a4e8bb23c23fc">encode</a> (const std::string &amp;s, const std::string &amp;additional_chars=&quot;&quot;)</td></tr>
+<tr class="memdesc:a4832f972e907d7d8de3a4e8bb23c23fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a percent-encoded string according to RFC 3986.  <a href="#a4832f972e907d7d8de3a4e8bb23c23fc">More...</a><br/></td></tr>
+<tr class="separator:a4832f972e907d7d8de3a4e8bb23c23fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a19068958e679ffa07c2c0894b1f566a7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTry.html">Try</a>&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceprocess_1_1http.html#a19068958e679ffa07c2c0894b1f566a7">decode</a> (const std::string &amp;s)</td></tr>
 <tr class="memdesc:a19068958e679ffa07c2c0894b1f566a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decode a string that is Base64-encoded with the standard Base64 alphabet.  <a href="#a19068958e679ffa07c2c0894b1f566a7">More...</a><br/></td></tr>
 <tr class="separator:a19068958e679ffa07c2c0894b1f566a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -408,36 +408,40 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="aad6e571ae51c5ea61289e3ab71fca7b6"></a>
+<a class="anchor" id="a4832f972e907d7d8de3a4e8bb23c23fc"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">std::string process::http::encode </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>s</em></td><td>)</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>additional_chars</em> = <code>&quot;&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Encode a string to Base64 with the standard Base64 alphabet. </p>
-<dl class="section see"><dt>See Also</dt><dd><a href="https://tools.ietf.org/html/rfc4648#section-4">RFC4648</a></dd></dl>
+<p>Returns a percent-encoded string according to RFC 3986. </p>
+<dl class="section see"><dt>See Also</dt><dd><a href="https://tools.ietf.org/html/rfc3986#section-2.3">RFC3986</a></dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">s</td><td>The string to encode. </td></tr>
+    <tr><td class="paramname">s</td><td>The input string, must not arleady be percent-encoded. </td></tr>
+    <tr><td class="paramname">additional_chars</td><td>When specified, all characters in it are also percent-encoded. </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>The percent-encoded string of <code>s</code>. </dd></dl>
 
 </div>
 </div>
