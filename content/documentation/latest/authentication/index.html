@@ -240,7 +240,7 @@ token (JWT) HTTP authenticator is loaded to handle executor authentication on
 both the executor and operator API endpoints. Note that command and custom
 executors not using the HTTP API will remain unauthenticated.</p>
 
-<p>When a secret key is loaded via the <code>--executor_secret_key</code> flag, the agent will
+<p>When a secret key is loaded via the <code>--jwt_secret_key</code> flag, the agent will
 generate a default JWT for each executor before it is launched. This token is
 passed into the executor&rsquo;s environment via the
 <code>MESOS_EXECUTOR_AUTHENTICATION_TOKEN</code> environment variable. In order to
@@ -255,7 +255,7 @@ following procedure should be followed:</p>
 
 <ol>
 <li><p>Upgrade all agents, and provide each agent with a cryptographic key via the
-<code>--executor_secret_key</code> flag. This key will be used to sign executor
+<code>--jwt_secret_key</code> flag. This key will be used to sign executor
 authentication tokens using the HMAC-SHA256 procedure.</p></li>
 <li><p>Before executor authentication can be enabled successfully, all HTTP
 executors must have executor authentication tokens in their environment and

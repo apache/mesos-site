@@ -120,48 +120,44 @@
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="keyword">private</span>:</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <a class="code" href="classmesos_1_1internal_1_1slave_1_1LinuxFilesystemIsolatorProcess.html">LinuxFilesystemIsolatorProcess</a>(<span class="keyword">const</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Flags.html">Flags</a>&amp; flags);</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <a class="code" href="classTry.html">Try&lt;std::vector&lt;CommandInfo&gt;</a>&gt; getPreExecCommands(</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;      <span class="keyword">const</span> ContainerID&amp; containerId,</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;      <span class="keyword">const</span> mesos::slave::ContainerConfig&amp; containerConfig);</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="keyword">const</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Flags.html">Flags</a> flags;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="keyword">const</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Flags.html">Flags</a> flags;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="keyword">struct </span>Info</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  {</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    Info(<span class="keyword">const</span> std::string&amp; _directory) : directory(_directory) {}</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="keyword">struct </span>Info</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  {</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    Info(<span class="keyword">const</span> std::string&amp; _directory) : directory(_directory) {}</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    Info(<span class="keyword">const</span> std::string&amp; _directory,</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;         <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;ExecutorInfo&gt;</a>&amp; _executor)</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;      : directory(_directory),</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        executor(_executor) {}</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keyword">const</span> std::string directory;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="comment">// Track resources so we can unmount unneeded persistent volumes.</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <a class="code" href="classmesos_1_1Resources.html">Resources</a> resources;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <a class="code" href="classOption.html">Option&lt;ExecutorInfo&gt;</a> executor;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  };</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  <a class="code" href="classhashmap.html">hashmap&lt;ContainerID, process::Owned&lt;Info&gt;</a>&gt; infos;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  <span class="keyword">struct </span><a class="code" href="namespacemesos_1_1internal_1_1tests.html#ace210c8852d8ef1f0f67ec3af06281f6">Metrics</a></div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  {</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="namespacemesos_1_1internal_1_1tests.html#ace210c8852d8ef1f0f67ec3af06281f6">Metrics</a>(</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        <span class="keyword">const</span> <a class="code" href="structprocess_1_1PID.html">process::PID&lt;LinuxFilesystemIsolatorProcess&gt;</a>&amp; isolator);</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    ~<a class="code" href="namespacemesos_1_1internal_1_1tests.html#ace210c8852d8ef1f0f67ec3af06281f6">Metrics</a>();</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <a class="code" href="classprocess_1_1metrics_1_1Gauge.html">process::metrics::Gauge</a> containers_new_rootfs;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  } metrics;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  <span class="keywordtype">double</span> _containers_new_rootfs();</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;};</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    Info(<span class="keyword">const</span> std::string&amp; _directory,</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;         <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;ExecutorInfo&gt;</a>&amp; _executor)</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;      : directory(_directory),</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        executor(_executor) {}</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keyword">const</span> std::string directory;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="comment">// Track resources so we can unmount unneeded persistent volumes.</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <a class="code" href="classmesos_1_1Resources.html">Resources</a> resources;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <a class="code" href="classOption.html">Option&lt;ExecutorInfo&gt;</a> executor;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  };</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  <a class="code" href="classhashmap.html">hashmap&lt;ContainerID, process::Owned&lt;Info&gt;</a>&gt; infos;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  <span class="keyword">struct </span><a class="code" href="namespacemesos_1_1internal_1_1tests.html#ace210c8852d8ef1f0f67ec3af06281f6">Metrics</a></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  {</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="namespacemesos_1_1internal_1_1tests.html#ace210c8852d8ef1f0f67ec3af06281f6">Metrics</a>(</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        <span class="keyword">const</span> <a class="code" href="structprocess_1_1PID.html">process::PID&lt;LinuxFilesystemIsolatorProcess&gt;</a>&amp; isolator);</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    ~<a class="code" href="namespacemesos_1_1internal_1_1tests.html#ace210c8852d8ef1f0f67ec3af06281f6">Metrics</a>();</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <a class="code" href="classprocess_1_1metrics_1_1Gauge.html">process::metrics::Gauge</a> containers_new_rootfs;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  } metrics;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  <span class="keywordtype">double</span> _containers_new_rootfs();</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;};</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;} <span class="comment">// namespace slave {</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;} <span class="comment">// namespace internal {</span></div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;} <span class="comment">// namespace mesos {</span></div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;} <span class="comment">// namespace slave {</span></div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;} <span class="comment">// namespace internal {</span></div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;} <span class="comment">// namespace mesos {</span></div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="preprocessor">#endif // __LINUX_FILESYSTEM_ISOLATOR_HPP__</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="preprocessor">#endif // __LINUX_FILESYSTEM_ISOLATOR_HPP__</span></div>
 <div class="ttc" id="resources_8hpp_html"><div class="ttname"><a href="resources_8hpp.html">resources.hpp</a></div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1slave_1_1LinuxFilesystemIsolatorProcess_html_ac4b659a1f0c7435908013ccd93b6501a"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1LinuxFilesystemIsolatorProcess.html#ac4b659a1f0c7435908013ccd93b6501a">mesos::internal::slave::LinuxFilesystemIsolatorProcess::create</a></div><div class="ttdeci">static Try&lt; mesos::slave::Isolator * &gt; create(const Flags &amp;flags)</div></div>
 <div class="ttc" id="classOption_html"><div class="ttname"><a href="classOption.html">Option&lt; ExecutorInfo &gt;</a></div></div>
