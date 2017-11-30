@@ -76,55 +76,109 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html">stout/windows.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="stat_8hpp.html">stout/os/stat.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="longpath_8hpp.html">stout/internal/windows/longpath.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="windows_2os_8hpp.html">stout/windows/os.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="longpath_8hpp.html">stout/internal/windows/longpath.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">namespace </span>os {</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;Nothing&gt;</a> <a class="code" href="namespaceos.html#ac1c8ce3595084d78291f98c2be9f62ba">rm</a>(<span class="keyword">const</span> std::string&amp; path)</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;{</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  <span class="comment">// This function uses either `RemoveDirectory` or `DeleteFile` to remove the</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  <span class="comment">// actual filesystem entry. These WinAPI functions are being used instead of</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <span class="comment">// the POSIX `remove` because their behavior when it comes to symbolic links</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <span class="comment">// is well documented in MSDN[1][2]. Whenever called on a symbolic link, both</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <span class="comment">// `RemoveDirectory` and `DeleteFile` act on the symlink itself, rather than</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <span class="comment">// its target.</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <span class="comment">//</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  <span class="comment">// Because `RemoveDirectory` fails if the specified path is not an empty</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <span class="comment">// directory, its behavior is consistent with the POSIX[3] `remove`[3] (which</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  <span class="comment">// uses `rmdir`[4]).</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <span class="comment">//</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <span class="comment">// [1] https://msdn.microsoft.com/en-us/library/windows/desktop/aa365488(v=vs.85).aspx</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <span class="comment">// [2] https://msdn.microsoft.com/en-us/library/windows/desktop/aa365682(v=vs.85).aspx#deletefile_and_deletefiletransacted</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  <span class="comment">// [3] http://pubs.opengroup.org/onlinepubs/009695399/functions/remove.html</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <span class="comment">// [4] http://pubs.opengroup.org/onlinepubs/009695399/functions/rmdir.html</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <span class="keyword">const</span> std::wstring <a class="code" href="namespaceinternal_1_1windows.html#abd7dbdbc8d95626d0c66455078380aa1">longpath</a> = <a class="code" href="namespaceinternal_1_1windows.html#abd7dbdbc8d95626d0c66455078380aa1">::internal::windows::longpath</a>(path);</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <span class="keyword">const</span> BOOL result = <a class="code" href="namespaceos_1_1stat.html#aa86aaa21fefc0e9cab89050b60aeca40">os::stat::isdir</a>(path)</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;      ? ::RemoveDirectoryW(longpath.data())</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;      : ::DeleteFileW(longpath.data());</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <span class="keywordflow">if</span> (!result) {</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classWindowsError.html">WindowsError</a>(<span class="stringliteral">&quot;`os::rm` could not remove &#39;&quot;</span> + path + <span class="stringliteral">&quot;&#39;&quot;</span>);</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  }</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="structNothing.html">Nothing</a>();</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;}</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;} <span class="comment">// namespace os {</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">namespace </span>internal {</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">namespace </span>windows {</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">// NOTE: File and directory deletion on Windows is an asynchronous operation,</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="comment">// and there is no built-in way to &quot;wait&quot; on the deletion. So we wait by</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">// checking for the path&#39;s existence until there is a &quot;file not found&quot; error.</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">// Until the file is actually deleted, this will loop on an access denied error</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">// (the file exists but has been marked for deletion).</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="namespaceinternal_1_1windows.html#ac9fbbbc8bb9b553f3ad1abac7c9a81c3">   38</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;Nothing&gt;</a> <a class="code" href="namespaceinternal_1_1windows.html#ac9fbbbc8bb9b553f3ad1abac7c9a81c3">wait_on_delete</a>(<span class="keyword">const</span> std::string&amp; path)</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;{</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  <span class="comment">// Try for 1 second in 10 intervals of 100 ms.</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; 10; ++i) {</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="comment">// This should always fail if the file has been marked for deletion.</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keyword">const</span> DWORD attributes =</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;      ::GetFileAttributesW(::<a class="code" href="namespaceinternal_1_1windows.html#abd7dbdbc8d95626d0c66455078380aa1">internal::windows::longpath</a>(path).data());</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    CHECK_EQ(attributes, INVALID_FILE_ATTRIBUTES);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keyword">const</span> DWORD <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#ae58e703656ab4a1bd5d9870441236727">error</a> = ::GetLastError();</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keywordflow">if</span> (error == ERROR_ACCESS_DENIED) {</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;      LOG(WARNING) &lt;&lt; <span class="stringliteral">&quot;Waiting for file &quot;</span> &lt;&lt; path &lt;&lt; <span class="stringliteral">&quot; to be deleted&quot;</span>;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;      <a class="code" href="namespaceos.html#ab2b826c68a25af9e9ef47c570c36e137">os::sleep</a>(<a class="code" href="classMilliseconds.html">Milliseconds</a>(100));</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (error == ERROR_FILE_NOT_FOUND) {</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;      <span class="comment">// The file is truly gone, stop waiting.</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="structNothing.html">Nothing</a>();</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="classWindowsError.html">WindowsError</a>(error);</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    }</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  }</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(<span class="stringliteral">&quot;Timed out when waiting for file &quot;</span> + path + <span class="stringliteral">&quot; to be deleted&quot;</span>);</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;}</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="preprocessor">#endif // __STOUT_OS_WINDOWS_RM_HPP__</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;} <span class="comment">// namespace windows {</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;} <span class="comment">// namespace internal {</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="keyword">namespace </span>os {</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;Nothing&gt;</a> <a class="code" href="namespaceos.html#ac1c8ce3595084d78291f98c2be9f62ba">rm</a>(<span class="keyword">const</span> std::string&amp; path)</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;{</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="comment">// This function uses either `RemoveDirectory` or `DeleteFile` to remove the</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="comment">// actual filesystem entry. These WinAPI functions are being used instead of</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="comment">// the POSIX `remove` because their behavior when it comes to symbolic links</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="comment">// is well documented in MSDN[1][2]. Whenever called on a symbolic link, both</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="comment">// `RemoveDirectory` and `DeleteFile` act on the symlink itself, rather than</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="comment">// its target.</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="comment">//</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="comment">// Because `RemoveDirectory` fails if the specified path is not an empty</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="comment">// directory, its behavior is consistent with the POSIX[3] `remove`[3] (which</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="comment">// uses `rmdir`[4]).</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="comment">//</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <span class="comment">// [1] https://msdn.microsoft.com/en-us/library/windows/desktop/aa365488(v=vs.85).aspx</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="comment">// [2] https://msdn.microsoft.com/en-us/library/windows/desktop/aa365682(v=vs.85).aspx#deletefile_and_deletefiletransacted</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <span class="comment">// [3] http://pubs.opengroup.org/onlinepubs/009695399/functions/remove.html</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="comment">// [4] http://pubs.opengroup.org/onlinepubs/009695399/functions/rmdir.html</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <span class="keyword">const</span> std::wstring <a class="code" href="namespaceinternal_1_1windows.html#abd7dbdbc8d95626d0c66455078380aa1">longpath</a> = <a class="code" href="namespaceinternal_1_1windows.html#abd7dbdbc8d95626d0c66455078380aa1">::internal::windows::longpath</a>(path);</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  <span class="keyword">const</span> BOOL result = <a class="code" href="namespaceos_1_1stat.html#aa86aaa21fefc0e9cab89050b60aeca40">os::stat::isdir</a>(path)</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;      ? ::RemoveDirectoryW(longpath.data())</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;      : ::DeleteFileW(longpath.data());</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <span class="keywordflow">if</span> (!result) {</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classWindowsError.html">WindowsError</a>();</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  }</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <span class="comment">// This wait is necessary because the `RemoveDirectory` API does not know to</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  <span class="comment">// wait for pending deletions of files in the directory, and can otherwise</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  <span class="comment">// immediately fail with &quot;directory not empty&quot; if there still exists a marked</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  <span class="comment">// for deletion but not yet deleted file. By making waiting synchronously, we</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  <span class="comment">// gain the behavior of the POSIX API.</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  <a class="code" href="classTry.html">Try&lt;Nothing&gt;</a> deleted = <a class="code" href="namespaceinternal_1_1windows.html#ac9fbbbc8bb9b553f3ad1abac7c9a81c3">::internal::windows::wait_on_delete</a>(path);</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  <span class="keywordflow">if</span> (deleted.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(<span class="stringliteral">&quot;wait_on_delete failed &quot;</span> + deleted.<a class="code" href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">error</a>());</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  }</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="structNothing.html">Nothing</a>();</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;}</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;} <span class="comment">// namespace os {</span></div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="preprocessor">#endif // __STOUT_OS_WINDOWS_RM_HPP__</span></div>
 <div class="ttc" id="structNothing_html"><div class="ttname"><a href="structNothing.html">Nothing</a></div><div class="ttdef"><b>Definition:</b> nothing.hpp:16</div></div>
+<div class="ttc" id="classError_html"><div class="ttname"><a href="classError.html">Error</a></div><div class="ttdef"><b>Definition:</b> errorbase.hpp:35</div></div>
 <div class="ttc" id="namespaceos_html_ac1c8ce3595084d78291f98c2be9f62ba"><div class="ttname"><a href="namespaceos.html#ac1c8ce3595084d78291f98c2be9f62ba">os::rm</a></div><div class="ttdeci">Try&lt; Nothing &gt; rm(const std::string &amp;path)</div><div class="ttdef"><b>Definition:</b> rm.hpp:26</div></div>
 <div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
+<div class="ttc" id="namespaceos_html_ab2b826c68a25af9e9ef47c570c36e137"><div class="ttname"><a href="namespaceos.html#ab2b826c68a25af9e9ef47c570c36e137">os::sleep</a></div><div class="ttdeci">Try&lt; Nothing &gt; sleep(const Duration &amp;duration)</div><div class="ttdef"><b>Definition:</b> os.hpp:221</div></div>
 <div class="ttc" id="classWindowsError_html"><div class="ttname"><a href="classWindowsError.html">WindowsError</a></div><div class="ttdef"><b>Definition:</b> error.hpp:106</div></div>
+<div class="ttc" id="namespaceinternal_1_1windows_html_ac9fbbbc8bb9b553f3ad1abac7c9a81c3"><div class="ttname"><a href="namespaceinternal_1_1windows.html#ac9fbbbc8bb9b553f3ad1abac7c9a81c3">internal::windows::wait_on_delete</a></div><div class="ttdeci">Try&lt; Nothing &gt; wait_on_delete(const std::string &amp;path)</div><div class="ttdef"><b>Definition:</b> rm.hpp:38</div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html">windows.hpp</a></div></div>
+<div class="ttc" id="classMilliseconds_html"><div class="ttname"><a href="classMilliseconds.html">Milliseconds</a></div><div class="ttdef"><b>Definition:</b> duration.hpp:241</div></div>
 <div class="ttc" id="nothing_8hpp_html"><div class="ttname"><a href="nothing_8hpp.html">nothing.hpp</a></div></div>
 <div class="ttc" id="longpath_8hpp_html"><div class="ttname"><a href="longpath_8hpp.html">longpath.hpp</a></div></div>
+<div class="ttc" id="classTry_html_aec4a11ddd3c036e889d90b7eb6258ba7"><div class="ttname"><a href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">Try::error</a></div><div class="ttdeci">static Try error(const E &amp;e)</div><div class="ttdef"><b>Definition:</b> try.hpp:42</div></div>
 <div class="ttc" id="error_8hpp_html"><div class="ttname"><a href="error_8hpp.html">error.hpp</a></div></div>
+<div class="ttc" id="classTry_html_a0b98f95163b8a38daafd1651b043a276"><div class="ttname"><a href="classTry.html#a0b98f95163b8a38daafd1651b043a276">Try::isError</a></div><div class="ttdeci">bool isError() const </div><div class="ttdef"><b>Definition:</b> try.hpp:71</div></div>
+<div class="ttc" id="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec_html_ae58e703656ab4a1bd5d9870441236727"><div class="ttname"><a href="namespacemesos_1_1internal_1_1slave_1_1cni_1_1spec.html#ae58e703656ab4a1bd5d9870441236727">mesos::internal::slave::cni::spec::error</a></div><div class="ttdeci">std::string error(const std::string &amp;msg, uint32_t code)</div></div>
 <div class="ttc" id="try_8hpp_html"><div class="ttname"><a href="try_8hpp.html">try.hpp</a></div></div>
 <div class="ttc" id="stat_8hpp_html"><div class="ttname"><a href="stat_8hpp.html">stat.hpp</a></div></div>
 <div class="ttc" id="namespaceos_1_1stat_html_aa86aaa21fefc0e9cab89050b60aeca40"><div class="ttname"><a href="namespaceos_1_1stat.html#aa86aaa21fefc0e9cab89050b60aeca40">os::stat::isdir</a></div><div class="ttdeci">bool isdir(const std::string &amp;path, const FollowSymlink follow=FollowSymlink::FOLLOW_SYMLINK)</div><div class="ttdef"><b>Definition:</b> stat.hpp:78</div></div>
+<div class="ttc" id="windows_2os_8hpp_html"><div class="ttname"><a href="windows_2os_8hpp.html">os.hpp</a></div></div>
 <div class="ttc" id="namespaceinternal_1_1windows_html_abd7dbdbc8d95626d0c66455078380aa1"><div class="ttname"><a href="namespaceinternal_1_1windows.html#abd7dbdbc8d95626d0c66455078380aa1">internal::windows::longpath</a></div><div class="ttdeci">std::wstring longpath(const std::string &amp;path)</div><div class="ttdef"><b>Definition:</b> longpath.hpp:38</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

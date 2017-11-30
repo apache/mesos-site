@@ -75,91 +75,121 @@
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="longpath_8hpp.html">stout/internal/windows/longpath.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="reparsepoint_8hpp.html">stout/internal/windows/reparsepoint.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="realpath_8hpp.html">stout/os/realpath.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">namespace </span>internal {</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">namespace </span>windows {</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">// Gets symlink data for a given path, if it exists.</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">// This turns out to be a very complicated task on Windows. The gist of it is</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">// that we know that symlinks on Windows are implemented with the Reparse Point</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="comment">// API, and so the process is a matter of:</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">//   1. Checking whether the attributes for the file/folder specified by the</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">//      path have the reparse point bit set; all symlinks are implemented with</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">//      reparse points, so this bit should be on all symlinks.</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">//   2. Opening a file/folder handle for that path, instructing it specifically</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">//      to open a handle for the symlink (if the path points at a symlink) and</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">//      *not* the file the symlink points at (as is the default). Note that</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">//      file and folder handles are different, so we have a function that</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">//      chooses appropriately.</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">//   3. Using `DeviceIoControl` to obtain information about the handle for this</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">//      reparse point, which we can then query to figure out if it&#39;s a reparse</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="comment">//      point that is owned by the symlink filesystem filter driver.</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment">//   4. If it is, then we report that this path does point at a symlink.</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">// NOTE: it may be helpful to consult the documentation for each of these</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">// functions, as they give you sources that justify the arguments to the</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment">// obscure APIs we call to get this all working.</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="namespaceinternal_1_1windows.html#a39ca8fa0643b489f6bef951bef207c92">   52</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;SymbolicLink&gt;</a> <a class="code" href="namespaceinternal_1_1windows.html#a39ca8fa0643b489f6bef951bef207c92">query_symbolic_link_data</a>(<span class="keyword">const</span> std::string&amp; path)</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;{</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="comment">// Convert to absolute path because Windows APIs expect it.</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <span class="keyword">const</span> <a class="code" href="classResult.html">Result&lt;std::string&gt;</a> absolute_path = <a class="code" href="namespaceos.html#aa533c79d98af12b40b567a851e442373">os::realpath</a>(path);</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="keywordflow">if</span> (!absolute_path.<a class="code" href="classResult.html#a85eaa52037223d71092e65701c166562">isSome</a>()) {</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(absolute_path.<a class="code" href="classResult.html#a521adf96f5c27d26d6b1d580aae8aaee">error</a>());</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  }</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="comment">// Windows has no built-in way to tell whether a path points at a symbolic</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="comment">// link; but, we know that symbolic links are implemented with reparse</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="comment">// points, so we begin by checking that.</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <a class="code" href="classTry.html">Try&lt;bool&gt;</a> is_reparse_point = <a class="code" href="namespaceinternal_1_1windows.html#a9205fe9be7dc028375cd24338483152b">reparse_point_attribute_set</a>(</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;      ::<a class="code" href="namespaceinternal_1_1windows.html#abd7dbdbc8d95626d0c66455078380aa1">internal::windows::longpath</a>(absolute_path.<a class="code" href="classResult.html#aedf79f3b14dcda5791b84a64ada4d412">get</a>()));</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <span class="keywordflow">if</span> (is_reparse_point.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(is_reparse_point.<a class="code" href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">error</a>());</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!is_reparse_point.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>()) {</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="stringliteral">&quot;Reparse point attribute is not set for path &#39;&quot;</span> + absolute_path.<a class="code" href="classResult.html#aedf79f3b14dcda5791b84a64ada4d412">get</a>() +</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <span class="stringliteral">&quot;&#39;, and therefore it is not a symbolic link&quot;</span>);</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  }</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="keyword">const</span> <a class="code" href="classTry.html">Try&lt;SharedHandle&gt;</a> symlink_handle =</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <a class="code" href="namespaceinternal_1_1windows.html#a8ee4f75d803d8ed56ce760d8e1dfac14">get_handle_no_follow</a>(absolute_path.<a class="code" href="classResult.html#aedf79f3b14dcda5791b84a64ada4d412">get</a>());</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="keywordflow">if</span> (symlink_handle.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(symlink_handle.<a class="code" href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">error</a>());</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  }</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="comment">// Finally, retrieve symlink data for the handle, if any.</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="namespaceinternal_1_1windows.html#a85f7e5d0197eeb93bde525379b8e14d6">get_symbolic_link_data</a>(symlink_handle.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>().<a class="code" href="classSharedHandle.html#a800385e17e17cb826147968e748fd8fa">get_handle</a>());</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;}</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;} <span class="comment">// namespace windows {</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;} <span class="comment">// namespace internal {</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="preprocessor">#endif // __STOUT_INTERNAL_WINDOWS_SYMLINK_HPP__</span></div>
-<div class="ttc" id="namespaceinternal_1_1windows_html_a8ee4f75d803d8ed56ce760d8e1dfac14"><div class="ttname"><a href="namespaceinternal_1_1windows.html#a8ee4f75d803d8ed56ce760d8e1dfac14">internal::windows::get_handle_no_follow</a></div><div class="ttdeci">Try&lt; SharedHandle &gt; get_handle_no_follow(const std::string &amp;absolute_path)</div><div class="ttdef"><b>Definition:</b> reparsepoint.hpp:180</div></div>
-<div class="ttc" id="realpath_8hpp_html"><div class="ttname"><a href="realpath_8hpp.html">realpath.hpp</a></div></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">namespace </span>internal {</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">namespace </span>windows {</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment">// Get the full / absolute path. Does not check for existence, and does not</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">// resolve symlinks.</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="namespaceinternal_1_1windows.html#a9a06fe58fd74d8f9fdcea8c061c70cc5">   30</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classResult.html">Result&lt;std::string&gt;</a> <a class="code" href="namespaceinternal_1_1windows.html#a9a06fe58fd74d8f9fdcea8c061c70cc5">fullpath</a>(<span class="keyword">const</span> std::string&amp; path)</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;{</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <span class="comment">// First query for the buffer size required.</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  <span class="keyword">const</span> DWORD length =</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    ::GetFullPathNameW(<a class="code" href="namespaceinternal_1_1windows.html#abd7dbdbc8d95626d0c66455078380aa1">longpath</a>(path).data(), 0, <span class="keyword">nullptr</span>, <span class="keyword">nullptr</span>);</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <span class="keywordflow">if</span> (length == 0) {</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classWindowsError.html">WindowsError</a>(<span class="stringliteral">&quot;Failed to retrieve fullpath buffer size&quot;</span>);</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  }</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  std::vector&lt;wchar_t&gt; buffer;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  buffer.reserve(static_cast&lt;size_t&gt;(length));</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <span class="keyword">const</span> DWORD result =</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    ::GetFullPathNameW(<a class="code" href="namespaceinternal_1_1windows.html#abd7dbdbc8d95626d0c66455078380aa1">longpath</a>(path).data(), length, buffer.data(), <span class="keyword">nullptr</span>);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  <span class="keywordflow">if</span> (result == 0) {</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classWindowsError.html">WindowsError</a>(<span class="stringliteral">&quot;Failed to determine fullpath&quot;</span>);</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  }</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="namespacestrings.html#a3fbaeb4d589c49ac115fab3412073ca7">strings::remove</a>(</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;      <a class="code" href="namespacens.html#a28116b46e6543597a11733424cd1aa20">stringify</a>(std::wstring(buffer.data())),</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;      os::LONGPATH_PREFIX,</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;      <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1containerizer_1_1paths.html#abb8ab3e62de157d1a7a81e08888ec30cabf80c29a65453b2615d8f9bd83f8f3d6">strings::Mode::PREFIX</a>);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;}</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment">// Gets symlink data for a given path, if it exists.</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">// This turns out to be a very complicated task on Windows. The gist of it is</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment">// that we know that symlinks on Windows are implemented with the Reparse Point</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="comment">// API, and so the process is a matter of:</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="comment">//   1. Checking whether the attributes for the file/folder specified by the</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="comment">//      path have the reparse point bit set; all symlinks are implemented with</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment">//      reparse points, so this bit should be on all symlinks.</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment">//   2. Opening a file/folder handle for that path, instructing it specifically</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="comment">//      to open a handle for the symlink (if the path points at a symlink) and</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="comment">//      *not* the file the symlink points at (as is the default). Note that</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="comment">//      file and folder handles are different, so we have a function that</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="comment">//      chooses appropriately.</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="comment">//   3. Using `DeviceIoControl` to obtain information about the handle for this</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="comment">//      reparse point, which we can then query to figure out if it&#39;s a reparse</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="comment">//      point that is owned by the symlink filesystem filter driver.</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="comment">//   4. If it is, then we report that this path does point at a symlink.</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="comment">// NOTE: it may be helpful to consult the documentation for each of these</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="comment">// functions, as they give you sources that justify the arguments to the</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="comment">// obscure APIs we call to get this all working.</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="namespaceinternal_1_1windows.html#a39ca8fa0643b489f6bef951bef207c92">   79</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;SymbolicLink&gt;</a> <a class="code" href="namespaceinternal_1_1windows.html#a39ca8fa0643b489f6bef951bef207c92">query_symbolic_link_data</a>(<span class="keyword">const</span> std::string&amp; path)</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;{</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="comment">// Convert to absolute path because Windows APIs expect it.</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <span class="keyword">const</span> <a class="code" href="classResult.html">Result&lt;std::string&gt;</a> absolute_path = <a class="code" href="namespaceinternal_1_1windows.html#a9a06fe58fd74d8f9fdcea8c061c70cc5">fullpath</a>(path);</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="keywordflow">if</span> (!absolute_path.<a class="code" href="classResult.html#a85eaa52037223d71092e65701c166562">isSome</a>()) {</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(absolute_path.<a class="code" href="classResult.html#a521adf96f5c27d26d6b1d580aae8aaee">error</a>());</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  }</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <span class="comment">// Windows has no built-in way to tell whether a path points at a symbolic</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  <span class="comment">// link; but, we know that symbolic links are implemented with reparse</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <span class="comment">// points, so we begin by checking that.</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  <a class="code" href="classTry.html">Try&lt;bool&gt;</a> is_reparse_point = <a class="code" href="namespaceinternal_1_1windows.html#a9205fe9be7dc028375cd24338483152b">reparse_point_attribute_set</a>(</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;      ::<a class="code" href="namespaceinternal_1_1windows.html#abd7dbdbc8d95626d0c66455078380aa1">internal::windows::longpath</a>(absolute_path.<a class="code" href="classResult.html#aedf79f3b14dcda5791b84a64ada4d412">get</a>()));</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <span class="keywordflow">if</span> (is_reparse_point.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(is_reparse_point.<a class="code" href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">error</a>());</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!is_reparse_point.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>()) {</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        <span class="stringliteral">&quot;Reparse point attribute is not set for path &#39;&quot;</span> + absolute_path.<a class="code" href="classResult.html#aedf79f3b14dcda5791b84a64ada4d412">get</a>() +</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        <span class="stringliteral">&quot;&#39;, and therefore it is not a symbolic link&quot;</span>);</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  }</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  <span class="keyword">const</span> <a class="code" href="classTry.html">Try&lt;SharedHandle&gt;</a> symlink_handle =</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <a class="code" href="namespaceinternal_1_1windows.html#a8ee4f75d803d8ed56ce760d8e1dfac14">get_handle_no_follow</a>(absolute_path.<a class="code" href="classResult.html#aedf79f3b14dcda5791b84a64ada4d412">get</a>());</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  <span class="keywordflow">if</span> (symlink_handle.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(symlink_handle.<a class="code" href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">error</a>());</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  }</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  <span class="comment">// Finally, retrieve symlink data for the handle, if any.</span></div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="namespaceinternal_1_1windows.html#a85f7e5d0197eeb93bde525379b8e14d6">get_symbolic_link_data</a>(symlink_handle.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>().<a class="code" href="classSharedHandle.html#a800385e17e17cb826147968e748fd8fa">get_handle</a>());</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;}</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;} <span class="comment">// namespace windows {</span></div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;} <span class="comment">// namespace internal {</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="preprocessor">#endif // __STOUT_INTERNAL_WINDOWS_SYMLINK_HPP__</span></div>
+<div class="ttc" id="namespaceinternal_1_1windows_html_a9a06fe58fd74d8f9fdcea8c061c70cc5"><div class="ttname"><a href="namespaceinternal_1_1windows.html#a9a06fe58fd74d8f9fdcea8c061c70cc5">internal::windows::fullpath</a></div><div class="ttdeci">Result&lt; std::string &gt; fullpath(const std::string &amp;path)</div><div class="ttdef"><b>Definition:</b> symlink.hpp:30</div></div>
+<div class="ttc" id="namespaceinternal_1_1windows_html_a8ee4f75d803d8ed56ce760d8e1dfac14"><div class="ttname"><a href="namespaceinternal_1_1windows.html#a8ee4f75d803d8ed56ce760d8e1dfac14">internal::windows::get_handle_no_follow</a></div><div class="ttdeci">Try&lt; SharedHandle &gt; get_handle_no_follow(const std::string &amp;absolute_path)</div><div class="ttdef"><b>Definition:</b> reparsepoint.hpp:212</div></div>
 <div class="ttc" id="classError_html"><div class="ttname"><a href="classError.html">Error</a></div><div class="ttdef"><b>Definition:</b> errorbase.hpp:35</div></div>
 <div class="ttc" id="classSharedHandle_html_a800385e17e17cb826147968e748fd8fa"><div class="ttname"><a href="classSharedHandle.html#a800385e17e17cb826147968e748fd8fa">SharedHandle::get_handle</a></div><div class="ttdeci">HANDLE get_handle() const </div><div class="ttdef"><b>Definition:</b> windows.hpp:96</div></div>
 <div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
-<div class="ttc" id="namespaceos_html_aa533c79d98af12b40b567a851e442373"><div class="ttname"><a href="namespaceos.html#aa533c79d98af12b40b567a851e442373">os::realpath</a></div><div class="ttdeci">Result&lt; std::string &gt; realpath(const std::string &amp;path)</div><div class="ttdef"><b>Definition:</b> realpath.hpp:24</div></div>
 <div class="ttc" id="classResult_html_a521adf96f5c27d26d6b1d580aae8aaee"><div class="ttname"><a href="classResult.html#a521adf96f5c27d26d6b1d580aae8aaee">Result::error</a></div><div class="ttdeci">static Result&lt; T &gt; error(const std::string &amp;message)</div><div class="ttdef"><b>Definition:</b> result.hpp:53</div></div>
-<div class="ttc" id="namespaceinternal_1_1windows_html_a39ca8fa0643b489f6bef951bef207c92"><div class="ttname"><a href="namespaceinternal_1_1windows.html#a39ca8fa0643b489f6bef951bef207c92">internal::windows::query_symbolic_link_data</a></div><div class="ttdeci">Try&lt; SymbolicLink &gt; query_symbolic_link_data(const std::string &amp;path)</div><div class="ttdef"><b>Definition:</b> symlink.hpp:52</div></div>
-<div class="ttc" id="namespaceinternal_1_1windows_html_a9205fe9be7dc028375cd24338483152b"><div class="ttname"><a href="namespaceinternal_1_1windows.html#a9205fe9be7dc028375cd24338483152b">internal::windows::reparse_point_attribute_set</a></div><div class="ttdeci">Try&lt; bool &gt; reparse_point_attribute_set(const std::wstring &amp;absolute_path)</div><div class="ttdef"><b>Definition:</b> reparsepoint.hpp:136</div></div>
+<div class="ttc" id="classWindowsError_html"><div class="ttname"><a href="classWindowsError.html">WindowsError</a></div><div class="ttdef"><b>Definition:</b> error.hpp:106</div></div>
+<div class="ttc" id="namespaceinternal_1_1windows_html_a39ca8fa0643b489f6bef951bef207c92"><div class="ttname"><a href="namespaceinternal_1_1windows.html#a39ca8fa0643b489f6bef951bef207c92">internal::windows::query_symbolic_link_data</a></div><div class="ttdeci">Try&lt; SymbolicLink &gt; query_symbolic_link_data(const std::string &amp;path)</div><div class="ttdef"><b>Definition:</b> symlink.hpp:79</div></div>
+<div class="ttc" id="namespaceinternal_1_1windows_html_a9205fe9be7dc028375cd24338483152b"><div class="ttname"><a href="namespaceinternal_1_1windows.html#a9205fe9be7dc028375cd24338483152b">internal::windows::reparse_point_attribute_set</a></div><div class="ttdeci">Try&lt; bool &gt; reparse_point_attribute_set(const std::wstring &amp;absolute_path)</div><div class="ttdef"><b>Definition:</b> reparsepoint.hpp:111</div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html">windows.hpp</a></div></div>
 <div class="ttc" id="classResult_html"><div class="ttname"><a href="classResult.html">Result</a></div><div class="ttdef"><b>Definition:</b> result.hpp:40</div></div>
 <div class="ttc" id="reparsepoint_8hpp_html"><div class="ttname"><a href="reparsepoint_8hpp.html">reparsepoint.hpp</a></div></div>
-<div class="ttc" id="namespaceinternal_1_1windows_html_a85f7e5d0197eeb93bde525379b8e14d6"><div class="ttname"><a href="namespaceinternal_1_1windows.html#a85f7e5d0197eeb93bde525379b8e14d6">internal::windows::get_symbolic_link_data</a></div><div class="ttdeci">Try&lt; SymbolicLink &gt; get_symbolic_link_data(const HANDLE handle)</div><div class="ttdef"><b>Definition:</b> reparsepoint.hpp:236</div></div>
+<div class="ttc" id="namespacestrings_html_a3fbaeb4d589c49ac115fab3412073ca7"><div class="ttname"><a href="namespacestrings.html#a3fbaeb4d589c49ac115fab3412073ca7">strings::remove</a></div><div class="ttdeci">std::string remove(const std::string &amp;from, const std::string &amp;substring, Mode mode=ANY)</div><div class="ttdef"><b>Definition:</b> strings.hpp:40</div></div>
+<div class="ttc" id="namespaceinternal_1_1windows_html_a85f7e5d0197eeb93bde525379b8e14d6"><div class="ttname"><a href="namespaceinternal_1_1windows.html#a85f7e5d0197eeb93bde525379b8e14d6">internal::windows::get_symbolic_link_data</a></div><div class="ttdeci">Try&lt; SymbolicLink &gt; get_symbolic_link_data(const HANDLE handle)</div><div class="ttdef"><b>Definition:</b> reparsepoint.hpp:265</div></div>
 <div class="ttc" id="longpath_8hpp_html"><div class="ttname"><a href="longpath_8hpp.html">longpath.hpp</a></div></div>
 <div class="ttc" id="classResult_html_aedf79f3b14dcda5791b84a64ada4d412"><div class="ttname"><a href="classResult.html#aedf79f3b14dcda5791b84a64ada4d412">Result::get</a></div><div class="ttdeci">const T &amp; get() const </div><div class="ttdef"><b>Definition:</b> result.hpp:112</div></div>
 <div class="ttc" id="classTry_html_aec4a11ddd3c036e889d90b7eb6258ba7"><div class="ttname"><a href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">Try::error</a></div><div class="ttdeci">static Try error(const E &amp;e)</div><div class="ttdef"><b>Definition:</b> try.hpp:42</div></div>
 <div class="ttc" id="classTry_html_a0b98f95163b8a38daafd1651b043a276"><div class="ttname"><a href="classTry.html#a0b98f95163b8a38daafd1651b043a276">Try::isError</a></div><div class="ttdeci">bool isError() const </div><div class="ttdef"><b>Definition:</b> try.hpp:71</div></div>
 <div class="ttc" id="try_8hpp_html"><div class="ttname"><a href="try_8hpp.html">try.hpp</a></div></div>
+<div class="ttc" id="namespacemesos_1_1internal_1_1slave_1_1containerizer_1_1paths_html_abb8ab3e62de157d1a7a81e08888ec30cabf80c29a65453b2615d8f9bd83f8f3d6"><div class="ttname"><a href="namespacemesos_1_1internal_1_1slave_1_1containerizer_1_1paths.html#abb8ab3e62de157d1a7a81e08888ec30cabf80c29a65453b2615d8f9bd83f8f3d6">mesos::internal::slave::containerizer::paths::PREFIX</a></div><div class="ttdef"><b>Definition:</b> paths.hpp:82</div></div>
 <div class="ttc" id="classResult_html_a85eaa52037223d71092e65701c166562"><div class="ttname"><a href="classResult.html#a85eaa52037223d71092e65701c166562">Result::isSome</a></div><div class="ttdeci">bool isSome() const </div><div class="ttdef"><b>Definition:</b> result.hpp:108</div></div>
 <div class="ttc" id="namespaceinternal_1_1windows_html_abd7dbdbc8d95626d0c66455078380aa1"><div class="ttname"><a href="namespaceinternal_1_1windows.html#abd7dbdbc8d95626d0c66455078380aa1">internal::windows::longpath</a></div><div class="ttdeci">std::wstring longpath(const std::string &amp;path)</div><div class="ttdef"><b>Definition:</b> longpath.hpp:38</div></div>
+<div class="ttc" id="namespacens_html_a28116b46e6543597a11733424cd1aa20"><div class="ttname"><a href="namespacens.html#a28116b46e6543597a11733424cd1aa20">ns::stringify</a></div><div class="ttdeci">std::string stringify(int flags)</div></div>
 <div class="ttc" id="classTry_html_a7be0768038e0628632492edf6cc1515a"><div class="ttname"><a href="classTry.html#a7be0768038e0628632492edf6cc1515a">Try::get</a></div><div class="ttdeci">const T &amp; get() const </div><div class="ttdef"><b>Definition:</b> try.hpp:73</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

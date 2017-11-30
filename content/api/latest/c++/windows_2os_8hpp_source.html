@@ -855,18 +855,22 @@
 <div class="line"><a name="l00801"></a><span class="lineno">  801</span>&#160;{</div>
 <div class="line"><a name="l00802"></a><span class="lineno">  802</span>&#160;  <span class="comment">// NOTE: On Windows, this code must run on the host where we are</span></div>
 <div class="line"><a name="l00803"></a><span class="lineno">  803</span>&#160;  <span class="comment">// expecting to `exec` the task, because the value of</span></div>
-<div class="line"><a name="l00804"></a><span class="lineno">  804</span>&#160;  <span class="comment">// `%SYSTEMROOT%` is not identical on all platforms.</span></div>
-<div class="line"><a name="l00805"></a><span class="lineno">  805</span>&#160;  <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;std::string&gt;</a> system_root_env = <a class="code" href="namespaceos.html#add69634db977768c56f0367b4bb03cd5">os::getenv</a>(<span class="stringliteral">&quot;SYSTEMROOT&quot;</span>);</div>
+<div class="line"><a name="l00804"></a><span class="lineno">  804</span>&#160;  <span class="comment">// `%SystemRoot%` is not identical on all platforms.</span></div>
+<div class="line"><a name="l00805"></a><span class="lineno">  805</span>&#160;  <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;std::string&gt;</a> system_root_env = <a class="code" href="namespaceos.html#add69634db977768c56f0367b4bb03cd5">os::getenv</a>(<span class="stringliteral">&quot;SystemRoot&quot;</span>);</div>
 <div class="line"><a name="l00806"></a><span class="lineno">  806</span>&#160;  <span class="keyword">const</span> std::string system_root = system_root_env.<a class="code" href="classOption.html#a4e3bf8416d95246f43c91f1b5c309323">isSome</a>()</div>
 <div class="line"><a name="l00807"></a><span class="lineno">  807</span>&#160;    ? system_root_env.<a class="code" href="classOption.html#a21358442c0fac1cc978a67a9a9089a79">get</a>()</div>
-<div class="line"><a name="l00808"></a><span class="lineno">  808</span>&#160;    : <span class="stringliteral">&quot;C:\\WINDOWS&quot;</span>;</div>
+<div class="line"><a name="l00808"></a><span class="lineno">  808</span>&#160;    : <a class="code" href="namespacepath.html#aa86b16a2171cec90bb3337930513ef0f">path::join</a>(<span class="stringliteral">&quot;C:&quot;</span>, <span class="stringliteral">&quot;Windows&quot;</span>);</div>
 <div class="line"><a name="l00809"></a><span class="lineno">  809</span>&#160;</div>
-<div class="line"><a name="l00810"></a><span class="lineno">  810</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="namespacestrings.html#ac315a6174f56cba0d8295f84da265416">strings::join</a>(<span class="stringliteral">&quot;;&quot;</span>, system_root, <a class="code" href="namespacepath.html#aa86b16a2171cec90bb3337930513ef0f">path::join</a>(system_root, <span class="stringliteral">&quot;system32&quot;</span>));</div>
-<div class="line"><a name="l00811"></a><span class="lineno">  811</span>&#160;}</div>
-<div class="line"><a name="l00812"></a><span class="lineno">  812</span>&#160;</div>
-<div class="line"><a name="l00813"></a><span class="lineno">  813</span>&#160;} <span class="comment">// namespace os {</span></div>
-<div class="line"><a name="l00814"></a><span class="lineno">  814</span>&#160;</div>
-<div class="line"><a name="l00815"></a><span class="lineno">  815</span>&#160;<span class="preprocessor">#endif // __STOUT_WINDOWS_OS_HPP__</span></div>
+<div class="line"><a name="l00810"></a><span class="lineno">  810</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="namespacestrings.html#ac315a6174f56cba0d8295f84da265416">strings::join</a>(<span class="stringliteral">&quot;;&quot;</span>,</div>
+<div class="line"><a name="l00811"></a><span class="lineno">  811</span>&#160;      <a class="code" href="namespacepath.html#aa86b16a2171cec90bb3337930513ef0f">path::join</a>(system_root, <span class="stringliteral">&quot;System32&quot;</span>),</div>
+<div class="line"><a name="l00812"></a><span class="lineno">  812</span>&#160;      system_root,</div>
+<div class="line"><a name="l00813"></a><span class="lineno">  813</span>&#160;      <a class="code" href="namespacepath.html#aa86b16a2171cec90bb3337930513ef0f">path::join</a>(system_root, <span class="stringliteral">&quot;System32&quot;</span>, <span class="stringliteral">&quot;Wbem&quot;</span>),</div>
+<div class="line"><a name="l00814"></a><span class="lineno">  814</span>&#160;      <a class="code" href="namespacepath.html#aa86b16a2171cec90bb3337930513ef0f">path::join</a>(system_root, <span class="stringliteral">&quot;System32&quot;</span>, <span class="stringliteral">&quot;WindowsPowerShell&quot;</span>, <span class="stringliteral">&quot;v1.0&quot;</span>));</div>
+<div class="line"><a name="l00815"></a><span class="lineno">  815</span>&#160;}</div>
+<div class="line"><a name="l00816"></a><span class="lineno">  816</span>&#160;</div>
+<div class="line"><a name="l00817"></a><span class="lineno">  817</span>&#160;} <span class="comment">// namespace os {</span></div>
+<div class="line"><a name="l00818"></a><span class="lineno">  818</span>&#160;</div>
+<div class="line"><a name="l00819"></a><span class="lineno">  819</span>&#160;<span class="preprocessor">#endif // __STOUT_WINDOWS_OS_HPP__</span></div>
 <div class="ttc" id="classResult_html_ac2cdc0db9f9d29a5bb2f1cf19c29da49"><div class="ttname"><a href="classResult.html#ac2cdc0db9f9d29a5bb2f1cf19c29da49">Result::isNone</a></div><div class="ttdeci">bool isNone() const </div><div class="ttdef"><b>Definition:</b> result.hpp:109</div></div>
 <div class="ttc" id="namespaceos_1_1stat_html_a96066cfc01f1f62fc25b56f6915800eb"><div class="ttname"><a href="namespaceos_1_1stat.html#a96066cfc01f1f62fc25b56f6915800eb">os::stat::uid</a></div><div class="ttdeci">Try&lt; uid_t &gt; uid(const std::string &amp;path, const FollowSymlink follow=FollowSymlink::FOLLOW_SYMLINK)</div><div class="ttdef"><b>Definition:</b> stat.hpp:182</div></div>
 <div class="ttc" id="structNothing_html"><div class="ttname"><a href="structNothing.html">Nothing</a></div><div class="ttdef"><b>Definition:</b> nothing.hpp:16</div></div>
