@@ -78,6 +78,8 @@ Inheritance diagram for mesos::internal::slave::DockerVolumeIsolatorProcess:</di
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a4b409988991161f69586ab7bfcf21729"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1slave_1_1DockerVolumeIsolatorProcess.html#a4b409988991161f69586ab7bfcf21729">~DockerVolumeIsolatorProcess</a> ()</td></tr>
 <tr class="separator:a4b409988991161f69586ab7bfcf21729"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab062769cb109a8b15771346fa50c5683"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1slave_1_1DockerVolumeIsolatorProcess.html#ab062769cb109a8b15771346fa50c5683">supportsNesting</a> ()</td></tr>
+<tr class="separator:ab062769cb109a8b15771346fa50c5683"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac2ae1c7f126584259b1e75769957b934"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt; <a class="el" href="structNothing.html">Nothing</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1slave_1_1DockerVolumeIsolatorProcess.html#ac2ae1c7f126584259b1e75769957b934">recover</a> (const std::list&lt; mesos::slave::ContainerState &gt; &amp;states, const <a class="el" href="classhashset.html">hashset</a>&lt; ContainerID &gt; &amp;orphans)</td></tr>
 <tr class="separator:ac2ae1c7f126584259b1e75769957b934"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a51a3341ecc4035d8605273b974237b39"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classprocess_1_1Future.html">process::Future</a><br class="typebreak"/>
@@ -89,8 +91,6 @@ Public Member Functions</h2></td></tr>
 <tr class="inherit_header pub_methods_classmesos_1_1internal_1_1slave_1_1MesosIsolatorProcess"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classmesos_1_1internal_1_1slave_1_1MesosIsolatorProcess')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classmesos_1_1internal_1_1slave_1_1MesosIsolatorProcess.html">mesos::internal::slave::MesosIsolatorProcess</a></td></tr>
 <tr class="memitem:ae62fa51227866cc1717d788a133b6608 inherit pub_methods_classmesos_1_1internal_1_1slave_1_1MesosIsolatorProcess"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1slave_1_1MesosIsolatorProcess.html#ae62fa51227866cc1717d788a133b6608">~MesosIsolatorProcess</a> ()</td></tr>
 <tr class="separator:ae62fa51227866cc1717d788a133b6608 inherit pub_methods_classmesos_1_1internal_1_1slave_1_1MesosIsolatorProcess"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8009c7782661b509933138479d3dbed5 inherit pub_methods_classmesos_1_1internal_1_1slave_1_1MesosIsolatorProcess"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1slave_1_1MesosIsolatorProcess.html#a8009c7782661b509933138479d3dbed5">supportsNesting</a> ()</td></tr>
-<tr class="separator:a8009c7782661b509933138479d3dbed5 inherit pub_methods_classmesos_1_1internal_1_1slave_1_1MesosIsolatorProcess"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9be889e55c9fa3b300a1a2c30c19e35e inherit pub_methods_classmesos_1_1internal_1_1slave_1_1MesosIsolatorProcess"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt; <a class="el" href="structNothing.html">Nothing</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1slave_1_1MesosIsolatorProcess.html#a9be889e55c9fa3b300a1a2c30c19e35e">isolate</a> (const ContainerID &amp;containerId, <a class="el" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ab03ced250ed239bc3b50b669493997f9">pid_t</a> pid)</td></tr>
 <tr class="separator:a9be889e55c9fa3b300a1a2c30c19e35e inherit pub_methods_classmesos_1_1internal_1_1slave_1_1MesosIsolatorProcess"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1dd1c873155700d4f1e3ebb1421057f3 inherit pub_methods_classmesos_1_1internal_1_1slave_1_1MesosIsolatorProcess"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classprocess_1_1Future.html">process::Future</a><br class="typebreak"/>
@@ -404,6 +404,31 @@ const <a class="el" href="structprocess_1_1http_1_1Request.html">http::Request</
 </div><div class="memdoc">
 
 <p>Reimplemented from <a class="el" href="classmesos_1_1internal_1_1slave_1_1MesosIsolatorProcess.html#adea82f6dd9074b11d8655f3ddbd2c7c7">mesos::internal::slave::MesosIsolatorProcess</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab062769cb109a8b15771346fa50c5683"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool mesos::internal::slave::DockerVolumeIsolatorProcess::supportsNesting </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reimplemented from <a class="el" href="classmesos_1_1internal_1_1slave_1_1MesosIsolatorProcess.html#a8009c7782661b509933138479d3dbed5">mesos::internal::slave::MesosIsolatorProcess</a>.</p>
 
 </div>
 </div>
