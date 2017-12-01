@@ -203,7 +203,7 @@
 , <a class="el" href="classmesos_1_1internal_1_1HttpConnectionProcess.html#a07daef2f77a33b44451c4cf7d53ff627">mesos::internal::HttpConnectionProcess&lt; Call, Event &gt;</a>
 , <a class="el" href="structmesos_1_1internal_1_1slave_1_1HttpConnection.html#ad0773acb50a9d74589dc050ee9bc3f9b">mesos::internal::slave::HttpConnection</a>
 , <a class="el" href="classmesos_1_1internal_1_1slave_1_1Executor.html#a6088e2d4d0160d0cdaf8674c46d91c43">mesos::internal::slave::Executor</a>
-, <a class="el" href="classmesos_1_1internal_1_1tests_1_1resource__provider_1_1MockResourceProvider.html#a8459ae056e543946b31286cdd70580a7">mesos::internal::tests::resource_provider::MockResourceProvider&lt; Event, Call, Driver, Resource, Resources, ResourceProviderID, OfferOperationState, Operation, Source &gt;</a>
+, <a class="el" href="classmesos_1_1internal_1_1tests_1_1resource__provider_1_1MockResourceProvider.html#a1d15bf4666d932342111c6e5f7ca761d">mesos::internal::tests::resource_provider::MockResourceProvider&lt; Event, Call, Driver, ResourceProviderInfo, Resource, Resources, ResourceProviderID, OfferOperationState, Operation, Source &gt;</a>
 , <a class="el" href="classprocess_1_1http_1_1Connection.html#a6956d4179d3a32950824e10ff6d3d731">process::http::Connection</a>
 </li>
 <li>sendfile()
@@ -434,15 +434,15 @@
 , <a class="el" href="structcpp14_1_1integer__sequence.html#ab9fea6b361fa762b9c513b0857bb8a07">cpp14::integer_sequence&lt; T, Is &gt;</a>
 , <a class="el" href="classLinkedHashMap.html#adc48b5dccbbe7fcb942d2f425ca6534a">LinkedHashMap&lt; Key, Value &gt;</a>
 </li>
-<li>slave
-: <a class="el" href="classmesos_1_1internal_1_1slave_1_1Executor.html#addd8f0d655f9d03ad6bc594c4d476818">mesos::internal::slave::Executor</a>
-, <a class="el" href="classmesos_1_1internal_1_1slave_1_1Framework.html#a28542cb83d680c4bd37f31ae58382866">mesos::internal::slave::Framework</a>
-, <a class="el" href="structmesos_1_1internal_1_1slave_1_1state_1_1State.html#ae252133ff6b2510a64888fc219960dda">mesos::internal::slave::state::State</a>
-</li>
 <li>Slave
 : <a class="el" href="classmesos_1_1internal_1_1master_1_1Master.html#ae1a3fb953af58d3b19033d4395ba4e5c">mesos::internal::master::Master</a>
 , <a class="el" href="structmesos_1_1internal_1_1master_1_1Slave.html#a0fee8f9b9fa578004a730fe416ce103f">mesos::internal::master::Slave</a>
 , <a class="el" href="classmesos_1_1internal_1_1slave_1_1Slave.html#adc334f9dc35ff066eee2fe0dfca8b8d7">mesos::internal::slave::Slave</a>
+</li>
+<li>slave
+: <a class="el" href="classmesos_1_1internal_1_1slave_1_1Executor.html#addd8f0d655f9d03ad6bc594c4d476818">mesos::internal::slave::Executor</a>
+, <a class="el" href="classmesos_1_1internal_1_1slave_1_1Framework.html#a28542cb83d680c4bd37f31ae58382866">mesos::internal::slave::Framework</a>
+, <a class="el" href="structmesos_1_1internal_1_1slave_1_1state_1_1State.html#ae252133ff6b2510a64888fc219960dda">mesos::internal::slave::state::State</a>
 </li>
 <li>slave_registrations
 : <a class="el" href="structmesos_1_1internal_1_1master_1_1Metrics.html#afd6c16298eaa2f63250c5ce9a023210f">mesos::internal::master::Metrics</a>
@@ -578,11 +578,11 @@
 : <a class="el" href="classmesos_1_1internal_1_1master_1_1allocator_1_1Sorter.html#a72e3b723477e1b7c63c1316cc2b19971">mesos::internal::master::allocator::Sorter</a>
 , <a class="el" href="classmesos_1_1internal_1_1master_1_1allocator_1_1DRFSorter.html#a3e6b57c2f202d8cdb5e852688999b6f4">mesos::internal::master::allocator::DRFSorter</a>
 </li>
-<li>sorter
-: <a class="el" href="structmesos_1_1internal_1_1master_1_1allocator_1_1Metrics.html#af7581c557179e93a7d845eedebb82765">mesos::internal::master::allocator::Metrics</a>
-</li>
 <li>Sorter()
 : <a class="el" href="classmesos_1_1internal_1_1master_1_1allocator_1_1Sorter.html#a3ff0ef79f7b92fa8863948b1ff0818a1">mesos::internal::master::allocator::Sorter</a>
+</li>
+<li>sorter
+: <a class="el" href="structmesos_1_1internal_1_1master_1_1allocator_1_1Metrics.html#af7581c557179e93a7d845eedebb82765">mesos::internal::master::allocator::Metrics</a>
 </li>
 <li>source
 : <a class="el" href="structmesos_1_1internal_1_1fs_1_1MountInfoTable_1_1Entry.html#a001e8b1b7f8a88fc44e6daa2fb72a861">mesos::internal::fs::MountInfoTable::Entry</a>
@@ -623,7 +623,7 @@
 , <a class="el" href="classmesos_1_1internal_1_1log_1_1LogWriterProcess.html#a0a9fd64b962d616673fb79e8af48a13e">mesos::internal::log::LogWriterProcess</a>
 , <a class="el" href="classmesos_1_1internal_1_1LocalResourceProviderDaemon.html#a715f0308ca33d91f56f9ba6ad1a9bc08">mesos::internal::LocalResourceProviderDaemon</a>
 , <a class="el" href="classmesos_1_1internal_1_1tests_1_1cluster_1_1Slave.html#a47fc0a2bf9ef40d0d57232ea3f69e148">mesos::internal::tests::cluster::Slave</a>
-, <a class="el" href="classmesos_1_1internal_1_1tests_1_1resource__provider_1_1MockResourceProvider.html#a5eb35eb9c900051938d326191998bfd7">mesos::internal::tests::resource_provider::MockResourceProvider&lt; Event, Call, Driver, Resource, Resources, ResourceProviderID, OfferOperationState, Operation, Source &gt;</a>
+, <a class="el" href="classmesos_1_1internal_1_1tests_1_1resource__provider_1_1MockResourceProvider.html#aff43f1bf7375e43dd94c4da9e9e0eb2a">mesos::internal::tests::resource_provider::MockResourceProvider&lt; Event, Call, Driver, ResourceProviderInfo, Resource, Resources, ResourceProviderID, OfferOperationState, Operation, Source &gt;</a>
 , <a class="el" href="classprocess_1_1internal_1_1Loop.html#a4743d5b323d0d9923cd83fd1abeda9c3">process::internal::Loop&lt; Iterate, Body, T, R &gt;</a>
 , <a class="el" href="classos_1_1Stack.html#a15a1637e699c755a2cd2cef394ec216f">os::Stack</a>
 , <a class="el" href="classStopwatch.html#a6d01ecc80c92f1d5210cd9c3eb72883d">Stopwatch</a>
@@ -660,38 +660,38 @@
 <li>Startup()
 : <a class="el" href="classmesos_1_1internal_1_1tests_1_1MockCSIPlugin.html#aaea2d23338730eed57c232aced068e3b">mesos::internal::tests::MockCSIPlugin</a>
 </li>
-<li>State()
-: <a class="el" href="structmesos_1_1internal_1_1slave_1_1state_1_1State.html#a0e87f47367f9441f5f10b26f2c4fcaae">mesos::internal::slave::state::State</a>
-, <a class="el" href="classmesos_1_1state_1_1State.html#aaedea4cd36c66e8a21f21723c1096d0f">mesos::state::State</a>
-, <a class="el" href="classmesos_1_1state_1_1protobuf_1_1State.html#a084189a3f5965bda21eae68aa370f148">mesos::state::protobuf::State</a>
-</li>
-<li>state
-: <a class="el" href="structmesos_1_1internal_1_1master_1_1Framework.html#af4322f8c99cfc37c386d3b5457a6f053">mesos::internal::master::Framework</a>
-</li>
-<li>State
-: <a class="el" href="classmesos_1_1state_1_1Variable.html#a7edbf9e31116a21e4e18cd2dd004ae63">mesos::state::Variable</a>
-</li>
-<li>state
-: <a class="el" href="classmesos_1_1internal_1_1slave_1_1Slave.html#af79c3eb007e12f37faec4a24d1f95cc4">mesos::internal::slave::Slave</a>
-, <a class="el" href="classmesos_1_1internal_1_1slave_1_1Executor.html#a27e0e6e088c0fd88a0c7f679c964c409">mesos::internal::slave::Executor</a>
-</li>
-<li>State
-: <a class="el" href="classmesos_1_1state_1_1protobuf_1_1Variable.html#a7edbf9e31116a21e4e18cd2dd004ae63">mesos::state::protobuf::Variable&lt; T &gt;</a>
-</li>
-<li>state
-: <a class="el" href="structmesos_1_1internal_1_1tests_1_1ZooKeeperTest_1_1TestWatcher_1_1Event.html#af21c5db710ec98fb430d015c4f1a10ee">mesos::internal::tests::ZooKeeperTest::TestWatcher::Event</a>
-, <a class="el" href="classmesos_1_1internal_1_1slave_1_1Http.html#a48698f07413ddb1d974b42c04a98c5fa">mesos::internal::slave::Http</a>
+<li>state()
+: <a class="el" href="classmesos_1_1internal_1_1slave_1_1Http.html#a48698f07413ddb1d974b42c04a98c5fa">mesos::internal::slave::Http</a>
+, <a class="el" href="structproc_1_1ProcessStatus.html#ac8b4bc0e80bf560b45e2bba608b9a764">proc::ProcessStatus</a>
+, <a class="el" href="structmesos_1_1internal_1_1tests_1_1ZooKeeperTest_1_1TestWatcher_1_1Event.html#af21c5db710ec98fb430d015c4f1a10ee">mesos::internal::tests::ZooKeeperTest::TestWatcher::Event</a>
 </li>
 <li>State
 : <a class="el" href="classmesos_1_1internal_1_1slave_1_1Slave.html#a135c9291e330f8ecb3b39b99eca94798">mesos::internal::slave::Slave</a>
-, <a class="el" href="classmesos_1_1internal_1_1slave_1_1Executor.html#a3b2abbbd9f9e9ca5c08b75329ac426c0">mesos::internal::slave::Executor</a>
-, <a class="el" href="classmesos_1_1internal_1_1slave_1_1Framework.html#accb4e9c8d32936b20f3d0ddc71fe8add">mesos::internal::slave::Framework</a>
-, <a class="el" href="structmesos_1_1internal_1_1master_1_1Framework.html#a96a90d8ae734d729489ba877367e6b65">mesos::internal::master::Framework</a>
 </li>
 <li>state
-: <a class="el" href="structproc_1_1ProcessStatus.html#ac8b4bc0e80bf560b45e2bba608b9a764">proc::ProcessStatus</a>
-, <a class="el" href="classmesos_1_1internal_1_1slave_1_1Framework.html#adbfec960b7cb705602bdac9853fb0c12">mesos::internal::slave::Framework</a>
-, <a class="el" href="structrouting_1_1diagnosis_1_1socket_1_1Info.html#a814b55aff4119a6ec5f412fc028af3f3">routing::diagnosis::socket::Info</a>
+: <a class="el" href="classmesos_1_1internal_1_1slave_1_1Framework.html#adbfec960b7cb705602bdac9853fb0c12">mesos::internal::slave::Framework</a>
+</li>
+<li>State
+: <a class="el" href="classmesos_1_1internal_1_1slave_1_1Executor.html#a3b2abbbd9f9e9ca5c08b75329ac426c0">mesos::internal::slave::Executor</a>
+, <a class="el" href="classmesos_1_1internal_1_1slave_1_1Framework.html#accb4e9c8d32936b20f3d0ddc71fe8add">mesos::internal::slave::Framework</a>
+</li>
+<li>state
+: <a class="el" href="classmesos_1_1internal_1_1slave_1_1Executor.html#a27e0e6e088c0fd88a0c7f679c964c409">mesos::internal::slave::Executor</a>
+</li>
+<li>State
+: <a class="el" href="classmesos_1_1state_1_1Variable.html#a7edbf9e31116a21e4e18cd2dd004ae63">mesos::state::Variable</a>
+, <a class="el" href="classmesos_1_1state_1_1State.html#aaedea4cd36c66e8a21f21723c1096d0f">mesos::state::State</a>
+</li>
+<li>state
+: <a class="el" href="structrouting_1_1diagnosis_1_1socket_1_1Info.html#a814b55aff4119a6ec5f412fc028af3f3">routing::diagnosis::socket::Info</a>
+, <a class="el" href="structmesos_1_1internal_1_1master_1_1Framework.html#af4322f8c99cfc37c386d3b5457a6f053">mesos::internal::master::Framework</a>
+, <a class="el" href="classmesos_1_1internal_1_1slave_1_1Slave.html#af79c3eb007e12f37faec4a24d1f95cc4">mesos::internal::slave::Slave</a>
+</li>
+<li>State()
+: <a class="el" href="structmesos_1_1internal_1_1slave_1_1state_1_1State.html#a0e87f47367f9441f5f10b26f2c4fcaae">mesos::internal::slave::state::State</a>
+, <a class="el" href="classmesos_1_1state_1_1protobuf_1_1State.html#a084189a3f5965bda21eae68aa370f148">mesos::state::protobuf::State</a>
+, <a class="el" href="classmesos_1_1state_1_1protobuf_1_1Variable.html#a7edbf9e31116a21e4e18cd2dd004ae63">mesos::state::protobuf::Variable&lt; T &gt;</a>
+, <a class="el" href="structmesos_1_1internal_1_1master_1_1Framework.html#a96a90d8ae734d729489ba877367e6b65">mesos::internal::master::Framework</a>
 </li>
 <li>STATE_HELP()
 : <a class="el" href="classmesos_1_1internal_1_1slave_1_1Http.html#a5c26c5c227679ba7f07387653469b01f">mesos::internal::slave::Http</a>
@@ -877,7 +877,7 @@
 : <a class="el" href="classmesos_1_1internal_1_1HttpConnectionProcess.html#a35a7a60a0e5a768c91915db644e61805a5c6a39375ac1378bd497ec545e10659a">mesos::internal::HttpConnectionProcess&lt; Call, Event &gt;</a>
 </li>
 <li>subscribedDefault()
-: <a class="el" href="classmesos_1_1internal_1_1tests_1_1resource__provider_1_1MockResourceProvider.html#a130aca70429aa173d2a27c6968f06d5f">mesos::internal::tests::resource_provider::MockResourceProvider&lt; Event, Call, Driver, Resource, Resources, ResourceProviderID, OfferOperationState, Operation, Source &gt;</a>
+: <a class="el" href="classmesos_1_1internal_1_1tests_1_1resource__provider_1_1MockResourceProvider.html#aa51159a4af37c0479ab794bfc0ad8d78">mesos::internal::tests::resource_provider::MockResourceProvider&lt; Event, Call, Driver, ResourceProviderInfo, Resource, Resources, ResourceProviderID, OfferOperationState, Operation, Source &gt;</a>
 </li>
 <li>Subscriber()
 : <a class="el" href="structmesos_1_1internal_1_1master_1_1Master_1_1Subscribers_1_1Subscriber.html#a7846e3eb3878fd037d273fa07fe97010">mesos::internal::master::Master::Subscribers::Subscriber</a>
