@@ -117,20 +117,26 @@
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <a class="code" href="classprocess_1_1Future.html">process::Future&lt;Nothing&gt;</a> <a class="code" href="classmesos_1_1internal_1_1slave_1_1WindowsCpuIsolatorProcess.html#ae9aeb71cb082870d963f4824681fb52d">cleanup</a>(<span class="keyword">const</span> ContainerID&amp; containerId) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <a class="code" href="classhashmap.html">hashmap&lt;ContainerID, pid_t&gt;</a> pids;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <a class="code" href="classhashmap.html">hashmap&lt;ContainerID, double&gt;</a> cpuLimits;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <a class="code" href="classmesos_1_1internal_1_1slave_1_1WindowsCpuIsolatorProcess.html">WindowsCpuIsolatorProcess</a>()</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    : <a class="code" href="classprocess_1_1ProcessBase.html#a318038bacd95e4260864533f7cfe12fd">ProcessBase</a>(<a class="code" href="namespaceprocess_1_1ID.html#aeb11a48c9def1da169d8455a30d0ee39">process::ID::generate</a>(<span class="stringliteral">&quot;windows-cpu-isolator&quot;</span>))</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  {}</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;};</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <span class="keyword">struct </span>Info</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  {</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <a class="code" href="classOption.html">Option&lt;pid_t&gt;</a> pid;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <a class="code" href="classOption.html">Option&lt;double&gt;</a> limit;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  };</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <a class="code" href="classhashmap.html">hashmap&lt;ContainerID, Info&gt;</a> infos;</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;} <span class="comment">// namespace slave {</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;} <span class="comment">// namespace internal {</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;} <span class="comment">// namespace mesos {</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="preprocessor">#endif // __WINDOWS_CPU_ISOLATOR_HPP__</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <a class="code" href="classmesos_1_1internal_1_1slave_1_1WindowsCpuIsolatorProcess.html">WindowsCpuIsolatorProcess</a>()</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    : <a class="code" href="classprocess_1_1ProcessBase.html#a318038bacd95e4260864533f7cfe12fd">ProcessBase</a>(<a class="code" href="namespaceprocess_1_1ID.html#aeb11a48c9def1da169d8455a30d0ee39">process::ID::generate</a>(<span class="stringliteral">&quot;windows-cpu-isolator&quot;</span>))</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  {}</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;};</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;} <span class="comment">// namespace slave {</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;} <span class="comment">// namespace internal {</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;} <span class="comment">// namespace mesos {</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="preprocessor">#endif // __WINDOWS_CPU_ISOLATOR_HPP__</span></div>
 <div class="ttc" id="namespaceprocess_1_1ID_html_aeb11a48c9def1da169d8455a30d0ee39"><div class="ttname"><a href="namespaceprocess_1_1ID.html#aeb11a48c9def1da169d8455a30d0ee39">process::ID::generate</a></div><div class="ttdeci">std::string generate(const std::string &amp;prefix=&quot;&quot;)</div><div class="ttdoc">Returns &amp;#39;prefix(N)&amp;#39; where N represents the number of instances where the same prefix (wrt...</div></div>
+<div class="ttc" id="classOption_html"><div class="ttname"><a href="classOption.html">Option&lt; pid_t &gt;</a></div></div>
 <div class="ttc" id="classprocess_1_1ProcessBase_html_a318038bacd95e4260864533f7cfe12fd"><div class="ttname"><a href="classprocess_1_1ProcessBase.html#a318038bacd95e4260864533f7cfe12fd">process::ProcessBase::ProcessBase</a></div><div class="ttdeci">ProcessBase(const std::string &amp;id=&quot;&quot;)</div></div>
 <div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1slave_1_1WindowsCpuIsolatorProcess_html_af4b1ea81568c04ee32d5598aa4a61855"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1WindowsCpuIsolatorProcess.html#af4b1ea81568c04ee32d5598aa4a61855">mesos::internal::slave::WindowsCpuIsolatorProcess::supportsNesting</a></div><div class="ttdeci">bool supportsNesting() override</div></div>
@@ -139,7 +145,7 @@
 <div class="ttc" id="classmesos_1_1internal_1_1slave_1_1Flags_html"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1Flags.html">mesos::internal::slave::Flags</a></div><div class="ttdef"><b>Definition:</b> flags.hpp:39</div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html">windows.hpp</a></div></div>
 <div class="ttc" id="src_2slave_2containerizer_2mesos_2isolator_8hpp_html"><div class="ttname"><a href="src_2slave_2containerizer_2mesos_2isolator_8hpp.html">isolator.hpp</a></div></div>
-<div class="ttc" id="classhashmap_html"><div class="ttname"><a href="classhashmap.html">hashmap&lt; ContainerID, pid_t &gt;</a></div></div>
+<div class="ttc" id="classhashmap_html"><div class="ttname"><a href="classhashmap.html">hashmap&lt; ContainerID, Info &gt;</a></div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_ab03ced250ed239bc3b50b669493997f9"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ab03ced250ed239bc3b50b669493997f9">pid_t</a></div><div class="ttdeci">DWORD pid_t</div><div class="ttdef"><b>Definition:</b> windows.hpp:187</div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1slave_1_1WindowsCpuIsolatorProcess_html"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1WindowsCpuIsolatorProcess.html">mesos::internal::slave::WindowsCpuIsolatorProcess</a></div><div class="ttdef"><b>Definition:</b> cpu.hpp:39</div></div>
 <div class="ttc" id="nothing_8hpp_html"><div class="ttname"><a href="nothing_8hpp.html">nothing.hpp</a></div></div>
