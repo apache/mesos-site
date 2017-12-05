@@ -89,7 +89,9 @@ Namespaces</h2></td></tr>
 Macros</h2></td></tr>
 <tr class="memitem:ae76028dfc9fdd64cb568444c99e1dc1a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dispatch_8hpp.html#ae76028dfc9fdd64cb568444c99e1dc1a">FORWARD</a>(Z, N, DATA)&#160;&#160;&#160;std::forward&lt;A ## N&gt;(a ## N)</td></tr>
 <tr class="separator:ae76028dfc9fdd64cb568444c99e1dc1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9221055bba5a299e229f1abfad86d392"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dispatch_8hpp.html#a9221055bba5a299e229f1abfad86d392">DECL</a>(Z, N, DATA)&#160;&#160;&#160;typename std::decay&lt;A ## N&gt;::type&amp; a ## N</td></tr>
+<tr class="memitem:a6026dd965c0b8b4c0242bbf6aedd279a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dispatch_8hpp.html#a6026dd965c0b8b4c0242bbf6aedd279a">MOVE</a>(Z, N, DATA)&#160;&#160;&#160;std::move(a ## N)</td></tr>
+<tr class="separator:a6026dd965c0b8b4c0242bbf6aedd279a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9221055bba5a299e229f1abfad86d392"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dispatch_8hpp.html#a9221055bba5a299e229f1abfad86d392">DECL</a>(Z, N, DATA)&#160;&#160;&#160;typename std::decay&lt;A ## N&gt;::type&amp;&amp; a ## N</td></tr>
 <tr class="separator:a9221055bba5a299e229f1abfad86d392"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a659a0f3373b1b8ed3e348bc4332657e2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dispatch_8hpp.html#a659a0f3373b1b8ed3e348bc4332657e2">TEMPLATE</a>(Z, N, DATA)</td></tr>
 <tr class="separator:a659a0f3373b1b8ed3e348bc4332657e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -100,8 +102,8 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:af41e327161ef61c79f5eb864fc2af03d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceprocess_1_1internal.html#af41e327161ef61c79f5eb864fc2af03d">process::internal::dispatch</a> (const UPID &amp;pid, const std::shared_ptr&lt; std::function&lt; void(ProcessBase *)&gt;&gt; &amp;f, const <a class="el" href="classOption.html">Option</a>&lt; const std::type_info * &gt; &amp;functionType=<a class="el" href="structNone.html">None</a>())</td></tr>
-<tr class="separator:af41e327161ef61c79f5eb864fc2af03d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab863b0922b3133630bec9cc010ddb261"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceprocess_1_1internal.html#ab863b0922b3133630bec9cc010ddb261">process::internal::dispatch</a> (const UPID &amp;pid, const std::shared_ptr&lt; <a class="el" href="classlambda_1_1CallableOnce.html">lambda::CallableOnce</a>&lt; void(ProcessBase *)&gt;&gt; &amp;f, const <a class="el" href="classOption.html">Option</a>&lt; const std::type_info * &gt; &amp;functionType=<a class="el" href="structNone.html">None</a>())</td></tr>
+<tr class="separator:ab863b0922b3133630bec9cc010ddb261"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acfbc29404bc653268289691b0dd59e22"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:acfbc29404bc653268289691b0dd59e22"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceprocess.html#acfbc29404bc653268289691b0dd59e22">process::dispatch</a> (const PID&lt; T &gt; &amp;pid, void(T::*method)())</td></tr>
 <tr class="separator:acfbc29404bc653268289691b0dd59e22"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -156,7 +158,7 @@ Functions</h2></td></tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td>&#160;&#160;&#160;typename std::decay&lt;A ## N&gt;::type&amp; a ## N</td>
+          <td></td><td>&#160;&#160;&#160;typename std::decay&lt;A ## N&gt;::type&amp;&amp; a ## N</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -189,6 +191,38 @@ Functions</h2></td></tr>
           <td></td>
           <td>)</td>
           <td></td><td>&#160;&#160;&#160;std::forward&lt;A ## N&gt;(a ## N)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a6026dd965c0b8b4c0242bbf6aedd279a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MOVE</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">Z, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">N, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">DATA&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;std::move(a ## N)</td>
         </tr>
       </table>
 </div><div class="memdoc">
