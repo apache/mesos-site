@@ -418,49 +418,48 @@
 <div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;  <a class="code" href="classlambda_1_1CallableOnce.html">CallableOnce</a>&amp; operator=(<a class="code" href="classlambda_1_1CallableOnce.html">CallableOnce</a>&amp;&amp;) = <span class="keywordflow">default</span>;</div>
 <div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;  <a class="code" href="classlambda_1_1CallableOnce.html">CallableOnce</a>&amp; operator=(<span class="keyword">const</span> <a class="code" href="classlambda_1_1CallableOnce.html">CallableOnce</a>&amp;) = <span class="keyword">delete</span>;</div>
 <div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;</div>
-<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;  <span class="keyword">template</span> &lt;<span class="keyword">typename</span>... Args_&gt;</div>
-<div class="line"><a name="l00368"></a><span class="lineno"><a class="line" href="classlambda_1_1CallableOnce_3_01R_07Args_8_8_8_08_4.html#a848685cf1a64b34e760426db40f9e203">  368</a></span>&#160;  R <a class="code" href="classlambda_1_1CallableOnce_3_01R_07Args_8_8_8_08_4.html#a848685cf1a64b34e760426db40f9e203">operator()</a>(Args_&amp;&amp;... args) &amp;&amp;</div>
-<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;  {</div>
-<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;    CHECK(<a class="code" href="namespaceprocess.html#a62d5333e8ec1817c249cf83e15d568b4">f</a> != <span class="keyword">nullptr</span>);</div>
-<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;    <span class="keywordflow">return</span> std::move(*<a class="code" href="namespaceprocess.html#a62d5333e8ec1817c249cf83e15d568b4">f</a>)(std::forward&lt;Args_&gt;(args)...);</div>
-<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;  }</div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;</div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;  <span class="keyword">struct </span>Callable</div>
-<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;  {</div>
-<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;    <span class="keyword">virtual</span> ~Callable() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;    <span class="keyword">virtual</span> R operator()(Args...) &amp;&amp; = 0;</div>
-<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;  };</div>
-<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;</div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> F&gt;</div>
-<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;  <span class="keyword">struct </span>CallableFn : Callable</div>
-<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;  {</div>
-<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;    F <a class="code" href="namespaceprocess.html#a62d5333e8ec1817c249cf83e15d568b4">f</a>;</div>
-<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;</div>
-<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;    CallableFn(<span class="keyword">const</span> F&amp; <a class="code" href="namespaceprocess.html#a62d5333e8ec1817c249cf83e15d568b4">f</a>) : f(f) {}</div>
-<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;    CallableFn(F&amp;&amp; <a class="code" href="namespaceprocess.html#a62d5333e8ec1817c249cf83e15d568b4">f</a>) : <a class="code" href="namespaceprocess.html#a62d5333e8ec1817c249cf83e15d568b4">f</a>(std::move(<a class="code" href="namespaceprocess.html#a62d5333e8ec1817c249cf83e15d568b4">f</a>)) {}</div>
-<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;</div>
-<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;    <span class="keyword">virtual</span> R operator()(Args... args) &amp;&amp;</div>
-<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;    {</div>
-<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;      <span class="keywordflow">return</span> internal::Invoke&lt;R&gt;{}(std::move(<a class="code" href="namespaceprocess.html#a62d5333e8ec1817c249cf83e15d568b4">f</a>), std::forward&lt;Args&gt;(args)...);</div>
-<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;    }</div>
-<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;  };</div>
-<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;</div>
-<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;  std::unique_ptr&lt;Callable&gt; <a class="code" href="namespaceprocess.html#a62d5333e8ec1817c249cf83e15d568b4">f</a>;</div>
-<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;};</div>
-<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;</div>
-<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;} <span class="comment">// namespace lambda {</span></div>
+<div class="line"><a name="l00367"></a><span class="lineno"><a class="line" href="classlambda_1_1CallableOnce_3_01R_07Args_8_8_8_08_4.html#a0efcb5ba7aaf7893973b7614907d5a3a">  367</a></span>&#160;  R <a class="code" href="classlambda_1_1CallableOnce_3_01R_07Args_8_8_8_08_4.html#a0efcb5ba7aaf7893973b7614907d5a3a">operator()</a>(Args... args) &amp;&amp;</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;  {</div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;    CHECK(<a class="code" href="namespaceprocess.html#a62d5333e8ec1817c249cf83e15d568b4">f</a> != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;    <span class="keywordflow">return</span> std::move(*<a class="code" href="namespaceprocess.html#a62d5333e8ec1817c249cf83e15d568b4">f</a>)(std::forward&lt;Args&gt;(args)...);</div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;  }</div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;</div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;  <span class="keyword">struct </span>Callable</div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;  {</div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;    <span class="keyword">virtual</span> ~Callable() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;    <span class="keyword">virtual</span> R operator()(Args&amp;&amp;...) &amp;&amp; = 0;</div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;  };</div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;</div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> F&gt;</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;  <span class="keyword">struct </span>CallableFn : Callable</div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;  {</div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;    F <a class="code" href="namespaceprocess.html#a62d5333e8ec1817c249cf83e15d568b4">f</a>;</div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;</div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;    CallableFn(<span class="keyword">const</span> F&amp; f) : f(f) {}</div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;    CallableFn(F&amp;&amp; f) : f(std::move(f)) {}</div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;</div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;    <span class="keyword">virtual</span> R operator()(Args&amp;&amp;... args) &amp;&amp;</div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;    {</div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;      <span class="keywordflow">return</span> internal::Invoke&lt;R&gt;{}(std::move(f), std::forward&lt;Args&gt;(args)...);</div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;    }</div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;  };</div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;</div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;  std::unique_ptr&lt;Callable&gt; <a class="code" href="namespaceprocess.html#a62d5333e8ec1817c249cf83e15d568b4">f</a>;</div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;};</div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;</div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;} <span class="comment">// namespace lambda {</span></div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;</div>
 <div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;</div>
-<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;</div>
-<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;<span class="keyword">namespace </span>std {</div>
-<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;</div>
-<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> F, <span class="keyword">typename</span>... Args&gt;</div>
-<div class="line"><a name="l00404"></a><span class="lineno"><a class="line" href="structstd_1_1is__bind__expression_3_01lambda_1_1internal_1_1Partial_3_01F_00_01Args_8_8_8_4_01_4.html">  404</a></span>&#160;<span class="keyword">struct </span>is_bind_expression&lt;lambda::internal::Partial&lt;F, Args...&gt;&gt;</div>
-<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;  : true_type {};</div>
-<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;</div>
-<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;} <span class="comment">// namespace std {</span></div>
-<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;</div>
-<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;<span class="preprocessor">#endif // __STOUT_LAMBDA_HPP__</span></div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;<span class="keyword">namespace </span>std {</div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;</div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> F, <span class="keyword">typename</span>... Args&gt;</div>
+<div class="line"><a name="l00403"></a><span class="lineno"><a class="line" href="structstd_1_1is__bind__expression_3_01lambda_1_1internal_1_1Partial_3_01F_00_01Args_8_8_8_4_01_4.html">  403</a></span>&#160;<span class="keyword">struct </span>is_bind_expression&lt;lambda::internal::Partial&lt;F, Args...&gt;&gt;</div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;  : true_type {};</div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;</div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;} <span class="comment">// namespace std {</span></div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;</div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;<span class="preprocessor">#endif // __STOUT_LAMBDA_HPP__</span></div>
 <div class="ttc" id="cpp17_8hpp_html"><div class="ttname"><a href="cpp17_8hpp.html">cpp17.hpp</a></div></div>
 <div class="ttc" id="namespaceprocess_html_a62d5333e8ec1817c249cf83e15d568b4"><div class="ttname"><a href="namespaceprocess.html#a62d5333e8ec1817c249cf83e15d568b4">process::f</a></div><div class="ttdeci">F &amp;&amp; f</div><div class="ttdef"><b>Definition:</b> defer.hpp:266</div></div>
 <div class="ttc" id="classlambda_1_1CallableOnce_3_01R_07Args_8_8_8_08_4_html_ad14b38bade412c5d2224ec31aee51ef2"><div class="ttname"><a href="classlambda_1_1CallableOnce_3_01R_07Args_8_8_8_08_4.html#ad14b38bade412c5d2224ec31aee51ef2">lambda::CallableOnce&lt; R(Args...)&gt;::CallableOnce</a></div><div class="ttdeci">CallableOnce(F &amp;&amp;f)</div><div class="ttdef"><b>Definition:</b> lambda.hpp:358</div></div>
@@ -472,8 +471,8 @@
 <div class="ttc" id="structlambda_1_1internal_1_1Expand_html"><div class="ttname"><a href="structlambda_1_1internal_1_1Expand.html">lambda::internal::Expand</a></div><div class="ttdef"><b>Definition:</b> lambda.hpp:177</div></div>
 <div class="ttc" id="namespacelambda_html_afcafcae83c68e89f8b0b325afb7c9ea1"><div class="ttname"><a href="namespacelambda.html#afcafcae83c68e89f8b0b325afb7c9ea1">lambda::map</a></div><div class="ttdeci">Iterable&lt; V &gt; map(F &amp;&amp;f, const Iterable&lt; U, Us...&gt; &amp;input)</div><div class="ttdef"><b>Definition:</b> lambda.hpp:45</div></div>
 <div class="ttc" id="namespacecpp14_html_a96c8d4b0127a8698c8081aaf829c0e59"><div class="ttname"><a href="namespacecpp14.html#a96c8d4b0127a8698c8081aaf829c0e59">cpp14::make_index_sequence</a></div><div class="ttdeci">make_integer_sequence&lt; std::size_t, N &gt; make_index_sequence</div><div class="ttdef"><b>Definition:</b> cpp14.hpp:61</div></div>
-<div class="ttc" id="classlambda_1_1CallableOnce_3_01R_07Args_8_8_8_08_4_html_a848685cf1a64b34e760426db40f9e203"><div class="ttname"><a href="classlambda_1_1CallableOnce_3_01R_07Args_8_8_8_08_4.html#a848685cf1a64b34e760426db40f9e203">lambda::CallableOnce&lt; R(Args...)&gt;::operator()</a></div><div class="ttdeci">R operator()(Args_ &amp;&amp;...args)&amp;&amp;</div><div class="ttdef"><b>Definition:</b> lambda.hpp:368</div></div>
 <div class="ttc" id="namespacemesos_1_1internal_1_1recordio_html_a5fcab68176c462aaeed909f304c91bdf"><div class="ttname"><a href="namespacemesos_1_1internal_1_1recordio.html#a5fcab68176c462aaeed909f304c91bdf">mesos::internal::recordio::transform</a></div><div class="ttdeci">process::Future&lt; Nothing &gt; transform(process::Owned&lt; Reader&lt; T &gt;&gt; &amp;&amp;reader, const std::function&lt; std::string(const T &amp;)&gt; &amp;func, process::http::Pipe::Writer writer)</div><div class="ttdoc">This is a helper function that reads records from a Reader, applies a transformation to the records a...</div><div class="ttdef"><b>Definition:</b> recordio.hpp:112</div></div>
+<div class="ttc" id="classlambda_1_1CallableOnce_3_01R_07Args_8_8_8_08_4_html_a0efcb5ba7aaf7893973b7614907d5a3a"><div class="ttname"><a href="classlambda_1_1CallableOnce_3_01R_07Args_8_8_8_08_4.html#a0efcb5ba7aaf7893973b7614907d5a3a">lambda::CallableOnce&lt; R(Args...)&gt;::operator()</a></div><div class="ttdeci">R operator()(Args...args)&amp;&amp;</div><div class="ttdef"><b>Definition:</b> lambda.hpp:367</div></div>
 <div class="ttc" id="namespacemesos_1_1internal_1_1fs_html_a2343e2642db514496ba8380776487fba"><div class="ttname"><a href="namespacemesos_1_1internal_1_1fs.html#a2343e2642db514496ba8380776487fba">mesos::internal::fs::type</a></div><div class="ttdeci">Try&lt; uint32_t &gt; type(const std::string &amp;path)</div></div>
 <div class="ttc" id="structlambda_1_1internal_1_1Invoke_html"><div class="ttname"><a href="structlambda_1_1internal_1_1Invoke.html">lambda::internal::Invoke</a></div><div class="ttdef"><b>Definition:</b> lambda.hpp:309</div></div>
 <div class="ttc" id="namespaceprocess_1_1network_html_ad067110a4b38cc83785a43f49bf6c8e2"><div class="ttname"><a href="namespaceprocess_1_1network.html#ad067110a4b38cc83785a43f49bf6c8e2">process::network::bind</a></div><div class="ttdeci">Try&lt; Nothing &gt; bind(int_fd s, const Address &amp;address)</div><div class="ttdef"><b>Definition:</b> network.hpp:46</div></div>
