@@ -101,9 +101,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa668a3cac81d97424ff4ec517ca21b23"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1master_1_1allocator_1_1MesosAllocator.html#aa668a3cac81d97424ff4ec517ca21b23">removeSlave</a> (const SlaveID &amp;slaveId)</td></tr>
 <tr class="memdesc:aa668a3cac81d97424ff4ec517ca21b23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes an agent from the Mesos cluster.  <a href="#aa668a3cac81d97424ff4ec517ca21b23">More...</a><br/></td></tr>
 <tr class="separator:aa668a3cac81d97424ff4ec517ca21b23"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a97b18046f20d3420ecb30cae056db694"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1master_1_1allocator_1_1MesosAllocator.html#a97b18046f20d3420ecb30cae056db694">updateSlave</a> (const SlaveID &amp;slave, const <a class="el" href="classOption.html">Option</a>&lt; <a class="el" href="classmesos_1_1Resources.html">Resources</a> &gt; &amp;total=<a class="el" href="structNone.html">None</a>(), const <a class="el" href="classOption.html">Option</a>&lt; std::vector&lt; SlaveInfo::Capability &gt;&gt; &amp;capabilities=<a class="el" href="structNone.html">None</a>())</td></tr>
-<tr class="memdesc:a97b18046f20d3420ecb30cae056db694"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates an agent.  <a href="#a97b18046f20d3420ecb30cae056db694">More...</a><br/></td></tr>
-<tr class="separator:a97b18046f20d3420ecb30cae056db694"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa56f3da089916233c038c6149fddacc7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1master_1_1allocator_1_1MesosAllocator.html#aa56f3da089916233c038c6149fddacc7">updateSlave</a> (const SlaveID &amp;slave, const SlaveInfo &amp;slaveInfo, const <a class="el" href="classOption.html">Option</a>&lt; <a class="el" href="classmesos_1_1Resources.html">Resources</a> &gt; &amp;total=<a class="el" href="structNone.html">None</a>(), const <a class="el" href="classOption.html">Option</a>&lt; std::vector&lt; SlaveInfo::Capability &gt;&gt; &amp;capabilities=<a class="el" href="structNone.html">None</a>())</td></tr>
+<tr class="memdesc:aa56f3da089916233c038c6149fddacc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates an agent.  <a href="#aa56f3da089916233c038c6149fddacc7">More...</a><br/></td></tr>
+<tr class="separator:aa56f3da089916233c038c6149fddacc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb4e5880e5f7eea3e746e29a5a8a35eb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1master_1_1allocator_1_1MesosAllocator.html#adb4e5880e5f7eea3e746e29a5a8a35eb">addResourceProvider</a> (const SlaveID &amp;slave, const <a class="el" href="classmesos_1_1Resources.html">Resources</a> &amp;total, const <a class="el" href="classhashmap.html">hashmap</a>&lt; FrameworkID, <a class="el" href="classmesos_1_1Resources.html">Resources</a> &gt; &amp;used)</td></tr>
 <tr class="memdesc:adb4e5880e5f7eea3e746e29a5a8a35eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add resources from a local resource provider to an agent.  <a href="#adb4e5880e5f7eea3e746e29a5a8a35eb">More...</a><br/></td></tr>
 <tr class="separator:adb4e5880e5f7eea3e746e29a5a8a35eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1193,7 +1193,7 @@ template&lt;typename AllocatorProcess &gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="a97b18046f20d3420ecb30cae056db694"></a>
+<a class="anchor" id="aa56f3da089916233c038c6149fddacc7"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -1207,6 +1207,12 @@ template&lt;typename AllocatorProcess &gt; </div>
           <td>(</td>
           <td class="paramtype">const SlaveID &amp;&#160;</td>
           <td class="paramname"><em>slave</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const SlaveInfo &amp;&#160;</td>
+          <td class="paramname"><em>slaveInfo</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1234,15 +1240,17 @@ template&lt;typename AllocatorProcess &gt; </div>
 </div><div class="memdoc">
 
 <p>Updates an agent. </p>
+<p>TODO(bevers): Make <code>total</code> and <code>capabilities</code> non-optional.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramname">slaveInfo</td><td>The current slave info of the agent. </td></tr>
     <tr><td class="paramname">total</td><td>The new total resources on the agent. </td></tr>
     <tr><td class="paramname">capabilities</td><td>The new capabilities of the agent. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="classmesos_1_1allocator_1_1Allocator.html#a0736a7f4fc8424d1dde7ff61e97e7317">mesos::allocator::Allocator</a>.</p>
+<p>Implements <a class="el" href="classmesos_1_1allocator_1_1Allocator.html#ad30279420381616f523418812beb798f">mesos::allocator::Allocator</a>.</p>
 
 </div>
 </div>
