@@ -88,95 +88,110 @@
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
 <div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="namespacecsi.html">   35</a></span>&#160;<span class="keyword">namespace </span>csi {</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keywordtype">bool</span> <a class="code" href="namespacecsi.html#a0bc45c1b9ad4f873ff9b50468fc4738e">operator==</a>(<span class="keyword">const</span> <a class="code" href="structVersion.html">Version</a>&amp; left, <span class="keyword">const</span> <a class="code" href="structVersion.html">Version</a>&amp; right);</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;std::ostream&amp; <a class="code" href="namespacecsi.html#ac9123c9440924432b0bcb67383ec8988">operator&lt;&lt;</a>(std::ostream&amp; stream, <span class="keyword">const</span> <a class="code" href="structVersion.html">Version</a>&amp; <a class="code" href="namespaceperf.html#a240601d1c5090f329a23755094e5b089">version</a>);</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keywordtype">bool</span> <a class="code" href="namespacecsi.html#a538f3d89ef1a042f4c11edc0d6585744">operator==</a>(</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keyword">const</span> ControllerServiceCapability&amp; left,</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keyword">const</span> ControllerServiceCapability&amp; right);</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">// Default imprementation for output protobuf messages in namespace</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">// `csi`. Note that any non-template overloading of the output operator</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">// would take precedence over this function template.</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">template</span> &lt;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keyword">typename</span> Message,</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keyword">typename</span> std::enable_if&lt;std::is_convertible&lt;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        Message*, google::protobuf::Message*&gt;::value, <span class="keywordtype">int</span>&gt;<a class="code" href="namespacemesos_1_1internal_1_1fs.html#a2343e2642db514496ba8380776487fba">::type</a> = 0&gt;</div>
-<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="namespacecsi.html#aff12b19ddfcedab960415d2ea69a4282">   50</a></span>&#160;std::ostream&amp; <a class="code" href="namespacecsi.html#ac9123c9440924432b0bcb67383ec8988">operator&lt;&lt;</a>(std::ostream&amp; stream, <span class="keyword">const</span> Message&amp; message)</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;{</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <span class="comment">// NOTE: We use Google&#39;s JSON utility functions for proto3.</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  std::string output;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  google::protobuf::util::MessageToJsonString(message, &amp;output);</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <span class="keywordflow">return</span> stream &lt;&lt; output;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;}</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;} <span class="comment">// namespace csi {</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="keyword">namespace </span>mesos {</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keyword">namespace </span>csi {</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="structmesos_1_1csi_1_1ControllerCapabilities.html">   64</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structmesos_1_1csi_1_1ControllerCapabilities.html">ControllerCapabilities</a></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;{</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <a class="code" href="structmesos_1_1csi_1_1ControllerCapabilities.html#a97e6bd1356e50c84793f71347aa01125">ControllerCapabilities</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Iterable&gt;</div>
-<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="structmesos_1_1csi_1_1ControllerCapabilities.html#acd305519dc814e2d0f603853053ed21f">   69</a></span>&#160;  <a class="code" href="structmesos_1_1csi_1_1ControllerCapabilities.html#acd305519dc814e2d0f603853053ed21f">ControllerCapabilities</a>(<span class="keyword">const</span> Iterable&amp; capabilities)</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  {</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keywordflow">foreach</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; capability, capabilities) {</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;      <span class="keywordflow">if</span> (capability.has_rpc() &amp;&amp;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;          ControllerServiceCapability::RPC::Type_IsValid(</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;              capability.rpc().type())) {</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <span class="keywordflow">switch</span>(capability.rpc().type()) {</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;          <span class="keywordflow">case</span> <a class="code" href="namespacerouting_1_1diagnosis_1_1socket_1_1state.html#a4cceb5a8a4b3f5e1323fdf4a14c5d2a6">ControllerServiceCapability::RPC::UNKNOWN</a>:</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;          <span class="keywordflow">case</span> ControllerServiceCapability::RPC::CREATE_DELETE_VOLUME:</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            <a class="code" href="structmesos_1_1csi_1_1ControllerCapabilities.html#aa07f329df0693ec2af71e16f8ebb8f8a">createDeleteVolume</a> = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;          <span class="keywordflow">case</span> ControllerServiceCapability::RPC::PUBLISH_UNPUBLISH_VOLUME:</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            <a class="code" href="structmesos_1_1csi_1_1ControllerCapabilities.html#a93adaf34e9b59873eeee9b68ef8f4012">publishUnpublishVolume</a> = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;          <span class="keywordflow">case</span> ControllerServiceCapability::RPC::LIST_VOLUMES:</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            <a class="code" href="structmesos_1_1csi_1_1ControllerCapabilities.html#a170a3a88fdf2bade6d478f400a25e24a">listVolumes</a> = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;          <span class="keywordflow">case</span> ControllerServiceCapability::RPC::GET_CAPACITY:</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            <a class="code" href="structmesos_1_1csi_1_1ControllerCapabilities.html#a0de7c215a48c18223d216cb46fbe650b">getCapacity</a> = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;            <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;          <span class="keywordflow">case</span> google::protobuf::kint32min:</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;          <span class="keywordflow">case</span> google::protobuf::kint32max:</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            <a class="code" href="unreachable_8hpp.html#a0bc63b24b654ca433be7b97a3edde132">UNREACHABLE</a>();</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        }</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;      }</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    }</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  }</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
-<div class="line"><a name="l00098"></a><span class="lineno"><a class="line" href="structmesos_1_1csi_1_1ControllerCapabilities.html#aa07f329df0693ec2af71e16f8ebb8f8a">   98</a></span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="structmesos_1_1csi_1_1ControllerCapabilities.html#aa07f329df0693ec2af71e16f8ebb8f8a">createDeleteVolume</a> = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00099"></a><span class="lineno"><a class="line" href="structmesos_1_1csi_1_1ControllerCapabilities.html#a93adaf34e9b59873eeee9b68ef8f4012">   99</a></span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="structmesos_1_1csi_1_1ControllerCapabilities.html#a93adaf34e9b59873eeee9b68ef8f4012">publishUnpublishVolume</a> = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00100"></a><span class="lineno"><a class="line" href="structmesos_1_1csi_1_1ControllerCapabilities.html#a170a3a88fdf2bade6d478f400a25e24a">  100</a></span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="structmesos_1_1csi_1_1ControllerCapabilities.html#a170a3a88fdf2bade6d478f400a25e24a">listVolumes</a> = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00101"></a><span class="lineno"><a class="line" href="structmesos_1_1csi_1_1ControllerCapabilities.html#a0de7c215a48c18223d216cb46fbe650b">  101</a></span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="structmesos_1_1csi_1_1ControllerCapabilities.html#a0de7c215a48c18223d216cb46fbe650b">getCapacity</a> = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;};</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;} <span class="comment">// namespace csi {</span></div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;} <span class="comment">// namespace mesos {</span></div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="preprocessor">#endif // __CSI_UTILS_HPP__</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keywordtype">bool</span> <a class="code" href="namespacecsi.html#a538f3d89ef1a042f4c11edc0d6585744">operator==</a>(<span class="keyword">const</span> <a class="code" href="structVersion.html">Version</a>&amp; left, <span class="keyword">const</span> <a class="code" href="structVersion.html">Version</a>&amp; right);</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keywordtype">bool</span> <a class="code" href="namespacecsi.html#a894a9fd02db667f2781e7cff4e05621a">operator!=</a>(<span class="keyword">const</span> <a class="code" href="structVersion.html">Version</a>&amp; left, <span class="keyword">const</span> <a class="code" href="structVersion.html">Version</a>&amp; right);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;std::ostream&amp; <a class="code" href="namespacecsi.html#aefc67fc55e9496ef84bc00eaea4067ba">operator&lt;&lt;</a>(</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    std::ostream&amp; stream,</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespacemesos_1_1internal_1_1capabilities.html#aaa5ec6d56ccbeba718b9e8fc6ec2f7c9">ControllerServiceCapability::RPC::Type</a>&amp; <a class="code" href="namespacemesos_1_1internal_1_1fs.html#a2343e2642db514496ba8380776487fba">type</a>);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;std::ostream&amp; <a class="code" href="namespacecsi.html#aefc67fc55e9496ef84bc00eaea4067ba">operator&lt;&lt;</a>(std::ostream&amp; stream, <span class="keyword">const</span> <a class="code" href="structVersion.html">Version</a>&amp; <a class="code" href="namespaceperf.html#a240601d1c5090f329a23755094e5b089">version</a>);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment">// Default imprementation for output protobuf messages in namespace</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment">// `csi`. Note that any non-template overloading of the output operator</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">// would take precedence over this function template.</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keyword">template</span> &lt;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keyword">typename</span> Message,</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keyword">typename</span> std::enable_if&lt;std::is_convertible&lt;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        Message*, google::protobuf::Message*&gt;::value, <span class="keywordtype">int</span>&gt;<a class="code" href="namespacemesos_1_1internal_1_1fs.html#a2343e2642db514496ba8380776487fba">::type</a> = 0&gt;</div>
+<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="namespacecsi.html#aff12b19ddfcedab960415d2ea69a4282">   63</a></span>&#160;std::ostream&amp; <a class="code" href="namespacecsi.html#aefc67fc55e9496ef84bc00eaea4067ba">operator&lt;&lt;</a>(std::ostream&amp; stream, <span class="keyword">const</span> Message&amp; message)</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;{</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="comment">// NOTE: We use Google&#39;s JSON utility functions for proto3.</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  std::string output;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  google::protobuf::util::MessageToJsonString(message, &amp;output);</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keywordflow">return</span> stream &lt;&lt; output;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;}</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;} <span class="comment">// namespace csi {</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="keyword">namespace </span>mesos {</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="keyword">namespace </span>csi {</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
+<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="structmesos_1_1csi_1_1ControllerCapabilities.html">   77</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structmesos_1_1csi_1_1ControllerCapabilities.html">ControllerCapabilities</a></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;{</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <a class="code" href="structmesos_1_1csi_1_1ControllerCapabilities.html#a97e6bd1356e50c84793f71347aa01125">ControllerCapabilities</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Iterable&gt;</div>
+<div class="line"><a name="l00082"></a><span class="lineno"><a class="line" href="structmesos_1_1csi_1_1ControllerCapabilities.html#acd305519dc814e2d0f603853053ed21f">   82</a></span>&#160;  <a class="code" href="structmesos_1_1csi_1_1ControllerCapabilities.html#acd305519dc814e2d0f603853053ed21f">ControllerCapabilities</a>(<span class="keyword">const</span> Iterable&amp; capabilities)</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  {</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordflow">foreach</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; capability, capabilities) {</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;      <span class="keywordflow">if</span> (capability.has_rpc() &amp;&amp;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;          ControllerServiceCapability::RPC::Type_IsValid(</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;              capability.rpc().type())) {</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        <span class="keywordflow">switch</span>(capability.rpc().type()) {</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;          <span class="keywordflow">case</span> <a class="code" href="namespacerouting_1_1diagnosis_1_1socket_1_1state.html#a4cceb5a8a4b3f5e1323fdf4a14c5d2a6">ControllerServiceCapability::RPC::UNKNOWN</a>:</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;          <span class="keywordflow">case</span> ControllerServiceCapability::RPC::CREATE_DELETE_VOLUME:</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            <a class="code" href="structmesos_1_1csi_1_1ControllerCapabilities.html#aa07f329df0693ec2af71e16f8ebb8f8a">createDeleteVolume</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;            <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;          <span class="keywordflow">case</span> ControllerServiceCapability::RPC::PUBLISH_UNPUBLISH_VOLUME:</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            <a class="code" href="structmesos_1_1csi_1_1ControllerCapabilities.html#a93adaf34e9b59873eeee9b68ef8f4012">publishUnpublishVolume</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;          <span class="keywordflow">case</span> ControllerServiceCapability::RPC::LIST_VOLUMES:</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            <a class="code" href="structmesos_1_1csi_1_1ControllerCapabilities.html#a170a3a88fdf2bade6d478f400a25e24a">listVolumes</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;          <span class="keywordflow">case</span> ControllerServiceCapability::RPC::GET_CAPACITY:</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            <a class="code" href="structmesos_1_1csi_1_1ControllerCapabilities.html#a0de7c215a48c18223d216cb46fbe650b">getCapacity</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;            <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;          <span class="keywordflow">case</span> google::protobuf::kint32min:</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;          <span class="keywordflow">case</span> google::protobuf::kint32max:</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;            <a class="code" href="unreachable_8hpp.html#a0bc63b24b654ca433be7b97a3edde132">UNREACHABLE</a>();</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        }</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;      }</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    }</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  }</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
+<div class="line"><a name="l00111"></a><span class="lineno"><a class="line" href="structmesos_1_1csi_1_1ControllerCapabilities.html#aa07f329df0693ec2af71e16f8ebb8f8a">  111</a></span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="structmesos_1_1csi_1_1ControllerCapabilities.html#aa07f329df0693ec2af71e16f8ebb8f8a">createDeleteVolume</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00112"></a><span class="lineno"><a class="line" href="structmesos_1_1csi_1_1ControllerCapabilities.html#a93adaf34e9b59873eeee9b68ef8f4012">  112</a></span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="structmesos_1_1csi_1_1ControllerCapabilities.html#a93adaf34e9b59873eeee9b68ef8f4012">publishUnpublishVolume</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00113"></a><span class="lineno"><a class="line" href="structmesos_1_1csi_1_1ControllerCapabilities.html#a170a3a88fdf2bade6d478f400a25e24a">  113</a></span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="structmesos_1_1csi_1_1ControllerCapabilities.html#a170a3a88fdf2bade6d478f400a25e24a">listVolumes</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00114"></a><span class="lineno"><a class="line" href="structmesos_1_1csi_1_1ControllerCapabilities.html#a0de7c215a48c18223d216cb46fbe650b">  114</a></span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="structmesos_1_1csi_1_1ControllerCapabilities.html#a0de7c215a48c18223d216cb46fbe650b">getCapacity</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;};</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;} <span class="comment">// namespace csi {</span></div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;} <span class="comment">// namespace mesos {</span></div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="preprocessor">#endif // __CSI_UTILS_HPP__</span></div>
+<div class="ttc" id="namespacecsi_html_a538f3d89ef1a042f4c11edc0d6585744"><div class="ttname"><a href="namespacecsi.html#a538f3d89ef1a042f4c11edc0d6585744">csi::operator==</a></div><div class="ttdeci">bool operator==(const ControllerServiceCapability &amp;left, const ControllerServiceCapability &amp;right)</div></div>
 <div class="ttc" id="structmesos_1_1csi_1_1ControllerCapabilities_html_a97e6bd1356e50c84793f71347aa01125"><div class="ttname"><a href="structmesos_1_1csi_1_1ControllerCapabilities.html#a97e6bd1356e50c84793f71347aa01125">mesos::csi::ControllerCapabilities::ControllerCapabilities</a></div><div class="ttdeci">ControllerCapabilities()=default</div></div>
-<div class="ttc" id="structmesos_1_1csi_1_1ControllerCapabilities_html_acd305519dc814e2d0f603853053ed21f"><div class="ttname"><a href="structmesos_1_1csi_1_1ControllerCapabilities.html#acd305519dc814e2d0f603853053ed21f">mesos::csi::ControllerCapabilities::ControllerCapabilities</a></div><div class="ttdeci">ControllerCapabilities(const Iterable &amp;capabilities)</div><div class="ttdef"><b>Definition:</b> utils.hpp:69</div></div>
+<div class="ttc" id="structmesos_1_1csi_1_1ControllerCapabilities_html_acd305519dc814e2d0f603853053ed21f"><div class="ttname"><a href="structmesos_1_1csi_1_1ControllerCapabilities.html#acd305519dc814e2d0f603853053ed21f">mesos::csi::ControllerCapabilities::ControllerCapabilities</a></div><div class="ttdeci">ControllerCapabilities(const Iterable &amp;capabilities)</div><div class="ttdef"><b>Definition:</b> utils.hpp:82</div></div>
 <div class="ttc" id="include_2mesos_2mesos_8hpp_html"><div class="ttname"><a href="include_2mesos_2mesos_8hpp.html">mesos.hpp</a></div></div>
-<div class="ttc" id="structmesos_1_1csi_1_1ControllerCapabilities_html_a170a3a88fdf2bade6d478f400a25e24a"><div class="ttname"><a href="structmesos_1_1csi_1_1ControllerCapabilities.html#a170a3a88fdf2bade6d478f400a25e24a">mesos::csi::ControllerCapabilities::listVolumes</a></div><div class="ttdeci">bool listVolumes</div><div class="ttdef"><b>Definition:</b> utils.hpp:100</div></div>
-<div class="ttc" id="namespacecsi_html_ac9123c9440924432b0bcb67383ec8988"><div class="ttname"><a href="namespacecsi.html#ac9123c9440924432b0bcb67383ec8988">csi::operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;stream, const Version &amp;version)</div><div class="ttdef"><b>Definition:</b> version.hpp:347</div></div>
-<div class="ttc" id="structmesos_1_1csi_1_1ControllerCapabilities_html"><div class="ttname"><a href="structmesos_1_1csi_1_1ControllerCapabilities.html">mesos::csi::ControllerCapabilities</a></div><div class="ttdef"><b>Definition:</b> utils.hpp:64</div></div>
+<div class="ttc" id="structmesos_1_1csi_1_1ControllerCapabilities_html_a170a3a88fdf2bade6d478f400a25e24a"><div class="ttname"><a href="structmesos_1_1csi_1_1ControllerCapabilities.html#a170a3a88fdf2bade6d478f400a25e24a">mesos::csi::ControllerCapabilities::listVolumes</a></div><div class="ttdeci">bool listVolumes</div><div class="ttdef"><b>Definition:</b> utils.hpp:113</div></div>
+<div class="ttc" id="structmesos_1_1csi_1_1ControllerCapabilities_html"><div class="ttname"><a href="structmesos_1_1csi_1_1ControllerCapabilities.html">mesos::csi::ControllerCapabilities</a></div><div class="ttdef"><b>Definition:</b> utils.hpp:77</div></div>
 <div class="ttc" id="src_2csi_2spec_8hpp_html"><div class="ttname"><a href="src_2csi_2spec_8hpp.html">spec.hpp</a></div></div>
-<div class="ttc" id="structmesos_1_1csi_1_1ControllerCapabilities_html_aa07f329df0693ec2af71e16f8ebb8f8a"><div class="ttname"><a href="structmesos_1_1csi_1_1ControllerCapabilities.html#aa07f329df0693ec2af71e16f8ebb8f8a">mesos::csi::ControllerCapabilities::createDeleteVolume</a></div><div class="ttdeci">bool createDeleteVolume</div><div class="ttdef"><b>Definition:</b> utils.hpp:98</div></div>
+<div class="ttc" id="structmesos_1_1csi_1_1ControllerCapabilities_html_aa07f329df0693ec2af71e16f8ebb8f8a"><div class="ttname"><a href="structmesos_1_1csi_1_1ControllerCapabilities.html#aa07f329df0693ec2af71e16f8ebb8f8a">mesos::csi::ControllerCapabilities::createDeleteVolume</a></div><div class="ttdeci">bool createDeleteVolume</div><div class="ttdef"><b>Definition:</b> utils.hpp:111</div></div>
+<div class="ttc" id="namespacecsi_html_a894a9fd02db667f2781e7cff4e05621a"><div class="ttname"><a href="namespacecsi.html#a894a9fd02db667f2781e7cff4e05621a">csi::operator!=</a></div><div class="ttdeci">bool operator!=(const Version &amp;left, const Version &amp;right)</div></div>
 <div class="ttc" id="namespaceperf_html_a240601d1c5090f329a23755094e5b089"><div class="ttname"><a href="namespaceperf.html#a240601d1c5090f329a23755094e5b089">perf::version</a></div><div class="ttdeci">process::Future&lt; Version &gt; version()</div><div class="ttdef"><b>Definition:</b> version.hpp:32</div></div>
 <div class="ttc" id="namespacerouting_1_1diagnosis_1_1socket_1_1state_html_a4cceb5a8a4b3f5e1323fdf4a14c5d2a6"><div class="ttname"><a href="namespacerouting_1_1diagnosis_1_1socket_1_1state.html#a4cceb5a8a4b3f5e1323fdf4a14c5d2a6">routing::diagnosis::socket::state::UNKNOWN</a></div><div class="ttdeci">const int UNKNOWN</div><div class="ttdef"><b>Definition:</b> diagnosis.hpp:39</div></div>
 <div class="ttc" id="unreachable_8hpp_html_a0bc63b24b654ca433be7b97a3edde132"><div class="ttname"><a href="unreachable_8hpp.html#a0bc63b24b654ca433be7b97a3edde132">UNREACHABLE</a></div><div class="ttdeci">#define UNREACHABLE()</div><div class="ttdef"><b>Definition:</b> unreachable.hpp:22</div></div>
 <div class="ttc" id="foreach_8hpp_html"><div class="ttname"><a href="foreach_8hpp.html">foreach.hpp</a></div></div>
+<div class="ttc" id="namespacecsi_html_aefc67fc55e9496ef84bc00eaea4067ba"><div class="ttname"><a href="namespacecsi.html#aefc67fc55e9496ef84bc00eaea4067ba">csi::operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;stream, const ControllerServiceCapability::RPC::Type &amp;type)</div></div>
+<div class="ttc" id="namespacemesos_1_1internal_1_1capabilities_html_aaa5ec6d56ccbeba718b9e8fc6ec2f7c9"><div class="ttname"><a href="namespacemesos_1_1internal_1_1capabilities.html#aaa5ec6d56ccbeba718b9e8fc6ec2f7c9">mesos::internal::capabilities::Type</a></div><div class="ttdeci">Type</div><div class="ttdef"><b>Definition:</b> capabilities.hpp:79</div></div>
 <div class="ttc" id="try_8hpp_html"><div class="ttname"><a href="try_8hpp.html">try.hpp</a></div></div>
-<div class="ttc" id="namespacecsi_html_a0bc45c1b9ad4f873ff9b50468fc4738e"><div class="ttname"><a href="namespacecsi.html#a0bc45c1b9ad4f873ff9b50468fc4738e">csi::operator==</a></div><div class="ttdeci">bool operator==(const Version &amp;left, const Version &amp;right)</div></div>
-<div class="ttc" id="structmesos_1_1csi_1_1ControllerCapabilities_html_a93adaf34e9b59873eeee9b68ef8f4012"><div class="ttname"><a href="structmesos_1_1csi_1_1ControllerCapabilities.html#a93adaf34e9b59873eeee9b68ef8f4012">mesos::csi::ControllerCapabilities::publishUnpublishVolume</a></div><div class="ttdeci">bool publishUnpublishVolume</div><div class="ttdef"><b>Definition:</b> utils.hpp:99</div></div>
+<div class="ttc" id="structmesos_1_1csi_1_1ControllerCapabilities_html_a93adaf34e9b59873eeee9b68ef8f4012"><div class="ttname"><a href="structmesos_1_1csi_1_1ControllerCapabilities.html#a93adaf34e9b59873eeee9b68ef8f4012">mesos::csi::ControllerCapabilities::publishUnpublishVolume</a></div><div class="ttdeci">bool publishUnpublishVolume</div><div class="ttdef"><b>Definition:</b> utils.hpp:112</div></div>
 <div class="ttc" id="structVersion_html"><div class="ttname"><a href="structVersion.html">Version</a></div><div class="ttdef"><b>Definition:</b> version.hpp:41</div></div>
 <div class="ttc" id="namespacemesos_1_1internal_1_1fs_html_a2343e2642db514496ba8380776487fba"><div class="ttname"><a href="namespacemesos_1_1internal_1_1fs.html#a2343e2642db514496ba8380776487fba">mesos::internal::fs::type</a></div><div class="ttdeci">Try&lt; uint32_t &gt; type(const std::string &amp;path)</div></div>
-<div class="ttc" id="structmesos_1_1csi_1_1ControllerCapabilities_html_a0de7c215a48c18223d216cb46fbe650b"><div class="ttname"><a href="structmesos_1_1csi_1_1ControllerCapabilities.html#a0de7c215a48c18223d216cb46fbe650b">mesos::csi::ControllerCapabilities::getCapacity</a></div><div class="ttdeci">bool getCapacity</div><div class="ttdef"><b>Definition:</b> utils.hpp:101</div></div>
+<div class="ttc" id="structmesos_1_1csi_1_1ControllerCapabilities_html_a0de7c215a48c18223d216cb46fbe650b"><div class="ttname"><a href="structmesos_1_1csi_1_1ControllerCapabilities.html#a0de7c215a48c18223d216cb46fbe650b">mesos::csi::ControllerCapabilities::getCapacity</a></div><div class="ttdeci">bool getCapacity</div><div class="ttdef"><b>Definition:</b> utils.hpp:114</div></div>
 <div class="ttc" id="unreachable_8hpp_html"><div class="ttname"><a href="unreachable_8hpp.html">unreachable.hpp</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
