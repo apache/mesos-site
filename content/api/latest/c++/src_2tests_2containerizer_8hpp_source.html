@@ -176,9 +176,9 @@
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;      <a class="code" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a1125caabfba60cdae07491ec2648ee73">kill</a>,</div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;      <a class="code" href="classprocess_1_1Future.html">process::Future&lt;bool&gt;</a>(<span class="keyword">const</span> ContainerID&amp;, <span class="keywordtype">int</span>));</div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;  <a class="code" href="classmesos_1_1internal_1_1tests_1_1TestContainerizer.html#aa026516e98b010a70dfaa311ce7d02b4">MOCK_METHOD0</a>(</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;      <a class="code" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a43b66ff0ea3d543150eb27725d4afe7f">pruneImages</a>,</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;      <a class="code" href="classprocess_1_1Future.html">process::Future&lt;Nothing&gt;</a>());</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;  <a class="code" href="classmesos_1_1internal_1_1tests_1_1TestContainerizer.html#a46f5aaa90b1455755644b2a2195aa3d5">MOCK_METHOD1</a>(</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;      <a class="code" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a58a74c17a75c87d288fa034178130104">pruneImages</a>,</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;      <a class="code" href="classprocess_1_1Future.html">process::Future&lt;Nothing&gt;</a>(<span class="keyword">const</span> std::vector&lt;Image&gt;&amp;));</div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;</div>
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;  <span class="comment">// Additional destroy method for testing because we won&#39;t know the</span></div>
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;  <span class="comment">// ContainerID created for each container.</span></div>
@@ -221,12 +221,12 @@
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;  <a class="code" href="classprocess_1_1Future.html">process::Future&lt;bool&gt;</a> _destroy(</div>
 <div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;      <span class="keyword">const</span> ContainerID&amp; containerId);</div>
 <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;  <a class="code" href="classprocess_1_1Future.html">process::Future&lt;bool&gt;</a> _kill(</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;      <span class="keyword">const</span> ContainerID&amp; containerId,</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;      <span class="keywordtype">int</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a41ab321c7dd4a940fce865953621881f">status</a>);</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;  <a class="code" href="classprocess_1_1Future.html">process::Future&lt;Nothing&gt;</a> _pruneImages();</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;  <a class="code" href="classprocess_1_1Future.html">process::Future&lt;bool&gt;</a> _kill(</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;      <span class="keyword">const</span> ContainerID&amp; containerId,</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;      <span class="keywordtype">int</span> <a class="code" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a41ab321c7dd4a940fce865953621881f">status</a>);</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;  <a class="code" href="classprocess_1_1Future.html">process::Future&lt;Nothing&gt;</a> _pruneImages(</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;      <span class="keyword">const</span> std::vector&lt;Image&gt;&amp; excludedImages);</div>
 <div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;</div>
 <div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;  <a class="code" href="classprocess_1_1Owned.html">process::Owned&lt;TestContainerizerProcess&gt;</a> process;</div>
 <div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;};</div>
@@ -245,7 +245,6 @@
 <div class="ttc" id="os_8hpp_html"><div class="ttname"><a href="os_8hpp.html">os.hpp</a></div></div>
 <div class="ttc" id="include_2mesos_2mesos_8hpp_html"><div class="ttname"><a href="include_2mesos_2mesos_8hpp.html">mesos.hpp</a></div></div>
 <div class="ttc" id="include_2mesos_2executor_8hpp_html"><div class="ttname"><a href="include_2mesos_2executor_8hpp.html">executor.hpp</a></div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1Containerizer_html_a43b66ff0ea3d543150eb27725d4afe7f"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a43b66ff0ea3d543150eb27725d4afe7f">mesos::internal::slave::Containerizer::pruneImages</a></div><div class="ttdeci">virtual process::Future&lt; Nothing &gt; pruneImages()=0</div></div>
 <div class="ttc" id="classmesos_1_1Resources_html"><div class="ttname"><a href="classmesos_1_1Resources.html">mesos::Resources</a></div><div class="ttdef"><b>Definition:</b> resources.hpp:79</div></div>
 <div class="ttc" id="slave_8hpp_html"><div class="ttname"><a href="slave_8hpp.html">slave.hpp</a></div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1tests_1_1TestContainerizer_html_abbd256339375865a3edea98eef4c24d7"><div class="ttname"><a href="classmesos_1_1internal_1_1tests_1_1TestContainerizer.html#abbd256339375865a3edea98eef4c24d7">mesos::internal::tests::TestContainerizer::MOCK_METHOD2</a></div><div class="ttdeci">MOCK_METHOD2(update, process::Future&lt; Nothing &gt;(const ContainerID &amp;, const Resources &amp;))</div></div>
@@ -264,7 +263,6 @@
 <div class="ttc" id="classmesos_1_1internal_1_1tests_1_1TestContainerizer_html_a249f9386c7a7d350edb621ea88417050"><div class="ttname"><a href="classmesos_1_1internal_1_1tests_1_1TestContainerizer.html#a249f9386c7a7d350edb621ea88417050">mesos::internal::tests::TestContainerizer::MOCK_METHOD4</a></div><div class="ttdeci">MOCK_METHOD4(launch, process::Future&lt; slave::Containerizer::LaunchResult &gt;(const ContainerID &amp;, const mesos::slave::ContainerConfig &amp;, const std::map&lt; std::string, std::string &gt; &amp;, const Option&lt; std::string &gt; &amp;))</div></div>
 <div class="ttc" id="classmesos_1_1Executor_html"><div class="ttname"><a href="classmesos_1_1Executor.html">mesos::Executor</a></div><div class="ttdef"><b>Definition:</b> executor.hpp:74</div></div>
 <div class="ttc" id="gmock_8hpp_html"><div class="ttname"><a href="gmock_8hpp.html">gmock.hpp</a></div></div>
-<div class="ttc" id="classmesos_1_1internal_1_1tests_1_1TestContainerizer_html_aa026516e98b010a70dfaa311ce7d02b4"><div class="ttname"><a href="classmesos_1_1internal_1_1tests_1_1TestContainerizer.html#aa026516e98b010a70dfaa311ce7d02b4">mesos::internal::tests::TestContainerizer::MOCK_METHOD0</a></div><div class="ttdeci">MOCK_METHOD0(pruneImages, process::Future&lt; Nothing &gt;())</div></div>
 <div class="ttc" id="future_8hpp_html"><div class="ttname"><a href="future_8hpp.html">future.hpp</a></div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1slave_1_1Containerizer_html_a1125caabfba60cdae07491ec2648ee73"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a1125caabfba60cdae07491ec2648ee73">mesos::internal::slave::Containerizer::kill</a></div><div class="ttdeci">virtual process::Future&lt; bool &gt; kill(const ContainerID &amp;containerId, int signal)</div><div class="ttdef"><b>Definition:</b> containerizer.hpp:148</div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1tests_1_1TestContainerizer_html_afee9673dc215076f476ac6c4c88bba19"><div class="ttname"><a href="classmesos_1_1internal_1_1tests_1_1TestContainerizer.html#afee9673dc215076f476ac6c4c88bba19">mesos::internal::tests::TestContainerizer::~TestContainerizer</a></div><div class="ttdeci">virtual ~TestContainerizer()</div></div>
@@ -278,6 +276,7 @@
 <div class="ttc" id="classmesos_1_1internal_1_1tests_1_1TestContainerizer_html_a460b7c3483def8f45e1e2b018bba48b8"><div class="ttname"><a href="classmesos_1_1internal_1_1tests_1_1TestContainerizer.html#a460b7c3483def8f45e1e2b018bba48b8">mesos::internal::tests::TestContainerizer::destroy</a></div><div class="ttdeci">process::Future&lt; bool &gt; destroy(const FrameworkID &amp;frameworkId, const ExecutorID &amp;executorId)</div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1slave_1_1Containerizer_html_a688a58965f318010cd3d1e01230b955c"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a688a58965f318010cd3d1e01230b955c">mesos::internal::slave::Containerizer::wait</a></div><div class="ttdeci">virtual process::Future&lt; Option&lt; mesos::slave::ContainerTermination &gt; &gt; wait(const ContainerID &amp;containerId)=0</div></div>
 <div class="ttc" id="classprocess_1_1Owned_html"><div class="ttname"><a href="classprocess_1_1Owned.html">process::Owned&lt; TestContainerizerProcess &gt;</a></div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1slave_1_1Containerizer_html_a58a74c17a75c87d288fa034178130104"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a58a74c17a75c87d288fa034178130104">mesos::internal::slave::Containerizer::pruneImages</a></div><div class="ttdeci">virtual process::Future&lt; Nothing &gt; pruneImages(const std::vector&lt; Image &gt; &amp;excludedImages)=0</div></div>
 <div class="ttc" id="3rdparty_2libprocess_2include_2process_2http_8hpp_html"><div class="ttname"><a href="3rdparty_2libprocess_2include_2process_2http_8hpp.html">http.hpp</a></div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1tests_1_1TestContainerizer_html_a38030dc1974595a9efd7ee9a224e1207"><div class="ttname"><a href="classmesos_1_1internal_1_1tests_1_1TestContainerizer.html#a38030dc1974595a9efd7ee9a224e1207">mesos::internal::tests::TestContainerizer::containers</a></div><div class="ttdeci">virtual process::Future&lt; hashset&lt; ContainerID &gt; &gt; containers()</div></div>
 <div class="ttc" id="hashmap_8hpp_html"><div class="ttname"><a href="hashmap_8hpp.html">hashmap.hpp</a></div></div>
