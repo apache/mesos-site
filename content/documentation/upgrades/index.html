@@ -217,6 +217,7 @@ R Removed feature/behavior
     <ul style="padding-left:10px;">
       <li>A <a href="#1-4-x-bounding-capabilities">Support for explicit setting bounding capabilities</a></li>
       <li>D <a href="#1-4-x-linuxinfo-capabilities">LinuxInfo.effective_capabilities deprecates LinuxInfo.capabilities</a></li>
+      <li>C <a href="#1-4-x-mesos-library">`Resources` class in the internal Mesos C++ library only supports post-`RESERVATION_REFINEMENT` format</a></li>
     </ul>
   </td>
 
@@ -579,6 +580,13 @@ that caused a task to fail with a resource limitation reason.</li>
 
 <ul>
 <li>The XFS Disk Isolator now supports the <code>--no-enforce_container_disk_quota</code> option to efficiently measure disk resource usage without enforcing any usage limits.</li>
+</ul>
+
+
+<p><a name="1-4-x-mesos-library"></a></p>
+
+<ul>
+<li>The <code>Resources</code> class in the internal Mesos C++ library changed its behavior to only support post-<code>RESERVATION_REFINEMENT</code> format. If a framework is using this internal utility, it is likely to break if the <code>RESERVATION_REFINEMENT</code> capability is not enabled.</li>
 </ul>
 
 

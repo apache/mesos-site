@@ -193,7 +193,7 @@ running task or if a <a href="/documentation/latest/./persistent-volume/">persis
 using the reserved resources. In the latter case, the volume should be destroyed
 before unreserving the resources.</p>
 
-<h3>Labeled Reservations</h3>
+<h2>Reservation Labels</h2>
 
 <p>Dynamic reservations can optionally include a list of <em>labels</em>, which are
 arbitrary key-value pairs. Labels can be used to associate arbitrary metadata
@@ -203,11 +203,39 @@ given slave. Note that two reservations with different labels will not be
 combined together into a single reservation, even if the reservations are at the
 same slave and use the same role.</p>
 
+<h2>Reservation Refinement</h2>
+
+<p>Hierarhical roles such as <code>eng/backend</code> enable the delegation of resources
+down a hierarchy, and reservation refinement is the mechanism with which
+<strong>reservations</strong> are delegated down the hierarchy. For example, a reservation
+(static or dynamic) for <code>eng</code> can be <strong>refined</strong> to <code>eng/backend</code>. When such
+a reservation is unreserved, they are returned to the previous owner. In this
+case it would be returned to <code>eng</code>. Reservation refinements can also &ldquo;skip&rdquo;
+levels. For example, <code>eng</code> can be <strong>refined</strong> directly to <code>eng/backend/db</code>.
+Again, unreserving such a reservation is returned to its previous owner <code>eng</code>.</p>
+
+<p><strong>NOTE:</strong> Frameworks need to enable the <code>RESERVATION_REFINEMENT</code> capability
+in order to be offered, and to create refined reservations</p>
+
+<h2>Listing Reservations</h2>
+
+<p>Information about the reserved resources at each slave in the cluster can be
+found by querying the <a href="/documentation/latest/./endpoints/master/slaves/">/slaves</a> master endpoint
+(under the <code>reserved_resources_full</code> key).</p>
+
+<p>The same information can also be found in the <a href="/documentation/latest/./endpoints/slave/state/">/state</a>
+endpoint on the agent (under the <code>reserved_resources_full</code> key). The agent
+endpoint is useful to confirm if a reservation has been propagated to the
+agent (which can fail in the event of network partition or master/agent
+restarts).</p>
+
+<h2>Examples</h2>
+
 <h3>Framework Scheduler API</h3>
 
 <p><a name="offer-operation-reserve"></a></p>
 
-<h4><code>Offer::Operation::Reserve</code></h4>
+<h4><code>Offer::Operation::Reserve</code> (<strong>without</strong> <code>RESERVATION_REFINEMENT</code>)</h4>
 
 <p>A framework can reserve resources through the resource offer cycle. The
 reservation role must match the offer&rsquo;s allocation role. Suppose we
@@ -315,7 +343,7 @@ following reserved resources:</p>
     }
 </code></pre>
 
-<h4><code>Offer::Operation::Unreserve</code></h4>
+<h4><code>Offer::Operation::Unreserve</code> (<strong>without</strong> <code>RESERVATION_REFINEMENT</code>)</h4>
 
 <p>A framework can unreserve resources through the resource offer cycle.
 In <a href="#offer-operation-reserve">Offer::Operation::Reserve</a>, we reserved 8 CPUs
@@ -389,6 +417,287 @@ which we can use to specify the resources to be unreserved.</p>
 </code></pre>
 
 <p>The unreserved resources may now be offered to other frameworks.</p>
+
+<p><a name="offer-operation-reserve-reservation-refinement"></a></p>
+
+<h4><code>Offer::Operation::Reserve</code> (<strong>with</strong> <code>RESERVATION_REFNEMENT</code>)</h4>
+
+<p>A framework that wants to create a refined reservation needs to enable
+the <code>RESERVATION_REFINEMENT</code> capability. Doing so will allow the framework
+to use the <code>reservations</code> field in the <code>Resource</code> message in order to
+<strong>push</strong> a refined reservation.</p>
+
+<p>Since reserved resources are offered to any of the child roles under the role
+for which they are reserved for, they can get <strong>allocated</strong> to say,
+<code>"engineering/backend"</code> while being <strong>reserved</strong> for <code>"engineering"</code>.
+It can then be refined to be <strong>reserved</strong> for <code>"engineering/backend"</code>.</p>
+
+<p>Note that the refined reservation role must match the offer&rsquo;s allocation role.</p>
+
+<p>Suppose we receive a resource offer with 12 CPUs and 6144 MB of RAM unreserved,
+allocated to role <code>"engineering/backend"</code>, reserved to <code>"engineering"</code>.</p>
+
+<pre><code>    {
+      "allocation_info": { "role": "engineering/backend" },
+      "id": &lt;offer_id&gt;,
+      "framework_id": &lt;framework_id&gt;,
+      "slave_id": &lt;slave_id&gt;,
+      "hostname": &lt;hostname&gt;,
+      "resources": [
+        {
+          "allocation_info": { "role": "engineering/backend" },
+          "name": "cpus",
+          "type": "SCALAR",
+          "scalar": { "value": 12 },
+          "reservations": [
+            {
+              type: DYNAMIC,
+              role: "engineering",
+              principal: &lt;principal&gt;,
+            }
+          ]
+        },
+        {
+          "allocation_info": { "role": "engineering/backend" },
+          "name": "mem",
+          "type": "SCALAR",
+          "scalar": { "value": 6144 },
+          "reservations": [
+            {
+              type: DYNAMIC,
+              role: "engineering",
+              principal: &lt;principal&gt;,
+            }
+          ]
+        }
+      ]
+    }
+</code></pre>
+
+<p>Take note of the fact that <code>role</code> and <code>reservation</code> are not set, and that there
+is a new field called <code>reservations</code> which represents the reservation state.
+With <code>RESERVATION_REFINEMENT</code> enabled, the framework receives resources in this
+new format where solely the <code>reservations</code> field is used for the reservation
+state, rather than <code>role</code>/<code>reservation</code> pair from pre-<code>RESERVATION_REFINEMENT</code>.</p>
+
+<p>We can reserve 8 CPUs and 4096 MB of RAM to <code>"engineering/backend"</code> by sending
+the following <code>Offer::Operation</code> message. <code>Offer::Operation::Reserve</code> has
+a <code>resources</code> field which we specify with the resources to be reserved.
+We must <strong>push</strong> a new <code>ReservationInfo</code> message onto the back of
+the <code>reservations</code> field. We must explicitly set the reservation&rsquo;s' <code>role</code> field
+to the offer&rsquo;s allocation role. The optional value of the <code>principal</code> field
+depends on whether or not the framework provided a principal when it registered
+with the master. If a principal was provided, then the resources' <code>principal</code>
+field must be equal to the framework&rsquo;s principal. If no principal was provided
+during registration, then the resources' <code>principal</code> field can take any value,
+or can be left unset.  Note that the <code>principal</code> field determines
+the &ldquo;reserver principal&rdquo; when <a href="/documentation/latest/./authorization/">authorization</a> is enabled, even
+if authentication is disabled.</p>
+
+<pre><code>    {
+      "type": Offer::Operation::RESERVE,
+      "reserve": {
+        "resources": [
+          {
+            "allocation_info": { "role": "engineering/backend" },
+            "name": "cpus",
+            "type": "SCALAR",
+            "scalar": { "value": 8 },
+            "reservations": [
+              {
+                type: DYNAMIC,
+                role: "engineering",
+                principal: &lt;principal&gt;,
+              },
+              {
+                type: DYNAMIC,
+                role: "engineering/backend",
+                principal: &lt;framework_principal&gt;,
+              }
+            ]
+          },
+          {
+            "allocation_info": { "role": "engineering/backend" },
+            "name": "mem",
+            "type": "SCALAR",
+            "scalar": { "value": 4096 },
+            "reservations": [
+              {
+                type: DYNAMIC,
+                role: "engineering",
+                principal: &lt;principal&gt;,
+              },
+              {
+                type: DYNAMIC,
+                role: "engineering/backend",
+                principal: &lt;framework_principal&gt;,
+              }
+            ]
+          }
+        ]
+      }
+    }
+</code></pre>
+
+<p>If the reservation is successful, a subsequent resource offer will contain the
+following reserved resources:</p>
+
+<pre><code>    {
+      "allocation_info": { "role": "engineering/backend" },
+      "id": &lt;offer_id&gt;,
+      "framework_id": &lt;framework_id&gt;,
+      "slave_id": &lt;slave_id&gt;,
+      "hostname": &lt;hostname&gt;,
+      "resources": [
+        {
+          "allocation_info": { "role": "engineering/backend" },
+          "name": "cpus",
+          "type": "SCALAR",
+          "scalar": { "value": 8 },
+          "reservations": [
+            {
+              type: DYNAMIC,
+              role: "engineering",
+              principal: &lt;principal&gt;,
+            },
+            {
+              type: DYNAMIC,
+              role: "engineering/backend",
+              principal: &lt;framework_principal&gt;,
+            }
+          ]
+        },
+        {
+          "allocation_info": { "role": "engineering/backend" },
+          "name": "mem",
+          "type": "SCALAR",
+          "scalar": { "value": 4096 },
+          "reservations": [
+            {
+              type: DYNAMIC,
+              role: "engineering",
+              principal: &lt;principal&gt;,
+            },
+            {
+              type: DYNAMIC,
+              role: "engineering/backend",
+              principal: &lt;framework_principal&gt;,
+            }
+          ]
+        },
+      ]
+    }
+</code></pre>
+
+<h4><code>Offer::Operation::Unreserve</code> (<strong>with</strong> <code>RESERVATION_REFINEMENT</code>)</h4>
+
+<p>A framework can unreserve resources through the resource offer cycle.
+In <a href="#offer-operation-reserve-reservation-refinement">Offer::Operation::Reserve</a>,
+we reserved 8 CPUs and 4096 MB of RAM on a particular slave for one of our
+subscribed roles (i.e. <code>"engineering/backend"</code>), previously reserved for
+<code>"engineering"</code>. When we unreserve these resources, they are returned to
+<code>"engineering"</code>, by the last <code>ReservationInfo</code> added to
+the <code>reservations</code> field being <strong>popped</strong>. First, we receive a resource offer
+(copy/pasted from above):</p>
+
+<pre><code>    {
+      "allocation_info": { "role": "engineering/backend" },
+      "id": &lt;offer_id&gt;,
+      "framework_id": &lt;framework_id&gt;,
+      "slave_id": &lt;slave_id&gt;,
+      "hostname": &lt;hostname&gt;,
+      "resources": [
+        {
+          "allocation_info": { "role": "engineering/backend" },
+          "name": "cpus",
+          "type": "SCALAR",
+          "scalar": { "value": 8 },
+          "reservations": [
+            {
+              type: DYNAMIC,
+              role: "engineering",
+              principal: &lt;principal&gt;,
+            },
+            {
+              type: DYNAMIC,
+              role: "engineering/backend",
+              principal: &lt;framework_principal&gt;,
+            }
+          ]
+        },
+        {
+          "allocation_info": { "role": "engineering/backend" },
+          "name": "mem",
+          "type": "SCALAR",
+          "scalar": { "value": 4096 },
+          "reservations": [
+            {
+              type: DYNAMIC,
+              role: "engineering",
+              principal: &lt;principal&gt;,
+            },
+            {
+              type: DYNAMIC,
+              role: "engineering/backend",
+              principal: &lt;framework_principal&gt;,
+            }
+          ]
+        },
+      ]
+    }
+</code></pre>
+
+<p>We can unreserve the 8 CPUs and 4096 MB of RAM by sending the following
+<code>Offer::Operation</code> message. <code>Offer::Operation::Unreserve</code> has a <code>resources</code> field
+which we can use to specify the resources to be unreserved.</p>
+
+<pre><code>    {
+      "type": Offer::Operation::UNRESERVE,
+      "unreserve": {
+        "resources": [
+          {
+            "allocation_info": { "role": "engineering/backend" },
+            "name": "cpus",
+            "type": "SCALAR",
+            "scalar": { "value": 8 },
+            "reservations": [
+              {
+                type: DYNAMIC,
+                role: "engineering",
+                principal: &lt;principal&gt;,
+              },
+              {
+                type: DYNAMIC,
+                role: "engineering/backend",
+                principal: &lt;framework_principal&gt;,
+              }
+            ]
+          },
+          {
+            "allocation_info": { "role": "engineering/backend" },
+            "name": "mem",
+            "type": "SCALAR",
+            "scalar": { "value": 4096 },
+            "reservations": [
+              {
+                type: DYNAMIC,
+                role: "engineering",
+                principal: &lt;principal&gt;,
+              },
+              {
+                type: DYNAMIC,
+                role: "engineering/backend",
+                principal: &lt;framework_principal&gt;,
+              }
+            ]
+          },
+        ]
+      }
+    }
+</code></pre>
+
+<p>The resources will now be reserved for <code>"engineering"</code> again, and may now be
+offered to <code>"engineering"</code> role itself, or other roles under <code>"engineering"</code>.</p>
 
 <h3>Operator HTTP Endpoints</h3>
 
@@ -519,18 +828,6 @@ unreserving resources at the slave might fail, in which case no resources will
 be unreserved. To determine if an unreserve operation has succeeded, the user
 can examine the state of the appropriate Mesos slave (e.g., via the slave&rsquo;s
 <a href="/documentation/latest/./endpoints/slave/state/">/state</a> HTTP endpoint).</p>
-
-<h3>Listing Reservations</h3>
-
-<p>Information about the reserved resources at each slave in the cluster can be
-found by querying the <a href="/documentation/latest/./endpoints/master/slaves/">/slaves</a> master endpoint
-(under the <code>reserved_resources_full</code> key).</p>
-
-<p>The same information can also be found in the <a href="/documentation/latest/./endpoints/slave/state/">/state</a>
-endpoint on the agent (under the <code>reserved_resources_full</code> key). The agent
-endpoint is useful to confirm if a reservation has been propagated to the
-agent (which can fail in the event of network partition or master/agent
-restarts).</p>
 
   </div>
 </div>
