@@ -79,278 +79,307 @@
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
 <div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="namespacepath.html">   26</a></span>&#160;<span class="keyword">namespace </span>path {</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment">// Base case.</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="namespacepath.html#aa86b16a2171cec90bb3337930513ef0f">   29</a></span>&#160;<span class="keyword">inline</span> std::string <a class="code" href="namespacepath.html#aa86b16a2171cec90bb3337930513ef0f">join</a>(</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keyword">const</span> std::string&amp; path1,</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keyword">const</span> std::string&amp; path2,</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span> _separator = <a class="code" href="namespaceos.html#a493d7d8775f0ed778ad3b52ec19bbaab">os::PATH_SEPARATOR</a>)</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;{</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  <span class="keyword">const</span> std::string separator = <a class="code" href="namespacens.html#a28116b46e6543597a11733424cd1aa20">stringify</a>(_separator);</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="namespacestrings.html#a3fbaeb4d589c49ac115fab3412073ca7">strings::remove</a>(path1, separator, <a class="code" href="namespacestrings.html#a6ebac6b171c6b20adb298cb020915b03a3772529a8ac366325b107aff7f7f1360">strings::SUFFIX</a>) +</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;         separator +</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;         <a class="code" href="namespacestrings.html#a3fbaeb4d589c49ac115fab3412073ca7">strings::remove</a>(path2, separator, <a class="code" href="namespacestrings.html#a6ebac6b171c6b20adb298cb020915b03ac5ca819908c72528657d7fb463db8a9a">strings::PREFIX</a>);</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;}</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span>... Paths&gt;</div>
-<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="namespacepath.html#a1729e1b6a293ad05545aa75e73f71de6">   42</a></span>&#160;<span class="keyword">inline</span> std::string <a class="code" href="namespacepath.html#aa86b16a2171cec90bb3337930513ef0f">join</a>(</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keyword">const</span> std::string&amp; path1,</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keyword">const</span> std::string&amp; path2,</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    Paths&amp;&amp;... <a class="code" href="namespaceos_1_1libraries.html#a41b3cb8b32c32ab2abf7a7aa62de9f18">paths</a>)</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;{</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="namespacepath.html#aa86b16a2171cec90bb3337930513ef0f">join</a>(path1, <a class="code" href="namespacepath.html#aa86b16a2171cec90bb3337930513ef0f">join</a>(path2, std::forward&lt;Paths&gt;(<a class="code" href="namespaceos_1_1libraries.html#a41b3cb8b32c32ab2abf7a7aa62de9f18">paths</a>)...));</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;}</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="namespacepath.html#a1d72015b1e35ab52249f56386c42d1a4">   51</a></span>&#160;<span class="keyword">inline</span> std::string <a class="code" href="namespacepath.html#aa86b16a2171cec90bb3337930513ef0f">join</a>(<span class="keyword">const</span> std::vector&lt;std::string&gt;&amp; <a class="code" href="namespaceos_1_1libraries.html#a41b3cb8b32c32ab2abf7a7aa62de9f18">paths</a>)</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;{</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <span class="keywordflow">if</span> (paths.empty()) {</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  }</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  std::string result = paths[0];</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 1; i &lt; paths.size(); ++i) {</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    result = <a class="code" href="namespacepath.html#aa86b16a2171cec90bb3337930513ef0f">join</a>(result, paths[i]);</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  }</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;}</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
-<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="namespacepath.html#a09c4941618b3a4ea2dbfccf5fe9d3687">   69</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code" href="namespacepath.html#a09c4941618b3a4ea2dbfccf5fe9d3687">absolute</a>(<span class="keyword">const</span> std::string&amp; path)</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;{</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">#ifndef __WINDOWS__</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor"></span>  <span class="keywordflow">return</span> <a class="code" href="namespacestrings.html#aa5513faacb213c7e097c0d43af43d9c7">strings::startsWith</a>(path, <a class="code" href="namespaceos.html#a493d7d8775f0ed778ad3b52ec19bbaab">os::PATH_SEPARATOR</a>);</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="preprocessor"></span>  <span class="comment">// NOTE: We do not use `PathIsRelative` Windows utility function</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="comment">// here because it does not support long paths.</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="comment">//</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="comment">// See https://msdn.microsoft.com/en-us/library/windows/desktop/aa365247(v=vs.85).aspx</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="comment">// for details on paths. In short, an absolute path for files on Windows</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="comment">// looks like one of the following:</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <span class="comment">//   * &quot;[A-Za-z]:\&quot;</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="comment">//   * &quot;[A-Za-z]:/&quot;</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <span class="comment">//   * &quot;\\?\...&quot;</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="comment">//   * &quot;\\server\...&quot; where &quot;server&quot; is a network host.</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <span class="comment">//</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  <span class="comment">// NOLINT(whitespace/line_length)</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <span class="comment">// A uniform naming convention (UNC) name of any format,</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  <span class="comment">// always starts with two backslash characters.</span></div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="namespacestrings.html#aa5513faacb213c7e097c0d43af43d9c7">strings::startsWith</a>(path, <span class="stringliteral">&quot;\\\\&quot;</span>)) {</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  }</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <span class="comment">// A disk designator with a slash, for example &quot;C:\&quot; or &quot;d:/&quot;.</span></div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  <span class="keywordflow">if</span> (path.length() &lt; 3) {</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  }</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span> letter = path[0];</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  <span class="keywordflow">if</span> (!((letter &gt;= <span class="charliteral">&#39;A&#39;</span> &amp;&amp; letter &lt;= <span class="charliteral">&#39;Z&#39;</span>) ||</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        (letter &gt;= <span class="charliteral">&#39;a&#39;</span> &amp;&amp; letter &lt;= <span class="charliteral">&#39;z&#39;</span>))) {</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  }</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  std::string colon = path.substr(1, 2);</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  <span class="keywordflow">return</span> colon == <span class="stringliteral">&quot;:\\&quot;</span> || colon == <span class="stringliteral">&quot;:/&quot;</span>;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="preprocessor">#endif // __WINDOWS__</span></div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="preprocessor"></span>}</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;} <span class="comment">// namespace path {</span></div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;</div>
-<div class="line"><a name="l00118"></a><span class="lineno"><a class="line" href="classPath.html">  118</a></span>&#160;<span class="keyword">class </span><a class="code" href="classPath.html">Path</a></div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;{</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00121"></a><span class="lineno"><a class="line" href="classPath.html#af26cfab021ddf49af73da3b2beca85ac">  121</a></span>&#160;  <a class="code" href="classPath.html#af26cfab021ddf49af73da3b2beca85ac">Path</a>() : value() {}</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;</div>
-<div class="line"><a name="l00123"></a><span class="lineno"><a class="line" href="classPath.html#a91965ddddabd9a15374ab51f6847f8b6">  123</a></span>&#160;  <span class="keyword">explicit</span> <a class="code" href="classPath.html#a91965ddddabd9a15374ab51f6847f8b6">Path</a>(<span class="keyword">const</span> std::string&amp; path)</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    : value(strings::<a class="code" href="namespacecgroups.html#abe24f34ebd9554eafc765b62c41fb74c">remove</a>(path, <span class="stringliteral">&quot;file://&quot;</span>, strings::<a class="code" href="namespacemesos_1_1internal_1_1slave_1_1containerizer_1_1paths.html#abb8ab3e62de157d1a7a81e08888ec30cabf80c29a65453b2615d8f9bd83f8f3d6">PREFIX</a>)) {}</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;  <span class="comment">// TODO(cmaloney): Add more useful operations such as &#39;directoryname()&#39;,</span></div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;  <span class="comment">// &#39;filename()&#39;, etc.</span></div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;</div>
-<div class="line"><a name="l00152"></a><span class="lineno"><a class="line" href="classPath.html#a11c34646ac636526f1b28b61057f3b1f">  152</a></span>&#160;  <span class="keyword">inline</span> std::string <a class="code" href="classPath.html#a11c34646ac636526f1b28b61057f3b1f">basename</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;<span class="keyword">  </span>{</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <span class="keywordflow">if</span> (value.empty()) {</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;      <span class="keywordflow">return</span> std::string(<span class="stringliteral">&quot;.&quot;</span>);</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    }</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    <span class="keywordtype">size_t</span> end = value.size() - 1;</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    <span class="comment">// Remove trailing slashes.</span></div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    <span class="keywordflow">if</span> (value[end] == <a class="code" href="namespaceos.html#a493d7d8775f0ed778ad3b52ec19bbaab">os::PATH_SEPARATOR</a>) {</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;      end = value.find_last_not_of(<a class="code" href="namespaceos.html#a493d7d8775f0ed778ad3b52ec19bbaab">os::PATH_SEPARATOR</a>, end);</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;      <span class="comment">// Paths containing only slashes result into &quot;/&quot;.</span></div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;      <span class="keywordflow">if</span> (end == std::string::npos) {</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="namespacens.html#a28116b46e6543597a11733424cd1aa20">stringify</a>(<a class="code" href="namespaceos.html#a493d7d8775f0ed778ad3b52ec19bbaab">os::PATH_SEPARATOR</a>);</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;      }</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    }</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    <span class="comment">// &#39;start&#39; should point towards the character after the last slash</span></div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    <span class="comment">// that is non trailing.</span></div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    <span class="keywordtype">size_t</span> <a class="code" href="namespacesystemd_1_1slices.html#a95aa197d8eed9f20dacb44f433b15f01">start</a> = value.find_last_of(<a class="code" href="namespaceos.html#a493d7d8775f0ed778ad3b52ec19bbaab">os::PATH_SEPARATOR</a>, end);</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    <span class="keywordflow">if</span> (start == std::string::npos) {</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;      start = 0;</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;      start++;</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    }</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    <span class="keywordflow">return</span> value.substr(start, end + 1 - start);</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;  }</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;  <span class="comment">// TODO(hausdorff) Make sure this works on Windows for very short path names,</span></div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;  <span class="comment">// such as &quot;C:\Temp&quot;. There is a distinction between &quot;C:&quot; and &quot;C:\&quot;, the</span></div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;  <span class="comment">// former means &quot;current directory of the C drive&quot;, while the latter means</span></div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;  <span class="comment">// &quot;The root of the C drive&quot;. Also make sure that UNC paths are handled.</span></div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;  <span class="comment">// Will probably need to use the Windows path functions for that.</span></div>
-<div class="line"><a name="l00211"></a><span class="lineno"><a class="line" href="classPath.html#a0449e93ffb615ef7fd198ef03dd1100c">  211</a></span>&#160;<span class="comment"></span>  <span class="keyword">inline</span> std::string <a class="code" href="classPath.html#a0449e93ffb615ef7fd198ef03dd1100c">dirname</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;<span class="keyword">  </span>{</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    <span class="keywordflow">if</span> (value.empty()) {</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;      <span class="keywordflow">return</span> std::string(<span class="stringliteral">&quot;.&quot;</span>);</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;    }</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;    <span class="keywordtype">size_t</span> end = value.size() - 1;</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;    <span class="comment">// Remove trailing slashes.</span></div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;    <span class="keywordflow">if</span> (value[end] == <a class="code" href="namespaceos.html#a493d7d8775f0ed778ad3b52ec19bbaab">os::PATH_SEPARATOR</a>) {</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;      end = value.find_last_not_of(<a class="code" href="namespaceos.html#a493d7d8775f0ed778ad3b52ec19bbaab">os::PATH_SEPARATOR</a>, end);</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;    }</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    <span class="comment">// Remove anything trailing the last slash.</span></div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;    end = value.find_last_of(<a class="code" href="namespaceos.html#a493d7d8775f0ed778ad3b52ec19bbaab">os::PATH_SEPARATOR</a>, end);</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    <span class="comment">// Paths containing no slashes result in &quot;.&quot;.</span></div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    <span class="keywordflow">if</span> (end == std::string::npos) {</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;      <span class="keywordflow">return</span> std::string(<span class="stringliteral">&quot;.&quot;</span>);</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    }</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    <span class="comment">// Paths containing only slashes result in &quot;/&quot;.</span></div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    <span class="keywordflow">if</span> (end == 0) {</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="namespacens.html#a28116b46e6543597a11733424cd1aa20">stringify</a>(<a class="code" href="namespaceos.html#a493d7d8775f0ed778ad3b52ec19bbaab">os::PATH_SEPARATOR</a>);</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;    }</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    <span class="comment">// &#39;end&#39; should point towards the last non slash character</span></div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    <span class="comment">// preceding the last slash.</span></div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;    end = value.find_last_not_of(<a class="code" href="namespaceos.html#a493d7d8775f0ed778ad3b52ec19bbaab">os::PATH_SEPARATOR</a>, end);</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;    <span class="comment">// Paths containing no non slash characters result in &quot;/&quot;.</span></div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;    <span class="keywordflow">if</span> (end == std::string::npos) {</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="namespacens.html#a28116b46e6543597a11733424cd1aa20">stringify</a>(<a class="code" href="namespaceos.html#a493d7d8775f0ed778ad3b52ec19bbaab">os::PATH_SEPARATOR</a>);</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    }</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment">// Converts a fully formed URI to a filename for the platform.</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">// On all platforms, the optional &quot;file://&quot; prefix is removed if it</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">// exists.</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">// On Windows, this also converts &quot;/&quot; characters to &quot;\&quot; characters.</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="comment">// The Windows file system APIs don&#39;t work with &quot;/&quot; in the filename</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">// when using long paths (although they do work fine if the file</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">// path happens to be short).</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">// NOTE: Currently, Mesos uses URIs and files somewhat interchangably.</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">// For compatibility, lack of &quot;file://&quot; prefix is not considered an</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">// error.</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="namespacepath.html#af28fb9428732d97d43f6b02be4a712ea">   41</a></span>&#160;<span class="keyword">inline</span> std::string <a class="code" href="namespacepath.html#af28fb9428732d97d43f6b02be4a712ea">from_uri</a>(<span class="keyword">const</span> std::string&amp; uri)</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;{</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <span class="comment">// Remove the optional &quot;file://&quot; if it exists.</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <span class="comment">// TODO(coffler): Remove the `hostname` component.</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <span class="keyword">const</span> std::string path = <a class="code" href="namespacestrings.html#a3fbaeb4d589c49ac115fab3412073ca7">strings::remove</a>(uri, <span class="stringliteral">&quot;file://&quot;</span>, <a class="code" href="namespacestrings.html#a6ebac6b171c6b20adb298cb020915b03ac5ca819908c72528657d7fb463db8a9a">strings::PREFIX</a>);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor">#ifndef __WINDOWS__</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor"></span>  <span class="keywordflow">return</span> path;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="preprocessor"></span>  <span class="keywordflow">return</span> <a class="code" href="namespacestrings.html#a082f6de42f9c52047369e2ff80155eca">strings::replace</a>(path, <span class="stringliteral">&quot;/&quot;</span>, <span class="stringliteral">&quot;\\&quot;</span>);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor">#endif // __WINDOWS__</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor"></span>}</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">// Base case.</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="namespacepath.html#aa86b16a2171cec90bb3337930513ef0f">   56</a></span>&#160;<span class="keyword">inline</span> std::string <a class="code" href="namespacepath.html#aa86b16a2171cec90bb3337930513ef0f">join</a>(</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keyword">const</span> std::string&amp; path1,</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keyword">const</span> std::string&amp; path2,</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span> _separator = <a class="code" href="namespaceos.html#a493d7d8775f0ed778ad3b52ec19bbaab">os::PATH_SEPARATOR</a>)</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;{</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="keyword">const</span> std::string separator = <a class="code" href="namespacens.html#a28116b46e6543597a11733424cd1aa20">stringify</a>(_separator);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="namespacestrings.html#a3fbaeb4d589c49ac115fab3412073ca7">strings::remove</a>(path1, separator, <a class="code" href="namespacestrings.html#a6ebac6b171c6b20adb298cb020915b03a3772529a8ac366325b107aff7f7f1360">strings::SUFFIX</a>) +</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;         separator +</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;         <a class="code" href="namespacestrings.html#a3fbaeb4d589c49ac115fab3412073ca7">strings::remove</a>(path2, separator, <a class="code" href="namespacestrings.html#a6ebac6b171c6b20adb298cb020915b03ac5ca819908c72528657d7fb463db8a9a">strings::PREFIX</a>);</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;}</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span>... Paths&gt;</div>
+<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="namespacepath.html#a1729e1b6a293ad05545aa75e73f71de6">   69</a></span>&#160;<span class="keyword">inline</span> std::string <a class="code" href="namespacepath.html#aa86b16a2171cec90bb3337930513ef0f">join</a>(</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keyword">const</span> std::string&amp; path1,</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keyword">const</span> std::string&amp; path2,</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    Paths&amp;&amp;... <a class="code" href="namespaceos_1_1libraries.html#a41b3cb8b32c32ab2abf7a7aa62de9f18">paths</a>)</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;{</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="namespacepath.html#aa86b16a2171cec90bb3337930513ef0f">join</a>(path1, <a class="code" href="namespacepath.html#aa86b16a2171cec90bb3337930513ef0f">join</a>(path2, std::forward&lt;Paths&gt;(<a class="code" href="namespaceos_1_1libraries.html#a41b3cb8b32c32ab2abf7a7aa62de9f18">paths</a>)...));</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;}</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
+<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="namespacepath.html#a1d72015b1e35ab52249f56386c42d1a4">   78</a></span>&#160;<span class="keyword">inline</span> std::string <a class="code" href="namespacepath.html#aa86b16a2171cec90bb3337930513ef0f">join</a>(<span class="keyword">const</span> std::vector&lt;std::string&gt;&amp; <a class="code" href="namespaceos_1_1libraries.html#a41b3cb8b32c32ab2abf7a7aa62de9f18">paths</a>)</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;{</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <span class="keywordflow">if</span> (paths.empty()) {</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  }</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  std::string result = paths[0];</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 1; i &lt; paths.size(); ++i) {</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    result = <a class="code" href="namespacepath.html#aa86b16a2171cec90bb3337930513ef0f">join</a>(result, paths[i]);</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  }</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;}</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
+<div class="line"><a name="l00096"></a><span class="lineno"><a class="line" href="namespacepath.html#a09c4941618b3a4ea2dbfccf5fe9d3687">   96</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code" href="namespacepath.html#a09c4941618b3a4ea2dbfccf5fe9d3687">absolute</a>(<span class="keyword">const</span> std::string&amp; path)</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;{</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="preprocessor">#ifndef __WINDOWS__</span></div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="preprocessor"></span>  <span class="keywordflow">return</span> <a class="code" href="namespacestrings.html#aa5513faacb213c7e097c0d43af43d9c7">strings::startsWith</a>(path, <a class="code" href="namespaceos.html#a493d7d8775f0ed778ad3b52ec19bbaab">os::PATH_SEPARATOR</a>);</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="preprocessor"></span>  <span class="comment">// NOTE: We do not use `PathIsRelative` Windows utility function</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  <span class="comment">// here because it does not support long paths.</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  <span class="comment">//</span></div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  <span class="comment">// See https://msdn.microsoft.com/en-us/library/windows/desktop/aa365247(v=vs.85).aspx</span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  <span class="comment">// for details on paths. In short, an absolute path for files on Windows</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  <span class="comment">// looks like one of the following:</span></div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;  <span class="comment">//   * &quot;[A-Za-z]:\&quot;</span></div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  <span class="comment">//   * &quot;[A-Za-z]:/&quot;</span></div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  <span class="comment">//   * &quot;\\?\...&quot;</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  <span class="comment">//   * &quot;\\server\...&quot; where &quot;server&quot; is a network host.</span></div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  <span class="comment">//</span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;  <span class="comment">// NOLINT(whitespace/line_length)</span></div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;  <span class="comment">// A uniform naming convention (UNC) name of any format,</span></div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;  <span class="comment">// always starts with two backslash characters.</span></div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="namespacestrings.html#aa5513faacb213c7e097c0d43af43d9c7">strings::startsWith</a>(path, <span class="stringliteral">&quot;\\\\&quot;</span>)) {</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  }</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;  <span class="comment">// A disk designator with a slash, for example &quot;C:\&quot; or &quot;d:/&quot;.</span></div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;  <span class="keywordflow">if</span> (path.length() &lt; 3) {</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;  }</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span> letter = path[0];</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;  <span class="keywordflow">if</span> (!((letter &gt;= <span class="charliteral">&#39;A&#39;</span> &amp;&amp; letter &lt;= <span class="charliteral">&#39;Z&#39;</span>) ||</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;        (letter &gt;= <span class="charliteral">&#39;a&#39;</span> &amp;&amp; letter &lt;= <span class="charliteral">&#39;z&#39;</span>))) {</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;  }</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;  std::string colon = path.substr(1, 2);</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;  <span class="keywordflow">return</span> colon == <span class="stringliteral">&quot;:\\&quot;</span> || colon == <span class="stringliteral">&quot;:/&quot;</span>;</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="preprocessor">#endif // __WINDOWS__</span></div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="preprocessor"></span>}</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;} <span class="comment">// namespace path {</span></div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;</div>
+<div class="line"><a name="l00145"></a><span class="lineno"><a class="line" href="classPath.html">  145</a></span>&#160;<span class="keyword">class </span><a class="code" href="classPath.html">Path</a></div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;{</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00148"></a><span class="lineno"><a class="line" href="classPath.html#af26cfab021ddf49af73da3b2beca85ac">  148</a></span>&#160;  <a class="code" href="classPath.html#af26cfab021ddf49af73da3b2beca85ac">Path</a>() : value() {}</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;</div>
+<div class="line"><a name="l00150"></a><span class="lineno"><a class="line" href="classPath.html#a91965ddddabd9a15374ab51f6847f8b6">  150</a></span>&#160;  <span class="keyword">explicit</span> <a class="code" href="classPath.html#a91965ddddabd9a15374ab51f6847f8b6">Path</a>(<span class="keyword">const</span> std::string&amp; path)</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    : value(strings::<a class="code" href="namespacecgroups.html#abe24f34ebd9554eafc765b62c41fb74c">remove</a>(path, <span class="stringliteral">&quot;file://&quot;</span>, strings::<a class="code" href="namespacemesos_1_1internal_1_1slave_1_1containerizer_1_1paths.html#abb8ab3e62de157d1a7a81e08888ec30cabf80c29a65453b2615d8f9bd83f8f3d6">PREFIX</a>)) {}</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;  <span class="comment">// TODO(cmaloney): Add more useful operations such as &#39;directoryname()&#39;,</span></div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;  <span class="comment">// &#39;filename()&#39;, etc.</span></div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;</div>
+<div class="line"><a name="l00179"></a><span class="lineno"><a class="line" href="classPath.html#a11c34646ac636526f1b28b61057f3b1f">  179</a></span>&#160;  <span class="keyword">inline</span> std::string <a class="code" href="classPath.html#a11c34646ac636526f1b28b61057f3b1f">basename</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;<span class="keyword">  </span>{</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    <span class="keywordflow">if</span> (value.empty()) {</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;      <span class="keywordflow">return</span> std::string(<span class="stringliteral">&quot;.&quot;</span>);</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    }</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    <span class="keywordtype">size_t</span> end = value.size() - 1;</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    <span class="comment">// Remove trailing slashes.</span></div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    <span class="keywordflow">if</span> (value[end] == <a class="code" href="namespaceos.html#a493d7d8775f0ed778ad3b52ec19bbaab">os::PATH_SEPARATOR</a>) {</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;      end = value.find_last_not_of(<a class="code" href="namespaceos.html#a493d7d8775f0ed778ad3b52ec19bbaab">os::PATH_SEPARATOR</a>, end);</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;      <span class="comment">// Paths containing only slashes result into &quot;/&quot;.</span></div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;      <span class="keywordflow">if</span> (end == std::string::npos) {</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="namespacens.html#a28116b46e6543597a11733424cd1aa20">stringify</a>(<a class="code" href="namespaceos.html#a493d7d8775f0ed778ad3b52ec19bbaab">os::PATH_SEPARATOR</a>);</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;      }</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    }</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    <span class="comment">// &#39;start&#39; should point towards the character after the last slash</span></div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    <span class="comment">// that is non trailing.</span></div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    <span class="keywordtype">size_t</span> <a class="code" href="namespacesystemd_1_1slices.html#a95aa197d8eed9f20dacb44f433b15f01">start</a> = value.find_last_of(<a class="code" href="namespaceos.html#a493d7d8775f0ed778ad3b52ec19bbaab">os::PATH_SEPARATOR</a>, end);</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    <span class="keywordflow">if</span> (start == std::string::npos) {</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;      start = 0;</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;      start++;</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    }</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    <span class="keywordflow">return</span> value.substr(start, end + 1 - start);</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;  }</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;  <span class="comment">// TODO(hausdorff) Make sure this works on Windows for very short path names,</span></div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;  <span class="comment">// such as &quot;C:\Temp&quot;. There is a distinction between &quot;C:&quot; and &quot;C:\&quot;, the</span></div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;  <span class="comment">// former means &quot;current directory of the C drive&quot;, while the latter means</span></div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;  <span class="comment">// &quot;The root of the C drive&quot;. Also make sure that UNC paths are handled.</span></div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;  <span class="comment">// Will probably need to use the Windows path functions for that.</span></div>
+<div class="line"><a name="l00238"></a><span class="lineno"><a class="line" href="classPath.html#a0449e93ffb615ef7fd198ef03dd1100c">  238</a></span>&#160;<span class="comment"></span>  <span class="keyword">inline</span> std::string <a class="code" href="classPath.html#a0449e93ffb615ef7fd198ef03dd1100c">dirname</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;<span class="keyword">  </span>{</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    <span class="keywordflow">if</span> (value.empty()) {</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;      <span class="keywordflow">return</span> std::string(<span class="stringliteral">&quot;.&quot;</span>);</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;    }</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    <span class="keywordtype">size_t</span> end = value.size() - 1;</div>
 <div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;    <span class="keywordflow">return</span> value.substr(0, end + 1);</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;  }</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;</div>
-<div class="line"><a name="l00266"></a><span class="lineno"><a class="line" href="classPath.html#a46e804f0daca3c3a0fef137364aca5ea">  266</a></span>&#160;  <span class="keyword">inline</span> <a class="code" href="classOption.html">Option&lt;std::string&gt;</a> <a class="code" href="classPath.html#a46e804f0daca3c3a0fef137364aca5ea">extension</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;<span class="keyword">  </span>{</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;    std::string _basename = <a class="code" href="classPath.html#a11c34646ac636526f1b28b61057f3b1f">basename</a>();</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;    <span class="keywordtype">size_t</span> <a class="code" href="namespacerouting_1_1link.html#a26486cdba01ef1c80706b1e07e8a6d3f">index</a> = _basename.rfind(<span class="charliteral">&#39;.&#39;</span>);</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;    <span class="keywordflow">if</span> (_basename == <span class="stringliteral">&quot;.&quot;</span> || _basename == <span class="stringliteral">&quot;..&quot;</span> || index == std::string::npos) {</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="structNone.html">None</a>();</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    }</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;    <span class="keywordflow">return</span> _basename.substr(index);</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;  }</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;  <span class="comment">// Checks whether the path is absolute.</span></div>
-<div class="line"><a name="l00279"></a><span class="lineno"><a class="line" href="classPath.html#a240c7b71a23c8e97b5490dbae75cc948">  279</a></span>&#160;  <span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code" href="classPath.html#a240c7b71a23c8e97b5490dbae75cc948">absolute</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;<span class="keyword">  </span>{</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespacepath.html#a09c4941618b3a4ea2dbfccf5fe9d3687">path::absolute</a>(value);</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;  }</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;  <span class="comment">// Implicit conversion from Path to string.</span></div>
-<div class="line"><a name="l00285"></a><span class="lineno"><a class="line" href="classPath.html#a3d26816443f4e274700f715db64379ee">  285</a></span>&#160;  <span class="keyword">operator</span> std::string()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;<span class="keyword">  </span>{</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;    <span class="keywordflow">return</span> value;</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;  }</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;</div>
-<div class="line"><a name="l00290"></a><span class="lineno"><a class="line" href="classPath.html#a9d36a94d674e3f889eb8f46dc7a156b8">  290</a></span>&#160;  <span class="keyword">const</span> std::string&amp; <a class="code" href="classPath.html#a9d36a94d674e3f889eb8f46dc7a156b8">string</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;<span class="keyword">  </span>{</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;    <span class="keywordflow">return</span> value;</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;  }</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;</div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;  std::string value;</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;};</div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;</div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;</div>
-<div class="line"><a name="l00300"></a><span class="lineno"><a class="line" href="path_8hpp.html#ad31aaa5ed4d55b1f295094e3fa84d769">  300</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code" href="path_8hpp.html#ad31aaa5ed4d55b1f295094e3fa84d769">operator==</a>(<span class="keyword">const</span> <a class="code" href="classPath.html">Path</a>&amp; left, <span class="keyword">const</span> <a class="code" href="classPath.html">Path</a>&amp; right)</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;{</div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;  <span class="keywordflow">return</span> left.<a class="code" href="classPath.html#a9d36a94d674e3f889eb8f46dc7a156b8">string</a>() == right.<a class="code" href="classPath.html#a9d36a94d674e3f889eb8f46dc7a156b8">string</a>();</div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;}</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;    <span class="comment">// Remove trailing slashes.</span></div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;    <span class="keywordflow">if</span> (value[end] == <a class="code" href="namespaceos.html#a493d7d8775f0ed778ad3b52ec19bbaab">os::PATH_SEPARATOR</a>) {</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;      end = value.find_last_not_of(<a class="code" href="namespaceos.html#a493d7d8775f0ed778ad3b52ec19bbaab">os::PATH_SEPARATOR</a>, end);</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    }</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    <span class="comment">// Remove anything trailing the last slash.</span></div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    end = value.find_last_of(<a class="code" href="namespaceos.html#a493d7d8775f0ed778ad3b52ec19bbaab">os::PATH_SEPARATOR</a>, end);</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;    <span class="comment">// Paths containing no slashes result in &quot;.&quot;.</span></div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;    <span class="keywordflow">if</span> (end == std::string::npos) {</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;      <span class="keywordflow">return</span> std::string(<span class="stringliteral">&quot;.&quot;</span>);</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;    }</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;    <span class="comment">// Paths containing only slashes result in &quot;/&quot;.</span></div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;    <span class="keywordflow">if</span> (end == 0) {</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="namespacens.html#a28116b46e6543597a11733424cd1aa20">stringify</a>(<a class="code" href="namespaceos.html#a493d7d8775f0ed778ad3b52ec19bbaab">os::PATH_SEPARATOR</a>);</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;    }</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;    <span class="comment">// &#39;end&#39; should point towards the last non slash character</span></div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;    <span class="comment">// preceding the last slash.</span></div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    end = value.find_last_not_of(<a class="code" href="namespaceos.html#a493d7d8775f0ed778ad3b52ec19bbaab">os::PATH_SEPARATOR</a>, end);</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;    <span class="comment">// Paths containing no non slash characters result in &quot;/&quot;.</span></div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;    <span class="keywordflow">if</span> (end == std::string::npos) {</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="namespacens.html#a28116b46e6543597a11733424cd1aa20">stringify</a>(<a class="code" href="namespaceos.html#a493d7d8775f0ed778ad3b52ec19bbaab">os::PATH_SEPARATOR</a>);</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;    }</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    <span class="keywordflow">return</span> value.substr(0, end + 1);</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;  }</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;</div>
+<div class="line"><a name="l00293"></a><span class="lineno"><a class="line" href="classPath.html#a46e804f0daca3c3a0fef137364aca5ea">  293</a></span>&#160;  <span class="keyword">inline</span> <a class="code" href="classOption.html">Option&lt;std::string&gt;</a> <a class="code" href="classPath.html#a46e804f0daca3c3a0fef137364aca5ea">extension</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;<span class="keyword">  </span>{</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;    std::string _basename = <a class="code" href="classPath.html#a11c34646ac636526f1b28b61057f3b1f">basename</a>();</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;    <span class="keywordtype">size_t</span> <a class="code" href="namespacerouting_1_1link.html#a26486cdba01ef1c80706b1e07e8a6d3f">index</a> = _basename.rfind(<span class="charliteral">&#39;.&#39;</span>);</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;    <span class="keywordflow">if</span> (_basename == <span class="stringliteral">&quot;.&quot;</span> || _basename == <span class="stringliteral">&quot;..&quot;</span> || index == std::string::npos) {</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="structNone.html">None</a>();</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;    }</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;    <span class="keywordflow">return</span> _basename.substr(index);</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;  }</div>
 <div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;</div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;</div>
-<div class="line"><a name="l00306"></a><span class="lineno"><a class="line" href="path_8hpp.html#a79f5bd235856dc07ee5980991200e646">  306</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code" href="path_8hpp.html#a79f5bd235856dc07ee5980991200e646">operator!=</a>(<span class="keyword">const</span> <a class="code" href="classPath.html">Path</a>&amp; left, <span class="keyword">const</span> <a class="code" href="classPath.html">Path</a>&amp; right)</div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;{</div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;  <span class="keywordflow">return</span> !(left == right);</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;}</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;  <span class="comment">// Checks whether the path is absolute.</span></div>
+<div class="line"><a name="l00306"></a><span class="lineno"><a class="line" href="classPath.html#a240c7b71a23c8e97b5490dbae75cc948">  306</a></span>&#160;  <span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code" href="classPath.html#a240c7b71a23c8e97b5490dbae75cc948">absolute</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;<span class="keyword">  </span>{</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespacepath.html#a09c4941618b3a4ea2dbfccf5fe9d3687">path::absolute</a>(value);</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;  }</div>
 <div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;</div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;</div>
-<div class="line"><a name="l00312"></a><span class="lineno"><a class="line" href="path_8hpp.html#a71e4826c717e331e929eec4f3f01998d">  312</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code" href="path_8hpp.html#a71e4826c717e331e929eec4f3f01998d">operator&lt;</a>(<span class="keyword">const</span> <a class="code" href="classPath.html">Path</a>&amp; left, <span class="keyword">const</span> <a class="code" href="classPath.html">Path</a>&amp; right)</div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;{</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;  <span class="keywordflow">return</span> left.<a class="code" href="classPath.html#a9d36a94d674e3f889eb8f46dc7a156b8">string</a>() &lt; right.<a class="code" href="classPath.html#a9d36a94d674e3f889eb8f46dc7a156b8">string</a>();</div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;}</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;  <span class="comment">// Implicit conversion from Path to string.</span></div>
+<div class="line"><a name="l00312"></a><span class="lineno"><a class="line" href="classPath.html#a3d26816443f4e274700f715db64379ee">  312</a></span>&#160;  <span class="keyword">operator</span> std::string()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;<span class="keyword">  </span>{</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;    <span class="keywordflow">return</span> value;</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;  }</div>
 <div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;</div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;</div>
-<div class="line"><a name="l00318"></a><span class="lineno"><a class="line" href="path_8hpp.html#a222005a87c0bb37fbabdc8effe38aed1">  318</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code" href="path_8hpp.html#a222005a87c0bb37fbabdc8effe38aed1">operator&gt;</a>(<span class="keyword">const</span> <a class="code" href="classPath.html">Path</a>&amp; left, <span class="keyword">const</span> <a class="code" href="classPath.html">Path</a>&amp; right)</div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;{</div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;  <span class="keywordflow">return</span> right &lt; left;</div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;}</div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;</div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;</div>
-<div class="line"><a name="l00324"></a><span class="lineno"><a class="line" href="path_8hpp.html#ae108a381c03097c921ee17af0f248c02">  324</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code" href="path_8hpp.html#ae108a381c03097c921ee17af0f248c02">operator&lt;=</a>(<span class="keyword">const</span> <a class="code" href="classPath.html">Path</a>&amp; left, <span class="keyword">const</span> <a class="code" href="classPath.html">Path</a>&amp; right)</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;{</div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;  <span class="keywordflow">return</span> !(left &gt; right);</div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;}</div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;</div>
-<div class="line"><a name="l00330"></a><span class="lineno"><a class="line" href="path_8hpp.html#a0a79d7788a7f0189a4a5b69b73dce859">  330</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code" href="path_8hpp.html#a0a79d7788a7f0189a4a5b69b73dce859">operator&gt;=</a>(<span class="keyword">const</span> <a class="code" href="classPath.html">Path</a>&amp; left, <span class="keyword">const</span> <a class="code" href="classPath.html">Path</a>&amp; right)</div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;{</div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;  <span class="keywordflow">return</span> !(left &lt; right);</div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;}</div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;</div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;</div>
-<div class="line"><a name="l00336"></a><span class="lineno"><a class="line" href="path_8hpp.html#a2ec9a8258175592b62eb0df607badc6d">  336</a></span>&#160;<span class="keyword">inline</span> std::ostream&amp; <a class="code" href="namespacemesos_1_1agent.html#a3b1bc144376bfefe215d6bba57e67c36">operator&lt;&lt;</a>(</div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;    std::ostream&amp; stream,</div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;    <span class="keyword">const</span> <a class="code" href="classPath.html">Path</a>&amp; path)</div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;{</div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;  <span class="keywordflow">return</span> stream &lt;&lt; path.<a class="code" href="classPath.html#a9d36a94d674e3f889eb8f46dc7a156b8">string</a>();</div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;}</div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;</div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;<span class="preprocessor">#endif // __STOUT_PATH_HPP__</span></div>
+<div class="line"><a name="l00317"></a><span class="lineno"><a class="line" href="classPath.html#a9d36a94d674e3f889eb8f46dc7a156b8">  317</a></span>&#160;  <span class="keyword">const</span> std::string&amp; <a class="code" href="classPath.html#a9d36a94d674e3f889eb8f46dc7a156b8">string</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;<span class="keyword">  </span>{</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;    <span class="keywordflow">return</span> value;</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;  }</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;  std::string value;</div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;};</div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;</div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;</div>
+<div class="line"><a name="l00327"></a><span class="lineno"><a class="line" href="path_8hpp.html#ad31aaa5ed4d55b1f295094e3fa84d769">  327</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code" href="path_8hpp.html#ad31aaa5ed4d55b1f295094e3fa84d769">operator==</a>(<span class="keyword">const</span> <a class="code" href="classPath.html">Path</a>&amp; left, <span class="keyword">const</span> <a class="code" href="classPath.html">Path</a>&amp; right)</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;{</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;  <span class="keywordflow">return</span> left.<a class="code" href="classPath.html#a9d36a94d674e3f889eb8f46dc7a156b8">string</a>() == right.<a class="code" href="classPath.html#a9d36a94d674e3f889eb8f46dc7a156b8">string</a>();</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;}</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;</div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;</div>
+<div class="line"><a name="l00333"></a><span class="lineno"><a class="line" href="path_8hpp.html#a79f5bd235856dc07ee5980991200e646">  333</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code" href="path_8hpp.html#a79f5bd235856dc07ee5980991200e646">operator!=</a>(<span class="keyword">const</span> <a class="code" href="classPath.html">Path</a>&amp; left, <span class="keyword">const</span> <a class="code" href="classPath.html">Path</a>&amp; right)</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;{</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;  <span class="keywordflow">return</span> !(left == right);</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;}</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;</div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;</div>
+<div class="line"><a name="l00339"></a><span class="lineno"><a class="line" href="path_8hpp.html#a71e4826c717e331e929eec4f3f01998d">  339</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code" href="path_8hpp.html#a71e4826c717e331e929eec4f3f01998d">operator&lt;</a>(<span class="keyword">const</span> <a class="code" href="classPath.html">Path</a>&amp; left, <span class="keyword">const</span> <a class="code" href="classPath.html">Path</a>&amp; right)</div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;{</div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;  <span class="keywordflow">return</span> left.<a class="code" href="classPath.html#a9d36a94d674e3f889eb8f46dc7a156b8">string</a>() &lt; right.<a class="code" href="classPath.html#a9d36a94d674e3f889eb8f46dc7a156b8">string</a>();</div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;}</div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;</div>
+<div class="line"><a name="l00345"></a><span class="lineno"><a class="line" href="path_8hpp.html#a222005a87c0bb37fbabdc8effe38aed1">  345</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code" href="path_8hpp.html#a222005a87c0bb37fbabdc8effe38aed1">operator&gt;</a>(<span class="keyword">const</span> <a class="code" href="classPath.html">Path</a>&amp; left, <span class="keyword">const</span> <a class="code" href="classPath.html">Path</a>&amp; right)</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;{</div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;  <span class="keywordflow">return</span> right &lt; left;</div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;}</div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;</div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;</div>
+<div class="line"><a name="l00351"></a><span class="lineno"><a class="line" href="path_8hpp.html#ae108a381c03097c921ee17af0f248c02">  351</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code" href="path_8hpp.html#ae108a381c03097c921ee17af0f248c02">operator&lt;=</a>(<span class="keyword">const</span> <a class="code" href="classPath.html">Path</a>&amp; left, <span class="keyword">const</span> <a class="code" href="classPath.html">Path</a>&amp; right)</div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;{</div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;  <span class="keywordflow">return</span> !(left &gt; right);</div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;}</div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;</div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;</div>
+<div class="line"><a name="l00357"></a><span class="lineno"><a class="line" href="path_8hpp.html#a0a79d7788a7f0189a4a5b69b73dce859">  357</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code" href="path_8hpp.html#a0a79d7788a7f0189a4a5b69b73dce859">operator&gt;=</a>(<span class="keyword">const</span> <a class="code" href="classPath.html">Path</a>&amp; left, <span class="keyword">const</span> <a class="code" href="classPath.html">Path</a>&amp; right)</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;{</div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;  <span class="keywordflow">return</span> !(left &lt; right);</div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;}</div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;</div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;</div>
+<div class="line"><a name="l00363"></a><span class="lineno"><a class="line" href="path_8hpp.html#a2ec9a8258175592b62eb0df607badc6d">  363</a></span>&#160;<span class="keyword">inline</span> std::ostream&amp; <a class="code" href="namespacemesos_1_1agent.html#a3b1bc144376bfefe215d6bba57e67c36">operator&lt;&lt;</a>(</div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;    std::ostream&amp; stream,</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;    <span class="keyword">const</span> <a class="code" href="classPath.html">Path</a>&amp; path)</div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;{</div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;  <span class="keywordflow">return</span> stream &lt;&lt; path.<a class="code" href="classPath.html#a9d36a94d674e3f889eb8f46dc7a156b8">string</a>();</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;}</div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;</div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;<span class="preprocessor">#endif // __STOUT_PATH_HPP__</span></div>
 <div class="ttc" id="classOption_html"><div class="ttname"><a href="classOption.html">Option&lt; std::string &gt;</a></div></div>
-<div class="ttc" id="classPath_html_a91965ddddabd9a15374ab51f6847f8b6"><div class="ttname"><a href="classPath.html#a91965ddddabd9a15374ab51f6847f8b6">Path::Path</a></div><div class="ttdeci">Path(const std::string &amp;path)</div><div class="ttdef"><b>Definition:</b> path.hpp:123</div></div>
+<div class="ttc" id="classPath_html_a91965ddddabd9a15374ab51f6847f8b6"><div class="ttname"><a href="classPath.html#a91965ddddabd9a15374ab51f6847f8b6">Path::Path</a></div><div class="ttdeci">Path(const std::string &amp;path)</div><div class="ttdef"><b>Definition:</b> path.hpp:150</div></div>
 <div class="ttc" id="namespaceos_1_1libraries_html_a41b3cb8b32c32ab2abf7a7aa62de9f18"><div class="ttname"><a href="namespaceos_1_1libraries.html#a41b3cb8b32c32ab2abf7a7aa62de9f18">os::libraries::paths</a></div><div class="ttdeci">std::string paths()</div><div class="ttdef"><b>Definition:</b> os.hpp:136</div></div>
-<div class="ttc" id="namespacepath_html_aa86b16a2171cec90bb3337930513ef0f"><div class="ttname"><a href="namespacepath.html#aa86b16a2171cec90bb3337930513ef0f">path::join</a></div><div class="ttdeci">std::string join(const std::string &amp;path1, const std::string &amp;path2, const char _separator=os::PATH_SEPARATOR)</div><div class="ttdef"><b>Definition:</b> path.hpp:29</div></div>
+<div class="ttc" id="namespacepath_html_aa86b16a2171cec90bb3337930513ef0f"><div class="ttname"><a href="namespacepath.html#aa86b16a2171cec90bb3337930513ef0f">path::join</a></div><div class="ttdeci">std::string join(const std::string &amp;path1, const std::string &amp;path2, const char _separator=os::PATH_SEPARATOR)</div><div class="ttdef"><b>Definition:</b> path.hpp:56</div></div>
 <div class="ttc" id="namespacesystemd_1_1slices_html_a95aa197d8eed9f20dacb44f433b15f01"><div class="ttname"><a href="namespacesystemd_1_1slices.html#a95aa197d8eed9f20dacb44f433b15f01">systemd::slices::start</a></div><div class="ttdeci">Try&lt; Nothing &gt; start(const std::string &amp;name)</div><div class="ttdoc">Starts the slice with the given name (via &amp;#39;systemctl start &amp;lt;name&amp;gt;&amp;#39;). </div></div>
-<div class="ttc" id="namespacepath_html_a09c4941618b3a4ea2dbfccf5fe9d3687"><div class="ttname"><a href="namespacepath.html#a09c4941618b3a4ea2dbfccf5fe9d3687">path::absolute</a></div><div class="ttdeci">bool absolute(const std::string &amp;path)</div><div class="ttdoc">Returns whether the given path is an absolute path. </div><div class="ttdef"><b>Definition:</b> path.hpp:69</div></div>
+<div class="ttc" id="namespacepath_html_a09c4941618b3a4ea2dbfccf5fe9d3687"><div class="ttname"><a href="namespacepath.html#a09c4941618b3a4ea2dbfccf5fe9d3687">path::absolute</a></div><div class="ttdeci">bool absolute(const std::string &amp;path)</div><div class="ttdoc">Returns whether the given path is an absolute path. </div><div class="ttdef"><b>Definition:</b> path.hpp:96</div></div>
 <div class="ttc" id="namespacestrings_html_a3fbaeb4d589c49ac115fab3412073ca7"><div class="ttname"><a href="namespacestrings.html#a3fbaeb4d589c49ac115fab3412073ca7">strings::remove</a></div><div class="ttdeci">std::string remove(const std::string &amp;from, const std::string &amp;substring, Mode mode=ANY)</div><div class="ttdef"><b>Definition:</b> strings.hpp:40</div></div>
-<div class="ttc" id="path_8hpp_html_a0a79d7788a7f0189a4a5b69b73dce859"><div class="ttname"><a href="path_8hpp.html#a0a79d7788a7f0189a4a5b69b73dce859">operator&gt;=</a></div><div class="ttdeci">bool operator&gt;=(const Path &amp;left, const Path &amp;right)</div><div class="ttdef"><b>Definition:</b> path.hpp:330</div></div>
+<div class="ttc" id="path_8hpp_html_a0a79d7788a7f0189a4a5b69b73dce859"><div class="ttname"><a href="path_8hpp.html#a0a79d7788a7f0189a4a5b69b73dce859">operator&gt;=</a></div><div class="ttdeci">bool operator&gt;=(const Path &amp;left, const Path &amp;right)</div><div class="ttdef"><b>Definition:</b> path.hpp:357</div></div>
 <div class="ttc" id="namespacecgroups_html_abe24f34ebd9554eafc765b62c41fb74c"><div class="ttname"><a href="namespacecgroups.html#abe24f34ebd9554eafc765b62c41fb74c">cgroups::remove</a></div><div class="ttdeci">Try&lt; Nothing &gt; remove(const std::string &amp;hierarchy, const std::string &amp;cgroup)</div></div>
 <div class="ttc" id="namespacerouting_1_1link_html_a26486cdba01ef1c80706b1e07e8a6d3f"><div class="ttname"><a href="namespacerouting_1_1link.html#a26486cdba01ef1c80706b1e07e8a6d3f">routing::link::index</a></div><div class="ttdeci">Result&lt; int &gt; index(const std::string &amp;link)</div></div>
-<div class="ttc" id="path_8hpp_html_a222005a87c0bb37fbabdc8effe38aed1"><div class="ttname"><a href="path_8hpp.html#a222005a87c0bb37fbabdc8effe38aed1">operator&gt;</a></div><div class="ttdeci">bool operator&gt;(const Path &amp;left, const Path &amp;right)</div><div class="ttdef"><b>Definition:</b> path.hpp:318</div></div>
+<div class="ttc" id="path_8hpp_html_a222005a87c0bb37fbabdc8effe38aed1"><div class="ttname"><a href="path_8hpp.html#a222005a87c0bb37fbabdc8effe38aed1">operator&gt;</a></div><div class="ttdeci">bool operator&gt;(const Path &amp;left, const Path &amp;right)</div><div class="ttdef"><b>Definition:</b> path.hpp:345</div></div>
 <div class="ttc" id="namespacestrings_html_a6ebac6b171c6b20adb298cb020915b03a3772529a8ac366325b107aff7f7f1360"><div class="ttname"><a href="namespacestrings.html#a6ebac6b171c6b20adb298cb020915b03a3772529a8ac366325b107aff7f7f1360">strings::SUFFIX</a></div><div class="ttdef"><b>Definition:</b> strings.hpp:35</div></div>
-<div class="ttc" id="classPath_html"><div class="ttname"><a href="classPath.html">Path</a></div><div class="ttdoc">Represents a POSIX or Windows file system path and offers common path manipulations. </div><div class="ttdef"><b>Definition:</b> path.hpp:118</div></div>
-<div class="ttc" id="classPath_html_a240c7b71a23c8e97b5490dbae75cc948"><div class="ttname"><a href="classPath.html#a240c7b71a23c8e97b5490dbae75cc948">Path::absolute</a></div><div class="ttdeci">bool absolute() const </div><div class="ttdef"><b>Definition:</b> path.hpp:279</div></div>
-<div class="ttc" id="classPath_html_a0449e93ffb615ef7fd198ef03dd1100c"><div class="ttname"><a href="classPath.html#a0449e93ffb615ef7fd198ef03dd1100c">Path::dirname</a></div><div class="ttdeci">std::string dirname() const </div><div class="ttdoc">Extracts the component up to, but not including, the final &amp;#39;/&amp;#39;. </div><div class="ttdef"><b>Definition:</b> path.hpp:211</div></div>
+<div class="ttc" id="classPath_html"><div class="ttname"><a href="classPath.html">Path</a></div><div class="ttdoc">Represents a POSIX or Windows file system path and offers common path manipulations. </div><div class="ttdef"><b>Definition:</b> path.hpp:145</div></div>
+<div class="ttc" id="namespacepath_html_af28fb9428732d97d43f6b02be4a712ea"><div class="ttname"><a href="namespacepath.html#af28fb9428732d97d43f6b02be4a712ea">path::from_uri</a></div><div class="ttdeci">std::string from_uri(const std::string &amp;uri)</div><div class="ttdef"><b>Definition:</b> path.hpp:41</div></div>
+<div class="ttc" id="namespacestrings_html_a082f6de42f9c52047369e2ff80155eca"><div class="ttname"><a href="namespacestrings.html#a082f6de42f9c52047369e2ff80155eca">strings::replace</a></div><div class="ttdeci">std::string replace(const std::string &amp;s, const std::string &amp;from, const std::string &amp;to)</div><div class="ttdef"><b>Definition:</b> strings.hpp:112</div></div>
+<div class="ttc" id="classPath_html_a240c7b71a23c8e97b5490dbae75cc948"><div class="ttname"><a href="classPath.html#a240c7b71a23c8e97b5490dbae75cc948">Path::absolute</a></div><div class="ttdeci">bool absolute() const </div><div class="ttdef"><b>Definition:</b> path.hpp:306</div></div>
+<div class="ttc" id="classPath_html_a0449e93ffb615ef7fd198ef03dd1100c"><div class="ttname"><a href="classPath.html#a0449e93ffb615ef7fd198ef03dd1100c">Path::dirname</a></div><div class="ttdeci">std::string dirname() const </div><div class="ttdoc">Extracts the component up to, but not including, the final &amp;#39;/&amp;#39;. </div><div class="ttdef"><b>Definition:</b> path.hpp:238</div></div>
 <div class="ttc" id="structNone_html"><div class="ttname"><a href="structNone.html">None</a></div><div class="ttdef"><b>Definition:</b> none.hpp:27</div></div>
-<div class="ttc" id="classPath_html_a46e804f0daca3c3a0fef137364aca5ea"><div class="ttname"><a href="classPath.html#a46e804f0daca3c3a0fef137364aca5ea">Path::extension</a></div><div class="ttdeci">Option&lt; std::string &gt; extension() const </div><div class="ttdoc">Returns the file extension of the path, including the dot. </div><div class="ttdef"><b>Definition:</b> path.hpp:266</div></div>
-<div class="ttc" id="path_8hpp_html_ad31aaa5ed4d55b1f295094e3fa84d769"><div class="ttname"><a href="path_8hpp.html#ad31aaa5ed4d55b1f295094e3fa84d769">operator==</a></div><div class="ttdeci">bool operator==(const Path &amp;left, const Path &amp;right)</div><div class="ttdef"><b>Definition:</b> path.hpp:300</div></div>
+<div class="ttc" id="classPath_html_a46e804f0daca3c3a0fef137364aca5ea"><div class="ttname"><a href="classPath.html#a46e804f0daca3c3a0fef137364aca5ea">Path::extension</a></div><div class="ttdeci">Option&lt; std::string &gt; extension() const </div><div class="ttdoc">Returns the file extension of the path, including the dot. </div><div class="ttdef"><b>Definition:</b> path.hpp:293</div></div>
+<div class="ttc" id="path_8hpp_html_ad31aaa5ed4d55b1f295094e3fa84d769"><div class="ttname"><a href="path_8hpp.html#ad31aaa5ed4d55b1f295094e3fa84d769">operator==</a></div><div class="ttdeci">bool operator==(const Path &amp;left, const Path &amp;right)</div><div class="ttdef"><b>Definition:</b> path.hpp:327</div></div>
 <div class="ttc" id="namespacemesos_1_1agent_html_a3b1bc144376bfefe215d6bba57e67c36"><div class="ttname"><a href="namespacemesos_1_1agent.html#a3b1bc144376bfefe215d6bba57e67c36">mesos::agent::operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;stream, const Call::Type &amp;type)</div><div class="ttdef"><b>Definition:</b> agent.hpp:28</div></div>
 <div class="ttc" id="stringify_8hpp_html"><div class="ttname"><a href="stringify_8hpp.html">stringify.hpp</a></div></div>
 <div class="ttc" id="namespacemesos_1_1internal_1_1slave_1_1containerizer_1_1paths_html_abb8ab3e62de157d1a7a81e08888ec30cabf80c29a65453b2615d8f9bd83f8f3d6"><div class="ttname"><a href="namespacemesos_1_1internal_1_1slave_1_1containerizer_1_1paths.html#abb8ab3e62de157d1a7a81e08888ec30cabf80c29a65453b2615d8f9bd83f8f3d6">mesos::internal::slave::containerizer::paths::PREFIX</a></div><div class="ttdef"><b>Definition:</b> paths.hpp:82</div></div>
-<div class="ttc" id="path_8hpp_html_ae108a381c03097c921ee17af0f248c02"><div class="ttname"><a href="path_8hpp.html#ae108a381c03097c921ee17af0f248c02">operator&lt;=</a></div><div class="ttdeci">bool operator&lt;=(const Path &amp;left, const Path &amp;right)</div><div class="ttdef"><b>Definition:</b> path.hpp:324</div></div>
-<div class="ttc" id="path_8hpp_html_a71e4826c717e331e929eec4f3f01998d"><div class="ttname"><a href="path_8hpp.html#a71e4826c717e331e929eec4f3f01998d">operator&lt;</a></div><div class="ttdeci">bool operator&lt;(const Path &amp;left, const Path &amp;right)</div><div class="ttdef"><b>Definition:</b> path.hpp:312</div></div>
-<div class="ttc" id="classPath_html_a11c34646ac636526f1b28b61057f3b1f"><div class="ttname"><a href="classPath.html#a11c34646ac636526f1b28b61057f3b1f">Path::basename</a></div><div class="ttdeci">std::string basename() const </div><div class="ttdoc">Extracts the component following the final &amp;#39;/&amp;#39;. </div><div class="ttdef"><b>Definition:</b> path.hpp:152</div></div>
+<div class="ttc" id="path_8hpp_html_ae108a381c03097c921ee17af0f248c02"><div class="ttname"><a href="path_8hpp.html#ae108a381c03097c921ee17af0f248c02">operator&lt;=</a></div><div class="ttdeci">bool operator&lt;=(const Path &amp;left, const Path &amp;right)</div><div class="ttdef"><b>Definition:</b> path.hpp:351</div></div>
+<div class="ttc" id="path_8hpp_html_a71e4826c717e331e929eec4f3f01998d"><div class="ttname"><a href="path_8hpp.html#a71e4826c717e331e929eec4f3f01998d">operator&lt;</a></div><div class="ttdeci">bool operator&lt;(const Path &amp;left, const Path &amp;right)</div><div class="ttdef"><b>Definition:</b> path.hpp:339</div></div>
+<div class="ttc" id="classPath_html_a11c34646ac636526f1b28b61057f3b1f"><div class="ttname"><a href="classPath.html#a11c34646ac636526f1b28b61057f3b1f">Path::basename</a></div><div class="ttdeci">std::string basename() const </div><div class="ttdoc">Extracts the component following the final &amp;#39;/&amp;#39;. </div><div class="ttdef"><b>Definition:</b> path.hpp:179</div></div>
 <div class="ttc" id="namespacens_html_a28116b46e6543597a11733424cd1aa20"><div class="ttname"><a href="namespacens.html#a28116b46e6543597a11733424cd1aa20">ns::stringify</a></div><div class="ttdeci">std::string stringify(int flags)</div></div>
 <div class="ttc" id="namespacestrings_html_aa5513faacb213c7e097c0d43af43d9c7"><div class="ttname"><a href="namespacestrings.html#aa5513faacb213c7e097c0d43af43d9c7">strings::startsWith</a></div><div class="ttdeci">bool startsWith(const std::string &amp;s, const std::string &amp;prefix)</div><div class="ttdef"><b>Definition:</b> strings.hpp:380</div></div>
-<div class="ttc" id="classPath_html_a9d36a94d674e3f889eb8f46dc7a156b8"><div class="ttname"><a href="classPath.html#a9d36a94d674e3f889eb8f46dc7a156b8">Path::string</a></div><div class="ttdeci">const std::string &amp; string() const </div><div class="ttdef"><b>Definition:</b> path.hpp:290</div></div>
-<div class="ttc" id="classPath_html_af26cfab021ddf49af73da3b2beca85ac"><div class="ttname"><a href="classPath.html#af26cfab021ddf49af73da3b2beca85ac">Path::Path</a></div><div class="ttdeci">Path()</div><div class="ttdef"><b>Definition:</b> path.hpp:121</div></div>
-<div class="ttc" id="path_8hpp_html_a79f5bd235856dc07ee5980991200e646"><div class="ttname"><a href="path_8hpp.html#a79f5bd235856dc07ee5980991200e646">operator!=</a></div><div class="ttdeci">bool operator!=(const Path &amp;left, const Path &amp;right)</div><div class="ttdef"><b>Definition:</b> path.hpp:306</div></div>
+<div class="ttc" id="classPath_html_a9d36a94d674e3f889eb8f46dc7a156b8"><div class="ttname"><a href="classPath.html#a9d36a94d674e3f889eb8f46dc7a156b8">Path::string</a></div><div class="ttdeci">const std::string &amp; string() const </div><div class="ttdef"><b>Definition:</b> path.hpp:317</div></div>
+<div class="ttc" id="classPath_html_af26cfab021ddf49af73da3b2beca85ac"><div class="ttname"><a href="classPath.html#af26cfab021ddf49af73da3b2beca85ac">Path::Path</a></div><div class="ttdeci">Path()</div><div class="ttdef"><b>Definition:</b> path.hpp:148</div></div>
+<div class="ttc" id="path_8hpp_html_a79f5bd235856dc07ee5980991200e646"><div class="ttname"><a href="path_8hpp.html#a79f5bd235856dc07ee5980991200e646">operator!=</a></div><div class="ttdeci">bool operator!=(const Path &amp;left, const Path &amp;right)</div><div class="ttdef"><b>Definition:</b> path.hpp:333</div></div>
 <div class="ttc" id="namespaceos_html_a493d7d8775f0ed778ad3b52ec19bbaab"><div class="ttname"><a href="namespaceos.html#a493d7d8775f0ed778ad3b52ec19bbaab">os::PATH_SEPARATOR</a></div><div class="ttdeci">constexpr char PATH_SEPARATOR</div><div class="ttdef"><b>Definition:</b> constants.hpp:24</div></div>
 <div class="ttc" id="strings_8hpp_html"><div class="ttname"><a href="strings_8hpp.html">strings.hpp</a></div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2os_2constants_8hpp_html"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2os_2constants_8hpp.html">constants.hpp</a></div></div>
