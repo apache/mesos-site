@@ -4,7 +4,123 @@
   <id>http://mesos.apache.org/blog</id>
   <link href="http://mesos.apache.org/blog" />
   <link href="http://mesos.apache.org/blog/feed.xml" rel="self"/>
-  <updated>2017-11-16T00:00:00Z</updated>
+  <updated>2017-12-07T00:00:00Z</updated>
+  
+  <entry>
+    <id>http://mesos.apache.org/blog/performance-working-group-progress-report/</id>
+    <link href="/blog/performance-working-group-progress-report/" />
+    <title>
+      December 2017 Performance Working Group Progress Report
+    </title>
+    <updated>2017-12-07T00:00:00Z</updated>
+    <author>
+      <name>Benjamin Mahler</name>
+    </author>
+    <content type="html">
+      &lt;p&gt;&lt;strong&gt;Scalability and performance are key features for Mesos. Some users of Mesos already run production clusters that consist of more than 35,000+ agents and 100,000+ active tasks.&lt;/strong&gt; However, there remains a lot of room for improvement across a variety of areas of the system.&lt;/p&gt;
+
+&lt;p&gt;The performance working group was created in order to focus on some of these areas. The group&amp;rsquo;s charter is to improve scalability / throughput / latency across the system, and in order to measure our improvements and prevent performance regressions we will write benchmarks and automate them.&lt;/p&gt;
+
+&lt;p&gt;In the past few months, we&amp;rsquo;ve focused on making improvements to the following areas:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Master failover time-to-completion&lt;/strong&gt;: Achieved a 450-600% improvement in throughput, which reduces the time-to-completion by 80-85%.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;a href=&quot;https://github.com/apache/mesos/tree/master/3rdparty/libprocess&quot;&gt;Libprocess&lt;/a&gt; message passing throughput&lt;/strong&gt;: These improvements will be covered in a separate blog post.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;Before we dive into the master failover improvements, I would like to recognize and thank the following contributors:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Dmitry Zhuk&lt;/strong&gt;: for writing &lt;em&gt;a lot&lt;/em&gt; of patches for improving the master failover performance.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Michael Park&lt;/strong&gt;: for reviewing and shipping many of Dmitry&amp;rsquo;s more challenging patches.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Yan Xu&lt;/strong&gt;: for writing the master failover benchmark that was the basis for measuring the improvements.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h2&gt;Master Failover Time-To-Completion&lt;/h2&gt;
+
+&lt;p&gt;Our first area of focus was to improve the time it takes for a master failover to complete, where completion is defined as all of the agents successfully re-registering. Mesos is architected to use a centralized master with standby masters that participate in a quorum for high availability. For scalability reasons, the leading master stores the state of the cluster in-memory. During a master failover, the leading master needs to therefore re-build the in-memory state from all of the agents that re-register. During this time, the master is available to process other requests, but will be exposing only partial state to API consumers.&lt;/p&gt;
+
+&lt;p&gt;The rebuilding of the master’s in-memory state can be expensive for larger clusters, and so the focus of this effort was to improve the efficiency of this. Improvements were made via several areas, and only the highest-impact changes are listed below:&lt;/p&gt;
+
+&lt;h3&gt;Protobuf 3.5.0 Move Support&lt;/h3&gt;
+
+&lt;p&gt;We upgraded to protobuf 3.5.0 in order to gain move support. When we profiled the master, we found that it spent a lot of time copying protobuf messages during agent re-registration. This support allowed us to eliminate copies of protobuf messages while retaining value semantics.&lt;/p&gt;
+
+&lt;h3&gt;Move Support and Copy Elimination in Libprocess &lt;code&gt;dispatch&lt;/code&gt; / &lt;code&gt;defer&lt;/code&gt; / &lt;code&gt;install&lt;/code&gt;&lt;/h3&gt;
+
+&lt;p&gt;Libprocess provides several primitives for message passing:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;dispatch&lt;/code&gt;: Provides the ability to post a messages to a local &lt;code&gt;Process&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;defer&lt;/code&gt;: Provides a deferred &lt;code&gt;dispatch&lt;/code&gt;. i.e. a function object that when invoked will issue a &lt;code&gt;dispatch&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;install&lt;/code&gt;: Installs a handler for receiving a protobuf message.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;These primitives did not have move support, as they were originally added prior to the addition of C++11 support to the code-base. In order to eliminate copies, we enhanced these primitives to support moving arguments in and out.&lt;/p&gt;
+
+&lt;p&gt;This required introducing a new C++ utility, because &lt;code&gt;defer&lt;/code&gt; takes on the same API as &lt;code&gt;std::bind&lt;/code&gt; (e.g., placeholders). Specifically, the function object returned by &lt;code&gt;std::bind&lt;/code&gt; does not move the bound arguments into the stored callable. In order to enable this, &lt;code&gt;defer&lt;/code&gt; now uses a utility we introduced called &lt;code&gt;lambda::partial&lt;/code&gt; rather than &lt;code&gt;std::bind&lt;/code&gt;. &lt;code&gt;lambda::partial&lt;/code&gt; performs partial function application similar to &lt;code&gt;std::bind&lt;/code&gt; except the returned function object moves the bound arguments into the stored callable if the invocation is performed on an r-value function object.&lt;/p&gt;
+
+&lt;h3&gt;Copy Elimination in the Master&lt;/h3&gt;
+
+&lt;p&gt;With these previous enhancements in place, we were able to eliminate many of the expensive copies of protobuf messages performed by the master.&lt;/p&gt;
+
+&lt;h3&gt;Benchmark and Results&lt;/h3&gt;
+
+&lt;p&gt;We wrote a synthetic benchmark to simulate a master failover. This benchmark prepares all the messages that would be sent to the master by the agents that need to re-register:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The benchmark uses synthetic agents in that they are just an actor that knows how to re-register with the master.&lt;/li&gt;
+&lt;li&gt;Each &amp;ldquo;agent&amp;rdquo; will send a configurable number of active and completed tasks belonging to a configurable number of active and completed frameworks.&lt;/li&gt;
+&lt;li&gt;Each task has 10 small labels to introduce metadata overhead.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;The benchmark has a few caveats:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;It does not use executors (this would show improved results over what is shown below, but for simplicity the benchmark omits them)&lt;/li&gt;
+&lt;li&gt;It uses local message passing, whereas a real cluster would be passing messages over HTTP.&lt;/li&gt;
+&lt;li&gt;It uses a quorum size of 1, so writes to the master’s registry occur only on single local log replica.&lt;/li&gt;
+&lt;li&gt;The synthetic agents do not retry their re-registration, whereas typically agents will retry with a backoff.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;This was tested on a 2015 Macbook Pro with 2.8 GHz Intel Core i7 processor. Mesos was configured using: &lt;code&gt;Apple LLVM version 9.0.0 (clang-900.0.38)&lt;/code&gt;, with &lt;code&gt;-O2&lt;/code&gt; enabled in 1.5.0.&lt;/p&gt;
+
+&lt;p&gt;The first results represent a cluster with 10 active tasks per agent across 5 frameworks, with no completed tasks. The results from 1,000 - 40,000 agents with 10,000 - 400,000 active tasks:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/documentation/1.3-1.5_master_failover_no_history.png&quot; alt=&quot;1.3 - 1.5 Master Failover without Task History Graph&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;There was a reduction in the time-to-completion of ~80% due to a 450-500% improvement in throughput across 1.3.0 to 1.5.0.&lt;/p&gt;
+
+&lt;p&gt;The second results add task history: each agent also now contains 100 completed tasks across 5 completed frameworks. The results from 1,000 - 40,000 agents with 10,000 - 400,000 active tasks and 100,000 - 4,000,000 completed tasks are shown below:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/documentation/1.3-1.5_master_failover_with_history&quot; alt=&quot;1.3 - 1.5 Master Failover with Task History Graph&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This represents a reduction in time-to-completion of ~85% due to a 550-700% improvement in throughput across 1.3.0 to 1.5.0.&lt;/p&gt;
+
+&lt;h2&gt;Performance Working Group Roadmap&lt;/h2&gt;
+
+&lt;p&gt;We&amp;rsquo;re currently targeting the following areas for improvements:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Performance of the v1 API&lt;/strong&gt;: Currently the v1 API can be significantly slower than the v0 API. We would like to reach parity, and ideally surpass the performance of the v0 API.
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;&lt;a href=&quot;https://github.com/apache/mesos/tree/master/3rdparty/libprocess&quot;&gt;Libprocess&lt;/a&gt; HTTP performance&lt;/strong&gt;: This will be undertaken as part of improving the v1 API performance, since it is HTTP-based.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Master state API performance&lt;/strong&gt;: Currently, API queries of the master&amp;rsquo;s state are serviced by the same master actor that processes all of the messages from schedulers and agents. Since the query processing can block the master from processing other events, users need to be careful not to query the master excessively. In practice, the master gets queried quite heavily due to the presence of several tools that rely on the master&amp;rsquo;s state (e.g. DNS tooling, UIs, CLIs, etc) and so this is a critical problem for users. This effort will leverage the state streaming API to stream the state to a different actor that can serve the state API requests. This will ensure that expensive state queries do not affect the master&amp;rsquo;s ability to process events.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;If you are a user and would like to suggest some areas for performance improvement, please let us know by emailing &lt;a href=&quot;&amp;#109;&amp;#97;&amp;#x69;&amp;#108;&amp;#x74;&amp;#x6f;&amp;#x3a;&amp;#100;&amp;#101;&amp;#x76;&amp;#64;&amp;#x61;&amp;#112;&amp;#97;&amp;#99;&amp;#104;&amp;#101;&amp;#46;&amp;#x6d;&amp;#101;&amp;#x73;&amp;#x6f;&amp;#x73;&amp;#x2e;&amp;#111;&amp;#114;&amp;#x67;&quot;&gt;&amp;#x64;&amp;#x65;&amp;#x76;&amp;#x40;&amp;#x61;&amp;#112;&amp;#x61;&amp;#x63;&amp;#x68;&amp;#101;&amp;#x2e;&amp;#x6d;&amp;#101;&amp;#115;&amp;#x6f;&amp;#x73;&amp;#46;&amp;#x6f;&amp;#114;&amp;#x67;&lt;/a&gt;.&lt;/p&gt;
+
+	</content>
+  </entry>
   
   <entry>
     <id>http://mesos.apache.org/blog/mesos-1-4-1-released/</id>
