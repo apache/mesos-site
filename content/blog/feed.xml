@@ -4,7 +4,58 @@
   <id>http://mesos.apache.org/blog</id>
   <link href="http://mesos.apache.org/blog" />
   <link href="http://mesos.apache.org/blog/feed.xml" rel="self"/>
-  <updated>2017-12-07T00:00:00Z</updated>
+  <updated>2017-12-12T00:00:00Z</updated>
+  
+  <entry>
+    <id>http://mesos.apache.org/blog/storage-developments-in-apache-mesos/</id>
+    <link href="/blog/storage-developments-in-apache-mesos/" />
+    <title>
+      Storage developments in Apache Mesos: Interview with Jie Yu
+    </title>
+    <updated>2017-12-12T00:00:00Z</updated>
+    <author>
+      <name>Greg Mann</name>
+    </author>
+    <content type="html">
+      &lt;p&gt;The &lt;a href=&quot;https://github.com/container-storage-interface&quot;&gt;Container Storage Interface&lt;/a&gt; (CSI) is a community driven effort to standardize the way that containers connect to storage, so that any compliant container platform will be able to use storage from any compliant ecosystem vendor. I recently sat down with long-time Mesos committer Jie Yu, who is participating heavily in the development of CSI, to discuss the effort that he’s been leading to build CSI compatibility into Mesos.
+&lt;br&gt;
+&lt;br&gt;
+&lt;strong&gt;Greg&lt;/strong&gt;: Before we get started, could you tell us a bit about your history with the Apache Mesos project?
+&lt;br&gt;
+&lt;strong&gt;Jie&lt;/strong&gt;: I’ve been working on Mesos for 4 years. I started at Twitter, and then came to Mesosphere 2 years ago. I’ve worked on many container-related things in the codebase. This includes - among other things - networking and, more recently, storage.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Greg&lt;/strong&gt;: Could you summarize, at a high level, the direction in which you’re currently taking Mesos storage support?
+&lt;br&gt;
+&lt;strong&gt;Jie&lt;/strong&gt;: There are many storage vendors out there, and we don’t want to build all this vendor-specific code ourselves. Instead, we want a system that allows storage vendors to plug into Mesos using a consistent interface. Then we don’t need to maintain code for each vendor, which requires specific expertise.
+Some other projects ask vendors to put their code into the main codebase. This can be painful because then the vendor’s release cycle is tied to the cycle of the project itself. This is hard to manage if you have many vendors. That’s why we decided to go with this “out-of-tree” solution for storage.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Greg&lt;/strong&gt;: What use cases are you most excited to enable?
+&lt;br&gt;
+&lt;strong&gt;Jie&lt;/strong&gt;: Historically, we didn’t support global resources like EBS. We have limited support using &lt;a href=&quot;https://docs.docker.com/engine/extend/plugins_volume/&quot;&gt;DVDI&lt;/a&gt;, but there are issues with this. I think external storage is something I’m really excited about with this work. Being able to plug in arbitrary vendors’ storage systems is exciting.
+The other thing I’m excited about is that we have a solution that allows a vendor to provide just a single container image for their plugin, and we’ll take care of the rest of the work end-to-end. So it will be very simple for people to integrate their storage system with Mesos.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Greg&lt;/strong&gt;: When can we expect these features to become available?
+&lt;br&gt;
+&lt;strong&gt;Jie&lt;/strong&gt;: The plan is to have local CSI storage support in Mesos 1.5, then external storage support in 1.6.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Greg&lt;/strong&gt;: How can community members get involved going forward?
+&lt;br&gt;
+&lt;strong&gt;Jie&lt;/strong&gt;: Well, there are multiple avenues. For storage vendors, you can write a CSI plugin and test it with Mesos. For Mesos users, please try out this feature! And if you want to contribute to the coding, you can reach out on the &lt;a href=&quot;dev@apache.mesos.org&quot;&gt;mailing list&lt;/a&gt;. Hopefully we can organize a storage working group in the near future once the feature lands.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Greg&lt;/strong&gt;: What’s next after Mesos 1.6?
+&lt;br&gt;
+&lt;strong&gt;Jie&lt;/strong&gt;: If we can wrap up our plans for 1.6, then we’ll be in pretty good shape. The next thing is building a great storage ecosystem for Mesos. We can reach out to vendors and try to get them to integrate.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Greg&lt;/strong&gt;: Is there anything else you’d like to share with the community?
+&lt;br&gt;
+&lt;strong&gt;Jie&lt;/strong&gt;: One thing to highlight is that while we’re doing storage work right now, the abstractions we’ve built for storage can be used for other purposes in Mesos - for example, they could be used for other &lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-2728&quot;&gt;global resources&lt;/a&gt; like IP addresses. In the cloud, you could use this to manage things like AWS’s ENI.
+In the future, we probably need a general interface to support arbitrary devices. The industry trend is the introduction of more and more specialized devices to support things like machine learning. We probably need a general interface for these types of devices so that Mesos can expose them in a unified way.
+&lt;br&gt;
+&lt;br&gt;
+To learn more about CSI work in Mesos, you can dig into the design document &lt;a href=&quot;https://docs.google.com/document/d/125YWqg_5BB5OY9a6M7LZcby5RSqBwo2PZzpVLuxYXh4/edit?usp=sharing&quot;&gt;here&lt;/a&gt;, and track the ongoing progress on &lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-7235&quot;&gt;Apache JIRA&lt;/a&gt;. To contribute to the multi-platform effort to implement CSI, join the &lt;a href=&quot;https://github.com/container-storage-interface/community#community&quot;&gt;CSI Community&lt;/a&gt;.&lt;/p&gt;
+
+	</content>
+  </entry>
   
   <entry>
     <id>http://mesos.apache.org/blog/performance-working-group-progress-report/</id>
@@ -117,7 +168,7 @@
 &lt;/ul&gt;
 
 
-&lt;p&gt;If you are a user and would like to suggest some areas for performance improvement, please let us know by emailing &lt;a href=&quot;&amp;#x6d;&amp;#97;&amp;#x69;&amp;#x6c;&amp;#116;&amp;#111;&amp;#58;&amp;#x64;&amp;#101;&amp;#118;&amp;#x40;&amp;#x61;&amp;#112;&amp;#x61;&amp;#99;&amp;#x68;&amp;#x65;&amp;#46;&amp;#x6d;&amp;#x65;&amp;#x73;&amp;#x6f;&amp;#115;&amp;#46;&amp;#111;&amp;#114;&amp;#x67;&quot;&gt;&amp;#x64;&amp;#x65;&amp;#x76;&amp;#x40;&amp;#97;&amp;#112;&amp;#x61;&amp;#x63;&amp;#104;&amp;#x65;&amp;#x2e;&amp;#x6d;&amp;#x65;&amp;#115;&amp;#111;&amp;#x73;&amp;#46;&amp;#111;&amp;#x72;&amp;#x67;&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;If you are a user and would like to suggest some areas for performance improvement, please let us know by emailing &lt;a href=&quot;&amp;#x6d;&amp;#97;&amp;#105;&amp;#x6c;&amp;#116;&amp;#111;&amp;#x3a;&amp;#x64;&amp;#x65;&amp;#118;&amp;#64;&amp;#x61;&amp;#x70;&amp;#x61;&amp;#x63;&amp;#104;&amp;#x65;&amp;#x2e;&amp;#x6d;&amp;#101;&amp;#x73;&amp;#x6f;&amp;#115;&amp;#x2e;&amp;#111;&amp;#114;&amp;#x67;&quot;&gt;&amp;#100;&amp;#101;&amp;#118;&amp;#x40;&amp;#x61;&amp;#112;&amp;#97;&amp;#x63;&amp;#104;&amp;#101;&amp;#46;&amp;#x6d;&amp;#x65;&amp;#x73;&amp;#x6f;&amp;#x73;&amp;#46;&amp;#111;&amp;#114;&amp;#103;&lt;/a&gt;.&lt;/p&gt;
 
 	</content>
   </entry>
