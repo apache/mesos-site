@@ -451,57 +451,6 @@ libraries by default.</p>
 Windows is not yet supported, as it requires code change to import symbols
 properly.</p>
 
-<h2>Building with Java</h2>
-
-<p>When building with Java on Windows, you must add the <a href="https://maven.apache.org/guides/getting-started/windows-prerequisites.html">Maven</a> build tool to
-your path. The <code>JAVA_HOME</code> environment variable must also be manually set.
-An installation of the Java SDK can be found form <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">Oracle</a>.</p>
-
-<p>As of this writing, Java 9 is not yet supported, but Java 8 has been tested.</p>
-
-<p>The Java build defaults to <code>OFF</code> because it is slow. To build the Java
-components on Windows, turn it <code>ON</code>:</p>
-
-<pre><code class="powershell">mkdir build; cd build
-$env:PATH += ";C:\...\apache-maven-3.3.9\bin\"
-$env:JAVA_HOME = "C:\Program Files\Java\jdk1.8.0_144"
-cmake .. -DENABLE_JAVA=ON -DENABLE_LIBEVENT=ON -G "Visual Studio 15 2017 Win64" -T "host=x64"
-cmake --build . --target mesos-java
-</code></pre>
-
-<p>Note that the <code>mesos-java</code> library does not have to be manually built; as
-<code>libmesos</code> will link it when Java is enabled.</p>
-
-<p>Unfortunately, on Windows the <code>FindJNI</code> CMake module will populate <code>JAVA_JVM_LIBRARY</code> with
-the path to the static <code>jvm.lib</code>, but this variable must point to the shared
-library, <code>jvm.dll</code>, as it is loaded at runtime. Set it correctly like this:</p>
-
-<pre><code>$env:JAVA_JVM_LIBRARY = "C:\Program Files\Java\jdk1.8.0_144\jre\bin\server\jvm.dll"
-</code></pre>
-
-<p>The library may still fail to load at runtime with the following error:</p>
-
-<blockquote><p>&ldquo;The specified module could not be found.&rdquo;</p></blockquote>
-
-<p>If this is the case, and the path to <code>jvm.dll</code> is verified to be correct, then
-the error message actually indicates that the dependencies of <code>jvm.dll</code> could
-not be found. On Windows, the DLL search path includes the environment variable
-<code>PATH</code>, so add the <code>bin</code> folder which contains <code>server\jvm.dll</code> to <code>PATH</code>:</p>
-
-<pre><code>$env:PATH += ";C:\Program Files\Java\jdk1.8.0_144\jre\bin"
-</code></pre>
-
-<h2>Building with OpenSSL</h2>
-
-<p>When building with OpenSSL on Windows, you must build or install a distribution
-of OpenSSL for Windows. A commonly chosen distribution is <a href="https://slproweb.com/products/Win32OpenSSL.html">Shining Light
-Productions' OpenSSL</a>.</p>
-
-<p>As of this writing, OpenSSL 1.1.x is not yet supported, but 1.0.2L has been
-tested.</p>
-
-<p>Use <code>-DENABLE_SSL=ON</code> when running CMake to build with OpenSSL.</p>
-
   </div>
 </div>
 

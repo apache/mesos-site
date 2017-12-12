@@ -144,10 +144,7 @@ patches, or lint source code).</p></li>
 
 <p>Following are the instructions for Windows 10.</p>
 
-<pre><code># Start an administrative session of PowerShell
-# (required for creating symlinks when using the agent).
-
-# Clone (or extract) Mesos.
+<pre><code># Clone (or extract) Mesos.
 git clone https://git-wip-us.apache.org/repos/asf/mesos.git
 cd mesos
 
@@ -171,14 +168,15 @@ src\mesos-agent.exe --master=&lt;master&gt; --work_dir=&lt;work folder&gt; --lau
 <p>The current implementation is known to have the following limitations:</p>
 
 <ul>
-<li>Only the agent should be run on Windows.  The Mesos master can be
+<li><p>Only the agent should be run on Windows.  The Mesos master can be
 launched, but only for testing as the master does not support
-high-availability setups on Windows.</li>
-<li>While Mesos supports NTFS long paths internally, tasks which do not support
-long paths must be run on agent whose <code>--work_dir</code> is a short path.</li>
-<li>The Mesos agent must be run as Administrator, mainly due to symlinks.</li>
-<li>The <code>MesosContainerizer</code> currently does not provide any actual
-resource isolation (similar to running the Mesos agent on POSIX).</li>
+high-availability setups on Windows.</p></li>
+<li><p>While Mesos supports NTFS long paths internally, tasks which do not support
+long paths must be run on agent whose <code>--work_dir</code> is a short path.</p></li>
+<li><p>The minimum versions of Windows supported are: Windows 10 Creators Update (AKA
+version 1703, build number 15063), and <a href="https://docs.microsoft.com/en-us/windows-server/get-started/get-started-with-1709">Windows Server, version 1709</a>.
+It is likely that this will increase, due to evolving Windows container
+support and developer features which ease porting.</p></li>
 </ul>
 
 
@@ -186,6 +184,68 @@ resource isolation (similar to running the Mesos agent on POSIX).</li>
 
 <p>For more information regarding the status of Windows support in Mesos,
 please refer to the <a href="https://issues.apache.org/jira/browse/MESOS-3094">JIRA epic</a>.</p>
+
+<h2>Build Configuration Examples</h2>
+
+<h3>Building with Java</h3>
+
+<p>This enables more unit tests, but we do not yet officially produce
+<code>mesos-master</code>.</p>
+
+<p>When building with Java on Windows, you must add the <a href="https://maven.apache.org/guides/getting-started/windows-prerequisites.html">Maven</a> build tool to
+your path. The <code>JAVA_HOME</code> environment variable must also be manually set.
+An installation of the Java SDK can be found form <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">Oracle</a>.</p>
+
+<p>As of this writing, Java 9 is not yet supported, but Java 8 has been tested.</p>
+
+<p>The Java build defaults to <code>OFF</code> because it is slow. To build the Java
+components on Windows, turn it <code>ON</code>:</p>
+
+<pre><code class="powershell">mkdir build; cd build
+$env:PATH += ";C:\...\apache-maven-3.3.9\bin\"
+$env:JAVA_HOME = "C:\Program Files\Java\jdk1.8.0_144"
+cmake .. -DENABLE_JAVA=ON -DENABLE_LIBEVENT=ON -G "Visual Studio 15 2017 Win64" -T "host=x64"
+cmake --build . --target mesos-java
+</code></pre>
+
+<p>Note that the <code>mesos-java</code> library does not have to be manually built; as
+<code>libmesos</code> will link it when Java is enabled.</p>
+
+<p>Unfortunately, on Windows the <code>FindJNI</code> CMake module will populate <code>JAVA_JVM_LIBRARY</code> with
+the path to the static <code>jvm.lib</code>, but this variable must point to the shared
+library, <code>jvm.dll</code>, as it is loaded at runtime. Set it correctly like this:</p>
+
+<pre><code>$env:JAVA_JVM_LIBRARY = "C:\Program Files\Java\jdk1.8.0_144\jre\bin\server\jvm.dll"
+</code></pre>
+
+<p>The library may still fail to load at runtime with the following error:</p>
+
+<blockquote><p>&ldquo;The specified module could not be found.&rdquo;</p></blockquote>
+
+<p>If this is the case, and the path to <code>jvm.dll</code> is verified to be correct, then
+the error message actually indicates that the dependencies of <code>jvm.dll</code> could
+not be found. On Windows, the DLL search path includes the environment variable
+<code>PATH</code>, so add the <code>bin</code> folder which contains <code>server\jvm.dll</code> to <code>PATH</code>:</p>
+
+<pre><code>$env:PATH += ";C:\Program Files\Java\jdk1.8.0_144\jre\bin"
+</code></pre>
+
+<h3>Building with OpenSSL</h3>
+
+<p>When building with OpenSSL on Windows, you must build or install a distribution
+of OpenSSL for Windows. A commonly chosen distribution is
+<a href="https://slproweb.com/products/Win32OpenSSL.html">Shining Light Productions' OpenSSL</a>.</p>
+
+<p>As of this writing, OpenSSL 1.1.x is not yet supported, but 1.0.2M has been
+tested.</p>
+
+<p>Use <code>-DENABLE_SSL=ON</code> when running CMake to build with OpenSSL.</p>
+
+<p>Note that it will link to OpenSSL dynamically, so if the built executables are
+deployed elsewhere, that machine also needs OpenSSL installed.</p>
+
+<p>Beware that the OpenSSL installation, nor Mesos itself, comes with a certificate
+bundle, and so it is likely that certificate verification will fail.</p>
 
   </div>
 </div>
