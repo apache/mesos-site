@@ -98,90 +98,102 @@
 <div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="classmesos_1_1internal_1_1OfferOperationStatusUpdateManager.html">   44</a></span>&#160;<span class="keyword">class </span><a class="code" href="classmesos_1_1internal_1_1OfferOperationStatusUpdateManager.html">OfferOperationStatusUpdateManager</a></div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;{</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <a class="code" href="classmesos_1_1internal_1_1OfferOperationStatusUpdateManager.html#a4010f3ab45f7f0b3e8f55d3fb44b7b70">OfferOperationStatusUpdateManager</a>();</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <a class="code" href="classmesos_1_1internal_1_1OfferOperationStatusUpdateManager.html#ad91139f9cbaaee6a9ae652a72cfbdaec">~OfferOperationStatusUpdateManager</a>();</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <a class="code" href="classmesos_1_1internal_1_1OfferOperationStatusUpdateManager.html#a4010f3ab45f7f0b3e8f55d3fb44b7b70">OfferOperationStatusUpdateManager</a>(</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;      <span class="keyword">const</span> <a class="code" href="classmesos_1_1internal_1_1OfferOperationStatusUpdateManager.html">OfferOperationStatusUpdateManager</a>&amp; that) = <span class="keyword">delete</span>;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <a class="code" href="classmesos_1_1internal_1_1OfferOperationStatusUpdateManager.html">OfferOperationStatusUpdateManager</a>&amp; <a class="code" href="classmesos_1_1internal_1_1OfferOperationStatusUpdateManager.html#a67170ad5f66841f2a4d1e8a3e258a563">operator=</a>(</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;      <span class="keyword">const</span> <a class="code" href="classmesos_1_1internal_1_1OfferOperationStatusUpdateManager.html">OfferOperationStatusUpdateManager</a>&amp; that) = <span class="keyword">delete</span>;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <span class="comment">// Expects two callbacks:</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="comment">//   `forward`: called in order to forward an offer operation status update</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="comment">//              to its recipient.</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="comment">//   `getPath`: called in order to generate the path of a status update stream</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <span class="comment">//              file, given the operation&#39;s `operation_uuid`.</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classmesos_1_1internal_1_1OfferOperationStatusUpdateManager.html#af9e9c4cc8632547a842cefafcd31a782">initialize</a>(</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;      <span class="keyword">const</span> lambda::function&lt;<span class="keywordtype">void</span>(<span class="keyword">const</span> OfferOperationStatusUpdate&amp;)&gt;&amp; forward,</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;      <span class="keyword">const</span> lambda::function&lt;<span class="keyword">const</span> std::string(<span class="keyword">const</span> <a class="code" href="structid_1_1UUID.html">UUID</a>&amp;)&gt;&amp; getPath);</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="comment">// Checkpoints the update if necessary and reliably sends the update.</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="comment">//</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <span class="comment">// Returns whether the update is handled successfully (e.g. checkpointed).</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <a class="code" href="classprocess_1_1Future.html">process::Future&lt;Nothing&gt;</a> <a class="code" href="classmesos_1_1internal_1_1OfferOperationStatusUpdateManager.html#ac2fcb72184c3b5e436161ae22f37d088">update</a>(</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;      <span class="keyword">const</span> OfferOperationStatusUpdate&amp; <a class="code" href="classmesos_1_1internal_1_1OfferOperationStatusUpdateManager.html#ac2fcb72184c3b5e436161ae22f37d088">update</a>,</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;      <span class="keywordtype">bool</span> <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1state_1_1internal.html#a749d698dcb6786428fa589b72cee6467">checkpoint</a> = <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="comment">// Checkpoints the acknowledgement to disk if necessary.</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="comment">// Also, sends the next pending status update, if any.</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="comment">//</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="comment">// Returns:</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="comment">//   - `true`: if the ACK is handled successfully (e.g., checkpointed)</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="comment">//             and the status update stream is not terminated.</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="comment">//   - `false`: same as above except the status update stream is terminated.</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="comment">//   - A `Failure`: if there are any errors (e.g., duplicate, checkpointing).</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <a class="code" href="classprocess_1_1Future.html">process::Future&lt;bool&gt;</a> <a class="code" href="classmesos_1_1internal_1_1OfferOperationStatusUpdateManager.html#a6034af290be4ed911ea8780176d02968">acknowledgement</a>(</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;      <span class="keyword">const</span> <a class="code" href="structid_1_1UUID.html">UUID</a>&amp; operationUuid,</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;      <span class="keyword">const</span> <a class="code" href="structid_1_1UUID.html">UUID</a>&amp; statusUuid);</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="comment">// Recover status updates. The provided list of operation_uuids is used as the</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <span class="comment">// source of truth for which checkpointed files should be recovered from.</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  <span class="comment">//</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  <span class="comment">// Returns the recovered state, including a map from operation ID to the</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <span class="comment">// stream state recovered for the status file.</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  <span class="comment">//</span></div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <span class="comment">// The stream state will be `None` if:</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  <span class="comment">//</span></div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  <span class="comment">//   * The status updates file didn&#39;t exist.</span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  <span class="comment">//   * The status updates file was empty.</span></div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <span class="comment">//</span></div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  <span class="comment">// The stream state contains all the status updates (both acknowledged and</span></div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  <span class="comment">// pending) added to the stream.</span></div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  <span class="comment">//</span></div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  <span class="comment">// This struct also contains a count of the recoverable errors found during</span></div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  <span class="comment">// non-strict recovery.</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  <a class="code" href="classprocess_1_1Future.html">process::Future&lt;OfferOperationStatusManagerState&gt;</a> <a class="code" href="classmesos_1_1internal_1_1OfferOperationStatusUpdateManager.html#a465beab2cc7b5d2258bc3401808761a4">recover</a>(</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;      <span class="keyword">const</span> std::list&lt;UUID&gt;&amp; operationUuids,</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;      <span class="keywordtype">bool</span> strict);</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  <span class="comment">// Closes all the status update streams corresponding to this framework.</span></div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  <span class="comment">//</span></div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  <span class="comment">// NOTE: This stops retrying any pending status updates for this framework,</span></div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  <span class="comment">// but does NOT garbage collect any checkpointed state. The caller is</span></div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;  <span class="comment">// responsible for garbage collection after this method has returned.</span></div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classmesos_1_1internal_1_1OfferOperationStatusUpdateManager.html#a3001cb794e44d490b42f0824a2f2ece7">cleanup</a>(<span class="keyword">const</span> FrameworkID&amp; frameworkId);</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  <a class="code" href="classprocess_1_1Owned.html">process::Owned</a>&lt;</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;      <a class="code" href="classmesos_1_1internal_1_1StatusUpdateManagerProcess.html">StatusUpdateManagerProcess</a>&lt;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;          <a class="code" href="structid_1_1UUID.html">UUID</a>,</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;          OfferOperationStatusUpdateRecord,</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;          OfferOperationStatusUpdate&gt;&gt; process;</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;};</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;} <span class="comment">// namespace internal {</span></div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;} <span class="comment">// namespace mesos {</span></div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="preprocessor">#endif // __STATUS_UPDATE_MANAGER_OFFER_OPERATION_HPP__</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <span class="comment">// NOTE: Unless first paused, the status update manager will forward updates</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <span class="comment">// as soon as possible; for example, during recovery or as soon as the first</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <span class="comment">// status update is processed.</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <a class="code" href="classmesos_1_1internal_1_1OfferOperationStatusUpdateManager.html#a4010f3ab45f7f0b3e8f55d3fb44b7b70">OfferOperationStatusUpdateManager</a>();</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <a class="code" href="classmesos_1_1internal_1_1OfferOperationStatusUpdateManager.html#ad91139f9cbaaee6a9ae652a72cfbdaec">~OfferOperationStatusUpdateManager</a>();</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <a class="code" href="classmesos_1_1internal_1_1OfferOperationStatusUpdateManager.html#a4010f3ab45f7f0b3e8f55d3fb44b7b70">OfferOperationStatusUpdateManager</a>(</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;      <span class="keyword">const</span> <a class="code" href="classmesos_1_1internal_1_1OfferOperationStatusUpdateManager.html">OfferOperationStatusUpdateManager</a>&amp; that) = <span class="keyword">delete</span>;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <a class="code" href="classmesos_1_1internal_1_1OfferOperationStatusUpdateManager.html">OfferOperationStatusUpdateManager</a>&amp; <a class="code" href="classmesos_1_1internal_1_1OfferOperationStatusUpdateManager.html#a67170ad5f66841f2a4d1e8a3e258a563">operator=</a>(</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;      <span class="keyword">const</span> <a class="code" href="classmesos_1_1internal_1_1OfferOperationStatusUpdateManager.html">OfferOperationStatusUpdateManager</a>&amp; that) = <span class="keyword">delete</span>;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <span class="comment">// Expects two callbacks:</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="comment">//   `forward`: called in order to forward an offer operation status update</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="comment">//              to its recipient.</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="comment">//   `getPath`: called in order to generate the path of a status update stream</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <span class="comment">//              file, given the operation&#39;s `operation_uuid`.</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classmesos_1_1internal_1_1OfferOperationStatusUpdateManager.html#af9e9c4cc8632547a842cefafcd31a782">initialize</a>(</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;      <span class="keyword">const</span> lambda::function&lt;<span class="keywordtype">void</span>(<span class="keyword">const</span> OfferOperationStatusUpdate&amp;)&gt;&amp; forward,</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;      <span class="keyword">const</span> lambda::function&lt;<span class="keyword">const</span> std::string(<span class="keyword">const</span> <a class="code" href="structid_1_1UUID.html">UUID</a>&amp;)&gt;&amp; getPath);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="comment">// Checkpoints the update if necessary and reliably sends the update.</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="comment">//</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="comment">// Returns whether the update is handled successfully (e.g. checkpointed).</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <a class="code" href="classprocess_1_1Future.html">process::Future&lt;Nothing&gt;</a> <a class="code" href="classmesos_1_1internal_1_1OfferOperationStatusUpdateManager.html#ac2fcb72184c3b5e436161ae22f37d088">update</a>(</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;      <span class="keyword">const</span> OfferOperationStatusUpdate&amp; <a class="code" href="classmesos_1_1internal_1_1OfferOperationStatusUpdateManager.html#ac2fcb72184c3b5e436161ae22f37d088">update</a>,</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;      <span class="keywordtype">bool</span> <a class="code" href="namespacemesos_1_1internal_1_1slave_1_1state_1_1internal.html#a749d698dcb6786428fa589b72cee6467">checkpoint</a> = <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="comment">// Checkpoints the acknowledgement to disk if necessary.</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="comment">// Also, sends the next pending status update, if any.</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="comment">//</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="comment">// Returns:</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="comment">//   - `true`: if the ACK is handled successfully (e.g., checkpointed)</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <span class="comment">//             and the status update stream is not terminated.</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="comment">//   - `false`: same as above except the status update stream is terminated.</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <span class="comment">//   - A `Failure`: if there are any errors (e.g., duplicate, checkpointing).</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <a class="code" href="classprocess_1_1Future.html">process::Future&lt;bool&gt;</a> <a class="code" href="classmesos_1_1internal_1_1OfferOperationStatusUpdateManager.html#a6034af290be4ed911ea8780176d02968">acknowledgement</a>(</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;      <span class="keyword">const</span> <a class="code" href="structid_1_1UUID.html">UUID</a>&amp; operationUuid,</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;      <span class="keyword">const</span> <a class="code" href="structid_1_1UUID.html">UUID</a>&amp; statusUuid);</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <span class="comment">// Recover status updates. The provided list of operation_uuids is used as the</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  <span class="comment">// source of truth for which checkpointed files should be recovered from.</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <span class="comment">//</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  <span class="comment">// Returns the recovered state, including a map from operation ID to the</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  <span class="comment">// stream state recovered for the status file.</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  <span class="comment">//</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <span class="comment">// The stream state will be `None` if:</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  <span class="comment">//</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  <span class="comment">//   * The status updates file didn&#39;t exist.</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  <span class="comment">//   * The status updates file was empty.</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  <span class="comment">//</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  <span class="comment">// The stream state contains all the status updates (both acknowledged and</span></div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  <span class="comment">// pending) added to the stream.</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  <span class="comment">//</span></div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  <span class="comment">// This struct also contains a count of the recoverable errors found during</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  <span class="comment">// non-strict recovery.</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  <a class="code" href="classprocess_1_1Future.html">process::Future&lt;OfferOperationStatusManagerState&gt;</a> <a class="code" href="classmesos_1_1internal_1_1OfferOperationStatusUpdateManager.html#a465beab2cc7b5d2258bc3401808761a4">recover</a>(</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;      <span class="keyword">const</span> std::list&lt;UUID&gt;&amp; operationUuids,</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;      <span class="keywordtype">bool</span> strict);</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;  <span class="comment">// Closes all the status update streams corresponding to this framework.</span></div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  <span class="comment">//</span></div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  <span class="comment">// NOTE: This stops retrying any pending status updates for this framework,</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  <span class="comment">// but does NOT garbage collect any checkpointed state. The caller is</span></div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  <span class="comment">// responsible for garbage collection after this method has returned.</span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classmesos_1_1internal_1_1OfferOperationStatusUpdateManager.html#a3001cb794e44d490b42f0824a2f2ece7">cleanup</a>(<span class="keyword">const</span> FrameworkID&amp; frameworkId);</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;  <span class="comment">// Stop forwarding status updates until `resume()` is called.</span></div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classmesos_1_1internal_1_1OfferOperationStatusUpdateManager.html#aa039202e38037c7af43431d71b44fc19">pause</a>();</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;  <span class="comment">// Resume forwarding status updates until `pause()` is called.</span></div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classmesos_1_1internal_1_1OfferOperationStatusUpdateManager.html#a357a2db3f8b1254e26b2570a0853616a">resume</a>();</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;  <a class="code" href="classprocess_1_1Owned.html">process::Owned</a>&lt;</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;      <a class="code" href="classmesos_1_1internal_1_1StatusUpdateManagerProcess.html">StatusUpdateManagerProcess</a>&lt;</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;          <a class="code" href="structid_1_1UUID.html">UUID</a>,</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;          OfferOperationStatusUpdateRecord,</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;          OfferOperationStatusUpdate&gt;&gt; process;</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;};</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;} <span class="comment">// namespace internal {</span></div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;} <span class="comment">// namespace mesos {</span></div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;<span class="preprocessor">#endif // __STATUS_UPDATE_MANAGER_OFFER_OPERATION_HPP__</span></div>
 <div class="ttc" id="classmesos_1_1internal_1_1OfferOperationStatusUpdateManager_html_a6034af290be4ed911ea8780176d02968"><div class="ttname"><a href="classmesos_1_1internal_1_1OfferOperationStatusUpdateManager.html#a6034af290be4ed911ea8780176d02968">mesos::internal::OfferOperationStatusUpdateManager::acknowledgement</a></div><div class="ttdeci">process::Future&lt; bool &gt; acknowledgement(const UUID &amp;operationUuid, const UUID &amp;statusUuid)</div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1OfferOperationStatusUpdateManager_html_a3001cb794e44d490b42f0824a2f2ece7"><div class="ttname"><a href="classmesos_1_1internal_1_1OfferOperationStatusUpdateManager.html#a3001cb794e44d490b42f0824a2f2ece7">mesos::internal::OfferOperationStatusUpdateManager::cleanup</a></div><div class="ttdeci">void cleanup(const FrameworkID &amp;frameworkId)</div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1OfferOperationStatusUpdateManager_html_a4010f3ab45f7f0b3e8f55d3fb44b7b70"><div class="ttname"><a href="classmesos_1_1internal_1_1OfferOperationStatusUpdateManager.html#a4010f3ab45f7f0b3e8f55d3fb44b7b70">mesos::internal::OfferOperationStatusUpdateManager::OfferOperationStatusUpdateManager</a></div><div class="ttdeci">OfferOperationStatusUpdateManager()</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1OfferOperationStatusUpdateManager_html_a357a2db3f8b1254e26b2570a0853616a"><div class="ttname"><a href="classmesos_1_1internal_1_1OfferOperationStatusUpdateManager.html#a357a2db3f8b1254e26b2570a0853616a">mesos::internal::OfferOperationStatusUpdateManager::resume</a></div><div class="ttdeci">void resume()</div></div>
 <div class="ttc" id="include_2mesos_2mesos_8hpp_html"><div class="ttname"><a href="include_2mesos_2mesos_8hpp.html">mesos.hpp</a></div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1StatusUpdateManagerProcess_html"><div class="ttname"><a href="classmesos_1_1internal_1_1StatusUpdateManagerProcess.html">mesos::internal::StatusUpdateManagerProcess</a></div><div class="ttdef"><b>Definition:</b> status_update_manager_process.hpp:76</div></div>
 <div class="ttc" id="status__update__manager__process_8hpp_html"><div class="ttname"><a href="status__update__manager__process_8hpp.html">status_update_manager_process.hpp</a></div></div>
 <div class="ttc" id="lambda_8hpp_html"><div class="ttname"><a href="lambda_8hpp.html">lambda.hpp</a></div></div>
 <div class="ttc" id="structid_1_1UUID_html"><div class="ttname"><a href="structid_1_1UUID.html">id::UUID</a></div><div class="ttdef"><b>Definition:</b> uuid.hpp:40</div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1OfferOperationStatusUpdateManager_html_a465beab2cc7b5d2258bc3401808761a4"><div class="ttname"><a href="classmesos_1_1internal_1_1OfferOperationStatusUpdateManager.html#a465beab2cc7b5d2258bc3401808761a4">mesos::internal::OfferOperationStatusUpdateManager::recover</a></div><div class="ttdeci">process::Future&lt; OfferOperationStatusManagerState &gt; recover(const std::list&lt; UUID &gt; &amp;operationUuids, bool strict)</div></div>
+<div class="ttc" id="classmesos_1_1internal_1_1OfferOperationStatusUpdateManager_html_aa039202e38037c7af43431d71b44fc19"><div class="ttname"><a href="classmesos_1_1internal_1_1OfferOperationStatusUpdateManager.html#aa039202e38037c7af43431d71b44fc19">mesos::internal::OfferOperationStatusUpdateManager::pause</a></div><div class="ttdeci">void pause()</div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1OfferOperationStatusUpdateManager_html"><div class="ttname"><a href="classmesos_1_1internal_1_1OfferOperationStatusUpdateManager.html">mesos::internal::OfferOperationStatusUpdateManager</a></div><div class="ttdef"><b>Definition:</b> offer_operation.hpp:44</div></div>
 <div class="ttc" id="namespacemesos_1_1internal_html_af6170a96974c24cb66d1a6334e890dcb"><div class="ttname"><a href="namespacemesos_1_1internal.html#af6170a96974c24cb66d1a6334e890dcb">mesos::internal::OfferOperationStatusManagerState</a></div><div class="ttdeci">StatusUpdateManagerProcess&lt; UUID, OfferOperationStatusUpdateRecord, OfferOperationStatusUpdate &gt;::State OfferOperationStatusManagerState</div><div class="ttdef"><b>Definition:</b> offer_operation.hpp:42</div></div>
 <div class="ttc" id="classmesos_1_1internal_1_1OfferOperationStatusUpdateManager_html_ad91139f9cbaaee6a9ae652a72cfbdaec"><div class="ttname"><a href="classmesos_1_1internal_1_1OfferOperationStatusUpdateManager.html#ad91139f9cbaaee6a9ae652a72cfbdaec">mesos::internal::OfferOperationStatusUpdateManager::~OfferOperationStatusUpdateManager</a></div><div class="ttdeci">~OfferOperationStatusUpdateManager()</div></div>
