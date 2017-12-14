@@ -197,7 +197,7 @@
 <div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;  <span class="comment">// UUID and no value to start).</span></div>
 <div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;  internal::state::Entry entry;</div>
 <div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;  entry.set_name(name);</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;  entry.set_uuid(<a class="code" href="namespaceos.html#aede9f61dcb4b7d1f276302a7bce37446">UUID::random</a>().toBytes());</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;  entry.set_uuid(<a class="code" href="structid_1_1UUID.html#a6d8296fba33c5d84a64e4a882fcdc280">id::UUID::random</a>().toBytes());</div>
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;</div>
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;  <span class="keywordflow">return</span> Variable(entry);</div>
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;}</div>
@@ -206,16 +206,16 @@
 <div class="line"><a name="l00152"></a><span class="lineno"><a class="line" href="classmesos_1_1state_1_1State.html#aee80fd693c8c027bbdf05a3d887ffaf6">  152</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classprocess_1_1Future.html">process::Future&lt;Option&lt;Variable&gt;</a>&gt; <a class="code" href="classmesos_1_1state_1_1State.html#aee80fd693c8c027bbdf05a3d887ffaf6">State::store</a>(<span class="keyword">const</span> <a class="code" href="classmesos_1_1state_1_1Variable.html">Variable</a>&amp; variable)</div>
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;{</div>
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;  <span class="comment">// Note that we try and swap an entry even if the value didn&#39;t change!</span></div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;  <a class="code" href="structid_1_1UUID.html">UUID</a> uuid = UUID::fromBytes(variable.entry.uuid()).<span class="keyword">get</span>();</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;  <a class="code" href="structid_1_1UUID.html">id::UUID</a> uuid = <a class="code" href="structid_1_1UUID.html#afd66db1d29a4ee4be9c82581437dda74">id::UUID::fromBytes</a>(variable.entry.uuid()).<span class="keyword">get</span>();</div>
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;  <span class="comment">// Create a new entry to replace the existing entry provided the</span></div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;  <span class="comment">// UUID matches.</span></div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;  internal::state::Entry entry;</div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;  entry.set_name(variable.entry.name());</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;  entry.set_uuid(<a class="code" href="namespaceos.html#aede9f61dcb4b7d1f276302a7bce37446">UUID::random</a>().toBytes());</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;  entry.set_uuid(<a class="code" href="structid_1_1UUID.html#a6d8296fba33c5d84a64e4a882fcdc280">id::UUID::random</a>().toBytes());</div>
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;  entry.set_value(variable.entry.value());</div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;  <span class="keywordflow">return</span> storage-&gt;<a class="code" href="classmesos_1_1state_1_1Storage.html#a069fded54c8f59a04b825f4ee7c79cf4">set</a>(entry, uuid)</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;  <span class="keywordflow">return</span> storage-&gt;<a class="code" href="classmesos_1_1state_1_1Storage.html#aa6db1d2a565596d7cc65a505f9e99028">set</a>(entry, uuid)</div>
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    .<a class="code" href="classprocess_1_1Future.html#a269dcc23e03e8868067c24fe70b65a41">then</a>(<a class="code" href="namespaceprocess_1_1network.html#ad067110a4b38cc83785a43f49bf6c8e2">lambda::bind</a>(&amp;State::_store, entry, lambda::_1));</div>
 <div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;}</div>
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;</div>
@@ -255,7 +255,6 @@
 <div class="ttc" id="classmesos_1_1state_1_1State_html"><div class="ttname"><a href="classmesos_1_1state_1_1State.html">mesos::state::State</a></div><div class="ttdef"><b>Definition:</b> state.hpp:90</div></div>
 <div class="ttc" id="include_2mesos_2state_2storage_8hpp_html"><div class="ttname"><a href="include_2mesos_2state_2storage_8hpp.html">storage.hpp</a></div></div>
 <div class="ttc" id="some_8hpp_html"><div class="ttname"><a href="some_8hpp.html">some.hpp</a></div></div>
-<div class="ttc" id="classmesos_1_1state_1_1Storage_html_a069fded54c8f59a04b825f4ee7c79cf4"><div class="ttname"><a href="classmesos_1_1state_1_1Storage.html#a069fded54c8f59a04b825f4ee7c79cf4">mesos::state::Storage::set</a></div><div class="ttdeci">virtual process::Future&lt; bool &gt; set(const internal::state::Entry &amp;entry, const UUID &amp;uuid)=0</div></div>
 <div class="ttc" id="classmesos_1_1state_1_1Variable_html_ade8ed8f89ceb5e3ab004e2922a5b35fa"><div class="ttname"><a href="classmesos_1_1state_1_1Variable.html#ade8ed8f89ceb5e3ab004e2922a5b35fa">mesos::state::Variable::value</a></div><div class="ttdeci">std::string value() const </div><div class="ttdef"><b>Definition:</b> state.hpp:67</div></div>
 <div class="ttc" id="classmesos_1_1state_1_1State_html_a3966e025554f6b786eb13bdac9fb53b5"><div class="ttname"><a href="classmesos_1_1state_1_1State.html#a3966e025554f6b786eb13bdac9fb53b5">mesos::state::State::names</a></div><div class="ttdeci">process::Future&lt; std::set&lt; std::string &gt; &gt; names()</div><div class="ttdef"><b>Definition:</b> state.hpp:187</div></div>
 <div class="ttc" id="none_8hpp_html"><div class="ttname"><a href="none_8hpp.html">none.hpp</a></div></div>
@@ -263,11 +262,11 @@
 <div class="ttc" id="lambda_8hpp_html"><div class="ttname"><a href="lambda_8hpp.html">lambda.hpp</a></div></div>
 <div class="ttc" id="classmesos_1_1state_1_1Storage_html_ae7f901a5273922d60386d059bcb419eb"><div class="ttname"><a href="classmesos_1_1state_1_1Storage.html#ae7f901a5273922d60386d059bcb419eb">mesos::state::Storage::expunge</a></div><div class="ttdeci">virtual process::Future&lt; bool &gt; expunge(const internal::state::Entry &amp;entry)=0</div></div>
 <div class="ttc" id="classOption_html_a4e3bf8416d95246f43c91f1b5c309323"><div class="ttname"><a href="classOption.html#a4e3bf8416d95246f43c91f1b5c309323">Option::isSome</a></div><div class="ttdeci">bool isSome() const </div><div class="ttdef"><b>Definition:</b> option.hpp:115</div></div>
+<div class="ttc" id="structid_1_1UUID_html_a6d8296fba33c5d84a64e4a882fcdc280"><div class="ttname"><a href="structid_1_1UUID.html#a6d8296fba33c5d84a64e4a882fcdc280">id::UUID::random</a></div><div class="ttdeci">static UUID random()</div><div class="ttdef"><b>Definition:</b> uuid.hpp:38</div></div>
 <div class="ttc" id="classmesos_1_1state_1_1Variable_html"><div class="ttname"><a href="classmesos_1_1state_1_1Variable.html">mesos::state::Variable</a></div><div class="ttdef"><b>Definition:</b> state.hpp:64</div></div>
 <div class="ttc" id="classmesos_1_1state_1_1Variable_html_abb0a232f470a26e935076cc6dd8f114a"><div class="ttname"><a href="classmesos_1_1state_1_1Variable.html#abb0a232f470a26e935076cc6dd8f114a">mesos::state::Variable::mutate</a></div><div class="ttdeci">Variable mutate(const std::string &amp;value) const </div><div class="ttdef"><b>Definition:</b> state.hpp:72</div></div>
-<div class="ttc" id="structid_1_1UUID_html"><div class="ttname"><a href="structid_1_1UUID.html">id::UUID</a></div><div class="ttdef"><b>Definition:</b> uuid.hpp:40</div></div>
+<div class="ttc" id="structid_1_1UUID_html"><div class="ttname"><a href="structid_1_1UUID.html">id::UUID</a></div><div class="ttdef"><b>Definition:</b> uuid.hpp:35</div></div>
 <div class="ttc" id="classOption_html_a21358442c0fac1cc978a67a9a9089a79"><div class="ttname"><a href="classOption.html#a21358442c0fac1cc978a67a9a9089a79">Option::get</a></div><div class="ttdeci">const T &amp; get() const &amp;</div><div class="ttdef"><b>Definition:</b> option.hpp:118</div></div>
-<div class="ttc" id="namespaceos_html_aede9f61dcb4b7d1f276302a7bce37446"><div class="ttname"><a href="namespaceos.html#aede9f61dcb4b7d1f276302a7bce37446">os::random</a></div><div class="ttdeci">int random()</div><div class="ttdef"><b>Definition:</b> os.hpp:635</div></div>
 <div class="ttc" id="option_8hpp_html"><div class="ttname"><a href="option_8hpp.html">option.hpp</a></div></div>
 <div class="ttc" id="future_8hpp_html"><div class="ttname"><a href="future_8hpp.html">future.hpp</a></div></div>
 <div class="ttc" id="classmesos_1_1state_1_1Storage_html"><div class="ttname"><a href="classmesos_1_1state_1_1Storage.html">mesos::state::Storage</a></div><div class="ttdef"><b>Definition:</b> storage.hpp:33</div></div>
@@ -275,7 +274,9 @@
 <div class="ttc" id="classmesos_1_1state_1_1State_html_acd5a045c3daa593a574f6335f63eda9d"><div class="ttname"><a href="classmesos_1_1state_1_1State.html#acd5a045c3daa593a574f6335f63eda9d">mesos::state::State::fetch</a></div><div class="ttdeci">process::Future&lt; Variable &gt; fetch(const std::string &amp;name)</div><div class="ttdef"><b>Definition:</b> state.hpp:127</div></div>
 <div class="ttc" id="some_8hpp_html_a2048f5c3b4ee79448c012cf6dc82a020"><div class="ttname"><a href="some_8hpp.html#a2048f5c3b4ee79448c012cf6dc82a020">Some</a></div><div class="ttdeci">_Some&lt; typename std::decay&lt; T &gt;::type &gt; Some(T &amp;&amp;t)</div><div class="ttdef"><b>Definition:</b> some.hpp:42</div></div>
 <div class="ttc" id="structNone_html"><div class="ttname"><a href="structNone.html">None</a></div><div class="ttdef"><b>Definition:</b> none.hpp:27</div></div>
+<div class="ttc" id="structid_1_1UUID_html_afd66db1d29a4ee4be9c82581437dda74"><div class="ttname"><a href="structid_1_1UUID.html#afd66db1d29a4ee4be9c82581437dda74">id::UUID::fromBytes</a></div><div class="ttdeci">static Try&lt; UUID &gt; fromBytes(const std::string &amp;s)</div><div class="ttdef"><b>Definition:</b> uuid.hpp:49</div></div>
 <div class="ttc" id="try_8hpp_html"><div class="ttname"><a href="try_8hpp.html">try.hpp</a></div></div>
+<div class="ttc" id="classmesos_1_1state_1_1Storage_html_aa6db1d2a565596d7cc65a505f9e99028"><div class="ttname"><a href="classmesos_1_1state_1_1Storage.html#aa6db1d2a565596d7cc65a505f9e99028">mesos::state::Storage::set</a></div><div class="ttdeci">virtual process::Future&lt; bool &gt; set(const internal::state::Entry &amp;entry, const id::UUID &amp;uuid)=0</div></div>
 <div class="ttc" id="deferred_8hpp_html"><div class="ttname"><a href="deferred_8hpp.html">deferred.hpp</a></div></div>
 <div class="ttc" id="classmesos_1_1state_1_1Storage_html_abf909dbdb474653209c4ffdc83f1f794"><div class="ttname"><a href="classmesos_1_1state_1_1Storage.html#abf909dbdb474653209c4ffdc83f1f794">mesos::state::Storage::names</a></div><div class="ttdeci">virtual process::Future&lt; std::set&lt; std::string &gt; &gt; names()=0</div></div>
 <div class="ttc" id="namespaceprocess_1_1network_html_ad067110a4b38cc83785a43f49bf6c8e2"><div class="ttname"><a href="namespaceprocess_1_1network.html#ad067110a4b38cc83785a43f49bf6c8e2">process::network::bind</a></div><div class="ttdeci">Try&lt; Nothing &gt; bind(int_fd s, const Address &amp;address)</div><div class="ttdef"><b>Definition:</b> network.hpp:46</div></div>
