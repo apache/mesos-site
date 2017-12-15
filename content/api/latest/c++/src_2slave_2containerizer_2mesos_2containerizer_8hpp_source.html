@@ -436,25 +436,31 @@
 <div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;  <span class="comment">// Helper to transition container state.</span></div>
 <div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;  <span class="keywordtype">void</span> transition(<span class="keyword">const</span> ContainerID&amp; containerId, <span class="keyword">const</span> State&amp; state);</div>
 <div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;</div>
-<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;  <span class="keyword">struct </span><a class="code" href="namespacemesos_1_1internal_1_1tests.html#ace210c8852d8ef1f0f67ec3af06281f6">Metrics</a></div>
-<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;  {</div>
-<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;    <a class="code" href="namespacemesos_1_1internal_1_1tests.html#ace210c8852d8ef1f0f67ec3af06281f6">Metrics</a>();</div>
-<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;    ~<a class="code" href="namespacemesos_1_1internal_1_1tests.html#ace210c8852d8ef1f0f67ec3af06281f6">Metrics</a>();</div>
-<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;</div>
-<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;    <a class="code" href="classprocess_1_1metrics_1_1Counter.html">process::metrics::Counter</a> container_destroy_errors;</div>
-<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;  } metrics;</div>
-<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;};</div>
-<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;</div>
-<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;</div>
-<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;std::ostream&amp; <a class="code" href="namespacemesos_1_1internal_1_1slave.html#acc816a5f127bb40e7d5464befda0a0a9">operator&lt;&lt;</a>(</div>
-<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;    std::ostream&amp; stream,</div>
-<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;    <span class="keyword">const</span> MesosContainerizerProcess::State&amp; state);</div>
-<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;</div>
-<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;} <span class="comment">// namespace slave {</span></div>
-<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;} <span class="comment">// namespace internal {</span></div>
-<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;} <span class="comment">// namespace mesos {</span></div>
-<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;</div>
-<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;<span class="preprocessor">#endif // __MESOS_CONTAINERIZER_HPP__</span></div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;  <span class="comment">// Helper to determine if a container is supported by an isolator.</span></div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;  <span class="keywordtype">bool</span> isSupportedByIsolator(</div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;      <span class="keyword">const</span> ContainerID&amp; containerId,</div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;      <span class="keywordtype">bool</span> isolatorSupportsNesting,</div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;      <span class="keywordtype">bool</span> isolatorSupportsStandalone);</div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;</div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;  <span class="keyword">struct </span><a class="code" href="namespacemesos_1_1internal_1_1tests.html#ace210c8852d8ef1f0f67ec3af06281f6">Metrics</a></div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;  {</div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;    <a class="code" href="namespacemesos_1_1internal_1_1tests.html#ace210c8852d8ef1f0f67ec3af06281f6">Metrics</a>();</div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;    ~<a class="code" href="namespacemesos_1_1internal_1_1tests.html#ace210c8852d8ef1f0f67ec3af06281f6">Metrics</a>();</div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;</div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;    <a class="code" href="classprocess_1_1metrics_1_1Counter.html">process::metrics::Counter</a> container_destroy_errors;</div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;  } metrics;</div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;};</div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;</div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;</div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;std::ostream&amp; <a class="code" href="namespacemesos_1_1internal_1_1slave.html#acc816a5f127bb40e7d5464befda0a0a9">operator&lt;&lt;</a>(</div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;    std::ostream&amp; stream,</div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;    <span class="keyword">const</span> MesosContainerizerProcess::State&amp; state);</div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;</div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;} <span class="comment">// namespace slave {</span></div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;} <span class="comment">// namespace internal {</span></div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;} <span class="comment">// namespace mesos {</span></div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;</div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;<span class="preprocessor">#endif // __MESOS_CONTAINERIZER_HPP__</span></div>
 <div class="ttc" id="classmesos_1_1internal_1_1slave_1_1MesosContainerizer_html_afcc9b85f1bb91f90c1c6089b99dfe4ba"><div class="ttname"><a href="classmesos_1_1internal_1_1slave_1_1MesosContainerizer.html#afcc9b85f1bb91f90c1c6089b99dfe4ba">mesos::internal::slave::MesosContainerizer::launch</a></div><div class="ttdeci">virtual process::Future&lt; Containerizer::LaunchResult &gt; launch(const ContainerID &amp;containerId, const mesos::slave::ContainerConfig &amp;containerConfig, const std::map&lt; std::string, std::string &gt; &amp;environment, const Option&lt; std::string &gt; &amp;pidCheckpointPath)</div></div>
 <div class="ttc" id="namespaceprocess_1_1ID_html_aeb11a48c9def1da169d8455a30d0ee39"><div class="ttname"><a href="namespaceprocess_1_1ID.html#aeb11a48c9def1da169d8455a30d0ee39">process::ID::generate</a></div><div class="ttdeci">std::string generate(const std::string &amp;prefix=&quot;&quot;)</div><div class="ttdoc">Returns &amp;#39;prefix(N)&amp;#39; where N represents the number of instances where the same prefix (wrt...</div></div>
 <div class="ttc" id="resolver_8hpp_html"><div class="ttname"><a href="resolver_8hpp.html">resolver.hpp</a></div></div>
