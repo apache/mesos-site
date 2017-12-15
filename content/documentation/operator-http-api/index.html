@@ -3207,6 +3207,11 @@ Content-Type: application/json
 <p>This call retrieves information about containers running on this agent. It contains
 ContainerStatus and ResourceStatistics along with some metadata of the containers.</p>
 
+<p>There are two knobs in the request to control the types of the containers this
+API will return:
+* <code>show_nested</code>: Whether to show nested containers [default: false].
+* <code>show_standalone</code>: Whether to show standalone containers [default: false].</p>
+
 <pre><code>GET_CONTAINERS HTTP Request (JSON):
 
 POST /api/v1  HTTP/1.1
@@ -3216,7 +3221,11 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "type": "GET_CONTAINERS"
+  "type": "GET_CONTAINERS",
+  "get_containers": {
+    "show_nested": true,
+    "show_standalone": false
+  }
 }
 
 
