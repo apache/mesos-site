@@ -218,38 +218,39 @@
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;  <span class="comment">// We don&#39;t bother introducing a `os::fdopen` since this is the only place</span></div>
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;  <span class="comment">// we use `fdopen` in the entire codebase as of writing this comment.</span></div>
 <div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="preprocessor">#ifdef __WINDOWS__</span></div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<span class="preprocessor"></span>  FILE* <a class="code" href="namespacemesos_1_1uri.html#a0a3b30c1eb427c4053aaef120b1f453c">file</a> = ::_fdopen(fd-&gt;crt(), <span class="stringliteral">&quot;w&quot;</span>);</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;<span class="preprocessor"></span>  FILE* file = ::fdopen(fd.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>(), <span class="stringliteral">&quot;w&quot;</span>);</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;<span class="preprocessor"></span>  <span class="keywordflow">if</span> (file == <span class="keyword">nullptr</span>) {</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    curl_easy_cleanup(curl);</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    <a class="code" href="namespaceos.html#a8df77ec6d6b8d32d9b287a41bc74cfdc">os::close</a>(fd.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>());</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classErrnoError.html">ErrnoError</a>(<span class="stringliteral">&quot;Failed to open file handle of &#39;&quot;</span> + path + <span class="stringliteral">&quot;&#39;&quot;</span>);</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;  }</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;  curl_easy_setopt(curl, CURLOPT_WRITEDATA, file);</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;  CURLcode curlErrorCode = curl_easy_perform(curl);</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;  <span class="keywordflow">if</span> (curlErrorCode != 0) {</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    curl_easy_cleanup(curl);</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    fclose(file);</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(curl_easy_strerror(curlErrorCode));</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;  }</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;  <span class="keywordtype">long</span> code;</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;  curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &amp;code);</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;  curl_easy_cleanup(curl);</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;  <span class="keywordflow">if</span> (fclose(file) != 0) {</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classErrnoError.html">ErrnoError</a>(<span class="stringliteral">&quot;Failed to close file handle of &#39;&quot;</span> + path + <span class="stringliteral">&quot;&#39;&quot;</span>);</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;  }</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="classTry.html#ac6304ce9dfd0042726f8b813ac64f06a">Try&lt;int&gt;::some</a>(code);</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;}</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;} <span class="comment">// namespace net {</span></div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;<span class="preprocessor">#endif // __STOUT_NET_HPP__</span></div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<span class="preprocessor"></span>  <span class="comment">// We open in &quot;binary&quot; mode on Windows to avoid line-ending translation.</span></div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;  FILE* <a class="code" href="namespacemesos_1_1uri.html#a0a3b30c1eb427c4053aaef120b1f453c">file</a> = ::_fdopen(fd-&gt;crt(), <span class="stringliteral">&quot;wb&quot;</span>);</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;<span class="preprocessor"></span>  FILE* file = ::fdopen(fd.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>(), <span class="stringliteral">&quot;w&quot;</span>);</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;<span class="preprocessor"></span>  <span class="keywordflow">if</span> (file == <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    curl_easy_cleanup(curl);</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    <a class="code" href="namespaceos.html#a8df77ec6d6b8d32d9b287a41bc74cfdc">os::close</a>(fd.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>());</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classErrnoError.html">ErrnoError</a>(<span class="stringliteral">&quot;Failed to open file handle of &#39;&quot;</span> + path + <span class="stringliteral">&quot;&#39;&quot;</span>);</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;  }</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;  curl_easy_setopt(curl, CURLOPT_WRITEDATA, file);</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;  CURLcode curlErrorCode = curl_easy_perform(curl);</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;  <span class="keywordflow">if</span> (curlErrorCode != 0) {</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    curl_easy_cleanup(curl);</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    fclose(file);</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(curl_easy_strerror(curlErrorCode));</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;  }</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;  <span class="keywordtype">long</span> code;</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;  curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &amp;code);</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;  curl_easy_cleanup(curl);</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;  <span class="keywordflow">if</span> (fclose(file) != 0) {</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classErrnoError.html">ErrnoError</a>(<span class="stringliteral">&quot;Failed to close file handle of &#39;&quot;</span> + path + <span class="stringliteral">&quot;&#39;&quot;</span>);</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;  }</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="classTry.html#ac6304ce9dfd0042726f8b813ac64f06a">Try&lt;int&gt;::some</a>(code);</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;}</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;} <span class="comment">// namespace net {</span></div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;<span class="preprocessor">#endif // __STOUT_NET_HPP__</span></div>
 <div class="ttc" id="windows_2fcntl_8hpp_html_a11b644a8526139c4cc1850dac1271ced"><div class="ttname"><a href="windows_2fcntl_8hpp.html#a11b644a8526139c4cc1850dac1271ced">O_WRONLY</a></div><div class="ttdeci">#define O_WRONLY</div><div class="ttdef"><b>Definition:</b> fcntl.hpp:26</div></div>
 <div class="ttc" id="classError_html"><div class="ttname"><a href="classError.html">Error</a></div><div class="ttdef"><b>Definition:</b> errorbase.hpp:35</div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_a55fad1c3746e1b8a6a00c10998e91d91"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a55fad1c3746e1b8a6a00c10998e91d91">S_IRGRP</a></div><div class="ttdeci">const mode_t S_IRGRP</div><div class="ttdef"><b>Definition:</b> windows.hpp:319</div></div>
