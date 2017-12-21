@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -162,20 +162,27 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code><a href="../../../org/apache/mesos/Log.Position.html" title="class in org.apache.mesos">Log.Position</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Log.Reader.html#catchup-long-java.util.concurrent.TimeUnit-">catchup</a></span>(long&nbsp;timeout,
+       java.util.concurrent.TimeUnit&nbsp;unit)</code>
+<div class="block">Attempts to catch-up positions from the log for reading.</div>
+</td>
+</tr>
+<tr id="i2" class="altColor">
+<td class="colFirst"><code><a href="../../../org/apache/mesos/Log.Position.html" title="class in org.apache.mesos">Log.Position</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Log.Reader.html#ending--">ending</a></span>()</code>
 <div class="block">Returns the ending position of the log (might be out of date
  with respect to another replica).</div>
 </td>
 </tr>
-<tr id="i2" class="altColor">
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code>protected void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Log.Reader.html#finalize--">finalize</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>protected void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Log.Reader.html#initialize-org.apache.mesos.Log-">initialize</a></span>(<a href="../../../org/apache/mesos/Log.html" title="class in org.apache.mesos">Log</a>&nbsp;log)</code>&nbsp;</td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../org/apache/mesos/Log.Entry.html" title="class in org.apache.mesos">Log.Entry</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Log.Reader.html#read-org.apache.mesos.Log.Position-org.apache.mesos.Log.Position-long-java.util.concurrent.TimeUnit-">read</a></span>(<a href="../../../org/apache/mesos/Log.Position.html" title="class in org.apache.mesos">Log.Position</a>&nbsp;from,
     <a href="../../../org/apache/mesos/Log.Position.html" title="class in org.apache.mesos">Log.Position</a>&nbsp;to,
@@ -297,6 +304,32 @@ extends java.lang.Object</pre>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>The ending position of the log</dd>
+</dl>
+</li>
+</ul>
+<a name="catchup-long-java.util.concurrent.TimeUnit-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>catchup</h4>
+<pre>public&nbsp;<a href="../../../org/apache/mesos/Log.Position.html" title="class in org.apache.mesos">Log.Position</a>&nbsp;catchup(long&nbsp;timeout,
+                            java.util.concurrent.TimeUnit&nbsp;unit)
+                     throws java.util.concurrent.TimeoutException,
+                            <a href="../../../org/apache/mesos/Log.OperationFailedException.html" title="class in org.apache.mesos">Log.OperationFailedException</a></pre>
+<div class="block">Attempts to catch-up positions from the log for reading.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>timeout</code> - Max number of time units to wait before a
+                <code>TimeoutException</code>.</dd>
+<dd><code>unit</code> - Type of time units used for the timeout, e.g. seconds,
+                minutes, etc.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>The ending position of the caught-up range.</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code>java.util.concurrent.TimeoutException</code> - If the catch-up doesn't happen before
+                                  the timeout.</dd>
+<dd><code><a href="../../../org/apache/mesos/Log.OperationFailedException.html" title="class in org.apache.mesos">Log.OperationFailedException</a></code> - If the catch-up fails.</dd>
 </dl>
 </li>
 </ul>

@@ -104,11 +104,25 @@
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keyword">const</span> <a class="code" href="classIntervalSet.html">IntervalSet&lt;uint64_t&gt;</a>&amp; positions,</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keyword">const</span> <a class="code" href="classDuration.html">Duration</a>&amp; timeout = <a class="code" href="classSeconds.html">Seconds</a>(10));</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;} <span class="comment">// namespace log {</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;} <span class="comment">// namespace internal {</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;} <span class="comment">// namespace mesos {</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor">#endif // __LOG_CATCHUP_HPP__</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">// Catches-up missing log positions in the local replica. Returns the</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">// highest position that was caught-up and now is safe to read. The</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment">// user of this function can provide a hint on the proposal number</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment">// that will be used for Paxos. We also allow the user to specify a</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">// timeout for the catch-up operation on each position and retry the</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">// operation if timeout happens.</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<a class="code" href="classprocess_1_1Future.html">process::Future&lt;uint64_t&gt;</a> <a class="code" href="namespacemesos_1_1internal_1_1log.html#a5f0feb5ad0380f875b4bd837974d087e">catchup</a>(</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordtype">size_t</span> quorum,</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keyword">const</span> <a class="code" href="classprocess_1_1Shared.html">process::Shared&lt;Replica&gt;</a>&amp; replica,</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keyword">const</span> <a class="code" href="classprocess_1_1Shared.html">process::Shared&lt;Network&gt;</a>&amp; network,</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;uint64_t&gt;</a>&amp; proposal = <a class="code" href="structNone.html">None</a>(),</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keyword">const</span> <a class="code" href="classDuration.html">Duration</a>&amp; timeout = <a class="code" href="classSeconds.html">Seconds</a>(10));</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;} <span class="comment">// namespace log {</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;} <span class="comment">// namespace internal {</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;} <span class="comment">// namespace mesos {</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">#endif // __LOG_CATCHUP_HPP__</span></div>
 <div class="ttc" id="classOption_html"><div class="ttname"><a href="classOption.html">Option&lt; uint64_t &gt;</a></div></div>
 <div class="ttc" id="classIntervalSet_html"><div class="ttname"><a href="classIntervalSet.html">IntervalSet&lt; uint64_t &gt;</a></div></div>
 <div class="ttc" id="classDuration_html"><div class="ttname"><a href="classDuration.html">Duration</a></div><div class="ttdef"><b>Definition:</b> duration.hpp:32</div></div>
@@ -120,6 +134,7 @@
 <div class="ttc" id="option_8hpp_html"><div class="ttname"><a href="option_8hpp.html">option.hpp</a></div></div>
 <div class="ttc" id="future_8hpp_html"><div class="ttname"><a href="future_8hpp.html">future.hpp</a></div></div>
 <div class="ttc" id="interval_8hpp_html"><div class="ttname"><a href="interval_8hpp.html">interval.hpp</a></div></div>
+<div class="ttc" id="structNone_html"><div class="ttname"><a href="structNone.html">None</a></div><div class="ttdef"><b>Definition:</b> none.hpp:27</div></div>
 <div class="ttc" id="replica_8hpp_html"><div class="ttname"><a href="replica_8hpp.html">replica.hpp</a></div></div>
 <div class="ttc" id="namespacemesos_1_1internal_1_1log_html_a5f0feb5ad0380f875b4bd837974d087e"><div class="ttname"><a href="namespacemesos_1_1internal_1_1log.html#a5f0feb5ad0380f875b4bd837974d087e">mesos::internal::log::catchup</a></div><div class="ttdeci">process::Future&lt; Nothing &gt; catchup(size_t quorum, const process::Shared&lt; Replica &gt; &amp;replica, const process::Shared&lt; Network &gt; &amp;network, const Option&lt; uint64_t &gt; &amp;proposal, const IntervalSet&lt; uint64_t &gt; &amp;positions, const Duration &amp;timeout=Seconds(10))</div></div>
 <div class="ttc" id="src_2log_2network_8hpp_html"><div class="ttname"><a href="src_2log_2network_8hpp.html">network.hpp</a></div></div>
