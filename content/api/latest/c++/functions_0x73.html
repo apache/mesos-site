@@ -203,7 +203,7 @@
 , <a class="el" href="classmesos_1_1internal_1_1HttpConnectionProcess.html#a07daef2f77a33b44451c4cf7d53ff627">mesos::internal::HttpConnectionProcess&lt; Call, Event &gt;</a>
 , <a class="el" href="structmesos_1_1internal_1_1slave_1_1HttpConnection.html#ad0773acb50a9d74589dc050ee9bc3f9b">mesos::internal::slave::HttpConnection</a>
 , <a class="el" href="classmesos_1_1internal_1_1slave_1_1Executor.html#a6088e2d4d0160d0cdaf8674c46d91c43">mesos::internal::slave::Executor</a>
-, <a class="el" href="classmesos_1_1internal_1_1tests_1_1resource__provider_1_1MockResourceProvider.html#a1d15bf4666d932342111c6e5f7ca761d">mesos::internal::tests::resource_provider::MockResourceProvider&lt; Event, Call, Driver, ResourceProviderInfo, Resource, Resources, ResourceProviderID, OfferOperationState, Operation, Source &gt;</a>
+, <a class="el" href="classmesos_1_1internal_1_1tests_1_1resource__provider_1_1MockResourceProvider.html#a76c485f9cb1bc023c658537f3adc428a">mesos::internal::tests::resource_provider::MockResourceProvider&lt; Event, Call, Driver, ResourceProviderInfo, Resource, Resources, ResourceProviderID, OperationState, Operation, Source &gt;</a>
 , <a class="el" href="classprocess_1_1http_1_1Connection.html#a6956d4179d3a32950824e10ff6d3d731">process::http::Connection</a>
 </li>
 <li>sendfile()
@@ -275,7 +275,7 @@
 , <a class="el" href="classmesos_1_1internal_1_1capabilities_1_1Capabilities.html#a95a1bb8a9f692d40b0e5dcbeec07d3ce">mesos::internal::capabilities::Capabilities</a>
 , <a class="el" href="classNetwork.html#a0722ba6e072b74ffbe4556e2d432f103">Network</a>
 , <a class="el" href="classNetworkProcess.html#aeddc897b59e6a9f85b878c8d7280df86">NetworkProcess</a>
-, <a class="el" href="classmesos_1_1internal_1_1master_1_1Operation.html#aa7325c01da3c8fff4d2bf6586a2e55df">mesos::internal::master::Operation</a>
+, <a class="el" href="classmesos_1_1internal_1_1master_1_1RegistryOperation.html#a61d5167998198e4726ed908bdde1bb83">mesos::internal::master::RegistryOperation</a>
 , <a class="el" href="classmesos_1_1resource__provider_1_1Registrar_1_1Operation.html#a9a33d37502b566caf2d93333c7b2030b">mesos::resource_provider::Registrar::Operation</a>
 , <a class="el" href="classprocess_1_1Promise.html#a989b8dfa7eb2633de3f0f25ac2b87943">process::Promise&lt; T &gt;</a>
 , <a class="el" href="structprocess_1_1TimeSeries.html#a32ad80193e5138cd76086f01ecbaf1ed">process::TimeSeries&lt; T &gt;</a>
@@ -627,7 +627,7 @@
 , <a class="el" href="classmesos_1_1internal_1_1LocalResourceProviderDaemon.html#a715f0308ca33d91f56f9ba6ad1a9bc08">mesos::internal::LocalResourceProviderDaemon</a>
 , <a class="el" href="classmesos_1_1internal_1_1HttpConnectionProcess.html#a589d04f6de8671d1842d488ae9039bc5">mesos::internal::HttpConnectionProcess&lt; Call, Event &gt;</a>
 , <a class="el" href="classmesos_1_1internal_1_1tests_1_1cluster_1_1Master.html#afbebaf82e91135ac7b344e4e0b1be430">mesos::internal::tests::cluster::Master</a>
-, <a class="el" href="classmesos_1_1internal_1_1tests_1_1resource__provider_1_1MockResourceProvider.html#aff43f1bf7375e43dd94c4da9e9e0eb2a">mesos::internal::tests::resource_provider::MockResourceProvider&lt; Event, Call, Driver, ResourceProviderInfo, Resource, Resources, ResourceProviderID, OfferOperationState, Operation, Source &gt;</a>
+, <a class="el" href="classmesos_1_1internal_1_1tests_1_1resource__provider_1_1MockResourceProvider.html#a2f7ecaa9b7af1e30d70dc6077a0047b8">mesos::internal::tests::resource_provider::MockResourceProvider&lt; Event, Call, Driver, ResourceProviderInfo, Resource, Resources, ResourceProviderID, OperationState, Operation, Source &gt;</a>
 , <a class="el" href="classprocess_1_1internal_1_1Loop.html#a4743d5b323d0d9923cd83fd1abeda9c3">process::internal::Loop&lt; Iterate, Body, T, R &gt;</a>
 , <a class="el" href="classprocess_1_1metrics_1_1Timer.html#a80f762ca1f2549d14c3ac54a93caa044">process::metrics::Timer&lt; T &gt;</a>
 , <a class="el" href="classStopwatch.html#a6d01ecc80c92f1d5210cd9c3eb72883d">Stopwatch</a>
@@ -833,9 +833,6 @@
 <li>strict
 : <a class="el" href="classmesos_1_1internal_1_1slave_1_1Flags.html#a2c8aab49e677f3ba6c5ea3c935f2aab0">mesos::internal::slave::Flags</a>
 </li>
-<li>string()
-: <a class="el" href="classJvm.html#ac2c7a5438fbf91870a29720b0a26b0a1">Jvm</a>
-</li>
 <li>String()
 : <a class="el" href="structJSON_1_1String.html#a7be21f307ea1e322a19a23da1b35afb4">JSON::String</a>
 </li>
@@ -846,8 +843,12 @@
 : <a class="el" href="structJSON_1_1String.html#ab8f3991c166dfd0e7761a8cfc733f4a2">JSON::String</a>
 </li>
 <li>string()
-: <a class="el" href="classPath.html#a9d36a94d674e3f889eb8f46dc7a156b8">Path</a>
-, <a class="el" href="structos_1_1sysctl.html#af54897c91536ccd5d829daabbac64266">os::sysctl</a>
+: <a class="el" href="structos_1_1sysctl.html#af54897c91536ccd5d829daabbac64266">os::sysctl</a>
+, <a class="el" href="classPath.html#a9d36a94d674e3f889eb8f46dc7a156b8">Path</a>
+, <a class="el" href="classJvm.html#ac2c7a5438fbf91870a29720b0a26b0a1">Jvm</a>
+</li>
+<li>String()
+: <a class="el" href="structJSON_1_1String.html#ab868bcf5be8276c353b0e218817c39a1">JSON::String</a>
 </li>
 <li>stringClass
 : <a class="el" href="classJvm.html#a22fedab43e2602218f1fbcaf25628a11">Jvm</a>
@@ -883,7 +884,7 @@
 : <a class="el" href="classmesos_1_1internal_1_1HttpConnectionProcess.html#a35a7a60a0e5a768c91915db644e61805a5c6a39375ac1378bd497ec545e10659a">mesos::internal::HttpConnectionProcess&lt; Call, Event &gt;</a>
 </li>
 <li>subscribedDefault()
-: <a class="el" href="classmesos_1_1internal_1_1tests_1_1resource__provider_1_1MockResourceProvider.html#aa51159a4af37c0479ab794bfc0ad8d78">mesos::internal::tests::resource_provider::MockResourceProvider&lt; Event, Call, Driver, ResourceProviderInfo, Resource, Resources, ResourceProviderID, OfferOperationState, Operation, Source &gt;</a>
+: <a class="el" href="classmesos_1_1internal_1_1tests_1_1resource__provider_1_1MockResourceProvider.html#a0238badb91d8330beab9014c1726c2b4">mesos::internal::tests::resource_provider::MockResourceProvider&lt; Event, Call, Driver, ResourceProviderInfo, Resource, Resources, ResourceProviderID, OperationState, Operation, Source &gt;</a>
 </li>
 <li>Subscriber()
 : <a class="el" href="structmesos_1_1internal_1_1master_1_1Master_1_1Subscribers_1_1Subscriber.html#a648eeb655edb6255b4f515a94ab55473">mesos::internal::master::Master::Subscribers::Subscriber</a>
