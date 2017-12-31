@@ -510,6 +510,49 @@ and mount it under the sandbox directory. The executor can perform
 <code>pivot_root</code> or <code>chroot</code> itself to enter the container root
 filesystem.</p>
 
+<h2>Garbage Collect Unused Container Images</h2>
+
+<p>Experimental support of garbage-collecting unused container images was added at
+Mesos 1.5. This can be either configured automatically via a new agent flag
+<code>--image_gc_config</code>, or manually invoked through agent&rsquo;s
+<a href="/documentation/latest/./operator-http-api/#prune_images">v1 Operator HTTP API</a>. This can be used
+to avoid unbounded disk space usage of image stores.</p>
+
+<p>This is implemented with a simple mark-and-sweep logic. When image GC happens,
+we check all layers and images referenced by active running containers and avoid
+removing them from the image store. As a pre-requisite, if there are active
+containers launched before Mesos 1.5.0, we cannot determine what images can be
+safely garbage collected, so agent will refuse to invoke image GC. To garbage
+collect container images, users are expected to drain all containers launched
+before Mesos 1.5.0.</p>
+
+<p><strong>NOTE</strong>: currently, the image GC is only supported for docker store in Mesos
+Containerizer.</p>
+
+<h3>Automatic Image GC through Agent Flag</h3>
+
+<p>To enable automatic image GC, use the new agent flag <code>--image_gc_config</code>:</p>
+
+<pre><code>--image_gc_config=file:///home/vagrant/image-gc-config.json
+</code></pre>
+
+<p>or as a JSON object,</p>
+
+<pre><code>--image_gc_config="{ \
+  \"image_disk_headroom\": 0.1, \
+  \"image_disk_watch_interval\": { \
+    \"nano_seconds\": 3600 \
+    }, \
+  \"excluded_images\": \[ \] \
+}"
+</code></pre>
+
+<h3>Manual Image GC through HTTP API</h3>
+
+<p>See <code>PRUNE_IMAGES</code> section in
+<a href="/documentation/latest/./operator-http-api/#prune_images">v1 Operator HTTP API</a> for manual image GC
+through the agent HTTP API.</p>
+
 <h2>References</h2>
 
 <p>For more information on the Mesos containerizer filesystem, namespace,
