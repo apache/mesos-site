@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Apache Mesos - Container Storage Interface (CSI) Support</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta property="og:locale" content="en_US"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:title" content="Apache Mesos"/>
+    <meta property="og:site_name" content="Apache Mesos"/>
+    <meta property="og:url" content="http://mesos.apache.org/"/>
+    <meta property="og:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta property="og:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
+
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:site" content="@ApacheMesos"/>
+    <meta name="twitter:title" content="Apache Mesos"/>
+    <meta name="twitter:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta name="twitter:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
+
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
+    <link href="../../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+
+    
+
+    <!-- Google Analytics Magic -->
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-20226872-1']);
+    _gaq.push(['_setDomainName', 'apache.org']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+    
+  </head>
+  <body>
+    <!-- magical breadcrumbs -->
+    <div class="topnav">
+      <div class="container">
+        <ul class="breadcrumb">
+          <li>
+            <div class="dropdown">
+              <a data-toggle="dropdown" href="#">Apache Software Foundation <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                <li><a href="http://www.apache.org">Apache Homepage</a></li>
+                <li><a href="http://www.apache.org/licenses/">License</a></li>
+                <li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>
+                <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                <li><a href="http://www.apache.org/security/">Security</a></li>
+              </ul>
+            </div>
+          </li>
+
+          <li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+          
+          
+          <li><a href="/documentation
+/">Documentation
+</a></li>
+          
+          
+        </ul><!-- /.breadcrumb -->
+      </div><!-- /.container -->
+    </div><!-- /.topnav -->
+
+    <!-- navbar excitement -->
+<div class="navbar navbar-default navbar-static-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#mesos-menu" aria-expanded="false">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo"/></a>
+    </div><!-- /.navbar-header -->
+
+    <div class="navbar-collapse collapse" id="mesos-menu">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/getting-started/">Getting Started</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/documentation/latest/">Documentation</a></li>
+        <li><a href="/downloads/">Downloads</a></li>
+        <li><a href="/community/">Community</a></li>
+      </ul>
+    </div><!-- /#mesos-menu -->
+  </div><!-- /.container -->
+</div><!-- /.navbar -->
+
+<div class="content">
+  <div class="container">
+    <div class="row-fluid">
+  <div class="col-md-4">
+    <h4>If you're new to Mesos</h4>
+    <p>See the <a href="/getting-started/">getting started</a> page for more
+       information about downloading, building, and deploying Mesos.</p>
+
+    <h4>If you'd like to get involved or you're looking for support</h4>
+    <p>See our <a href="/community/">community</a> page for more details.</p>
+  </div>
+  <div class="col-md-8">
+    <h1>Container Storage Interface (CSI) Support</h1>
+
+<p>This document describes the <a href="https://github.com/container-storage-interface/spec">Container Storage Interface</a>
+(CSI) support in Mesos.</p>
+
+<p>Currently, only CSI spec version 0.1 is supported.</p>
+
+<h2>Motivation</h2>
+
+<h3>Current Limitations of Storage Support in Mesos</h3>
+
+<p>Prior to 1.5, Mesos supports both <a href="/documentation/latest/./persistent-volume/">local persistent volumes</a>
+as well as <a href="/documentation/latest/./isolators/docker-volume/">external persistent volumes</a>. However,
+both of them have limitations.</p>
+
+<p><a href="/documentation/latest/./persistent-volume/">Local persistent volumes</a> do not support offering
+physical or logical block devices directly. Frameworks do not have the choice to
+select filesystems for their local persistent volumes. Although Mesos does
+support <a href="/documentation/latest/./multiple-disk/">multiple local disks</a>, it&rsquo;s a big burden for
+operators to configure each agent properly to be able to leverage this feature.
+Finally, there is no well-defined interface allowing third-party storage vendors
+to plug into Mesos.</p>
+
+<p><a href="/documentation/latest/./isolators/docker-volume/">External persistent volumes</a> support in Mesos
+bypasses the resource management part. In other words, using an external
+persistent volume does not go through the usual offer cycle. Mesos does not
+track resources associated with the external volumes. This makes quota control,
+reservation, and fair sharing almost impossible to enforce. Also, the current
+interface Mesos uses to interact with storage vendors is the
+<a href="https://docs.docker.com/engine/extend/plugins_volume/">Docker Volume Driver Interface</a>
+(DVDI), which has several <a href="https://docs.google.com/document/d/125YWqg_5BB5OY9a6M7LZcby5RSqBwo2PZzpVLuxYXh4/edit?usp=sharing">limitations</a>.</p>
+
+<h3>Container Storage Interface (CSI)</h3>
+
+<p><a href="https://github.com/container-storage-interface/spec">Container Storage Interface</a>
+(CSI) is a specification that defines a common set of APIs for all interactions
+between the storage vendors and the container orchestration platforms. It is the
+result of a <a href="https://github.com/container-storage-interface/community">close collaboration</a>
+among representatives from the <a href="https://kubernetes.io/">Kubernetes</a>,
+<a href="https://www.cloudfoundry.org/">CloudFoundry</a>, <a href="https://www.docker.com/">Docker</a>
+and Mesos communities. The primary goal of CSI is to allow storage vendors to
+write one plugin that works with all container orchestration platforms.</p>
+
+<p>It was an easy decision to build the storage support in Mesos using CSI. The
+benefits are clear: it will fit Mesos into the larger storage ecosystem in a
+consistent way. In other words, users will be able to use any storage system
+with Mesos using a consistent API. The out-of-tree plugin model of CSI decouples
+the release cycle of Mesos from that of the storage systems, making the
+integration itself more sustainable and maintainable.</p>
+
+<h2>Architecture</h2>
+
+<p>The following figure provides an overview about how Mesos supports CSI.</p>
+
+<p><img src="/assets/img/documentation/csi-architecture.png" alt="CSI Architecture" /></p>
+
+<h3>Resource Providers</h3>
+
+<p><a href="/documentation/latest/./resource-provider/">Resource Provider</a> is a new abstraction introduced in
+Mesos 1.5. Leveraging this, the resource-providing part of Mesos can be easily
+extended and customized. Before 1.5, this part of the logic is hard-coded in the
+agent. Resource providers are mainly responsible for updating Mesos about
+available resources and handling operations on those resources.</p>
+
+<p>There are two types of resource providers: Local Resource Providers (LRP) and
+External Resource Providers (ERP). Local resource providers only provide
+resources that are tied to a particular agent node, while external resource
+providers provide resources that are not tied to any agent node (a.k.a. global
+resources). The resource provider API is designed in such a way that it works
+for both types of resource providers. In Mesos 1.5, only local resource
+providers are supported.</p>
+
+<p>The resource provider API is an HTTP-based API, allowing resource providers to
+be running outside the Mesos master or agent. This is important for ERPs.</p>
+
+<p>There is a component in the agent, called the Resource Provider Manager, that
+monitors and manages LRPs on that agent. The same component will be running in
+the master in the future to monitor ERPs.</p>
+
+<h3>First Class Storage Resource Provider</h3>
+
+<p>The resource provider abstraction is a natural fit for supporting storage and
+CSI.  Since CSI standardizes the interface between container orchestrators and
+storage vendors, the implementation for the storage resource provider should be
+the same for all storage systems that are CSI-compatible.</p>
+
+<p>As a result, Mesos provides a default implementation of LRP, called Storage
+Local Resource Provider (SLRP), to provide general support for storage and CSI.
+Storage External Resource Provider (SERP) support is <a href="https://issues.apache.org/jira/browse/MESOS-8371">coming soon</a>.
+The storage resource providers serve as the bridges between Mesos and CSI plugins.</p>
+
+<p>More details about SLRP can be found in the following <a href="#storage-local-resource-provider">section</a>.</p>
+
+<h3>Standalone Containers for CSI Plugins</h3>
+
+<p>CSI plugins are long-running <a href="https://grpc.io/">gRPC</a> services, like daemons.
+Those CSI plugins are packaged as containers, and are launched by SLRPs using
+the <a href="/documentation/latest/./standalone-container/">standalone containers</a> API from the agent.
+Standalone containers can be launched without any tasks or executors. They use
+the same isolation mechanism provided by the agent for task and executor
+containers.</p>
+
+<p>There is a component in each SLRP that is responsible for monitoring the health
+of the CSI plugin containers and restarting them if needed.</p>
+
+<h2>Framework API</h2>
+
+<h3>New Disk Source Types</h3>
+
+<p>Two new types of disk sources have been added: <code>RAW</code> and <code>BLOCK</code>.</p>
+
+<pre><code class="protobuf">message Resource {
+  message DiskInfo {
+    message Source {
+      enum Type {
+        PATH = 1;
+        MOUNT = 2;
+        BLOCK = 3;  // New in 1.5
+        RAW = 4;    // New in 1.5
+      }
+      optional Type type = 1;
+    }
+  }
+}
+</code></pre>
+
+<p>The disk source type (i.e., <code>DiskInfo::Source::Type</code>) specifies the property of
+a disk resource and how it can be consumed.</p>
+
+<ul>
+<li><code>PATH</code>: The disk resource can be accessed using the Volume API (backed by a
+POSIX compliant filesystem). The disk resource can be carved up into smaller
+chunks.</li>
+<li><code>MOUNT</code>: The disk resource can be accessed using the Volume API (backed by a
+POSIX compliant filesystem). The disk resource cannot be carved up into
+smaller chunks.</li>
+<li><code>BLOCK</code>: (New in 1.5) The disk resource can be directly accessed on Linux
+without any filesystem (e.g., <code>/dev/sdb</code>). The disk resource cannot be carved
+up into smaller chunks.</li>
+<li><code>RAW</code>: (New in 1.5) The disk resource cannot be accessed by the framework yet.
+It has to be <a href="#new-offer-operations-for-disk-resources">converted</a> into any of
+the above types before it can be accessed. The disk resource cannot be carved
+up into smaller chunks if it has an <a href="#disk-id-and-metadata">ID</a> (i.e.,
+<a href="#pre-existing-disks">pre-existing disks</a>), and can be carved up into smaller
+chunks if it does not have an <a href="#disk-id-and-metadata">ID</a> (i.e.,
+<a href="#storage-pool">storage pool</a>).</li>
+</ul>
+
+
+<h3>Disk ID and Metadata</h3>
+
+<p>Two more fields have been added to <code>DiskInfo.Source</code> to further describe the
+disk source. It also allows CSI plugins to propagate plugin-specific information
+to the framework.</p>
+
+<pre><code class="protobuf">message Resource {
+  message DiskInfo {
+    message Source {
+      // An identifier for this source. This field maps onto CSI
+      // volume IDs and is not expected to be set by frameworks.
+      optional string id = 4;
+
+      // Additional metadata for this source. This field maps onto CSI
+      // volume metadata and is not expected to be set by frameworks.
+      optional Labels metadata = 5;
+    }
+  }
+}
+</code></pre>
+
+<ul>
+<li><code>id</code>: This maps to CSI <a href="https://github.com/container-storage-interface/spec/blob/v0.1.0/spec.md#createvolume">Volume ID</a>
+if the disk resource is backed by a <a href="https://github.com/container-storage-interface/spec/blob/v0.1.0/spec.md#terminology">Volume</a>
+from a CSI plugin. This field must not be set by frameworks.</li>
+<li><code>metadata</code>: This maps to CSI <a href="https://github.com/container-storage-interface/spec/blob/v0.1.0/spec.md#createvolume">Volume Attributes</a>
+if the disk resource is backed by a <a href="https://github.com/container-storage-interface/spec/blob/v0.1.0/spec.md#terminology">Volume</a>
+from a CSI plugin. This field must not be set by framweworks.</li>
+</ul>
+
+
+<h3>Storage Pool</h3>
+
+<p>A <code>RAW</code> disk resource may or may not have an ID (i.e., <code>DiskInfo.Source.id</code>),
+depending on whether or not the <code>RAW</code> disk resource is backed by a CSI Volume. A
+<code>RAW</code> disk resource not backed by a CSI Volume is usually referred to as a
+storage pool (e.g., an LVM volume group, or EBS storage space, etc.).</p>
+
+<p>The size of the storage pool is reported by the CSI plugin using the
+<a href="https://github.com/container-storage-interface/spec/blob/v0.1.0/spec.md#getcapacity"><code>GetCapacity</code> interface</a>.</p>
+
+<p>Currently, a storage pool must have a <a href="#profiles">profile</a> defined. Any disk
+resource created from the storage pool inherits the same profile as the storage
+pool. See more details in the <a href="#profiles">profiles</a> section.</p>
+
+<h3>Pre-existing Disks</h3>
+
+<p>A <code>RAW</code> disk resource with an ID (i.e., <code>DiskInfo.Source.id</code>) is referred to as
+a <a href="#pre-existing-disks">pre-existing disk</a>.  Pre-existing disks are those
+<a href="https://github.com/container-storage-interface/spec/blob/v0.1.0/spec.md#terminology">CSI Volumes</a>
+that are detected by the corresponding CSI plugin using the
+<a href="https://github.com/container-storage-interface/spec/blob/v0.1.0/spec.md#listvolumes"><code>ListVolumes</code> interface</a>,
+but have not gone through the dynamic provisioning process (i.e., via
+<code>CREATE_VOLUME</code> or <code>CREATE_BLOCK</code>).</p>
+
+<p>For example, operators might pre-create some LVM logical volumes before
+launching Mesos. Those pre-created LVM logical volumes will be reported by the
+LVM CSI plugin when Mesos invokes the <code>ListVolumes</code> interface, thus will be
+reported as pre-existing disks in Mesos.</p>
+
+<p>Currently, pre-existing disks do not have <a href="#profiles">profiles</a>. This may change
+in the near future. See more details in the <a href="#profiles">profiles</a> section.</p>
+
+<h3>New Offer Operations for Disk Resources</h3>
+
+<p>To allow dynamic provisioning of disk resources, 4 new offer operations have
+been added to the <a href="/documentation/latest/./scheduler-http-api/#accept">scheduler API</a>:
+<code>CREATE_VOLUME</code>, <code>DESTROY_VOLUME</code>, <code>CREATE_BLOCK</code> and <code>DESTROY_BLOCK</code>.</p>
+
+<p>To learn how to use the offer operations, please refer to the
+<a href="/documentation/latest/./scheduler-http-api/#accept"><code>ACCEPT</code></a> Call in the v1 scheduler API, or
+<a href="/documentation/latest/./app-framework-development-guide/#scheduler-driver-api"><code>acceptOffers</code></a> method
+in the v0 scheduler API for more details.</p>
+
+<pre><code class="protobuf">message Offer {
+  message Operation {
+    enum Type {
+      UNKNOWN = 0;
+      LAUNCH = 1;
+      LAUNCH_GROUP = 6;
+      RESERVE = 2;
+      UNRESERVE = 3;
+      CREATE = 4;
+      DESTROY = 5;
+      CREATE_VOLUME = 7;   // New in 1.5.
+      DESTROY_VOLUME = 8;  // New in 1.5.
+      CREATE_BLOCK = 9;    // New in 1.5.
+      DESTROY_BLOCK = 10;  // New in 1.5.
+    }
+    optional Type type = 1;
+  }
+}
+</code></pre>
+
+<h4><code>CREATE_VOLUME</code> operation</h4>
+
+<p>The offer operation <code>CREATE_VOLUME</code> takes a <code>RAW</code> disk resource
+(<code>create_volume.source</code>), and converts it into either a <code>PATH</code> or a <code>MOUNT</code> disk
+resource (<code>create_volume.target_type</code>). The source <code>RAW</code> disk resource can
+either be a storage pool (i.e., a <code>RAW</code> disk resource without an ID) or a
+pre-existing disk (i.e., a <code>RAW</code> disk resource with an ID). The quantity of the
+converted resource (either <code>PATH</code> or <code>MOUNT</code> disk resource) will be the same as
+the source <code>RAW</code> resource.</p>
+
+<pre><code class="protobuf">message Offer {
+  message Operation {
+    message CreateVolume {
+      required Resource source = 1;
+      required Resource.DiskInfo.Source.Type target_type = 2;
+    }
+    optional CreateVolume create_volume = 8;
+  }
+}
+</code></pre>
+
+<p>The converted disk resource will have the disk <a href="#disk-id-and-metadata"><code>id</code> and <code>metadata</code></a>
+set accordingly to uniquely identify the volume reported by the CSI plugin.</p>
+
+<p>Note that <code>CREATE_VOLUME</code> is different than <a href="/documentation/latest/./persistent-volume/"><code>CREATE</code></a>.
+<code>CREATE</code> creates a <a href="/documentation/latest/./persistent-volume/">persistent volume</a> which indicates
+that the data stored in the volume will be persisted until the framework
+explicitly destroys it. It must operate on a non-<code>RAW</code> disk resource (i.e.,
+<code>PATH</code>, <code>MOUNT</code> or <code>BLOCK</code>).</p>
+
+<h4><code>DESTROY_VOLUME</code> operation</h4>
+
+<p>The offer operation <code>DESTROY_VOLUME</code> takes a volume, either a <code>PATH</code> or a
+<code>MOUNT</code> disk resource, to destroy, and converts it into a <code>RAW</code> disk resource.
+The quantity of the converted resource (<code>RAW</code> disk resource) will be the same as
+the specified <code>volume</code>.</p>
+
+<pre><code class="protobuf">message Offer {
+  message Operation {
+    message DestroyVolume {
+      required Resource volume = 1;
+    }
+    optional DestroyVolume destroy_volume = 9;
+  }
+}
+</code></pre>
+
+<p>This operation is intended to be a reverse operation of <code>CREATE_VOLUME</code>. In
+other words, if the volume is created from a storage pool (i.e., a <code>RAW</code> disk
+resource without an ID), the result of the corresponding <code>DESTROY_VOLUME</code> should
+be a storage pool. And if the volume is created from a <a href="#pre-existing-disks">pre-existing disk</a>
+(i.e., a <code>RAW</code> disk resource with an ID), the result of the corresponding
+<code>DESTROY_VOLUME</code> should be a pre-existing disk.</p>
+
+<p>Currently, Mesos infers the result based on the presence of an assigned
+<a href="#profiles">profile</a> in the disk resource. In other words, if the volume to be
+destroyed has a profile, the converted <code>RAW</code> disk resource will be a storage
+pool (i.e., <code>RAW</code> disk resource without an ID). Otherwise, the converted <code>RAW</code>
+disk resource will be a pre-existing disk (i.e., <code>RAW</code> disk resource with an
+ID). This leverages the fact that currently, each storage pool must have a
+profile, and pre-existing disks do not have profiles.</p>
+
+<h4><code>CREATE_BLOCK</code> operation</h4>
+
+<p>The offer operation <code>CREATE_BLOCK</code> is similar to <code>CREATE_VOLUME</code>, except that
+the converted disk resource will be in <code>BLOCK</code> type.</p>
+
+<pre><code class="protobuf">message Offer {
+  message Operation {
+    message CreateBlock {
+      required Resource source = 1;
+    }
+    optional CreateBlock create_block = 10;
+  }
+}
+</code></pre>
+
+<h4><code>DESTROY_BLOCK</code> operation</h4>
+
+<p>The offer operation <code>DESTROY_BLOCK</code> is similar to <code>DESTROY_VOLUME</code>, except that
+the source disk resource will be in <code>BLOCK</code> type.</p>
+
+<pre><code class="protobuf">message Offer {
+  message Operation {
+    message DestroyBlock {
+      required Resource block = 1;
+    }
+    optional DestroyBlock destroy_block = 11;
+  }
+}
+</code></pre>
+
+<h4>Getting Operation Results</h4>
+
+<p>It is important for the frameworks to get the results of the above offer
+operations so that they know if the dynamic disk provisioning is successful or
+not.</p>
+
+<p>Unfortunately, the current scheduler API does not provide a way to give explicit
+offer operation feedback. Frameworks have to infer the result of the operation
+by looking at various sources of information that are available to them. Here are
+the tips to get offer operation results:</p>
+
+<ul>
+<li>Leverage <a href="/documentation/latest/./reservation/#reservation-labels">reservation labels</a>. Reservation
+labels can be used to uniquely identify a resource. By looking at the
+reservation labels of an offered resource, the framework can infer if an
+operation is successful or not.</li>
+<li>Use <a href="/documentation/latest/./operator-http-api/">operator API</a> to get the current set of resources.</li>
+</ul>
+
+
+<h5>Explicit Operation Feedback</h5>
+
+<p>Even if there are tips to infer offer operation results, it is far from ideal.
+The biggest issue is that it is impossible to get the failure reason if an offer
+operation fails. For instance, a CSI plugin might return a failure when creating
+a volume, and it is important for the framework to know about that and surface
+that information to the end user.</p>
+
+<p>As a result, we need a way to get explicit operation feedback just like task
+status updates. This feature is <a href="https://issues.apache.org/jira/browse/MESOS-8054">coming soon</a>.</p>
+
+<h2>Profiles</h2>
+
+<p>The primary goal of introducing profiles is to provide an indirection to a set
+of storage vendor-specific parameters for the disk resources. It provides a way
+for the cluster operator to describe the classes of storage they offer and
+abstracts away the low-level details of a storage system.</p>
+
+<p>Each profile is just a simple string (e.g., &ldquo;fast”, "slow”, "gold”), as
+described below:</p>
+
+<pre><code class="protobuf">message Resource {
+  message DiskInfo {
+    message Source {
+      // This field serves as an indirection to a set of storage
+      // vendor specific disk parameters which describe the properties
+      // of the disk. The operator will setup mappings between a
+      // profile name to a set of vendor specific disk parameters. And
+      // the framework will do disk selection based on profile names,
+      // instead of vendor specific disk parameters.
+      //
+      // Also see the VolumeProfile module.
+      optional string profile = 6;
+    }
+  }
+}
+</code></pre>
+
+<p>A typical framework that needs storage is expected to perform disk
+resource selection based on the <code>profile</code> of a disk resource, rather
+than low-level storage vendor specific parameters.</p>
+
+<h3>Volume Profile Adaptor Module</h3>
+
+<p>In order to let cluster operators customize the mapping between profiles and
+storage system-specific parameters, Mesos provides a <a href="/documentation/latest/./#modules/">module</a>
+interface called <code>VolumeProfileAdaptor</code>.</p>
+
+<pre><code class="cpp">class VolumeProfileAdaptor
+{
+public:
+  struct ProfileInfo
+  {
+    csi::VolumeCapability capability;
+    google::protobuf::Map&lt;std::string, std::string&gt; parameters;
+  };
+
+  virtual Future&lt;ProfileInfo&gt; translate(
+      const std::string&amp; profile,
+      const std::string&amp; csiPluginInfoType) = 0;
+
+  virtual Future&lt;hashset&lt;std::string&gt;&gt; watch(
+      const hashset&lt;std::string&gt;&amp; knownProfiles,
+      const std::string&amp; csiPluginInfoType) = 0;
+};
+</code></pre>
+
+<p>The module interface has a <code>translate</code> method that takes a profile and returns
+the corresponding <a href="https://github.com/container-storage-interface/spec/blob/v0.1.0/spec.md#createvolume">CSI volume capability</a>
+(i.e., the <code>capability</code> field) and <a href="https://github.com/container-storage-interface/spec/blob/v0.1.0/spec.md#createvolume">CSI volume creation parameters</a>
+(i.e., the <code>parameter</code> field) for that profile. These two fields will be used to
+call the CSI <code>CreateVolume</code> interface during dynamic provisioning (i.e.,
+<code>CREATE_VOLUME</code> and <code>CREATE_BLOCK</code>), or CSI <code>ControllerPublishVolume</code> and
+<code>NodePublishVolume</code> when publishing (i.e., when a task using the disk resources
+is being launched on a Mesos agent).</p>
+
+<p>The <code>watch</code> method in the module interface allows Mesos to get notified about
+the changes on the profiles. It takes a list of known profiles and returns a
+future which will be set if the module detects changes to the known profiles
+(e.g., a new profile is added).  Currently, all profiles are immutable, thus are
+safe to cache.</p>
+
+<p>Since <code>ProfileInfo</code> uses protobuf from the CSI spec directly, there is an
+implicit dependency between backward compatibility of the module interface and
+the CSI spec version. Since CSI doesn&rsquo;t provide a backward compatibility
+promise, modules have to be re-built against each release of Mesos.</p>
+
+<h3>URI Volume Profile Adaptor</h3>
+
+<p>To demonstrate how to use the volume profile adaptor module, Mesos ships with a
+default volume profile adaptor, called <code>UriVolumeProfileAdaptor</code>. This module
+polls the profile information (in JSON) from a configurable URI. Here are the
+module parameters that can be used to configure the module:</p>
+
+<ul>
+<li><code>uri</code>: URI to a JSON object containing the profile mapping. The module
+supports both HTTP(s) and file URIs. The JSON object should consist of some
+top-level string keys corresponding to the profile.  Each value should contain
+a <code>VolumeCapability</code> under <code>volumeCapabilities</code> and arbitrary key-value
+pairs under <code>createParameters</code>. For example:</li>
+</ul>
+
+
+<pre><code class="json">{
+  "profile_matrix": {
+    "my-profile": {
+      "volume_capabilities": {
+        "mount": {
+          "fs_type": "xfs"
+        },
+        "access_mode": {
+          "mode": "SINGLE_NODE_WRITER"
+        }
+      },
+      "create_arameters": {
+        "type": "raid5",
+        "stripes": "3",
+        "stripesize": "64"
+      }
+    }
+  }
+}
+</code></pre>
+
+<ul>
+<li><code>poll_interval</code>: How long to wait between polling the specified <code>uri</code>.  If the
+poll interval has elapsed since the last fetch, then the URI is re-fetched;
+otherwise, a cached ProfileInfo is returned. If not specified, the URI is only
+fetched once.</li>
+<li><code>max_random_wait</code>: How long at most to wait between discovering a new set of
+profiles and notifying the callers of <code>watch</code>. The actual wait time is a
+uniform random value between 0 and this value. If the <code>--uri</code> points to a
+centralized location, it may be good to scale this number according to the
+number of resource providers in the cluster.  [default: 0secs]</li>
+</ul>
+
+
+<p>To enable this module, please follow the <a href="/documentation/latest/./modules/">modules documentation</a>:
+add the following JSON to the <code>--modules</code> agent flag, and set agent flag
+<code>--volume_profile_adaptor</code> to <code>org_apache_mesos_UriVolumeProfileAdaptor</code>.</p>
+
+<pre><code class="json">{
+  "libraries": [
+    {
+      "file": "/PATH/TO/liburi_volume_profile.so",
+      "modules": [
+        {
+          "name": "org_apache_mesos_UriVolumeProfileAdaptor",
+          "parameters" : [
+            {
+              "key": "uri",
+              "value" : "/PATH/TO/my_profile.json"
+            },
+            {
+              "key": "poll_interval",
+              "value" : "1secs"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+</code></pre>
+
+<h3>Storage Pool Capacity and Profiles</h3>
+
+<p>The capacity of a <a href="#storage-pool">storage pool</a> is usually tied to the profiles
+of the volumes that the users want to provision from the pool. For instance,
+consider an LVM volume group (a storage pool) backed by 1000G of physical
+volumes. The capacity of the storage pool will be 1000G if the logical volumes
+provisioned from the pool have <code>"raid0"</code> configuration, and will be 500G if the
+logical volumes provisioned from the pool have <code>"raid1"</code> configuration.</p>
+
+<p>In fact, it does not make sense to have a storage pool that does not have a
+profile because otherwise the allocator or the framework will not be able to
+predict how much space a volume will take, making resource management almost
+impossible to implement.</p>
+
+<p>Therefore, each storage pool must have a profile associated with it. The profile
+of a storage pool is the profile of the volumes that can be provisioned from the
+pool. In other words, the volumes provisioned from a storage pool inherit the
+profile of the storage pool.</p>
+
+<p>Mesos gets the capacity of a storage pool with a given profile by invoking the
+CSI <a href="https://github.com/container-storage-interface/spec/blob/v0.1.0/spec.md#getcapacity"><code>GetCapacity</code> interface</a>
+with the corresponding volume capability and parameters associated with the
+profile.</p>
+
+<p>It is possible that a storage system is able to provide volumes with different
+profiles. For example, the LVM volume group is able to produce both raid0 and
+raid1 logical volumes, backed by the same physical volumes. In that case, Mesos
+will report one storage pool per profile. In this example, assuming there are
+two profiles: <code>"raid0"</code> and <code>"raid1"</code>, Mesos will report 2 <code>RAW</code> disk resources:</p>
+
+<ol>
+<li>1000G <code>RAW</code> disk resource with profile <code>"raid0"</code></li>
+<li>500G <code>RAW</code> disk resource with profile <code>"raid1"</code>.</li>
+</ol>
+
+
+<p>TODO(jieyu): Discuss correlated resources.</p>
+
+<h2>Storage Local Resource Provider</h2>
+
+<p><a href="/documentation/latest/./resource-provider/">Resource Provider</a> is an abstraction in Mesos allowing
+cluster administrators to customize the providing of resources and the handling
+of operations related to the provided resources.</p>
+
+<p>For storage and CSI support, Mesos provides a default implementation of the
+resource provider interface that serves as the bridge between Mesos and the CSI
+plugins. It is called the Storage Resource Provider. It is responsible for
+launching CSI plugins, talking to CSI plugins using the gRPC protocol, reporting
+available disk resources, handling offer operations from frameworks, and making
+disk resources available on the agent where the disk resources are used.</p>
+
+<p>Currently, each Storage Resource Provider instance manages exactly one CSI
+plugin. This simplifies reasoning and implementation.</p>
+
+<p>In Mesos 1.5, only the Storage Local Resource Provider (SLRP) is supported. This
+means the disk resources it reports are tied to a particular agent node, and
+thus cannot be used on other nodes. The Storage External Resource Provider
+(SERP) is <a href="https://issues.apache.org/jira/browse/MESOS-8371">coming soon</a>.</p>
+
+<h3>Enable gRPC Support</h3>
+
+<p><a href="https://grpc.io/">gRPC</a> must be enabled to support SLRP. To enable gRPC
+support, configure Mesos with <code>--enable-grpc</code>.</p>
+
+<h3>Enable Agent Resource Provider Capability</h3>
+
+<p>In order to use SLRPs, the agent needs to be configured to enable resource
+provider support. Since resource provider support is an experimental feature, it
+is not turned on by default in 1.5. To enable that, please set the agent flag
+<code>--agent_features</code> to the following JSON:</p>
+
+<pre><code class="json">{
+  "capabilities": [
+    {"type": "MULTI_ROLE"},
+    {"type": "HIERARCHICAL_ROLE"},
+    {"type": "RESERVATION_REFINEMENT"},
+    {"type": "RESOURCE_PROVIDER"}
+  ]
+}
+</code></pre>
+
+<p>Note that although capabilities <code>MULTI_ROLE</code>, <code>HIERARCHICAL_ROLE</code> and
+<code>RESERVATION_REFINEMENT</code> are not strictly necessary for supporting resources
+providers, these must be specified because the agent code already assumes those
+capabilities are set, and the old code that assumes those capabilities not being
+set has already been removed.</p>
+
+<h3>SLRP Configuration</h3>
+
+<p>Each SLRP configures itself according to its <code>ResourceProviderInfo</code> which is
+specified by the operator.</p>
+
+<pre><code class="protobuf">message ResourceProviderInfo {
+  required string type = 3;
+  required string name = 4;
+  repeated Resource.ReservationInfo default_reservations = 5;
+
+  // Storage resource provider related information.
+  message Storage {
+    required CSIPluginInfo plugin = 1;
+  }
+
+  optional Storage storage = 6;
+}
+</code></pre>
+
+<ul>
+<li><code>type</code>: The type of the resource provider. This uniquely identifies a resource
+provider implementation. For instance: <code>"org.apache.mesos.rp.local.storage"</code>.
+The naming of the <code>type</code> field should follow the
+<a href="https://en.wikipedia.org/wiki/Java_package#Package_naming_conventions">Java package naming convention</a>
+to avoid conflicts on the type names.</li>
+<li><code>name</code>: The name of the resource provider. There could be multiple instances
+of a type of resource provider. The name field is used to distinguish these
+instances. It should be a legal <a href="https://docs.oracle.com/javase/tutorial/java/nutsandbolts/variables.html">Java identifier</a>
+to avoid conflicts on concatenation of type and name.</li>
+<li><code>default_reservations</code>: If set, any new resources from this resource provider
+will be reserved by default. The first <code>ReservationInfo</code> may have type
+<code>STATIC</code> or <code>DYNAMIC</code>, but the rest must have <code>DYNAMIC</code>. One can create a new
+reservation on top of an existing one by pushing a new <code>ReservationInfo</code> to
+the back. The last <code>ReservationInfo</code> in this stack is the &ldquo;current&rdquo;
+reservation. The new reservation&rsquo;s role must be a child of the current one.</li>
+<li><code>storage</code>: Storage resource provider specific information (see more details
+below).</li>
+</ul>
+
+
+<pre><code class="protobuf">message CSIPluginInfo {
+  required string type = 1;
+  required string name = 2;
+  repeated CSIPluginContainerInfo containers = 3;
+}
+</code></pre>
+
+<ul>
+<li><code>type</code>: The type of the CSI plugin. This uniquely identifies a CSI plugin
+implementation. For instance: <code>"org.apache.mesos.csi.test"</code>.  The naming
+should follow the <a href="https://en.wikipedia.org/wiki/Java_package#Package_naming_conventions">Java package naming convention</a>
+to avoid conflicts on type names.</li>
+<li><code>name</code>: The name of the CSI plugin. There could be multiple instances of the
+same type of CSI plugin. The name field is used to distinguish these
+instances. It should be a legal <a href="https://docs.oracle.com/javase/tutorial/java/nutsandbolts/variables.html">Java identifier</a>
+to avoid conflicts on concatenation of type and name.</li>
+<li><code>containers</code>: CSI plugin container configurations (see more details below).
+The <a href="https://github.com/container-storage-interface/spec/blob/v0.1.0/spec.md#controller-service-rpc">CSI controller service</a>
+will be served by the first that contains <code>CONTROLLER_SERVICE</code>, and the
+<a href="https://github.com/container-storage-interface/spec/blob/v0.1.0/spec.md#node-service-rpc">CSI node service</a>
+will be served by the first that contains <code>NODE_SERVICE</code>.</li>
+</ul>
+
+
+<pre><code class="protobuf">message CSIPluginContainerInfo {
+  enum Service {
+    UNKNOWN = 0;
+    CONTROLLER_SERVICE = 1;
+    NODE_SERVICE = 2;
+  }
+
+  repeated Service services = 1;
+  optional CommandInfo command = 2;
+  repeated Resource resources = 3;
+  optional ContainerInfo container = 4;
+}
+</code></pre>
+
+<ul>
+<li><code>services</code>: Whether the CSI plugin container provides the
+<a href="https://github.com/container-storage-interface/spec/blob/v0.1.0/spec.md#controller-service-rpc">CSI controller service</a>,
+the <a href="https://github.com/container-storage-interface/spec/blob/v0.1.0/spec.md#node-service-rpc">CSI node service</a>
+or both.</li>
+<li><code>command</code>: The command to launch the CSI plugin container.</li>
+<li><code>resources</code>: The resources to be used for the CSI plugin container.</li>
+<li><code>container</code>: The additional <code>ContainerInfo</code> about the CSI plugin container.</li>
+</ul>
+
+
+<p>Note that each CSI plugin will have all isolation mechanisms configured on the
+agent applied to it.</p>
+
+<h4>Sample SLRP Configuration</h4>
+
+<p>The following is a sample SLRP configuration that uses the <a href="https://github.com/apache/mesos/blob/1.5.x/src/examples/test_csi_plugin.cpp">test CSI plugin</a>
+provided by Mesos that provides both CSI controller and node services, and sets
+the default reservation to <code>"test-role"</code>. The test CSI plugin will be built if
+you configure Mesos with <code>--enable-tests-install</code>.</p>
+
+<pre><code class="json">{
+  "type": "org.apache.mesos.rp.local.storage",
+  "name": "test_slrp",
+  "default_reservations": [
+    {
+      "type": "DYNAMIC",
+      "role": "test-role"
+    }
+  ],
+  "storage": {
+    "plugin": {
+      "type": "org.apache.mesos.csi.test",
+      "name": "test_plugin",
+      "containers": [
+        {
+          "services": [ "CONTROLLER_SERVICE", "NODE_SERVICE" ],
+          "command": {
+            "shell": true,
+            "value": "./test-csi-plugin --available_capacity=2GB --work_dir=workdir",
+            "uris": [
+              {
+                "value": "/PATH/TO/test-csi-plugin",
+                "executable": true
+              }
+            ]
+          },
+          "resources": [
+            { "name": "cpus", "type": "SCALAR", "scalar": { "value": 0.1 } },
+            { "name": "mem", "type": "SCALAR", "scalar": { "value": 200.0 } }
+          ]
+        }
+      ]
+    }
+  }
+}
+</code></pre>
+
+<h3>SLRP Management</h3>
+
+<h4>Launching SLRP</h4>
+
+<p>To launch a SLRP, place the SLRP configuration JSON described in the
+<a href="#slrp-configuration">previous section</a> in a directory (e.g.,
+<code>/etc/mesos/resource-providers</code>) and set the agent flag
+<code>--resource_provider_config_dir</code> to point to that directory. The corresponding
+SLRP will be loaded by the agent. It is possible to put multiple SLRP
+configuration JSON files under that directory to instruct the agent to load
+multiple SLRPs.</p>
+
+<p>Alternatively, it is also possible to dynamically launch a SLRP using the <a href="/documentation/latest/./operator-http-api/#agent-api">agent
+v1 operator API</a>. To use that, still set the
+agent flag <code>--resource_provider_config_dir</code> to point to a configuration
+directory (the directory maybe empty). Once the agent is launched, hit the agent
+<code>/api/v1</code> endpoint using the <a href="/documentation/latest/./operator-http-api/#add_resource_provider_config"><code>ADD_RESOURCE_PROVIDER_CONFIG</code></a>
+call:</p>
+
+<p>For example, here is the <code>curl</code> command to launch a SLRP:</p>
+
+<pre><code class="shell">curl -X POST -H 'Content-Type: application/json' -d '{"type":"ADD_RESOURCE_PROVIDER_CONFIG","add_resource_provider_config":{"info":&lt;SLRP_JSON_CONFIG&gt;}}' http://&lt;agent_ip&gt;:&lt;agent_port&gt;/api/v1
+</code></pre>
+
+<h4>Updating SLRP</h4>
+
+<p>A SLRP can be updated by modifying the JSON configuration file. Once the
+modification is done, restart the agent to pick up the new configuration.</p>
+
+<p>Alternatively, the operator can dynamically update a SLRP using the <a href="/documentation/latest/./operator-http-api/#agent-api">agent v1
+operator API</a>. When the agent is running, hit
+the agent <code>/api/v1</code> endpoint using the
+<a href="/documentation/latest/./operator-http-api/#update_resource_provider_config"><code>UPDATE_RESOURCE_PROVIDER_CONFIG</code></a>
+call:</p>
+
+<p>For example, here is the <code>curl</code> command to update a SLRP:</p>
+
+<pre><code class="shell">curl -X POST -H 'Content-Type: application/json' -d '{"type":"UPDATE_RESOURCE_PROVIDER_CONFIG","update_resource_provider_config":{"info":&lt;NEW_SLRP_JSON_CONFIG&gt;}}' http://&lt;agent_ip&gt;:&lt;agent_port&gt;/api/v1
+</code></pre>
+
+<p><em>NOTE</em>: Currently, only <code>storage.containers</code> in the <code>ResourceProviderInfo</code> can
+be updated. This allows operators to update the CSI plugin (e.g., upgrading)
+without affecting running tasks and executors.</p>
+
+<h4>Removing SLRP</h4>
+
+<p>Removing a SLRP means that the agent will terminate the existing SLRP if it is
+still running, and will no longer launch the SLRP during startup. The master and
+the agent will think the SLRP has disconnected, similar to agent disconnection.
+If there exists a task that is using the disk resources provided by the SLRP,
+its execution will not be affected. However, offer operations (e.g.,
+<code>CREATE_VOLUME</code>) for the SLRP will not be successful. In fact, if a SLRP is
+disconnected, the master will rescind the offers related to that SLRP,
+effectively disallowing frameworks to perform operations on the disconnected
+SLRP.</p>
+
+<p>The SLRP can be re-added after its removal following the same instructions of
+<a href="#launching-slrp">launching a SLRP</a>. Note that removing a SLRP is different than
+marking a SLRP as gone, in which case the SLRP will not be allowed to be
+re-added. Marking a SLRP as gone is not yet supported.</p>
+
+<p>A SLRP can be removed by removing the JSON configuration file from the
+configuration directory (<code>--resource_provider_config_dir</code>). Once the removal is
+done, restart the agent to pick up the removal.</p>
+
+<p>Alternatively, the operator can dynamically remove a SLRP using the
+<a href="/documentation/latest/./operator-http-api/#agent-api">agent v1 operator API</a>. When the agent is
+running, hit the agent <code>/api/v1</code> endpoint using the
+<a href="/documentation/latest/./operator-http-api/#remove_resource_provider_config"><code>REMOVE_RESOURCE_PROVIDER_CONFIG</code></a>
+call:</p>
+
+<p>For example, here is the <code>curl</code> command to update a SLRP:</p>
+
+<pre><code class="shell">curl -X POST -H 'Content-Type: application/json' -d '{"type":"REMOVE_RESOURCE_PROVIDER_CONFIG","remove_resource_provider_config":{"type":"org.apache.mesos.rp.local.storage","name":&lt;SLRP_NAME&gt;}}' http://&lt;agent_ip&gt;:&lt;agent_port&gt;/api/v1
+</code></pre>
+
+<h4>Authorization</h4>
+
+<p>A new authorization action <code>MODIFY_RESOURCE_PROVIDER_CONFIG</code> has been added.
+This action applies to adding/updating/removing a SLRP.</p>
+
+<p>For the default Mesos local authorizer, a new ACL
+<code>ACL.ModifyResourceProviderConfig</code> has been added， allowing operators limit the
+access to the above API endpoints.</p>
+
+<pre><code class="protobuf">message ACL {
+  // Which principals are authorized to add, update and remove resource
+  // provider config files.
+  message ModifyResourceProviderConfig {
+    // Subjects: HTTP Username.
+    required Entity principals = 1;
+
+    // Objects: Given implicitly.
+    // Use Entity type ANY or NONE to allow or deny access.
+    required Entity resource_providers = 2;
+  }
+}
+</code></pre>
+
+<p>Currently, the <code>Objects</code> has to be either <code>ANY</code> or <code>NONE</code>. Fine-grained
+authorization of specific resource provider objects is not yet supported. Please
+refer to the <a href="/documentation/latest/./authorization/">authorization doc</a> for more details about the
+default Mesos local authorizer.</p>
+
+<h3>Standalone Containers for CSI Plugins</h3>
+
+<p>As already mentioned earlier, each SLRP instance manages exactly one CSI plugin.
+Each CSI plugin consists of one or more containers containing run processes that
+implement both the <a href="https://github.com/container-storage-interface/spec/blob/v0.1.0/spec.md#controller-service-rpc">CSI controller service</a>
+and the <a href="https://github.com/container-storage-interface/spec/blob/v0.1.0/spec.md#node-service-rpc">CSI node service</a>.</p>
+
+<p>The CSI plugin containers are managed by the SLRP automatically. The operator
+does not need to deploy them manually. The SLRP will make sure that the CSI
+plugin containers are running and restart them if needed (e.g., failed).</p>
+
+<p>The CSI plugin containers are launched using the standalone container API
+provided by the Mesos agent. See more details about standalone container in the
+<a href="/documentation/latest/./standalone-container/">standalone container doc</a>.</p>
+
+<h2>Limitations</h2>
+
+<ul>
+<li>Only local disk resources are supported currently. That means the disk
+resources are tied to a particular agent node and cannot be used on a
+different agent node. The external disk resources support is coming soon.</li>
+<li>The CSI plugin container cannot be a Docker container yet. Storage vendors
+currently should package the CSI plugins in binary format and use the
+<a href="/documentation/latest/./#fetcher/">fetcher</a> to fetch the binary executable.</li>
+<li><code>BLOCK</code> type disk resources are not supported yet.</li>
+</ul>
+
+
+  </div>
+</div>
+
+  </div><!-- /.container -->
+</div><!-- /.content -->
+
+<hr>
+
+
+
+    <!-- footer -->
+    <div class="footer">
+      <div class="container">
+        <div class="col-md-4 social-blk">
+          <span class="social">
+            <a href="https://twitter.com/ApacheMesos"
+              class="twitter-follow-button"
+              data-show-count="false" data-size="large">Follow @ApacheMesos</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+            <a href="https://twitter.com/intent/tweet?button_hashtag=mesos"
+              class="twitter-hashtag-button"
+              data-size="large"
+              data-related="ApacheMesos">Tweet #mesos</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+          </span>
+        </div>
+
+        <div class="col-md-8 trademark">
+          <p>&copy; 2012-2017 <a href="http://apache.org">The Apache Software Foundation</a>.
+            Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.
+          <p>
+        </div>
+      </div><!-- /.container -->
+    </div><!-- /.footer -->
+
+    <!-- JS -->
+    <script src="//code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" type="text/javascript"></script>
+
+    <!-- Inject anchors for all headings on the page, see https://www.bryanbraun.com/anchorjs. -->
+    <script type="text/javascript">
+    anchors.options = {
+      placement: 'right',
+      ariaLabel: 'Permalink',
+    };
+
+    // The default is to not add anchors to h1, but we have pages with multiple h1 headers,
+    // and we do want to put anchors on those.
+    anchors.add('h1, h2, h3, h4, h5, h6');
+    </script>
+  </body>
+</html>

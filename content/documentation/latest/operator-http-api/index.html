@@ -3866,6 +3866,207 @@ REMOVE_NESTED_CONTAINER HTTP Response (JSON):
 HTTP/1.1 200 OK
 </code></pre>
 
+<h3>ADD_RESOURCE_PROVIDER_CONFIG</h3>
+
+<p>This call launches a Local Resource Provider on the agent with the specified
+<code>ResourceProviderInfo</code>.</p>
+
+<pre><code>ADD_RESOURCE_PROVIDER_CONFIG HTTP Request (JSON):
+
+POST /api/v1  HTTP/1.1
+
+Host: agenthost:5051
+Content-Type: application/json
+Accept: application/json
+
+{
+  "type": "ADD_RESOURCE_PROVIDER_CONFIG",
+  "add_resource_provider_config": {
+    "info": {
+      "type": "org.apache.mesos.rp.local.storage",
+      "name": "test_slrp",
+      "default_reservations": [
+        {
+          "type": "DYNAMIC",
+          "role": "test-role"
+        }
+      ],
+      "storage": {
+        "plugin": {
+          "type": "org.apache.mesos.csi.test",
+          "name": "test_plugin",
+          "containers": [
+            {
+              "services": [
+                "CONTROLLER_SERVICE",
+                "NODE_SERVICE"
+              ],
+              "command": {
+                "shell": true,
+                "value": "./test-csi-plugin --available_capacity=2GB --work_dir=workdir",
+                "uris": [
+                  {
+                    "value": "/PATH/TO/test-csi-plugin",
+                    "executable": true
+                  }
+                ]
+              },
+              "resources": [
+                { "name": "cpus", "type": "SCALAR", "scalar": { "value": 0.1 } },
+                { "name": "mem", "type": "SCALAR", "scalar": { "value": 200.0 } }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+}
+
+ADD_RESOURCE_PROVIDER_CONFIG HTTP Response (JSON):
+
+HTTP/1.1 200 OK
+</code></pre>
+
+<p>Possible responses:</p>
+
+<ul>
+<li><code>200 OK</code>: If a new config file is created.</li>
+<li><code>400 Bad Request</code>: If the request is not well-formed.</li>
+<li><code>401 Unauthorized</code>: If HTTP authentication fails.</li>
+<li><code>403 Forbidden</code>: If the call is not authorized.</li>
+<li><code>409 Conflict</code>: If another config file that describes a resource provider of the same type and name exists.</li>
+<li><code>500 Internal Server Error</code>: If an unexpected error occurs.</li>
+</ul>
+
+
+<h3>UPDATE_RESOURCE_PROVIDER_CONFIG</h3>
+
+<p>This call updates a Local Resource Provider on the agent with the specified
+<code>ResourceProviderInfo</code>.</p>
+
+<pre><code>UPDATE_RESOURCE_PROVIDER_CONFIG HTTP Request (JSON):
+
+POST /api/v1  HTTP/1.1
+
+Host: agenthost:5051
+Content-Type: application/json
+Accept: application/json
+
+{
+  "type": "UPDATE_RESOURCE_PROVIDER_CONFIG",
+  "update_resource_provider_config": {
+    "info": {
+      "type": "org.apache.mesos.rp.local.storage",
+      "name": "test_slrp",
+      "default_reservations": [
+        {
+          "type": "DYNAMIC",
+          "role": "test-role"
+        }
+      ],
+      "storage": {
+        "plugin": {
+          "type": "org.apache.mesos.csi.test",
+          "name": "test_plugin",
+          "containers": [
+            {
+              "services": [
+                "CONTROLLER_SERVICE",
+                "NODE_SERVICE"
+              ],
+              "command": {
+                "shell": true,
+                "value": "./test-csi-plugin --available_capacity=2GB --work_dir=workdir",
+                "uris": [
+                  {
+                    "value": "/PATH/TO/test-csi-plugin",
+                    "executable": true
+                  }
+                ]
+              },
+              "resources": [
+                { "name": "cpus", "type": "SCALAR", "scalar": { "value": 0.1 } },
+                { "name": "mem", "type": "SCALAR", "scalar": { "value": 200.0 } }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+}
+
+UPDATE_RESOURCE_PROVIDER_CONFIG HTTP Response (JSON):
+
+HTTP/1.1 200 OK
+</code></pre>
+
+<p>Possible responses:</p>
+
+<ul>
+<li><code>200 OK</code>: If an existing config file is updated.</li>
+<li><code>400 Bad Request</code>: If the request is not well-formed.</li>
+<li><code>401 Unauthorized</code>: If HTTP authentication fails.</li>
+<li><code>403 Forbidden</code>: If the call is not authorized.</li>
+<li><code>404 Not Found</code>: If no config file describes a resource provider of the same type and name exists.</li>
+<li><code>500 Internal Server Error</code>: If an unexpected error occurs.</li>
+</ul>
+
+
+<h3>REMOVE_RESOURCE_PROVIDER_CONFIG</h3>
+
+<p>This call terminates a given Local Resource Provider on the agent and prevents
+it from being launched again until the config is added back. The master and the
+agent will think the resource provider has disconnected, similar to agent
+disconnection.</p>
+
+<p>If there exists a task that is using the resources provided by the resource
+provider, its execution will not be affected. However, offer operations for the
+local resource provider will not be successful. In fact, if a local resource
+provider is disconnected, the master will rescind the offers related to that
+local resource provider, effectively disallowing frameworks to perform
+operations on the disconnected local resource provider.</p>
+
+<p>The local resource provider can be re-added after its removal using
+<a href="#add_resource_provider_config"><code>ADD_RESOURCE_PROVIDER_CONFIG</code></a>. Note that
+removing a local resource provider is different than marking a local resource
+provider as gone, in which case the local resource provider will not be allowed
+to be re-added.  Marking a local resource provider as gone is not yet supported.</p>
+
+<pre><code>REMOVE_RESOURCE_PROVIDER_CONFIG HTTP Request (JSON):
+
+POST /api/v1  HTTP/1.1
+
+Host: agenthost:5051
+Content-Type: application/json
+Accept: application/json
+
+{
+  "type": "REMOVE_RESOURCE_PROVIDER_CONFIG",
+  "remove_resource_provider_config": {
+    "type": "org.apache.mesos.rp.local.storage",
+    "name": "test_slrp"
+  }
+}
+
+REMOVE_RESOURCE_PROVIDER_CONFIG HTTP Response (JSON):
+
+HTTP/1.1 200 OK
+</code></pre>
+
+<p>Possible responses:</p>
+
+<ul>
+<li><code>200 OK</code>: If the config file is removed.</li>
+<li><code>400 Bad Request</code>: If the request is not well-formed.</li>
+<li><code>401 Unauthorized</code>: If HTTP authentication fails.</li>
+<li><code>403 Forbidden</code>: If the call is not authorized.</li>
+<li><code>404 Not Found</code>: If the config file does not exist.</li>
+<li><code>500 Internal Server Error</code>: If an unexpected error occurs.</li>
+</ul>
+
+
 <h3>PRUNE_IMAGES</h3>
 
 <p>This call triggers garbage collection for container images. This call can
