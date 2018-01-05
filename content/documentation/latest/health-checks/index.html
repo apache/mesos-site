@@ -336,6 +336,9 @@ routeable interface it might be listening on. Field <code>port</code> must speci
 actual port the task is listening on, not a mapped one. The result of the check
 is the HTTP status code of the response.</p>
 
+<p>Built-in executors follow HTTP <code>3xx</code> redirects; custom executors may employ a
+different strategy.</p>
+
 <p>If necessary, executors enter the task&rsquo;s network namespace prior to launching
 the <code>curl</code> command.</p>
 
@@ -504,9 +507,9 @@ listening on. The <code>scheme</code> field supports <code>"http"</code> and <co
 Field <code>port</code> must specify an actual port the task is listening on, not a mapped
 one.</p>
 
-<p>Built-in executors treat status codes between <code>200</code> and <code>399</code> as success; custom
-executors may employ a different strategy, e.g., leveraging the <code>statuses</code>
-field.</p>
+<p>Built-in executors follow HTTP <code>3xx</code> redirects and treat status codes between
+<code>200</code> and <code>399</code> as success; custom executors may employ a different strategy,
+e.g., leveraging the <code>statuses</code> field.</p>
 
 <p><strong>NOTE:</strong> Setting <code>HealthCheck.HTTPCheckInfo.statuses</code> has no effect on the
 built-in executors.</p>
