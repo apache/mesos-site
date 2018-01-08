@@ -123,8 +123,8 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmesos_1_1UnavailableResources.html">UnavailableResources</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1VolumeProfileAdaptor.html">VolumeProfileAdaptor</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This module is used by Storage Resource Providers to translate the "profile" field of a <code>Resource::DiskInfo::Source</code> into fields that a Container Storage Interface (CSI) plugin can potentially understand.  <a href="classmesos_1_1VolumeProfileAdaptor.html#details">More...</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1DiskProfileAdaptor.html">DiskProfileAdaptor</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This module is used by Storage Resource Providers to translate the "profile" field of a <code>Resource::DiskInfo::Source</code> into fields that a Container Storage Interface (CSI) plugin can potentially understand.  <a href="classmesos_1_1DiskProfileAdaptor.html#details">More...</a><br/></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1Resources.html">Resources</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -511,8 +511,12 @@ Functions</h2></td></tr>
 <tr class="separator:ad248dd7e67de347397e0e53018dde98c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adffefc8a8e27c477ede7849dcc8e1897"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos.html#adffefc8a8e27c477ede7849dcc8e1897">convertResourceFormat</a> (std::vector&lt; Resource &gt; *resources, <a class="el" href="namespacemesos.html#aeea322fd31c5b71ac06c65bcf1241a82">ResourceFormat</a> format)</td></tr>
 <tr class="separator:adffefc8a8e27c477ede7849dcc8e1897"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae1f81565662e134a1aabbcbd124dd2cc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos.html#ae1f81565662e134a1aabbcbd124dd2cc">upgradeResources</a> (Offer::Operation *operation)</td></tr>
-<tr class="separator:ae1f81565662e134a1aabbcbd124dd2cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2d6a10d8b400e8759764200839d8452"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos.html#aa2d6a10d8b400e8759764200839d8452">upgradeResource</a> (Resource *resource)</td></tr>
+<tr class="separator:aa2d6a10d8b400e8759764200839d8452"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd6e7795d91704a2923093e05c5ef62a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos.html#acd6e7795d91704a2923093e05c5ef62a">upgradeResources</a> (google::protobuf::RepeatedPtrField&lt; Resource &gt; *resources)</td></tr>
+<tr class="separator:acd6e7795d91704a2923093e05c5ef62a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8d3710ac89f0e83fe47426823b9bea0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos.html#ad8d3710ac89f0e83fe47426823b9bea0">upgradeResources</a> (google::protobuf::Message *message)</td></tr>
+<tr class="separator:ad8d3710ac89f0e83fe47426823b9bea0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af6f7185e6b68ed285aff034622e0ffc3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classOption.html">Option</a>&lt; <a class="el" href="classError.html">Error</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos.html#af6f7185e6b68ed285aff034622e0ffc3">validateAndUpgradeResources</a> (Offer::Operation *operation)</td></tr>
 <tr class="separator:af6f7185e6b68ed285aff034622e0ffc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8ffd0265cced4fe23456fd434f597693"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTry.html">Try</a>&lt; <a class="el" href="structNothing.html">Nothing</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos.html#a8ffd0265cced4fe23456fd434f597693">downgradeResource</a> (Resource *resource)</td></tr>
@@ -5452,15 +5456,47 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="ae1f81565662e134a1aabbcbd124dd2cc"></a>
+<a class="anchor" id="aa2d6a10d8b400e8759764200839d8452"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void mesos::upgradeResource </td>
+          <td>(</td>
+          <td class="paramtype">Resource *&#160;</td>
+          <td class="paramname"><em>resource</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="acd6e7795d91704a2923093e05c5ef62a"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void mesos::upgradeResources </td>
           <td>(</td>
-          <td class="paramtype">Offer::Operation *&#160;</td>
-          <td class="paramname"><em>operation</em></td><td>)</td>
+          <td class="paramtype">google::protobuf::RepeatedPtrField&lt; Resource &gt; *&#160;</td>
+          <td class="paramname"><em>resources</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ad8d3710ac89f0e83fe47426823b9bea0"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void mesos::upgradeResources </td>
+          <td>(</td>
+          <td class="paramtype">google::protobuf::Message *&#160;</td>
+          <td class="paramname"><em>message</em></td><td>)</td>
           <td></td>
         </tr>
       </table>

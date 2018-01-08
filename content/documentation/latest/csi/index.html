@@ -499,7 +499,7 @@ described below:</p>
       // the framework will do disk selection based on profile names,
       // instead of vendor specific disk parameters.
       //
-      // Also see the VolumeProfile module.
+      // Also see the DiskProfile module.
       optional string profile = 6;
     }
   }
@@ -510,13 +510,13 @@ described below:</p>
 resource selection based on the <code>profile</code> of a disk resource, rather
 than low-level storage vendor specific parameters.</p>
 
-<h3>Volume Profile Adaptor Module</h3>
+<h3>Disk Profile Adaptor Module</h3>
 
 <p>In order to let cluster operators customize the mapping between profiles and
 storage system-specific parameters, Mesos provides a <a href="/documentation/latest/./#modules/">module</a>
-interface called <code>VolumeProfileAdaptor</code>.</p>
+interface called <code>DiskProfileAdaptor</code>.</p>
 
-<pre><code class="cpp">class VolumeProfileAdaptor
+<pre><code class="cpp">class DiskProfileAdaptor
 {
 public:
   struct ProfileInfo
@@ -555,10 +555,10 @@ implicit dependency between backward compatibility of the module interface and
 the CSI spec version. Since CSI doesn&rsquo;t provide a backward compatibility
 promise, modules have to be re-built against each release of Mesos.</p>
 
-<h3>URI Volume Profile Adaptor</h3>
+<h3>URI Disk Profile Adaptor</h3>
 
-<p>To demonstrate how to use the volume profile adaptor module, Mesos ships with a
-default volume profile adaptor, called <code>UriVolumeProfileAdaptor</code>. This module
+<p>To demonstrate how to use the disk profile adaptor module, Mesos ships with a
+default disk profile adaptor, called <code>UriDiskProfileAdaptor</code>. This module
 polls the profile information (in JSON) from a configurable URI. Here are the
 module parameters that can be used to configure the module:</p>
 
@@ -607,15 +607,15 @@ number of resource providers in the cluster.  [default: 0secs]</li>
 
 <p>To enable this module, please follow the <a href="/documentation/latest/./modules/">modules documentation</a>:
 add the following JSON to the <code>--modules</code> agent flag, and set agent flag
-<code>--volume_profile_adaptor</code> to <code>org_apache_mesos_UriVolumeProfileAdaptor</code>.</p>
+<code>--disk_profile_adaptor</code> to <code>org_apache_mesos_UriDiskProfileAdaptor</code>.</p>
 
 <pre><code class="json">{
   "libraries": [
     {
-      "file": "/PATH/TO/liburi_volume_profile.so",
+      "file": "/PATH/TO/liburi_disk_profile.so",
       "modules": [
         {
-          "name": "org_apache_mesos_UriVolumeProfileAdaptor",
+          "name": "org_apache_mesos_UriDiskProfileAdaptor",
           "parameters" : [
             {
               "key": "uri",
