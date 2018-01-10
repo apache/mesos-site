@@ -2030,7 +2030,7 @@
 <div class="line"><a name="l01976"></a><span class="lineno"> 1976</span>&#160;      <span class="keyword">typename</span> std::decay&lt;decltype(f(std::forward&lt;Args&gt;(args)...))&gt;::<a class="code" href="namespacemesos_1_1internal_1_1fs.html#a2343e2642db514496ba8380776487fba">type</a>;</div>
 <div class="line"><a name="l01977"></a><span class="lineno"> 1977</span>&#160;</div>
 <div class="line"><a name="l01978"></a><span class="lineno"> 1978</span>&#160;    static_assert(</div>
-<div class="line"><a name="l01979"></a><span class="lineno"> 1979</span>&#160;        <a class="code" href="structis__specialization__of.html">is_specialization_of&lt;Future, Result&gt;::value</a>,</div>
+<div class="line"><a name="l01979"></a><span class="lineno"> 1979</span>&#160;        <a class="code" href="structis__specialization__of.html">is_specialization_of&lt;Result, Future&gt;::value</a>,</div>
 <div class="line"><a name="l01980"></a><span class="lineno"> 1980</span>&#160;        <span class="stringliteral">&quot;Expecting Future&lt;T&gt; to be returned from undiscarded(...)&quot;</span>);</div>
 <div class="line"><a name="l01981"></a><span class="lineno"> 1981</span>&#160;</div>
 <div class="line"><a name="l01982"></a><span class="lineno"> 1982</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespaceprocess.html#a3bf988425025cc1f778727e61bc6d523">undiscardable</a>(<a class="code" href="structprocess_1_1UndiscardableDecorator.html#af431c54e30cf9f0862ab1618ab2130e2">f</a>(std::forward&lt;Args&gt;(args)...));</div>
@@ -2054,20 +2054,19 @@
 <div class="line"><a name="l02000"></a><span class="lineno"> 2000</span>&#160;<span class="comment">// This guarantees that even if `future` is discarded the discard will</span></div>
 <div class="line"><a name="l02001"></a><span class="lineno"> 2001</span>&#160;<span class="comment">// not propagate into the lambda passed into `.then()`.</span></div>
 <div class="line"><a name="l02002"></a><span class="lineno"> 2002</span>&#160;<span class="keyword">template</span> &lt;</div>
-<div class="line"><a name="l02003"></a><span class="lineno"> 2003</span>&#160;  <span class="keyword">typename</span> F,</div>
-<div class="line"><a name="l02004"></a><span class="lineno"> 2004</span>&#160;  <span class="keyword">typename</span> std::enable_if&lt;</div>
-<div class="line"><a name="l02005"></a><span class="lineno"> 2005</span>&#160;    !<a class="code" href="structis__specialization__of.html">is_specialization_of</a>&lt;</div>
-<div class="line"><a name="l02006"></a><span class="lineno"> 2006</span>&#160;      <a class="code" href="classprocess_1_1Future.html">Future</a>,</div>
-<div class="line"><a name="l02007"></a><span class="lineno"> 2007</span>&#160;      <span class="keyword">typename</span> <a class="code" href="namespacemesos_1_1internal_1_1fs.html#a2343e2642db514496ba8380776487fba">std::decay&lt;F&gt;::type</a>&gt;::value, <span class="keywordtype">int</span>&gt;<a class="code" href="namespacemesos_1_1internal_1_1fs.html#a2343e2642db514496ba8380776487fba">::type</a> = 0&gt;</div>
-<div class="line"><a name="l02008"></a><span class="lineno"><a class="line" href="namespaceprocess.html#a75a00f108c8067c629ad5c587a92eb55"> 2008</a></span>&#160;<a class="code" href="structprocess_1_1UndiscardableDecorator.html">UndiscardableDecorator&lt;typename std::decay&lt;F&gt;::type</a>&gt; <a class="code" href="namespaceprocess.html#a3bf988425025cc1f778727e61bc6d523">undiscardable</a>(F&amp;&amp; <a class="code" href="namespaceprocess.html#a62d5333e8ec1817c249cf83e15d568b4">f</a>)</div>
-<div class="line"><a name="l02009"></a><span class="lineno"> 2009</span>&#160;{</div>
-<div class="line"><a name="l02010"></a><span class="lineno"> 2010</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="structprocess_1_1UndiscardableDecorator.html">UndiscardableDecorator</a>&lt;</div>
-<div class="line"><a name="l02011"></a><span class="lineno"> 2011</span>&#160;    <span class="keyword">typename</span> <a class="code" href="namespacemesos_1_1internal_1_1fs.html#a2343e2642db514496ba8380776487fba">std::decay&lt;F&gt;::type</a>&gt;(std::forward&lt;F&gt;(<a class="code" href="namespaceprocess.html#a62d5333e8ec1817c249cf83e15d568b4">f</a>));</div>
-<div class="line"><a name="l02012"></a><span class="lineno"> 2012</span>&#160;}</div>
-<div class="line"><a name="l02013"></a><span class="lineno"> 2013</span>&#160;</div>
-<div class="line"><a name="l02014"></a><span class="lineno"> 2014</span>&#160;}  <span class="comment">// namespace process {</span></div>
-<div class="line"><a name="l02015"></a><span class="lineno"> 2015</span>&#160;</div>
-<div class="line"><a name="l02016"></a><span class="lineno"> 2016</span>&#160;<span class="preprocessor">#endif // __PROCESS_FUTURE_HPP__</span></div>
+<div class="line"><a name="l02003"></a><span class="lineno"> 2003</span>&#160;    <span class="keyword">typename</span> F,</div>
+<div class="line"><a name="l02004"></a><span class="lineno"> 2004</span>&#160;    <span class="keyword">typename</span> std::enable_if&lt;</div>
+<div class="line"><a name="l02005"></a><span class="lineno"> 2005</span>&#160;        !<a class="code" href="structis__specialization__of.html">is_specialization_of&lt;typename std::decay&lt;F&gt;::type</a>, <a class="code" href="classprocess_1_1Future.html">Future</a>&gt;::value,</div>
+<div class="line"><a name="l02006"></a><span class="lineno"> 2006</span>&#160;        <span class="keywordtype">int</span>&gt;<a class="code" href="namespacemesos_1_1internal_1_1fs.html#a2343e2642db514496ba8380776487fba">::type</a> = 0&gt;</div>
+<div class="line"><a name="l02007"></a><span class="lineno"><a class="line" href="namespaceprocess.html#a75a00f108c8067c629ad5c587a92eb55"> 2007</a></span>&#160;<a class="code" href="structprocess_1_1UndiscardableDecorator.html">UndiscardableDecorator&lt;typename std::decay&lt;F&gt;::type</a>&gt; <a class="code" href="namespaceprocess.html#a3bf988425025cc1f778727e61bc6d523">undiscardable</a>(F&amp;&amp; <a class="code" href="namespaceprocess.html#a62d5333e8ec1817c249cf83e15d568b4">f</a>)</div>
+<div class="line"><a name="l02008"></a><span class="lineno"> 2008</span>&#160;{</div>
+<div class="line"><a name="l02009"></a><span class="lineno"> 2009</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="structprocess_1_1UndiscardableDecorator.html">UndiscardableDecorator</a>&lt;</div>
+<div class="line"><a name="l02010"></a><span class="lineno"> 2010</span>&#160;    <span class="keyword">typename</span> <a class="code" href="namespacemesos_1_1internal_1_1fs.html#a2343e2642db514496ba8380776487fba">std::decay&lt;F&gt;::type</a>&gt;(std::forward&lt;F&gt;(<a class="code" href="namespaceprocess.html#a62d5333e8ec1817c249cf83e15d568b4">f</a>));</div>
+<div class="line"><a name="l02011"></a><span class="lineno"> 2011</span>&#160;}</div>
+<div class="line"><a name="l02012"></a><span class="lineno"> 2012</span>&#160;</div>
+<div class="line"><a name="l02013"></a><span class="lineno"> 2013</span>&#160;}  <span class="comment">// namespace process {</span></div>
+<div class="line"><a name="l02014"></a><span class="lineno"> 2014</span>&#160;</div>
+<div class="line"><a name="l02015"></a><span class="lineno"> 2015</span>&#160;<span class="preprocessor">#endif // __PROCESS_FUTURE_HPP__</span></div>
 <div class="ttc" id="namespaceprocess_1_1internal_html_ae0eecf64520fb955719d8edce806cc9b"><div class="ttname"><a href="namespaceprocess_1_1internal.html#ae0eecf64520fb955719d8edce806cc9b">process::internal::select</a></div><div class="ttdeci">void select(const Future&lt; T &gt; &amp;future, std::shared_ptr&lt; Promise&lt; Future&lt; T &gt;&gt;&gt; promise)</div><div class="ttdef"><b>Definition:</b> future.hpp:950</div></div>
 <div class="ttc" id="synchronized_8hpp_html"><div class="ttname"><a href="synchronized_8hpp.html">synchronized.hpp</a></div></div>
 <div class="ttc" id="classprocess_1_1Future_html_a68f241961e700d0cecf982d9cc0043d7"><div class="ttname"><a href="classprocess_1_1Future.html#a68f241961e700d0cecf982d9cc0043d7">process::Future::isReady</a></div><div class="ttdeci">bool isReady() const </div><div class="ttdef"><b>Definition:</b> future.hpp:1231</div></div>
