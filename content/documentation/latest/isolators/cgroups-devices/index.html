@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Apache Mesos - Mesos Containerizer</title>
+    <title>Apache Mesos - Cgroups 'devices' Subsystem Support in Mesos Containerizer</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <meta property="og:locale" content="en_US"/>
@@ -27,7 +27,7 @@
 
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
-    <link href="../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="../../../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
 
     
 
@@ -113,68 +113,73 @@
     <p>See our <a href="/community/">community</a> page for more details.</p>
   </div>
   <div class="col-md-8">
-    <h1>Mesos Containerizer</h1>
+    <h1>Cgroups &lsquo;devices&rsquo; Subsystems Support in Mesos Containerizer</h1>
 
-<p>The Mesos Containerizer provides lightweight containerization and
-resource isolation of executors using Linux-specific functionality
-such as control cgroups and namespaces. It is composable so operators
-can selectively enable different <a href="#isolators">isolators</a>.</p>
+<p>The <code>cgroups/devices</code> isolator allows operators to provide device isolation for
+containers launched by Mesos Containerizer. It uses the cgroups
+<a href="https://www.kernel.org/doc/Documentation/cgroup-v1/devices.txt">device whitelist controller</a> to
+track and enforce open and mknod restrictions on device files. To enable the
+<code>cgroups/devices</code> isolator, append <code>cgroups/devices</code> to the <code>--isolation</code> flag
+when starting the Mesos agent.</p>
 
-<p>It also provides basic support for POSIX systems (e.g., OSX) but
-without any actual isolation, only resource usage reporting.</p>
+<h2>Default whitelisted devices</h2>
 
-<h2>Isolators</h2>
+<p>The following devices are, by default, whitelisted for each container, if you
+turn on this isolator.</p>
 
-<p>Isolators are components that each define an aspect of how a tasks
-execution environment (or container) is constructed. Isolators can
-control how containers are isolated from each other, how task resource
-limits are enforced, how networking is configured, how security
-policies are applied.</p>
-
-<p>Since the isolator interface is <a href="/documentation/latest/./modules/">modularized</a>, operators
-can write modules that implement custom isolators.</p>
-
-<p>Mesos supports the following built-in isolators.</p>
+<p>Each whitelist entry has 4 fields. <code>type</code> is <code>a</code> (all), <code>c</code> (char), or <code>b</code>
+(block). &lsquo;all&rsquo; means it applies to all types and all major and minor numbers.
+Major and minor are either an integer or <code>*</code> for all.  Access is a composition
+of <code>r</code> (<a href="http://man7.org/linux/man-pages/man2/read.2.html">read</a>),
+<code>w</code> (<a href="http://man7.org/linux/man-pages/man2/write.2.html">write</a>),
+and <code>m</code> (<a href="http://man7.org/linux/man-pages/man2/mknod.2.html">mknod</a>).</p>
 
 <ul>
-<li>appc/runtime</li>
-<li><a href="/documentation/latest/./isolators/cgroups-blkio/">cgroups/blkio</a></li>
-<li><a href="/documentation/latest/./isolators/cgroups-cpu/">cgroups/cpu</a></li>
-<li>cgroups/cpuset</li>
-<li><a href="/documentation/latest/./isolators/cgroups-devices/">cgroups/devices</a></li>
-<li>cgroups/hugetlb</li>
-<li>cgroups/mem</li>
-<li><a href="/documentation/latest/./isolators/cgroups-net-cls/">cgroups/net_cls</a></li>
-<li>cgroups/net_prio</li>
-<li>cgroups/perf_event</li>
-<li>cgroups/pids</li>
-<li><a href="/documentation/latest/./isolators/disk-du/">disk/du</a></li>
-<li><a href="/documentation/latest/./isolators/disk-xfs/">disk/xfs</a></li>
-<li><a href="/documentation/latest/./isolators/docker-runtime/">docker/runtime</a></li>
-<li><a href="/documentation/latest/./isolators/docker-volume/">docker/volume</a></li>
-<li><a href="/documentation/latest/./secrets/#environment-based-secrets">environment_secret</a></li>
-<li><a href="/documentation/latest/./isolators/filesystems/">filesystem/linux</a></li>
-<li><a href="/documentation/latest/./isolators/filesystems/">filesystem/posix</a></li>
-<li><a href="/documentation/latest/./isolators/filesystem-shared/">filesystem/shared</a></li>
-<li>filesystem/windows</li>
-<li><a href="/documentation/latest/./gpu-support/">gpu/nvidia</a></li>
-<li><a href="/documentation/latest/./isolators/linux-capabilities/">linux/capabilities</a></li>
-<li><a href="/documentation/latest/./isolators/namespaces-ipc/">namespaces/ipc</a></li>
-<li><a href="/documentation/latest/./isolators/namespaces-pid/">namespaces/pid</a></li>
-<li><a href="/documentation/latest/./cni/">network/cni</a></li>
-<li><a href="/documentation/latest/./isolators/network-port-mapping/">network/port_mapping</a></li>
-<li><a href="/documentation/latest/./isolators/network-ports/">network/ports</a></li>
-<li>posix/cpu</li>
-<li>posix/mem</li>
-<li><a href="/documentation/latest/./isolators/posix-rlimits/">posix/rlimits</a></li>
-<li><a href="/documentation/latest/./container-volume/#host_path-volume-source">volume/host_path</a></li>
-<li>volume/image</li>
-<li><a href="/documentation/latest/./container-volume/#sandbox_path-volume-source">volume/sandbox_path</a></li>
-<li><a href="/documentation/latest/./secrets/#file-based-secrets">volume/secret</a></li>
-<li><a href="/documentation/latest/./isolators/windows/#cpu-limits">windows/cpu</a></li>
-<li><a href="/documentation/latest/./isolators/windows/#memory-limits">windows/mem</a></li>
+<li><code>c *:* m</code>: Make new character devices using <a href="http://man7.org/linux/man-pages/man2/mknod.2.html">mknod(2)</a>.</li>
+<li><code>b *:* m</code>: Make new block devices using <a href="http://man7.org/linux/man-pages/man2/mknod.2.html">mknod(2)</a>.</li>
+<li><code>c 5:1 rwm</code>: Read/write <code>/dev/console</code></li>
+<li><code>c 4:0 rwm</code>: Read/write <code>/dev/tty0</code></li>
+<li><code>c 4:1 rwm</code>: Read/write <code>/dev/tty1</code></li>
+<li><code>c 136:* rwm</code>: Read/write <code>/dev/pts/*</code></li>
+<li><code>c 5:2 rwm</code>: Read/write <code>/dev/ptmx</code></li>
+<li><code>c 10:200 rwm</code>: Read/write <code>/dev/net/tun</code></li>
+<li><code>c 1:3 rwm</code>: Read/write <code>/dev/null</code></li>
+<li><code>c 1:5 rwm</code>: Read/write <code>/dev/zero</code></li>
+<li><code>c 1:7 rwm</code>: Read/write <code>/dev/full</code></li>
+<li><code>c 5:0 rwm</code>: Read/write <code>/dev/tty</code></li>
+<li><code>c 1:9 rwm</code>: Read/write <code>/dev/urandom</code></li>
+<li><code>c 1:8 rwm</code>: Read/write <code>/dev/random</code></li>
 </ul>
 
+
+<p>Note that the cgroups device whitelist control is based on device numbers. This
+is orthogonal to populating <code>/dev</code>, which is typically done by udev or devtmpfs.</p>
+
+<p>Capability <code>CAP_MKNOD</code> is always required to perform
+<a href="http://man7.org/linux/man-pages/man2/mknod.2.html">mknod(2)</a> irrespective of
+whether the device is whitelisted or not.</p>
+
+<h2>Additional whitelisted devices</h2>
+
+<p>The operator can configure the agent to add additional whitelisted devices using
+the <code>--allowed_devices</code> flag on the agent. The flag takes a JSON object (or the
+path to a file that contains the JSON object). For example:</p>
+
+<pre><code class="json">{
+  "allowed_devices": [
+    {
+      "device": {
+        "path": "/path/to/device"
+      },
+      "access": {
+        "read": true,
+        "write": false,
+        "mknod": false
+      }
+    }
+  ]
+}
+</code></pre>
 
   </div>
 </div>
