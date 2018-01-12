@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Apache Mesos - Container Volumes</title>
+    <title>Apache Mesos - Filesystem Isolators in Mesos Containerizer</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <meta property="og:locale" content="en_US"/>
@@ -27,7 +27,7 @@
 
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
-    <link href="../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="../../../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
 
     
 
@@ -113,148 +113,70 @@
     <p>See our <a href="/community/">community</a> page for more details.</p>
   </div>
   <div class="col-md-8">
-    <h1>Container Volumes</h1>
+    <h1>Filesystem Isolators in Mesos Containerizer</h1>
 
-<p>For each volume a container specifies (i.e., <code>ContainerInfo.volumes</code>),
-the following fields must be specified:</p>
+<p>The <a href="/documentation/latest/isolators/../mesos-containerizer/">Mesos Containerizer</a> has several &lsquo;filesystem&rsquo;
+isolators that are used to provide isolation for a container&rsquo;s filesystems.
+Usually, each platform has a corresponding filesystem isolator associated with
+it, because the level of isolation depends on the capabilities of that platform.</p>
+
+<p>Currently, the Mesos Containerizer supports the
+<a href="#filesystemposix-isolator"><code>filesystem/posix</code></a> and
+<a href="#filesystemlinux-isolator"><code>filesystem/linux</code></a> isolators.
+<a href="/documentation/latest/isolators/filesystem-shared/"><code>filesystem/shared</code></a> isolator has a subset of the
+features provided by the <a href="#filesystemlinux-isolator"><code>filesystem/linux</code></a>
+isolator and is broken on hosts with systemd
+(<a href="https://issues.apache.org/jira/browse/MESOS-6563">MESOS-6563</a>), thus is not
+recommended and will be deprecated.</p>
+
+<p>If you are using the Mesos Containerizer, at least one of the filesystem
+isolators needs to be specified through the <code>--isolation</code> flag. If a user does
+not specify any filesystem isolator, Mesos Containerizer will default to using
+the <a href="#filesystemposix-isolator"><code>filesystem/posix</code></a> isolator.</p>
+
+<p>Filesystem isolation is a pre-requisite for all the <a href="/documentation/latest/isolators/../container-volume/">container volume
+isolators</a> because it provides some basic
+functionality that the volume isolators depends on. For example, the
+<a href="#filesystemlinux-isolator"><code>filesystem/linux</code></a> isolator will create a new mount
+namespace for the container so that any volume mounts made by the volume
+isolators will be hidden from the host mount namespace.</p>
+
+<p>The filesystem isolator is also responsible for preparing <a href="/documentation/latest/isolators/../persistent-volume/">persistent volumes</a>
+for containers.</p>
+
+<h2><code>filesystem/posix</code> isolator</h2>
+
+<p>The <code>filesystem/posix</code> isolator works on all POSIX systems. It isolates
+container sandboxes and persistent volumes using UNIX file permissions.</p>
+
+<p>All containers share the same host filesystem. As a result, if you want to
+specify a <a href="/documentation/latest/isolators/../container-image/">container image</a> for the container, you cannot
+use this isolator. Use the <a href="#filesystemlinux-isolator"><code>filesystem/linux</code></a>
+isolator instead.</p>
+
+<p>The <code>filesystem/posix</code> isolator handles <a href="/documentation/latest/isolators/../persistent-volume/">persistent volumes</a>
+by creating symlinks in the container&rsquo;s sandbox that point to the actual
+persistent volumes on the host filesystem.</p>
+
+<h2><code>filesystem/linux</code> isolator</h2>
+
+<p>The <code>filesystem/linux</code> isolator works only on Linux. It isolates the filesystems
+of containers using the following primitives:</p>
 
 <ul>
-<li><p><code>container_path</code>: Path in the container filesystem at which the
-volume will be mounted. If the path is a relative path, it is
-relative to the container&rsquo;s sandbox.</p></li>
-<li><p><code>mode</code>: If the volume is read-only or read-write.</p></li>
-<li><p><code>source</code>: Describe where the volume originates from. See more
-details in the following section.</p></li>
+<li>Each container gets its own mount namespace. The default <a href="https://www.kernel.org/doc/Documentation/filesystems/sharedsubtree.txt">mount propagation</a>
+in each container is set to &lsquo;slave&rsquo;.</li>
+<li>Use UNIX file permissions to protect container sandboxes and persistent
+volumes.</li>
 </ul>
 
 
-<h2>Volume Source Types</h2>
+<p>Each container is allowed to define its own <a href="/documentation/latest/isolators/../container-image/">image</a>. If a
+container image is specified, by default, the container won&rsquo;t be able to see
+files and directories on the host filesystem.</p>
 
-<ul>
-<li><a href="#host_path-volume-source">HOST_PATH</a></li>
-<li><a href="#sandbox_path-volume-source">SANDBOX_PATH</a></li>
-<li><a href="#docker_volume-volume-source">DOCKER_VOLUME</a></li>
-<li><a href="#secret-volume-source">SECRET</a></li>
-</ul>
-
-
-<h3>HOST_PATH Volume Source</h3>
-
-<p>This volume source represents a path on the host filesystem. The path
-can either point to a directory or a file (either a regular file or a
-device file).</p>
-
-<p>The following example shows a <code>HOST_PATH</code> volume that mounts
-<code>/var/lib/mysql</code> on the host filesystem to the same location in the
-container.</p>
-
-<pre><code class="json">{
-  "container_path": "/var/lib/mysql",
-  "mode": "RW",
-  "source": {
-    "type": "HOST_PATH",
-    "host_path": {
-      "path": "/var/lib/mysql"
-    }
-  }
-}
-</code></pre>
-
-<p>The mode and ownership of the volume will be the same as that on the
-host filesystem.</p>
-
-<p>If you are using the <a href="/documentation/latest/./mesos-containerizer/">Mesos Containerizer</a>,
-<code>HOST_PATH</code> volumes are handled by the <code>volume/host_path</code> isolator. To
-enable this isolator, append <code>volume/host_path</code> to the <code>--isolation</code>
-flag when starting the agent. This isolator depends on the
-<a href="/documentation/latest/./isolators/filesystems/#filesystemlinux-isolator"><code>filesystem/linux</code></a>
-isolator.</p>
-
-<p><a href="/documentation/latest/./docker-containerizer/">Docker Containerizer</a> supports <code>HOST_PATH</code>
-volume as well.</p>
-
-<h3>SANDBOX_PATH Volume Source</h3>
-
-<p>There are currently two types of <code>SANDBOX_PATH</code> volume sources:
-<a href="#self-type"><code>SELF</code></a> and <a href="#parent-type"><code>PARENT</code></a>.</p>
-
-<p>If you are using <a href="/documentation/latest/./mesos-containerizer/">Mesos Containerizer</a>,
-<code>SANDBOX_PATH</code> volumes are handled by the <code>volume/sandbox_path</code>
-isolator.  To enable this isolator, append <code>volume/sandbox_path</code> to
-the <code>--isolation</code> flag when starting the agent.</p>
-
-<p>The <a href="/documentation/latest/./docker-containerizer/">Docker Containerizer</a> only supports
-<code>SELF</code> type <code>SANDBOX_PATH</code> volumes currently.</p>
-
-<h4><code>SELF</code> Type</h4>
-
-<p>This represents a path in the container&rsquo;s own sandbox. The path can
-point to either a directory or a file in the sandbox of the container.</p>
-
-<p>The following example shows a <code>SANDBOX_PATH</code> volume from the
-container&rsquo;s own sandbox that mount the subdirectory <code>tmp</code> in the
-sandbox to <code>/tmp</code> in the container root filesystem. This will be
-useful to cap the <code>/tmp</code> usage in the container (if disk isolator is
-used and <code>--enforce_container_disk_quota</code> is turned on).</p>
-
-<pre><code class="json">{
-  "container_path": "/tmp",
-  "mode": "RW",
-  "source": {
-    "type": "SANDBOX_PATH",
-    "sandbox_path": {
-      "type": "SELF",
-      "path": "tmp"
-    }
-  }
-}
-</code></pre>
-
-<p>The ownership of the volume will be the same as that of the sandbox of
-the container.</p>
-
-<p>Note that <code>container_path</code> has to be an absolute path in this case. If
-<code>container_path</code> is relative, that means it&rsquo;s a volume from a
-subdirectory in the container sandbox to another subdirectory in the
-container sandbox. In that case, the user can just create a symlink,
-instead of using a volume.</p>
-
-<h4>PARENT Type</h4>
-
-<p>This represents a path in the sandbox of the parent container. The
-path can point to either a directory or a file in the sandbox of the
-parent container. See the <a href="/documentation/latest/./nested-container-and-task-group/">nested container
-doc</a> for more details about what a
-parent container is.</p>
-
-<p>The following example shows a <code>SANDBOX_PATH</code> volume from the sandbox
-of the parent container that mounts the subdirectory <code>shared_volume</code> in
-the sandbox of the parent container to subdirectory <code>volume</code> in the
-sandbox of the container.</p>
-
-<pre><code class="json">{
-  "container_path": "volume",
-  "mode": "RW",
-  "source": {
-    "type": "SANDBOX_PATH",
-    "sandbox_path": {
-      "type": "PARENT",
-      "path": "shared_volume"
-    }
-  }
-}
-</code></pre>
-
-<p>The ownership of the volume will be the same as that of the sandbox of
-the parent container.</p>
-
-<h3>DOCKER_VOLUME Volume Source</h3>
-
-<p>See more details in this <a href="/documentation/latest/./isolators/docker-volume/">doc</a>.</p>
-
-<h3>SECRET Volume Source</h3>
-
-<p>See more details in this <a href="/documentation/latest/./secrets/#file-based-secrets">doc</a>.</p>
+<p>The <code>filesystem/linux</code> isolator handles <a href="/documentation/latest/isolators/../persistent-volume/">persistent volumes</a>
+by bind mounting persistent volumes into the container&rsquo;s sandbox.</p>
 
   </div>
 </div>
