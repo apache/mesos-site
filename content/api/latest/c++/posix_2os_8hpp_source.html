@@ -457,123 +457,83 @@
 <div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;}</div>
 <div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;</div>
 <div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;</div>
-<div class="line"><a name="l00406"></a><span class="lineno"><a class="line" href="namespaceos.html#acdff0f297e3166c5a2ad4766f6ef9e9b">  406</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classOption.html">Option&lt;std::string&gt;</a> <a class="code" href="namespaceos.html#acdff0f297e3166c5a2ad4766f6ef9e9b">which</a>(</div>
-<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;    <span class="keyword">const</span> std::string&amp; command,</div>
-<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;    <span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;std::string&gt;</a>&amp; _path = <a class="code" href="structNone.html">None</a>())</div>
-<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;{</div>
-<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;  <a class="code" href="classOption.html">Option&lt;std::string&gt;</a> path = _path;</div>
+<div class="line"><a name="l00406"></a><span class="lineno"><a class="line" href="namespaceos.html#a547f04b42e472b2ff0070897010fac78">  406</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;std::string&gt;</a> <a class="code" href="namespaceos.html#a547f04b42e472b2ff0070897010fac78">var</a>()</div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;{</div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;  <span class="keywordflow">return</span> <span class="stringliteral">&quot;/var&quot;</span>;</div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;}</div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;</div>
 <div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;</div>
-<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;  <span class="keywordflow">if</span> (path.<a class="code" href="classOption.html#a06eab791122ebc1f8af4ad310e5e7d7e">isNone</a>()) {</div>
-<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;    path = <a class="code" href="namespaceos.html#add69634db977768c56f0367b4bb03cd5">getenv</a>(<span class="stringliteral">&quot;PATH&quot;</span>);</div>
-<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;</div>
-<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;    <span class="keywordflow">if</span> (path.<a class="code" href="classOption.html#a06eab791122ebc1f8af4ad310e5e7d7e">isNone</a>()) {</div>
-<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="structNone.html">None</a>();</div>
-<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;    }</div>
-<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;  }</div>
-<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;</div>
-<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;  std::vector&lt;std::string&gt; tokens = <a class="code" href="namespacestrings.html#afffe11c8ecce961981653358520d6a04">strings::tokenize</a>(path.<a class="code" href="classOption.html#a21358442c0fac1cc978a67a9a9089a79">get</a>(), <span class="stringliteral">&quot;:&quot;</span>);</div>
-<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;  <span class="keywordflow">foreach</span> (<span class="keyword">const</span> std::string&amp; token, tokens) {</div>
-<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;    <span class="keyword">const</span> std::string commandPath = <a class="code" href="namespacepath.html#aa86b16a2171cec90bb3337930513ef0f">path::join</a>(token, command);</div>
-<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="namespaceos.html#a69b3969276ffa4cb698b9431ee43bd7c">os::exists</a>(commandPath)) {</div>
-<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;      <span class="keywordflow">continue</span>;</div>
-<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;    }</div>
-<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;</div>
-<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;    <a class="code" href="classTry.html">Try&lt;os::Permissions&gt;</a> <a class="code" href="namespaceos.html#a3fc3402e6d83c2e2f1dc680d77489a29">permissions</a> = <a class="code" href="namespaceos.html#a3fc3402e6d83c2e2f1dc680d77489a29">os::permissions</a>(commandPath);</div>
-<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;    <span class="keywordflow">if</span> (permissions.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
-<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;      <span class="keywordflow">continue</span>;</div>
-<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;    }</div>
+<div class="line"><a name="l00412"></a><span class="lineno"><a class="line" href="namespaceos.html#a54f3320a4d6f88c14f80f5247aa879b9">  412</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;Nothing&gt;</a> <a class="code" href="namespaceos.html#a54f3320a4d6f88c14f80f5247aa879b9">dup2</a>(<span class="keywordtype">int</span> oldFd, <span class="keywordtype">int</span> newFd)</div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;{</div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;  <span class="keywordflow">while</span> (::<a class="code" href="namespaceos.html#a54f3320a4d6f88c14f80f5247aa879b9">dup2</a>(oldFd, newFd) == -1) {</div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;    <span class="keywordflow">if</span> (errno == EINTR) {</div>
+<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;      <span class="keywordflow">continue</span>;</div>
+<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="classErrnoError.html">ErrnoError</a>();</div>
+<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;    }</div>
+<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;  }</div>
+<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="structNothing.html">Nothing</a>();</div>
+<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;}</div>
+<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;</div>
+<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;</div>
+<div class="line"><a name="l00425"></a><span class="lineno"><a class="line" href="namespaceos.html#a07a766e0355221b949e5fe6fdfca63f2">  425</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;std::string&gt;</a> <a class="code" href="namespaceos.html#a07a766e0355221b949e5fe6fdfca63f2">ptsname</a>(<span class="keywordtype">int</span> master)</div>
+<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;{</div>
+<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;  <span class="comment">// &#39;ptsname&#39; is not thread safe. Therefore, we use mutex here to</span></div>
+<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;  <span class="comment">// make this method thread safe.</span></div>
+<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;  <span class="comment">// TODO(jieyu): Consider using ptsname_r for linux.</span></div>
+<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;  <span class="keyword">static</span> std::mutex* mutex = <span class="keyword">new</span> std::mutex;</div>
 <div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;</div>
-<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;    <span class="keywordflow">if</span> (!permissions.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>().<a class="code" href="structos_1_1Permissions.html#a8d51e62d281d015ba6a4ee38c0dceb9a">owner</a>.<a class="code" href="structos_1_1Permissions.html#afe509a1398f95df7d2bda5fbfaa91a44">x</a> &amp;&amp;</div>
-<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;        !permissions.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>().<a class="code" href="structos_1_1Permissions.html#aff088e7e48d02dea27b19d0983d49b69">group</a>.<a class="code" href="structos_1_1Permissions.html#afe509a1398f95df7d2bda5fbfaa91a44">x</a> &amp;&amp;</div>
-<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;        !permissions.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>().<a class="code" href="structos_1_1Permissions.html#ae14ff3a707c064967e132d47a5a116ff">others</a>.<a class="code" href="structos_1_1Permissions.html#afe509a1398f95df7d2bda5fbfaa91a44">x</a>) {</div>
-<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;      <span class="keywordflow">continue</span>;</div>
+<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;  <span class="keyword">synchronized</span> (mutex) {</div>
+<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* slavePath = <a class="code" href="namespaceos.html#a07a766e0355221b949e5fe6fdfca63f2">::ptsname</a>(master);</div>
+<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;    <span class="keywordflow">if</span> (slavePath == <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="classErrnoError.html">ErrnoError</a>();</div>
 <div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;    }</div>
-<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;</div>
-<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;    <span class="keywordflow">return</span> commandPath;</div>
-<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;  }</div>
+<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;    <span class="keywordflow">return</span> slavePath;</div>
+<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;  }</div>
+<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;}</div>
 <div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;</div>
-<div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="structNone.html">None</a>();</div>
-<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;}</div>
-<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;</div>
-<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;</div>
-<div class="line"><a name="l00445"></a><span class="lineno"><a class="line" href="namespaceos.html#a547f04b42e472b2ff0070897010fac78">  445</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;std::string&gt;</a> <a class="code" href="namespaceos.html#a547f04b42e472b2ff0070897010fac78">var</a>()</div>
-<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;{</div>
-<div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;  <span class="keywordflow">return</span> <span class="stringliteral">&quot;/var&quot;</span>;</div>
-<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;}</div>
-<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;</div>
+<div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;</div>
+<div class="line"><a name="l00442"></a><span class="lineno"><a class="line" href="namespaceos.html#a2cc6177f60b8bd36990aab876a3c3c3f">  442</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;Nothing&gt;</a> <a class="code" href="namespaceos.html#a2cc6177f60b8bd36990aab876a3c3c3f">setctty</a>(<span class="keywordtype">int</span> fd)</div>
+<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;{</div>
+<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;  <span class="keywordflow">if</span> (ioctl(fd, TIOCSCTTY, <span class="keyword">nullptr</span>) == -1) {</div>
+<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classErrnoError.html">ErrnoError</a>();</div>
+<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;  }</div>
+<div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;</div>
+<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="structNothing.html">Nothing</a>();</div>
+<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;}</div>
 <div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;</div>
-<div class="line"><a name="l00451"></a><span class="lineno"><a class="line" href="namespaceos.html#a54f3320a4d6f88c14f80f5247aa879b9">  451</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;Nothing&gt;</a> <a class="code" href="namespaceos.html#a54f3320a4d6f88c14f80f5247aa879b9">dup2</a>(<span class="keywordtype">int</span> oldFd, <span class="keywordtype">int</span> newFd)</div>
-<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;{</div>
-<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;  <span class="keywordflow">while</span> (::<a class="code" href="namespaceos.html#a54f3320a4d6f88c14f80f5247aa879b9">dup2</a>(oldFd, newFd) == -1) {</div>
-<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;    <span class="keywordflow">if</span> (errno == EINTR) {</div>
-<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;      <span class="keywordflow">continue</span>;</div>
-<div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="classErrnoError.html">ErrnoError</a>();</div>
-<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;    }</div>
-<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;  }</div>
-<div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="structNothing.html">Nothing</a>();</div>
-<div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;}</div>
+<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;</div>
+<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;<span class="comment">// Update the window size for</span></div>
+<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;<span class="comment">// the terminal represented by fd.</span></div>
+<div class="line"><a name="l00454"></a><span class="lineno"><a class="line" href="namespaceos.html#a788e763662cf01a30bcd06baa95332bb">  454</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;Nothing&gt;</a> <a class="code" href="namespaceos.html#a788e763662cf01a30bcd06baa95332bb">setWindowSize</a>(</div>
+<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;    <span class="keywordtype">int</span> fd,</div>
+<div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> rows,</div>
+<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> columns)</div>
+<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;{</div>
+<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;  <span class="keyword">struct </span>winsize winsize;</div>
+<div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;  winsize.ws_row = rows;</div>
+<div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;  winsize.ws_col = columns;</div>
 <div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;</div>
-<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;</div>
-<div class="line"><a name="l00464"></a><span class="lineno"><a class="line" href="namespaceos.html#a07a766e0355221b949e5fe6fdfca63f2">  464</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;std::string&gt;</a> <a class="code" href="namespaceos.html#a07a766e0355221b949e5fe6fdfca63f2">ptsname</a>(<span class="keywordtype">int</span> master)</div>
-<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;{</div>
-<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;  <span class="comment">// &#39;ptsname&#39; is not thread safe. Therefore, we use mutex here to</span></div>
-<div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;  <span class="comment">// make this method thread safe.</span></div>
-<div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;  <span class="comment">// TODO(jieyu): Consider using ptsname_r for linux.</span></div>
-<div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;  <span class="keyword">static</span> std::mutex* mutex = <span class="keyword">new</span> std::mutex;</div>
+<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;  <span class="keywordflow">if</span> (ioctl(fd, TIOCSWINSZ, &amp;winsize) != 0) {</div>
+<div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classErrnoError.html">ErrnoError</a>();</div>
+<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;  }</div>
+<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;</div>
+<div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="structNothing.html">Nothing</a>();</div>
+<div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;}</div>
+<div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;</div>
 <div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160;</div>
-<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;  <span class="keyword">synchronized</span> (mutex) {</div>
-<div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* slavePath = <a class="code" href="namespaceos.html#a07a766e0355221b949e5fe6fdfca63f2">::ptsname</a>(master);</div>
-<div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;    <span class="keywordflow">if</span> (slavePath == <span class="keyword">nullptr</span>) {</div>
-<div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="classErrnoError.html">ErrnoError</a>();</div>
-<div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;    }</div>
-<div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;    <span class="keywordflow">return</span> slavePath;</div>
-<div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160;  }</div>
-<div class="line"><a name="l00478"></a><span class="lineno">  478</span>&#160;}</div>
+<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;<span class="comment">// Returns a host-specific default for the `PATH` environment variable, based</span></div>
+<div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;<span class="comment">// on the configuration of the host.</span></div>
+<div class="line"><a name="l00473"></a><span class="lineno"><a class="line" href="namespaceos.html#a05476e646f895fd2f27f0e449f86ff63">  473</a></span>&#160;<span class="keyword">inline</span> std::string <a class="code" href="namespaceos.html#a05476e646f895fd2f27f0e449f86ff63">host_default_path</a>()</div>
+<div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;{</div>
+<div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;  <span class="keywordflow">return</span> <span class="stringliteral">&quot;/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin&quot;</span>;</div>
+<div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;}</div>
+<div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160;</div>
+<div class="line"><a name="l00478"></a><span class="lineno">  478</span>&#160;} <span class="comment">// namespace os {</span></div>
 <div class="line"><a name="l00479"></a><span class="lineno">  479</span>&#160;</div>
-<div class="line"><a name="l00480"></a><span class="lineno">  480</span>&#160;</div>
-<div class="line"><a name="l00481"></a><span class="lineno"><a class="line" href="namespaceos.html#a2cc6177f60b8bd36990aab876a3c3c3f">  481</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;Nothing&gt;</a> <a class="code" href="namespaceos.html#a2cc6177f60b8bd36990aab876a3c3c3f">setctty</a>(<span class="keywordtype">int</span> fd)</div>
-<div class="line"><a name="l00482"></a><span class="lineno">  482</span>&#160;{</div>
-<div class="line"><a name="l00483"></a><span class="lineno">  483</span>&#160;  <span class="keywordflow">if</span> (ioctl(fd, TIOCSCTTY, <span class="keyword">nullptr</span>) == -1) {</div>
-<div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classErrnoError.html">ErrnoError</a>();</div>
-<div class="line"><a name="l00485"></a><span class="lineno">  485</span>&#160;  }</div>
-<div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160;</div>
-<div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="structNothing.html">Nothing</a>();</div>
-<div class="line"><a name="l00488"></a><span class="lineno">  488</span>&#160;}</div>
-<div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;</div>
-<div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160;</div>
-<div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160;<span class="comment">// Update the window size for</span></div>
-<div class="line"><a name="l00492"></a><span class="lineno">  492</span>&#160;<span class="comment">// the terminal represented by fd.</span></div>
-<div class="line"><a name="l00493"></a><span class="lineno"><a class="line" href="namespaceos.html#a788e763662cf01a30bcd06baa95332bb">  493</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;Nothing&gt;</a> <a class="code" href="namespaceos.html#a788e763662cf01a30bcd06baa95332bb">setWindowSize</a>(</div>
-<div class="line"><a name="l00494"></a><span class="lineno">  494</span>&#160;    <span class="keywordtype">int</span> fd,</div>
-<div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> rows,</div>
-<div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> columns)</div>
-<div class="line"><a name="l00497"></a><span class="lineno">  497</span>&#160;{</div>
-<div class="line"><a name="l00498"></a><span class="lineno">  498</span>&#160;  <span class="keyword">struct </span>winsize winsize;</div>
-<div class="line"><a name="l00499"></a><span class="lineno">  499</span>&#160;  winsize.ws_row = rows;</div>
-<div class="line"><a name="l00500"></a><span class="lineno">  500</span>&#160;  winsize.ws_col = columns;</div>
-<div class="line"><a name="l00501"></a><span class="lineno">  501</span>&#160;</div>
-<div class="line"><a name="l00502"></a><span class="lineno">  502</span>&#160;  <span class="keywordflow">if</span> (ioctl(fd, TIOCSWINSZ, &amp;winsize) != 0) {</div>
-<div class="line"><a name="l00503"></a><span class="lineno">  503</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classErrnoError.html">ErrnoError</a>();</div>
-<div class="line"><a name="l00504"></a><span class="lineno">  504</span>&#160;  }</div>
-<div class="line"><a name="l00505"></a><span class="lineno">  505</span>&#160;</div>
-<div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="structNothing.html">Nothing</a>();</div>
-<div class="line"><a name="l00507"></a><span class="lineno">  507</span>&#160;}</div>
-<div class="line"><a name="l00508"></a><span class="lineno">  508</span>&#160;</div>
-<div class="line"><a name="l00509"></a><span class="lineno">  509</span>&#160;</div>
-<div class="line"><a name="l00510"></a><span class="lineno">  510</span>&#160;<span class="comment">// Returns a host-specific default for the `PATH` environment variable, based</span></div>
-<div class="line"><a name="l00511"></a><span class="lineno">  511</span>&#160;<span class="comment">// on the configuration of the host.</span></div>
-<div class="line"><a name="l00512"></a><span class="lineno"><a class="line" href="namespaceos.html#a05476e646f895fd2f27f0e449f86ff63">  512</a></span>&#160;<span class="keyword">inline</span> std::string <a class="code" href="namespaceos.html#a05476e646f895fd2f27f0e449f86ff63">host_default_path</a>()</div>
-<div class="line"><a name="l00513"></a><span class="lineno">  513</span>&#160;{</div>
-<div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;  <span class="keywordflow">return</span> <span class="stringliteral">&quot;/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin&quot;</span>;</div>
-<div class="line"><a name="l00515"></a><span class="lineno">  515</span>&#160;}</div>
-<div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160;</div>
-<div class="line"><a name="l00517"></a><span class="lineno">  517</span>&#160;} <span class="comment">// namespace os {</span></div>
-<div class="line"><a name="l00518"></a><span class="lineno">  518</span>&#160;</div>
-<div class="line"><a name="l00519"></a><span class="lineno">  519</span>&#160;<span class="preprocessor">#endif // __STOUT_POSIX_OS_HPP__</span></div>
-<div class="ttc" id="namespaceos_html_a54f3320a4d6f88c14f80f5247aa879b9"><div class="ttname"><a href="namespaceos.html#a54f3320a4d6f88c14f80f5247aa879b9">os::dup2</a></div><div class="ttdeci">Try&lt; Nothing &gt; dup2(int oldFd, int newFd)</div><div class="ttdef"><b>Definition:</b> os.hpp:451</div></div>
+<div class="line"><a name="l00480"></a><span class="lineno">  480</span>&#160;<span class="preprocessor">#endif // __STOUT_POSIX_OS_HPP__</span></div>
+<div class="ttc" id="namespaceos_html_a54f3320a4d6f88c14f80f5247aa879b9"><div class="ttname"><a href="namespaceos.html#a54f3320a4d6f88c14f80f5247aa879b9">os::dup2</a></div><div class="ttdeci">Try&lt; Nothing &gt; dup2(int oldFd, int newFd)</div><div class="ttdef"><b>Definition:</b> os.hpp:412</div></div>
 <div class="ttc" id="synchronized_8hpp_html"><div class="ttname"><a href="synchronized_8hpp.html">synchronized.hpp</a></div></div>
-<div class="ttc" id="namespaceos_html_a69b3969276ffa4cb698b9431ee43bd7c"><div class="ttname"><a href="namespaceos.html#a69b3969276ffa4cb698b9431ee43bd7c">os::exists</a></div><div class="ttdeci">bool exists(const std::string &amp;path)</div><div class="ttdef"><b>Definition:</b> exists.hpp:26</div></div>
 <div class="ttc" id="rename_8hpp_html"><div class="ttname"><a href="rename_8hpp.html">rename.hpp</a></div></div>
 <div class="ttc" id="find_8hpp_html"><div class="ttname"><a href="find_8hpp.html">find.hpp</a></div></div>
 <div class="ttc" id="structNothing_html"><div class="ttname"><a href="structNothing.html">Nothing</a></div><div class="ttdef"><b>Definition:</b> nothing.hpp:16</div></div>
@@ -585,7 +545,6 @@
 <div class="ttc" id="namespaceos_html_ab2b826c68a25af9e9ef47c570c36e137"><div class="ttname"><a href="namespaceos.html#ab2b826c68a25af9e9ef47c570c36e137">os::sleep</a></div><div class="ttdeci">Try&lt; Nothing &gt; sleep(const Duration &amp;duration)</div><div class="ttdef"><b>Definition:</b> os.hpp:218</div></div>
 <div class="ttc" id="structos_1_1Process_html_a41f9befab165fd224ba2d829e7c35ba6"><div class="ttname"><a href="structos_1_1Process.html#a41f9befab165fd224ba2d829e7c35ba6">os::Process::group</a></div><div class="ttdeci">const pid_t group</div><div class="ttdef"><b>Definition:</b> process.hpp:55</div></div>
 <div class="ttc" id="namespaceos_html_aa98ca8ac255e2b9c689979a1b40084d3"><div class="ttname"><a href="namespaceos.html#aa98ca8ac255e2b9c689979a1b40084d3">os::processes</a></div><div class="ttdeci">Try&lt; std::list&lt; Process &gt; &gt; processes()</div><div class="ttdef"><b>Definition:</b> os.hpp:182</div></div>
-<div class="ttc" id="structos_1_1Permissions_html_aff088e7e48d02dea27b19d0983d49b69"><div class="ttname"><a href="structos_1_1Permissions.html#aff088e7e48d02dea27b19d0983d49b69">os::Permissions::group</a></div><div class="ttdeci">struct os::Permissions::@21 group</div></div>
 <div class="ttc" id="namespaceos_html_accb0757a8d9eca48dd31c4c433d17cfd"><div class="ttname"><a href="namespaceos.html#accb0757a8d9eca48dd31c4c433d17cfd">os::mknod</a></div><div class="ttdeci">Try&lt; Nothing &gt; mknod(const std::string &amp;path, mode_t mode, dev_t dev)</div><div class="ttdef"><b>Definition:</b> os.hpp:204</div></div>
 <div class="ttc" id="namespaceproc_html_a34396c6140a28f583dc13fee3c3c35d4"><div class="ttname"><a href="namespaceproc.html#a34396c6140a28f583dc13fee3c3c35d4">proc::status</a></div><div class="ttdeci">Result&lt; ProcessStatus &gt; status(pid_t pid)</div><div class="ttdef"><b>Definition:</b> proc.hpp:166</div></div>
 <div class="ttc" id="killtree_8hpp_html"><div class="ttname"><a href="killtree_8hpp.html">killtree.hpp</a></div></div>
@@ -593,15 +552,13 @@
 <div class="ttc" id="classErrnoError_html"><div class="ttname"><a href="classErrnoError.html">ErrnoError</a></div><div class="ttdef"><b>Definition:</b> errorbase.hpp:49</div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2os_2read_8hpp_html"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2os_2read_8hpp.html">read.hpp</a></div></div>
 <div class="ttc" id="structos_1_1Process_html_a688cf2d2f64d48fc510aa78a952c5ad4"><div class="ttname"><a href="structos_1_1Process.html#a688cf2d2f64d48fc510aa78a952c5ad4">os::Process::session</a></div><div class="ttdeci">const Option&lt; pid_t &gt; session</div><div class="ttdef"><b>Definition:</b> process.hpp:56</div></div>
-<div class="ttc" id="namespaceos_html_a3fc3402e6d83c2e2f1dc680d77489a29"><div class="ttname"><a href="namespaceos.html#a3fc3402e6d83c2e2f1dc680d77489a29">os::permissions</a></div><div class="ttdeci">Try&lt; Permissions &gt; permissions(const std::string &amp;path)</div><div class="ttdef"><b>Definition:</b> permissions.hpp:61</div></div>
-<div class="ttc" id="namespacepath_html_aa86b16a2171cec90bb3337930513ef0f"><div class="ttname"><a href="namespacepath.html#aa86b16a2171cec90bb3337930513ef0f">path::join</a></div><div class="ttdeci">std::string join(const std::string &amp;path1, const std::string &amp;path2, const char _separator=os::PATH_SEPARATOR)</div><div class="ttdef"><b>Definition:</b> path.hpp:56</div></div>
 <div class="ttc" id="sunos_8hpp_html"><div class="ttname"><a href="sunos_8hpp.html">sunos.hpp</a></div></div>
 <div class="ttc" id="namespaceos_html_ac0f608e2a32764327e38c53d0d51527d"><div class="ttname"><a href="namespaceos.html#ac0f608e2a32764327e38c53d0d51527d">os::setenv</a></div><div class="ttdeci">void setenv(const std::string &amp;key, const std::string &amp;value, bool overwrite=true)</div><div class="ttdef"><b>Definition:</b> os.hpp:157</div></div>
 <div class="ttc" id="namespaceos_html_a7471e14f4cbd7e23b5daa21e556f4eb5"><div class="ttname"><a href="namespaceos.html#a7471e14f4cbd7e23b5daa21e556f4eb5">os::unsetenv</a></div><div class="ttdeci">void unsetenv(const std::string &amp;key)</div><div class="ttdef"><b>Definition:</b> os.hpp:167</div></div>
 <div class="ttc" id="permissions_8hpp_html"><div class="ttname"><a href="permissions_8hpp.html">permissions.hpp</a></div></div>
 <div class="ttc" id="classDuration_html"><div class="ttname"><a href="classDuration.html">Duration</a></div><div class="ttdef"><b>Definition:</b> duration.hpp:32</div></div>
 <div class="ttc" id="classResult_html"><div class="ttname"><a href="classResult.html">Result</a></div><div class="ttdef"><b>Definition:</b> result.hpp:40</div></div>
-<div class="ttc" id="namespaceos_html_a05476e646f895fd2f27f0e449f86ff63"><div class="ttname"><a href="namespaceos.html#a05476e646f895fd2f27f0e449f86ff63">os::host_default_path</a></div><div class="ttdeci">std::string host_default_path()</div><div class="ttdef"><b>Definition:</b> os.hpp:512</div></div>
+<div class="ttc" id="namespaceos_html_a05476e646f895fd2f27f0e449f86ff63"><div class="ttname"><a href="namespaceos.html#a05476e646f895fd2f27f0e449f86ff63">os::host_default_path</a></div><div class="ttdeci">std::string host_default_path()</div><div class="ttdef"><b>Definition:</b> os.hpp:473</div></div>
 <div class="ttc" id="fork_8hpp_html"><div class="ttname"><a href="fork_8hpp.html">fork.hpp</a></div></div>
 <div class="ttc" id="close_8hpp_html"><div class="ttname"><a href="close_8hpp.html">close.hpp</a></div></div>
 <div class="ttc" id="namespaceos_1_1raw_html_a255f9fd6996adf47571d24586f9ba8fe"><div class="ttname"><a href="namespaceos_1_1raw.html#a255f9fd6996adf47571d24586f9ba8fe">os::raw::environmentp</a></div><div class="ttdeci">char *** environmentp()</div><div class="ttdef"><b>Definition:</b> environment.hpp:88</div></div>
@@ -615,7 +572,6 @@
 <div class="ttc" id="open_8hpp_html"><div class="ttname"><a href="open_8hpp.html">open.hpp</a></div></div>
 <div class="ttc" id="namespaceos_html_ad932e3876b339c61b03abc575ad3943b"><div class="ttname"><a href="namespaceos.html#ad932e3876b339c61b03abc575ad3943b">os::loadavg</a></div><div class="ttdeci">Try&lt; Load &gt; loadavg()</div><div class="ttdef"><b>Definition:</b> os.hpp:279</div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_ab03ced250ed239bc3b50b669493997f9"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ab03ced250ed239bc3b50b669493997f9">pid_t</a></div><div class="ttdeci">DWORD pid_t</div><div class="ttdef"><b>Definition:</b> windows.hpp:187</div></div>
-<div class="ttc" id="namespacestrings_html_afffe11c8ecce961981653358520d6a04"><div class="ttname"><a href="namespacestrings.html#afffe11c8ecce961981653358520d6a04">strings::tokenize</a></div><div class="ttdeci">std::vector&lt; std::string &gt; tokenize(const std::string &amp;s, const std::string &amp;delims, const Option&lt; size_t &gt; &amp;maxTokens=None())</div><div class="ttdef"><b>Definition:</b> strings.hpp:138</div></div>
 <div class="ttc" id="structos_1_1Process_html"><div class="ttname"><a href="structos_1_1Process.html">os::Process</a></div><div class="ttdef"><b>Definition:</b> process.hpp:32</div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_a8a35dd1207a16dfa8b1d4163176d828c"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a8a35dd1207a16dfa8b1d4163176d828c">mode_t</a></div><div class="ttdeci">int mode_t</div><div class="ttdef"><b>Definition:</b> windows.hpp:183</div></div>
 <div class="ttc" id="namespaceos_1_1stat_html_a083c9ff4aefeba1a75a27e6a6d6e2a71"><div class="ttname"><a href="namespaceos_1_1stat.html#a083c9ff4aefeba1a75a27e6a6d6e2a71">os::stat::dev</a></div><div class="ttdeci">Try&lt; dev_t &gt; dev(const std::string &amp;path, const FollowSymlink follow=FollowSymlink::FOLLOW_SYMLINK)</div><div class="ttdef"><b>Definition:</b> stat.hpp:139</div></div>
@@ -629,15 +585,12 @@
 <div class="ttc" id="namespaceos_html_a30f836264363d7d7f0578fd0fb98ee36"><div class="ttname"><a href="namespaceos.html#a30f836264363d7d7f0578fd0fb98ee36">os::tar</a></div><div class="ttdeci">Try&lt; Nothing &gt; tar(const std::string &amp;path, const std::string &amp;archive)</div><div class="ttdef"><b>Definition:</b> os.hpp:363</div></div>
 <div class="ttc" id="namespaceos_html_a73c0258b355f6a38f3809bcd16a8f25a"><div class="ttname"><a href="namespaceos.html#a73c0258b355f6a38f3809bcd16a8f25a">os::hstrerror</a></div><div class="ttdeci">std::string hstrerror(int err)=delete</div></div>
 <div class="ttc" id="getcwd_8hpp_html"><div class="ttname"><a href="getcwd_8hpp.html">getcwd.hpp</a></div></div>
-<div class="ttc" id="namespaceos_html_a2cc6177f60b8bd36990aab876a3c3c3f"><div class="ttname"><a href="namespaceos.html#a2cc6177f60b8bd36990aab876a3c3c3f">os::setctty</a></div><div class="ttdeci">Try&lt; Nothing &gt; setctty(int fd)</div><div class="ttdef"><b>Definition:</b> os.hpp:481</div></div>
+<div class="ttc" id="namespaceos_html_a2cc6177f60b8bd36990aab876a3c3c3f"><div class="ttname"><a href="namespaceos.html#a2cc6177f60b8bd36990aab876a3c3c3f">os::setctty</a></div><div class="ttdeci">Try&lt; Nothing &gt; setctty(int fd)</div><div class="ttdef"><b>Definition:</b> os.hpp:442</div></div>
 <div class="ttc" id="classOption_html_a21358442c0fac1cc978a67a9a9089a79"><div class="ttname"><a href="classOption.html#a21358442c0fac1cc978a67a9a9089a79">Option::get</a></div><div class="ttdeci">const T &amp; get() const &amp;</div><div class="ttdef"><b>Definition:</b> option.hpp:118</div></div>
-<div class="ttc" id="namespaceos_html_add69634db977768c56f0367b4bb03cd5"><div class="ttname"><a href="namespaceos.html#add69634db977768c56f0367b4bb03cd5">os::getenv</a></div><div class="ttdeci">Option&lt; std::string &gt; getenv(const std::string &amp;key)</div><div class="ttdef"><b>Definition:</b> getenv.hpp:29</div></div>
-<div class="ttc" id="namespaceos_html_acdff0f297e3166c5a2ad4766f6ef9e9b"><div class="ttname"><a href="namespaceos.html#acdff0f297e3166c5a2ad4766f6ef9e9b">os::which</a></div><div class="ttdeci">Option&lt; std::string &gt; which(const std::string &amp;command, const Option&lt; std::string &gt; &amp;_path=None())</div><div class="ttdef"><b>Definition:</b> os.hpp:406</div></div>
 <div class="ttc" id="namespaceos_html_aede9f61dcb4b7d1f276302a7bce37446"><div class="ttname"><a href="namespaceos.html#aede9f61dcb4b7d1f276302a7bce37446">os::random</a></div><div class="ttdeci">int random()</div><div class="ttdef"><b>Definition:</b> os.hpp:538</div></div>
 <div class="ttc" id="namespaceos_html_a079aa1b108c567735620a14ea2a2e506"><div class="ttname"><a href="namespaceos.html#a079aa1b108c567735620a14ea2a2e506">os::release</a></div><div class="ttdeci">Try&lt; Version &gt; release()</div><div class="ttdef"><b>Definition:</b> os.hpp:377</div></div>
 <div class="ttc" id="classDuration_html_a31ebb8d92dc93914cb830d70753d802b"><div class="ttname"><a href="classDuration.html#a31ebb8d92dc93914cb830d70753d802b">Duration::secs</a></div><div class="ttdeci">double secs() const </div><div class="ttdef"><b>Definition:</b> duration.hpp:101</div></div>
 <div class="ttc" id="namespaceos_html_a48c86262928f59c5c54d0cb0012e2aba"><div class="ttname"><a href="namespaceos.html#a48c86262928f59c5c54d0cb0012e2aba">os::waitpid</a></div><div class="ttdeci">Result&lt; pid_t &gt; waitpid(pid_t pid, int *status, int options)</div><div class="ttdef"><b>Definition:</b> os.hpp:141</div></div>
-<div class="ttc" id="structos_1_1Permissions_html_ae14ff3a707c064967e132d47a5a116ff"><div class="ttname"><a href="structos_1_1Permissions.html#ae14ff3a707c064967e132d47a5a116ff">os::Permissions::others</a></div><div class="ttdeci">struct os::Permissions::@21 others</div></div>
 <div class="ttc" id="structos_1_1UTSInfo_html_a6d960255088be07cac7157b7cbe94cbf"><div class="ttname"><a href="structos_1_1UTSInfo.html#a6d960255088be07cac7157b7cbe94cbf">os::UTSInfo::sysname</a></div><div class="ttdeci">std::string sysname</div><div class="ttdef"><b>Definition:</b> os.hpp:46</div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2os_2linux_8hpp_html"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2os_2linux_8hpp.html">linux.hpp</a></div></div>
 <div class="ttc" id="sendfile_8hpp_html"><div class="ttname"><a href="sendfile_8hpp.html">sendfile.hpp</a></div></div>
@@ -651,7 +604,6 @@
 <div class="ttc" id="structNone_html"><div class="ttname"><a href="structNone.html">None</a></div><div class="ttdef"><b>Definition:</b> none.hpp:27</div></div>
 <div class="ttc" id="classTry_html_a0b98f95163b8a38daafd1651b043a276"><div class="ttname"><a href="classTry.html#a0b98f95163b8a38daafd1651b043a276">Try::isError</a></div><div class="ttdeci">bool isError() const </div><div class="ttdef"><b>Definition:</b> try.hpp:71</div></div>
 <div class="ttc" id="structos_1_1UTSInfo_html_a03dd23e9031a68b633dc6e405e32bab0"><div class="ttname"><a href="structos_1_1UTSInfo.html#a03dd23e9031a68b633dc6e405e32bab0">os::UTSInfo::nodename</a></div><div class="ttdeci">std::string nodename</div><div class="ttdef"><b>Definition:</b> os.hpp:47</div></div>
-<div class="ttc" id="structos_1_1Permissions_html_a8d51e62d281d015ba6a4ee38c0dceb9a"><div class="ttname"><a href="structos_1_1Permissions.html#a8d51e62d281d015ba6a4ee38c0dceb9a">os::Permissions::owner</a></div><div class="ttdeci">struct os::Permissions::@21 owner</div></div>
 <div class="ttc" id="namespaceos_html_aebc3586b2be0d2b9093ccfbf25dfcde8"><div class="ttname"><a href="namespaceos.html#aebc3586b2be0d2b9093ccfbf25dfcde8">os::execvpe</a></div><div class="ttdeci">int execvpe(const std::string &amp;command, const std::vector&lt; std::string &gt; &amp;argv, const std::map&lt; std::string, std::string &gt; &amp;envp)</div><div class="ttdef"><b>Definition:</b> shell.hpp:394</div></div>
 <div class="ttc" id="signals_8hpp_html"><div class="ttname"><a href="signals_8hpp.html">signals.hpp</a></div></div>
 <div class="ttc" id="structVersion_html"><div class="ttname"><a href="structVersion.html">Version</a></div><div class="ttdef"><b>Definition:</b> version.hpp:41</div></div>
@@ -660,19 +612,18 @@
 <div class="ttc" id="namespaceos_1_1stat_html_afc51654ad486693167c300612bf8ebfa"><div class="ttname"><a href="namespaceos_1_1stat.html#afc51654ad486693167c300612bf8ebfa">os::stat::mode</a></div><div class="ttdeci">Try&lt; mode_t &gt; mode(const std::string &amp;path, const FollowSymlink follow=FollowSymlink::FOLLOW_SYMLINK)</div><div class="ttdef"><b>Definition:</b> stat.hpp:126</div></div>
 <div class="ttc" id="classOption_html_a06eab791122ebc1f8af4ad310e5e7d7e"><div class="ttname"><a href="classOption.html#a06eab791122ebc1f8af4ad310e5e7d7e">Option::isNone</a></div><div class="ttdeci">bool isNone() const </div><div class="ttdef"><b>Definition:</b> option.hpp:116</div></div>
 <div class="ttc" id="shell_8hpp_html"><div class="ttname"><a href="shell_8hpp.html">shell.hpp</a></div></div>
-<div class="ttc" id="namespaceos_html_a547f04b42e472b2ff0070897010fac78"><div class="ttname"><a href="namespaceos.html#a547f04b42e472b2ff0070897010fac78">os::var</a></div><div class="ttdeci">Try&lt; std::string &gt; var()</div><div class="ttdef"><b>Definition:</b> os.hpp:445</div></div>
+<div class="ttc" id="namespaceos_html_a547f04b42e472b2ff0070897010fac78"><div class="ttname"><a href="namespaceos.html#a547f04b42e472b2ff0070897010fac78">os::var</a></div><div class="ttdeci">Try&lt; std::string &gt; var()</div><div class="ttdef"><b>Definition:</b> os.hpp:406</div></div>
 <div class="ttc" id="namespaceos_html_a781ae694650dd3c6addab2a383a8c422"><div class="ttname"><a href="namespaceos.html#a781ae694650dd3c6addab2a383a8c422">os::glob</a></div><div class="ttdeci">Try&lt; std::list&lt; std::string &gt; &gt; glob(const std::string &amp;pattern)</div><div class="ttdef"><b>Definition:</b> os.hpp:238</div></div>
-<div class="ttc" id="structos_1_1Permissions_html_afe509a1398f95df7d2bda5fbfaa91a44"><div class="ttname"><a href="structos_1_1Permissions.html#afe509a1398f95df7d2bda5fbfaa91a44">os::Permissions::x</a></div><div class="ttdeci">bool x</div><div class="ttdef"><b>Definition:</b> permissions.hpp:51</div></div>
 <div class="ttc" id="namespaceos_html_a42af1cab63434cedf2b698cd6f49f073"><div class="ttname"><a href="namespaceos.html#a42af1cab63434cedf2b698cd6f49f073">os::pids</a></div><div class="ttdeci">Try&lt; std::set&lt; pid_t &gt; &gt; pids()</div><div class="ttdef"><b>Definition:</b> freebsd.hpp:62</div></div>
 <div class="ttc" id="classTry_html_a7be0768038e0628632492edf6cc1515a"><div class="ttname"><a href="classTry.html#a7be0768038e0628632492edf6cc1515a">Try::get</a></div><div class="ttdeci">const T &amp; get() const </div><div class="ttdef"><b>Definition:</b> try.hpp:73</div></div>
 <div class="ttc" id="structos_1_1Load_html_acff27912cf063f465aaf72fbda6ad3a7"><div class="ttname"><a href="structos_1_1Load.html#acff27912cf063f465aaf72fbda6ad3a7">os::Load::five</a></div><div class="ttdeci">double five</div><div class="ttdef"><b>Definition:</b> os.hpp:27</div></div>
 <div class="ttc" id="structos_1_1UTSInfo_html_a493fadfa45429ab755d01d02d2f8be17"><div class="ttname"><a href="structos_1_1UTSInfo.html#a493fadfa45429ab755d01d02d2f8be17">os::UTSInfo::machine</a></div><div class="ttdeci">std::string machine</div><div class="ttdef"><b>Definition:</b> os.hpp:50</div></div>
-<div class="ttc" id="namespaceos_html_a788e763662cf01a30bcd06baa95332bb"><div class="ttname"><a href="namespaceos.html#a788e763662cf01a30bcd06baa95332bb">os::setWindowSize</a></div><div class="ttdeci">Try&lt; Nothing &gt; setWindowSize(int fd, unsigned short rows, unsigned short columns)</div><div class="ttdef"><b>Definition:</b> os.hpp:493</div></div>
+<div class="ttc" id="namespaceos_html_a788e763662cf01a30bcd06baa95332bb"><div class="ttname"><a href="namespaceos.html#a788e763662cf01a30bcd06baa95332bb">os::setWindowSize</a></div><div class="ttdeci">Try&lt; Nothing &gt; setWindowSize(int fd, unsigned short rows, unsigned short columns)</div><div class="ttdef"><b>Definition:</b> os.hpp:454</div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2os_2raw_2environment_8hpp_html"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2os_2raw_2environment_8hpp.html">environment.hpp</a></div></div>
 <div class="ttc" id="structos_1_1UTSInfo_html"><div class="ttname"><a href="structos_1_1UTSInfo.html">os::UTSInfo</a></div><div class="ttdef"><b>Definition:</b> os.hpp:44</div></div>
 <div class="ttc" id="namespaceos_html_a5e0295f0e3bae2bd29d86803f9293b5d"><div class="ttname"><a href="namespaceos.html#a5e0295f0e3bae2bd29d86803f9293b5d">os::gmtime_r</a></div><div class="ttdeci">tm * gmtime_r(const time_t *timep, tm *result)</div><div class="ttdef"><b>Definition:</b> os.hpp:389</div></div>
 <div class="ttc" id="structos_1_1Load_html_ac65d8819bbf8201cfa6975d853061e93"><div class="ttname"><a href="structos_1_1Load.html#ac65d8819bbf8201cfa6975d853061e93">os::Load::one</a></div><div class="ttdeci">double one</div><div class="ttdef"><b>Definition:</b> os.hpp:26</div></div>
-<div class="ttc" id="namespaceos_html_a07a766e0355221b949e5fe6fdfca63f2"><div class="ttname"><a href="namespaceos.html#a07a766e0355221b949e5fe6fdfca63f2">os::ptsname</a></div><div class="ttdeci">Try&lt; std::string &gt; ptsname(int master)</div><div class="ttdef"><b>Definition:</b> os.hpp:464</div></div>
+<div class="ttc" id="namespaceos_html_a07a766e0355221b949e5fe6fdfca63f2"><div class="ttname"><a href="namespaceos.html#a07a766e0355221b949e5fe6fdfca63f2">os::ptsname</a></div><div class="ttdeci">Try&lt; std::string &gt; ptsname(int master)</div><div class="ttdef"><b>Definition:</b> os.hpp:425</div></div>
 <div class="ttc" id="namespaceos_1_1raw_html_aad2bd3acb3ca09c75a1a1db58075f9f4"><div class="ttname"><a href="namespaceos_1_1raw.html#aad2bd3acb3ca09c75a1a1db58075f9f4">os::raw::environment</a></div><div class="ttdeci">char ** environment()</div><div class="ttdef"><b>Definition:</b> environment.hpp:66</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
