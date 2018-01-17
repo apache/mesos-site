@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Apache Mesos - Developer Guide</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta property="og:locale" content="en_US"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:title" content="Apache Mesos"/>
+    <meta property="og:site_name" content="Apache Mesos"/>
+    <meta property="og:url" content="http://mesos.apache.org/"/>
+    <meta property="og:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta property="og:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
+
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:site" content="@ApacheMesos"/>
+    <meta name="twitter:title" content="Apache Mesos"/>
+    <meta name="twitter:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta name="twitter:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
+
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
+    <link href="../../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+
+    
+
+    <!-- Google Analytics Magic -->
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-20226872-1']);
+    _gaq.push(['_setDomainName', 'apache.org']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+    
+  </head>
+  <body>
+    <!-- magical breadcrumbs -->
+    <div class="topnav">
+      <div class="container">
+        <ul class="breadcrumb">
+          <li>
+            <div class="dropdown">
+              <a data-toggle="dropdown" href="#">Apache Software Foundation <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                <li><a href="http://www.apache.org">Apache Homepage</a></li>
+                <li><a href="http://www.apache.org/licenses/">License</a></li>
+                <li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>
+                <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                <li><a href="http://www.apache.org/security/">Security</a></li>
+              </ul>
+            </div>
+          </li>
+
+          <li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+          
+          
+          <li><a href="/documentation
+/">Documentation
+</a></li>
+          
+          
+        </ul><!-- /.breadcrumb -->
+      </div><!-- /.container -->
+    </div><!-- /.topnav -->
+
+    <!-- navbar excitement -->
+<div class="navbar navbar-default navbar-static-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#mesos-menu" aria-expanded="false">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo"/></a>
+    </div><!-- /.navbar-header -->
+
+    <div class="navbar-collapse collapse" id="mesos-menu">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/getting-started/">Getting Started</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/documentation/latest/">Documentation</a></li>
+        <li><a href="/downloads/">Downloads</a></li>
+        <li><a href="/community/">Community</a></li>
+      </ul>
+    </div><!-- /#mesos-menu -->
+  </div><!-- /.container -->
+</div><!-- /.navbar -->
+
+<div class="content">
+  <div class="container">
+    <div class="row-fluid">
+  <div class="col-md-4">
+    <h4>If you're new to Mesos</h4>
+    <p>See the <a href="/getting-started/">getting started</a> page for more
+       information about downloading, building, and deploying Mesos.</p>
+
+    <h4>If you'd like to get involved or you're looking for support</h4>
+    <p>See our <a href="/community/">community</a> page for more details.</p>
+  </div>
+  <div class="col-md-8">
+    <h1>Developer Guide</h1>
+
+<p>This document is distinct from the <a href="/documentation/latest/./c++-style-guide/">C++ Style Guide</a> as it
+covers best practices, design patterns, and other tribal knowledge, not just how
+to format code correctly.</p>
+
+<h1>General</h1>
+
+<h2>When to Introduce Abstractions</h2>
+
+<p>Don&rsquo;t introduce an abstraction just for code de-duplication. Always think about
+if the abstraction makes sense.</p>
+
+<h2>Include What You Use</h2>
+
+<p>IWYU: the principle that if you use a type or symbol from a header file, that
+header file should be included.</p>
+
+<p>While IWYU should always be followed in C++, we have a problem specifically with
+the <code>os</code> namespace. Originally, all functions like <code>os::realpath</code> were
+implemented in <code>stout/os.hpp</code>. At some point, however, each of these were moved
+to their own file (i.e. <code>stout/os/realpath.hpp</code>). Unfortunately, it is very easy
+to use an <code>os</code> function without including its respective header because
+<code>stout/posix/os.hpp</code> includes almost all of these headers. This tends to break
+other platforms, as <code>stout/windows/os.hpp</code> <em>does not</em> include all of these
+headers. The guideline is to Include What You Use, especially for
+<code>stout/os/*.hpp</code>.</p>
+
+<h2>Error message reporting</h2>
+
+<p>The general pattern is to just include the reason for an error, and to not
+include any information the caller already has, because otherwise the callers
+will double log:</p>
+
+<pre><code>namespace os {
+
+Try&lt;Nothing&gt; copyfile(string source, string destination)
+{
+  if (... copying failed ...) {
+    return Error("Failed to copy '" + source + "' to '" + destination + "'");
+  }
+
+  return Nothing();
+}
+
+} // namespace os
+
+Try&lt;Nothing&gt; copy = os::copyfile(source, destination);
+
+if (copy.isError()) {
+  return ("Failed to copy '" + source + "'"
+          " to '" + destination + "': " + copy.error();
+}
+</code></pre>
+
+<p>This would emit:</p>
+
+<blockquote><p>Failed to copy &rsquo;s' to &rsquo;d': Failed to copy &rsquo;s' to &rsquo;d': No disk space left</p></blockquote>
+
+<p>A good way to think of this is: &ldquo;what is the &lsquo;actual&rsquo; error message?&rdquo;</p>
+
+<p>An error message consists of several parts, much like an exception: the &ldquo;reason&rdquo;
+for the error, and multiple &ldquo;stacks&rdquo; of context. If you&rsquo;re referring to the
+&ldquo;reason&rdquo; when you said &ldquo;actual&rdquo;, both approaches (the one Mesos uses, or the
+above example) include the reason in their returned error message. The
+distinction lies in <em>where</em> the &ldquo;stacks&rdquo; of context get included.</p>
+
+<p>The decision Mesos took some time ago was to have the &ldquo;owner&rdquo; of the context be
+responsible for including it. So if we call <code>os::copyfile</code> we know which
+function we&rsquo;re calling and which <code>source</code> and <code>destination</code> we&rsquo;re passing into
+it. This matches POSIX-style programming, which is likely why this approach was
+chosen.</p>
+
+<p>The POSIX-style code:</p>
+
+<pre><code>int main()
+{
+  int fd = open("/file");
+
+  if (fd == -1) {
+    // Caller logs the thing it was doing, and gets the reason for the error:
+    LOG(ERROR) &lt;&lt; "Failed to initialize: Failed to open '/file': " &lt;&lt; strerror(errno);
+  }
+}
+</code></pre>
+
+<p>is similar to the following Mesos-style code:</p>
+
+<pre><code>int main()
+{
+  Try&lt;int&gt; fd = open("/file");
+
+  if (fd.isError()) {
+    // Caller logs the thing it was doing, and gets the reason for the error:
+    LOG(ERROR) &lt;&lt; "Failed to initialize: Failed to open '/file': " &lt;&lt; fd.error();
+  }
+}
+</code></pre>
+
+<p>If we use the alternative approach to have the leaf include all the information
+it has, then we have to compose differently:</p>
+
+<pre><code>int main()
+{
+  Try&lt;int&gt; fd = os::open("/file");
+
+  if (fd.isError()) {
+    // Caller knows that no additional context needs to be added because callee has all of it.
+    LOG(ERROR) &lt;&lt; "Failed to initialize: " &lt;&lt; fd.error();
+  }
+}
+</code></pre>
+
+<p>The approach we chose was to treat the error as just the &ldquo;reason&rdquo; (much like
+<code>strerror</code>), so if the caller wants to add context to it, they can. Both
+approaches work, but we have to pick one and apply it consistently as best we
+can. So don&rsquo;t add information to an error message that the caller already has.</p>
+
+<h1>Windows</h1>
+
+<h2>Unicode</h2>
+
+<p>Mesos is explicitly compiled with <code>UNICODE</code> and <code>_UNICODE</code> preprocess
+defintions, forcing the use of the wide <code>wchar_t</code> versions of ambiguous APIs.
+Nonetheless, developers should be explicit when using an API: use
+<code>::SetCurrentDirectoryW</code> over the ambiguous macro <code>::SetCurrentyDirectory</code>.</p>
+
+<p>When converting from <code>std::string</code> to <code>std::wstring</code>, do not reinvent the wheel!
+Use the <code>wide_stringify()</code> and <code>stringify()</code> functions from
+<a href="https://github.com/apache/mesos/blob/master/3rdparty/stout/include/stout/stringify.hpp"><code>stringify.hpp</code></a>.</p>
+
+<h2>Long Path Support</h2>
+
+<p>Mesos has built-in NTFS long path support. On Windows, the usual maximum path is
+about 255 characters (it varies per API). This is unusable because Mesos uses
+directories with GUIDs, and easily exceeds this limitation. To support this, we
+use the Unicode versions of the Windows APIs, and explicitly preprend the long
+path marker <code>\\?\</code> to any path sent to these APIs.</p>
+
+<p>The pattern, when using a Windows API which takes a path, is to:</p>
+
+<ol>
+<li>Use the wide version of the API (suffixed with <code>W</code>).</li>
+<li>Ensure the API supports long paths (check MSDN for the API).</li>
+<li>Use <code>::internal::windows::longpath(std::string path)</code> to safely convert the path.</li>
+<li>Only use the <code>longpath</code> for Windows APIs, or internal Windows API wrappers.</li>
+</ol>
+
+
+<p>For an example, see
+<a href="https://github.com/apache/mesos/blob/master/3rdparty/stout/include/stout/os/windows/chdir.hpp"><code>chdir.hpp</code></a>.</p>
+
+<p>The long path helper is found in
+<a href="https://github.com/apache/mesos/blob/master/3rdparty/stout/include/stout/internal/windows/longpath.hpp"><code>longpath.hpp</code></a>.</p>
+
+<h3>Windows CRT</h3>
+
+<p>While it is tempting to use the Windows CRT to ease porting, we explicitly avoid
+using it as much as possible for several reasons:</p>
+
+<ul>
+<li><p>It does not interact well with Windows APIs. For instance, an environment
+variable set by the Win32 API <code>SetEnvironmentVariable</code> will not be visible in
+the CRT API <code>environ</code>.</p></li>
+<li><p>The CRT APIs tend to be difficult to encapsulate properly with RAII.</p></li>
+<li><p>Parts of the CRT have been deprecated, and even more are marked unsafe.</p></li>
+</ul>
+
+
+<p>It is almost always preferable to use Win32 APIs, which is akin to &ldquo;Windows
+system programming&rdquo; rather than porting Mesos onto a POSIX compatibility layer.
+It may not always be possible to avoid the CRT, but consider the implementation
+carefully before using it.</p>
+
+<h2>Handles</h2>
+
+<p>The Windows API is flawed and has multiple invalid semantic values for the
+<code>HANDLE</code> type, i.e. some APIs return <code>-1</code> or <code>INVALID_HANDLE_VALUE</code>, and other
+APIs return <code>nullptr</code>. It is simply
+<a href="https://blogs.msdn.microsoft.com/oldnewthing/20040302-00/?p=40443">inconsistent</a>,
+so developers must take extra caution when checking handles returned from the
+Windows APIs. Please double check the documentation to determine which value
+will indicate it is invalid.</p>
+
+<p>Using raw handles (or indeed raw pointers anywhere) in C++ is treachorous. Mesos
+has a <code>SafeHandle</code> class which should be used immediately when obtaining a
+<code>HANDLE</code> from a Windows API, with the deleter likely set to <code>::CloseHandle</code>.</p>
+
+<h2>Nano Server Compatibility</h2>
+
+<p>We would like to target Microsoft Nano Server. This means we are restricted to
+the set of Windows APIs available on Nano,
+<a href="https://msdn.microsoft.com/en-us/library/mt588480(v=vs.85">Nano Server APIs</a>.aspx).
+An example of an <em>excluded and unavailable</em> set of APIs is <code>Shell32.dll</code> AKA
+<code>&lt;shlobj.h&gt;</code>.</p>
+
+  </div>
+</div>
+
+  </div><!-- /.container -->
+</div><!-- /.content -->
+
+<hr>
+
+
+
+    <!-- footer -->
+    <div class="footer">
+      <div class="container">
+        <div class="col-md-4 social-blk">
+          <span class="social">
+            <a href="https://twitter.com/ApacheMesos"
+              class="twitter-follow-button"
+              data-show-count="false" data-size="large">Follow @ApacheMesos</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+            <a href="https://twitter.com/intent/tweet?button_hashtag=mesos"
+              class="twitter-hashtag-button"
+              data-size="large"
+              data-related="ApacheMesos">Tweet #mesos</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+          </span>
+        </div>
+
+        <div class="col-md-8 trademark">
+          <p>&copy; 2012-2017 <a href="http://apache.org">The Apache Software Foundation</a>.
+            Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.
+          <p>
+        </div>
+      </div><!-- /.container -->
+    </div><!-- /.footer -->
+
+    <!-- JS -->
+    <script src="//code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" type="text/javascript"></script>
+
+    <!-- Inject anchors for all headings on the page, see https://www.bryanbraun.com/anchorjs. -->
+    <script type="text/javascript">
+    anchors.options = {
+      placement: 'right',
+      ariaLabel: 'Permalink',
+    };
+
+    // The default is to not add anchors to h1, but we have pages with multiple h1 headers,
+    // and we do want to put anchors on those.
+    anchors.add('h1, h2, h3, h4, h5, h6');
+    </script>
+  </body>
+</html>

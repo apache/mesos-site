@@ -124,6 +124,7 @@
 <ul>
 <li>We avoid <code>using namespace foo</code> statements as it is not explicit about which symbols are pulled in, and it can often pull in a lot of symbols, which sometimes lead to conflicts.</li>
 <li>It is OK to use namespace aliases to help pull in sub-namespaces, such as <code>namespace http = process::http;</code>. These should only be present at the top of the .cpp file.</li>
+<li>We prefer to prefix the global namespace with <code>::</code>, such as <code>::syscall</code>. This makes it clear that we&rsquo;re calling a C API, not a function in the local namespace.</li>
 </ul>
 
 
@@ -230,13 +231,26 @@ driver.acceptOffers({offer.id()},
 
 <ul>
 <li>Leave one space after the <code>template</code> keyword, e.g. <code>template &lt;typename T&gt;</code> rather than <code>template&lt;typename T&gt;</code>.</li>
+<li>Put <code>template &lt;typename T&gt;</code> on its own line, with the templated code (such as a function) starting on the next line.</li>
 </ul>
 
 
 <h3>Function Definition/Invocation</h3>
 
 <ul>
-<li>Newline when calling or defining a function: indent with four spaces.</li>
+<li><p>Newline when calling or defining a function: indent with four spaces.</p></li>
+<li><p>When using types like <code>Try</code> or <code>Owned</code>, use <code>operator-&gt;</code> instead of chained calls to <code>.get()</code> when possible:</p></li>
+</ul>
+
+
+<pre><code class="{.cpp}">// Preferred.
+Owned&lt;MasterDetector&gt; detector = master.get()-&gt;createDetector();
+
+// Don't use.
+Owned&lt;MasterDetector&gt; detector = master.get().get().createDetector();
+</code></pre>
+
+<ul>
 <li>We do not follow Google&rsquo;s style of wrapping on the open parenthesis, the general goal is to reduce visual &ldquo;jaggedness&rdquo; in the code. Prefer (1), (4), (5), sometimes (3), never (2):</li>
 </ul>
 
