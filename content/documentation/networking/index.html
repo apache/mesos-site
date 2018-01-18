@@ -223,13 +223,22 @@ protobuf.</p>
  };
 </code></pre>
 
-<p>For <code>NONE</code>, <code>HOST</code> and <code>BRIDGE</code> network mode the framework only needs
-to specify the network mode in the <code>DockerInfo</code> protobuf. However, for
-the USER mode, since a user-defined docker network is identified by a
-canonical network name (similar to CNI networks) apart from setting
-the network mode in <code>DockerInfo</code> the framework also needs to specify
-the <code>name</code> field in the <code>NetworkInfo</code> protobuf corresponding to the
-name of the user-defined docker network.</p>
+<p>For <code>NONE</code>, <code>HOST</code>, and <code>BRIDGE</code> network mode the framework only needs
+to specify the network mode in the <code>DockerInfo</code> protobuf. To use other
+networks, such as <code>MACVLAN</code> on Linux, <code>TRANSPARENT</code> and <code>L2BRIDGE</code> on
+Windows, or any other user-defined network, the network needs to be
+created beforehand and the <code>USER</code> network mode needs to be chosen. For
+the <code>USER</code> mode, since a user-defined docker network is identified by a
+canonical network name (similar to CNI networks) apart from setting the
+network mode in <code>DockerInfo</code> the framework also needs to specify the
+<code>name</code> field in the <code>NetworkInfo</code> protobuf corresponding to the name of
+the user-defined docker network.</p>
+
+<p>Note that on Windows, the <code>HOST</code> network mode is not supported. Although the
+<code>BRIDGE</code> network mode does not exist on Windows, it has an equivalent mode
+called <code>NAT</code>, so on Windows agents, the <code>BRIDGE</code> mode will be interpretted as
+<code>NAT</code>. If the network mode is not specified, then the default mode will be
+chosen, which is <code>HOST</code> on Linux and <code>NAT</code> on Windows.</p>
 
 <h4><a name="limitations-docker"></a>Limitations of Docker containerizer</h4>
 
