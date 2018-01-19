@@ -154,15 +154,40 @@
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  }</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;};</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;} <span class="comment">// namespace flags {</span></div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="preprocessor">#endif // __STOUT_FLAGS_FLAG_HPP__</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="comment">// Allows to hide the contents of a file located at `path` when serializing</span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="comment">// a flag. This is important for files containing sensitive information.</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno"><a class="line" href="structflags_1_1SecurePathOrValue.html">  106</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structflags_1_1SecurePathOrValue.html">SecurePathOrValue</a></div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;{</div>
+<div class="line"><a name="l00108"></a><span class="lineno"><a class="line" href="structflags_1_1SecurePathOrValue.html#a28ba6af3886c2d7b09ffd521ccfb7c15">  108</a></span>&#160;  <a class="code" href="classOption.html">Option&lt;Path&gt;</a> <a class="code" href="structflags_1_1SecurePathOrValue.html#a28ba6af3886c2d7b09ffd521ccfb7c15">path</a>;</div>
+<div class="line"><a name="l00109"></a><span class="lineno"><a class="line" href="structflags_1_1SecurePathOrValue.html#ac8064a96d7a14f4c0bfaf654e5d772de">  109</a></span>&#160;  std::string <a class="code" href="structflags_1_1SecurePathOrValue.html#ac8064a96d7a14f4c0bfaf654e5d772de">value</a>;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;};</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
+<div class="line"><a name="l00113"></a><span class="lineno"><a class="line" href="namespaceflags.html#a9a4e5bb9a94a3527f736168c50051254">  113</a></span>&#160;<span class="keyword">inline</span> std::ostream&amp; <a class="code" href="namespaceflags.html#a9a4e5bb9a94a3527f736168c50051254">operator&lt;&lt;</a>(</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    std::ostream &amp;stream,</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <span class="keyword">const</span> <a class="code" href="structflags_1_1SecurePathOrValue.html">SecurePathOrValue</a>&amp; flag)</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;{</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;  <span class="keywordflow">if</span> (flag.<a class="code" href="structflags_1_1SecurePathOrValue.html#a28ba6af3886c2d7b09ffd521ccfb7c15">path</a>.<a class="code" href="classOption.html#a4e3bf8416d95246f43c91f1b5c309323">isSome</a>()) {</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    stream &lt;&lt; flag.<a class="code" href="structflags_1_1SecurePathOrValue.html#a28ba6af3886c2d7b09ffd521ccfb7c15">path</a>.<a class="code" href="classOption.html#a21358442c0fac1cc978a67a9a9089a79">get</a>();</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;  } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    stream &lt;&lt; flag.<a class="code" href="structflags_1_1SecurePathOrValue.html#ac8064a96d7a14f4c0bfaf654e5d772de">value</a>;</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;  }</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;  <span class="keywordflow">return</span> stream;</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;}</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;} <span class="comment">// namespace flags {</span></div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;<span class="preprocessor">#endif // __STOUT_FLAGS_FLAG_HPP__</span></div>
 <div class="ttc" id="structflags_1_1Flag_html_a48427029bfe0f14d178fec0e2388fb84"><div class="ttname"><a href="structflags_1_1Flag.html#a48427029bfe0f14d178fec0e2388fb84">flags::Flag::boolean</a></div><div class="ttdeci">bool boolean</div><div class="ttdef"><b>Definition:</b> flag.hpp:89</div></div>
 <div class="ttc" id="classOption_html"><div class="ttname"><a href="classOption.html">Option</a></div><div class="ttdef"><b>Definition:</b> option.hpp:28</div></div>
 <div class="ttc" id="structflags_1_1Warnings_html_adc8532ecf5745eac3fe7d08f48ee5399"><div class="ttname"><a href="structflags_1_1Warnings.html#adc8532ecf5745eac3fe7d08f48ee5399">flags::Warnings::warnings</a></div><div class="ttdeci">std::vector&lt; Warning &gt; warnings</div><div class="ttdef"><b>Definition:</b> flag.hpp:73</div></div>
 <div class="ttc" id="structflags_1_1Warning_html_aa64e779378e27362e1502c29f87adc43"><div class="ttname"><a href="structflags_1_1Warning.html#aa64e779378e27362e1502c29f87adc43">flags::Warning::message</a></div><div class="ttdeci">const std::string message</div><div class="ttdef"><b>Definition:</b> flag.hpp:66</div></div>
 <div class="ttc" id="structflags_1_1Name_html_a08980f466a25017202edd0db9a595f34"><div class="ttname"><a href="structflags_1_1Name.html#a08980f466a25017202edd0db9a595f34">flags::Name::deprecated</a></div><div class="ttdeci">bool deprecated</div><div class="ttdef"><b>Definition:</b> flag.hpp:48</div></div>
+<div class="ttc" id="structflags_1_1SecurePathOrValue_html_ac8064a96d7a14f4c0bfaf654e5d772de"><div class="ttname"><a href="structflags_1_1SecurePathOrValue.html#ac8064a96d7a14f4c0bfaf654e5d772de">flags::SecurePathOrValue::value</a></div><div class="ttdeci">std::string value</div><div class="ttdef"><b>Definition:</b> flag.hpp:109</div></div>
+<div class="ttc" id="structflags_1_1SecurePathOrValue_html_a28ba6af3886c2d7b09ffd521ccfb7c15"><div class="ttname"><a href="structflags_1_1SecurePathOrValue.html#a28ba6af3886c2d7b09ffd521ccfb7c15">flags::SecurePathOrValue::path</a></div><div class="ttdeci">Option&lt; Path &gt; path</div><div class="ttdef"><b>Definition:</b> flag.hpp:108</div></div>
 <div class="ttc" id="lambda_8hpp_html"><div class="ttname"><a href="lambda_8hpp.html">lambda.hpp</a></div></div>
+<div class="ttc" id="classOption_html_a4e3bf8416d95246f43c91f1b5c309323"><div class="ttname"><a href="classOption.html#a4e3bf8416d95246f43c91f1b5c309323">Option::isSome</a></div><div class="ttdeci">bool isSome() const </div><div class="ttdef"><b>Definition:</b> option.hpp:115</div></div>
 <div class="ttc" id="structflags_1_1Warning_html"><div class="ttname"><a href="structflags_1_1Warning.html">flags::Warning</a></div><div class="ttdef"><b>Definition:</b> flag.hpp:61</div></div>
 <div class="ttc" id="structflags_1_1Name_html_aade2f31e63c84733e639817137d48389"><div class="ttname"><a href="structflags_1_1Name.html#aade2f31e63c84733e639817137d48389">flags::Name::Name</a></div><div class="ttdeci">Name()</div><div class="ttdef"><b>Definition:</b> flag.hpp:33</div></div>
 <div class="ttc" id="structflags_1_1Name_html_a41cf541b2117e10ec4a030291ad988da"><div class="ttname"><a href="structflags_1_1Name.html#a41cf541b2117e10ec4a030291ad988da">flags::Name::Name</a></div><div class="ttdeci">Name(const char *_value)</div><div class="ttdef"><b>Definition:</b> flag.hpp:39</div></div>
@@ -171,6 +196,7 @@
 <div class="ttc" id="structflags_1_1Flag_html"><div class="ttname"><a href="structflags_1_1Flag.html">flags::Flag</a></div><div class="ttdef"><b>Definition:</b> flag.hpp:77</div></div>
 <div class="ttc" id="classflags_1_1FlagsBase_html"><div class="ttname"><a href="classflags_1_1FlagsBase.html">flags::FlagsBase</a></div><div class="ttdef"><b>Definition:</b> flags.hpp:44</div></div>
 <div class="ttc" id="structflags_1_1Warning_html_a84f5fd059adc3bc0e134598b8b89f8c0"><div class="ttname"><a href="structflags_1_1Warning.html#a84f5fd059adc3bc0e134598b8b89f8c0">flags::Warning::Warning</a></div><div class="ttdeci">Warning(const std::string &amp;_message)</div><div class="ttdef"><b>Definition:</b> flag.hpp:64</div></div>
+<div class="ttc" id="classOption_html_a21358442c0fac1cc978a67a9a9089a79"><div class="ttname"><a href="classOption.html#a21358442c0fac1cc978a67a9a9089a79">Option::get</a></div><div class="ttdeci">const T &amp; get() const &amp;</div><div class="ttdef"><b>Definition:</b> option.hpp:118</div></div>
 <div class="ttc" id="structflags_1_1Flag_html_aa8ffc927c2aef997452107b2f3157ac9"><div class="ttname"><a href="structflags_1_1Flag.html#aa8ffc927c2aef997452107b2f3157ac9">flags::Flag::alias</a></div><div class="ttdeci">Option&lt; Name &gt; alias</div><div class="ttdef"><b>Definition:</b> flag.hpp:80</div></div>
 <div class="ttc" id="structflags_1_1Name_html_a341f15992435778177fba1fb437ad0cd"><div class="ttname"><a href="structflags_1_1Name.html#a341f15992435778177fba1fb437ad0cd">flags::Name::Name</a></div><div class="ttdeci">Name(const std::string &amp;_value)</div><div class="ttdef"><b>Definition:</b> flag.hpp:36</div></div>
 <div class="ttc" id="structflags_1_1Flag_html_a239ef85712dd1cb4c06bcd1177a489b2"><div class="ttname"><a href="structflags_1_1Flag.html#a239ef85712dd1cb4c06bcd1177a489b2">flags::Flag::name</a></div><div class="ttdeci">Name name</div><div class="ttdef"><b>Definition:</b> flag.hpp:79</div></div>
@@ -182,6 +208,8 @@
 <div class="ttc" id="structflags_1_1Warnings_html"><div class="ttname"><a href="structflags_1_1Warnings.html">flags::Warnings</a></div><div class="ttdef"><b>Definition:</b> flag.hpp:71</div></div>
 <div class="ttc" id="decoder_8hpp_html_abb0829cce9dd20a40ae0d86890ae85c6"><div class="ttname"><a href="decoder_8hpp.html#abb0829cce9dd20a40ae0d86890ae85c6">flags</a></div><div class="ttdeci">#define flags</div><div class="ttdef"><b>Definition:</b> decoder.hpp:18</div></div>
 <div class="ttc" id="error_8hpp_html"><div class="ttname"><a href="error_8hpp.html">error.hpp</a></div></div>
+<div class="ttc" id="namespaceflags_html_a9a4e5bb9a94a3527f736168c50051254"><div class="ttname"><a href="namespaceflags.html#a9a4e5bb9a94a3527f736168c50051254">flags::operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;stream, const SecurePathOrValue &amp;flag)</div><div class="ttdef"><b>Definition:</b> flag.hpp:113</div></div>
+<div class="ttc" id="structflags_1_1SecurePathOrValue_html"><div class="ttname"><a href="structflags_1_1SecurePathOrValue.html">flags::SecurePathOrValue</a></div><div class="ttdef"><b>Definition:</b> flag.hpp:106</div></div>
 <div class="ttc" id="try_8hpp_html"><div class="ttname"><a href="try_8hpp.html">try.hpp</a></div></div>
 <div class="ttc" id="structflags_1_1Name_html_a63d59c9cd49d00f55ddec17729e69f83"><div class="ttname"><a href="structflags_1_1Name.html#a63d59c9cd49d00f55ddec17729e69f83">flags::Name::operator==</a></div><div class="ttdeci">bool operator==(const Name &amp;other) const </div><div class="ttdef"><b>Definition:</b> flag.hpp:42</div></div>
 <div class="ttc" id="structflags_1_1Flag_html_adc8211c146568f329f825bc853e50eae"><div class="ttname"><a href="structflags_1_1Flag.html#adc8211c146568f329f825bc853e50eae">flags::Flag::loaded_name</a></div><div class="ttdeci">Option&lt; Name &gt; loaded_name</div><div class="ttdef"><b>Definition:</b> flag.hpp:86</div></div>
