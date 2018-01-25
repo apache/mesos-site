@@ -246,6 +246,82 @@ searched in the standard library paths or directories pointed to by the
 
 <p>Here are the various module kinds currently available.</p>
 
+<table>
+<thead>
+<tr>
+<th> kind                                                </th>
+<th> description                                                             </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a href="#allocator"><code>Allocator</code></a>                           </td>
+<td> Provides available resources to schedulers.                             </td>
+</tr>
+<tr>
+<td> <a href="#anonymous"><code>Anonymous</code></a>                           </td>
+<td> Coexists with parent process without providing any callbacks.           </td>
+</tr>
+<tr>
+<td> <a href="#authentication"><code>Authenticatee</code></a>                  </td>
+<td> Provides the client side of an RPC authentication.                      </td>
+</tr>
+<tr>
+<td> <a href="#authentication"><code>Authenticator</code></a>                  </td>
+<td> Provides the server side of an RPC authentication.                      </td>
+</tr>
+<tr>
+<td> <a href="#authorization"><code>Authorizer</code></a>                      </td>
+<td> Allows certain principals to perform specific actions.                  </td>
+</tr>
+<tr>
+<td> <code>ContainerLogger</code>                                   </td>
+<td> Container logger modules implement container log management.            </td>
+</tr>
+<tr>
+<td> <a href="#hook"><code>Hook</code></a>                                     </td>
+<td> Provides means of tying into specific callbacks.                        </td>
+</tr>
+<tr>
+<td> <a href="#authentication"><code>HttpAuthenticatee</code></a>              </td>
+<td> Provides the client side of an HTTP authentication.                     </td>
+</tr>
+<tr>
+<td> <a href="#authentication"><code>HttpAuthenticator</code></a>              </td>
+<td> Provides the server side of an HTTP authentication.                     </td>
+</tr>
+<tr>
+<td> <a href="#isolator"><code>Isolator</code></a>                             </td>
+<td> Enables experimenting with specialized isolation and monitoring.        </td>
+</tr>
+<tr>
+<td> <a href="#master_contender_and_detector"><code>MasterContender</code></a> </td>
+<td> Contender modules allow implementing custom leader election mechanisms. </td>
+</tr>
+<tr>
+<td> <a href="#master_contender_and_detector"><code>MasterDetector</code></a>  </td>
+<td> Detector modules allow implementing custom master detection mechanisms. </td>
+</tr>
+<tr>
+<td> <code>QoSController</code>                                     </td>
+<td> QoS modules allow providing task performance guarantees.                </td>
+</tr>
+<tr>
+<td> <code>ResourceEstimator</code>                                 </td>
+<td> Estimator modules allow predicting the resources total used.            </td>
+</tr>
+<tr>
+<td> <code>SecretResolver</code>                                    </td>
+<td> Secret resolver modules allow interfacing with secure data providers.   </td>
+</tr>
+<tr>
+<td> <code>TestModule</code>                                        </td>
+<td> Used internally for testing purposes only.                              </td>
+</tr>
+</tbody>
+</table>
+
+
 <h3>Allocator</h3>
 
 <p>The Mesos master&rsquo;s <em>allocator</em> periodically determines which framework(s) should be offered the cluster&rsquo;s available resources. Allocator modules enable experimenting with specialized resource allocation algorithms. An example of these could be an allocator that provides a feature currently not supported by the built-in Hierarchical Dominant Resource Fairness allocator, like oversubscription with preemption.</p>
@@ -283,6 +359,15 @@ they are immediately instantiated when getting loaded via the
 develop and plug-in new authentication methods. An example for such modules
 could be to support PAM (LDAP, MySQL, NIS, UNIX) backed authentication.</p>
 
+<p>Mesos currently supports two variants of authentication; RPC authentication
+as used by schedulers and agents to authenticate against the master and HTTP
+authentication for securing all kinds of HTTP endpoints. See <a href="/documentation/latest/./authentication/">Authentication</a> for more.</p>
+
+<h3>Authorization</h3>
+
+<p>The authorization subsystem permits operators to configure the actions that certain
+principals are allowed to perform. See <a href="/documentation/latest/./authorization/">Authorization</a> for more.</p>
+
 <h3>Hook</h3>
 
 <p>Similar to Apache Webserver Modules, hooks allows module writers to tie into
@@ -291,9 +376,9 @@ modules but rather lets them define actions on so-called hooks.</p>
 
 <p>The available hooks API is defined in mesos/hook.hpp and for each hook defines
 the insertion point and available context. An example of this context is the
-task information which is passed to masterLaunchTaskHook.</p>
+task information which is passed to <code>masterLaunchTaskHook</code>.</p>
 
-<p>Some hooks take in an object (e.g. TaskInfo) and return all or part of that
+<p>Some hooks take in an object (e.g. <code>TaskInfo</code>) and return all or part of that
 object (e.g. task labels), so that the hook can modify or replace the contents
 in-flight. These hooks are referred to as <em>decorators</em>.</p>
 
