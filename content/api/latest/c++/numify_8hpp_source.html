@@ -82,78 +82,87 @@
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
 <div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="numify_8hpp.html#a1ada38a2bf3389b131c6f50042634681">   29</a></span>&#160;<a class="code" href="classTry.html">Try&lt;T&gt;</a> <a class="code" href="numify_8hpp.html#a1ada38a2bf3389b131c6f50042634681">numify</a>(<span class="keyword">const</span> std::string&amp; s)</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;{</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  <span class="keywordflow">try</span> {</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keywordflow">return</span> boost::lexical_cast&lt;T&gt;(s);</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  } <span class="keywordflow">catch</span> (<span class="keyword">const</span> boost::bad_lexical_cast&amp;) {</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="comment">// Unfortunately boost::lexical_cast cannot cast a hexadecimal</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="comment">// number even with a &quot;0x&quot; prefix, we have to workaround this</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="comment">// issue here. We also process negative hexadecimal number &quot;-0x&quot;</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="comment">// here to keep it consistent with non-hexadecimal numbers.</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="namespacestrings.html#aa5513faacb213c7e097c0d43af43d9c7">strings::startsWith</a>(s, <span class="stringliteral">&quot;0x&quot;</span>) || <a class="code" href="namespacestrings.html#aa5513faacb213c7e097c0d43af43d9c7">strings::startsWith</a>(s, <span class="stringliteral">&quot;0X&quot;</span>) ||</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <a class="code" href="namespacestrings.html#aa5513faacb213c7e097c0d43af43d9c7">strings::startsWith</a>(s, <span class="stringliteral">&quot;-0x&quot;</span>) || <a class="code" href="namespacestrings.html#aa5513faacb213c7e097c0d43af43d9c7">strings::startsWith</a>(s, <span class="stringliteral">&quot;-0X&quot;</span>)) {</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;      <span class="comment">// NOTE: Hexadecimal floating-point constants (e.g., 0x1p-5,</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;      <span class="comment">// 0x10.0), are allowed in C99, but cannot be used as floating</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;      <span class="comment">// point literals in standard C++. Some C++ compilers might</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;      <span class="comment">// accept them as an extension; for consistency, we always</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;      <span class="comment">// disallow them.  See:</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;      <span class="comment">// https://gcc.gnu.org/onlinedocs/gcc/Hex-Floats.html</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;      <span class="keywordflow">if</span> (!<a class="code" href="namespacestrings.html#a269921757daf11096d3f5e02686f8444">strings::contains</a>(s, <span class="stringliteral">&quot;.&quot;</span>) &amp;&amp; !<a class="code" href="namespacestrings.html#a269921757daf11096d3f5e02686f8444">strings::contains</a>(s, <span class="stringliteral">&quot;p&quot;</span>)) {</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        T result;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        std::stringstream ss;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="comment">// Process negative hexadecimal numbers.</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="namespacestrings.html#aa5513faacb213c7e097c0d43af43d9c7">strings::startsWith</a>(s, <span class="stringliteral">&quot;-&quot;</span>)) {</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;          ss &lt;&lt; std::hex &lt;&lt; s.substr(1);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;          ss &gt;&gt; result;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;          <span class="comment">// Note: When numify is instantiated with unsigned scalars</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;          <span class="comment">// the expected behaviour is as follow:</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;          <span class="comment">// numify&lt;T&gt;(&quot;-1&quot;) == std::numeric_limits&lt;T&gt;::max();</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;          <span class="comment">// Disabled unary negation warning for all types.</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor">#ifdef __WINDOWS__</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="preprocessor"></span><span class="preprocessor">          #pragma warning(disable:4146)</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="preprocessor"></span>          result = -result;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor">#ifdef __WINDOWS__</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="preprocessor"></span><span class="preprocessor">          #pragma warning(default:4146)</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="preprocessor"></span>        } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;          ss &lt;&lt; std::hex &lt;&lt; s;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;          ss &gt;&gt; result;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        }</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <span class="comment">// Make sure we really hit the end of the string.</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <span class="keywordflow">if</span> (!ss.fail() &amp;&amp; ss.eof()) {</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;          <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        }</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;      }</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    }</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(<span class="stringliteral">&quot;Failed to convert &#39;&quot;</span> + s + <span class="stringliteral">&quot;&#39; to number&quot;</span>);</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  }</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;}</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="numify_8hpp.html#a59b1d5f427c671cff74388396af9f6f6">   81</a></span>&#160;<a class="code" href="classTry.html">Try&lt;T&gt;</a> <a class="code" href="numify_8hpp.html#a1ada38a2bf3389b131c6f50042634681">numify</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* s)</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;{</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="keywordflow">return</span> numify&lt;T&gt;(std::string(s));</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;}</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00088"></a><span class="lineno"><a class="line" href="numify_8hpp.html#aa210fa1a1b3c16842ffbea356b35cafd">   88</a></span>&#160;<a class="code" href="classResult.html">Result&lt;T&gt;</a> <a class="code" href="numify_8hpp.html#a1ada38a2bf3389b131c6f50042634681">numify</a>(<span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;std::string&gt;</a>&amp; s)</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;{</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  <span class="keywordflow">if</span> (s.<a class="code" href="classOption.html#a4e3bf8416d95246f43c91f1b5c309323">isSome</a>()) {</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <a class="code" href="classTry.html">Try&lt;T&gt;</a> t = numify&lt;T&gt;(s.<a class="code" href="classOption.html#a21358442c0fac1cc978a67a9a9089a79">get</a>());</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="keywordflow">if</span> (t.<a class="code" href="classTry.html#a6543d7d5db4f298bcd673bf3cd509acc">isSome</a>()) {</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;      <span class="keywordflow">return</span> t.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>();</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (t.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(t.<a class="code" href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">error</a>());</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    }</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  }</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="structNone.html">None</a>();</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;}</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="preprocessor">#endif // __STOUT_NUMIFY_HPP__</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  <span class="comment">// Since even with a `0x` prefix `boost::lexical_cast` cannot always</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <span class="comment">// cast all hexadecimal numbers on all platforms (parsing of some</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  <span class="comment">// floating point literals seems to work e.g., on macOS, but fails on</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  <span class="comment">// some Linuxes), we have to workaround this issue here. We also</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <span class="comment">// process negative hexadecimal numbers `-0x` here to keep it</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <span class="comment">// consistent with non-hexadecimal numbers.</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <span class="keywordtype">bool</span> maybeHex = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="namespacestrings.html#aa5513faacb213c7e097c0d43af43d9c7">strings::startsWith</a>(s, <span class="stringliteral">&quot;0x&quot;</span>) || <a class="code" href="namespacestrings.html#aa5513faacb213c7e097c0d43af43d9c7">strings::startsWith</a>(s, <span class="stringliteral">&quot;0X&quot;</span>) ||</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;      <a class="code" href="namespacestrings.html#aa5513faacb213c7e097c0d43af43d9c7">strings::startsWith</a>(s, <span class="stringliteral">&quot;-0x&quot;</span>) || <a class="code" href="namespacestrings.html#aa5513faacb213c7e097c0d43af43d9c7">strings::startsWith</a>(s, <span class="stringliteral">&quot;-0X&quot;</span>)) {</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    maybeHex = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="comment">// We disallow hexadecimal floating point numbers.</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="namespacestrings.html#a269921757daf11096d3f5e02686f8444">strings::contains</a>(s, <span class="stringliteral">&quot;.&quot;</span>) || <a class="code" href="namespacestrings.html#a269921757daf11096d3f5e02686f8444">strings::contains</a>(s, <span class="stringliteral">&quot;p&quot;</span>)) {</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(<span class="stringliteral">&quot;Failed to convert &#39;&quot;</span> + s + <span class="stringliteral">&quot;&#39; to number&quot;</span>);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    }</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  }</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <span class="keywordflow">try</span> {</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keywordflow">return</span> boost::lexical_cast&lt;T&gt;(s);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  } <span class="keywordflow">catch</span> (<span class="keyword">const</span> boost::bad_lexical_cast&amp;) {</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="comment">// Try to parse hexadecimal numbers by hand if `boost::lexical_cast` failed.</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordflow">if</span> (maybeHex) {</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;      T result;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;      std::stringstream ss;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;      <span class="comment">// Process negative hexadecimal numbers.</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;      <span class="keywordflow">if</span> (<a class="code" href="namespacestrings.html#aa5513faacb213c7e097c0d43af43d9c7">strings::startsWith</a>(s, <span class="stringliteral">&quot;-&quot;</span>)) {</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        ss &lt;&lt; std::hex &lt;&lt; s.substr(1);</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        ss &gt;&gt; result;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <span class="comment">// NOTE: Negating `result` is safe even if `T` is an unsigned</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="comment">// integer type, because the C++ standard defines the result</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <span class="comment">// to be modulo 2^n in that case.</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="comment">//</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="comment">//     numify&lt;T&gt;(&quot;-1&quot;) == std::numeric_limits&lt;T&gt;::max();</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <span class="comment">//</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="comment">// Disabled unary negation warning for all types.</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor">#ifdef __WINDOWS__</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#pragma warning(disable:4146)</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor"></span>        result = -result;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">#ifdef __WINDOWS__</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#pragma warning(default:4146)</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="preprocessor"></span>      } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        ss &lt;&lt; std::hex &lt;&lt; s;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        ss &gt;&gt; result;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;      }</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;      <span class="comment">// Make sure we really hit the end of the string.</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;      <span class="keywordflow">if</span> (!ss.fail() &amp;&amp; ss.eof()) {</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;      }</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    }</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(<span class="stringliteral">&quot;Failed to convert &#39;&quot;</span> + s + <span class="stringliteral">&quot;&#39; to number&quot;</span>);</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  }</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;}</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00090"></a><span class="lineno"><a class="line" href="numify_8hpp.html#a59b1d5f427c671cff74388396af9f6f6">   90</a></span>&#160;<a class="code" href="classTry.html">Try&lt;T&gt;</a> <a class="code" href="numify_8hpp.html#a1ada38a2bf3389b131c6f50042634681">numify</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* s)</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;{</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  <span class="keywordflow">return</span> numify&lt;T&gt;(std::string(s));</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;}</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00097"></a><span class="lineno"><a class="line" href="numify_8hpp.html#aa210fa1a1b3c16842ffbea356b35cafd">   97</a></span>&#160;<a class="code" href="classResult.html">Result&lt;T&gt;</a> <a class="code" href="numify_8hpp.html#a1ada38a2bf3389b131c6f50042634681">numify</a>(<span class="keyword">const</span> <a class="code" href="classOption.html">Option&lt;std::string&gt;</a>&amp; s)</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;{</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  <span class="keywordflow">if</span> (s.<a class="code" href="classOption.html#a4e3bf8416d95246f43c91f1b5c309323">isSome</a>()) {</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <a class="code" href="classTry.html">Try&lt;T&gt;</a> t = numify&lt;T&gt;(s.<a class="code" href="classOption.html#a21358442c0fac1cc978a67a9a9089a79">get</a>());</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="keywordflow">if</span> (t.<a class="code" href="classTry.html#a6543d7d5db4f298bcd673bf3cd509acc">isSome</a>()) {</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;      <span class="keywordflow">return</span> t.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>();</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (t.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(t.<a class="code" href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">error</a>());</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    }</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  }</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="structNone.html">None</a>();</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;}</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="preprocessor">#endif // __STOUT_NUMIFY_HPP__</span></div>
 <div class="ttc" id="classError_html"><div class="ttname"><a href="classError.html">Error</a></div><div class="ttdef"><b>Definition:</b> errorbase.hpp:35</div></div>
 <div class="ttc" id="classOption_html"><div class="ttname"><a href="classOption.html">Option&lt; std::string &gt;</a></div></div>
 <div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
