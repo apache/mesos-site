@@ -188,7 +188,7 @@ third-party dependency exists.</p>
 EXTERNAL(boost ${BOOST_VERSION} ${CMAKE_CURRENT_BINARY_DIR})
 add_library(boost INTERFACE)
 add_dependencies(boost ${BOOST_TARGET})
-target_include_directories(boost SYSTEM INTERFACE ${BOOST_ROOT})
+target_include_directories(boost INTERFACE ${BOOST_ROOT})
 ...
 </code></pre>
 
@@ -203,7 +203,7 @@ target, usable like any other library. We use <code>add_dependencies(boost
 ${BOOST_TARGET})</code> to add a manual dependency on the <code>ExternalProject_Add</code> step;
 this is necessary as CMake is lazy and won&rsquo;t execute code unless it must (say,
 because of a dependency). The final part of creating this header-only library in
-our build system is <code>target_include_directories(boost SYSTEM INTERFACE
+our build system is <code>target_include_directories(boost INTERFACE
 ${BOOST_ROOT})</code>, which sets the <code>BOOST_ROOT</code> folder (the destination of the
 extracted headers) as the include interface for the <code>boost</code> target. All
 dependencies on Boost will now automatically include this folder during
