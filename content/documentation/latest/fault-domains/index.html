@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Apache Mesos - Domains and Regions</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta property="og:locale" content="en_US"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:title" content="Apache Mesos"/>
+    <meta property="og:site_name" content="Apache Mesos"/>
+    <meta property="og:url" content="http://mesos.apache.org/"/>
+    <meta property="og:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta property="og:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
+
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:site" content="@ApacheMesos"/>
+    <meta name="twitter:title" content="Apache Mesos"/>
+    <meta name="twitter:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta name="twitter:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
+
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
+    <link href="../../../assets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+
+    
+
+    <!-- Google Analytics Magic -->
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-20226872-1']);
+    _gaq.push(['_setDomainName', 'apache.org']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+    
+  </head>
+  <body>
+    <!-- magical breadcrumbs -->
+    <div class="topnav">
+      <div class="container">
+        <ul class="breadcrumb">
+          <li>
+            <div class="dropdown">
+              <a data-toggle="dropdown" href="#">Apache Software Foundation <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                <li><a href="http://www.apache.org">Apache Homepage</a></li>
+                <li><a href="http://www.apache.org/licenses/">License</a></li>
+                <li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>
+                <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                <li><a href="http://www.apache.org/security/">Security</a></li>
+              </ul>
+            </div>
+          </li>
+
+          <li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+          
+          
+          <li><a href="/documentation
+/">Documentation
+</a></li>
+          
+          
+        </ul><!-- /.breadcrumb -->
+      </div><!-- /.container -->
+    </div><!-- /.topnav -->
+
+    <!-- navbar excitement -->
+<div class="navbar navbar-default navbar-static-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#mesos-menu" aria-expanded="false">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo"/></a>
+    </div><!-- /.navbar-header -->
+
+    <div class="navbar-collapse collapse" id="mesos-menu">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/getting-started/">Getting Started</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/documentation/latest/">Documentation</a></li>
+        <li><a href="/downloads/">Downloads</a></li>
+        <li><a href="/community/">Community</a></li>
+      </ul>
+    </div><!-- /#mesos-menu -->
+  </div><!-- /.container -->
+</div><!-- /.navbar -->
+
+<div class="content">
+  <div class="container">
+    <div class="row-fluid">
+  <div class="col-md-4">
+    <h4>If you're new to Mesos</h4>
+    <p>See the <a href="/getting-started/">getting started</a> page for more
+       information about downloading, building, and deploying Mesos.</p>
+
+    <h4>If you'd like to get involved or you're looking for support</h4>
+    <p>See our <a href="/community/">community</a> page for more details.</p>
+  </div>
+  <div class="col-md-8">
+    <h1>Regions and Fault Domains</h1>
+
+<p>Starting with Mesos 1.5, it is possible to place Mesos masters and agents into
+<em>domains</em>, which are logical groups of machines that share some characteristics.</p>
+
+<p>Currently, fault domains are the only supported type of domains, which are
+groups of machines with similar failure characteristics.</p>
+
+<p>A fault domain is a 2 level hierarchy of regions and zones. The mapping from
+fault domains to physical infrastructure is up to the operator to configure,
+although it is recommended that machines in the same zones have low latency to
+each other.</p>
+
+<p>In cloud environments, regions and zones can be mapped to the &ldquo;region&rdquo; and
+&ldquo;availability zone&rdquo; concepts exposed by most cloud providers, respectively.
+In on-premise deployments, regions and zones can be mapped to data centers and
+racks, respectively.</p>
+
+<p>Schedulers may prefer to place network-intensive workloads in the same domain,
+as this may improve performance. Conversely, a single failure that affects a
+host in a domain may be more likely to affect other hosts in the same domain;
+hence, schedulers may prefer to place workloads that require high availability
+in multiple domains. For example, all the hosts in a single rack might lose
+power or network connectivity simultaneously.</p>
+
+<p>The <code>--domain</code> flag can be used to specify the fault domain of a master or
+agent node. The value of this flag must be a file path or a JSON dictionary
+with the key <code>fault_domain</code> and subkeys <code>region</code> and <code>zone</code> mapping to
+arbitrary strings:</p>
+
+<pre><code>mesos-master --domain='{"fault_domain": {"region": "eu", "zone": "rack1"}}'
+
+mesos-agent  --domain='{"fault_domain": {"region": "eu", "zone": "rack2"}}'
+</code></pre>
+
+<p>Frameworks can learn about the domain of an agent by inspecting the <code>domain</code>
+field in the received offer, which contains a <code>DomainInfo</code> that has the
+same structure as the JSON dictionary above.</p>
+
+<h1>Constraints</h1>
+
+<p>When configuring fault domains for the masters and agents, the following
+constraints must be obeyed:</p>
+
+<ul>
+<li><p>If a mesos master is not configured with a domain, it will reject connection
+attempts from agents with a domain.</p>
+
+<p>This is done because the master is not able to determine whether or not the
+agent would be remote in this case.</p></li>
+<li><p>Agents with no configured domain are assumed to be in the same domain as the
+master.</p>
+
+<p>If this behaviour isn&rsquo;t desired, the <code>--require_agent_domain</code> flag on the
+master can be used to enforce that domains are configured on all agents by
+having the master reject all registration attempts by agents without a
+configured domain.</p></li>
+<li><p>If one master is configured with a domain, all other masters must be in the
+same &ldquo;region&rdquo; to avoid cross-region quorum writes. It is recommended to put
+them in different zones within that region for high availability.</p></li>
+<li><p>The default DRF resource allocator will only offer resources from agents in
+the same region as the master. To receive offers from all regions, a
+framework must set the <code>REGION_AWARE</code> capability bit in its FrameworkInfo.</p></li>
+</ul>
+
+
+<h1>Example</h1>
+
+<p>A short example will serve to illustrate these concepts. WayForward Technologies
+runs a successful website that allows users to purchase things that they want
+to have.</p>
+
+<p>To do this, it owns a data center in San Francisco, in which it runs a number of
+custom Mesos frameworks. All agents within the data center are configured with
+the same region <code>sf</code>, and the individual racks inside the data center are used
+as zones.</p>
+
+<p>The three mesos masters are placed in different server racks in the data center,
+which gives them enough isolation to withstand events like a whole rack losing
+power or network connectivity but still have low-enough latency for
+quorum writes.</p>
+
+<p>One of the provided services is a real-time view of the company&rsquo;s inventory.
+The framework providing this service is placing all of its tasks in the same
+zone as the database server, to take advantage of the high-speed, low-latency
+link so it can always display the latest results.</p>
+
+<p>During peak hours, it might happen that the computing power required to operate
+the website exceeds the capacity of the data center. To avoid unnecessary
+hardware purchases, WayForward Technologies contracted with a third-party cloud
+provider TPC. The machines from this provider are placed in a different
+region <code>tpc</code>, and the zones are configured to correspond to the availability
+zones provided by TPC. All relevant frameworks are updated with the
+<code>REGION_AWARE</code> bit in their <code>FrameworkInfo</code> and their scheduling logic is
+updated so that they can schedule tasks in the cloud if required.</p>
+
+<p>Non-region aware frameworks will now only receive offers from agents within
+the data center, where the master nodes reside. Region-aware frameworks are
+supposed to know when and if they should place their tasks in the data center
+or with the cloud provider.</p>
+
+  </div>
+</div>
+
+  </div><!-- /.container -->
+</div><!-- /.content -->
+
+<hr>
+
+
+
+    <!-- footer -->
+    <div class="footer">
+      <div class="container">
+        <div class="col-md-4 social-blk">
+          <span class="social">
+            <a href="https://twitter.com/ApacheMesos"
+              class="twitter-follow-button"
+              data-show-count="false" data-size="large">Follow @ApacheMesos</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+            <a href="https://twitter.com/intent/tweet?button_hashtag=mesos"
+              class="twitter-hashtag-button"
+              data-size="large"
+              data-related="ApacheMesos">Tweet #mesos</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+          </span>
+        </div>
+
+        <div class="col-md-8 trademark">
+          <p>&copy; 2012-2017 <a href="http://apache.org">The Apache Software Foundation</a>.
+            Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.
+          <p>
+        </div>
+      </div><!-- /.container -->
+    </div><!-- /.footer -->
+
+    <!-- JS -->
+    <script src="//code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" type="text/javascript"></script>
+
+    <!-- Inject anchors for all headings on the page, see https://www.bryanbraun.com/anchorjs. -->
+    <script type="text/javascript">
+    anchors.options = {
+      placement: 'right',
+      ariaLabel: 'Permalink',
+    };
+
+    // The default is to not add anchors to h1, but we have pages with multiple h1 headers,
+    // and we do want to put anchors on those.
+    anchors.add('h1, h2, h3, h4, h5, h6');
+    </script>
+  </body>
+</html>
