@@ -4,7 +4,134 @@
   <id>http://mesos.apache.org/blog</id>
   <link href="http://mesos.apache.org/blog" />
   <link href="http://mesos.apache.org/blog/feed.xml" rel="self"/>
-  <updated>2017-12-12T00:00:00Z</updated>
+  <updated>2018-02-08T00:00:00Z</updated>
+  
+  <entry>
+    <id>http://mesos.apache.org/blog/mesos-1-5-0-released/</id>
+    <link href="/blog/mesos-1-5-0-released/" />
+    <title>
+      Mesos 1.5: Storage, Performance, Resource Management, and Containerization improvements
+    </title>
+    <updated>2018-02-08T00:00:00Z</updated>
+    <author>
+      <name>Gilbert Song</name>
+    </author>
+    <content type="html">
+      &lt;p&gt;I&amp;rsquo;m pleased to announce that Apache Mesos 1.5.0 was released today!&lt;/p&gt;
+
+&lt;h1&gt;New Features and Improvements&lt;/h1&gt;
+
+&lt;p&gt;Mesos 1.5 includes significant improvements to resource management, storage and containerization. Container Storage Interface (CSI) support is new and experimental in Mesos 1.5, and many of the 1.5 features were added to support CSI. The new ability to reconfigure agents has made the operator experience better. Performance gains have made master failover 80-85% faster, and the v1 API performance has improved significantly. Resource management is more flexible with the new release. Last but not least, image garbage collection and better Windows support make it easier to run Mesos on different types of infrastructure, and to run different types of workloads on Mesos.&lt;/p&gt;
+
+&lt;p&gt;Read about all these improvements below, and enjoy Mesos 1.5.&lt;/p&gt;
+
+&lt;h2&gt;Container Storage Interface Support&lt;/h2&gt;
+
+&lt;p&gt;Mesos 1.5 adds experimental support for the &lt;a href=&quot;https://github.com/container-storage-interface/spec&quot;&gt;Container Storage Interface (CSI)&lt;/a&gt;.CSI is a specification that defines a common set of APIs for all interactions between storage vendors and container orchestration platforms. It is the result of a close collaboration among representatives from the Mesos, &lt;a href=&quot;https://kubernetes.io/&quot;&gt;Kubernetes&lt;/a&gt;, &lt;a href=&quot;https://www.cloudfoundry.org/&quot;&gt;Cloud Foundry&lt;/a&gt;, and &lt;a href=&quot;https://www.docker.com/&quot;&gt;Docker&lt;/a&gt; communities. The primary goal of CSI is to allow storage vendors to write one plugin that works with all container orchestration platforms.&lt;/p&gt;
+
+&lt;p&gt;Supporting CSI will help Mesos consistently fit into the larger storage ecosystem, resulting in better storage support in Mesos. Users will be able to use any storage system with Mesos using a consistent API. The out-of-tree plugin model of CSI decouples the release cycle of Mesos from that of the storage systems, making the integration itself more sustainable and maintainable.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/documentation/csi-architecture.png&quot; alt=&quot;CSI Support in Mesos&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The above figure shows the high-level architecture of how CSI is supported in Mesos. For more details, refer to this &lt;a href=&quot;http://mesos.apache.org/documentation/latest/csi/&quot;&gt;documentation&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2&gt;Improved Operator Experiences&lt;/h2&gt;
+
+&lt;h3&gt;Agent Reconfiguration Policy&lt;/h3&gt;
+
+&lt;p&gt;Prior to Mesos 1.5, it was not possible to make any changes to the configuration of an agent without killing all tasks running on that agent and restarting with a new agent ID. Any change, for example, an additional attribute or a newly connected hard-drive, would be detected and abort the agent startup with a nasty-looking error:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;EXIT with status 1: Failed to perform recovery: Incompatible agent info detected.
+------------------------------------------------------------
+[...]
+------------------------------------------------------------
+To remedy this do as follows:
+Step 1: rm -f /path/to/work_dir/meta/slaves/latest
+    This ensures agent doesn&apos;t recover old live executors.
+Step 2: Restart the agent.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Starting with 1.5, operators can use the new agent command-line flag &lt;code&gt;--reconfiguration_policy&lt;/code&gt; to configure the types of operations that should be allowed on agents, and which should lead to errors. When setting the value of this flag to &lt;code&gt;additive&lt;/code&gt;, the agent will tolerate any changes that increase the amount of resources on the agent, as well as changes that add additional attributes or fault domains.&lt;/p&gt;
+
+&lt;p&gt;In the future, we hope to provide the additional setting &lt;code&gt;--reconfiguration_policy=any&lt;/code&gt; to allow any changes to the agent configuration.&lt;/p&gt;
+
+&lt;h2&gt;Performance improvements&lt;/h2&gt;
+
+&lt;p&gt;This release includes improvements to master failover and v1 operator state query API performance. Master failover time-to-completion achieved a 450-600% improvement in throughput, which reduces the time-to-completion by 80-85%.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/documentation/1.3-1.5_master_failover_with_history.png&quot; alt=&quot;1.3 - 1.5 Master Failover with Task History Graph&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;See &lt;a href=&quot;http://mesos.apache.org/blog/performance-working-group-progress-report/&quot;&gt;our blog post&lt;/a&gt; for more details.&lt;/p&gt;
+
+&lt;p&gt;In addition, the performance of v1 operator state query API has also been greatly improved thanks to unnecessary copy eliminations. Specifically, v1 protobuf GetState call is 36% faster compared to v0. And, v1 JSON GetState performance has improved by more than four times.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/documentation/1.3-1.5_v1_json_state_query_latency.png&quot; alt=&quot;1.3 - 1.5 v1 JSON State Query Latency&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Detailed benchmark results can be found in &lt;a href=&quot;https://docs.google.com/spreadsheets/d/1mN4OLEi7UdbLxv-Q3k3iMlmO6Gb2wx9X-gHRnDENSK0/edit#gid=1562845084&quot;&gt;this spreadsheet&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2&gt;Resource Management&lt;/h2&gt;
+
+&lt;h3&gt;Quota guarantee improvements&lt;/h3&gt;
+
+&lt;p&gt;Several quota related improvements were made in this release. Now Mesos does a better job ensuring that a role receives its quota and that a role does not exceed its quota, e.g.:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Previously a role could “game” the quota system by amassing reservations that it leaves unused. This is now prevented by &lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-4527&quot;&gt;accounting for reservations&lt;/a&gt; when allocating resources.&lt;/li&gt;
+&lt;li&gt;Resources are now &lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-7099&quot;&gt;allocated in a fine-grained manner&lt;/a&gt; to prevent roles from exceeding their quota.&lt;/li&gt;
+&lt;li&gt;There was a &lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8293&quot;&gt;bug&lt;/a&gt; where roles without quota may not receive their reservations. This has been fixed.&lt;/li&gt;
+&lt;li&gt;When a role had more reservations than its quota, there was a &lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8339&quot;&gt;bug&lt;/a&gt; where an insufficient amount of quota headroom was held. This has been fixed.&lt;/li&gt;
+&lt;li&gt;When allocating resources to a role with quota, we previously also included resources that the role did not have the quota for on the agent. This made it possible to violate the quota guarantees of a different role. This has been fixed by &lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8352&quot;&gt;taking into account the headroom&lt;/a&gt; that is needed when allocating the resources.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h3&gt;Resource Provider abstraction&lt;/h3&gt;
+
+&lt;p&gt;To decouple resource and agent life cycles we have introduced an abstraction for &lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-7235&quot;&gt;resource providers&lt;/a&gt;. This lays the groundwork to support dynamic changes to agent resources, integration of external resource providers, or management of cluster-wide resources. As part of the decoupling of resource responsibilities, we have introduced a new protocol to distribute operations on resources. This allows them to explicitly communicate success or failure, and enables reconciliation between cluster components. We have used the new resource provider abstraction to integrate agent-local storage resources interfaced with CSI.&lt;/p&gt;
+
+&lt;h2&gt;Containerization and Multi-Platform Support&lt;/h2&gt;
+
+&lt;h3&gt;Windows Support Improvements&lt;/h3&gt;
+
+&lt;p&gt;With the release of Mesos 1.5, Windows support has been vastly improved. Now when running tasks with the Mesos containerizer, resource limits can be enforced at the operating system level via job objects (&lt;a href=&quot;https://issues-test.apache.org/jira/browse/MESOS-6690&quot;&gt;MESOS-6690&lt;/a&gt;). When the &lt;a href=&quot;https://mesos.apache.org/documentation/latest/isolators/windows/#cpu-limits&quot;&gt;windows/cpu&lt;/a&gt; and &lt;a href=&quot;https://mesos.apache.org/documentation/latest/isolators/windows/#memory-limits&quot;&gt;windows/mem&lt;/a&gt; isolators are used, a hard cap on the CPU cycles and virtual memory can be enforced. Additionally, the CPU and memory statistics are now correctly supported. The Mesos fetcher has been &lt;a href=&quot;https://issues-test.apache.org/jira/browse/MESOS-8180&quot;&gt;ported to Windows&lt;/a&gt;, with support for automatically downloading files over TLS, and extracting ZIP archives. When configured for it, libprocess can now be built with &lt;a href=&quot;https://issues-test.apache.org/jira/browse/MESOS-7992&quot;&gt;OpenSSL support on Windows&lt;/a&gt;, allowing TLS connections to be enforced within the cluster (note that this relies on building or installing OpenSSL externally, as it is not shipped with Windows). The first authentication method, CRAM-MD5, has been enabled on Windows, so that agents can authenticate with masters. Both HTTP and TCP &lt;a href=&quot;https://issues-test.apache.org/jira/browse/MESOS-6709&quot;&gt;health checks&lt;/a&gt; are now available for tasks on Windows agents (for shell tasks at least; health checks for Docker containers are coming soon). The Mesos agent no longer has to be run as an administrator, as it is now possible to &lt;a href=&quot;https://issues-test.apache.org/jira/browse/MESOS-7370&quot;&gt;create symlinks as a normal user&lt;/a&gt;, and this feature was integrated into the agent. Finally, while this was available in the previous release, &lt;a href=&quot;https://issues-test.apache.org/jira/browse/MESOS-7371&quot;&gt;native long path support for Windows&lt;/a&gt; has been implemented, so that running the agent on Windows is now straightforward (with no more registry configurations).&lt;/p&gt;
+
+&lt;h3&gt;Container Image GC&lt;/h3&gt;
+
+&lt;p&gt;Mesos 1.5 has support for Container Image Garbage Collection. There are two ways to garbage collect unused image layers: automatically or manually. This feature helps users avoid unbounded disk space usage in the docker image store. Please see &lt;a href=&quot;http://mesos.apache.org/documentation/latest/container-image/#garbage-collect-unused-container-images&quot;&gt;Container Image GC Document&lt;/a&gt; for more details.&lt;/p&gt;
+
+&lt;h3&gt;Standalone Container&lt;/h3&gt;
+
+&lt;p&gt;This release includes a set of new operator APIs for launching and managing a new primitive called a &amp;ldquo;Standalone Container&amp;rdquo;. A Standalone Container is similar to a container launched by a framework on the Mesos Agent, except that Standalone Containers are launched directly on the Mesos Agent by the operator. As a result, these containers do not use a Mesos Executor and have some other limitations (such as not being able to use reserved resources). At the same time, Standalone Containers are isolated like any other container and can use the same set of containerization features, like container images.&lt;/p&gt;
+
+&lt;p&gt;This feature is being released to support the &lt;a href=&quot;http://mesos.apache.org/documentation/latest/csi/&quot;&gt;CSI&lt;/a&gt; workflow but the APIs are not restricted to this use case. This feature may potentially be used to implement &lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-6595&quot;&gt;daemon processes for agent&lt;/a&gt; nodes in future. See &lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-7302&quot;&gt;MESOS-7302&lt;/a&gt; for more details.&lt;/p&gt;
+
+&lt;h2&gt;Mesos Internals&lt;/h2&gt;
+
+&lt;h3&gt;Support gRPC Client&lt;/h3&gt;
+
+&lt;p&gt;This release includes a gRPC client wrapper. &lt;a href=&quot;https://grpc.io/&quot;&gt;gRPC&lt;/a&gt; is an RPC mechanism that is becoming increasingly popular in the cloud-native space as an alternative to REST API. As a first step to integrating gRPC into Mesos, we have added this client wrapper in libprocess to support CSI. This feature is disabled by default, and can be enabled with the &lt;code&gt;--enable-grpc&lt;/code&gt; (autotools) build flag on clusters that have been built with the &lt;a href=&quot;https://www.openssl.org/&quot;&gt;OpenSSL&lt;/a&gt; library installed. The wrapper class maintains gRPC runtime data structures internally, and provides a simple interface to make asynchronous gRPC calls that are compatible to libprocess’ actor-based model. We have used this new feature to interface with CSI plugins. In addition, people can also use this new feature to create Mesos modules to talk to their own gRPC-based services.&lt;/p&gt;
+
+&lt;h3&gt;Replicated log improvements&lt;/h3&gt;
+
+&lt;p&gt;Mesos replicated log is used by frameworks (e.g. Apache Aurora) to persist their state across multiple replicas so it can survive failovers and restarts. Starting with 1.5 it is possible to perform eventually consistent reads from a non-leading VOTING replicated log replica. This makes possible to do additional work on non-leading framework replicas, such as offloading some reading from a leader to standbys, or reducing failover time by keeping in-memory storage represented by the replicated log &amp;ldquo;hot&amp;rdquo;.&lt;/p&gt;
+
+&lt;h1&gt;Upgrade&lt;/h1&gt;
+
+&lt;p&gt;Rolling upgrades from a Mesos 1.4.0 cluster to Mesos 1.5.0 are straightforward. Please refer to the &lt;a href=&quot;http://mesos.apache.org/documentation/latest/upgrades/&quot;&gt;upgrade guide&lt;/a&gt; for detailed information on upgrading to Mesos 1.5.0.&lt;/p&gt;
+
+&lt;h1&gt;Community&lt;/h1&gt;
+
+&lt;p&gt;Inspired by the work that went into this release? Want to get involved? Have feedback? We&amp;rsquo;d love to hear from you! Join a &lt;a href=&quot;http://mesos.apache.org/documentation/latest/working-groups/&quot;&gt;working group&lt;/a&gt; or start a conversation in the &lt;a href=&quot;http://mesos.apache.org/community/&quot;&gt;community&lt;/a&gt;!&lt;/p&gt;
+
+&lt;h1&gt;Thank you!&lt;/h1&gt;
+
+&lt;p&gt;Thanks to the 59 contributors who made Mesos 1.5.0 possible:&lt;/p&gt;
+
+&lt;p&gt;Aaron Wood, Adam B, Adam Dangoor, Akash Gupta, Alastair Montgomery, Alexander Rojas, Alexander Rukletsov, Anand Mazumdar, Andrei Budnik, Andrew Schwartzmeyer, Andrey Dudin, Andy Pang, Anindya Sinha, Armand Grillet, Avinash sridharan, Benjamin Bannier, Benjamin Hindman, Benjamin Mahler, Benno Evers, Bob Eckert, Chun-Hung Hsiao, Cynthia Thomas, Deepak Goel, Dmitry Zhuk, Gaston Kleiman, Gastón Kleiman, Gilbert Song, Greg Mann, Ilya Pronin, Jack Yang, James DeFelice, James Peach, Jan Schlicht, Jason Lai, Jeff Coffler, Jiang Yan Xu, Jie Yu, Joerg Schad, John Kordich, Joseph Wu, Julien Pepy, Kapil Arya, Kevin Klues, Megha Sharma, Meng Zhu, Michael Park, Nathan Jackson, Neil Conway, Packt, Pranay Kanwar, Qian Zhang, Quinn Leng, Richard Shaw, ThodorisZois, Till Toenshoff, Tomas Barton, Tomasz Janiszewski, Vinod Kone, Zhitao Li&lt;/p&gt;
+
+&lt;p&gt;Enjoy Apache Mesos 1.5!&lt;/p&gt;
+
+	</content>
+  </entry>
   
   <entry>
     <id>http://mesos.apache.org/blog/storage-developments-in-apache-mesos/</id>
@@ -168,7 +295,7 @@ To learn more about CSI work in Mesos, you can dig into the design document &lt;
 &lt;/ul&gt;
 
 
-&lt;p&gt;If you are a user and would like to suggest some areas for performance improvement, please let us know by emailing &lt;a href=&quot;&amp;#x6d;&amp;#x61;&amp;#x69;&amp;#108;&amp;#x74;&amp;#111;&amp;#x3a;&amp;#x64;&amp;#101;&amp;#x76;&amp;#64;&amp;#97;&amp;#112;&amp;#x61;&amp;#99;&amp;#x68;&amp;#x65;&amp;#46;&amp;#x6d;&amp;#101;&amp;#115;&amp;#111;&amp;#115;&amp;#x2e;&amp;#x6f;&amp;#114;&amp;#x67;&quot;&gt;&amp;#100;&amp;#x65;&amp;#x76;&amp;#64;&amp;#97;&amp;#112;&amp;#97;&amp;#99;&amp;#x68;&amp;#101;&amp;#x2e;&amp;#x6d;&amp;#x65;&amp;#115;&amp;#x6f;&amp;#x73;&amp;#46;&amp;#x6f;&amp;#x72;&amp;#x67;&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;If you are a user and would like to suggest some areas for performance improvement, please let us know by emailing &lt;a href=&quot;&amp;#x6d;&amp;#x61;&amp;#x69;&amp;#108;&amp;#x74;&amp;#x6f;&amp;#x3a;&amp;#100;&amp;#x65;&amp;#x76;&amp;#64;&amp;#97;&amp;#x70;&amp;#97;&amp;#99;&amp;#104;&amp;#x65;&amp;#46;&amp;#x6d;&amp;#101;&amp;#x73;&amp;#x6f;&amp;#x73;&amp;#46;&amp;#x6f;&amp;#x72;&amp;#x67;&quot;&gt;&amp;#x64;&amp;#101;&amp;#118;&amp;#x40;&amp;#x61;&amp;#112;&amp;#97;&amp;#x63;&amp;#x68;&amp;#x65;&amp;#x2e;&amp;#109;&amp;#x65;&amp;#115;&amp;#111;&amp;#x73;&amp;#x2e;&amp;#111;&amp;#x72;&amp;#103;&lt;/a&gt;.&lt;/p&gt;
 
 	</content>
   </entry>
