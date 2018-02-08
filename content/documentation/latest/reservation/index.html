@@ -745,19 +745,25 @@ HTTP authentication is disabled.</p>
           "name": "cpus",
           "type": "SCALAR",
           "scalar": { "value": 8 },
-          "reservation": {
-            "principal": &lt;operator_principal&gt;,
-            "role": "ads"
-          }
+          "reservations": [
+            {
+              type: DYNAMIC,
+              role: "ads",
+              principal: &lt;operator_principal&gt;,
+            }
+          ]
         },
         {
           "name": "mem",
           "type": "SCALAR",
           "scalar": { "value": 4096 },
-          "reservation": {
-            "principal": &lt;operator_principal&gt;,
-            "role": "ads"
-          }
+          "reservations": [
+            {
+              type: DYNAMIC,
+              role: "ads",
+              principal: &lt;operator_principal&gt;,
+            }
+          ]
         }
       ]' \
       -X POST http://&lt;ip&gt;:&lt;port&gt;/master/reserve
@@ -797,19 +803,25 @@ We can send an HTTP POST request to the master&rsquo;s
           "name": "cpus",
           "type": "SCALAR",
           "scalar": { "value": 8 },
-          "reservation": {
-            "principal": &lt;reserver_principal&gt;,
-            "role": "ads"
-          }
+          "reservations": [
+            {
+              type: DYNAMIC,
+              role: "ads",
+              principal: &lt;reserver_principal&gt;,
+            }
+          ]
         },
         {
           "name": "mem",
           "type": "SCALAR",
           "scalar": { "value": 4096 },
-          "reservation": {
-            "principal": &lt;reserver_principal&gt;,
-            "role": "ads"
-          }
+          "reservations": [
+            {
+              type: DYNAMIC,
+              role: "ads",
+              principal: &lt;reserver_principal&gt;,
+            }
+          ]
         }
       ]' \
       -X POST http://&lt;ip&gt;:&lt;port&gt;/master/unreserve
