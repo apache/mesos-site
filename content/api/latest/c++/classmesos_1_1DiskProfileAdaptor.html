@@ -84,14 +84,14 @@ Classes</h2></td></tr>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a22b6d3969a849cfbafd34cf95177499e"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1DiskProfileAdaptor.html#a22b6d3969a849cfbafd34cf95177499e">~DiskProfileAdaptor</a> ()</td></tr>
 <tr class="separator:a22b6d3969a849cfbafd34cf95177499e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3ef41898257d1bbe3bbb567c74b3c890"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classprocess_1_1Future.html">process::Future</a><br class="typebreak"/>
-&lt; <a class="el" href="structmesos_1_1DiskProfileAdaptor_1_1ProfileInfo.html">ProfileInfo</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1DiskProfileAdaptor.html#a3ef41898257d1bbe3bbb567c74b3c890">translate</a> (const std::string &amp;profile, const std::string &amp;csiPluginInfoType)=0</td></tr>
-<tr class="memdesc:a3ef41898257d1bbe3bbb567c74b3c890"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called before a Storage Resource Provider makes an affected CSI request.  <a href="#a3ef41898257d1bbe3bbb567c74b3c890">More...</a><br/></td></tr>
-<tr class="separator:a3ef41898257d1bbe3bbb567c74b3c890"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6cf351ac366237ddc154b0ffb11c27e0"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classprocess_1_1Future.html">process::Future</a><br class="typebreak"/>
-&lt; <a class="el" href="classhashset.html">hashset</a>&lt; std::string &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1DiskProfileAdaptor.html#a6cf351ac366237ddc154b0ffb11c27e0">watch</a> (const <a class="el" href="classhashset.html">hashset</a>&lt; std::string &gt; &amp;knownProfiles, const std::string &amp;csiPluginInfoType)=0</td></tr>
-<tr class="memdesc:a6cf351ac366237ddc154b0ffb11c27e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a future that will be satisifed iff the set of profiles known by the module differs from the <code>knownProfiles</code> parameter.  <a href="#a6cf351ac366237ddc154b0ffb11c27e0">More...</a><br/></td></tr>
-<tr class="separator:a6cf351ac366237ddc154b0ffb11c27e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29e4d7ea512ce2308f8d412ea8b5bd71"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classprocess_1_1Future.html">process::Future</a><br class="typebreak"/>
+&lt; <a class="el" href="structmesos_1_1DiskProfileAdaptor_1_1ProfileInfo.html">ProfileInfo</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1DiskProfileAdaptor.html#a29e4d7ea512ce2308f8d412ea8b5bd71">translate</a> (const std::string &amp;profile, const ResourceProviderInfo &amp;resourceProviderInfo)=0</td></tr>
+<tr class="memdesc:a29e4d7ea512ce2308f8d412ea8b5bd71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the CSI volume capability and the parameters to create CSI volumes associated with the profile.  <a href="#a29e4d7ea512ce2308f8d412ea8b5bd71">More...</a><br/></td></tr>
+<tr class="separator:a29e4d7ea512ce2308f8d412ea8b5bd71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace8355051c0207021493861c64e67d0f"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classprocess_1_1Future.html">process::Future</a><br class="typebreak"/>
+&lt; <a class="el" href="classhashset.html">hashset</a>&lt; std::string &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1DiskProfileAdaptor.html#ace8355051c0207021493861c64e67d0f">watch</a> (const <a class="el" href="classhashset.html">hashset</a>&lt; std::string &gt; &amp;knownProfiles, const ResourceProviderInfo &amp;resourceProviderInfo)=0</td></tr>
+<tr class="memdesc:ace8355051c0207021493861c64e67d0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a future that will be satisifed iff the set of profiles known by the module differs from the <code>knownProfiles</code> parameter.  <a href="#ace8355051c0207021493861c64e67d0f">More...</a><br/></td></tr>
+<tr class="separator:ace8355051c0207021493861c64e67d0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -248,7 +248,7 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a3ef41898257d1bbe3bbb567c74b3c890"></a>
+<a class="anchor" id="a29e4d7ea512ce2308f8d412ea8b5bd71"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -264,8 +264,8 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>csiPluginInfoType</em>&#160;</td>
+          <td class="paramtype">const ResourceProviderInfo &amp;&#160;</td>
+          <td class="paramname"><em>resourceProviderInfo</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -280,17 +280,16 @@ Protected Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Called before a Storage Resource Provider makes an affected CSI request. </p>
-<p>The caller is responsible for copying the returned values into the request object.</p>
-<p>This method is expected to return a Failure if a matching "profile" cannot be found or retrieved. The caller should not proceed with any of the affected CSI requests if this method returns a failure.</p>
-<p>The <code>csiPluginInfoType</code> parameter is the <code>CSIPluginInfo::type</code> field found inside <code>ResourceProviderInfo::storage</code>. This module may choose to filter results based on the type of CSI plugin.</p>
-<p>NOTE: This module assumes that profiles are immutable after creation. Changing the <code>VolumeCapability</code> or Parameters of a profile after creation may result in undefined behavior from the SLRP or CSI plugins. </p>
+<p>Returns the CSI volume capability and the parameters to create CSI volumes associated with the profile. </p>
+<p>This method is expected to return a Failure if a matching profile cannot be found or retrieved. The caller should not proceed with any of the affected CSI requests if this method returns a failure.</p>
+<p>The <code>resourceProviderInfo</code> parameter is the <code>ResourceProviderInfo</code> of the storage resource provider. This module may choose to filter results based on the type and name of the resource provider, or based on the type of the CSI plugin.</p>
+<p>NOTE: This module assumes that profiles are immutable after creation. Changing the CSI volume capability or parameters of a profile after creation may result in undefined behavior from the storage resource provider. </p>
 
-<p>Implemented in <a class="el" href="classmesos_1_1internal_1_1profile_1_1UriDiskProfileAdaptor.html#a28f7504a35efefc91b93ab0f98039a36">mesos::internal::profile::UriDiskProfileAdaptor</a>.</p>
+<p>Implemented in <a class="el" href="classmesos_1_1internal_1_1profile_1_1UriDiskProfileAdaptor.html#a805d75d0b0f8fdb303b6e3056b4c40c9">mesos::internal::profile::UriDiskProfileAdaptor</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a6cf351ac366237ddc154b0ffb11c27e0"></a>
+<a class="anchor" id="ace8355051c0207021493861c64e67d0f"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -306,8 +305,8 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>csiPluginInfoType</em>&#160;</td>
+          <td class="paramtype">const ResourceProviderInfo &amp;&#160;</td>
+          <td class="paramname"><em>resourceProviderInfo</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -323,10 +322,10 @@ Protected Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Returns a future that will be satisifed iff the set of profiles known by the module differs from the <code>knownProfiles</code> parameter. </p>
-<p>The <code>csiPluginInfoType</code> parameter is the <code>CSIPluginInfo::type</code> field found inside <code>ResourceProviderInfo::storage</code>. This module may choose to filter results based on the type of CSI plugin.</p>
-<p>NOTE: It is highly recommended for the module to insert a random delay between discovering a different set of profiles and satisfying this future, because the SLRP is expected to update the set of offered resources based on this future. Adding a random delay may prevent a thundering herd of resource updates to the Mesos master. </p>
+<p>The <code>resourceProviderInfo</code> parameter is the <code>ResourceProviderInfo</code> of the storage resource provider. This module may choose to filter results based on the type and name of the resource provider, or based on the type of the CSI plugin.</p>
+<p>NOTE: It is highly recommended for the module to insert a random delay between discovering a different set of profiles and satisfying this future, because the storage resource provider is expected to update the set of offered resources based on this future. Adding a random delay may prevent a thundering herd of resource updates to the Mesos master. </p>
 
-<p>Implemented in <a class="el" href="classmesos_1_1internal_1_1profile_1_1UriDiskProfileAdaptor.html#a2a1bcf83da4e8e2ce2389fd929d4e99f">mesos::internal::profile::UriDiskProfileAdaptor</a>.</p>
+<p>Implemented in <a class="el" href="classmesos_1_1internal_1_1profile_1_1UriDiskProfileAdaptor.html#a7b2fa69e4f1d061c6da40f217da0121f">mesos::internal::profile::UriDiskProfileAdaptor</a>.</p>
 
 </div>
 </div>
