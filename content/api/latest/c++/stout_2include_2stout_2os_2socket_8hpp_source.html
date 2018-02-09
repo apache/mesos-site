@@ -78,43 +78,12 @@
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &lt;<a class="code" href="stout_2include_2stout_2os_2posix_2socket_8hpp.html">stout/os/posix/socket.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#endif // __WINDOWS__</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">namespace </span>net {</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">// Returns a socket file descriptor for the specified options.</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">// NOTE: on OS X, the returned socket will have the SO_NOSIGPIPE option set.</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="namespacenet.html#a4cfca6331034dc0a6dc6077fc048843b">   31</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;int_fd&gt;</a> <a class="code" href="namespacenet.html#a4cfca6331034dc0a6dc6077fc048843b">socket</a>(<span class="keywordtype">int</span> family, <span class="keywordtype">int</span> <a class="code" href="namespacemesos_1_1internal_1_1fs.html#a2343e2642db514496ba8380776487fba">type</a>, <span class="keywordtype">int</span> protocol)</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;{</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  <a class="code" href="int__fd_8hpp.html#aea4dbda01c90455f158ffa9b924c2f07">int_fd</a> s;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  <span class="keywordflow">if</span> ((s = ::<a class="code" href="namespacenet.html#a4cfca6331034dc0a6dc6077fc048843b">socket</a>(family, type, protocol)) &lt; 0) {</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classErrnoError.html">ErrnoError</a>();</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  }</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#ifdef __APPLE__</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor"></span>  <span class="comment">// Disable SIGPIPE via setsockopt because OS X does not support</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  <span class="comment">// the MSG_NOSIGNAL flag on send(2).</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code" href="namespacecgroups_1_1memory_1_1oom_1_1killer.html#adeb417cd82edadd687c4ae8eab50cd3d">enable</a> = 1;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  <span class="keywordflow">if</span> (setsockopt(s, SOL_SOCKET, SO_NOSIGPIPE, &amp;enable, <span class="keyword">sizeof</span>(<span class="keywordtype">int</span>)) == -1) {</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classErrnoError.html">ErrnoError</a>();</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  }</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#endif // __APPLE__</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <span class="keywordflow">return</span> s;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;}</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;} <span class="comment">// namespace net {</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor">#endif // __STOUT_OS_SOCKET_HPP__</span></div>
-<div class="ttc" id="namespacenet_html_a4cfca6331034dc0a6dc6077fc048843b"><div class="ttname"><a href="namespacenet.html#a4cfca6331034dc0a6dc6077fc048843b">net::socket</a></div><div class="ttdeci">Try&lt; int_fd &gt; socket(int family, int type, int protocol)</div><div class="ttdef"><b>Definition:</b> socket.hpp:31</div></div>
-<div class="ttc" id="namespacecgroups_1_1memory_1_1oom_1_1killer_html_adeb417cd82edadd687c4ae8eab50cd3d"><div class="ttname"><a href="namespacecgroups_1_1memory_1_1oom_1_1killer.html#adeb417cd82edadd687c4ae8eab50cd3d">cgroups::memory::oom::killer::enable</a></div><div class="ttdeci">Try&lt; Nothing &gt; enable(const std::string &amp;hierarchy, const std::string &amp;cgroup)</div></div>
-<div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
-<div class="ttc" id="classErrnoError_html"><div class="ttname"><a href="classErrnoError.html">ErrnoError</a></div><div class="ttdef"><b>Definition:</b> errorbase.hpp:49</div></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#endif // __STOUT_OS_SOCKET_HPP__</span></div>
 <div class="ttc" id="stout_2include_2stout_2os_2posix_2socket_8hpp_html"><div class="ttname"><a href="stout_2include_2stout_2os_2posix_2socket_8hpp.html">socket.hpp</a></div></div>
 <div class="ttc" id="error_8hpp_html"><div class="ttname"><a href="error_8hpp.html">error.hpp</a></div></div>
 <div class="ttc" id="try_8hpp_html"><div class="ttname"><a href="try_8hpp.html">try.hpp</a></div></div>
 <div class="ttc" id="int__fd_8hpp_html"><div class="ttname"><a href="int__fd_8hpp.html">int_fd.hpp</a></div></div>
-<div class="ttc" id="namespacemesos_1_1internal_1_1fs_html_a2343e2642db514496ba8380776487fba"><div class="ttname"><a href="namespacemesos_1_1internal_1_1fs.html#a2343e2642db514496ba8380776487fba">mesos::internal::fs::type</a></div><div class="ttdeci">Try&lt; uint32_t &gt; type(const std::string &amp;path)</div></div>
 <div class="ttc" id="stout_2include_2stout_2os_2windows_2socket_8hpp_html"><div class="ttname"><a href="stout_2include_2stout_2os_2windows_2socket_8hpp.html">socket.hpp</a></div></div>
-<div class="ttc" id="int__fd_8hpp_html_aea4dbda01c90455f158ffa9b924c2f07"><div class="ttname"><a href="int__fd_8hpp.html#aea4dbda01c90455f158ffa9b924c2f07">int_fd</a></div><div class="ttdeci">int int_fd</div><div class="ttdef"><b>Definition:</b> int_fd.hpp:35</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
