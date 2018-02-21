@@ -634,7 +634,7 @@
 <div class="line"><a name="l00580"></a><span class="lineno">  580</span>&#160;</div>
 <div class="line"><a name="l00581"></a><span class="lineno">  581</span>&#160;  <span class="keywordflow">switch</span> (address.<a class="code" href="classnet_1_1IP.html#ac7007d7cc8e87925e19d60515bf28c03">family</a>()) {</div>
 <div class="line"><a name="l00582"></a><span class="lineno">  582</span>&#160;    <span class="keywordflow">case</span> AF_INET: {</div>
-<div class="line"><a name="l00583"></a><span class="lineno">  583</span>&#160;      uint32_t mask = ntohl(netmask.<a class="code" href="classnet_1_1IP.html#a9b2b8da4b79c15e6632a9305a3d4c7cb">in</a>().get().s_addr);</div>
+<div class="line"><a name="l00583"></a><span class="lineno">  583</span>&#160;      uint32_t mask = ntohl(netmask.<a class="code" href="classnet_1_1IP.html#a9b2b8da4b79c15e6632a9305a3d4c7cb">in</a>()-&gt;s_addr);</div>
 <div class="line"><a name="l00584"></a><span class="lineno">  584</span>&#160;      <span class="keywordflow">if</span> (((~mask + 1) &amp; (~mask)) != 0) {</div>
 <div class="line"><a name="l00585"></a><span class="lineno">  585</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(<span class="stringliteral">&quot;IPv4 netmask is not valid&quot;</span>);</div>
 <div class="line"><a name="l00586"></a><span class="lineno">  586</span>&#160;      }</div>
@@ -745,7 +745,7 @@
 <div class="line"><a name="l00691"></a><span class="lineno">  691</span>&#160;</div>
 <div class="line"><a name="l00692"></a><span class="lineno">  692</span>&#160;    <span class="keywordflow">switch</span> (ip.<a class="code" href="classnet_1_1IP.html#ac7007d7cc8e87925e19d60515bf28c03">family</a>()) {</div>
 <div class="line"><a name="l00693"></a><span class="lineno">  693</span>&#160;      <span class="keywordflow">case</span> AF_INET:</div>
-<div class="line"><a name="l00694"></a><span class="lineno">  694</span>&#160;        boost::hash_combine(seed, htonl(ip.<a class="code" href="classnet_1_1IP.html#a9b2b8da4b79c15e6632a9305a3d4c7cb">in</a>().get().s_addr));</div>
+<div class="line"><a name="l00694"></a><span class="lineno">  694</span>&#160;        boost::hash_combine(seed, htonl(ip.<a class="code" href="classnet_1_1IP.html#a9b2b8da4b79c15e6632a9305a3d4c7cb">in</a>()-&gt;s_addr));</div>
 <div class="line"><a name="l00695"></a><span class="lineno">  695</span>&#160;        <span class="keywordflow">return</span> seed;</div>
 <div class="line"><a name="l00696"></a><span class="lineno">  696</span>&#160;      <span class="keywordflow">case</span> AF_INET6: {</div>
 <div class="line"><a name="l00697"></a><span class="lineno">  697</span>&#160;        in6_addr in6 = ip.<a class="code" href="classnet_1_1IP.html#ad81fc914433c4874645a406471f57b34">in6</a>().get();</div>

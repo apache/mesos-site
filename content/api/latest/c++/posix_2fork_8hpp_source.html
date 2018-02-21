@@ -422,7 +422,7 @@
 <div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;    <span class="comment">// Execute or wait.</span></div>
 <div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;    <span class="keywordflow">if</span> (exec.isSome()) {</div>
 <div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;      <span class="comment">// Execute the command (via &#39;/bin/sh -c command&#39;).</span></div>
-<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;      <span class="keyword">const</span> <span class="keywordtype">char</span>* command = exec.get().command.c_str();</div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;      <span class="keyword">const</span> <span class="keywordtype">char</span>* command = exec-&gt;command.c_str();</div>
 <div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;      <a class="code" href="namespaceos.html#a4b727e301623549c37cdfcd8c553a2c7">execlp</a>(<span class="stringliteral">&quot;sh&quot;</span>, <span class="stringliteral">&quot;sh&quot;</span>, <span class="stringliteral">&quot;-c&quot;</span>, command, (<span class="keywordtype">char</span>*) <span class="keyword">nullptr</span>);</div>
 <div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;      <a class="code" href="exit_8hpp.html#a536432347f1ad965e8116c2940fbf110">EXIT</a>(EXIT_FAILURE)</div>
 <div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;        &lt;&lt; <span class="stringliteral">&quot;Failed to execute &#39;&quot;</span> &lt;&lt; command &lt;&lt; <span class="stringliteral">&quot;&#39;: &quot;</span> &lt;&lt; <a class="code" href="namespaceos.html#aa9ac22b4028f187826a9861373006abf">os::strerror</a>(errno);</div>
@@ -460,7 +460,7 @@
 <div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;        <a class="code" href="structNone.html">None</a>(),</div>
 <div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;        <a class="code" href="structNone.html">None</a>(),</div>
 <div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;        <a class="code" href="structNone.html">None</a>(),</div>
-<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;        <span class="keyword">self</span>.isSome() ? <span class="keyword">self</span>.<span class="keyword">get</span>().command : <span class="stringliteral">&quot;&quot;</span>,</div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;        <span class="keyword">self</span>.isSome() ? self-&gt;command : <span class="stringliteral">&quot;&quot;</span>,</div>
 <div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;        <span class="keyword">false</span>);</div>
 <div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;</div>
 <div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;    std::list&lt;ProcessTree&gt; children;</div>

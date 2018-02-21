@@ -100,7 +100,7 @@
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <span class="keywordflow">if</span> (processes.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(<span class="stringliteral">&quot;Failed to get process via sysctl: &quot;</span> + processes.<a class="code" href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">error</a>());</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (processes.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>().size() != 1) {</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (processes-&gt;size() != 1) {</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="structNone.html">None</a>();</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  }</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
@@ -129,7 +129,7 @@
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <a class="code" href="classTry.html">Try&lt;std::string&gt;</a> args = <a class="code" href="structos_1_1sysctl.html">os::sysctl</a>(CTL_KERN, KERN_PROCARGS2, pid).<a class="code" href="structos_1_1sysctl.html#af54897c91536ccd5d829daabbac64266">string</a>();</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="keywordflow">if</span> (args.<a class="code" href="classTry.html#a6543d7d5db4f298bcd673bf3cd509acc">isSome</a>()) {</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keywordtype">int</span> argc = *((<span class="keywordtype">int</span>*) args.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>().data());</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keywordtype">int</span> argc = *((<span class="keywordtype">int</span>*) args-&gt;data());</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordflow">if</span> (argc &gt; 0) {</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;      <span class="comment">// Now grab the arguments.</span></div>
