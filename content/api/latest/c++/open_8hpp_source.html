@@ -86,31 +86,35 @@
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#ifndef O_CLOEXEC</span></div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#error &quot;missing O_CLOEXEC support on this platform&quot;</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">namespace </span>os {</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
-<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="namespaceos.html#abbdbbbe902fd8dc271077d94b99994e7">   39</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;int_fd&gt;</a> <a class="code" href="namespaceos.html#abbdbbbe902fd8dc271077d94b99994e7">open</a>(<span class="keyword">const</span> std::string&amp; path, <span class="keywordtype">int</span> oflag, <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a8a35dd1207a16dfa8b1d4163176d828c">mode_t</a> <a class="code" href="namespaceos_1_1stat.html#afc51654ad486693167c300612bf8ebfa">mode</a> = 0)</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;{</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#ifdef __WINDOWS__</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor"></span>  std::wstring <a class="code" href="namespaceinternal_1_1windows.html#abd7dbdbc8d95626d0c66455078380aa1">longpath</a> = <a class="code" href="namespaceinternal_1_1windows.html#abd7dbdbc8d95626d0c66455078380aa1">::internal::windows::longpath</a>(path);</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <span class="comment">// By default, Windows will perform &quot;text translation&quot; meaning that it will</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <span class="comment">// automatically write CR/LF instead of LF line feeds. To prevent this, and</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <span class="comment">// use the POSIX semantics, we open with `O_BINARY`.</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  <a class="code" href="int__fd_8hpp.html#aea4dbda01c90455f158ffa9b924c2f07">int_fd</a> fd = ::_wopen(longpath.data(), oflag | O_BINARY, <a class="code" href="namespaceos_1_1stat.html#afc51654ad486693167c300612bf8ebfa">mode</a>);</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor"></span>  <a class="code" href="int__fd_8hpp.html#aea4dbda01c90455f158ffa9b924c2f07">int_fd</a> fd = <a class="code" href="namespaceos.html#abbdbbbe902fd8dc271077d94b99994e7">::open</a>(path.c_str(), oflag, <a class="code" href="namespaceos_1_1stat.html#afc51654ad486693167c300612bf8ebfa">mode</a>);</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor">#endif // __WINDOWS__</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="preprocessor"></span>  <span class="keywordflow">if</span> (fd &lt; 0) {</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classErrnoError.html">ErrnoError</a>();</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  }</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="keywordflow">return</span> fd;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;}</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;} <span class="comment">// namespace os {</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="preprocessor">#endif // __STOUT_OS_OPEN_HPP__</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor"></span><span class="comment">// NOTE: On Windows, `fnctl.hpp` defines `O_CLOEXEC` to a no-op.</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">namespace </span>os {</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
+<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="namespaceos.html#abbdbbbe902fd8dc271077d94b99994e7">   40</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classTry.html">Try&lt;int_fd&gt;</a> <a class="code" href="namespaceos.html#abbdbbbe902fd8dc271077d94b99994e7">open</a>(<span class="keyword">const</span> std::string&amp; path, <span class="keywordtype">int</span> oflag, <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a8a35dd1207a16dfa8b1d4163176d828c">mode_t</a> <a class="code" href="namespaceos_1_1stat.html#afc51654ad486693167c300612bf8ebfa">mode</a> = 0)</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;{</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#ifdef __WINDOWS__</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor"></span>  std::wstring <a class="code" href="namespaceinternal_1_1windows.html#abd7dbdbc8d95626d0c66455078380aa1">longpath</a> = <a class="code" href="namespaceinternal_1_1windows.html#abd7dbdbc8d95626d0c66455078380aa1">::internal::windows::longpath</a>(path);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <span class="comment">// By default, Windows will perform &quot;text translation&quot; meaning that it will</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <span class="comment">// automatically write CR/LF instead of LF line feeds. To prevent this, and</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  <span class="comment">// use the POSIX semantics, we open with `O_BINARY`.</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <span class="comment">//</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <span class="comment">// Also by default, we will mimic the Windows (non-CRT) APIs and make all</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <span class="comment">// opened handles non-inheritable.</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <a class="code" href="int__fd_8hpp.html#aea4dbda01c90455f158ffa9b924c2f07">int_fd</a> fd = ::_wopen(longpath.data(), oflag | O_BINARY | O_NOINHERIT, <a class="code" href="namespaceos_1_1stat.html#afc51654ad486693167c300612bf8ebfa">mode</a>);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor"></span>  <a class="code" href="int__fd_8hpp.html#aea4dbda01c90455f158ffa9b924c2f07">int_fd</a> fd = <a class="code" href="namespaceos.html#abbdbbbe902fd8dc271077d94b99994e7">::open</a>(path.c_str(), oflag, <a class="code" href="namespaceos_1_1stat.html#afc51654ad486693167c300612bf8ebfa">mode</a>);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="preprocessor">#endif // __WINDOWS__</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="preprocessor"></span>  <span class="keywordflow">if</span> (fd &lt; 0) {</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classErrnoError.html">ErrnoError</a>();</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  }</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="keywordflow">return</span> fd;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;}</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;} <span class="comment">// namespace os {</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor">#endif // __STOUT_OS_OPEN_HPP__</span></div>
 <div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
 <div class="ttc" id="classErrnoError_html"><div class="ttname"><a href="classErrnoError.html">ErrnoError</a></div><div class="ttdef"><b>Definition:</b> errorbase.hpp:49</div></div>
 <div class="ttc" id="close_8hpp_html"><div class="ttname"><a href="close_8hpp.html">close.hpp</a></div></div>
@@ -119,7 +123,7 @@
 <div class="ttc" id="nothing_8hpp_html"><div class="ttname"><a href="nothing_8hpp.html">nothing.hpp</a></div></div>
 <div class="ttc" id="longpath_8hpp_html"><div class="ttname"><a href="longpath_8hpp.html">longpath.hpp</a></div></div>
 <div class="ttc" id="error_8hpp_html"><div class="ttname"><a href="error_8hpp.html">error.hpp</a></div></div>
-<div class="ttc" id="namespaceos_html_abbdbbbe902fd8dc271077d94b99994e7"><div class="ttname"><a href="namespaceos.html#abbdbbbe902fd8dc271077d94b99994e7">os::open</a></div><div class="ttdeci">Try&lt; int_fd &gt; open(const std::string &amp;path, int oflag, mode_t mode=0)</div><div class="ttdef"><b>Definition:</b> open.hpp:39</div></div>
+<div class="ttc" id="namespaceos_html_abbdbbbe902fd8dc271077d94b99994e7"><div class="ttname"><a href="namespaceos.html#abbdbbbe902fd8dc271077d94b99994e7">os::open</a></div><div class="ttdeci">Try&lt; int_fd &gt; open(const std::string &amp;path, int oflag, mode_t mode=0)</div><div class="ttdef"><b>Definition:</b> open.hpp:40</div></div>
 <div class="ttc" id="try_8hpp_html"><div class="ttname"><a href="try_8hpp.html">try.hpp</a></div></div>
 <div class="ttc" id="int__fd_8hpp_html"><div class="ttname"><a href="int__fd_8hpp.html">int_fd.hpp</a></div></div>
 <div class="ttc" id="namespaceos_1_1stat_html_afc51654ad486693167c300612bf8ebfa"><div class="ttname"><a href="namespaceos_1_1stat.html#afc51654ad486693167c300612bf8ebfa">os::stat::mode</a></div><div class="ttdeci">Try&lt; mode_t &gt; mode(const std::string &amp;path, const FollowSymlink follow=FollowSymlink::FOLLOW_SYMLINK)</div><div class="ttdef"><b>Definition:</b> stat.hpp:126</div></div>

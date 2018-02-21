@@ -69,8 +69,8 @@
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &lt;signal.h&gt;</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;tuple&gt;</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;array&gt;</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;glog/logging.h&gt;</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
@@ -107,57 +107,70 @@
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keyword">const</span> <a class="code" href="structprocess_1_1Subprocess_1_1IO_1_1OutputFileDescriptors.html">OutputFileDescriptors</a> stdoutfds,</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keyword">const</span> <a class="code" href="structprocess_1_1Subprocess_1_1IO_1_1OutputFileDescriptors.html">OutputFileDescriptors</a> stderrfds)</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;{</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <a class="code" href="classTry.html">Try&lt;::internal::windows::ProcessData&gt;</a> process_data =</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <a class="code" href="namespaceinternal_1_1windows.html#a2aa192bfa7f7cff72ec40efdfa983a72">::internal::windows::create_process</a>(</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        path,</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        argv,</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <a class="code" href="namespacemesos_1_1internal_1_1tests.html#a1396c5e3b0a179220de2792d74770ec2">environment</a>,</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="keyword">true</span>, <span class="comment">// Create suspended.</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        std::make_tuple(stdinfds.<a class="code" href="structprocess_1_1Subprocess_1_1IO_1_1InputFileDescriptors.html#a0a3f315345ef7b7ee6f3f1d4d337854d">read</a>, stdoutfds.<a class="code" href="structprocess_1_1Subprocess_1_1IO_1_1OutputFileDescriptors.html#a5dabb8e3008efd61ce42478f260b54ac">write</a>, stderrfds.<a class="code" href="structprocess_1_1Subprocess_1_1IO_1_1OutputFileDescriptors.html#a5dabb8e3008efd61ce42478f260b54ac">write</a>));</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keywordflow">if</span> (process_data.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keywordflow">return</span> process_data;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  }</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="comment">// Run the parent hooks.</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="keyword">const</span> <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ab03ced250ed239bc3b50b669493997f9">pid_t</a> pid = process_data.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>().<a class="code" href="structinternal_1_1windows_1_1ProcessData.html#a65a4a4aba5450087363bfffdb30eea25">pid</a>;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="keywordflow">foreach</span> (<span class="keyword">const</span> <a class="code" href="structprocess_1_1Subprocess_1_1ParentHook.html">Subprocess::ParentHook</a>&amp; hook, parent_hooks) {</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <a class="code" href="classTry.html">Try&lt;Nothing&gt;</a> parentSetup = hook.<a class="code" href="structprocess_1_1Subprocess_1_1ParentHook.html#aaf9ff141314d619cd65cd8ec9320fb7d">parent_setup</a>(pid);</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="comment">// If the hook callback fails, we shouldn&#39;t proceed with the</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="comment">// execution and hence the child process should be killed.</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keywordflow">if</span> (parentSetup.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;      <span class="comment">// Attempt to kill the process. Since it is still in suspended state, we</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;      <span class="comment">// do not need to kill any descendents. We also can&#39;t use `os::kill_job`</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;      <span class="comment">// because this process is not in a Job Object unless one of the parent</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;      <span class="comment">// hooks added it.</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;      ::TerminateProcess(process_data.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>().<a class="code" href="structinternal_1_1windows_1_1ProcessData.html#a96c76121644bd430e9ca67cf57636c0d">process_handle</a>.<a class="code" href="classSharedHandle.html#a800385e17e17cb826147968e748fd8fa">get_handle</a>(), 1);</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;          <span class="stringliteral">&quot;Failed to execute Parent Hook in child &#39;&quot;</span> + <a class="code" href="namespacens.html#a28116b46e6543597a11733424cd1aa20">stringify</a>(pid) +</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;          <span class="stringliteral">&quot;&#39; with command &#39;&quot;</span> + <a class="code" href="namespacens.html#a28116b46e6543597a11733424cd1aa20">stringify</a>(argv) + <span class="stringliteral">&quot;&#39;: &quot;</span> +</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;          parentSetup.<a class="code" href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">error</a>());</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    }</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  }</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <span class="comment">// Start child process.</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  <span class="keywordflow">if</span> (::ResumeThread(process_data.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>().<a class="code" href="structinternal_1_1windows_1_1ProcessData.html#a7160cf48fc6e70d9390233b246b93bee">thread_handle</a>.<a class="code" href="classSharedHandle.html#a800385e17e17cb826147968e748fd8fa">get_handle</a>()) == -1) {</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classWindowsError.html">WindowsError</a>(</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        <span class="stringliteral">&quot;Failed to resume child process with command &#39;&quot;</span> +</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        <a class="code" href="namespacens.html#a28116b46e6543597a11733424cd1aa20">stringify</a>(argv) + <span class="stringliteral">&quot;&#39;&quot;</span>);</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  }</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  <span class="keywordflow">return</span> process_data;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;}</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;}  <span class="comment">// namespace internal {</span></div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;}  <span class="comment">// namespace process {</span></div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="preprocessor">#endif // __PROCESS_WINDOWS_SUBPROCESS_HPP__</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="keyword">const</span> std::array&lt;os::WindowsFD, 3&gt; fds{</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    stdinfds.<a class="code" href="structprocess_1_1Subprocess_1_1IO_1_1InputFileDescriptors.html#a0a3f315345ef7b7ee6f3f1d4d337854d">read</a>, stdoutfds.<a class="code" href="structprocess_1_1Subprocess_1_1IO_1_1OutputFileDescriptors.html#a5dabb8e3008efd61ce42478f260b54ac">write</a>, stderrfds.<a class="code" href="structprocess_1_1Subprocess_1_1IO_1_1OutputFileDescriptors.html#a5dabb8e3008efd61ce42478f260b54ac">write</a>};</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <a class="code" href="classTry.html">Try&lt;::internal::windows::ProcessData&gt;</a> process_data =</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <a class="code" href="namespaceinternal_1_1windows.html#a67bc4425e2c4293fe819946851151c9a">::internal::windows::create_process</a>(</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        path,</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        argv,</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <a class="code" href="namespacemesos_1_1internal_1_1tests.html#a1396c5e3b0a179220de2792d74770ec2">environment</a>,</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="keyword">true</span>, <span class="comment">// Create suspended.</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        fds);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <span class="comment">// Close the child-ends of the file descriptors that are created</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="comment">// by this function.</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="keywordflow">foreach</span> (<span class="keyword">const</span> <a class="code" href="classos_1_1WindowsFD.html">os::WindowsFD</a>&amp; fd, fds) {</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordflow">if</span> (fd &gt;= 0) {</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;      <a class="code" href="namespaceos.html#a8df77ec6d6b8d32d9b287a41bc74cfdc">os::close</a>(fd);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    }</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  }</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="keywordflow">if</span> (process_data.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(process_data.<a class="code" href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">error</a>());</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  }</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="comment">// Run the parent hooks.</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <span class="keyword">const</span> <a class="code" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ab03ced250ed239bc3b50b669493997f9">pid_t</a> pid = process_data-&gt;<a class="code" href="structinternal_1_1windows_1_1ProcessData.html#a65a4a4aba5450087363bfffdb30eea25">pid</a>;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="keywordflow">foreach</span> (<span class="keyword">const</span> <a class="code" href="structprocess_1_1Subprocess_1_1ParentHook.html">Subprocess::ParentHook</a>&amp; hook, parent_hooks) {</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <a class="code" href="classTry.html">Try&lt;Nothing&gt;</a> parent_setup = hook.<a class="code" href="structprocess_1_1Subprocess_1_1ParentHook.html#aaf9ff141314d619cd65cd8ec9320fb7d">parent_setup</a>(pid);</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="comment">// If the hook callback fails, we shouldn&#39;t proceed with the</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="comment">// execution and hence the child process should be killed.</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keywordflow">if</span> (parent_setup.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;      <span class="comment">// Attempt to kill the process. Since it is still in suspended state, we</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;      <span class="comment">// do not need to kill any descendents. We also can&#39;t use `os::kill_job`</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;      <span class="comment">// because this process is not in a Job Object unless one of the parent</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;      <span class="comment">// hooks added it.</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;      ::TerminateProcess(process_data-&gt;<a class="code" href="structinternal_1_1windows_1_1ProcessData.html#a96c76121644bd430e9ca67cf57636c0d">process_handle</a>.<a class="code" href="classSharedHandle.html#a800385e17e17cb826147968e748fd8fa">get_handle</a>(), 1);</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;          <span class="stringliteral">&quot;Failed to execute Parent Hook in child &#39;&quot;</span> + <a class="code" href="namespacens.html#a28116b46e6543597a11733424cd1aa20">stringify</a>(pid) +</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;          <span class="stringliteral">&quot;&#39; with command &#39;&quot;</span> + <a class="code" href="namespacens.html#a28116b46e6543597a11733424cd1aa20">stringify</a>(argv) + <span class="stringliteral">&quot;&#39;: &quot;</span> +</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;          parent_setup.<a class="code" href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">error</a>());</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    }</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  }</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  <span class="comment">// Start child process.</span></div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  <span class="keywordflow">if</span> (::ResumeThread(process_data-&gt;<a class="code" href="structinternal_1_1windows_1_1ProcessData.html#a7160cf48fc6e70d9390233b246b93bee">thread_handle</a>.<a class="code" href="classSharedHandle.html#a800385e17e17cb826147968e748fd8fa">get_handle</a>()) == -1) {</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classWindowsError.html">WindowsError</a>(</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        <span class="stringliteral">&quot;Failed to resume child process with command &#39;&quot;</span> +</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        <a class="code" href="namespacens.html#a28116b46e6543597a11733424cd1aa20">stringify</a>(argv) + <span class="stringliteral">&quot;&#39;&quot;</span>);</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  }</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;  <span class="keywordflow">return</span> process_data;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;}</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;}  <span class="comment">// namespace internal {</span></div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;}  <span class="comment">// namespace process {</span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="preprocessor">#endif // __PROCESS_WINDOWS_SUBPROCESS_HPP__</span></div>
 <div class="ttc" id="classError_html"><div class="ttname"><a href="classError.html">Error</a></div><div class="ttdef"><b>Definition:</b> errorbase.hpp:35</div></div>
 <div class="ttc" id="classOption_html"><div class="ttname"><a href="classOption.html">Option</a></div><div class="ttdef"><b>Definition:</b> option.hpp:28</div></div>
 <div class="ttc" id="classSharedHandle_html_a800385e17e17cb826147968e748fd8fa"><div class="ttname"><a href="classSharedHandle.html#a800385e17e17cb826147968e748fd8fa">SharedHandle::get_handle</a></div><div class="ttdeci">HANDLE get_handle() const </div><div class="ttdef"><b>Definition:</b> windows.hpp:96</div></div>
+<div class="ttc" id="classos_1_1WindowsFD_html"><div class="ttname"><a href="classos_1_1WindowsFD.html">os::WindowsFD</a></div><div class="ttdef"><b>Definition:</b> fd.hpp:47</div></div>
 <div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
+<div class="ttc" id="namespaceinternal_1_1windows_html_a67bc4425e2c4293fe819946851151c9a"><div class="ttname"><a href="namespaceinternal_1_1windows.html#a67bc4425e2c4293fe819946851151c9a">internal::windows::create_process</a></div><div class="ttdeci">Try&lt; ProcessData &gt; create_process(const std::string &amp;command, const std::vector&lt; std::string &gt; &amp;argv, const Option&lt; std::map&lt; std::string, std::string &gt;&gt; &amp;environment, const bool create_suspended=false, const Option&lt; std::array&lt; os::WindowsFD, 3 &gt;&gt; pipes=None())</div><div class="ttdef"><b>Definition:</b> shell.hpp:238</div></div>
 <div class="ttc" id="subprocess_8hpp_html"><div class="ttname"><a href="subprocess_8hpp.html">subprocess.hpp</a></div></div>
 <div class="ttc" id="os_8hpp_html"><div class="ttname"><a href="os_8hpp.html">os.hpp</a></div></div>
 <div class="ttc" id="classWindowsError_html"><div class="ttname"><a href="classWindowsError.html">WindowsError</a></div><div class="ttdef"><b>Definition:</b> error.hpp:106</div></div>
@@ -170,6 +183,7 @@
 <div class="ttc" id="namespacemesos_1_1internal_1_1tests_html_a1396c5e3b0a179220de2792d74770ec2"><div class="ttname"><a href="namespacemesos_1_1internal_1_1tests.html#a1396c5e3b0a179220de2792d74770ec2">mesos::internal::tests::environment</a></div><div class="ttdeci">Environment * environment</div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_ab03ced250ed239bc3b50b669493997f9"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ab03ced250ed239bc3b50b669493997f9">pid_t</a></div><div class="ttdeci">DWORD pid_t</div><div class="ttdef"><b>Definition:</b> windows.hpp:187</div></div>
 <div class="ttc" id="structprocess_1_1Subprocess_1_1IO_1_1OutputFileDescriptors_html_a5dabb8e3008efd61ce42478f260b54ac"><div class="ttname"><a href="structprocess_1_1Subprocess_1_1IO_1_1OutputFileDescriptors.html#a5dabb8e3008efd61ce42478f260b54ac">process::Subprocess::IO::OutputFileDescriptors::write</a></div><div class="ttdeci">int_fd write</div><div class="ttdef"><b>Definition:</b> subprocess.hpp:91</div></div>
+<div class="ttc" id="namespaceos_html_a8df77ec6d6b8d32d9b287a41bc74cfdc"><div class="ttname"><a href="namespaceos.html#a8df77ec6d6b8d32d9b287a41bc74cfdc">os::close</a></div><div class="ttdeci">Try&lt; Nothing &gt; close(int fd)</div><div class="ttdef"><b>Definition:</b> close.hpp:24</div></div>
 <div class="ttc" id="structinternal_1_1windows_1_1ProcessData_html_a96c76121644bd430e9ca67cf57636c0d"><div class="ttname"><a href="structinternal_1_1windows_1_1ProcessData.html#a96c76121644bd430e9ca67cf57636c0d">internal::windows::ProcessData::process_handle</a></div><div class="ttdeci">SharedHandle process_handle</div><div class="ttdef"><b>Definition:</b> shell.hpp:212</div></div>
 <div class="ttc" id="structinternal_1_1windows_1_1ProcessData_html_a7160cf48fc6e70d9390233b246b93bee"><div class="ttname"><a href="structinternal_1_1windows_1_1ProcessData.html#a7160cf48fc6e70d9390233b246b93bee">internal::windows::ProcessData::thread_handle</a></div><div class="ttdeci">SharedHandle thread_handle</div><div class="ttdef"><b>Definition:</b> shell.hpp:213</div></div>
 <div class="ttc" id="structprocess_1_1Subprocess_1_1IO_1_1InputFileDescriptors_html"><div class="ttname"><a href="structprocess_1_1Subprocess_1_1IO_1_1InputFileDescriptors.html">process::Subprocess::IO::InputFileDescriptors</a></div><div class="ttdoc">For input file descriptors a child reads from the read file descriptor and a parent may write to the ...</div><div class="ttdef"><b>Definition:</b> subprocess.hpp:73</div></div>
@@ -186,8 +200,6 @@
 <div class="ttc" id="shell_8hpp_html"><div class="ttname"><a href="shell_8hpp.html">shell.hpp</a></div></div>
 <div class="ttc" id="structprocess_1_1Subprocess_1_1ParentHook_html"><div class="ttname"><a href="structprocess_1_1Subprocess_1_1ParentHook.html">process::Subprocess::ParentHook</a></div><div class="ttdoc">A hook can be passed to a subprocess call. </div><div class="ttdef"><b>Definition:</b> subprocess.hpp:151</div></div>
 <div class="ttc" id="namespacens_html_a28116b46e6543597a11733424cd1aa20"><div class="ttname"><a href="namespacens.html#a28116b46e6543597a11733424cd1aa20">ns::stringify</a></div><div class="ttdeci">std::string stringify(int flags)</div></div>
-<div class="ttc" id="classTry_html_a7be0768038e0628632492edf6cc1515a"><div class="ttname"><a href="classTry.html#a7be0768038e0628632492edf6cc1515a">Try::get</a></div><div class="ttdeci">const T &amp; get() const </div><div class="ttdef"><b>Definition:</b> try.hpp:73</div></div>
-<div class="ttc" id="namespaceinternal_1_1windows_html_a2aa192bfa7f7cff72ec40efdfa983a72"><div class="ttname"><a href="namespaceinternal_1_1windows.html#a2aa192bfa7f7cff72ec40efdfa983a72">internal::windows::create_process</a></div><div class="ttdeci">Try&lt; ProcessData &gt; create_process(const std::string &amp;command, const std::vector&lt; std::string &gt; &amp;argv, const Option&lt; std::map&lt; std::string, std::string &gt;&gt; &amp;environment, const bool create_suspended=false, const Option&lt; std::tuple&lt; int_fd, int_fd, int_fd &gt;&gt; pipes=None())</div><div class="ttdef"><b>Definition:</b> shell.hpp:233</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
