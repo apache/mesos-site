@@ -94,7 +94,7 @@
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;                 kinfos.<a class="code" href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">error</a>());</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  }</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <span class="keywordflow">foreach</span> (<span class="keyword">const</span> kinfo_proc&amp; kinfo, kinfos.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>()) {</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <span class="keywordflow">foreach</span> (<span class="keyword">const</span> kinfo_proc&amp; kinfo, kinfos.<a class="code" href="classTry.html#a8bc7f43e75a47111ea18e9c83b007be5">get</a>()) {</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keywordflow">if</span> (kinfo.ki_pid == pid) {</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;      <span class="keywordtype">size_t</span> <a class="code" href="namespaceos.html#af0898f40a19c3804347e30b9efa0984a">pagesize</a> = <a class="code" href="namespaceos.html#af0898f40a19c3804347e30b9efa0984a">os::pagesize</a>();</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="structos_1_1Process.html">Process</a>(kinfo.ki_pid,</div>
@@ -120,7 +120,7 @@
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <span class="keyword">const</span> <a class="code" href="classTry.html">Try&lt;std::vector&lt;kinfo_proc&gt;</a>&gt; kinfos =</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <a class="code" href="structos_1_1sysctl.html">os::sysctl</a>(CTL_KERN, KERN_PROC, KERN_PROC_ALL).<a class="code" href="structos_1_1sysctl.html#a519389727f9ecc76af96ed087fcff691">table</a>();</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="keywordflow">foreach</span> (<span class="keyword">const</span> kinfo_proc&amp; kinfo, kinfos.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>()) {</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="keywordflow">foreach</span> (<span class="keyword">const</span> kinfo_proc&amp; kinfo, kinfos.<a class="code" href="classTry.html#a8bc7f43e75a47111ea18e9c83b007be5">get</a>()) {</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    result.insert(kinfo.ki_pid);</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  }</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
@@ -137,7 +137,7 @@
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="keywordflow">if</span> (physicalMemory.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(physicalMemory.<a class="code" href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">error</a>());</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  }</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  memory.<a class="code" href="structos_1_1Memory.html#a3670204f7fb13a96ca0e278f49b91282">total</a> = <a class="code" href="classBytes.html">Bytes</a>(physicalMemory.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>());</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  memory.<a class="code" href="structos_1_1Memory.html#a3670204f7fb13a96ca0e278f49b91282">total</a> = <a class="code" href="classBytes.html">Bytes</a>(physicalMemory.<a class="code" href="classTry.html#a8bc7f43e75a47111ea18e9c83b007be5">get</a>());</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">size_t</span> pageSize = <a class="code" href="namespaceos.html#af0898f40a19c3804347e30b9efa0984a">os::pagesize</a>();</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
@@ -189,10 +189,11 @@
 <div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;</div>
 <div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="classError_html"><div class="ttname"><a href="classError.html">Error</a></div><div class="ttdef"><b>Definition:</b> errorbase.hpp:35</div></div>
-<div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
+<div class="ttc" id="classTry_html_a8bc7f43e75a47111ea18e9c83b007be5"><div class="ttname"><a href="classTry.html#a8bc7f43e75a47111ea18e9c83b007be5">Try::get</a></div><div class="ttdeci">T &amp; get()&amp;</div><div class="ttdef"><b>Definition:</b> try.hpp:73</div></div>
+<div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> check.hpp:33</div></div>
 <div class="ttc" id="namespaceos_html_af0898f40a19c3804347e30b9efa0984a"><div class="ttname"><a href="namespaceos.html#af0898f40a19c3804347e30b9efa0984a">os::pagesize</a></div><div class="ttdeci">size_t pagesize()</div><div class="ttdef"><b>Definition:</b> pagesize.hpp:24</div></div>
 <div class="ttc" id="classErrnoError_html"><div class="ttname"><a href="classErrnoError.html">ErrnoError</a></div><div class="ttdef"><b>Definition:</b> errorbase.hpp:49</div></div>
-<div class="ttc" id="classResult_html"><div class="ttname"><a href="classResult.html">Result</a></div><div class="ttdef"><b>Definition:</b> result.hpp:40</div></div>
+<div class="ttc" id="classResult_html"><div class="ttname"><a href="classResult.html">Result</a></div><div class="ttdef"><b>Definition:</b> check.hpp:30</div></div>
 <div class="ttc" id="structos_1_1Memory_html_a99857d2d965390fe2e88f417037dce55"><div class="ttname"><a href="structos_1_1Memory.html#a99857d2d965390fe2e88f417037dce55">os::Memory::freeSwap</a></div><div class="ttdeci">Bytes freeSwap</div><div class="ttdef"><b>Definition:</b> os.hpp:39</div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_ab03ced250ed239bc3b50b669493997f9"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ab03ced250ed239bc3b50b669493997f9">pid_t</a></div><div class="ttdeci">DWORD pid_t</div><div class="ttdef"><b>Definition:</b> windows.hpp:187</div></div>
 <div class="ttc" id="structos_1_1Process_html"><div class="ttname"><a href="structos_1_1Process.html">os::Process</a></div><div class="ttdef"><b>Definition:</b> process.hpp:32</div></div>
@@ -212,7 +213,6 @@
 <div class="ttc" id="namespaceos_html_a23a7b8f4b4c145ad212381e89d4b6dc4"><div class="ttname"><a href="namespaceos.html#a23a7b8f4b4c145ad212381e89d4b6dc4">os::memory</a></div><div class="ttdeci">Try&lt; Memory &gt; memory()</div><div class="ttdef"><b>Definition:</b> freebsd.hpp:78</div></div>
 <div class="ttc" id="structos_1_1Memory_html_ab447e8e30892e0d5f0e3a976e6d80cde"><div class="ttname"><a href="structos_1_1Memory.html#ab447e8e30892e0d5f0e3a976e6d80cde">os::Memory::free</a></div><div class="ttdeci">Bytes free</div><div class="ttdef"><b>Definition:</b> os.hpp:37</div></div>
 <div class="ttc" id="namespaceos_html_a42af1cab63434cedf2b698cd6f49f073"><div class="ttname"><a href="namespaceos.html#a42af1cab63434cedf2b698cd6f49f073">os::pids</a></div><div class="ttdeci">Try&lt; std::set&lt; pid_t &gt; &gt; pids()</div><div class="ttdef"><b>Definition:</b> freebsd.hpp:62</div></div>
-<div class="ttc" id="classTry_html_a7be0768038e0628632492edf6cc1515a"><div class="ttname"><a href="classTry.html#a7be0768038e0628632492edf6cc1515a">Try::get</a></div><div class="ttdeci">const T &amp; get() const </div><div class="ttdef"><b>Definition:</b> try.hpp:73</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

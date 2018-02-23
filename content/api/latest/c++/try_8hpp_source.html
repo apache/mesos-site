@@ -85,7 +85,7 @@
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">// stored. Calling &#39;isError&#39; will return true if it stores an error,</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">// in which case calling &#39;error&#39; will return the error string.</span></div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> E = Error&gt;</div>
-<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="classTry.html">   34</a></span>&#160;<span class="keyword">class </span><a class="code" href="classTry.html">Try</a></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">class </span><a class="code" href="classTry.html">Try</a></div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;{</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  static_assert(</div>
@@ -124,59 +124,60 @@
 <div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="classTry.html#a6543d7d5db4f298bcd673bf3cd509acc">   70</a></span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="classTry.html#a6543d7d5db4f298bcd673bf3cd509acc">isSome</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> data.isSome(); }</div>
 <div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">   71</a></span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> data.isNone(); }</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="classTry.html#a7be0768038e0628632492edf6cc1515a">   73</a></span>&#160;  <span class="keyword">const</span> T&amp; <span class="keyword">get</span>() <span class="keyword">const</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  {</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keywordflow">if</span> (!data.isSome()) {</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;      assert(error_.<a class="code" href="classOption.html#a4e3bf8416d95246f43c91f1b5c309323">isSome</a>());</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;      <a class="code" href="abort_8hpp.html#a4d84a74fe6e4f84bc3d2f901b9e89f93">ABORT</a>(<span class="stringliteral">&quot;Try::get() but state == ERROR: &quot;</span> + error_-&gt;message);</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    }</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordflow">return</span> data.get();</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  }</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
-<div class="line"><a name="l00082"></a><span class="lineno"><a class="line" href="classTry.html#a81382bcf376c5d85d5da27422d034c2c">   82</a></span>&#160;  T&amp; <span class="keyword">get</span>()</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  {</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">const_cast&lt;</span>T&amp;<span class="keyword">&gt;</span>(<span class="keyword">static_cast&lt;</span><span class="keyword">const </span><a class="code" href="classTry.html">Try</a>&amp;<span class="keyword">&gt;</span>(*this).<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>());</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  }</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
-<div class="line"><a name="l00087"></a><span class="lineno"><a class="line" href="classTry.html#aa1a9b7b5155868454bf85971cfea4676">   87</a></span>&#160;  <span class="keyword">const</span> T* <a class="code" href="classTry.html#aa1a9b7b5155868454bf85971cfea4676">operator-&gt;</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> &amp;<span class="keyword">get</span>(); }</div>
-<div class="line"><a name="l00088"></a><span class="lineno"><a class="line" href="classTry.html#abb420e7f8f439f0cf4083489c4662d7b">   88</a></span>&#160;  T* <a class="code" href="classTry.html#abb420e7f8f439f0cf4083489c4662d7b">operator-&gt;</a>() { <span class="keywordflow">return</span> &amp;<span class="keyword">get</span>(); }</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  <span class="comment">// NOTE: This function is intended to return the error of type `E`.</span></div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  <span class="comment">// However, we return a `std::string` if `E` == `Error` since that&#39;s what it</span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  <span class="comment">// used to return, and it&#39;s the only data that `Error` holds anyway.</span></div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <span class="keyword">const</span> <span class="keyword">typename</span> std::conditional&lt;</div>
-<div class="line"><a name="l00094"></a><span class="lineno"><a class="line" href="classTry.html#abb21343eabcba0eb0d88f13c4fbdf1f7">   94</a></span>&#160;      std::is_same&lt;E, Error&gt;::value, std::string, E&gt;<a class="code" href="namespacemesos_1_1internal_1_1fs.html#a2343e2642db514496ba8380776487fba">::type</a>&amp; <a class="code" href="classTry.html#abb21343eabcba0eb0d88f13c4fbdf1f7">error</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="keyword">  </span>{</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    assert(data.isNone());</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    assert(error_.<a class="code" href="classOption.html#a4e3bf8416d95246f43c91f1b5c309323">isSome</a>());</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <span class="keywordflow">return</span> error_impl(error_.<a class="code" href="classOption.html#a21358442c0fac1cc978a67a9a9089a79">get</a>());</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  }</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  <span class="keyword">static</span> <span class="keyword">const</span> std::string&amp; error_impl(<span class="keyword">const</span> <a class="code" href="classError.html">Error</a>&amp; err) { <span class="keywordflow">return</span> err.<a class="code" href="classError.html#a2d13609e80acd2a2a473a26f273b1c4f">message</a>; }</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Err&gt;</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  <span class="keyword">static</span> <span class="keyword">const</span> Err&amp; error_impl(<span class="keyword">const</span> Err&amp; err) { <span class="keywordflow">return</span> err; }</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;  <span class="comment">// We leverage Option&lt;T&gt; to avoid dynamic allocation of T. This</span></div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  <span class="comment">// means that the storage for T will be included in this object</span></div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  <span class="comment">// (Try&lt;T&gt;). Since Option&lt;T&gt; keeps track of whether a value is</span></div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  <span class="comment">// stored, we just ask it when we want to know whether we are</span></div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  <span class="comment">// storing a value or an error. Another advantage of leveraging</span></div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;  <span class="comment">// Option&lt;T&gt; is that it takes care of all the manual construction</span></div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;  <span class="comment">// and destruction. This makes the code for Try&lt;T&gt; really simple!</span></div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;  <a class="code" href="classOption.html">Option&lt;T&gt;</a> data;</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;  <a class="code" href="classOption.html">Option&lt;E&gt;</a> error_;</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;};</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;</div>
+<div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="classTry.html#a8bc7f43e75a47111ea18e9c83b007be5">   73</a></span>&#160;  T&amp; <span class="keyword">get</span>() &amp; { <span class="keywordflow">return</span> <span class="keyword">get</span>(*this); }</div>
+<div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="classTry.html#a6279f363f225df7d23450efed4f6266b">   74</a></span>&#160;  <span class="keyword">const</span> T&amp; <span class="keyword">get</span>() <span class="keyword">const</span> &amp; { <span class="keywordflow">return</span> <span class="keyword">get</span>(*this); }</div>
+<div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="classTry.html#a130c5793fda00481e0dd08815a5e1a3b">   75</a></span>&#160;  T&amp;&amp; <span class="keyword">get</span>() &amp;&amp; { <span class="keywordflow">return</span> <span class="keyword">get</span>(std::move(*<span class="keyword">this</span>)); }</div>
+<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="classTry.html#aa7fc5faedc2dc83838bf5a58bcdd1731">   76</a></span>&#160;  <span class="keyword">const</span> T&amp;&amp; <span class="keyword">get</span>() <span class="keyword">const</span> &amp;&amp; { <span class="keywordflow">return</span> <span class="keyword">get</span>(std::move(*<span class="keyword">this</span>)); }</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
+<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="classTry.html#aa1a9b7b5155868454bf85971cfea4676">   78</a></span>&#160;  <span class="keyword">const</span> T* <a class="code" href="classTry.html#aa1a9b7b5155868454bf85971cfea4676">operator-&gt;</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> &amp;<span class="keyword">get</span>(); }</div>
+<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="classTry.html#abb420e7f8f439f0cf4083489c4662d7b">   79</a></span>&#160;  T* <a class="code" href="classTry.html#abb420e7f8f439f0cf4083489c4662d7b">operator-&gt;</a>() { <span class="keywordflow">return</span> &amp;<span class="keyword">get</span>(); }</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="comment">// NOTE: This function is intended to return the error of type `E`.</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <span class="comment">// However, we return a `std::string` if `E` == `Error` since that&#39;s what it</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="comment">// used to return, and it&#39;s the only data that `Error` holds anyway.</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <span class="keyword">const</span> <span class="keyword">typename</span> std::conditional&lt;</div>
+<div class="line"><a name="l00085"></a><span class="lineno"><a class="line" href="classTry.html#abb21343eabcba0eb0d88f13c4fbdf1f7">   85</a></span>&#160;      std::is_same&lt;E, Error&gt;::value, std::string, E&gt;<a class="code" href="namespacemesos_1_1internal_1_1fs.html#a2343e2642db514496ba8380776487fba">::type</a>&amp; <a class="code" href="classTry.html#abb21343eabcba0eb0d88f13c4fbdf1f7">error</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="keyword">  </span>{</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    assert(data.isNone());</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    assert(error_.<a class="code" href="classOption.html#a4e3bf8416d95246f43c91f1b5c309323">isSome</a>());</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="keywordflow">return</span> error_impl(error_.<a class="code" href="classOption.html#a21358442c0fac1cc978a67a9a9089a79">get</a>());</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  }</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <span class="keyword">static</span> <span class="keyword">const</span> std::string&amp; error_impl(<span class="keyword">const</span> <a class="code" href="classError.html">Error</a>&amp; err) { <span class="keywordflow">return</span> err.<a class="code" href="classError.html#a2d13609e80acd2a2a473a26f273b1c4f">message</a>; }</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Self&gt;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  <span class="keyword">static</span> <span class="keyword">auto</span> <span class="keyword">get</span>(Self&amp;&amp; <span class="keyword">self</span>) -&gt; decltype(std::forward&lt;Self&gt;(<span class="keyword">self</span>).data.get())</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  {</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <span class="keywordflow">if</span> (!<span class="keyword">self</span>.data.isSome()) {</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;      assert(<span class="keyword">self</span>.error_.<a class="code" href="classOption.html#a4e3bf8416d95246f43c91f1b5c309323">isSome</a>());</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;      <a class="code" href="abort_8hpp.html#a4d84a74fe6e4f84bc3d2f901b9e89f93">ABORT</a>(<span class="stringliteral">&quot;Try::get() but state == ERROR: &quot;</span> + <span class="keyword">self</span>.error_-&gt;message);</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    }</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keywordflow">return</span> std::forward&lt;Self&gt;(<span class="keyword">self</span>).data.get();</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  }</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Err&gt;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  <span class="keyword">static</span> <span class="keyword">const</span> Err&amp; error_impl(<span class="keyword">const</span> Err&amp; err) { <span class="keywordflow">return</span> err; }</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  <span class="comment">// We leverage Option&lt;T&gt; to avoid dynamic allocation of T. This</span></div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  <span class="comment">// means that the storage for T will be included in this object</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  <span class="comment">// (Try&lt;T&gt;). Since Option&lt;T&gt; keeps track of whether a value is</span></div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  <span class="comment">// stored, we just ask it when we want to know whether we are</span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;  <span class="comment">// storing a value or an error. Another advantage of leveraging</span></div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;  <span class="comment">// Option&lt;T&gt; is that it takes care of all the manual construction</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;  <span class="comment">// and destruction. This makes the code for Try&lt;T&gt; really simple!</span></div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;  <a class="code" href="classOption.html">Option&lt;T&gt;</a> data;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;  <a class="code" href="classOption.html">Option&lt;E&gt;</a> error_;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;};</div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="preprocessor">#endif // __STOUT_TRY_HPP__</span></div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="preprocessor">#endif // __STOUT_TRY_HPP__</span></div>
 <div class="ttc" id="classError_html"><div class="ttname"><a href="classError.html">Error</a></div><div class="ttdef"><b>Definition:</b> errorbase.hpp:35</div></div>
 <div class="ttc" id="classOption_html"><div class="ttname"><a href="classOption.html">Option</a></div><div class="ttdef"><b>Definition:</b> option.hpp:28</div></div>
 <div class="ttc" id="abort_8hpp_html_a4d84a74fe6e4f84bc3d2f901b9e89f93"><div class="ttname"><a href="abort_8hpp.html#a4d84a74fe6e4f84bc3d2f901b9e89f93">ABORT</a></div><div class="ttdeci">#define ABORT(...)</div><div class="ttdef"><b>Definition:</b> abort.hpp:40</div></div>
-<div class="ttc" id="classTry_html_abb21343eabcba0eb0d88f13c4fbdf1f7"><div class="ttname"><a href="classTry.html#abb21343eabcba0eb0d88f13c4fbdf1f7">Try::error</a></div><div class="ttdeci">const std::conditional&lt; std::is_same&lt; E, Error &gt;::value, std::string, E &gt;::type &amp; error() const </div><div class="ttdef"><b>Definition:</b> try.hpp:94</div></div>
-<div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
-<div class="ttc" id="classTry_html_abb420e7f8f439f0cf4083489c4662d7b"><div class="ttname"><a href="classTry.html#abb420e7f8f439f0cf4083489c4662d7b">Try::operator-&gt;</a></div><div class="ttdeci">T * operator-&gt;()</div><div class="ttdef"><b>Definition:</b> try.hpp:88</div></div>
+<div class="ttc" id="classTry_html_abb21343eabcba0eb0d88f13c4fbdf1f7"><div class="ttname"><a href="classTry.html#abb21343eabcba0eb0d88f13c4fbdf1f7">Try::error</a></div><div class="ttdeci">const std::conditional&lt; std::is_same&lt; E, Error &gt;::value, std::string, E &gt;::type &amp; error() const </div><div class="ttdef"><b>Definition:</b> try.hpp:85</div></div>
+<div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> check.hpp:33</div></div>
+<div class="ttc" id="classTry_html_abb420e7f8f439f0cf4083489c4662d7b"><div class="ttname"><a href="classTry.html#abb420e7f8f439f0cf4083489c4662d7b">Try::operator-&gt;</a></div><div class="ttdeci">T * operator-&gt;()</div><div class="ttdef"><b>Definition:</b> try.hpp:79</div></div>
 <div class="ttc" id="some_8hpp_html"><div class="ttname"><a href="some_8hpp.html">some.hpp</a></div></div>
 <div class="ttc" id="classOption_html_a4e3bf8416d95246f43c91f1b5c309323"><div class="ttname"><a href="classOption.html#a4e3bf8416d95246f43c91f1b5c309323">Option::isSome</a></div><div class="ttdeci">bool isSome() const </div><div class="ttdef"><b>Definition:</b> option.hpp:115</div></div>
 <div class="ttc" id="classTry_html_ae0e226aa8c3c77673411edf615e97c2d"><div class="ttname"><a href="classTry.html#ae0e226aa8c3c77673411edf615e97c2d">Try::Try</a></div><div class="ttdeci">Try(const E &amp;error)</div><div class="ttdef"><b>Definition:</b> try.hpp:53</div></div>
@@ -196,8 +197,7 @@
 <div class="ttc" id="namespacemesos_1_1internal_1_1fs_html_a2343e2642db514496ba8380776487fba"><div class="ttname"><a href="namespacemesos_1_1internal_1_1fs.html#a2343e2642db514496ba8380776487fba">mesos::internal::fs::type</a></div><div class="ttdeci">Try&lt; uint32_t &gt; type(const std::string &amp;path)</div></div>
 <div class="ttc" id="classTry_html_a2fa050bcf6cf16a616bec68abf676973"><div class="ttname"><a href="classTry.html#a2fa050bcf6cf16a616bec68abf676973">Try::Try</a></div><div class="ttdeci">Try(const U &amp;u)</div><div class="ttdef"><b>Definition:</b> try.hpp:51</div></div>
 <div class="ttc" id="classTry_html_aa61bbfa75f0feb3ccc93846f296145d8"><div class="ttname"><a href="classTry.html#aa61bbfa75f0feb3ccc93846f296145d8">Try::operator=</a></div><div class="ttdeci">Try &amp; operator=(const Try &amp;that)=default</div></div>
-<div class="ttc" id="classTry_html_aa1a9b7b5155868454bf85971cfea4676"><div class="ttname"><a href="classTry.html#aa1a9b7b5155868454bf85971cfea4676">Try::operator-&gt;</a></div><div class="ttdeci">const T * operator-&gt;() const </div><div class="ttdef"><b>Definition:</b> try.hpp:87</div></div>
-<div class="ttc" id="classTry_html_a7be0768038e0628632492edf6cc1515a"><div class="ttname"><a href="classTry.html#a7be0768038e0628632492edf6cc1515a">Try::get</a></div><div class="ttdeci">const T &amp; get() const </div><div class="ttdef"><b>Definition:</b> try.hpp:73</div></div>
+<div class="ttc" id="classTry_html_aa1a9b7b5155868454bf85971cfea4676"><div class="ttname"><a href="classTry.html#aa1a9b7b5155868454bf85971cfea4676">Try::operator-&gt;</a></div><div class="ttdeci">const T * operator-&gt;() const </div><div class="ttdef"><b>Definition:</b> try.hpp:78</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

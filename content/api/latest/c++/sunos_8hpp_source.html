@@ -133,7 +133,7 @@
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                 pstatus.pr_sid,</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;                 <a class="code" href="structNone.html">None</a>(),</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                 utime.isSome() ? utime.get() : <a class="code" href="classOption.html#aca73609603df4687dba70c2a5df47ef8">Option&lt;Duration&gt;::none</a>(),</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                 stime.<a class="code" href="classTry.html#a6543d7d5db4f298bcd673bf3cd509acc">isSome</a>() ? stime.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>() : <a class="code" href="classOption.html#aca73609603df4687dba70c2a5df47ef8">Option&lt;Duration&gt;::none</a>(),</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                 stime.<a class="code" href="classTry.html#a6543d7d5db4f298bcd673bf3cd509acc">isSome</a>() ? stime.<a class="code" href="classTry.html#a8bc7f43e75a47111ea18e9c83b007be5">get</a>() : <a class="code" href="classOption.html#aca73609603df4687dba70c2a5df47ef8">Option&lt;Duration&gt;::none</a>(),</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                 psinfo.pr_fname,</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                 (psinfo.pr_nzomb == 0) &amp;&amp;</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                  (psinfo.pr_nlwp == 0) &amp;&amp;</div>
@@ -150,10 +150,10 @@
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(<span class="stringliteral">&quot;Failed to list files in /proc: &quot;</span> + entries.<a class="code" href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">error</a>());</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  }</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  <span class="keywordflow">foreach</span> (<span class="keyword">const</span> std::string&amp; entry, entries.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>()) {</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  <span class="keywordflow">foreach</span> (<span class="keyword">const</span> std::string&amp; entry, entries.<a class="code" href="classTry.html#a8bc7f43e75a47111ea18e9c83b007be5">get</a>()) {</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <a class="code" href="classTry.html">Try&lt;pid_t&gt;</a> pid = numify&lt;pid_t&gt;(entry);</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="keywordflow">if</span> (pid.<a class="code" href="classTry.html#a6543d7d5db4f298bcd673bf3cd509acc">isSome</a>()) {</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;      pids.insert(pid.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>()); <span class="comment">// Ignore entries that can&#39;t be numified.</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;      pids.insert(pid.<a class="code" href="classTry.html#a8bc7f43e75a47111ea18e9c83b007be5">get</a>()); <span class="comment">// Ignore entries that can&#39;t be numified.</span></div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    }</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  }</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
@@ -175,10 +175,11 @@
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;</div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="preprocessor">#endif // __STOUT_OS_SUNOS_HPP__</span></div>
 <div class="ttc" id="classError_html"><div class="ttname"><a href="classError.html">Error</a></div><div class="ttdef"><b>Definition:</b> errorbase.hpp:35</div></div>
-<div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
+<div class="ttc" id="classTry_html_a8bc7f43e75a47111ea18e9c83b007be5"><div class="ttname"><a href="classTry.html#a8bc7f43e75a47111ea18e9c83b007be5">Try::get</a></div><div class="ttdeci">T &amp; get()&amp;</div><div class="ttdef"><b>Definition:</b> try.hpp:73</div></div>
+<div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> check.hpp:33</div></div>
 <div class="ttc" id="classErrnoError_html"><div class="ttname"><a href="classErrnoError.html">ErrnoError</a></div><div class="ttdef"><b>Definition:</b> errorbase.hpp:49</div></div>
 <div class="ttc" id="result_8hpp_html"><div class="ttname"><a href="result_8hpp.html">result.hpp</a></div></div>
-<div class="ttc" id="classResult_html"><div class="ttname"><a href="classResult.html">Result</a></div><div class="ttdef"><b>Definition:</b> result.hpp:40</div></div>
+<div class="ttc" id="classResult_html"><div class="ttname"><a href="classResult.html">Result</a></div><div class="ttdef"><b>Definition:</b> check.hpp:30</div></div>
 <div class="ttc" id="open_8hpp_html"><div class="ttname"><a href="open_8hpp.html">open.hpp</a></div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_ab03ced250ed239bc3b50b669493997f9"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ab03ced250ed239bc3b50b669493997f9">pid_t</a></div><div class="ttdeci">DWORD pid_t</div><div class="ttdef"><b>Definition:</b> windows.hpp:187</div></div>
 <div class="ttc" id="namespaceos_html_a8df77ec6d6b8d32d9b287a41bc74cfdc"><div class="ttname"><a href="namespaceos.html#a8df77ec6d6b8d32d9b287a41bc74cfdc">os::close</a></div><div class="ttdeci">Try&lt; Nothing &gt; close(int fd)</div><div class="ttdef"><b>Definition:</b> close.hpp:24</div></div>
@@ -203,7 +204,6 @@
 <div class="ttc" id="namespaceos_html_a23a7b8f4b4c145ad212381e89d4b6dc4"><div class="ttname"><a href="namespaceos.html#a23a7b8f4b4c145ad212381e89d4b6dc4">os::memory</a></div><div class="ttdeci">Try&lt; Memory &gt; memory()</div><div class="ttdef"><b>Definition:</b> freebsd.hpp:78</div></div>
 <div class="ttc" id="namespaceos_html_a42af1cab63434cedf2b698cd6f49f073"><div class="ttname"><a href="namespaceos.html#a42af1cab63434cedf2b698cd6f49f073">os::pids</a></div><div class="ttdeci">Try&lt; std::set&lt; pid_t &gt; &gt; pids()</div><div class="ttdef"><b>Definition:</b> freebsd.hpp:62</div></div>
 <div class="ttc" id="windows_2fcntl_8hpp_html_a7a68c9ffaac7dbcd652225dd7c06a54b"><div class="ttname"><a href="windows_2fcntl_8hpp.html#a7a68c9ffaac7dbcd652225dd7c06a54b">O_RDONLY</a></div><div class="ttdeci">#define O_RDONLY</div><div class="ttdef"><b>Definition:</b> fcntl.hpp:25</div></div>
-<div class="ttc" id="classTry_html_a7be0768038e0628632492edf6cc1515a"><div class="ttname"><a href="classTry.html#a7be0768038e0628632492edf6cc1515a">Try::get</a></div><div class="ttdeci">const T &amp; get() const </div><div class="ttdef"><b>Definition:</b> try.hpp:73</div></div>
 <div class="ttc" id="namespaceos_html_a5effa5ea3568d8c18e5c66039702dfa0"><div class="ttname"><a href="namespaceos.html#a5effa5ea3568d8c18e5c66039702dfa0">os::ls</a></div><div class="ttdeci">Try&lt; std::list&lt; std::string &gt; &gt; ls(const std::string &amp;directory)</div><div class="ttdef"><b>Definition:</b> ls.hpp:29</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

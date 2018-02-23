@@ -104,7 +104,7 @@
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="structNone.html">None</a>();</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  }</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <span class="keyword">const</span> kinfo_proc <a class="code" href="namespaceos.html#ae19e4161a51b86a1f330f3bf1dc75389">process</a> = processes.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>()[0];</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <span class="keyword">const</span> kinfo_proc <a class="code" href="namespaceos.html#ae19e4161a51b86a1f330f3bf1dc75389">process</a> = processes.<a class="code" href="classTry.html#a8bc7f43e75a47111ea18e9c83b007be5">get</a>()[0];</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <span class="comment">// The command line from &#39;process.kp_proc.p_comm&#39; only includes the</span></div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="comment">// first 16 characters from &quot;arg0&quot; (i.e., the canonical executable</span></div>
@@ -146,7 +146,7 @@
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        <span class="comment">// Tokenize the args by the null byte (&#39;\0&#39;).</span></div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        std::vector&lt;std::string&gt; tokens =</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;          <a class="code" href="namespacestrings.html#afffe11c8ecce961981653358520d6a04">strings::tokenize</a>(args.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>(), std::string(1, <span class="charliteral">&#39;\0&#39;</span>));</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;          <a class="code" href="namespacestrings.html#afffe11c8ecce961981653358520d6a04">strings::tokenize</a>(args.<a class="code" href="classTry.html#a8bc7f43e75a47111ea18e9c83b007be5">get</a>(), std::string(1, <span class="charliteral">&#39;\0&#39;</span>));</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        <span class="keywordflow">if</span> (!tokens.empty()) {</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;          <span class="keywordflow">if</span> (argc == 1) {</div>
@@ -230,14 +230,14 @@
 <div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;  }</div>
 <div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;</div>
 <div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;  <span class="keyword">const</span> <a class="code" href="classTry.html">Try&lt;std::vector&lt;kinfo_proc&gt;</a>&gt; processes =</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    <a class="code" href="structos_1_1sysctl.html">os::sysctl</a>(CTL_KERN, KERN_PROC, KERN_PROC_ALL).<a class="code" href="structos_1_1sysctl.html#a519389727f9ecc76af96ed087fcff691">table</a>(maxproc.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>());</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    <a class="code" href="structos_1_1sysctl.html">os::sysctl</a>(CTL_KERN, KERN_PROC, KERN_PROC_ALL).<a class="code" href="structos_1_1sysctl.html#a519389727f9ecc76af96ed087fcff691">table</a>(maxproc.<a class="code" href="classTry.html#a8bc7f43e75a47111ea18e9c83b007be5">get</a>());</div>
 <div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;</div>
 <div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;  <span class="keywordflow">if</span> (processes.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
 <div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(processes.<a class="code" href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">error</a>());</div>
 <div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;  }</div>
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;</div>
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;  std::set&lt;pid_t&gt; result;</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;  <span class="keywordflow">foreach</span> (<span class="keyword">const</span> kinfo_proc&amp; process, processes.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>()) {</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;  <span class="keywordflow">foreach</span> (<span class="keyword">const</span> kinfo_proc&amp; process, processes.<a class="code" href="classTry.html#a8bc7f43e75a47111ea18e9c83b007be5">get</a>()) {</div>
 <div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    result.insert(process.kp_proc.p_pid);</div>
 <div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;  }</div>
 <div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;  <span class="keywordflow">return</span> result;</div>
@@ -254,7 +254,7 @@
 <div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;  <span class="keywordflow">if</span> (totalMemory.<a class="code" href="classTry.html#a0b98f95163b8a38daafd1651b043a276">isError</a>()) {</div>
 <div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(totalMemory.<a class="code" href="classTry.html#aec4a11ddd3c036e889d90b7eb6258ba7">error</a>());</div>
 <div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;  }</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;  memory.total = <a class="code" href="classBytes.html">Bytes</a>(totalMemory.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>());</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;  memory.total = <a class="code" href="classBytes.html">Bytes</a>(totalMemory.<a class="code" href="classTry.html#a8bc7f43e75a47111ea18e9c83b007be5">get</a>());</div>
 <div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;</div>
 <div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;  <span class="comment">// Size of free memory is available in terms of number of</span></div>
 <div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;  <span class="comment">// free pages on Mac OS X.</span></div>
@@ -295,13 +295,14 @@
 <div class="ttc" id="classError_html"><div class="ttname"><a href="classError.html">Error</a></div><div class="ttdef"><b>Definition:</b> errorbase.hpp:35</div></div>
 <div class="ttc" id="classOption_html"><div class="ttname"><a href="classOption.html">Option&lt; std::string &gt;</a></div></div>
 <div class="ttc" id="namespaceos_1_1stat_html_a7a116891923bc8b5d8c50f78da8657be"><div class="ttname"><a href="namespaceos_1_1stat.html#a7a116891923bc8b5d8c50f78da8657be">os::stat::size</a></div><div class="ttdeci">Try&lt; Bytes &gt; size(const std::string &amp;path, const FollowSymlink follow=FollowSymlink::FOLLOW_SYMLINK)</div><div class="ttdef"><b>Definition:</b> stat.hpp:100</div></div>
+<div class="ttc" id="classTry_html_a8bc7f43e75a47111ea18e9c83b007be5"><div class="ttname"><a href="classTry.html#a8bc7f43e75a47111ea18e9c83b007be5">Try::get</a></div><div class="ttdeci">T &amp; get()&amp;</div><div class="ttdef"><b>Definition:</b> try.hpp:73</div></div>
 <div class="ttc" id="namespacestrings_html_ac315a6174f56cba0d8295f84da265416"><div class="ttname"><a href="namespacestrings.html#ac315a6174f56cba0d8295f84da265416">strings::join</a></div><div class="ttdeci">std::stringstream &amp; join(std::stringstream &amp;stream, const std::string &amp;separator, T &amp;&amp;...args)</div><div class="ttdef"><b>Definition:</b> strings.hpp:306</div></div>
-<div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
+<div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> check.hpp:33</div></div>
 <div class="ttc" id="namespaceos_html_aa98ca8ac255e2b9c689979a1b40084d3"><div class="ttname"><a href="namespaceos.html#aa98ca8ac255e2b9c689979a1b40084d3">os::processes</a></div><div class="ttdeci">Try&lt; std::list&lt; Process &gt; &gt; processes()</div><div class="ttdef"><b>Definition:</b> os.hpp:182</div></div>
 <div class="ttc" id="namespaceos_html_af0898f40a19c3804347e30b9efa0984a"><div class="ttname"><a href="namespaceos.html#af0898f40a19c3804347e30b9efa0984a">os::pagesize</a></div><div class="ttdeci">size_t pagesize()</div><div class="ttdef"><b>Definition:</b> pagesize.hpp:24</div></div>
 <div class="ttc" id="none_8hpp_html"><div class="ttname"><a href="none_8hpp.html">none.hpp</a></div></div>
 <div class="ttc" id="classErrnoError_html"><div class="ttname"><a href="classErrnoError.html">ErrnoError</a></div><div class="ttdef"><b>Definition:</b> errorbase.hpp:49</div></div>
-<div class="ttc" id="classResult_html"><div class="ttname"><a href="classResult.html">Result</a></div><div class="ttdef"><b>Definition:</b> result.hpp:40</div></div>
+<div class="ttc" id="classResult_html"><div class="ttname"><a href="classResult.html">Result</a></div><div class="ttdef"><b>Definition:</b> check.hpp:30</div></div>
 <div class="ttc" id="structos_1_1sysctl_html_af54897c91536ccd5d829daabbac64266"><div class="ttname"><a href="structos_1_1sysctl.html#af54897c91536ccd5d829daabbac64266">os::sysctl::string</a></div><div class="ttdeci">Try&lt; std::string &gt; string() const </div><div class="ttdef"><b>Definition:</b> sysctl.hpp:188</div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_ab03ced250ed239bc3b50b669493997f9"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ab03ced250ed239bc3b50b669493997f9">pid_t</a></div><div class="ttdeci">DWORD pid_t</div><div class="ttdef"><b>Definition:</b> windows.hpp:187</div></div>
 <div class="ttc" id="namespacestrings_html_afffe11c8ecce961981653358520d6a04"><div class="ttname"><a href="namespacestrings.html#afffe11c8ecce961981653358520d6a04">strings::tokenize</a></div><div class="ttdeci">std::vector&lt; std::string &gt; tokenize(const std::string &amp;s, const std::string &amp;delims, const Option&lt; size_t &gt; &amp;maxTokens=None())</div><div class="ttdef"><b>Definition:</b> strings.hpp:138</div></div>
@@ -324,7 +325,6 @@
 <div class="ttc" id="namespaceos_html_a23a7b8f4b4c145ad212381e89d4b6dc4"><div class="ttname"><a href="namespaceos.html#a23a7b8f4b4c145ad212381e89d4b6dc4">os::memory</a></div><div class="ttdeci">Try&lt; Memory &gt; memory()</div><div class="ttdef"><b>Definition:</b> freebsd.hpp:78</div></div>
 <div class="ttc" id="classOption_html_a6a6c9f0bcb1a83e2251d3e49960e97f5"><div class="ttname"><a href="classOption.html#a6a6c9f0bcb1a83e2251d3e49960e97f5">Option::getOrElse</a></div><div class="ttdeci">T getOrElse(const T &amp;_t) const </div><div class="ttdef"><b>Definition:</b> option.hpp:127</div></div>
 <div class="ttc" id="namespaceos_html_a42af1cab63434cedf2b698cd6f49f073"><div class="ttname"><a href="namespaceos.html#a42af1cab63434cedf2b698cd6f49f073">os::pids</a></div><div class="ttdeci">Try&lt; std::set&lt; pid_t &gt; &gt; pids()</div><div class="ttdef"><b>Definition:</b> freebsd.hpp:62</div></div>
-<div class="ttc" id="classTry_html_a7be0768038e0628632492edf6cc1515a"><div class="ttname"><a href="classTry.html#a7be0768038e0628632492edf6cc1515a">Try::get</a></div><div class="ttdeci">const T &amp; get() const </div><div class="ttdef"><b>Definition:</b> try.hpp:73</div></div>
 <div class="ttc" id="strings_8hpp_html"><div class="ttname"><a href="strings_8hpp.html">strings.hpp</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

@@ -93,7 +93,7 @@
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  <span class="comment">// First query for the buffer size required.</span></div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  DWORD length = ::GetFinalPathNameByHandleW(</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;      handle.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>().<a class="code" href="classSharedHandle.html#a800385e17e17cb826147968e748fd8fa">get_handle</a>(), <span class="keyword">nullptr</span>, 0, FILE_NAME_NORMALIZED);</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;      handle.<a class="code" href="classTry.html#a8bc7f43e75a47111ea18e9c83b007be5">get</a>().<a class="code" href="classSharedHandle.html#a800385e17e17cb826147968e748fd8fa">get_handle</a>(), <span class="keyword">nullptr</span>, 0, FILE_NAME_NORMALIZED);</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <span class="keywordflow">if</span> (length == 0) {</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classWindowsError.html">WindowsError</a>(<span class="stringliteral">&quot;Failed to retrieve realpath buffer size&quot;</span>);</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  }</div>
@@ -102,7 +102,7 @@
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  buffer.reserve(static_cast&lt;size_t&gt;(length));</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  DWORD result = ::GetFinalPathNameByHandleW(</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;      handle.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>().<a class="code" href="classSharedHandle.html#a800385e17e17cb826147968e748fd8fa">get_handle</a>(), buffer.data(), length, FILE_NAME_NORMALIZED);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;      handle.<a class="code" href="classTry.html#a8bc7f43e75a47111ea18e9c83b007be5">get</a>().<a class="code" href="classSharedHandle.html#a800385e17e17cb826147968e748fd8fa">get_handle</a>(), buffer.data(), length, FILE_NAME_NORMALIZED);</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <span class="keywordflow">if</span> (result == 0) {</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classWindowsError.html">WindowsError</a>(<span class="stringliteral">&quot;Failed to determine realpath&quot;</span>);</div>
@@ -118,13 +118,14 @@
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">#endif // __STOUT_OS_WINDOWS_REALPATH_HPP__</span></div>
 <div class="ttc" id="classError_html"><div class="ttname"><a href="classError.html">Error</a></div><div class="ttdef"><b>Definition:</b> errorbase.hpp:35</div></div>
+<div class="ttc" id="classTry_html_a8bc7f43e75a47111ea18e9c83b007be5"><div class="ttname"><a href="classTry.html#a8bc7f43e75a47111ea18e9c83b007be5">Try::get</a></div><div class="ttdeci">T &amp; get()&amp;</div><div class="ttdef"><b>Definition:</b> try.hpp:73</div></div>
 <div class="ttc" id="classSharedHandle_html_a800385e17e17cb826147968e748fd8fa"><div class="ttname"><a href="classSharedHandle.html#a800385e17e17cb826147968e748fd8fa">SharedHandle::get_handle</a></div><div class="ttdeci">HANDLE get_handle() const </div><div class="ttdef"><b>Definition:</b> windows.hpp:96</div></div>
-<div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
+<div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> check.hpp:33</div></div>
 <div class="ttc" id="namespaceos_html_aa533c79d98af12b40b567a851e442373"><div class="ttname"><a href="namespaceos.html#aa533c79d98af12b40b567a851e442373">os::realpath</a></div><div class="ttdeci">Result&lt; std::string &gt; realpath(const std::string &amp;path)</div><div class="ttdef"><b>Definition:</b> realpath.hpp:24</div></div>
 <div class="ttc" id="classWindowsError_html"><div class="ttname"><a href="classWindowsError.html">WindowsError</a></div><div class="ttdef"><b>Definition:</b> error.hpp:106</div></div>
 <div class="ttc" id="result_8hpp_html"><div class="ttname"><a href="result_8hpp.html">result.hpp</a></div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html">windows.hpp</a></div></div>
-<div class="ttc" id="classResult_html"><div class="ttname"><a href="classResult.html">Result</a></div><div class="ttdef"><b>Definition:</b> result.hpp:40</div></div>
+<div class="ttc" id="classResult_html"><div class="ttname"><a href="classResult.html">Result</a></div><div class="ttdef"><b>Definition:</b> check.hpp:30</div></div>
 <div class="ttc" id="reparsepoint_8hpp_html"><div class="ttname"><a href="reparsepoint_8hpp.html">reparsepoint.hpp</a></div></div>
 <div class="ttc" id="namespacestrings_html_a3fbaeb4d589c49ac115fab3412073ca7"><div class="ttname"><a href="namespacestrings.html#a3fbaeb4d589c49ac115fab3412073ca7">strings::remove</a></div><div class="ttdeci">std::string remove(const std::string &amp;from, const std::string &amp;substring, Mode mode=ANY)</div><div class="ttdef"><b>Definition:</b> strings.hpp:40</div></div>
 <div class="ttc" id="longpath_8hpp_html"><div class="ttname"><a href="longpath_8hpp.html">longpath.hpp</a></div></div>
@@ -135,7 +136,6 @@
 <div class="ttc" id="stringify_8hpp_html"><div class="ttname"><a href="stringify_8hpp.html">stringify.hpp</a></div></div>
 <div class="ttc" id="namespacemesos_1_1internal_1_1slave_1_1containerizer_1_1paths_html_abb8ab3e62de157d1a7a81e08888ec30cabf80c29a65453b2615d8f9bd83f8f3d6"><div class="ttname"><a href="namespacemesos_1_1internal_1_1slave_1_1containerizer_1_1paths.html#abb8ab3e62de157d1a7a81e08888ec30cabf80c29a65453b2615d8f9bd83f8f3d6">mesos::internal::slave::containerizer::paths::PREFIX</a></div><div class="ttdef"><b>Definition:</b> paths.hpp:82</div></div>
 <div class="ttc" id="namespacens_html_a28116b46e6543597a11733424cd1aa20"><div class="ttname"><a href="namespacens.html#a28116b46e6543597a11733424cd1aa20">ns::stringify</a></div><div class="ttdeci">std::string stringify(int flags)</div></div>
-<div class="ttc" id="classTry_html_a7be0768038e0628632492edf6cc1515a"><div class="ttname"><a href="classTry.html#a7be0768038e0628632492edf6cc1515a">Try::get</a></div><div class="ttdeci">const T &amp; get() const </div><div class="ttdef"><b>Definition:</b> try.hpp:73</div></div>
 <div class="ttc" id="strings_8hpp_html"><div class="ttname"><a href="strings_8hpp.html">strings.hpp</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

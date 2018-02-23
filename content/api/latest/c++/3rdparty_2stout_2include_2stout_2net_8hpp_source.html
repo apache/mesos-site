@@ -207,7 +207,7 @@
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;</div>
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;  <span class="keywordflow">if</span> (curl == <span class="keyword">nullptr</span>) {</div>
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    curl_easy_cleanup(curl);</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    <a class="code" href="namespaceos.html#a8df77ec6d6b8d32d9b287a41bc74cfdc">os::close</a>(fd.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>());</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    <a class="code" href="namespaceos.html#a8df77ec6d6b8d32d9b287a41bc74cfdc">os::close</a>(fd.<a class="code" href="classTry.html#a8bc7f43e75a47111ea18e9c83b007be5">get</a>());</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classError.html">Error</a>(<span class="stringliteral">&quot;Failed to initialize libcurl&quot;</span>);</div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;  }</div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;</div>
@@ -221,11 +221,11 @@
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<span class="preprocessor"></span>  <span class="comment">// We open in &quot;binary&quot; mode on Windows to avoid line-ending translation.</span></div>
 <div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;  FILE* <a class="code" href="namespacemesos_1_1uri.html#a0a3b30c1eb427c4053aaef120b1f453c">file</a> = ::_fdopen(fd-&gt;crt(), <span class="stringliteral">&quot;wb&quot;</span>);</div>
 <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;<span class="preprocessor"></span>  FILE* file = ::fdopen(fd.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>(), <span class="stringliteral">&quot;w&quot;</span>);</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;<span class="preprocessor"></span>  FILE* file = ::fdopen(fd.<a class="code" href="classTry.html#a8bc7f43e75a47111ea18e9c83b007be5">get</a>(), <span class="stringliteral">&quot;w&quot;</span>);</div>
 <div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;<span class="preprocessor"></span>  <span class="keywordflow">if</span> (file == <span class="keyword">nullptr</span>) {</div>
 <div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    curl_easy_cleanup(curl);</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    <a class="code" href="namespaceos.html#a8df77ec6d6b8d32d9b287a41bc74cfdc">os::close</a>(fd.<a class="code" href="classTry.html#a7be0768038e0628632492edf6cc1515a">get</a>());</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    <a class="code" href="namespaceos.html#a8df77ec6d6b8d32d9b287a41bc74cfdc">os::close</a>(fd.<a class="code" href="classTry.html#a8bc7f43e75a47111ea18e9c83b007be5">get</a>());</div>
 <div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classErrnoError.html">ErrnoError</a>(<span class="stringliteral">&quot;Failed to open file handle of &#39;&quot;</span> + path + <span class="stringliteral">&quot;&#39;&quot;</span>);</div>
 <div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;  }</div>
 <div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;  curl_easy_setopt(curl, CURLOPT_WRITEDATA, file);</div>
@@ -254,7 +254,8 @@
 <div class="ttc" id="windows_2fcntl_8hpp_html_a11b644a8526139c4cc1850dac1271ced"><div class="ttname"><a href="windows_2fcntl_8hpp.html#a11b644a8526139c4cc1850dac1271ced">O_WRONLY</a></div><div class="ttdeci">#define O_WRONLY</div><div class="ttdef"><b>Definition:</b> fcntl.hpp:26</div></div>
 <div class="ttc" id="classError_html"><div class="ttname"><a href="classError.html">Error</a></div><div class="ttdef"><b>Definition:</b> errorbase.hpp:35</div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_a55fad1c3746e1b8a6a00c10998e91d91"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a55fad1c3746e1b8a6a00c10998e91d91">S_IRGRP</a></div><div class="ttdeci">const mode_t S_IRGRP</div><div class="ttdef"><b>Definition:</b> windows.hpp:319</div></div>
-<div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> try.hpp:34</div></div>
+<div class="ttc" id="classTry_html_a8bc7f43e75a47111ea18e9c83b007be5"><div class="ttname"><a href="classTry.html#a8bc7f43e75a47111ea18e9c83b007be5">Try::get</a></div><div class="ttdeci">T &amp; get()&amp;</div><div class="ttdef"><b>Definition:</b> try.hpp:73</div></div>
+<div class="ttc" id="classTry_html"><div class="ttname"><a href="classTry.html">Try</a></div><div class="ttdef"><b>Definition:</b> check.hpp:33</div></div>
 <div class="ttc" id="windows_2fcntl_8hpp_html_ad6d8fbe4e494b4dbe051612572d3f757"><div class="ttname"><a href="windows_2fcntl_8hpp.html#ad6d8fbe4e494b4dbe051612572d3f757">O_CLOEXEC</a></div><div class="ttdeci">#define O_CLOEXEC</div><div class="ttdef"><b>Definition:</b> fcntl.hpp:33</div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2ip_8hpp_html"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2ip_8hpp.html">ip.hpp</a></div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_aead39710af2622ee9b0d412f62e90aa5"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#aead39710af2622ee9b0d412f62e90aa5">S_IWUSR</a></div><div class="ttdeci">const mode_t S_IWUSR</div><div class="ttdef"><b>Definition:</b> windows.hpp:312</div></div>
@@ -281,7 +282,6 @@
 <div class="ttc" id="namespacenet_html_aa3d8cac2c33d11239203ab0f06aa5a4f"><div class="ttname"><a href="namespacenet.html#aa3d8cac2c33d11239203ab0f06aa5a4f">net::contentLength</a></div><div class="ttdeci">Try&lt; Bytes &gt; contentLength(const std::string &amp;url)</div><div class="ttdef"><b>Definition:</b> net.hpp:102</div></div>
 <div class="ttc" id="classBytes_html"><div class="ttname"><a href="classBytes.html">Bytes</a></div><div class="ttdef"><b>Definition:</b> bytes.hpp:30</div></div>
 <div class="ttc" id="3rdparty_2stout_2include_2stout_2windows_8hpp_html_a90d7514882640a8cd7b8da14138103b7"><div class="ttname"><a href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#a90d7514882640a8cd7b8da14138103b7">S_IROTH</a></div><div class="ttdeci">const mode_t S_IROTH</div><div class="ttdef"><b>Definition:</b> windows.hpp:327</div></div>
-<div class="ttc" id="classTry_html_a7be0768038e0628632492edf6cc1515a"><div class="ttname"><a href="classTry.html#a7be0768038e0628632492edf6cc1515a">Try::get</a></div><div class="ttdeci">const T &amp; get() const </div><div class="ttdef"><b>Definition:</b> try.hpp:73</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
