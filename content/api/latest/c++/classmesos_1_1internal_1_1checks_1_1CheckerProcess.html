@@ -75,8 +75,8 @@ Inheritance diagram for mesos::internal::checks::CheckerProcess:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a44f1f8394e3232a25632689a16085a9e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1checks_1_1CheckerProcess.html#a44f1f8394e3232a25632689a16085a9e">CheckerProcess</a> (const CheckInfo &amp;_check, const std::string &amp;_launcherDir, const lambda::function&lt; void(const <a class="el" href="classTry.html">Try</a>&lt; CheckStatusInfo &gt; &amp;)&gt; &amp;_callback, const TaskID &amp;_taskId, const <a class="el" href="classOption.html">Option</a>&lt; <a class="el" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ab03ced250ed239bc3b50b669493997f9">pid_t</a> &gt; &amp;_taskPid, const std::vector&lt; std::string &gt; &amp;_namespaces, const <a class="el" href="classOption.html">Option</a>&lt; ContainerID &gt; &amp;_taskContainerId, const <a class="el" href="classOption.html">Option</a>&lt; <a class="el" href="structprocess_1_1http_1_1URL.html">process::http::URL</a> &gt; &amp;_agentURL, const <a class="el" href="classOption.html">Option</a>&lt; std::string &gt; &amp;_authorizationHeader, const <a class="el" href="classOption.html">Option</a>&lt; std::string &gt; &amp;_scheme, const std::string &amp;_name, bool _commandCheckViaAgent, bool _ipv6=false)</td></tr>
-<tr class="separator:a44f1f8394e3232a25632689a16085a9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac767c2df24548c2e371c9fb6e0f96bb8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1checks_1_1CheckerProcess.html#ac767c2df24548c2e371c9fb6e0f96bb8">CheckerProcess</a> (const CheckInfo &amp;checkInfo, const std::string &amp;launcherDir, const lambda::function&lt; void(const <a class="el" href="classTry.html">Try</a>&lt; CheckStatusInfo &gt; &amp;)&gt; &amp;_callback, const TaskID &amp;_taskId, const std::string &amp;_name, <a class="el" href="classVariant.html">Variant</a>&lt; <a class="el" href="structmesos_1_1internal_1_1checks_1_1runtime_1_1Plain.html">runtime::Plain</a>, <a class="el" href="structmesos_1_1internal_1_1checks_1_1runtime_1_1Docker.html">runtime::Docker</a>, <a class="el" href="structmesos_1_1internal_1_1checks_1_1runtime_1_1Nested.html">runtime::Nested</a> &gt; _runtime, const <a class="el" href="classOption.html">Option</a>&lt; std::string &gt; &amp;scheme, bool ipv6=false)</td></tr>
+<tr class="separator:ac767c2df24548c2e371c9fb6e0f96bb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab7f51a87c406ebd0a6f995be19b4d831"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1checks_1_1CheckerProcess.html#ab7f51a87c406ebd0a6f995be19b4d831">pause</a> ()</td></tr>
 <tr class="separator:ab7f51a87c406ebd0a6f995be19b4d831"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aab6429358cff19d17ac73b1c22327bdf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1checks_1_1CheckerProcess.html#aab6429358cff19d17ac73b1c22327bdf">resume</a> ()</td></tr>
@@ -227,7 +227,7 @@ const <a class="el" href="structprocess_1_1http_1_1Request.html">http::Request</
 <tr class="separator:a0834b08377ce20a01893a033c46898f6 inherit pro_types_classprocess_1_1ProcessBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a44f1f8394e3232a25632689a16085a9e"></a>
+<a class="anchor" id="ac767c2df24548c2e371c9fb6e0f96bb8"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -235,13 +235,13 @@ const <a class="el" href="structprocess_1_1http_1_1Request.html">http::Request</
           <td class="memname">mesos::internal::checks::CheckerProcess::CheckerProcess </td>
           <td>(</td>
           <td class="paramtype">const CheckInfo &amp;&#160;</td>
-          <td class="paramname"><em>_check</em>, </td>
+          <td class="paramname"><em>checkInfo</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>_launcherDir</em>, </td>
+          <td class="paramname"><em>launcherDir</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -258,56 +258,26 @@ const <a class="el" href="structprocess_1_1http_1_1Request.html">http::Request</
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classOption.html">Option</a>&lt; <a class="el" href="3rdparty_2stout_2include_2stout_2windows_8hpp.html#ab03ced250ed239bc3b50b669493997f9">pid_t</a> &gt; &amp;&#160;</td>
-          <td class="paramname"><em>_taskPid</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::vector&lt; std::string &gt; &amp;&#160;</td>
-          <td class="paramname"><em>_namespaces</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classOption.html">Option</a>&lt; ContainerID &gt; &amp;&#160;</td>
-          <td class="paramname"><em>_taskContainerId</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classOption.html">Option</a>&lt; <a class="el" href="structprocess_1_1http_1_1URL.html">process::http::URL</a> &gt; &amp;&#160;</td>
-          <td class="paramname"><em>_agentURL</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classOption.html">Option</a>&lt; std::string &gt; &amp;&#160;</td>
-          <td class="paramname"><em>_authorizationHeader</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classOption.html">Option</a>&lt; std::string &gt; &amp;&#160;</td>
-          <td class="paramname"><em>_scheme</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>_name</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>_commandCheckViaAgent</em>, </td>
+          <td class="paramtype"><a class="el" href="classVariant.html">Variant</a>&lt; <a class="el" href="structmesos_1_1internal_1_1checks_1_1runtime_1_1Plain.html">runtime::Plain</a>, <a class="el" href="structmesos_1_1internal_1_1checks_1_1runtime_1_1Docker.html">runtime::Docker</a>, <a class="el" href="structmesos_1_1internal_1_1checks_1_1runtime_1_1Nested.html">runtime::Nested</a> &gt;&#160;</td>
+          <td class="paramname"><em>_runtime</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classOption.html">Option</a>&lt; std::string &gt; &amp;&#160;</td>
+          <td class="paramname"><em>scheme</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>_ipv6</em> = <code>false</code>&#160;</td>
+          <td class="paramname"><em>ipv6</em> = <code>false</code>&#160;</td>
         </tr>
         <tr>
           <td></td>

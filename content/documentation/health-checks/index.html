@@ -499,9 +499,10 @@ task.mutable_health_check()-&gt;CopyFrom(healthCheck);
 
 <p>HTTP(S) health checks are described by the <code>HealthCheck.HTTPCheckInfo</code> protobuf
 with <code>scheme</code>, <code>port</code>, <code>path</code>, and <code>statuses</code> fields. A <code>GET</code> request is sent to
-<code>scheme://&lt;host&gt;:port/path</code> using the <code>curl</code> command. Note that <code>&lt;host&gt;</code> is
-currently not configurable and is set automatically to <code>127.0.0.1</code> (see
-<a href="#current-limitations">limitations</a>), hence the health checked task must listen
+<code>scheme://&lt;host&gt;:port/path</code> using the <code>curl</code> command or for the Windows docker
+executor, PowerShell&rsquo;s <code>Invoke-WebRequest</code>. Note that <code>&lt;host&gt;</code> is currently not
+configurable and is set automatically to <code>127.0.0.1</code>
+(see <a href="#current-limitations">limitations</a>), hence the health checked task must listen
 on the loopback interface along with any other routeable interface it might be
 listening on. The <code>scheme</code> field supports <code>"http"</code> and <code>"https"</code> values only.
 Field <code>port</code> must specify an actual port the task is listening on, not a mapped
@@ -539,8 +540,10 @@ task.mutable_health_check()-&gt;CopyFrom(healthCheck);
 which has a single <code>port</code> field, which must specify an actual port the task is
 listening on, not a mapped one. The task is probed using Mesos'
 <code>mesos-tcp-connect</code> command, which tries to establish a TCP connection to
-<code>&lt;host&gt;:port</code>. Note that <code>&lt;host&gt;</code> is currently not configurable and is set
-automatically to <code>127.0.0.1</code> (see <a href="#current-limitations">limitations</a>), hence
+<code>&lt;host&gt;:port</code>. For the Windows docker executor, it uses PowerShell to call
+.NET&rsquo;s <code>System.Net.Sockets.TcpClient</code> library. Note that <code>&lt;host&gt;</code> is currently
+not configurable and is set automatically to <code>127.0.0.1</code>
+(see <a href="#current-limitations">limitations</a>), hence
 the health checked task must listen on the loopback interface along with any
 other routeable interface it might be listening on. Field <code>port</code> must specify an
 actual port the task is listening on, not a mapped one.</p>
@@ -650,6 +653,20 @@ with the checked process; in case of docker containerizer <code>setns()</code> f
 namespace is explicitly called, while mesos containerizer guarantees an executor
 and its tasks are in the same network namespace.</p>
 
+<p>On Windows, the implementation differs between the <a href="/documentation/latest/./mesos-containerizer/">mesos containerizer</a>
+and <a href="/documentation/latest/./docker-containerizer/">docker containerizer</a>. The
+<a href="/documentation/latest/./mesos-containerizer/">mesos containerizer</a> does not provide network or mount
+namespace isolation, so <code>curl</code>, <code>mesos-tcp-connect</code> or the command health check
+simply run as regular processes on the host. In constrast, the
+<a href="/documentation/latest/./docker-containerizer/">docker containerizer</a> provides network and mount
+isolation. For the command health check, the command enters the container&rsquo;s
+namespace through <code>docker exec</code>. For the network health checks, the docker
+executor launches a <code>microsoft/powershell:nanoserver</code> container and enters the
+original container&rsquo;s network namespace through the <code>--network=container:&lt;ID&gt;</code>
+parameter in <code>docker run</code>. The <code>microsoft/powershell:nanoserver</code> container uses
+<code>Invoke-WebRequest</code> and <code>System.Net.Sockets.TcpClient</code> instead of <code>curl</code> and
+<code>mesos-tcp-connect</code>.</p>
+
 <p><strong>NOTE:</strong> Custom executors may or may not use this library. Please consult the
 respective framework&rsquo;s documentation.</p>
 
@@ -684,8 +701,12 @@ introduce a &ldquo;global&rdquo; policy for handling unhealthy tasks (see
 tasks want to support HTTP or TCP health checks, they should listen on the
 loopback interface in addition to whatever interface they require (see
 <a href="https://issues.apache.org/jira/browse/MESOS-6517">MESOS-6517</a>).</li>
-<li>HTTP(S) health checks rely on the <code>curl</code> command; if it is not available, a
-health check is considered failed.</li>
+<li>HTTP(S) health checks rely on the <code>curl</code> command for Linux health checks
+and Windows <a href="/documentation/latest/./mesos-containerizer/">mesos containerizer</a> health checks.
+For Windows <a href="/documentation/latest/./docker-containerizer/">docker containerizer</a>, HTTP(S) and
+TCP health checks rely on the <code>microsoft/powershell:nanoserver</code> image. A
+health check is considered failed if the required command or image is not
+available.</li>
 <li>TCP health checks are not supported on Windows (see
 <a href="https://issues.apache.org/jira/browse/MESOS-6117">MESOS-6117</a>).</li>
 <li>Only a single health check per task is allowed (see
