@@ -766,150 +766,153 @@
 <div class="line"><a name="l00712"></a><span class="lineno">  712</span>&#160;<span class="preprocessor">      process::TEST_AWAIT_TIMEOUT)</span></div>
 <div class="line"><a name="l00713"></a><span class="lineno">  713</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00714"></a><span class="lineno">  714</span>&#160;</div>
-<div class="line"><a name="l00715"></a><span class="lineno"><a class="line" href="libprocess_2include_2process_2gtest_8hpp.html#a8db0b1187c1add9f6c5af1cc845578e2">  715</a></span>&#160;inline ::testing::AssertionResult <a class="code" href="libprocess_2include_2process_2gtest_8hpp.html#a8db0b1187c1add9f6c5af1cc845578e2">AwaitAssertSignaled</a>(</div>
-<div class="line"><a name="l00716"></a><span class="lineno">  716</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* actualExpr,</div>
-<div class="line"><a name="l00717"></a><span class="lineno">  717</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* durationExpr,</div>
-<div class="line"><a name="l00718"></a><span class="lineno">  718</span>&#160;    <span class="keyword">const</span> <a class="code" href="classprocess_1_1Future.html">process::Future</a>&lt;<a class="code" href="classOption.html">Option&lt;int&gt;</a>&gt;&amp; actual,</div>
-<div class="line"><a name="l00719"></a><span class="lineno">  719</span>&#160;    <span class="keyword">const</span> <a class="code" href="classDuration.html">Duration</a>&amp; duration)</div>
-<div class="line"><a name="l00720"></a><span class="lineno">  720</span>&#160;{</div>
-<div class="line"><a name="l00721"></a><span class="lineno">  721</span>&#160;  const ::testing::AssertionResult result =</div>
-<div class="line"><a name="l00722"></a><span class="lineno">  722</span>&#160;    <a class="code" href="libprocess_2include_2process_2gtest_8hpp.html#af5232d02c562e977285d52228e29aaa9">AwaitAssertReady</a>(actualExpr, durationExpr, actual, duration);</div>
-<div class="line"><a name="l00723"></a><span class="lineno">  723</span>&#160;</div>
-<div class="line"><a name="l00724"></a><span class="lineno">  724</span>&#160;  <span class="keywordflow">if</span> (result) {</div>
-<div class="line"><a name="l00725"></a><span class="lineno">  725</span>&#160;    <a class="code" href="libprocess_2include_2process_2check_8hpp.html#a55bf53e1f554470600774a6bf0c09140">CHECK_READY</a>(actual);</div>
-<div class="line"><a name="l00726"></a><span class="lineno">  726</span>&#160;    <span class="keywordflow">if</span> (actual-&gt;isNone()) {</div>
-<div class="line"><a name="l00727"></a><span class="lineno">  727</span>&#160;      return ::testing::AssertionFailure()</div>
-<div class="line"><a name="l00728"></a><span class="lineno">  728</span>&#160;        &lt;&lt; <span class="stringliteral">&quot;(&quot;</span> &lt;&lt; actualExpr &lt;&lt; <span class="stringliteral">&quot;)-&gt;isNone() is true&quot;</span>;</div>
-<div class="line"><a name="l00729"></a><span class="lineno">  729</span>&#160;    }</div>
-<div class="line"><a name="l00730"></a><span class="lineno">  730</span>&#160;</div>
-<div class="line"><a name="l00731"></a><span class="lineno">  731</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="stout_2include_2stout_2gtest_8hpp.html#a799901963033736968a8328d9aa63b38">AssertSignaled</a>(</div>
-<div class="line"><a name="l00732"></a><span class="lineno">  732</span>&#160;        <a class="code" href="namespacestrings.html#ac315a6174f56cba0d8295f84da265416">strings::join</a>(<span class="stringliteral">&quot;(&quot;</span>, actualExpr, <span class="stringliteral">&quot;)-&gt;get()&quot;</span>).c_str(),</div>
-<div class="line"><a name="l00733"></a><span class="lineno">  733</span>&#160;        actual-&gt;get());</div>
-<div class="line"><a name="l00734"></a><span class="lineno">  734</span>&#160;  }</div>
-<div class="line"><a name="l00735"></a><span class="lineno">  735</span>&#160;</div>
-<div class="line"><a name="l00736"></a><span class="lineno">  736</span>&#160;  <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00737"></a><span class="lineno">  737</span>&#160;}</div>
-<div class="line"><a name="l00738"></a><span class="lineno">  738</span>&#160;</div>
-<div class="line"><a name="l00739"></a><span class="lineno">  739</span>&#160;</div>
-<div class="line"><a name="l00740"></a><span class="lineno"><a class="line" href="libprocess_2include_2process_2gtest_8hpp.html#a48ee0e589360edf83f93f4483d454211">  740</a></span>&#160;<span class="preprocessor">#define AWAIT_ASSERT_SIGNALED_FOR(expected, actual, duration)           \</span></div>
-<div class="line"><a name="l00741"></a><span class="lineno">  741</span>&#160;<span class="preprocessor">  ASSERT_PRED_FORMAT3(AwaitAssertSignaled, expected, actual, duration)</span></div>
-<div class="line"><a name="l00742"></a><span class="lineno">  742</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00743"></a><span class="lineno">  743</span>&#160;</div>
-<div class="line"><a name="l00744"></a><span class="lineno"><a class="line" href="libprocess_2include_2process_2gtest_8hpp.html#ac548d367a0eba55993fd0f069cfe88fe">  744</a></span>&#160;<span class="preprocessor">#define AWAIT_ASSERT_SIGNALED(expected, actual)                 \</span></div>
-<div class="line"><a name="l00745"></a><span class="lineno">  745</span>&#160;<span class="preprocessor">  AWAIT_ASSERT_SIGNALED_FOR(expected, actual, process::TEST_AWAIT_TIMEOUT)</span></div>
-<div class="line"><a name="l00746"></a><span class="lineno">  746</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00747"></a><span class="lineno">  747</span>&#160;</div>
-<div class="line"><a name="l00748"></a><span class="lineno"><a class="line" href="libprocess_2include_2process_2gtest_8hpp.html#ade5ade88fc75a1cda2c37969ce513d19">  748</a></span>&#160;<span class="preprocessor">#define AWAIT_EXPECT_SIGNALED_FOR(expected, actual, duration)           \</span></div>
-<div class="line"><a name="l00749"></a><span class="lineno">  749</span>&#160;<span class="preprocessor">  EXPECT_PRED_FORMAT3(AwaitAssertSignaled, expected, actual, duration)</span></div>
-<div class="line"><a name="l00750"></a><span class="lineno">  750</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00751"></a><span class="lineno">  751</span>&#160;</div>
-<div class="line"><a name="l00752"></a><span class="lineno"><a class="line" href="libprocess_2include_2process_2gtest_8hpp.html#ad7db91aee8534c29d1a1409787f1ba0a">  752</a></span>&#160;<span class="preprocessor">#define AWAIT_EXPECT_SIGNALED(expected, actual)                 \</span></div>
-<div class="line"><a name="l00753"></a><span class="lineno">  753</span>&#160;<span class="preprocessor">  AWAIT_EXPECT_SIGNALED_FOR(expected, actual, process::TEST_AWAIT_TIMEOUT)</span></div>
-<div class="line"><a name="l00754"></a><span class="lineno">  754</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00755"></a><span class="lineno">  755</span>&#160;</div>
-<div class="line"><a name="l00756"></a><span class="lineno"><a class="line" href="libprocess_2include_2process_2gtest_8hpp.html#a94ca5d39f53b828cce40c52051ec5065">  756</a></span>&#160;inline ::testing::AssertionResult <a class="code" href="libprocess_2include_2process_2gtest_8hpp.html#a94ca5d39f53b828cce40c52051ec5065">AwaitAssertTermSigEq</a>(</div>
-<div class="line"><a name="l00757"></a><span class="lineno">  757</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* expectedExpr,</div>
-<div class="line"><a name="l00758"></a><span class="lineno">  758</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* actualExpr,</div>
-<div class="line"><a name="l00759"></a><span class="lineno">  759</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* durationExpr,</div>
-<div class="line"><a name="l00760"></a><span class="lineno">  760</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> expected,</div>
-<div class="line"><a name="l00761"></a><span class="lineno">  761</span>&#160;    <span class="keyword">const</span> <a class="code" href="classprocess_1_1Future.html">process::Future</a>&lt;<a class="code" href="classOption.html">Option&lt;int&gt;</a>&gt;&amp; actual,</div>
-<div class="line"><a name="l00762"></a><span class="lineno">  762</span>&#160;    <span class="keyword">const</span> <a class="code" href="classDuration.html">Duration</a>&amp; duration)</div>
-<div class="line"><a name="l00763"></a><span class="lineno">  763</span>&#160;{</div>
-<div class="line"><a name="l00764"></a><span class="lineno">  764</span>&#160;  const ::testing::AssertionResult result =</div>
-<div class="line"><a name="l00765"></a><span class="lineno">  765</span>&#160;    <a class="code" href="libprocess_2include_2process_2gtest_8hpp.html#a8db0b1187c1add9f6c5af1cc845578e2">AwaitAssertSignaled</a>(actualExpr, durationExpr, actual, duration);</div>
-<div class="line"><a name="l00766"></a><span class="lineno">  766</span>&#160;</div>
-<div class="line"><a name="l00767"></a><span class="lineno">  767</span>&#160;  <span class="keywordflow">if</span> (result) {</div>
-<div class="line"><a name="l00768"></a><span class="lineno">  768</span>&#160;    <a class="code" href="libprocess_2include_2process_2check_8hpp.html#a55bf53e1f554470600774a6bf0c09140">CHECK_READY</a>(actual);</div>
-<div class="line"><a name="l00769"></a><span class="lineno">  769</span>&#160;    <a class="code" href="stout_2include_2stout_2check_8hpp.html#aee320e7c6e107071f4b85d4cc135a265">CHECK_SOME</a>(actual.get());</div>
-<div class="line"><a name="l00770"></a><span class="lineno">  770</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="stout_2include_2stout_2gtest_8hpp.html#a5e399531eaa0ff53ca397cadd739fe33">AssertTermSigEq</a>(</div>
-<div class="line"><a name="l00771"></a><span class="lineno">  771</span>&#160;        expectedExpr,</div>
-<div class="line"><a name="l00772"></a><span class="lineno">  772</span>&#160;        <a class="code" href="namespacestrings.html#ac315a6174f56cba0d8295f84da265416">strings::join</a>(<span class="stringliteral">&quot;(&quot;</span>, actualExpr, <span class="stringliteral">&quot;)-&gt;get()&quot;</span>).c_str(),</div>
-<div class="line"><a name="l00773"></a><span class="lineno">  773</span>&#160;        expected,</div>
-<div class="line"><a name="l00774"></a><span class="lineno">  774</span>&#160;        actual-&gt;get());</div>
-<div class="line"><a name="l00775"></a><span class="lineno">  775</span>&#160;  }</div>
-<div class="line"><a name="l00776"></a><span class="lineno">  776</span>&#160;</div>
-<div class="line"><a name="l00777"></a><span class="lineno">  777</span>&#160;  <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00778"></a><span class="lineno">  778</span>&#160;}</div>
-<div class="line"><a name="l00779"></a><span class="lineno">  779</span>&#160;</div>
-<div class="line"><a name="l00780"></a><span class="lineno">  780</span>&#160;</div>
-<div class="line"><a name="l00781"></a><span class="lineno"><a class="line" href="libprocess_2include_2process_2gtest_8hpp.html#a92326e20cea850f70b0c8f8d5c6fcc23">  781</a></span>&#160;<span class="preprocessor">#define AWAIT_ASSERT_WTERMSIG_EQ_FOR(expected, actual, duration)        \</span></div>
-<div class="line"><a name="l00782"></a><span class="lineno">  782</span>&#160;<span class="preprocessor">  ASSERT_PRED_FORMAT3(AwaitAssertTermSigEq, expected, actual, duration)</span></div>
-<div class="line"><a name="l00783"></a><span class="lineno">  783</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00784"></a><span class="lineno">  784</span>&#160;</div>
-<div class="line"><a name="l00785"></a><span class="lineno"><a class="line" href="libprocess_2include_2process_2gtest_8hpp.html#a9c88f78aaec602d30ac11dfade1048de">  785</a></span>&#160;<span class="preprocessor">#define AWAIT_ASSERT_WTERMSIG_EQ(expected, actual)  \</span></div>
-<div class="line"><a name="l00786"></a><span class="lineno">  786</span>&#160;<span class="preprocessor">  AWAIT_ASSERT_WTERMSIG_EQ_FOR(                     \</span></div>
-<div class="line"><a name="l00787"></a><span class="lineno">  787</span>&#160;<span class="preprocessor">      expected,                                     \</span></div>
-<div class="line"><a name="l00788"></a><span class="lineno">  788</span>&#160;<span class="preprocessor">      actual,                                       \</span></div>
-<div class="line"><a name="l00789"></a><span class="lineno">  789</span>&#160;<span class="preprocessor">      process::TEST_AWAIT_TIMEOUT)</span></div>
-<div class="line"><a name="l00790"></a><span class="lineno">  790</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00791"></a><span class="lineno">  791</span>&#160;</div>
-<div class="line"><a name="l00792"></a><span class="lineno"><a class="line" href="libprocess_2include_2process_2gtest_8hpp.html#ad71f04a8cf6788ea907661c79ca2f795">  792</a></span>&#160;<span class="preprocessor">#define AWAIT_EXPECT_WTERMSIG_EQ_FOR(expected, actual, duration)        \</span></div>
-<div class="line"><a name="l00793"></a><span class="lineno">  793</span>&#160;<span class="preprocessor">  EXPECT_PRED_FORMAT3(AwaitAssertTermSigEq, expected, actual, duration)</span></div>
-<div class="line"><a name="l00794"></a><span class="lineno">  794</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00795"></a><span class="lineno">  795</span>&#160;</div>
-<div class="line"><a name="l00796"></a><span class="lineno"><a class="line" href="libprocess_2include_2process_2gtest_8hpp.html#a3ab1e561d075d86d66a10c1ca9d6ad01">  796</a></span>&#160;<span class="preprocessor">#define AWAIT_EXPECT_WTERMSIG_EQ(expected, actual)  \</span></div>
-<div class="line"><a name="l00797"></a><span class="lineno">  797</span>&#160;<span class="preprocessor">  AWAIT_EXPECT_WTERMSIG_EQ_FOR(                     \</span></div>
-<div class="line"><a name="l00798"></a><span class="lineno">  798</span>&#160;<span class="preprocessor">      expected,                                     \</span></div>
-<div class="line"><a name="l00799"></a><span class="lineno">  799</span>&#160;<span class="preprocessor">      actual,                                       \</span></div>
-<div class="line"><a name="l00800"></a><span class="lineno">  800</span>&#160;<span class="preprocessor">      process::TEST_AWAIT_TIMEOUT)</span></div>
-<div class="line"><a name="l00801"></a><span class="lineno">  801</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00802"></a><span class="lineno">  802</span>&#160;</div>
-<div class="line"><a name="l00803"></a><span class="lineno"><a class="line" href="libprocess_2include_2process_2gtest_8hpp.html#ad5c297c3dee7d417b71b4d8675126420">  803</a></span>&#160;inline ::testing::AssertionResult <a class="code" href="libprocess_2include_2process_2gtest_8hpp.html#ad5c297c3dee7d417b71b4d8675126420">AwaitAssertTermSigNe</a>(</div>
-<div class="line"><a name="l00804"></a><span class="lineno">  804</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* expectedExpr,</div>
-<div class="line"><a name="l00805"></a><span class="lineno">  805</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* actualExpr,</div>
-<div class="line"><a name="l00806"></a><span class="lineno">  806</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* durationExpr,</div>
-<div class="line"><a name="l00807"></a><span class="lineno">  807</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> expected,</div>
-<div class="line"><a name="l00808"></a><span class="lineno">  808</span>&#160;    <span class="keyword">const</span> <a class="code" href="classprocess_1_1Future.html">process::Future</a>&lt;<a class="code" href="classOption.html">Option&lt;int&gt;</a>&gt;&amp; actual,</div>
-<div class="line"><a name="l00809"></a><span class="lineno">  809</span>&#160;    <span class="keyword">const</span> <a class="code" href="classDuration.html">Duration</a>&amp; duration)</div>
-<div class="line"><a name="l00810"></a><span class="lineno">  810</span>&#160;{</div>
-<div class="line"><a name="l00811"></a><span class="lineno">  811</span>&#160;  const ::testing::AssertionResult result =</div>
-<div class="line"><a name="l00812"></a><span class="lineno">  812</span>&#160;    <a class="code" href="libprocess_2include_2process_2gtest_8hpp.html#a8db0b1187c1add9f6c5af1cc845578e2">AwaitAssertSignaled</a>(actualExpr, durationExpr, actual, duration);</div>
-<div class="line"><a name="l00813"></a><span class="lineno">  813</span>&#160;</div>
-<div class="line"><a name="l00814"></a><span class="lineno">  814</span>&#160;  <span class="keywordflow">if</span> (result) {</div>
-<div class="line"><a name="l00815"></a><span class="lineno">  815</span>&#160;    <a class="code" href="libprocess_2include_2process_2check_8hpp.html#a55bf53e1f554470600774a6bf0c09140">CHECK_READY</a>(actual);</div>
-<div class="line"><a name="l00816"></a><span class="lineno">  816</span>&#160;    <a class="code" href="stout_2include_2stout_2check_8hpp.html#aee320e7c6e107071f4b85d4cc135a265">CHECK_SOME</a>(actual.get());</div>
-<div class="line"><a name="l00817"></a><span class="lineno">  817</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="stout_2include_2stout_2gtest_8hpp.html#a4af6af348abe6fc830763329ae961e5f">AssertTermSigNe</a>(</div>
-<div class="line"><a name="l00818"></a><span class="lineno">  818</span>&#160;        expectedExpr,</div>
-<div class="line"><a name="l00819"></a><span class="lineno">  819</span>&#160;        <a class="code" href="namespacestrings.html#ac315a6174f56cba0d8295f84da265416">strings::join</a>(<span class="stringliteral">&quot;(&quot;</span>, actualExpr, <span class="stringliteral">&quot;)-&gt;get()&quot;</span>).c_str(),</div>
-<div class="line"><a name="l00820"></a><span class="lineno">  820</span>&#160;        expected,</div>
-<div class="line"><a name="l00821"></a><span class="lineno">  821</span>&#160;        actual-&gt;get());</div>
-<div class="line"><a name="l00822"></a><span class="lineno">  822</span>&#160;  }</div>
-<div class="line"><a name="l00823"></a><span class="lineno">  823</span>&#160;</div>
-<div class="line"><a name="l00824"></a><span class="lineno">  824</span>&#160;  <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00825"></a><span class="lineno">  825</span>&#160;}</div>
-<div class="line"><a name="l00826"></a><span class="lineno">  826</span>&#160;</div>
-<div class="line"><a name="l00827"></a><span class="lineno">  827</span>&#160;</div>
-<div class="line"><a name="l00828"></a><span class="lineno"><a class="line" href="libprocess_2include_2process_2gtest_8hpp.html#a0491ed6c5a56cb33ff1d42f9e3fa0d95">  828</a></span>&#160;<span class="preprocessor">#define AWAIT_ASSERT_WTERMSIG_NE_FOR(expected, actual, duration)        \</span></div>
-<div class="line"><a name="l00829"></a><span class="lineno">  829</span>&#160;<span class="preprocessor">  ASSERT_PRED_FORMAT3(AwaitAssertTermSigNe, expected, actual, duration)</span></div>
-<div class="line"><a name="l00830"></a><span class="lineno">  830</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00831"></a><span class="lineno">  831</span>&#160;</div>
-<div class="line"><a name="l00832"></a><span class="lineno"><a class="line" href="libprocess_2include_2process_2gtest_8hpp.html#a3850c9439df7c51d4f30ab78bf52e0e4">  832</a></span>&#160;<span class="preprocessor">#define AWAIT_ASSERT_WTERMSIG_NE(expected, actual)  \</span></div>
-<div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160;<span class="preprocessor">  AWAIT_ASSERT_TERMSIG_NE_FOR(                      \</span></div>
-<div class="line"><a name="l00834"></a><span class="lineno">  834</span>&#160;<span class="preprocessor">      expected,                                     \</span></div>
-<div class="line"><a name="l00835"></a><span class="lineno">  835</span>&#160;<span class="preprocessor">      actual,                                       \</span></div>
-<div class="line"><a name="l00836"></a><span class="lineno">  836</span>&#160;<span class="preprocessor">      process::TEST_AWAIT_TIMEOUT</span></div>
-<div class="line"><a name="l00837"></a><span class="lineno">  837</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00838"></a><span class="lineno">  838</span>&#160;</div>
-<div class="line"><a name="l00839"></a><span class="lineno"><a class="line" href="libprocess_2include_2process_2gtest_8hpp.html#a18e0951702b19794add0b7a307035b48">  839</a></span>&#160;<span class="preprocessor">#define AWAIT_EXPECT_TERMSIG_NE_FOR(expected, actual, duration)         \</span></div>
-<div class="line"><a name="l00840"></a><span class="lineno">  840</span>&#160;<span class="preprocessor">  EXPECT_PRED_FORMAT3(AwaitAssertTermSigNe, expected, actual, duration)</span></div>
-<div class="line"><a name="l00841"></a><span class="lineno">  841</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00842"></a><span class="lineno">  842</span>&#160;</div>
-<div class="line"><a name="l00843"></a><span class="lineno"><a class="line" href="libprocess_2include_2process_2gtest_8hpp.html#ac4d50cef4ea4c371b20fb8c5082d9995">  843</a></span>&#160;<span class="preprocessor">#define AWAIT_EXPECT_WTERMSIG_NE(expected, actual)  \</span></div>
-<div class="line"><a name="l00844"></a><span class="lineno">  844</span>&#160;<span class="preprocessor">  AWAIT_EXPECT_WTERMSIG_NE_FOR(                     \</span></div>
-<div class="line"><a name="l00845"></a><span class="lineno">  845</span>&#160;<span class="preprocessor">    expected,                                       \</span></div>
-<div class="line"><a name="l00846"></a><span class="lineno">  846</span>&#160;<span class="preprocessor">    actual,                                         \</span></div>
-<div class="line"><a name="l00847"></a><span class="lineno">  847</span>&#160;<span class="preprocessor">    process::TEST_AWAIT_TIMEOUT)</span></div>
-<div class="line"><a name="l00848"></a><span class="lineno">  848</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00849"></a><span class="lineno">  849</span>&#160;</div>
-<div class="line"><a name="l00850"></a><span class="lineno">  850</span>&#160;<span class="comment">// TODO(benh):</span></div>
-<div class="line"><a name="l00851"></a><span class="lineno">  851</span>&#160;<span class="comment">// inline ::testing::AssertionResult AwaitAssertStopped(...)</span></div>
-<div class="line"><a name="l00852"></a><span class="lineno">  852</span>&#160;<span class="comment">// inline ::testing::AssertionResult AwaitAssertStopSigEq(...)</span></div>
-<div class="line"><a name="l00853"></a><span class="lineno">  853</span>&#160;<span class="comment">// inline ::testing::AssertionResult AwaitAssertStopSigNe(...)</span></div>
-<div class="line"><a name="l00854"></a><span class="lineno">  854</span>&#160;</div>
-<div class="line"><a name="l00855"></a><span class="lineno">  855</span>&#160;<span class="preprocessor">#endif // __PROCESS_GTEST_HPP__</span></div>
+<div class="line"><a name="l00715"></a><span class="lineno">  715</span>&#160;<span class="comment">// Signals are&#39;t used on Windows, so #ifdef these out.</span></div>
+<div class="line"><a name="l00716"></a><span class="lineno">  716</span>&#160;<span class="preprocessor">#ifndef __WINDOWS__</span></div>
+<div class="line"><a name="l00717"></a><span class="lineno"><a class="line" href="libprocess_2include_2process_2gtest_8hpp.html#a8db0b1187c1add9f6c5af1cc845578e2">  717</a></span>&#160;<span class="preprocessor"></span>inline ::testing::AssertionResult <a class="code" href="libprocess_2include_2process_2gtest_8hpp.html#a8db0b1187c1add9f6c5af1cc845578e2">AwaitAssertSignaled</a>(</div>
+<div class="line"><a name="l00718"></a><span class="lineno">  718</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* actualExpr,</div>
+<div class="line"><a name="l00719"></a><span class="lineno">  719</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* durationExpr,</div>
+<div class="line"><a name="l00720"></a><span class="lineno">  720</span>&#160;    <span class="keyword">const</span> <a class="code" href="classprocess_1_1Future.html">process::Future</a>&lt;<a class="code" href="classOption.html">Option&lt;int&gt;</a>&gt;&amp; actual,</div>
+<div class="line"><a name="l00721"></a><span class="lineno">  721</span>&#160;    <span class="keyword">const</span> <a class="code" href="classDuration.html">Duration</a>&amp; duration)</div>
+<div class="line"><a name="l00722"></a><span class="lineno">  722</span>&#160;{</div>
+<div class="line"><a name="l00723"></a><span class="lineno">  723</span>&#160;  const ::testing::AssertionResult result =</div>
+<div class="line"><a name="l00724"></a><span class="lineno">  724</span>&#160;    <a class="code" href="libprocess_2include_2process_2gtest_8hpp.html#af5232d02c562e977285d52228e29aaa9">AwaitAssertReady</a>(actualExpr, durationExpr, actual, duration);</div>
+<div class="line"><a name="l00725"></a><span class="lineno">  725</span>&#160;</div>
+<div class="line"><a name="l00726"></a><span class="lineno">  726</span>&#160;  <span class="keywordflow">if</span> (result) {</div>
+<div class="line"><a name="l00727"></a><span class="lineno">  727</span>&#160;    <a class="code" href="libprocess_2include_2process_2check_8hpp.html#a55bf53e1f554470600774a6bf0c09140">CHECK_READY</a>(actual);</div>
+<div class="line"><a name="l00728"></a><span class="lineno">  728</span>&#160;    <span class="keywordflow">if</span> (actual-&gt;isNone()) {</div>
+<div class="line"><a name="l00729"></a><span class="lineno">  729</span>&#160;      return ::testing::AssertionFailure()</div>
+<div class="line"><a name="l00730"></a><span class="lineno">  730</span>&#160;        &lt;&lt; <span class="stringliteral">&quot;(&quot;</span> &lt;&lt; actualExpr &lt;&lt; <span class="stringliteral">&quot;)-&gt;isNone() is true&quot;</span>;</div>
+<div class="line"><a name="l00731"></a><span class="lineno">  731</span>&#160;    }</div>
+<div class="line"><a name="l00732"></a><span class="lineno">  732</span>&#160;</div>
+<div class="line"><a name="l00733"></a><span class="lineno">  733</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="stout_2include_2stout_2gtest_8hpp.html#a799901963033736968a8328d9aa63b38">AssertSignaled</a>(</div>
+<div class="line"><a name="l00734"></a><span class="lineno">  734</span>&#160;        <a class="code" href="namespacestrings.html#ac315a6174f56cba0d8295f84da265416">strings::join</a>(<span class="stringliteral">&quot;(&quot;</span>, actualExpr, <span class="stringliteral">&quot;)-&gt;get()&quot;</span>).c_str(),</div>
+<div class="line"><a name="l00735"></a><span class="lineno">  735</span>&#160;        actual-&gt;get());</div>
+<div class="line"><a name="l00736"></a><span class="lineno">  736</span>&#160;  }</div>
+<div class="line"><a name="l00737"></a><span class="lineno">  737</span>&#160;</div>
+<div class="line"><a name="l00738"></a><span class="lineno">  738</span>&#160;  <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l00739"></a><span class="lineno">  739</span>&#160;}</div>
+<div class="line"><a name="l00740"></a><span class="lineno">  740</span>&#160;</div>
+<div class="line"><a name="l00741"></a><span class="lineno">  741</span>&#160;</div>
+<div class="line"><a name="l00742"></a><span class="lineno"><a class="line" href="libprocess_2include_2process_2gtest_8hpp.html#a48ee0e589360edf83f93f4483d454211">  742</a></span>&#160;<span class="preprocessor">#define AWAIT_ASSERT_SIGNALED_FOR(expected, actual, duration)           \</span></div>
+<div class="line"><a name="l00743"></a><span class="lineno">  743</span>&#160;<span class="preprocessor">  ASSERT_PRED_FORMAT3(AwaitAssertSignaled, expected, actual, duration)</span></div>
+<div class="line"><a name="l00744"></a><span class="lineno">  744</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00745"></a><span class="lineno">  745</span>&#160;</div>
+<div class="line"><a name="l00746"></a><span class="lineno"><a class="line" href="libprocess_2include_2process_2gtest_8hpp.html#ac548d367a0eba55993fd0f069cfe88fe">  746</a></span>&#160;<span class="preprocessor">#define AWAIT_ASSERT_SIGNALED(expected, actual)                 \</span></div>
+<div class="line"><a name="l00747"></a><span class="lineno">  747</span>&#160;<span class="preprocessor">  AWAIT_ASSERT_SIGNALED_FOR(expected, actual, process::TEST_AWAIT_TIMEOUT)</span></div>
+<div class="line"><a name="l00748"></a><span class="lineno">  748</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00749"></a><span class="lineno">  749</span>&#160;</div>
+<div class="line"><a name="l00750"></a><span class="lineno"><a class="line" href="libprocess_2include_2process_2gtest_8hpp.html#ade5ade88fc75a1cda2c37969ce513d19">  750</a></span>&#160;<span class="preprocessor">#define AWAIT_EXPECT_SIGNALED_FOR(expected, actual, duration)           \</span></div>
+<div class="line"><a name="l00751"></a><span class="lineno">  751</span>&#160;<span class="preprocessor">  EXPECT_PRED_FORMAT3(AwaitAssertSignaled, expected, actual, duration)</span></div>
+<div class="line"><a name="l00752"></a><span class="lineno">  752</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00753"></a><span class="lineno">  753</span>&#160;</div>
+<div class="line"><a name="l00754"></a><span class="lineno"><a class="line" href="libprocess_2include_2process_2gtest_8hpp.html#ad7db91aee8534c29d1a1409787f1ba0a">  754</a></span>&#160;<span class="preprocessor">#define AWAIT_EXPECT_SIGNALED(expected, actual)                 \</span></div>
+<div class="line"><a name="l00755"></a><span class="lineno">  755</span>&#160;<span class="preprocessor">  AWAIT_EXPECT_SIGNALED_FOR(expected, actual, process::TEST_AWAIT_TIMEOUT)</span></div>
+<div class="line"><a name="l00756"></a><span class="lineno">  756</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00757"></a><span class="lineno">  757</span>&#160;</div>
+<div class="line"><a name="l00758"></a><span class="lineno"><a class="line" href="libprocess_2include_2process_2gtest_8hpp.html#a94ca5d39f53b828cce40c52051ec5065">  758</a></span>&#160;inline ::testing::AssertionResult <a class="code" href="libprocess_2include_2process_2gtest_8hpp.html#a94ca5d39f53b828cce40c52051ec5065">AwaitAssertTermSigEq</a>(</div>
+<div class="line"><a name="l00759"></a><span class="lineno">  759</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* expectedExpr,</div>
+<div class="line"><a name="l00760"></a><span class="lineno">  760</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* actualExpr,</div>
+<div class="line"><a name="l00761"></a><span class="lineno">  761</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* durationExpr,</div>
+<div class="line"><a name="l00762"></a><span class="lineno">  762</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> expected,</div>
+<div class="line"><a name="l00763"></a><span class="lineno">  763</span>&#160;    <span class="keyword">const</span> <a class="code" href="classprocess_1_1Future.html">process::Future</a>&lt;<a class="code" href="classOption.html">Option&lt;int&gt;</a>&gt;&amp; actual,</div>
+<div class="line"><a name="l00764"></a><span class="lineno">  764</span>&#160;    <span class="keyword">const</span> <a class="code" href="classDuration.html">Duration</a>&amp; duration)</div>
+<div class="line"><a name="l00765"></a><span class="lineno">  765</span>&#160;{</div>
+<div class="line"><a name="l00766"></a><span class="lineno">  766</span>&#160;  const ::testing::AssertionResult result =</div>
+<div class="line"><a name="l00767"></a><span class="lineno">  767</span>&#160;    <a class="code" href="libprocess_2include_2process_2gtest_8hpp.html#a8db0b1187c1add9f6c5af1cc845578e2">AwaitAssertSignaled</a>(actualExpr, durationExpr, actual, duration);</div>
+<div class="line"><a name="l00768"></a><span class="lineno">  768</span>&#160;</div>
+<div class="line"><a name="l00769"></a><span class="lineno">  769</span>&#160;  <span class="keywordflow">if</span> (result) {</div>
+<div class="line"><a name="l00770"></a><span class="lineno">  770</span>&#160;    <a class="code" href="libprocess_2include_2process_2check_8hpp.html#a55bf53e1f554470600774a6bf0c09140">CHECK_READY</a>(actual);</div>
+<div class="line"><a name="l00771"></a><span class="lineno">  771</span>&#160;    <a class="code" href="stout_2include_2stout_2check_8hpp.html#aee320e7c6e107071f4b85d4cc135a265">CHECK_SOME</a>(actual.get());</div>
+<div class="line"><a name="l00772"></a><span class="lineno">  772</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="stout_2include_2stout_2gtest_8hpp.html#a5e399531eaa0ff53ca397cadd739fe33">AssertTermSigEq</a>(</div>
+<div class="line"><a name="l00773"></a><span class="lineno">  773</span>&#160;        expectedExpr,</div>
+<div class="line"><a name="l00774"></a><span class="lineno">  774</span>&#160;        <a class="code" href="namespacestrings.html#ac315a6174f56cba0d8295f84da265416">strings::join</a>(<span class="stringliteral">&quot;(&quot;</span>, actualExpr, <span class="stringliteral">&quot;)-&gt;get()&quot;</span>).c_str(),</div>
+<div class="line"><a name="l00775"></a><span class="lineno">  775</span>&#160;        expected,</div>
+<div class="line"><a name="l00776"></a><span class="lineno">  776</span>&#160;        actual-&gt;get());</div>
+<div class="line"><a name="l00777"></a><span class="lineno">  777</span>&#160;  }</div>
+<div class="line"><a name="l00778"></a><span class="lineno">  778</span>&#160;</div>
+<div class="line"><a name="l00779"></a><span class="lineno">  779</span>&#160;  <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l00780"></a><span class="lineno">  780</span>&#160;}</div>
+<div class="line"><a name="l00781"></a><span class="lineno">  781</span>&#160;</div>
+<div class="line"><a name="l00782"></a><span class="lineno">  782</span>&#160;</div>
+<div class="line"><a name="l00783"></a><span class="lineno"><a class="line" href="libprocess_2include_2process_2gtest_8hpp.html#a92326e20cea850f70b0c8f8d5c6fcc23">  783</a></span>&#160;<span class="preprocessor">#define AWAIT_ASSERT_WTERMSIG_EQ_FOR(expected, actual, duration)        \</span></div>
+<div class="line"><a name="l00784"></a><span class="lineno">  784</span>&#160;<span class="preprocessor">  ASSERT_PRED_FORMAT3(AwaitAssertTermSigEq, expected, actual, duration)</span></div>
+<div class="line"><a name="l00785"></a><span class="lineno">  785</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00786"></a><span class="lineno">  786</span>&#160;</div>
+<div class="line"><a name="l00787"></a><span class="lineno"><a class="line" href="libprocess_2include_2process_2gtest_8hpp.html#a9c88f78aaec602d30ac11dfade1048de">  787</a></span>&#160;<span class="preprocessor">#define AWAIT_ASSERT_WTERMSIG_EQ(expected, actual)  \</span></div>
+<div class="line"><a name="l00788"></a><span class="lineno">  788</span>&#160;<span class="preprocessor">  AWAIT_ASSERT_WTERMSIG_EQ_FOR(                     \</span></div>
+<div class="line"><a name="l00789"></a><span class="lineno">  789</span>&#160;<span class="preprocessor">      expected,                                     \</span></div>
+<div class="line"><a name="l00790"></a><span class="lineno">  790</span>&#160;<span class="preprocessor">      actual,                                       \</span></div>
+<div class="line"><a name="l00791"></a><span class="lineno">  791</span>&#160;<span class="preprocessor">      process::TEST_AWAIT_TIMEOUT)</span></div>
+<div class="line"><a name="l00792"></a><span class="lineno">  792</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00793"></a><span class="lineno">  793</span>&#160;</div>
+<div class="line"><a name="l00794"></a><span class="lineno"><a class="line" href="libprocess_2include_2process_2gtest_8hpp.html#ad71f04a8cf6788ea907661c79ca2f795">  794</a></span>&#160;<span class="preprocessor">#define AWAIT_EXPECT_WTERMSIG_EQ_FOR(expected, actual, duration)        \</span></div>
+<div class="line"><a name="l00795"></a><span class="lineno">  795</span>&#160;<span class="preprocessor">  EXPECT_PRED_FORMAT3(AwaitAssertTermSigEq, expected, actual, duration)</span></div>
+<div class="line"><a name="l00796"></a><span class="lineno">  796</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00797"></a><span class="lineno">  797</span>&#160;</div>
+<div class="line"><a name="l00798"></a><span class="lineno"><a class="line" href="libprocess_2include_2process_2gtest_8hpp.html#a3ab1e561d075d86d66a10c1ca9d6ad01">  798</a></span>&#160;<span class="preprocessor">#define AWAIT_EXPECT_WTERMSIG_EQ(expected, actual)  \</span></div>
+<div class="line"><a name="l00799"></a><span class="lineno">  799</span>&#160;<span class="preprocessor">  AWAIT_EXPECT_WTERMSIG_EQ_FOR(                     \</span></div>
+<div class="line"><a name="l00800"></a><span class="lineno">  800</span>&#160;<span class="preprocessor">      expected,                                     \</span></div>
+<div class="line"><a name="l00801"></a><span class="lineno">  801</span>&#160;<span class="preprocessor">      actual,                                       \</span></div>
+<div class="line"><a name="l00802"></a><span class="lineno">  802</span>&#160;<span class="preprocessor">      process::TEST_AWAIT_TIMEOUT)</span></div>
+<div class="line"><a name="l00803"></a><span class="lineno">  803</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00804"></a><span class="lineno">  804</span>&#160;</div>
+<div class="line"><a name="l00805"></a><span class="lineno"><a class="line" href="libprocess_2include_2process_2gtest_8hpp.html#ad5c297c3dee7d417b71b4d8675126420">  805</a></span>&#160;inline ::testing::AssertionResult <a class="code" href="libprocess_2include_2process_2gtest_8hpp.html#ad5c297c3dee7d417b71b4d8675126420">AwaitAssertTermSigNe</a>(</div>
+<div class="line"><a name="l00806"></a><span class="lineno">  806</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* expectedExpr,</div>
+<div class="line"><a name="l00807"></a><span class="lineno">  807</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* actualExpr,</div>
+<div class="line"><a name="l00808"></a><span class="lineno">  808</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* durationExpr,</div>
+<div class="line"><a name="l00809"></a><span class="lineno">  809</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> expected,</div>
+<div class="line"><a name="l00810"></a><span class="lineno">  810</span>&#160;    <span class="keyword">const</span> <a class="code" href="classprocess_1_1Future.html">process::Future</a>&lt;<a class="code" href="classOption.html">Option&lt;int&gt;</a>&gt;&amp; actual,</div>
+<div class="line"><a name="l00811"></a><span class="lineno">  811</span>&#160;    <span class="keyword">const</span> <a class="code" href="classDuration.html">Duration</a>&amp; duration)</div>
+<div class="line"><a name="l00812"></a><span class="lineno">  812</span>&#160;{</div>
+<div class="line"><a name="l00813"></a><span class="lineno">  813</span>&#160;  const ::testing::AssertionResult result =</div>
+<div class="line"><a name="l00814"></a><span class="lineno">  814</span>&#160;    <a class="code" href="libprocess_2include_2process_2gtest_8hpp.html#a8db0b1187c1add9f6c5af1cc845578e2">AwaitAssertSignaled</a>(actualExpr, durationExpr, actual, duration);</div>
+<div class="line"><a name="l00815"></a><span class="lineno">  815</span>&#160;</div>
+<div class="line"><a name="l00816"></a><span class="lineno">  816</span>&#160;  <span class="keywordflow">if</span> (result) {</div>
+<div class="line"><a name="l00817"></a><span class="lineno">  817</span>&#160;    <a class="code" href="libprocess_2include_2process_2check_8hpp.html#a55bf53e1f554470600774a6bf0c09140">CHECK_READY</a>(actual);</div>
+<div class="line"><a name="l00818"></a><span class="lineno">  818</span>&#160;    <a class="code" href="stout_2include_2stout_2check_8hpp.html#aee320e7c6e107071f4b85d4cc135a265">CHECK_SOME</a>(actual.get());</div>
+<div class="line"><a name="l00819"></a><span class="lineno">  819</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="stout_2include_2stout_2gtest_8hpp.html#a4af6af348abe6fc830763329ae961e5f">AssertTermSigNe</a>(</div>
+<div class="line"><a name="l00820"></a><span class="lineno">  820</span>&#160;        expectedExpr,</div>
+<div class="line"><a name="l00821"></a><span class="lineno">  821</span>&#160;        <a class="code" href="namespacestrings.html#ac315a6174f56cba0d8295f84da265416">strings::join</a>(<span class="stringliteral">&quot;(&quot;</span>, actualExpr, <span class="stringliteral">&quot;)-&gt;get()&quot;</span>).c_str(),</div>
+<div class="line"><a name="l00822"></a><span class="lineno">  822</span>&#160;        expected,</div>
+<div class="line"><a name="l00823"></a><span class="lineno">  823</span>&#160;        actual-&gt;get());</div>
+<div class="line"><a name="l00824"></a><span class="lineno">  824</span>&#160;  }</div>
+<div class="line"><a name="l00825"></a><span class="lineno">  825</span>&#160;</div>
+<div class="line"><a name="l00826"></a><span class="lineno">  826</span>&#160;  <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l00827"></a><span class="lineno">  827</span>&#160;}</div>
+<div class="line"><a name="l00828"></a><span class="lineno">  828</span>&#160;</div>
+<div class="line"><a name="l00829"></a><span class="lineno">  829</span>&#160;</div>
+<div class="line"><a name="l00830"></a><span class="lineno"><a class="line" href="libprocess_2include_2process_2gtest_8hpp.html#a0491ed6c5a56cb33ff1d42f9e3fa0d95">  830</a></span>&#160;<span class="preprocessor">#define AWAIT_ASSERT_WTERMSIG_NE_FOR(expected, actual, duration)        \</span></div>
+<div class="line"><a name="l00831"></a><span class="lineno">  831</span>&#160;<span class="preprocessor">  ASSERT_PRED_FORMAT3(AwaitAssertTermSigNe, expected, actual, duration)</span></div>
+<div class="line"><a name="l00832"></a><span class="lineno">  832</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160;</div>
+<div class="line"><a name="l00834"></a><span class="lineno"><a class="line" href="libprocess_2include_2process_2gtest_8hpp.html#a3850c9439df7c51d4f30ab78bf52e0e4">  834</a></span>&#160;<span class="preprocessor">#define AWAIT_ASSERT_WTERMSIG_NE(expected, actual)  \</span></div>
+<div class="line"><a name="l00835"></a><span class="lineno">  835</span>&#160;<span class="preprocessor">  AWAIT_ASSERT_TERMSIG_NE_FOR(                      \</span></div>
+<div class="line"><a name="l00836"></a><span class="lineno">  836</span>&#160;<span class="preprocessor">      expected,                                     \</span></div>
+<div class="line"><a name="l00837"></a><span class="lineno">  837</span>&#160;<span class="preprocessor">      actual,                                       \</span></div>
+<div class="line"><a name="l00838"></a><span class="lineno">  838</span>&#160;<span class="preprocessor">      process::TEST_AWAIT_TIMEOUT</span></div>
+<div class="line"><a name="l00839"></a><span class="lineno">  839</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00840"></a><span class="lineno">  840</span>&#160;</div>
+<div class="line"><a name="l00841"></a><span class="lineno"><a class="line" href="libprocess_2include_2process_2gtest_8hpp.html#a18e0951702b19794add0b7a307035b48">  841</a></span>&#160;<span class="preprocessor">#define AWAIT_EXPECT_TERMSIG_NE_FOR(expected, actual, duration)         \</span></div>
+<div class="line"><a name="l00842"></a><span class="lineno">  842</span>&#160;<span class="preprocessor">  EXPECT_PRED_FORMAT3(AwaitAssertTermSigNe, expected, actual, duration)</span></div>
+<div class="line"><a name="l00843"></a><span class="lineno">  843</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00844"></a><span class="lineno">  844</span>&#160;</div>
+<div class="line"><a name="l00845"></a><span class="lineno"><a class="line" href="libprocess_2include_2process_2gtest_8hpp.html#ac4d50cef4ea4c371b20fb8c5082d9995">  845</a></span>&#160;<span class="preprocessor">#define AWAIT_EXPECT_WTERMSIG_NE(expected, actual)  \</span></div>
+<div class="line"><a name="l00846"></a><span class="lineno">  846</span>&#160;<span class="preprocessor">  AWAIT_EXPECT_WTERMSIG_NE_FOR(                     \</span></div>
+<div class="line"><a name="l00847"></a><span class="lineno">  847</span>&#160;<span class="preprocessor">    expected,                                       \</span></div>
+<div class="line"><a name="l00848"></a><span class="lineno">  848</span>&#160;<span class="preprocessor">    actual,                                         \</span></div>
+<div class="line"><a name="l00849"></a><span class="lineno">  849</span>&#160;<span class="preprocessor">    process::TEST_AWAIT_TIMEOUT)</span></div>
+<div class="line"><a name="l00850"></a><span class="lineno">  850</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00851"></a><span class="lineno">  851</span>&#160;</div>
+<div class="line"><a name="l00852"></a><span class="lineno">  852</span>&#160;<span class="comment">// TODO(benh):</span></div>
+<div class="line"><a name="l00853"></a><span class="lineno">  853</span>&#160;<span class="comment">// inline ::testing::AssertionResult AwaitAssertStopped(...)</span></div>
+<div class="line"><a name="l00854"></a><span class="lineno">  854</span>&#160;<span class="comment">// inline ::testing::AssertionResult AwaitAssertStopSigEq(...)</span></div>
+<div class="line"><a name="l00855"></a><span class="lineno">  855</span>&#160;<span class="comment">// inline ::testing::AssertionResult AwaitAssertStopSigNe(...)</span></div>
+<div class="line"><a name="l00856"></a><span class="lineno">  856</span>&#160;<span class="preprocessor">#endif // __WINDOWS__</span></div>
+<div class="line"><a name="l00857"></a><span class="lineno">  857</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00858"></a><span class="lineno">  858</span>&#160;<span class="preprocessor">#endif // __PROCESS_GTEST_HPP__</span></div>
 <div class="ttc" id="classprocess_1_1Future_html_a68f241961e700d0cecf982d9cc0043d7"><div class="ttname"><a href="classprocess_1_1Future.html#a68f241961e700d0cecf982d9cc0043d7">process::Future::isReady</a></div><div class="ttdeci">bool isReady() const </div><div class="ttdef"><b>Definition:</b> future.hpp:1220</div></div>
 <div class="ttc" id="gtest__constants_8hpp_html"><div class="ttname"><a href="gtest__constants_8hpp.html">gtest_constants.hpp</a></div></div>
-<div class="ttc" id="stout_2include_2stout_2gtest_8hpp_html_a0eee39affc289ff372336ce8bbeef40a"><div class="ttname"><a href="stout_2include_2stout_2gtest_8hpp.html#a0eee39affc289ff372336ce8bbeef40a">AssertExitStatusNe</a></div><div class="ttdeci">inline::testing::AssertionResult AssertExitStatusNe(const char *expectedExpr, const char *actualExpr, const int expected, const int actual)</div><div class="ttdef"><b>Definition:</b> gtest.hpp:311</div></div>
+<div class="ttc" id="stout_2include_2stout_2gtest_8hpp_html_a0eee39affc289ff372336ce8bbeef40a"><div class="ttname"><a href="stout_2include_2stout_2gtest_8hpp.html#a0eee39affc289ff372336ce8bbeef40a">AssertExitStatusNe</a></div><div class="ttdeci">inline::testing::AssertionResult AssertExitStatusNe(const char *expectedExpr, const char *actualExpr, const int expected, const int actual)</div><div class="ttdef"><b>Definition:</b> gtest.hpp:313</div></div>
 <div class="ttc" id="classprocess_1_1ClockTestEventListener_html_af42ab7cf085778cd46cd105657c387fd"><div class="ttname"><a href="classprocess_1_1ClockTestEventListener.html#af42ab7cf085778cd46cd105657c387fd">process::ClockTestEventListener::OnTestEnd</a></div><div class="ttdeci">virtual void OnTestEnd(const ::testing::TestInfo &amp;)</div><div class="ttdef"><b>Definition:</b> gtest.hpp:51</div></div>
 <div class="ttc" id="classOption_html"><div class="ttname"><a href="classOption.html">Option&lt; std::string &gt;</a></div></div>
 <div class="ttc" id="libprocess_2include_2process_2gtest_8hpp_html_a26834a54c3b5880d4d08ce10248a6a76"><div class="ttname"><a href="libprocess_2include_2process_2gtest_8hpp.html#a26834a54c3b5880d4d08ce10248a6a76">AwaitAssertDiscarded</a></div><div class="ttdeci">::testing::AssertionResult AwaitAssertDiscarded(const char *expr, const char *, const process::Future&lt; T &gt; &amp;actual, const Duration &amp;duration)</div><div class="ttdef"><b>Definition:</b> gtest.hpp:164</div></div>
@@ -926,9 +929,9 @@
 <div class="ttc" id="namespaceprocess_html_a5294b892bbfaf52600526bfb7b42bc41"><div class="ttname"><a href="namespaceprocess.html#a5294b892bbfaf52600526bfb7b42bc41">process::READWRITE_HTTP_AUTHENTICATION_REALM</a></div><div class="ttdeci">constexpr char READWRITE_HTTP_AUTHENTICATION_REALM[]</div><div class="ttdef"><b>Definition:</b> gtest.hpp:36</div></div>
 <div class="ttc" id="classDuration_html"><div class="ttname"><a href="classDuration.html">Duration</a></div><div class="ttdef"><b>Definition:</b> duration.hpp:32</div></div>
 <div class="ttc" id="classprocess_1_1Future_html_af23884cf963eb5ec061595eb2e288903"><div class="ttname"><a href="classprocess_1_1Future.html#af23884cf963eb5ec061595eb2e288903">process::Future::isPending</a></div><div class="ttdeci">bool isPending() const </div><div class="ttdef"><b>Definition:</b> future.hpp:1213</div></div>
-<div class="ttc" id="stout_2include_2stout_2gtest_8hpp_html_a9f0924a7f42c846a34589d10d60d7538"><div class="ttname"><a href="stout_2include_2stout_2gtest_8hpp.html#a9f0924a7f42c846a34589d10d60d7538">AssertExitStatusEq</a></div><div class="ttdeci">inline::testing::AssertionResult AssertExitStatusEq(const char *expectedExpr, const char *actualExpr, const int expected, const int actual)</div><div class="ttdef"><b>Definition:</b> gtest.hpp:278</div></div>
+<div class="ttc" id="stout_2include_2stout_2gtest_8hpp_html_a9f0924a7f42c846a34589d10d60d7538"><div class="ttname"><a href="stout_2include_2stout_2gtest_8hpp.html#a9f0924a7f42c846a34589d10d60d7538">AssertExitStatusEq</a></div><div class="ttdeci">inline::testing::AssertionResult AssertExitStatusEq(const char *expectedExpr, const char *actualExpr, const int expected, const int actual)</div><div class="ttdef"><b>Definition:</b> gtest.hpp:280</div></div>
 <div class="ttc" id="stopwatch_8hpp_html"><div class="ttname"><a href="stopwatch_8hpp.html">stopwatch.hpp</a></div></div>
-<div class="ttc" id="libprocess_2include_2process_2gtest_8hpp_html_a94ca5d39f53b828cce40c52051ec5065"><div class="ttname"><a href="libprocess_2include_2process_2gtest_8hpp.html#a94ca5d39f53b828cce40c52051ec5065">AwaitAssertTermSigEq</a></div><div class="ttdeci">inline::testing::AssertionResult AwaitAssertTermSigEq(const char *expectedExpr, const char *actualExpr, const char *durationExpr, const int expected, const process::Future&lt; Option&lt; int &gt;&gt; &amp;actual, const Duration &amp;duration)</div><div class="ttdef"><b>Definition:</b> gtest.hpp:756</div></div>
+<div class="ttc" id="libprocess_2include_2process_2gtest_8hpp_html_a94ca5d39f53b828cce40c52051ec5065"><div class="ttname"><a href="libprocess_2include_2process_2gtest_8hpp.html#a94ca5d39f53b828cce40c52051ec5065">AwaitAssertTermSigEq</a></div><div class="ttdeci">inline::testing::AssertionResult AwaitAssertTermSigEq(const char *expectedExpr, const char *actualExpr, const char *durationExpr, const int expected, const process::Future&lt; Option&lt; int &gt;&gt; &amp;actual, const Duration &amp;duration)</div><div class="ttdef"><b>Definition:</b> gtest.hpp:758</div></div>
 <div class="ttc" id="duration_8hpp_html"><div class="ttname"><a href="duration_8hpp.html">duration.hpp</a></div></div>
 <div class="ttc" id="stout_2include_2stout_2check_8hpp_html_aee320e7c6e107071f4b85d4cc135a265"><div class="ttname"><a href="stout_2include_2stout_2check_8hpp.html#aee320e7c6e107071f4b85d4cc135a265">CHECK_SOME</a></div><div class="ttdeci">#define CHECK_SOME(expression)</div><div class="ttdef"><b>Definition:</b> check.hpp:50</div></div>
 <div class="ttc" id="stout_2include_2stout_2gtest_8hpp_html"><div class="ttname"><a href="stout_2include_2stout_2gtest_8hpp.html">gtest.hpp</a></div></div>
@@ -945,7 +948,7 @@
 <div class="ttc" id="classOption_html_a21358442c0fac1cc978a67a9a9089a79"><div class="ttname"><a href="classOption.html#a21358442c0fac1cc978a67a9a9089a79">Option::get</a></div><div class="ttdeci">const T &amp; get() const &amp;</div><div class="ttdef"><b>Definition:</b> option.hpp:118</div></div>
 <div class="ttc" id="libprocess_2include_2process_2gtest_8hpp_html_ad87911bc1359b66cd739b1c0a53b8f34"><div class="ttname"><a href="libprocess_2include_2process_2gtest_8hpp.html#ad87911bc1359b66cd739b1c0a53b8f34">AwaitAssertResponseBodyEq</a></div><div class="ttdeci">inline::testing::AssertionResult AwaitAssertResponseBodyEq(const char *expectedExpr, const char *actualExpr, const char *durationExpr, const std::string &amp;expected, const process::Future&lt; process::http::Response &gt; &amp;actual, const Duration &amp;duration)</div><div class="ttdef"><b>Definition:</b> gtest.hpp:464</div></div>
 <div class="ttc" id="option_8hpp_html"><div class="ttname"><a href="option_8hpp.html">option.hpp</a></div></div>
-<div class="ttc" id="stout_2include_2stout_2gtest_8hpp_html_a4af6af348abe6fc830763329ae961e5f"><div class="ttname"><a href="stout_2include_2stout_2gtest_8hpp.html#a4af6af348abe6fc830763329ae961e5f">AssertTermSigNe</a></div><div class="ttdeci">inline::testing::AssertionResult AssertTermSigNe(const char *expectedExpr, const char *actualExpr, const int expected, const int actual)</div><div class="ttdef"><b>Definition:</b> gtest.hpp:407</div></div>
+<div class="ttc" id="stout_2include_2stout_2gtest_8hpp_html_a4af6af348abe6fc830763329ae961e5f"><div class="ttname"><a href="stout_2include_2stout_2gtest_8hpp.html#a4af6af348abe6fc830763329ae961e5f">AssertTermSigNe</a></div><div class="ttdeci">inline::testing::AssertionResult AssertTermSigNe(const char *expectedExpr, const char *actualExpr, const int expected, const int actual)</div><div class="ttdef"><b>Definition:</b> gtest.hpp:411</div></div>
 <div class="ttc" id="libprocess_2include_2process_2gtest_8hpp_html_ad7d94eaa58fc7d51e295e99c33351958"><div class="ttname"><a href="libprocess_2include_2process_2gtest_8hpp.html#ad7d94eaa58fc7d51e295e99c33351958">AwaitAssertExited</a></div><div class="ttdeci">inline::testing::AssertionResult AwaitAssertExited(const char *actualExpr, const char *durationExpr, const process::Future&lt; Option&lt; int &gt;&gt; &amp;actual, const Duration &amp;duration)</div><div class="ttdef"><b>Definition:</b> gtest.hpp:580</div></div>
 <div class="ttc" id="libprocess_2include_2process_2gtest_8hpp_html_a064572a727a632a5dedd25197ea5469b"><div class="ttname"><a href="libprocess_2include_2process_2gtest_8hpp.html#a064572a727a632a5dedd25197ea5469b">AwaitAssertExitStatusNe</a></div><div class="ttdeci">inline::testing::AssertionResult AwaitAssertExitStatusNe(const char *expectedExpr, const char *actualExpr, const char *durationExpr, const int expected, const process::Future&lt; Option&lt; int &gt;&gt; &amp;actual, const Duration &amp;duration)</div><div class="ttdef"><b>Definition:</b> gtest.hpp:668</div></div>
 <div class="ttc" id="future_8hpp_html"><div class="ttname"><a href="future_8hpp.html">future.hpp</a></div></div>
@@ -956,8 +959,8 @@
 <div class="ttc" id="classprocess_1_1Clock_html_a4fd154ded1943f0b442bb88151adb758"><div class="ttname"><a href="classprocess_1_1Clock.html#a4fd154ded1943f0b442bb88151adb758">process::Clock::settle</a></div><div class="ttdeci">static void settle()</div></div>
 <div class="ttc" id="clock_8hpp_html"><div class="ttname"><a href="clock_8hpp.html">clock.hpp</a></div></div>
 <div class="ttc" id="classprocess_1_1Latch_html_a473b02733aa6a87f9ce3462d7a872414"><div class="ttname"><a href="classprocess_1_1Latch.html#a473b02733aa6a87f9ce3462d7a872414">process::Latch::await</a></div><div class="ttdeci">bool await(const Duration &amp;duration=Seconds(-1))</div></div>
-<div class="ttc" id="stout_2include_2stout_2gtest_8hpp_html_a5e399531eaa0ff53ca397cadd739fe33"><div class="ttname"><a href="stout_2include_2stout_2gtest_8hpp.html#a5e399531eaa0ff53ca397cadd739fe33">AssertTermSigEq</a></div><div class="ttdeci">inline::testing::AssertionResult AssertTermSigEq(const char *expectedExpr, const char *actualExpr, const int expected, const int actual)</div><div class="ttdef"><b>Definition:</b> gtest.hpp:375</div></div>
-<div class="ttc" id="stout_2include_2stout_2gtest_8hpp_html_a799901963033736968a8328d9aa63b38"><div class="ttname"><a href="stout_2include_2stout_2gtest_8hpp.html#a799901963033736968a8328d9aa63b38">AssertSignaled</a></div><div class="ttdeci">inline::testing::AssertionResult AssertSignaled(const char *actualExpr, const int actual)</div><div class="ttdef"><b>Definition:</b> gtest.hpp:343</div></div>
+<div class="ttc" id="stout_2include_2stout_2gtest_8hpp_html_a5e399531eaa0ff53ca397cadd739fe33"><div class="ttname"><a href="stout_2include_2stout_2gtest_8hpp.html#a5e399531eaa0ff53ca397cadd739fe33">AssertTermSigEq</a></div><div class="ttdeci">inline::testing::AssertionResult AssertTermSigEq(const char *expectedExpr, const char *actualExpr, const int expected, const int actual)</div><div class="ttdef"><b>Definition:</b> gtest.hpp:379</div></div>
+<div class="ttc" id="stout_2include_2stout_2gtest_8hpp_html_a799901963033736968a8328d9aa63b38"><div class="ttname"><a href="stout_2include_2stout_2gtest_8hpp.html#a799901963033736968a8328d9aa63b38">AssertSignaled</a></div><div class="ttdeci">inline::testing::AssertionResult AssertSignaled(const char *actualExpr, const int actual)</div><div class="ttdef"><b>Definition:</b> gtest.hpp:347</div></div>
 <div class="ttc" id="classprocess_1_1Latch_html_a8a13204c5c42c42633674afc8ad6e307"><div class="ttname"><a href="classprocess_1_1Latch.html#a8a13204c5c42c42633674afc8ad6e307">process::Latch::trigger</a></div><div class="ttdeci">bool trigger()</div></div>
 <div class="ttc" id="classOption_html_a06eab791122ebc1f8af4ad310e5e7d7e"><div class="ttname"><a href="classOption.html#a06eab791122ebc1f8af4ad310e5e7d7e">Option::isNone</a></div><div class="ttdeci">bool isNone() const </div><div class="ttdef"><b>Definition:</b> option.hpp:116</div></div>
 <div class="ttc" id="libprocess_2include_2process_2gtest_8hpp_html_abcc52054812ecbc8937d533a3a5e4b72"><div class="ttname"><a href="libprocess_2include_2process_2gtest_8hpp.html#abcc52054812ecbc8937d533a3a5e4b72">AwaitAssertFailed</a></div><div class="ttdeci">::testing::AssertionResult AwaitAssertFailed(const char *expr, const char *, const process::Future&lt; T &gt; &amp;actual, const Duration &amp;duration)</div><div class="ttdef"><b>Definition:</b> gtest.hpp:142</div></div>
@@ -973,10 +976,10 @@
 <div class="ttc" id="libprocess_2include_2process_2gtest_8hpp_html_af5232d02c562e977285d52228e29aaa9"><div class="ttname"><a href="libprocess_2include_2process_2gtest_8hpp.html#af5232d02c562e977285d52228e29aaa9">AwaitAssertReady</a></div><div class="ttdeci">::testing::AssertionResult AwaitAssertReady(const char *expr, const char *, const process::Future&lt; T &gt; &amp;actual, const Duration &amp;duration)</div><div class="ttdef"><b>Definition:</b> gtest.hpp:120</div></div>
 <div class="ttc" id="classprocess_1_1Latch_html"><div class="ttname"><a href="classprocess_1_1Latch.html">process::Latch</a></div><div class="ttdef"><b>Definition:</b> latch.hpp:24</div></div>
 <div class="ttc" id="classprocess_1_1Clock_html_aaba2025cf9ac7b264f113d6a3bf4364c"><div class="ttname"><a href="classprocess_1_1Clock.html#aaba2025cf9ac7b264f113d6a3bf4364c">process::Clock::paused</a></div><div class="ttdeci">static bool paused()</div><div class="ttdoc">Check whether clock is currently running. </div></div>
-<div class="ttc" id="libprocess_2include_2process_2gtest_8hpp_html_a8db0b1187c1add9f6c5af1cc845578e2"><div class="ttname"><a href="libprocess_2include_2process_2gtest_8hpp.html#a8db0b1187c1add9f6c5af1cc845578e2">AwaitAssertSignaled</a></div><div class="ttdeci">inline::testing::AssertionResult AwaitAssertSignaled(const char *actualExpr, const char *durationExpr, const process::Future&lt; Option&lt; int &gt;&gt; &amp;actual, const Duration &amp;duration)</div><div class="ttdef"><b>Definition:</b> gtest.hpp:715</div></div>
+<div class="ttc" id="libprocess_2include_2process_2gtest_8hpp_html_a8db0b1187c1add9f6c5af1cc845578e2"><div class="ttname"><a href="libprocess_2include_2process_2gtest_8hpp.html#a8db0b1187c1add9f6c5af1cc845578e2">AwaitAssertSignaled</a></div><div class="ttdeci">inline::testing::AssertionResult AwaitAssertSignaled(const char *actualExpr, const char *durationExpr, const process::Future&lt; Option&lt; int &gt;&gt; &amp;actual, const Duration &amp;duration)</div><div class="ttdef"><b>Definition:</b> gtest.hpp:717</div></div>
 <div class="ttc" id="classprocess_1_1ClockTestEventListener_html_a684e54b986d32130f3b63e0f4cfa109e"><div class="ttname"><a href="classprocess_1_1ClockTestEventListener.html#a684e54b986d32130f3b63e0f4cfa109e">process::ClockTestEventListener::instance</a></div><div class="ttdeci">static ClockTestEventListener * instance()</div><div class="ttdef"><b>Definition:</b> gtest.hpp:45</div></div>
 <div class="ttc" id="strings_8hpp_html"><div class="ttname"><a href="strings_8hpp.html">strings.hpp</a></div></div>
-<div class="ttc" id="libprocess_2include_2process_2gtest_8hpp_html_ad5c297c3dee7d417b71b4d8675126420"><div class="ttname"><a href="libprocess_2include_2process_2gtest_8hpp.html#ad5c297c3dee7d417b71b4d8675126420">AwaitAssertTermSigNe</a></div><div class="ttdeci">inline::testing::AssertionResult AwaitAssertTermSigNe(const char *expectedExpr, const char *actualExpr, const char *durationExpr, const int expected, const process::Future&lt; Option&lt; int &gt;&gt; &amp;actual, const Duration &amp;duration)</div><div class="ttdef"><b>Definition:</b> gtest.hpp:803</div></div>
+<div class="ttc" id="libprocess_2include_2process_2gtest_8hpp_html_ad5c297c3dee7d417b71b4d8675126420"><div class="ttname"><a href="libprocess_2include_2process_2gtest_8hpp.html#ad5c297c3dee7d417b71b4d8675126420">AwaitAssertTermSigNe</a></div><div class="ttdeci">inline::testing::AssertionResult AwaitAssertTermSigNe(const char *expectedExpr, const char *actualExpr, const char *durationExpr, const int expected, const process::Future&lt; Option&lt; int &gt;&gt; &amp;actual, const Duration &amp;duration)</div><div class="ttdef"><b>Definition:</b> gtest.hpp:805</div></div>
 <div class="ttc" id="stout_2include_2stout_2gtest_8hpp_html_a35ffb1309cac5b5df236add23d5582a4"><div class="ttname"><a href="stout_2include_2stout_2gtest_8hpp.html#a35ffb1309cac5b5df236add23d5582a4">AssertExited</a></div><div class="ttdeci">inline::testing::AssertionResult AssertExited(const char *actualExpr, const int actual)</div><div class="ttdef"><b>Definition:</b> gtest.hpp:246</div></div>
 <div class="ttc" id="classprocess_1_1Future_html_a493227e57f8848e37777b89c0f81e2ec"><div class="ttname"><a href="classprocess_1_1Future.html#a493227e57f8848e37777b89c0f81e2ec">process::Future::isFailed</a></div><div class="ttdeci">bool isFailed() const </div><div class="ttdef"><b>Definition:</b> future.hpp:1234</div></div>
 <div class="ttc" id="classprocess_1_1Future_html"><div class="ttname"><a href="classprocess_1_1Future.html">process::Future</a></div><div class="ttdef"><b>Definition:</b> future.hpp:57</div></div>
