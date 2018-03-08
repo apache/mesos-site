@@ -123,7 +123,7 @@
 
 <ol>
 <li><p>Install the latest <a href="https://www.visualstudio.com/downloads/">Visual Studio 2017</a>:
-The &ldquo;Community&rdquo; edition is sufficient (and free).
+The &ldquo;Community&rdquo; edition is sufficient (and free of charge).
 During installation, choose the &ldquo;Desktop development with C++&rdquo; workload.</p></li>
 <li><p>Install <a href="https://cmake.org/download/">CMake 3.8.0</a> or later.
 During installation, choose to &ldquo;Add CMake to the system PATH for all users&rdquo;.</p></li>
@@ -168,7 +168,7 @@ src\mesos-agent.exe --master=&lt;master&gt; --work_dir=&lt;work folder&gt; --lau
 <p>The current implementation is known to have the following limitations:</p>
 
 <ul>
-<li><p>Only the agent should be run on Windows.  The Mesos master can be
+<li><p>Only the agent should be run on Windows. The Mesos master can be
 launched, but only for testing as the master does not support
 high-availability setups on Windows.</p></li>
 <li><p>While Mesos supports NTFS long paths internally, tasks which do not support
@@ -177,15 +177,38 @@ long paths must be run on agent whose <code>--work_dir</code> is a short path.</
 version 1703, build number 15063), and <a href="https://docs.microsoft.com/en-us/windows-server/get-started/get-started-with-1709">Windows Server, version 1709</a>.
 It is likely that this will increase, due to evolving Windows container
 support and developer features which ease porting.</p></li>
+<li><p>The ability to <a href="https://blogs.windows.com/buildingapps/2016/12/02/symlinks-windows-10/">create symlinks</a> as a non-admin user requires
+Developer Mode to be enabled. Otherwise the agent will need to be
+run under an administrator.</p></li>
 </ul>
 
 
-<h2>Status</h2>
-
-<p>For more information regarding the status of Windows support in Mesos,
-please refer to the <a href="https://issues.apache.org/jira/browse/MESOS-3094">JIRA epic</a>.</p>
-
 <h2>Build Configuration Examples</h2>
+
+<h3>Building with Ninja</h3>
+
+<p>Instead of using MSBuild, it is also possible to build Mesos on
+Windows using <a href="https://ninja-build.org/">Ninja</a>, which can result in
+significantly faster builds. To use Ninja, you need to download it and
+ensure <code>ninja.exe</code> is in your <code>PATH</code>.</p>
+
+<ul>
+<li>Download the <a href="https://github.com/ninja-build/ninja/releases">Windows binary</a>.</li>
+<li>Unzip it and place <code>ninja.exe</code> in your <code>PATH</code>.</li>
+<li>Open an &ldquo;x64 Native Tools Command Prompt for VS 2017&rdquo; to set your
+environment.</li>
+<li>In that command prompt, type <code>powershell</code> to use a better shell.</li>
+<li>Similar to above, configure CMake with
+<code>cmake .. -G Ninja -DENABLE_LIBEVENT=1</code>.</li>
+<li>Now you can use <code>ninja</code> to build the various targets.</li>
+<li>You may want to use <code>ninja -v</code> to make it verbose, as it&rsquo;s otherwise
+very quiet.</li>
+</ul>
+
+
+<p>Note that with Ninja it is imperative to open the correct developer
+command prompt so that the 64-bit build tools are used, as Ninja does
+not otherwise know how to find them.</p>
 
 <h3>Building with Java</h3>
 
