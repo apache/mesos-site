@@ -171,7 +171,7 @@
 
 <h2>Master Failover Time-To-Completion</h2>
 
-<p>Our first area of focus was to improve the time it takes for a master failover to complete, where completion is defined as all of the agents successfully re-registering. Mesos is architected to use a centralized master with standby masters that participate in a quorum for high availability. For scalability reasons, the leading master stores the state of the cluster in-memory. During a master failover, the leading master needs to therefore re-build the in-memory state from all of the agents that re-register. During this time, the master is available to process other requests, but will be exposing only partial state to API consumers.</p>
+<p>Our first area of focus was to improve the time it takes for a master failover to complete, where completion is defined as all of the agents successfully reregistering. Mesos is architected to use a centralized master with standby masters that participate in a quorum for high availability. For scalability reasons, the leading master stores the state of the cluster in-memory. During a master failover, the leading master needs to therefore re-build the in-memory state from all of the agents that reregister. During this time, the master is available to process other requests, but will be exposing only partial state to API consumers.</p>
 
 <p>The rebuilding of the master’s in-memory state can be expensive for larger clusters, and so the focus of this effort was to improve the efficiency of this. Improvements were made via several areas, and only the highest-impact changes are listed below:</p>
 
@@ -200,10 +200,10 @@
 
 <h3>Benchmark and Results</h3>
 
-<p>We wrote a synthetic benchmark to simulate a master failover. This benchmark prepares all the messages that would be sent to the master by the agents that need to re-register:</p>
+<p>We wrote a synthetic benchmark to simulate a master failover. This benchmark prepares all the messages that would be sent to the master by the agents that need to reregister:</p>
 
 <ul>
-<li>The benchmark uses synthetic agents in that they are just an actor that knows how to re-register with the master.</li>
+<li>The benchmark uses synthetic agents in that they are just an actor that knows how to reregister with the master.</li>
 <li>Each &ldquo;agent&rdquo; will send a configurable number of active and completed tasks belonging to a configurable number of active and completed frameworks.</li>
 <li>Each task has 10 small labels to introduce metadata overhead.</li>
 </ul>
@@ -248,7 +248,7 @@
 </ul>
 
 
-<p>If you are a user and would like to suggest some areas for performance improvement, please let us know by emailing <a href="&#109;&#x61;&#105;&#108;&#116;&#x6f;&#58;&#x64;&#101;&#x76;&#x40;&#x61;&#112;&#x61;&#x63;&#104;&#101;&#x2e;&#x6d;&#101;&#x73;&#111;&#115;&#46;&#111;&#x72;&#103;">&#100;&#x65;&#x76;&#64;&#x61;&#112;&#97;&#x63;&#104;&#101;&#x2e;&#x6d;&#101;&#x73;&#111;&#x73;&#x2e;&#x6f;&#x72;&#x67;</a>.</p>
+<p>If you are a user and would like to suggest some areas for performance improvement, please let us know by emailing <a href="&#109;&#97;&#105;&#x6c;&#x74;&#x6f;&#x3a;&#100;&#x65;&#x76;&#x40;&#97;&#x70;&#x61;&#x63;&#104;&#101;&#46;&#109;&#101;&#115;&#111;&#x73;&#46;&#111;&#114;&#x67;">&#x64;&#x65;&#x76;&#64;&#x61;&#x70;&#97;&#99;&#x68;&#x65;&#x2e;&#x6d;&#x65;&#x73;&#x6f;&#x73;&#46;&#111;&#114;&#x67;</a>.</p>
 
   </div>
 </div>

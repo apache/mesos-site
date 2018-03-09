@@ -218,7 +218,7 @@ To learn more about CSI work in Mesos, you can dig into the design document &lt;
 
 &lt;h2&gt;Master Failover Time-To-Completion&lt;/h2&gt;
 
-&lt;p&gt;Our first area of focus was to improve the time it takes for a master failover to complete, where completion is defined as all of the agents successfully re-registering. Mesos is architected to use a centralized master with standby masters that participate in a quorum for high availability. For scalability reasons, the leading master stores the state of the cluster in-memory. During a master failover, the leading master needs to therefore re-build the in-memory state from all of the agents that re-register. During this time, the master is available to process other requests, but will be exposing only partial state to API consumers.&lt;/p&gt;
+&lt;p&gt;Our first area of focus was to improve the time it takes for a master failover to complete, where completion is defined as all of the agents successfully reregistering. Mesos is architected to use a centralized master with standby masters that participate in a quorum for high availability. For scalability reasons, the leading master stores the state of the cluster in-memory. During a master failover, the leading master needs to therefore re-build the in-memory state from all of the agents that reregister. During this time, the master is available to process other requests, but will be exposing only partial state to API consumers.&lt;/p&gt;
 
 &lt;p&gt;The rebuilding of the master’s in-memory state can be expensive for larger clusters, and so the focus of this effort was to improve the efficiency of this. Improvements were made via several areas, and only the highest-impact changes are listed below:&lt;/p&gt;
 
@@ -247,10 +247,10 @@ To learn more about CSI work in Mesos, you can dig into the design document &lt;
 
 &lt;h3&gt;Benchmark and Results&lt;/h3&gt;
 
-&lt;p&gt;We wrote a synthetic benchmark to simulate a master failover. This benchmark prepares all the messages that would be sent to the master by the agents that need to re-register:&lt;/p&gt;
+&lt;p&gt;We wrote a synthetic benchmark to simulate a master failover. This benchmark prepares all the messages that would be sent to the master by the agents that need to reregister:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;The benchmark uses synthetic agents in that they are just an actor that knows how to re-register with the master.&lt;/li&gt;
+&lt;li&gt;The benchmark uses synthetic agents in that they are just an actor that knows how to reregister with the master.&lt;/li&gt;
 &lt;li&gt;Each &amp;ldquo;agent&amp;rdquo; will send a configurable number of active and completed tasks belonging to a configurable number of active and completed frameworks.&lt;/li&gt;
 &lt;li&gt;Each task has 10 small labels to introduce metadata overhead.&lt;/li&gt;
 &lt;/ul&gt;
@@ -295,7 +295,7 @@ To learn more about CSI work in Mesos, you can dig into the design document &lt;
 &lt;/ul&gt;
 
 
-&lt;p&gt;If you are a user and would like to suggest some areas for performance improvement, please let us know by emailing &lt;a href=&quot;&amp;#109;&amp;#x61;&amp;#105;&amp;#108;&amp;#116;&amp;#x6f;&amp;#58;&amp;#x64;&amp;#101;&amp;#x76;&amp;#x40;&amp;#x61;&amp;#112;&amp;#x61;&amp;#x63;&amp;#104;&amp;#101;&amp;#x2e;&amp;#x6d;&amp;#101;&amp;#x73;&amp;#111;&amp;#115;&amp;#46;&amp;#111;&amp;#x72;&amp;#103;&quot;&gt;&amp;#100;&amp;#x65;&amp;#x76;&amp;#64;&amp;#x61;&amp;#112;&amp;#97;&amp;#x63;&amp;#104;&amp;#101;&amp;#x2e;&amp;#x6d;&amp;#101;&amp;#x73;&amp;#111;&amp;#x73;&amp;#x2e;&amp;#x6f;&amp;#x72;&amp;#x67;&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;If you are a user and would like to suggest some areas for performance improvement, please let us know by emailing &lt;a href=&quot;&amp;#109;&amp;#97;&amp;#105;&amp;#x6c;&amp;#x74;&amp;#x6f;&amp;#x3a;&amp;#100;&amp;#x65;&amp;#x76;&amp;#x40;&amp;#97;&amp;#x70;&amp;#x61;&amp;#x63;&amp;#104;&amp;#101;&amp;#46;&amp;#109;&amp;#101;&amp;#115;&amp;#111;&amp;#x73;&amp;#46;&amp;#111;&amp;#114;&amp;#x67;&quot;&gt;&amp;#x64;&amp;#x65;&amp;#x76;&amp;#64;&amp;#x61;&amp;#x70;&amp;#97;&amp;#99;&amp;#x68;&amp;#x65;&amp;#x2e;&amp;#x6d;&amp;#x65;&amp;#x73;&amp;#x6f;&amp;#x73;&amp;#46;&amp;#111;&amp;#114;&amp;#x67;&lt;/a&gt;.&lt;/p&gt;
 
 	</content>
   </entry>
@@ -427,7 +427,7 @@ to efficiently measure disk usage without enforcing usage constraints. The
 previous implementation always enforced the quota even if the operator might
 not have wanted it.&lt;/p&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-6223&quot;&gt;MESOS-6223&lt;/a&gt; -
-With partition awareness, the agents are now allowed to re-register after they
+With partition awareness, the agents are now allowed to reregister after they
 have been marked Unreachable. Thus, they can recover their agent ID after a
 host reboot. See docs/upgrades.md for details.&lt;/p&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-6375&quot;&gt;MESOS-6375&lt;/a&gt; -
@@ -3018,11 +3018,11 @@ please note the &lt;a href=&quot;http://mesos.apache.org/documentation/latest/mo
 
 &lt;ul&gt;
 &lt;li&gt;In the event of a dual failure (slave fails while master is down), no lost task notifications are sent. This leads to a task running according to the framework but unknown to Mesos.&lt;/li&gt;
-&lt;li&gt;When a new master is elected, we may allow rogue slaves to re-register with the master. This leads to tasks running on the slave that are not known to the framework.&lt;/li&gt;
+&lt;li&gt;When a new master is elected, we may allow rogue slaves to reregister with the master. This leads to tasks running on the slave that are not known to the framework.&lt;/li&gt;
 &lt;/ul&gt;
 
 
-&lt;p&gt;Persisting the list of registered slaves allows failed over masters to detect slaves that do not re-register, and notify frameworks accordingly. It also allows us to prevent rogue slaves from re-registering; terminating the rogue tasks in the process.&lt;/p&gt;
+&lt;p&gt;Persisting the list of registered slaves allows failed over masters to detect slaves that do not reregister, and notify frameworks accordingly. It also allows us to prevent rogue slaves from reregistering; terminating the rogue tasks in the process.&lt;/p&gt;
 
 &lt;p&gt;The state is persisted using the &lt;a href=&quot;http://mesos.apache.org/blog/mesos-0-17-0-released-featuring-autorecovery/&quot;&gt;replicated log&lt;/a&gt; (available since 0.9.0).&lt;/p&gt;
 
@@ -3450,7 +3450,7 @@ please note the &lt;a href=&quot;http://mesos.apache.org/documentation/latest/mo
 &lt;p&gt;  As part of this feature, the executor driver has also been improved to make it more resilient in the face of a slave failure. As an example, status updates sent by the executor while the slave is down are cached by the driver and sent to the slave when it reconnects with the restarted slave. Since this is all handled by the executor driver, framework/executor writers do not have to worry about it! The executors can keep sending status updates for their tasks while remaining oblivious to the slave being up or down.&lt;/p&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;&lt;strong&gt;Reliable status updates&lt;/strong&gt;&lt;/p&gt;
 
-&lt;p&gt;  Another benefit of slave checkpointing the status updates is that now updates are more reliably delivered to frameworks in the face of failures. Before slave recovery if the slave fails at the same time that a master is failing over, no TASK_LOST updates for tasks running on the slave were sent to the framework. This is partly because the Mesos master is stateless. A failed over master reconstructs the cluster state from the information given to it by re-registering slaves and frameworks. With slave recovery, status updates and tasks are no longer lost when slaves fail. Rather, the slave recovers tasks, status updates and reconnects with the running executors. Even if an executor does terminate when the slave is down, a recovered slave knows about it from its checkpointed state and reliably sends TASK_LOST updates to the framework.&lt;/p&gt;&lt;/li&gt;
+&lt;p&gt;  Another benefit of slave checkpointing the status updates is that now updates are more reliably delivered to frameworks in the face of failures. Before slave recovery if the slave fails at the same time that a master is failing over, no TASK_LOST updates for tasks running on the slave were sent to the framework. This is partly because the Mesos master is stateless. A failed over master reconstructs the cluster state from the information given to it by reregistering slaves and frameworks. With slave recovery, status updates and tasks are no longer lost when slaves fail. Rather, the slave recovers tasks, status updates and reconnects with the running executors. Even if an executor does terminate when the slave is down, a recovered slave knows about it from its checkpointed state and reliably sends TASK_LOST updates to the framework.&lt;/p&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 

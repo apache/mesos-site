@@ -2382,7 +2382,7 @@ for all the running tasks. This signal can be used by stateful frameworks to
 re-schedule their workloads (volumes, reservations etc.) to other agent
 instances. It is possible that the tasks might still be running if the
 operator&rsquo;s assertion was wrong and the agent was partitioned away from
-the master. The agent would be shutdown when it tries to re-register with the
+the master. The agent would be shutdown when it tries to reregister with the
 master when the partition heals. This call is idempotent.</p>
 
 <pre><code>MARK_AGENT_GONE HTTP Request (JSON):
@@ -2462,7 +2462,7 @@ Transfer-Encoding: chunked
 
 <h3>TASK_ADDED</h3>
 
-<p>Sent whenever a task has been added to the master. This can happen either when a new task launch is processed by the master or when an agent re-registers with a failed over master.</p>
+<p>Sent whenever a task has been added to the master. This can happen either when a new task launch is processed by the master or when an agent reregisters with a failed over master.</p>
 
 <pre><code>TASK_ADDED Event (JSON)
 
@@ -2567,7 +2567,7 @@ Transfer-Encoding: chunked
 
 <h3>FRAMEWORK_UPDATED</h3>
 
-<p>Sent whenever a framework re-registers with the master upon a disconnection (network error) or upon a master failover.</p>
+<p>Sent whenever a framework reregisters with the master upon a disconnection (network error) or upon a master failover.</p>
 
 <pre><code>FRAMEWORK_UPDATED Event (JSON)
 
@@ -2610,7 +2610,7 @@ Transfer-Encoding: chunked
 
 <h3>FRAMEWORK_REMOVED</h3>
 
-<p>Sent whenever a framework is removed. This can happen when a framework is explicitly teardown by the operator or if it fails to re-register with the master within the failover timeout.</p>
+<p>Sent whenever a framework is removed. This can happen when a framework is explicitly teardown by the operator or if it fails to reregister with the master within the failover timeout.</p>
 
 <pre><code>FRAMEWORK_REMOVED Event (JSON)
 
