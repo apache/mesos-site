@@ -183,7 +183,7 @@
 
 <ul>
 <li><p>The lower level <code>LeaderContender</code> and <code>LeaderDetector</code> implement a generic ZooKeeper election algorithm loosely modeled after this
-<a href="http://zookeeper.apache.org/doc/trunk/recipes.html#sc_leaderElection">recipe</a> (sans herd effect handling due to the master group&rsquo;s small size, which is often 3).</p></li>
+<a href="http://zookeeper.apache.org/doc/current/recipes.html#sc_leaderElection">recipe</a> (sans herd effect handling due to the master group&rsquo;s small size, which is often 3).</p></li>
 <li><p>The higher level <code>MasterContender</code> and <code>MasterDetector</code> wrap around ZooKeeper&rsquo;s contender and detector abstractions as adapters to provide/interpret the ZooKeeper data.</p></li>
 <li><p>Each Mesos master simultaneously uses both a contender and a detector to try to elect themselves and detect who the current leader is. A separate detector is necessary because each master&rsquo;s WebUI redirects browser traffic to the current leader when that master is not elected. Other Mesos components (i.e., agents and scheduler drivers) use the detector to find the current leader and connect to it.</p></li>
 </ul>
