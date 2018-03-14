@@ -62,6 +62,7 @@
 <code>#include &lt;<a class="el" href="include_2mesos_2mesos_8hpp_source.html">mesos/mesos.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="include_2mesos_2authorizer_2authorizer_8hpp_source.html">mesos/authorizer/authorizer.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="include_2mesos_2quota_2quota_8hpp_source.html">mesos/quota/quota.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="3rdparty_2libprocess_2include_2process_2authenticator_8hpp_source.html">process/authenticator.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="future_8hpp_source.html">process/future.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="3rdparty_2libprocess_2include_2process_2http_8hpp_source.html">process/http.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="owned_8hpp_source.html">process/owned.hpp</a>&gt;</code><br />
@@ -76,11 +77,13 @@
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstd_1_1hash_3_01mesos_1_1authorization_1_1Action_01_4.html">std::hash&lt; mesos::authorization::Action &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmesos_1_1internal_1_1RequestMediaTypes.html">mesos::internal::RequestMediaTypes</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1AcceptingObjectApprover.html">mesos::AcceptingObjectApprover</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1AuthorizationAcceptor.html">mesos::AuthorizationAcceptor</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1ObjectApprovers.html">mesos::ObjectApprovers</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1IDAcceptor.html">mesos::IDAcceptor&lt; T &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to filter results for API handlers.  <a href="classmesos_1_1IDAcceptor.html#details">More...</a><br /></td></tr>
@@ -88,6 +91,8 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
+<tr class="memitem:namespacestd"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestd.html">std</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacemesos"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos.html">mesos</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacemesos_1_1internal"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1internal.html">mesos::internal</a></td></tr>
@@ -144,22 +149,11 @@ Functions</h2></td></tr>
 <tr class="separator:a876801d3f6c22d613cf83123c4598d5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4b83a9b4d6d4952f6b687add145a96d1"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceprocess_1_1http_1_1authorization.html#affe51580eadc8728411234d784808ece">process::http::authorization::AuthorizationCallbacks</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos.html#a4b83a9b4d6d4952f6b687add145a96d1">mesos::createAuthorizationCallbacks</a> (Authorizer *authorizer)</td></tr>
 <tr class="separator:a4b83a9b4d6d4952f6b687add145a96d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a04bc4b7d18b08c608828cac2b3004a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos.html#a8a04bc4b7d18b08c608828cac2b3004a">mesos::approveViewFrameworkInfo</a> (const <a class="el" href="classprocess_1_1Owned.html">process::Owned</a>&lt; ObjectApprover &gt; &amp;frameworksApprover, const FrameworkInfo &amp;frameworkInfo)</td></tr>
-<tr class="separator:a8a04bc4b7d18b08c608828cac2b3004a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a254e7b935a0110e95e8076a5f5d29934"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos.html#a254e7b935a0110e95e8076a5f5d29934">mesos::approveViewExecutorInfo</a> (const <a class="el" href="classprocess_1_1Owned.html">process::Owned</a>&lt; ObjectApprover &gt; &amp;executorsApprover, const ExecutorInfo &amp;executorInfo, const FrameworkInfo &amp;frameworkInfo)</td></tr>
-<tr class="separator:a254e7b935a0110e95e8076a5f5d29934"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a54cc3ddbec7dba620584d1c8e0c12d23"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos.html#a54cc3ddbec7dba620584d1c8e0c12d23">mesos::approveViewTaskInfo</a> (const <a class="el" href="classprocess_1_1Owned.html">process::Owned</a>&lt; ObjectApprover &gt; &amp;tasksApprover, const TaskInfo &amp;taskInfo, const FrameworkInfo &amp;frameworkInfo)</td></tr>
-<tr class="separator:a54cc3ddbec7dba620584d1c8e0c12d23"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9a61d1410b2000856aef4427ab9d03e4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos.html#a9a61d1410b2000856aef4427ab9d03e4">mesos::approveViewTask</a> (const <a class="el" href="classprocess_1_1Owned.html">process::Owned</a>&lt; ObjectApprover &gt; &amp;tasksApprover, const Task &amp;task, const FrameworkInfo &amp;frameworkInfo)</td></tr>
-<tr class="separator:a9a61d1410b2000856aef4427ab9d03e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae0eb1987d262ac7d089cb6865c7fa3c8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos.html#ae0eb1987d262ac7d089cb6865c7fa3c8">mesos::approveViewFlags</a> (const <a class="el" href="classprocess_1_1Owned.html">process::Owned</a>&lt; ObjectApprover &gt; &amp;flagsApprover)</td></tr>
-<tr class="separator:ae0eb1987d262ac7d089cb6865c7fa3c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32d3c2a48160df803ce466136940440e"><td class="memTemplParams" colspan="2">template&lt;&gt; </td></tr>
+<tr class="memitem:a32d3c2a48160df803ce466136940440e"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemesos.html#a32d3c2a48160df803ce466136940440e">mesos::ObjectApprovers::approved&lt; authorization::VIEW_ROLE &gt;</a> (const Resource &amp;resource)</td></tr>
+<tr class="separator:a32d3c2a48160df803ce466136940440e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1cf38910e9883f2375ee724671784e27"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos.html#a1cf38910e9883f2375ee724671784e27">mesos::authorizeEndpoint</a> (const std::string &amp;endpoint, const std::string &amp;method, const <a class="el" href="classOption.html">Option</a>&lt; Authorizer * &gt; &amp;authorizer, const <a class="el" href="classOption.html">Option</a>&lt; <a class="el" href="structprocess_1_1http_1_1authentication_1_1Principal.html">process::http::authentication::Principal</a> &gt; &amp;principal)</td></tr>
 <tr class="separator:a1cf38910e9883f2375ee724671784e27"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afe270c43274348d86d7cbefc8702b5cb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos.html#afe270c43274348d86d7cbefc8702b5cb">mesos::approveViewRole</a> (const <a class="el" href="classprocess_1_1Owned.html">process::Owned</a>&lt; ObjectApprover &gt; &amp;rolesApprover, const std::string &amp;role)</td></tr>
-<tr class="separator:afe270c43274348d86d7cbefc8702b5cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae17da17ee0b8c22416e3e7f4fa416a49"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos.html#ae17da17ee0b8c22416e3e7f4fa416a49">mesos::authorizeResource</a> (const Resource &amp;resource, const <a class="el" href="classOption.html">Option</a>&lt; <a class="el" href="classprocess_1_1Owned.html">process::Owned</a>&lt; AuthorizationAcceptor &gt;&gt; &amp;acceptor)</td></tr>
-<tr class="separator:ae17da17ee0b8c22416e3e7f4fa416a49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b9820f049a74a88b8c7523c8d74deea"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTry.html">Try</a>&lt; <a class="el" href="structNothing.html">Nothing</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos.html#a7b9820f049a74a88b8c7523c8d74deea">mesos::initializeHttpAuthenticators</a> (const std::string &amp;realm, const std::vector&lt; std::string &gt; &amp;httpAuthenticatorNames, const <a class="el" href="classOption.html">Option</a>&lt; Credentials &gt; &amp;credentials=<a class="el" href="structNone.html">None</a>(), const <a class="el" href="classOption.html">Option</a>&lt; std::string &gt; &amp;jwtSecretKey=<a class="el" href="structNone.html">None</a>())</td></tr>
 <tr class="memdesc:a7b9820f049a74a88b8c7523c8d74deea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper function to create HTTP authenticators for a given realm and register in libprocess.  <a href="namespacemesos.html#a7b9820f049a74a88b8c7523c8d74deea">More...</a><br /></td></tr>
 <tr class="separator:a7b9820f049a74a88b8c7523c8d74deea"><td class="memSeparator" colspan="2">&#160;</td></tr>
