@@ -224,8 +224,8 @@ isolator) will not affect container orchestration.</p>
 <h4><a name="adding-modifying-deleting"></a>Adding/Deleting/Modifying CNI networks</h4>
 
 <p>The <code>network/cni</code> isolator learns about all the CNI networks by
-reading the CNI configuration specified in <code>--network_cni_config_dir</code>
-. Hence, if the operator wants to add a CNI network, the corresponding
+reading the CNI configuration specified in <code>--network_cni_config_dir</code>.
+Hence, if the operator wants to add a CNI network, the corresponding
 configuration needs to be added to <code>--network_cni_config_dir</code>.</p>
 
 <p>While the <code>network/cni</code> isolator learns the CNI networks by reading
@@ -245,13 +245,13 @@ destroyed, even if the CNI configuration is deleted.</p>
 <p>The fact that the <code>network/cni</code> isolator always reads the CNI
 configurations from the disk allows the operator to dynamically add,
 modify and delete CNI configurations without the need to restart the
-agent. Whenever the operator adds a new CNI configuration, or modifies
-an existing CNI configuration, the agent will pick up this new CNI
-configuration when the next container is launched on that specific CNI
-network. Similarly when the operator deletes a CNI network the
-<code>network/cni</code> isolator will &ldquo;unlearn&rdquo; the CNI network (since it will
-have a reference to this CNI network when it started) in case a
-framework tries to launch a container on the deleted CNI network.</p>
+agent. Whenever the operator modifies an existing CNI configuration,
+the agent will pick up this new CNI configuration when the next
+container is launched on that specific CNI network. Similarly when the
+operator deletes a CNI network the <code>network/cni</code> isolator will
+&ldquo;unlearn&rdquo; the CNI network (since it will have a reference to this CNI
+network when it started) in case a framework tries to launch a
+container on the deleted CNI network.</p>
 
 <h4><a name="attaching-containers-to-cni-networks"></a>Attaching containers to CNI networks</h4>
 
