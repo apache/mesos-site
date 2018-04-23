@@ -139,7 +139,11 @@ considered stable and is the recommended way to develop new Mesos schedulers.</p
 
 <p><strong>Schedulers are expected to keep the subscription connection open as long as possible (barring errors in network, software, hardware, etc.) and incrementally process the response.</strong> HTTP client libraries that can only parse the response after the connection is closed cannot be used. For the encoding used, please refer to <strong>Events</strong> section below.</p>
 
-<p>All subsequent (non-<code>SUBSCRIBE</code>) requests to the &ldquo;/scheduler&rdquo; endpoint (see details below in <strong>Calls</strong> section) must be sent using a different connection than the one used for subscription. The master responds to these HTTP POST requests with &ldquo;202 Accepted&rdquo; status codes (or, for unsuccessful requests, with 4xx or 5xx status codes; details in later sections). The &ldquo;202 Accepted&rdquo; response means that a request has been accepted for processing, not that the processing of the request has been completed. The request might or might not be acted upon by Mesos (e.g., master fails during the processing of the request). Any asynchronous responses from these requests will be streamed on the long-lived subscription connection. Schedulers can submit requests using more than one different HTTP connection.</p>
+<p>All subsequent (non-<code>SUBSCRIBE</code>) requests to the &ldquo;/scheduler&rdquo; endpoint (see details below in <strong>Calls</strong> section) must be sent using a different connection than the one used for subscription. Schedulers can submit requests using more than one different HTTP connection.</p>
+
+<p>The master responds to HTTP POST requests that require asynchronous processing with status <strong>202 Accepted</strong> (or, for unsuccessful requests, with 4xx or 5xx status codes; details in later sections). The <strong>202 Accepted</strong> response means that a request has been accepted for processing, not that the processing of the request has been completed. The request might or might not be acted upon by Mesos (e.g., master fails during the processing of the request). Any asynchronous responses from these requests will be streamed on the long-lived subscription connection.</p>
+
+<p>The master responds to HTTP POST requests that can be answered synchronously and immediately with status <strong>200 OK</strong> (or, for unsuccessful requests, with 4xx or 5xx status codes; details in later sections), possibly including a response body encoded in JSON or Protobuf. The encoding depends on the <strong>Accept</strong> header present in the request (the default encoding is JSON).</p>
 
 <h2>Calls</h2>
 
@@ -271,6 +275,10 @@ HTTP/1.1 202 Accepted
 <p>The scheduler API uses <code>Filters.refuse_seconds</code> to specify the duration for which resources are considered declined. If <code>filters</code> is not set, then the default value defined in <a href="https://github.com/apache/mesos/blob/master/include/mesos/v1/mesos.proto">mesos.proto</a> will be used.</p>
 
 <p>NOTE: Mesos will cap <code>Filters.refuse_seconds</code> at 31536000 seconds (365 days).</p>
+
+<p>The master will send task status updates in response to <code>LAUNCH</code> and <code>LAUNCH_GROUP</code> operations. For other types of operations, if an operation ID is specified, the master will send operation status updates in response.</p>
+
+<p>NOTE: For the time being, an operation ID can only be set if the operation affects resources provided by a <a href="/documentation/latest/./csi/#resource-providers">resource provider</a>. See <a href="https://issues.apache.org/jira/browse/MESOS-8371">MESOS-8194</a> for more details.</p>
 
 <pre><code>ACCEPT Request (JSON):
 POST /api/v1/scheduler  HTTP/1.1
@@ -452,6 +460,32 @@ ACKNOWLEDGE Response:
 HTTP/1.1 202 Accepted
 </code></pre>
 
+<h3>ACKNOWLEDGE_OPERATION_STATUS</h3>
+
+<p>Sent by the scheduler to acknowledge an operation status update. Schedulers are responsible for explicitly acknowledging the receipt of status updates that have <code>status.uuid</code> set. These status updates are retried until they are acknowledged by the scheduler. The scheduler must not acknowledge status updates that do not have <code>status.uuid</code> set, as they are not retried. The <code>uuid</code> field contains raw bytes encoded in Base64.</p>
+
+<pre><code>ACKNOWLEDGE_OPERATION_STATUS Request (JSON):
+POST /api/v1/scheduler  HTTP/1.1
+
+Host: masterhost:5050
+Content-Type: application/json
+Mesos-Stream-Id: 130ae4e3-6b13-4ef4-baa9-9f2e85c3e9af
+
+{
+  "framework_id": { "value": "12220-3440-12532-2345" },
+  "type": "ACKNOWLEDGE_OPERATION_STATUS",
+  "acknowledge_operation_status": {
+    "agent_id": { "value": "12220-3440-12532-S1233" },
+    "resource_provider_id": { "value": "12220-3440-12532-rp" },
+    "uuid": "jhadf73jhakdlfha723adf",
+    "operation_id": "73jhakdlfha723adf"
+  }
+}
+
+ACKNOWLEDGE_OPERATION_STATUS Response:
+HTTP/1.1 202 Accepted
+</code></pre>
+
 <h3>RECONCILE</h3>
 
 <p>Sent by the scheduler to query the status of non-terminal tasks. This causes the master to send back <code>UPDATE</code> events for each task in the list. Tasks that are no longer known to Mesos will result in <code>TASK_LOST</code> updates. If the list of tasks is empty, master will send <code>UPDATE</code> events for all currently known tasks of the framework.</p>
@@ -477,6 +511,50 @@ Mesos-Stream-Id: 130ae4e3-6b13-4ef4-baa9-9f2e85c3e9af
 
 RECONCILE Response:
 HTTP/1.1 202 Accepted
+</code></pre>
+
+<h3>RECONCILE_OPERATIONS</h3>
+
+<p>Sent by the scheduler to query the status of non-terminal operations. The master will respond with a <code>RECONCILE_OPERATIONS</code> response containing the status of each operation in the list. If the list of operations is empty, the master will include in the response all currently known operations of the framework.</p>
+
+<pre><code>RECONCILE_OPERATIONS Request (JSON):
+POST /api/v1/scheduler   HTTP/1.1
+
+Host: masterhost:5050
+Content-Type: application/json
+Accept: application/json
+Mesos-Stream-Id: 130ae4e3-6b13-4ef4-baa9-9f2e85c3e9af
+
+{
+  "framework_id": { "value": "12220-3440-12532-2345" },
+  "type": "RECONCILE_OPERATIONS",
+  "reconcile_operations": {
+    "operations": [
+      {
+        "operation_id": { "value": "312325" },
+        "agent_id": { "value": "123535" }
+      }
+    ]
+  }
+}
+
+RECONCILE_OPERATIONS Response:
+HTTP/1.1 200 Accepted
+
+Content-Type: application/json
+
+{
+  "type": "RECONCILE_OPERATIONS",
+  "reconcile_operations": {
+    "operation_statuses": [
+      {
+        "operation_id": { "value": "312325" },
+        "state": "OPERATION_PENDING",
+        "uuid": "adfadfadbhgvjayd23r2uahj"
+      }
+    ]
+  }
+}
 </code></pre>
 
 <h3>MESSAGE</h3>

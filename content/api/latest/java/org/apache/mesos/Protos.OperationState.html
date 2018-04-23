@@ -169,9 +169,37 @@ extends java.lang.Enum&lt;<a href="../../../org/apache/mesos/Protos.OperationSta
 </td>
 </tr>
 <tr class="altColor">
+<td class="colOne"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.OperationState.html#OPERATION_GONE_BY_OPERATOR">OPERATION_GONE_BY_OPERATOR</a></span></code>
+<div class="block">
+ The operation affected an agent that the master cannot contact;
+ the operator has asserted that the agent has been shutdown, but this has
+ not been directly confirmed by the master.</div>
+</td>
+</tr>
+<tr class="rowColor">
 <td class="colOne"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.OperationState.html#OPERATION_PENDING">OPERATION_PENDING</a></span></code>
 <div class="block">
  Initial state.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.OperationState.html#OPERATION_RECOVERING">OPERATION_RECOVERING</a></span></code>
+<div class="block">
+ The operation affects an agent that the master recovered from its
+ state, but that agent has not yet re-registered.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.OperationState.html#OPERATION_UNKNOWN">OPERATION_UNKNOWN</a></span></code>
+<div class="block">
+ The master has no knowledge of the operation.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.OperationState.html#OPERATION_UNREACHABLE">OPERATION_UNREACHABLE</a></span></code>
+<div class="block">
+ The operation affects an agent that has lost contact with the master,
+ typically due to a network failure or partition.</div>
 </td>
 </tr>
 <tr class="rowColor">
@@ -225,9 +253,41 @@ extends java.lang.Enum&lt;<a href="../../../org/apache/mesos/Protos.OperationSta
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>static int</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.OperationState.html#OPERATION_GONE_BY_OPERATOR_VALUE">OPERATION_GONE_BY_OPERATOR_VALUE</a></span></code>
+<div class="block">
+ The operation affected an agent that the master cannot contact;
+ the operator has asserted that the agent has been shutdown, but this has
+ not been directly confirmed by the master.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static int</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.OperationState.html#OPERATION_PENDING_VALUE">OPERATION_PENDING_VALUE</a></span></code>
 <div class="block">
  Initial state.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static int</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.OperationState.html#OPERATION_RECOVERING_VALUE">OPERATION_RECOVERING_VALUE</a></span></code>
+<div class="block">
+ The operation affects an agent that the master recovered from its
+ state, but that agent has not yet re-registered.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static int</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.OperationState.html#OPERATION_UNKNOWN_VALUE">OPERATION_UNKNOWN_VALUE</a></span></code>
+<div class="block">
+ The master has no knowledge of the operation.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static int</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.OperationState.html#OPERATION_UNREACHABLE_VALUE">OPERATION_UNREACHABLE_VALUE</a></span></code>
+<div class="block">
+ The operation affects an agent that has lost contact with the master,
+ typically due to a network failure or partition.</div>
 </td>
 </tr>
 <tr class="rowColor">
@@ -403,7 +463,7 @@ the order they are declared.</div>
 <a name="OPERATION_DROPPED">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>OPERATION_DROPPED</h4>
 <pre>public static final&nbsp;<a href="../../../org/apache/mesos/Protos.OperationState.html" title="enum in org.apache.mesos">Protos.OperationState</a> OPERATION_DROPPED</pre>
@@ -412,6 +472,77 @@ the order they are declared.</div>
  </pre>
 
  <code>OPERATION_DROPPED = 5;</code></div>
+</li>
+</ul>
+<a name="OPERATION_UNREACHABLE">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>OPERATION_UNREACHABLE</h4>
+<pre>public static final&nbsp;<a href="../../../org/apache/mesos/Protos.OperationState.html" title="enum in org.apache.mesos">Protos.OperationState</a> OPERATION_UNREACHABLE</pre>
+<div class="block"><pre>
+ The operation affects an agent that has lost contact with the master,
+ typically due to a network failure or partition. The operation may or may
+ not still be pending.
+ </pre>
+
+ <code>OPERATION_UNREACHABLE = 6;</code></div>
+</li>
+</ul>
+<a name="OPERATION_GONE_BY_OPERATOR">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>OPERATION_GONE_BY_OPERATOR</h4>
+<pre>public static final&nbsp;<a href="../../../org/apache/mesos/Protos.OperationState.html" title="enum in org.apache.mesos">Protos.OperationState</a> OPERATION_GONE_BY_OPERATOR</pre>
+<div class="block"><pre>
+ The operation affected an agent that the master cannot contact;
+ the operator has asserted that the agent has been shutdown, but this has
+ not been directly confirmed by the master.
+ If the operator is correct, the operation is not pending and this is a
+ terminal state; if the operator is mistaken, the operation may still be
+ pending and might return to a different state in the future.
+ </pre>
+
+ <code>OPERATION_GONE_BY_OPERATOR = 7;</code></div>
+</li>
+</ul>
+<a name="OPERATION_RECOVERING">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>OPERATION_RECOVERING</h4>
+<pre>public static final&nbsp;<a href="../../../org/apache/mesos/Protos.OperationState.html" title="enum in org.apache.mesos">Protos.OperationState</a> OPERATION_RECOVERING</pre>
+<div class="block"><pre>
+ The operation affects an agent that the master recovered from its
+ state, but that agent has not yet re-registered.
+ The operation can transition to `OPERATION_UNREACHABLE` if the
+ corresponding agent is marked as unreachable, and will transition to
+ another status if the agent re-registers.
+ </pre>
+
+ <code>OPERATION_RECOVERING = 8;</code></div>
+</li>
+</ul>
+<a name="OPERATION_UNKNOWN">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>OPERATION_UNKNOWN</h4>
+<pre>public static final&nbsp;<a href="../../../org/apache/mesos/Protos.OperationState.html" title="enum in org.apache.mesos">Protos.OperationState</a> OPERATION_UNKNOWN</pre>
+<div class="block"><pre>
+ The master has no knowledge of the operation. This is typically
+ because either (a) the master never had knowledge of the operation, or
+ (b) the master forgot about the operation because it garbage collected
+ its metadata about the operation. The operation may or may not still be
+ pending.
+ </pre>
+
+ <code>OPERATION_UNKNOWN = 9;</code></div>
 </li>
 </ul>
 </li>
@@ -515,7 +646,7 @@ the order they are declared.</div>
 <a name="OPERATION_DROPPED_VALUE">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>OPERATION_DROPPED_VALUE</h4>
 <pre>public static final&nbsp;int OPERATION_DROPPED_VALUE</pre>
@@ -527,6 +658,93 @@ the order they are declared.</div>
 <dl>
 <dt><span class="seeLabel">See Also:</span></dt>
 <dd><a href="../../../constant-values.html#org.apache.mesos.Protos.OperationState.OPERATION_DROPPED_VALUE">Constant Field Values</a></dd>
+</dl>
+</li>
+</ul>
+<a name="OPERATION_UNREACHABLE_VALUE">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>OPERATION_UNREACHABLE_VALUE</h4>
+<pre>public static final&nbsp;int OPERATION_UNREACHABLE_VALUE</pre>
+<div class="block"><pre>
+ The operation affects an agent that has lost contact with the master,
+ typically due to a network failure or partition. The operation may or may
+ not still be pending.
+ </pre>
+
+ <code>OPERATION_UNREACHABLE = 6;</code></div>
+<dl>
+<dt><span class="seeLabel">See Also:</span></dt>
+<dd><a href="../../../constant-values.html#org.apache.mesos.Protos.OperationState.OPERATION_UNREACHABLE_VALUE">Constant Field Values</a></dd>
+</dl>
+</li>
+</ul>
+<a name="OPERATION_GONE_BY_OPERATOR_VALUE">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>OPERATION_GONE_BY_OPERATOR_VALUE</h4>
+<pre>public static final&nbsp;int OPERATION_GONE_BY_OPERATOR_VALUE</pre>
+<div class="block"><pre>
+ The operation affected an agent that the master cannot contact;
+ the operator has asserted that the agent has been shutdown, but this has
+ not been directly confirmed by the master.
+ If the operator is correct, the operation is not pending and this is a
+ terminal state; if the operator is mistaken, the operation may still be
+ pending and might return to a different state in the future.
+ </pre>
+
+ <code>OPERATION_GONE_BY_OPERATOR = 7;</code></div>
+<dl>
+<dt><span class="seeLabel">See Also:</span></dt>
+<dd><a href="../../../constant-values.html#org.apache.mesos.Protos.OperationState.OPERATION_GONE_BY_OPERATOR_VALUE">Constant Field Values</a></dd>
+</dl>
+</li>
+</ul>
+<a name="OPERATION_RECOVERING_VALUE">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>OPERATION_RECOVERING_VALUE</h4>
+<pre>public static final&nbsp;int OPERATION_RECOVERING_VALUE</pre>
+<div class="block"><pre>
+ The operation affects an agent that the master recovered from its
+ state, but that agent has not yet re-registered.
+ The operation can transition to `OPERATION_UNREACHABLE` if the
+ corresponding agent is marked as unreachable, and will transition to
+ another status if the agent re-registers.
+ </pre>
+
+ <code>OPERATION_RECOVERING = 8;</code></div>
+<dl>
+<dt><span class="seeLabel">See Also:</span></dt>
+<dd><a href="../../../constant-values.html#org.apache.mesos.Protos.OperationState.OPERATION_RECOVERING_VALUE">Constant Field Values</a></dd>
+</dl>
+</li>
+</ul>
+<a name="OPERATION_UNKNOWN_VALUE">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>OPERATION_UNKNOWN_VALUE</h4>
+<pre>public static final&nbsp;int OPERATION_UNKNOWN_VALUE</pre>
+<div class="block"><pre>
+ The master has no knowledge of the operation. This is typically
+ because either (a) the master never had knowledge of the operation, or
+ (b) the master forgot about the operation because it garbage collected
+ its metadata about the operation. The operation may or may not still be
+ pending.
+ </pre>
+
+ <code>OPERATION_UNKNOWN = 9;</code></div>
+<dl>
+<dt><span class="seeLabel">See Also:</span></dt>
+<dd><a href="../../../constant-values.html#org.apache.mesos.Protos.OperationState.OPERATION_UNKNOWN_VALUE">Constant Field Values</a></dd>
 </dl>
 </li>
 </ul>
