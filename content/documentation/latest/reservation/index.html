@@ -140,11 +140,11 @@ We start the slave like so:</p>
 
 <p>It&rsquo;s often more convenient to specify the total resources available on
 the slave as unreserved via the <code>--resources</code> flag and manage reservations
-dynamically (see below) via the master HTTP endpoints. However static reservation
-provides a way for the operator to more deterministically control the reservations
-(roles, amount, principals) before the agent is exposed to the master and
-frameworks. One use case is for the operator to dedicate entire agents for
-specific roles.</p>
+dynamically (see below) via the master HTTP endpoints. However static
+reservation provides a way for the operator to more deterministically control
+the reservations (roles, amount, principals) before the agent is exposed to the
+master and frameworks. One use case is for the operator to dedicate entire
+agents for specific roles.</p>
 
 <h2>Dynamic Reservation</h2>
 
@@ -390,8 +390,8 @@ these resources. First, we receive a resource offer (copy/pasted from above):</p
 </code></pre>
 
 <p>We can unreserve the 8 CPUs and 4096 MB of RAM by sending the following
-<code>Offer::Operation</code> message. <code>Offer::Operation::Unreserve</code> has a <code>resources</code> field
-which we can use to specify the resources to be unreserved.</p>
+<code>Offer::Operation</code> message. <code>Offer::Operation::Unreserve</code> has a <code>resources</code>
+field which we can use to specify the resources to be unreserved.</p>
 
 <pre><code>    {
       "type": Offer::Operation::UNRESERVE,
@@ -457,9 +457,9 @@ allocated to role <code>"engineering/backend"</code>, reserved to <code>"enginee
           "scalar": { "value": 12 },
           "reservations": [
             {
-              type: DYNAMIC,
-              role: "engineering",
-              principal: &lt;principal&gt;,
+              "type": "DYNAMIC",
+              "role": "engineering",
+              "principal": &lt;principal&gt;,
             }
           ]
         },
@@ -470,9 +470,9 @@ allocated to role <code>"engineering/backend"</code>, reserved to <code>"enginee
           "scalar": { "value": 6144 },
           "reservations": [
             {
-              type: DYNAMIC,
-              role: "engineering",
-              principal: &lt;principal&gt;,
+              "type": "DYNAMIC",
+              "role": "engineering",
+              "principal": &lt;principal&gt;,
             }
           ]
         }
@@ -511,14 +511,14 @@ if authentication is disabled.</p>
             "scalar": { "value": 8 },
             "reservations": [
               {
-                type: DYNAMIC,
-                role: "engineering",
-                principal: &lt;principal&gt;,
+                "type": "DYNAMIC",
+                "role": "engineering",
+                "principal": &lt;principal&gt;,
               },
               {
-                type: DYNAMIC,
-                role: "engineering/backend",
-                principal: &lt;framework_principal&gt;,
+                "type": "DYNAMIC",
+                "role": "engineering/backend",
+                "principal": &lt;framework_principal&gt;,
               }
             ]
           },
@@ -529,14 +529,14 @@ if authentication is disabled.</p>
             "scalar": { "value": 4096 },
             "reservations": [
               {
-                type: DYNAMIC,
-                role: "engineering",
-                principal: &lt;principal&gt;,
+                "type": "DYNAMIC",
+                "role": "engineering",
+                "principal": &lt;principal&gt;,
               },
               {
-                type: DYNAMIC,
-                role: "engineering/backend",
-                principal: &lt;framework_principal&gt;,
+                "type": "DYNAMIC",
+                "role": "engineering/backend",
+                "principal": &lt;framework_principal&gt;,
               }
             ]
           }
@@ -562,14 +562,14 @@ following reserved resources:</p>
           "scalar": { "value": 8 },
           "reservations": [
             {
-              type: DYNAMIC,
-              role: "engineering",
-              principal: &lt;principal&gt;,
+              "type": "DYNAMIC",
+              "role": "engineering",
+              "principal": &lt;principal&gt;,
             },
             {
-              type: DYNAMIC,
-              role: "engineering/backend",
-              principal: &lt;framework_principal&gt;,
+              "type": "DYNAMIC",
+              "role": "engineering/backend",
+              "principal": &lt;framework_principal&gt;,
             }
           ]
         },
@@ -580,14 +580,14 @@ following reserved resources:</p>
           "scalar": { "value": 4096 },
           "reservations": [
             {
-              type: DYNAMIC,
-              role: "engineering",
-              principal: &lt;principal&gt;,
+              "type": "DYNAMIC",
+              "role": "engineering",
+              "principal": &lt;principal&gt;,
             },
             {
-              type: DYNAMIC,
-              role: "engineering/backend",
-              principal: &lt;framework_principal&gt;,
+              "type": "DYNAMIC",
+              "role": "engineering/backend",
+              "principal": &lt;framework_principal&gt;,
             }
           ]
         },
@@ -620,14 +620,14 @@ the <code>reservations</code> field being <strong>popped</strong>. First, we rec
           "scalar": { "value": 8 },
           "reservations": [
             {
-              type: DYNAMIC,
-              role: "engineering",
-              principal: &lt;principal&gt;,
+              "type": "DYNAMIC",
+              "role": "engineering",
+              "principal": &lt;principal&gt;,
             },
             {
-              type: DYNAMIC,
-              role: "engineering/backend",
-              principal: &lt;framework_principal&gt;,
+              "type": "DYNAMIC",
+              "role": "engineering/backend",
+              "principal": &lt;framework_principal&gt;,
             }
           ]
         },
@@ -638,14 +638,14 @@ the <code>reservations</code> field being <strong>popped</strong>. First, we rec
           "scalar": { "value": 4096 },
           "reservations": [
             {
-              type: DYNAMIC,
-              role: "engineering",
-              principal: &lt;principal&gt;,
+              "type": "DYNAMIC",
+              "role": "engineering",
+              "principal": &lt;principal&gt;,
             },
             {
-              type: DYNAMIC,
-              role: "engineering/backend",
-              principal: &lt;framework_principal&gt;,
+              "type": "DYNAMIC",
+              "role": "engineering/backend",
+              "principal": &lt;framework_principal&gt;,
             }
           ]
         },
@@ -654,8 +654,8 @@ the <code>reservations</code> field being <strong>popped</strong>. First, we rec
 </code></pre>
 
 <p>We can unreserve the 8 CPUs and 4096 MB of RAM by sending the following
-<code>Offer::Operation</code> message. <code>Offer::Operation::Unreserve</code> has a <code>resources</code> field
-which we can use to specify the resources to be unreserved.</p>
+<code>Offer::Operation</code> message. <code>Offer::Operation::Unreserve</code> has a <code>resources</code>
+field which we can use to specify the resources to be unreserved.</p>
 
 <pre><code>    {
       "type": Offer::Operation::UNRESERVE,
@@ -668,14 +668,14 @@ which we can use to specify the resources to be unreserved.</p>
             "scalar": { "value": 8 },
             "reservations": [
               {
-                type: DYNAMIC,
-                role: "engineering",
-                principal: &lt;principal&gt;,
+                "type": "DYNAMIC",
+                "role": "engineering",
+                "principal": &lt;principal&gt;,
               },
               {
-                type: DYNAMIC,
-                role: "engineering/backend",
-                principal: &lt;framework_principal&gt;,
+                "type": "DYNAMIC",
+                "role": "engineering/backend",
+                "principal": &lt;framework_principal&gt;,
               }
             ]
           },
@@ -686,14 +686,14 @@ which we can use to specify the resources to be unreserved.</p>
             "scalar": { "value": 4096 },
             "reservations": [
               {
-                type: DYNAMIC,
-                role: "engineering",
-                principal: &lt;principal&gt;,
+                "type": "DYNAMIC",
+                "role": "engineering",
+                "principal": &lt;principal&gt;,
               },
               {
-                type: DYNAMIC,
-                role: "engineering/backend",
-                principal: &lt;framework_principal&gt;,
+                "type": "DYNAMIC",
+                "role": "engineering/backend",
+                "principal": &lt;framework_principal&gt;,
               }
             ]
           },
@@ -741,9 +741,9 @@ HTTP authentication is disabled.</p>
           "scalar": { "value": 8 },
           "reservations": [
             {
-              type: DYNAMIC,
-              role: "ads",
-              principal: &lt;operator_principal&gt;,
+              "type": "DYNAMIC",
+              "role": "ads",
+              "principal": &lt;operator_principal&gt;,
             }
           ]
         },
@@ -753,9 +753,9 @@ HTTP authentication is disabled.</p>
           "scalar": { "value": 4096 },
           "reservations": [
             {
-              type: DYNAMIC,
-              role: "ads",
-              principal: &lt;operator_principal&gt;,
+              "type": "DYNAMIC",
+              "role": "ads",
+              "principal": &lt;operator_principal&gt;,
             }
           ]
         }
@@ -799,9 +799,9 @@ We can send an HTTP POST request to the master&rsquo;s
           "scalar": { "value": 8 },
           "reservations": [
             {
-              type: DYNAMIC,
-              role: "ads",
-              principal: &lt;reserver_principal&gt;,
+              "type": "DYNAMIC",
+              "role": "ads",
+              "principal": &lt;reserver_principal&gt;,
             }
           ]
         },
@@ -811,9 +811,9 @@ We can send an HTTP POST request to the master&rsquo;s
           "scalar": { "value": 4096 },
           "reservations": [
             {
-              type: DYNAMIC,
-              role: "ads",
-              principal: &lt;reserver_principal&gt;,
+              "type": "DYNAMIC",
+              "role": "ads",
+              "principal": &lt;reserver_principal&gt;,
             }
           ]
         }
