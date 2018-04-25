@@ -125,7 +125,10 @@ During installation, choose to &ldquo;Add CMake to the system PATH for all users
 <li><p>If building from source, install <a href="https://git-scm.com/download/win">Git</a>.
 During installation, keep the defaults to &ldquo;Use Git from the Windows
 Command Prompt&rdquo;, and &ldquo;Checkout Windows-style, commit Unix-style
-line endings&rdquo; (i.e. <code>git config core.autocrlf true</code>).</p></li>
+line endings&rdquo; (i.e. <code>git config --global core.autocrlf true</code>). The
+last part is <em>very</em> important, because GNU patch will crash with
+&ldquo;Assertion failed, hunk, file patch.c, line 343&rdquo; if the patch files
+on Windows are Unix-style (LF) instead of Windows-style (CRLF).</p></li>
 <li><p>Make sure there are no spaces in your build directory.
 For example, <code>C:/Program Files (x86)/mesos</code> is an invalid build directory.</p></li>
 <li><p>If developing Mesos, install <a href="https://www.python.org/downloads/">Python 2</a>
