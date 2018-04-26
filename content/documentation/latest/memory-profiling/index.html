@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Apache Mesos - Memory Profiling</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta property="og:locale" content="en_US"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:title" content="Apache Mesos"/>
+    <meta property="og:site_name" content="Apache Mesos"/>
+    <meta property="og:url" content="http://mesos.apache.org/"/>
+    <meta property="og:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta property="og:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
+
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:site" content="@ApacheMesos"/>
+    <meta name="twitter:title" content="Apache Mesos"/>
+    <meta name="twitter:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta name="twitter:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
+
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
+    <link href="../../../assets/css/main.css" rel="stylesheet" />
+
+
+    <!-- Google Analytics Magic -->
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-20226872-1']);
+    _gaq.push(['_setDomainName', 'apache.org']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+  </head>
+  <body>
+    <!-- magical breadcrumbs -->
+    <div class="topnav">
+      <div class="container">
+        <ul class="breadcrumb">
+          <li>
+            <div class="dropdown">
+              <a data-toggle="dropdown" href="#">Apache Software Foundation <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                <li><a href="http://www.apache.org">Apache Homepage</a></li>
+                <li><a href="http://www.apache.org/licenses/">License</a></li>
+                <li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>
+                <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                <li><a href="http://www.apache.org/security/">Security</a></li>
+              </ul>
+            </div>
+          </li>
+
+          <li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+          <li><a href="/documentation
+/">Documentation
+</a></li>
+        </ul><!-- /.breadcrumb -->
+      </div><!-- /.container -->
+    </div><!-- /.topnav -->
+
+    <!-- navbar excitement -->
+<div class="navbar navbar-default navbar-static-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#mesos-menu" aria-expanded="false">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo"/></a>
+    </div><!-- /.navbar-header -->
+
+    <div class="navbar-collapse collapse" id="mesos-menu">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/getting-started/">Getting Started</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/documentation/latest/">Documentation</a></li>
+        <li><a href="/downloads/">Downloads</a></li>
+        <li><a href="/community/">Community</a></li>
+      </ul>
+    </div><!-- /#mesos-menu -->
+  </div><!-- /.container -->
+</div><!-- /.navbar -->
+
+<div class="content">
+  <div class="container">
+    <div class="row-fluid">
+  <div class="col-md-4">
+    <h4>If you're new to Mesos</h4>
+    <p>See the <a href="/getting-started/">getting started</a> page for more
+       information about downloading, building, and deploying Mesos.</p>
+
+    <h4>If you'd like to get involved or you're looking for support</h4>
+    <p>See our <a href="/community/">community</a> page for more details.</p>
+  </div>
+  <div class="col-md-8">
+    <h1>Memory Profiling with Mesos and Jemalloc</h1>
+
+<p>On Linux systems, Mesos is able to leverage the memory-profiling capabilities of
+the <a href="http://jemalloc.net">jemalloc</a> general-purpose allocator to provide
+powerful debugging tools for investigating memory-related issues.</p>
+
+<p>These include detailed real-time statistics of the current memory usage, as well
+as information about the location and frequency of individual allocations.</p>
+
+<p>This generally works by having libprocess detect at runtime whether the current
+process is using jemalloc as its memory allocator, and if so enable a number of
+HTTP endpoints described below that allow operators to generate the desired data
+at runtime.</p>
+
+<p><a name="requirements"></a></p>
+
+<h2>Requirements</h2>
+
+<p>A prerequisite for memory profiling is a suitable allocator. Currently only
+jemalloc is supported, which can be connected via one of the following ways.</p>
+
+<p>The recommended method is to specify the <code>--enable-jemalloc-allocator</code>
+compile-time flag, which causes the <code>mesos-master</code> and <code>mesos-agent</code> binaries
+to be statically linked against a bundled version of jemalloc that will be
+compiled with the correct compile-time flags.</p>
+
+<p>Alternatively and analogous to other bundled dependencies of Mesos, it is of
+course also possible to use a <em>suitable</em> custom version of jemalloc with the
+<code>--with-jemalloc=&lt;/path-to-jemalloc&gt;</code> flag.</p>
+
+<p><strong>NOTE:</strong> Suitable here means that jemalloc should have been built with the
+<code>--enable-stats</code> and <code>--enable-prof</code> flags.</p>
+
+<p>The third way is to use the <code>LD_PRELOAD</code> mechanism to preload a <code>libjemalloc.so</code>
+shared library that is present on the system at runtime. The <code>MemoryProfiler</code>
+class in libprocess will automatically detect this and enable its memory
+profiling support.</p>
+
+<p>The generated profile dumps will be written to a random directory under <code>TMPDIR</code>
+if set, otherwise in a subdirectory of <code>/tmp</code>.</p>
+
+<p>Finally, note that since jemalloc was designed to be used in highly concurrent
+allocation scenarios, it can improve performance over the default system
+allocator. In this case, it can be beneficial to build Mesos with jemalloc even
+if there is no intention to use the memory profiling functionality.</p>
+
+<h2>Usage</h2>
+
+<p>There are two independent sets of data that can be collected from jemalloc:
+memory statistics and heap profiling information.</p>
+
+<p>Using any of the endpoints described below
+<a href="#requirements">requires the jemalloc allocator</a> and starting the <code>mesos-agent</code>
+or <code>mesos-master</code> binary with the option <code>--memory_profiling=true</code> (or setting
+the environment variable <code>LIBPROCESS_MEMORY_PROFILING=true</code> for other binaries
+using libprocess).</p>
+
+<h3>Memory Statistics</h3>
+
+<p>The <code>/statistics</code> endpoint returns exact statistics about the memory usage in
+JSON format, for example the number of bytes currently allocated and the size
+distribution of these allocations.</p>
+
+<p>It takes no parameters and will return the results in JSON format:</p>
+
+<pre><code>http://example.org:5050/memory-profiler/statistics
+</code></pre>
+
+<p>Be aware that the returned JSON is quite large, so when accessing this endpoint
+from a terminal, it is advisable to redirect the results into a file.</p>
+
+<h3>Heap Profiling</h3>
+
+<p>The profiling done by jemalloc works by sampling from the calls to <code>malloc()</code>
+according to a configured probability distribution, and storing stack traces for
+the sampled calls in a separate memory area. These can then be dumped into files
+on the filesystem, so-called heap profiles.</p>
+
+<p>To start a profiling run one would access the <code>/start</code> endpoint:</p>
+
+<pre><code>http://example.org:5050/memory-profiler/start?duration=5mins
+</code></pre>
+
+<p>followed by downloading one of the generated files described below after the
+duration has elapsed. The remaining time of the current profiling run can be
+verified via the <code>/state</code> endpoint:</p>
+
+<pre><code>http://example.org:5050/memory-profiler/state
+</code></pre>
+
+<p>Since profiling information is stored process-global by jemalloc, only a single
+concurrent profiling run is allowed. Additionally, only the results of the most
+recently finished run are stored on disk.</p>
+
+<p>The profile collection can also be stopped early with the <code>/stop</code> endpoint:</p>
+
+<pre><code>http://example.org:5050/memory-profiler/stop
+</code></pre>
+
+<p>To analyze the generated profiling data, the results are offered in three
+different formats.</p>
+
+<h4>Raw profile</h4>
+
+<pre><code>http://example.org:5050/memory-profiler/download/raw
+</code></pre>
+
+<p>This returns a file in a plain text format containing the raw backtraces
+collected, i.e., lists of memory addresses. It can be interactively analyzed
+and rendered using the <code>jeprof</code> tool provided by the jemalloc project. For more
+information on this file format, check out <a href="http://jemalloc.net/jemalloc.3.html#heap_profile_format">the official jemalloc
+documentation</a>.</p>
+
+<h4>Symbolized profile</h4>
+
+<pre><code>http://example.org:5050/memory-profiler/download/text
+</code></pre>
+
+<p>This is similar to the raw format above, except that <code>jeprof</code> is called on the
+host machine to attempt to read symbol information from the current binary and
+replace raw memory addresses in the profile by human-readable symbol names.</p>
+
+<p>Usage of this endpoint requires that <code>jeprof</code> is present on the host machine
+and on the <code>PATH</code>, and no useful information will be generated unless the binary
+contains symbol information.</p>
+
+<h4>Call graph</h4>
+
+<pre><code>http://example.org:5050/memory-profiler/download/graph
+</code></pre>
+
+<p>This endpoint returns an image in SVG format that shows a graphical
+representation of the samples backtraces.</p>
+
+<p>Usage of this endpoint requires that <code>jeprof</code> and <code>dot</code> are present on the host
+machine and on the <code>PATH</code> of mesos, and no useful information will be generated
+unless the binary contains symbol information.</p>
+
+<h4>Overview</h4>
+
+<p>Which of these is needed will depend on the circumstances of the application
+deployment and of the bug that is investigated.</p>
+
+<p>For example, the call graph presents information in a visual, immediately useful
+form, but is difficult to filter and post-process if non-default output options
+are desired.</p>
+
+<p>On the other hand, in many debian-like environments symbol information is by
+default stripped from binaries to save space and shipped in separate packages.
+In such an environment, if it is not permitted to install additional packages on
+the host running Mesos, one would store the raw profiles and enrich them with
+symbol information locally.</p>
+
+<h2>Jeprof Installation</h2>
+
+<p>As described above, the <code>/download/text</code> and <code>/download/graph</code> endpoints require
+the <code>jeprof</code> program installed on the host system. Where possible, it is
+recommended to install <code>jeprof</code> through the system package manager, where it is
+usually packaged alongside with jemalloc itself.</p>
+
+<p>Alternatively, a copy of the script can be found under
+<code>3rdparty/jemalloc-5.0.1/bin/jeprof</code> in the build directory, or can be
+downloaded directly from the internet using a command like:</p>
+
+<pre><code>$ curl https://raw.githubusercontent.com/jemalloc/jemalloc/dev/bin/jeprof.in | sed s/@jemalloc_version@/5.0.1/ &gt;jeprof
+</code></pre>
+
+<p>Note that <code>jeprof</code> is just a perl script that post-processes the raw profiles.
+It has no connection to the jemalloc library besides being distributed in the
+same package. In particular, it is generally not required to have matching
+versions of jemalloc and <code>jeprof</code>.</p>
+
+<p>If <code>jeprof</code> is installed manually, one also needs to take care to install the
+necessary dependencies. In particular, this include the <code>perl</code> interpreter to
+execute the script itself and the <code>dot</code> binary to generate graph files.</p>
+
+<h2>Command-line Usage</h2>
+
+<p>In some circumstances, it might be desired to automate the downloading of heap
+profiles by writing a simple script. A simple example for how this might look
+like this:</p>
+
+<pre><code>#!/bin/bash
+
+SECONDS=600
+HOST=example.org:5050
+
+curl ${HOST}/memory-profiler/start?duration=${SECONDS}
+sleep $((${SECONDS} + 1))
+wget ${HOST}/memory-profiler/download/raw
+</code></pre>
+
+<p>A more sophisticated script would additionally store the <code>id</code> value returned by
+the call to <code>/start</code> and pass it as a paremter to <code>/download</code>, to ensure that a
+new run was not started in the meantime.</p>
+
+<h2>Using the <code>MALLOC_CONF</code> Interface</h2>
+
+<p>The jemalloc allocator provides a native interface to control the memory
+profiling behaviour. The usual way to provide settings through this interface is
+by setting the environment variable <code>MALLOC_CONF</code>.</p>
+
+<p><strong>NOTE:</strong> If libprocess detects that memory profiling was started through
+<code>MALLOC_CONF</code>, it will reject starting a profiling run of its own to avoid
+interference.</p>
+
+<p>The <code>MALLOC_CONF</code> interface provides a number of options that are not exposed by
+libprocess, like generating heap profiles automatically after a certain amount
+of memory has been allocated, or whenever memory usage reaches a new high-water
+mark. The full list of settings is described on the
+<a href="http://jemalloc.net/jemalloc.3.html">jemalloc man page</a>.</p>
+
+<p>On the other hand, features like starting and stopping the profiling at runtime
+or getting the information provided by the <code>/statistics</code> endpoint can not be
+achieved through the <code>MALLOC_CONF</code> interface.</p>
+
+<p>For example, to create a dump automatically for every 1 GiB worth of recorded
+allocations, one might use the configuration:</p>
+
+<pre><code>MALLOC_CONF="prof:true,prof_prefix:/path/to/folder,lg_prof_interval=20"
+</code></pre>
+
+<p>To debug memory allocations during early startup, profiling can be activated
+before accessing the <code>/start</code> endpoint:</p>
+
+<pre><code>MALLOC_CONF="prof:true,prof_active:true"
+</code></pre>
+
+  </div>
+</div>
+
+  </div><!-- /.container -->
+</div><!-- /.content -->
+
+<hr>
+
+
+
+    <!-- footer -->
+    <div class="footer">
+      <div class="container">
+        <div class="col-md-4 social-blk">
+          <span class="social">
+            <a href="https://twitter.com/ApacheMesos"
+              class="twitter-follow-button"
+              data-show-count="false" data-size="large">Follow @ApacheMesos</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+            <a href="https://twitter.com/intent/tweet?button_hashtag=mesos"
+              class="twitter-hashtag-button"
+              data-size="large"
+              data-related="ApacheMesos">Tweet #mesos</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+          </span>
+        </div>
+
+        <div class="col-md-8 trademark">
+          <p>&copy; 2012-2018 <a href="http://apache.org">The Apache Software Foundation</a>.
+            Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.
+          <p>
+        </div>
+      </div><!-- /.container -->
+    </div><!-- /.footer -->
+
+    <!-- JS -->
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js"></script>
+
+    <!-- Inject anchors for all headings on the page, see https://www.bryanbraun.com/anchorjs. -->
+    <script type="text/javascript">
+    anchors.options = {
+      placement: 'right',
+      ariaLabel: 'Permalink',
+    };
+
+    // The default is to not add anchors to h1, but we have pages with multiple h1 headers,
+    // and we do want to put anchors on those.
+    anchors.add('h1, h2, h3, h4, h5, h6');
+    </script>
+  </body>
+</html>
