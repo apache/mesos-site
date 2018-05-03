@@ -148,6 +148,38 @@ R Removed feature/behavior
   </thead>
 <tr>
   <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Version-->
+  1.6.x
+  </td>
+
+  <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Mesos Core-->
+    <ul style="padding-left:10px;">
+      <li>C <a href="#1-6-x-grpc-requirement">Requirement for gRPC library</a></li>
+      <li>C <a href="#1-6-x-csi-support">CSI v0.2 Support</a></li>
+    </ul>
+  </td>
+
+  <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Flags-->
+    <ul style="padding-left:10px;">
+    </ul>
+  </td>
+
+  <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Framework API-->
+    <ul style="padding-left:10px;">
+    </ul>
+  </td>
+
+  <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Module API-->
+    <ul style="padding-left:10px;">
+    </ul>
+  </td>
+
+  <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Endpoints-->
+    <ul style="padding-left:10px;">
+    </ul>
+  </td>
+</tr>
+<tr>
+  <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Version-->
   1.5.x
   </td>
 
@@ -466,6 +498,22 @@ R Removed feature/behavior
 </table>
 
 
+<h2>Upgrading from 1.5.x to 1.6.x</h2>
+
+<p><a name="1-6-x-grpc-requirement"></a></p>
+
+<ul>
+<li>gRPC version 1.10+ is required to build Mesos when enabling gRPC-related features. Please upgrade your gRPC library if you are using an unbundled one.</li>
+</ul>
+
+
+<p><a name="1-6-x-csi-support"></a></p>
+
+<ul>
+<li>CSI v0.2 is now supported as experimental. Due to the incompatibility between CSI v0.1 and v0.2, the experimental support for CSI v0.1 is deprecated, and the operator must remove all storage local resource providers within an agent before upgrading the agent. NOTE: This is a <strong>breaking change</strong> for storage local resource providers.</li>
+</ul>
+
+
 <h2>Upgrading from 1.4.x to 1.5.x</h2>
 
 <p><a name="1-5-x-task-starting"></a></p>
@@ -497,7 +545,7 @@ that caused a task to fail with a resource limitation reason.</li>
 
 <ul>
 <li><code>--container_ports_watch_interval</code> specifies the interval at which the isolator reconciles port assignments.</li>
-<li><code>--check_agent_port_range_only</code> excludes ports outside the agent&rsquo;s range from port reconcilation.</li>
+<li><code>--check_agent_port_range_only</code> excludes ports outside the agent&rsquo;s range from port reconciliation.</li>
 </ul>
 </li>
 </ul>
@@ -565,7 +613,7 @@ changed. Note that if this feature is used, the master version is required to be
 <p><a name="1-4-x-bounding-capabilities"></a></p>
 
 <ul>
-<li>Explicitly setting the bounding capabilities of a task independently of the effective capabilities is now supported. Frameworks can specifiy the task bounding capabilities by using the <code>LinuxInfo.bounding_capabilities</code> message. Operators can specify the default bounding capabilities using the agent <code>--bounding_capabilities</code> flag. This flag also specifies the maximum bounding set that a framework is allowed to specify.</li>
+<li>Explicitly setting the bounding capabilities of a task independently of the effective capabilities is now supported. Frameworks can specify the task bounding capabilities by using the <code>LinuxInfo.bounding_capabilities</code> message. Operators can specify the default bounding capabilities using the agent <code>--bounding_capabilities</code> flag. This flag also specifies the maximum bounding set that a framework is allowed to specify.</li>
 </ul>
 
 
@@ -811,7 +859,7 @@ changed. Note that if this feature is used, the master version is required to be
 <p><a name="1-1-x-allocator-updateallocation"></a></p>
 
 <ul>
-<li>Mesos 1.1 adds an <code>offeredResources</code> argument to the <code>Allocator::updateAllocation()</code> method. It is used to indicate the resources that the operations passed to <code>updateAllocation()</code> are applied to. <a href="https://issues.apache.org/jira/browse/MESOS-4431">MESOS-4431</a> (paticularly <a href="https://reviews.apache.org/r/45961/">/r/45961/</a>) has more details on the motivation.</li>
+<li>Mesos 1.1 adds an <code>offeredResources</code> argument to the <code>Allocator::updateAllocation()</code> method. It is used to indicate the resources that the operations passed to <code>updateAllocation()</code> are applied to. <a href="https://issues.apache.org/jira/browse/MESOS-4431">MESOS-4431</a> (particularly <a href="https://reviews.apache.org/r/45961/">/r/45961/</a>) has more details on the motivation.</li>
 </ul>
 
 
@@ -970,7 +1018,7 @@ changed. Note that if this feature is used, the master version is required to be
 <li>The <code>SetQuota</code> and <code>RemoveQuota</code> ACLs have been deprecated. To replace these, a new ACL <code>UpdateQuota</code> have been introduced. In addition, a new ACL <code>GetQuota</code> have been added; these control which principals are allowed to query quota information for which roles. These changes affect the <code>--acls</code> flag for the local authorizer in the following ways:
 
 <ul>
-<li>The <code>update_quotas</code> ACL cannot be used in combination with either the <code>set_quotas</code> or <code>remove_quotas</code> ACL. The local authorizor will produce an error in such a case;</li>
+<li>The <code>update_quotas</code> ACL cannot be used in combination with either the <code>set_quotas</code> or <code>remove_quotas</code> ACL. The local authorizer will produce an error in such a case;</li>
 <li>When upgrading a Mesos cluster that uses the <code>set_quotas</code> or <code>remove_quotas</code> ACLs, the operator should first upgrade the Mesos binaries. At this point, the deprecated ACLs will still be enforced. After the upgrade has been verified, the operator should replace deprecated values for <code>set_quotas</code> and <code>remove_quotas</code> with equivalent values for <code>update_quotas</code>;</li>
 <li>If desired, the operator can use the <code>get_quotas</code> ACL after the upgrade to control which principals are allowed to query quota information.</li>
 </ul>
@@ -1009,7 +1057,7 @@ changed. Note that if this feature is used, the master version is required to be
 <p><a name="1-0-x-http-authentication-flags"></a></p>
 
 <ul>
-<li>The <code>--authenticate_http</code> flag has been deprecated in favor of <code>--authenticate_http_readwrite</code>. Setting <code>--authenticate_http_readwrite</code> will now enable authentication for all endpoints which previously had authentication support. These happen to be the endpoints which allow modifiication of the cluster state, or &ldquo;read-write&rdquo; endpoints. Note that <code>/logging/toggle</code>, <code>/profiler/start</code>, <code>/profiler/stop</code>, <code>/maintenance/schedule</code>, <code>/machine/up</code>, and <code>/machine/down</code> previously did not have authentication support, but in 1.0 if either <code>--authenticate_http</code> or <code>--authenticate_http_readwrite</code> is set, those endpoints will now require authentication. A new flag has also been introduced, <code>--authenticate_http_readonly</code>, which enables authentication for endpoints which support authentication and do not allow modification of the state of the cluster, like <code>/state</code> or <code>/flags</code>.</li>
+<li>The <code>--authenticate_http</code> flag has been deprecated in favor of <code>--authenticate_http_readwrite</code>. Setting <code>--authenticate_http_readwrite</code> will now enable authentication for all endpoints which previously had authentication support. These happen to be the endpoints which allow modification of the cluster state, or &ldquo;read-write&rdquo; endpoints. Note that <code>/logging/toggle</code>, <code>/profiler/start</code>, <code>/profiler/stop</code>, <code>/maintenance/schedule</code>, <code>/machine/up</code>, and <code>/machine/down</code> previously did not have authentication support, but in 1.0 if either <code>--authenticate_http</code> or <code>--authenticate_http_readwrite</code> is set, those endpoints will now require authentication. A new flag has also been introduced, <code>--authenticate_http_readonly</code>, which enables authentication for endpoints which support authentication and do not allow modification of the state of the cluster, like <code>/state</code> or <code>/flags</code>.</li>
 </ul>
 
 
