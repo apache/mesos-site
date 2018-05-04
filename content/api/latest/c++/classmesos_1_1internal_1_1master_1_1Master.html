@@ -282,6 +282,9 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:a1f6fc4cb3e2558265ece532b23279c20"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1master_1_1Master.html#a1f6fc4cb3e2558265ece532b23279c20">authorizeDestroyVolume</a> (const Offer::Operation::Destroy &amp;destroy, const <a class="el" href="classOption.html">Option</a>&lt; <a class="el" href="structprocess_1_1http_1_1authentication_1_1Principal.html">process::http::authentication::Principal</a> &gt; &amp;principal)</td></tr>
 <tr class="memdesc:a1f6fc4cb3e2558265ece532b23279c20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Authorizes a <code>DESTROY</code> operation.  <a href="#a1f6fc4cb3e2558265ece532b23279c20">More...</a><br /></td></tr>
 <tr class="separator:a1f6fc4cb3e2558265ece532b23279c20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aecfa1995f657b5b0ccae84d30037daf6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1master_1_1Master.html#aecfa1995f657b5b0ccae84d30037daf6">authorizeResizeVolume</a> (const Resource &amp;volume, const <a class="el" href="classOption.html">Option</a>&lt; <a class="el" href="structprocess_1_1http_1_1authentication_1_1Principal.html">process::http::authentication::Principal</a> &gt; &amp;principal)</td></tr>
+<tr class="memdesc:aecfa1995f657b5b0ccae84d30037daf6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Authorizes resize of a volume triggered by either <code>GROW_VOLUME</code> or <code>SHRINK_VOLUME</code> operations.  <a href="#aecfa1995f657b5b0ccae84d30037daf6">More...</a><br /></td></tr>
+<tr class="separator:aecfa1995f657b5b0ccae84d30037daf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe57d8fd4f6aae4747ee337bfad5d1e7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1master_1_1Master.html#afe57d8fd4f6aae4747ee337bfad5d1e7">isLaunchExecutor</a> (const ExecutorID &amp;executorId, <a class="el" href="structmesos_1_1internal_1_1master_1_1Framework.html">Framework</a> *framework, <a class="el" href="structmesos_1_1internal_1_1master_1_1Slave.html">Slave</a> *slave) const </td></tr>
 <tr class="separator:afe57d8fd4f6aae4747ee337bfad5d1e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab960ce75a31f64a96aa71633bc16faa9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1master_1_1Master.html#ab960ce75a31f64a96aa71633bc16faa9">addExecutor</a> (const ExecutorInfo &amp;executorInfo, <a class="el" href="structmesos_1_1internal_1_1master_1_1Framework.html">Framework</a> *framework, <a class="el" href="structmesos_1_1internal_1_1master_1_1Slave.html">Slave</a> *slave)</td></tr>
@@ -1595,6 +1598,51 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="aecfa1995f657b5b0ccae84d30037daf6"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt;bool&gt; mesos::internal::master::Master::authorizeResizeVolume </td>
+          <td>(</td>
+          <td class="paramtype">const Resource &amp;&#160;</td>
+          <td class="paramname"><em>volume</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classOption.html">Option</a>&lt; <a class="el" href="structprocess_1_1http_1_1authentication_1_1Principal.html">process::http::authentication::Principal</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>principal</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Authorizes resize of a volume triggered by either <code>GROW_VOLUME</code> or <code>SHRINK_VOLUME</code> operations. </p>
+<p>Returns whether the triggering operation is authorized with the provided principal. This function is used for authorization of operations originating both from frameworks and operators. Note that operations may be validated AFTER authorization, so it's possible that the operation could be malformed.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">volume</td><td>The volume being resized. </td></tr>
+    <tr><td class="paramname">principal</td><td>An <code><a class="el" href="classOption.html">Option</a></code> containing the principal attempting this operation.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A <code>Future</code> containing a boolean value representing the success or failure of this authorization. A failed <code>Future</code> implies that validation of the operation did not succeed. </dd></dl>
 
 </div>
 </div>
