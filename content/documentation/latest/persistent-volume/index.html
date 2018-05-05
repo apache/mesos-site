@@ -158,9 +158,19 @@ appropriate ACLs. For more information, see the
 <a href="/documentation/latest/./authorization/">authorization documentation</a>.</p>
 
 <ul>
-<li><code>Offer::Operation::Create</code> and <code>Offer::Operation::Destroy</code> messages are
-available for <strong>frameworks</strong> to send back via the <code>acceptOffers</code> API as a
-response to a resource offer.</li>
+<li>The following messages are available for <strong>frameworks</strong> to send back via the
+<code>acceptOffers</code> API as a response to a resource offer:
+
+<ul>
+<li><code>Offer::Operation::Create</code></li>
+<li><code>Offer::Operation::Destroy</code></li>
+<li><code>Offer::Operation::GrowVolume</code></li>
+<li><code>Offer::Operation::ShrinkVolume</code></li>
+</ul>
+</li>
+<li>For each message in above list, a corresponding call in
+<a href="/documentation/latest/./operator-http-api/">HTTP Operator API</a> is available for operators or
+administrative tools;</li>
 <li><code>/create-volumes</code> and <code>/destroy-volumes</code> HTTP endpoints allow
 <strong>operators</strong> to manage persistent volumes through the master.</li>
 </ul>
@@ -316,9 +326,9 @@ created. First, we receive a resource offer (copy/pasted from above):</p>
 }
 </code></pre>
 
-<p>We can destroy the persistent volume by sending a <code>Offer::Operation</code> message via
-the <code>acceptOffers</code> API. <code>Offer::Operation::Destroy</code> has a <code>volumes</code> field which
-specifies the persistent volumes to be destroyed.</p>
+<p>We can destroy the persistent volume by sending an <code>Offer::Operation</code> message
+via the <code>acceptOffers</code> API. <code>Offer::Operation::Destroy</code> has a <code>volumes</code> field
+which specifies the persistent volumes to be destroyed.</p>
 
 <pre><code>{
   "type" : Offer::Operation::DESTROY,
@@ -374,13 +384,268 @@ contain the following reserved disk resources:</p>
 <p>Those reserved resources can then be used as normal: e.g., they can be used to
 create another persistent volume or can be unreserved.</p>
 
-<h2>Operator HTTP Endpoints</h2>
+<p><a name="offer-operation-grow-volume"></a></p>
+
+<h3><code>Offer::Operation::GrowVolume</code></h3>
+
+<p>Sometimes, a framework or an operator may find that the size of an existing
+persistent volume may be too small (possibly due to increased usage). In
+<a href="#offer-operation-create">Offer::Operation::Create</a>, we created a persistent
+volume from 2048 MB of disk resources. Suppose we want to grow the size of
+the volume to 4096 MB, we first need resource offer(s) with at least 2048 MB of
+disk resources with the same reservation and disk information:</p>
+
+<pre><code>{
+  "id" : &lt;offer_id&gt;,
+  "framework_id" : &lt;framework_id&gt;,
+  "slave_id" : &lt;slave_id&gt;,
+  "hostname" : &lt;hostname&gt;,
+  "resources" : [
+    {
+      "name" : "disk",
+      "type" : "SCALAR",
+      "scalar" : { "value" : 2048 },
+      "role" : &lt;offer's allocation role&gt;,
+      "reservation" : {
+        "principal" : &lt;framework_principal&gt;
+      }
+    },
+    {
+      "name" : "disk",
+      "type" : "SCALAR",
+      "scalar" : { "value" : 2048 },
+      "role" : &lt;offer's allocation role&gt;,
+      "reservation" : {
+        "principal" : &lt;framework_principal&gt;
+      },
+      "disk": {
+        "persistence": {
+          "id" : &lt;persistent_volume_id&gt;
+        },
+        "volume" : {
+          "container_path" : &lt;container_path&gt;,
+          "mode" : &lt;mode&gt;
+        }
+      }
+    }
+  ]
+}
+</code></pre>
+
+<p>We can grow the persistent volume by sending an <code>Offer::Operation</code> message.
+<code>Offer::Operation::GrowVolume</code> has a <code>volume</code> field which specifies the
+persistent volume to grow, and an <code>addition</code> field which specifies he
+additional disk space resource.</p>
+
+<pre><code>{
+  "type" : Offer::Operation::GROW_VOLUME,
+  "grow_volume" : {
+    "volume" : {
+      "name" : "disk",
+      "type" : "SCALAR",
+      "scalar" : { "value" : 2048 },
+      "role" : &lt;offer's allocation role&gt;,
+      "reservation" : {
+        "principal" : &lt;framework_principal&gt;
+      },
+      "disk": {
+        "persistence": {
+          "id" : &lt;persistent_volume_id&gt;
+        },
+        "volume" : {
+          "container_path" : &lt;container_path&gt;,
+          "mode" : &lt;mode&gt;
+        }
+      }
+    },
+   "addition" : {
+      "name" : "disk",
+      "type" : "SCALAR",
+      "scalar" : { "value" : 2048 },
+      "role" : &lt;offer's allocation role&gt;,
+      "reservation" : {
+        "principal" : &lt;framework_principal&gt;
+      }
+    }
+  }
+}
+</code></pre>
+
+<p>If this request succeeds, the persistent volume will be grown to the new size,
+and all files and directories associated with the volume will not be touched.
+A subsequent resource offer will contain the grown volume:</p>
+
+<pre><code>{
+  "id" : &lt;offer_id&gt;,
+  "framework_id" : &lt;framework_id&gt;,
+  "slave_id" : &lt;slave_id&gt;,
+  "hostname" : &lt;hostname&gt;,
+  "resources" : [
+    {
+      "name" : "disk",
+      "type" : "SCALAR",
+      "scalar" : { "value" : 4096 },
+      "role" : &lt;offer's allocation role&gt;,
+      "reservation" : {
+        "principal" : &lt;framework_principal&gt;
+      },
+      "disk": {
+        "persistence": {
+          "id" : &lt;persistent_volume_id&gt;
+        },
+        "volume" : {
+          "container_path" : &lt;container_path&gt;,
+          "mode" : &lt;mode&gt;
+        }
+      }
+    }
+  ]
+}
+</code></pre>
+
+<p><a name="offer-operation-shrink-volume"></a></p>
+
+<h3><code>Offer::Operation::ShrinkVolume</code></h3>
+
+<p>Similarly, a framework or an operator may find that the size of an existing
+persistent volume may be too large (possibly due to over provisioning), and want
+to free up unneeded disk space resources.
+In <a href="#offer-operation-create">Offer::Operation::Create</a>, we created a persistent
+volume from 2048 MB of disk resources. Suppose we want to shrink the size of
+the volume to 1024 MB, we first need a resource offer with the volume to shrink:</p>
+
+<pre><code>{
+  "id" : &lt;offer_id&gt;,
+  "framework_id" : &lt;framework_id&gt;,
+  "slave_id" : &lt;slave_id&gt;,
+  "hostname" : &lt;hostname&gt;,
+  "resources" : [
+    {
+      "name" : "disk",
+      "type" : "SCALAR",
+      "scalar" : { "value" : 2048 },
+      "role" : &lt;offer's allocation role&gt;,
+      "reservation" : {
+        "principal" : &lt;framework_principal&gt;
+      },
+      "disk": {
+        "persistence": {
+          "id" : &lt;persistent_volume_id&gt;
+        },
+        "volume" : {
+          "container_path" : &lt;container_path&gt;,
+          "mode" : &lt;mode&gt;
+        }
+      }
+    }
+  ]
+}
+</code></pre>
+
+<p>We can shrink the persistent volume by sending an <code>Offer::Operation</code> message via
+the <code>acceptOffers</code> API. <code>Offer::Operation::ShrinkVolume</code> has a <code>volume</code> field
+which specifies the persistent volume to grow, and a <code>subtract</code> field which
+specifies the scalar value of disk space to subtract from the volume:</p>
+
+<pre><code>{
+  "type" : Offer::Operation::SHRINK_VOLUME,
+  "shrink_volume" : {
+    "volume" : {
+      "name" : "disk",
+      "type" : "SCALAR",
+      "scalar" : { "value" : 2048 },
+      "role" : &lt;offer's allocation role&gt;,
+      "reservation" : {
+        "principal" : &lt;framework_principal&gt;
+      },
+      "disk": {
+        "persistence": {
+          "id" : &lt;persistent_volume_id&gt;
+        },
+        "volume" : {
+          "container_path" : &lt;container_path&gt;,
+          "mode" : &lt;mode&gt;
+        }
+      }
+    },
+   "subtract" : {
+      "value" : 1024
+    }
+  }
+}
+</code></pre>
+
+<p>If this request succeeds, the persistent volume will be shrunk to the new size,
+and all files and directories associated with the volume will not be touched.
+A subsequent resource offer will contain the shrunk volume as well as freed up
+disk resources with the same reservation information:</p>
+
+<pre><code>{
+  "id" : &lt;offer_id&gt;,
+  "framework_id" : &lt;framework_id&gt;,
+  "slave_id" : &lt;slave_id&gt;,
+  "hostname" : &lt;hostname&gt;,
+  "resources" : [
+    {
+      "name" : "disk",
+      "type" : "SCALAR",
+      "scalar" : { "value" : 1024 },
+      "role" : &lt;offer's allocation role&gt;,
+      "reservation" : {
+        "principal" : &lt;framework_principal&gt;
+      }
+    },
+    {
+      "name" : "disk",
+      "type" : "SCALAR",
+      "scalar" : { "value" : 1024 },
+      "role" : &lt;offer's allocation role&gt;,
+      "reservation" : {
+        "principal" : &lt;framework_principal&gt;
+      },
+      "disk": {
+        "persistence": {
+          "id" : &lt;persistent_volume_id&gt;
+        },
+        "volume" : {
+          "container_path" : &lt;container_path&gt;,
+          "mode" : &lt;mode&gt;
+        }
+      }
+    }
+  ]
+}
+</code></pre>
+
+<p>Some restrictions about resizing a volume (applicable to both
+<a href="#offer-operation-grow-volume">Offer::Operation::GrowVolume</a> and
+<a href="#offer-operation-shrink-volume">Offer::Operation::ShrinkVolume</a>):
+* Only persistent volumes created on an agent&rsquo;s local disk space with <code>ROOT</code> or
+  <code>PATH</code> type can be resized;
+* A persistent volume cannot be actively used by a task when being resized;
+* A persistent volume cannot be shared when being resized;
+* Volume resize operations cannot be included in an ACCEPT call with other
+  operations which make use of the resized volume.</p>
+
+<h2>Versioned HTTP Operator API</h2>
 
 <p>As described above, persistent volumes can be created by a framework scheduler
-as part of the resource offer cycle. Persistent volumes can also be created and
-destroyed using the <a href="/documentation/latest/./endpoints/master/create-volumes/">/create-volumes</a> and
-<a href="/documentation/latest/./endpoints/master/destroy-volumes/">/destroy-volumes</a> endpoints, respectively.
-This capability is intended for use by operators and administrative tools.</p>
+as part of the resource offer cycle. Persistent volumes can also be managed
+using the <a href="/documentation/latest/./operator-http-api/">HTTP Operator API</a>.</p>
+
+<p>This capability is intended for use by operators and administrative tools.</p>
+
+<p>For each offer operation which interacts with persistent volume, there is an
+equivalent call in master&rsquo;s <a href="/documentation/latest/./operator-http-api/">HTTP Operator API</a>.</p>
+
+<h2>Unversioned Operator HTTP Endpoints</h2>
+
+<p>Several HTTP endpoints like
+<a href="/documentation/latest/./endpoints/master/create-volumes/">/create-volumes</a> and
+<a href="/documentation/latest/./endpoints/master/destroy-volumes/">/destroy-volumes</a> can still be used to
+manage persisent volumes, but we generally encourage operators to use
+versioned <a href="/documentation/latest/./operator-http-api/">HTTP Operator API</a> instead, as new features
+like resize support may not be backported.</p>
 
 <h3><code>/create-volumes</code></h3>
 
@@ -626,7 +891,8 @@ master endpoint to include detailed information about persistent volumes and
 dynamic reservations. Mesos 1.0 changed the semantics of destroying a volume:
 in previous releases, destroying a volume would remove the Mesos-level metadata
 but would not remove the volume&rsquo;s data from the agent&rsquo;s filesystem. Mesos 1.1
-introduced support for <a href="/documentation/latest/./shared-resources/">shared persistent volumes</a>.</p>
+introduced support for <a href="/documentation/latest/./shared-resources/">shared persistent volumes</a>. Mesos
+1.6 introduced experimental support for resizing persistent volumes.</p>
 
   </div>
 </div>

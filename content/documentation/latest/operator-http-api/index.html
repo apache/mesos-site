@@ -1949,11 +1949,11 @@ HTTP/1.1 202 Accepted
 
 <h3>CREATE_VOLUMES</h3>
 
-<p>This call create persistent volumes on reserved resources. The request is
-forwarded asynchronously to the Mesos agent where the reserved resources are
-located. That asynchronous message may not be delivered or creating the volumes
-at the agent might fail. This call takes <code>agent_id</code> and <code>volumes</code> details like
-the following.</p>
+<p>This call create <a href="/documentation/latest/./persistent-volume/">persistent volumes</a> on reserved
+resources. The request is forwarded asynchronously to the Mesos agent where the
+reserved resources are located. That asynchronous message may not be delivered
+or creating the volumes at the agent might fail. This call takes <code>agent_id</code>
+and <code>volumes</code> details like the following.</p>
 
 <pre><code>CREATE_VOLUMES HTTP Request (JSON):
 
@@ -2000,8 +2000,8 @@ HTTP/1.1 202 Accepted
 
 <h3>DESTROY_VOLUMES</h3>
 
-<p>This call destroys persistent volumes. The request is forwarded asynchronously to the
-Mesos agent where the reserved resources are located.</p>
+<p>This call destroys <a href="/documentation/latest/./persistent-volume/">persistent volumes</a>. The request is
+forwarded asynchronously to the Mesos agent where the volumes are located.</p>
 
 <pre><code>DESTROY_VOLUMES HTTP Request (JSON):
 
@@ -2042,6 +2042,111 @@ Accept: application/json
 
 
 DESTROY_VOLUMES HTTP Response:
+
+HTTP/1.1 202 Accepted
+</code></pre>
+
+<h3>GROW_VOLUME</h3>
+
+<p>This call grows the size of a <a href="/documentation/latest/./persistent-volume/">persistent volume</a>. The
+request is forwarded asynchronously to the Mesos agent where the volume is
+located.</p>
+
+<pre><code>GROW_VOLUME HTTP Request (JSON):
+
+POST /api/v1  HTTP/1.1
+
+Host: masterhost:5050
+Content-Type: application/json
+Accept: application/json
+
+{
+  "type": "GROW_VOLUME",
+  "grow_volume": {
+    "agent_id": {
+      "value": "919141a8-b434-4946-86b9-e1b65c8171f6-S0"
+    },
+    "volume": {
+      "disk": {
+        "persistence": {
+          "id": "id1",
+          "principal": "my-principal"
+        },
+        "volume": {
+          "container_path": "path1",
+          "mode": "RW"
+        }
+      },
+      "name": "disk",
+      "role": "role1",
+      "scalar": {
+        "value": 64.0
+      },
+      "type": "SCALAR"
+    },
+    "addition": {
+      "name": "disk",
+      "role": "role1",
+      "scalar": {
+        "value": 64.0
+      },
+      "type": "SCALAR"
+    }
+  }
+}
+
+
+GROW_VOLUME HTTP Response:
+
+HTTP/1.1 202 Accepted
+</code></pre>
+
+<h3>SHRINK_VOLUME</h3>
+
+<p>This call shrinks the size of a <a href="/documentation/latest/./persistent-volume/">persistent volume</a>.
+The request is forwarded asynchronously to the Mesos agent where the volume
+is located.</p>
+
+<pre><code>SHRINK_VOLUME HTTP Request (JSON):
+
+POST /api/v1  HTTP/1.1
+
+Host: masterhost:5050
+Content-Type: application/json
+Accept: application/json
+
+{
+  "type": "SHRINK_VOLUME",
+  "shrink_volume": {
+    "agent_id": {
+      "value": "919141a8-b434-4946-86b9-e1b65c8171f6-S0"
+    },
+    "volume": {
+      "disk": {
+        "persistence": {
+          "id": "id1",
+          "principal": "my-principal"
+        },
+        "volume": {
+          "container_path": "path1",
+          "mode": "RW"
+        }
+      },
+      "name": "disk",
+      "role": "role1",
+      "scalar": {
+        "value": 128.0
+      },
+      "type": "SCALAR"
+    },
+    "subtract": {
+      "value": 64.0
+    }
+  }
+}
+
+
+SHRINK_VOLUME HTTP Response:
 
 HTTP/1.1 202 Accepted
 </code></pre>
