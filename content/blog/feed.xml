@@ -4,7 +4,66 @@
   <id>http://mesos.apache.org/blog</id>
   <link href="http://mesos.apache.org/blog" />
   <link href="http://mesos.apache.org/blog/feed.xml" rel="self"/>
-  <updated>2018-02-08T00:00:00+00:00</updated>
+  <updated>2018-05-17T00:00:00+00:00</updated>
+  <entry>
+    <id>http://mesos.apache.org/blog/mesos-1-6-0-released/</id>
+    <link href="/blog/mesos-1-6-0-released/" />
+    <title>
+      Mesos 1.6: Persistent Volume, Scheduler API, and Docker Support Improvements
+    </title>
+    <updated>2018-05-17T00:00:00+00:00</updated>
+    <author>
+      <name>Greg Mann</name>
+    </author>
+    <content type="html">
+      &lt;p&gt;Great work everyone; Apache Mesos 1.6.0 was released on May 11!&lt;/p&gt;
+
+&lt;h1&gt;New Features and Improvements&lt;/h1&gt;
+
+&lt;p&gt;Mesos 1.6 includes improvements to persistent volumes, usability of the scheduler API, Docker daemon support, and memory allocation performance.&lt;/p&gt;
+
+&lt;h2&gt;Resizing Persistent Volumes&lt;/h2&gt;
+
+&lt;p&gt;Mesos 1.6 adds experimental support for the &lt;a href=&quot;http://mesos.apache.org/documentation/latest/persistent-volume/&quot;&gt;resizing of persistent volumes&lt;/a&gt;. Two new operations, &lt;a href=&quot;http://mesos.apache.org/documentation/latest/persistent-volume/#offer-operation-growvolume&quot;&gt;GrowVolume&lt;/a&gt; and &lt;a href=&quot;http://mesos.apache.org/documentation/latest/persistent-volume/#offer-operation-shrinkvolume&quot;&gt;ShrinkVolume&lt;/a&gt;, can be used both via the &lt;a href=&quot;http://mesos.apache.org/documentation/latest/scheduler-http-api/#accept&quot;&gt;scheduler API&lt;/a&gt; and via the &lt;a href=&quot;http://mesos.apache.org/documentation/latest/operator-http-api/#grow_volume&quot;&gt;operator API&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Persistent volume resizing is currently limited to volumes created on default agent disk resources - in other words, CSI volumes are not yet supported.&lt;/p&gt;
+
+&lt;h2&gt;Offer Operation Feedback&lt;/h2&gt;
+
+&lt;p&gt;Mesos 1.6 introduces experimental support for offer operation status updates. Previously, only &lt;code&gt;Launch&lt;/code&gt; and &lt;code&gt;LaunchGroup&lt;/code&gt; operations received feedback via task status updates. Now, schedulers may opt to receive feedback on other offer operations via operation status updates by setting the &lt;code&gt;id&lt;/code&gt; field in the operation. Similar to task status updates, when these operation updates have a unique &lt;code&gt;uuid&lt;/code&gt; set, the scheduler must acknowledge them. This feature allows schedulers to ensure the reliability of offer operations like &lt;code&gt;Reserve&lt;/code&gt; and &lt;code&gt;Create&lt;/code&gt;; if such an operation fails and the scheduler has opted in to receive feedback, an operation status update will be sent and the scheduler can retry if appropriate.&lt;/p&gt;
+
+&lt;p&gt;Offer operation feedback is currently limited to operations on resources provided by a resource provider - in most cases, this means that only operations on CSI volumes are supported.&lt;/p&gt;
+
+&lt;h2&gt;Performance and Debugging&lt;/h2&gt;
+
+&lt;p&gt;Mesos 1.6 includes experimental support for the &lt;a href=&quot;http://jemalloc.net&quot;&gt;jemalloc&lt;/a&gt; memory allocation library. In addition to a potential improvement in memory allocation performance, this enables simple memory profiling via command-line flags and environment variables outlined in the &lt;a href=&quot;http://mesos.apache.org/documentation/latest/memory-profiling/&quot;&gt;documentation&lt;/a&gt;. We expect this feature to help drive future performance improvments in Mesos since it improves the ability of operators to understand how Mesos behaves in production environments.&lt;/p&gt;
+
+&lt;h2&gt;Docker Improvements&lt;/h2&gt;
+
+&lt;p&gt;In response to issues encountered by operators when using Mesos with the Docker container runtime, &lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8572&quot;&gt;several improvements&lt;/a&gt; were made to the Docker containerizer and executor to help them more gracefully handle situations in which the Docker daemon is unresponsive. Retry and timeout logic has been added in several key locations so that when the Docker daemon hangs for short periods of time, Mesos can recover and resume normal operation.&lt;/p&gt;
+
+&lt;h2&gt;Upgrade&lt;/h2&gt;
+
+&lt;p&gt;In most cases, upgrades from Mesos 1.5.0 to Mesos 1.6.0 are straightforward. Please refer to the &lt;a href=&quot;http://mesos.apache.org/documentation/latest/upgrades/&quot;&gt;upgrade guide&lt;/a&gt; for detailed information on upgrading to Mesos 1.6.0.&lt;/p&gt;
+
+&lt;p&gt;Support for the Container Storage Interface (CSI) version 0.2 has been added, and CSI v0.1 support is now deprecated.&lt;/p&gt;
+
+&lt;p&gt;When building Mesos with gRPC support, note that gRPC version 1.10 or later is now required.&lt;/p&gt;
+
+&lt;h1&gt;Community&lt;/h1&gt;
+
+&lt;p&gt;Inspired by the work that went into this release? Want to get involved? Have feedback? We&amp;rsquo;d love to hear from you! Join a &lt;a href=&quot;http://mesos.apache.org/documentation/latest/working-groups/&quot;&gt;working group&lt;/a&gt; or start a conversation in the &lt;a href=&quot;http://mesos.apache.org/community/&quot;&gt;community&lt;/a&gt;!&lt;/p&gt;
+
+&lt;h1&gt;Thank you!&lt;/h1&gt;
+
+&lt;p&gt;Thanks to the 55 contributors who made Mesos 1.6.0 possible:&lt;/p&gt;
+
+&lt;p&gt;Adam B, Akash Gupta, Alexander Rojas, Alexander Rukletsov, Andrei Budnik, Andrew Schwartzmeyer, AntonDan, Armand Grillet, Benjamin Bannier, Benjamin Mahler, Benjamin Peterson, Benno Evers, Chun-Hung Hsiao, Clement Michaud, David Forsythe, Demitri Swan, EMumau, Eric Chung, Eric Mumau, Gaston Kleiman, Gilbert Song, Greg Mann, Harold Dost, Ilya Pronin, James Peach, Jan Schlicht, Jason Lai, Jeff Coffler, Jiang Yan Xu, Jie Yu, Joerg Schad, John Kordich, Joseph Wu, Judith Malnick, Kapil Arya, Marcin Owsiany, Megha Sharma, Meng Zhu, Michael Park, Murilo Pereira, Packt, Qian Zhang, Sachin Paryani, Sagar Patwardhan, Senthil Kumaran, Shiv Deepak, Shubham Kumar, Sofian Brabez, Till Toenshoff, Tomasz Janiszewski, Vinod Kone, Xudong Ni, Zhitao Li, longfei, miamipanther&lt;/p&gt;
+
+&lt;p&gt;Enjoy Apache Mesos 1.6!&lt;/p&gt;
+
+	</content>
+  </entry>
   <entry>
     <id>http://mesos.apache.org/blog/mesos-1-5-0-released/</id>
     <link href="/blog/mesos-1-5-0-released/" />
