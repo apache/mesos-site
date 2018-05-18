@@ -81,9 +81,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abf91d08c21dae805eed4fdd9f9f5fbd5"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classTry.html">Try</a>&lt; <a class="el" href="structNothing.html">Nothing</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1slave_1_1ContainerLogger.html#abf91d08c21dae805eed4fdd9f9f5fbd5">initialize</a> ()=0</td></tr>
 <tr class="memdesc:abf91d08c21dae805eed4fdd9f9f5fbd5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes this container logger.  <a href="#abf91d08c21dae805eed4fdd9f9f5fbd5">More...</a><br /></td></tr>
 <tr class="separator:abf91d08c21dae805eed4fdd9f9f5fbd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a202f3ca4f6c935fa958c5b8d37b7fc23"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt; <a class="el" href="structmesos_1_1slave_1_1ContainerIO.html">ContainerIO</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1slave_1_1ContainerLogger.html#a202f3ca4f6c935fa958c5b8d37b7fc23">prepare</a> (const ContainerConfig &amp;containerConfig)=0</td></tr>
-<tr class="memdesc:a202f3ca4f6c935fa958c5b8d37b7fc23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called before Mesos creates a container.  <a href="#a202f3ca4f6c935fa958c5b8d37b7fc23">More...</a><br /></td></tr>
-<tr class="separator:a202f3ca4f6c935fa958c5b8d37b7fc23"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a71d26b11f639c21a14187a1b2c0d19b8"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt; <a class="el" href="structmesos_1_1slave_1_1ContainerIO.html">ContainerIO</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1slave_1_1ContainerLogger.html#a71d26b11f639c21a14187a1b2c0d19b8">prepare</a> (const ContainerID &amp;containerId, const ContainerConfig &amp;containerConfig)=0</td></tr>
+<tr class="memdesc:a71d26b11f639c21a14187a1b2c0d19b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called before Mesos creates a container.  <a href="#a71d26b11f639c21a14187a1b2c0d19b8">More...</a><br /></td></tr>
+<tr class="separator:a71d26b11f639c21a14187a1b2c0d19b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -178,7 +178,7 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a202f3ca4f6c935fa958c5b8d37b7fc23"></a>
+<a class="anchor" id="a71d26b11f639c21a14187a1b2c0d19b8"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -188,9 +188,19 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">virtual <a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt;<a class="el" href="structmesos_1_1slave_1_1ContainerIO.html">ContainerIO</a>&gt; mesos::slave::ContainerLogger::prepare </td>
           <td>(</td>
-          <td class="paramtype">const ContainerConfig &amp;&#160;</td>
-          <td class="paramname"><em>containerConfig</em></td><td>)</td>
+          <td class="paramtype">const ContainerID &amp;&#160;</td>
+          <td class="paramname"><em>containerId</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const ContainerConfig &amp;&#160;</td>
+          <td class="paramname"><em>containerConfig</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -205,6 +215,7 @@ Static Public Member Functions</h2></td></tr>
 <p>NOTE: The container logger should not lose stdout/stderr if the agent fails over. Additionally, if the container logger is stateful, the logger should be capable of recovering managed containers during the agent recovery process. See <code>ContainerLogger::recover</code>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramname">containerId</td><td>The ID of the container. </td></tr>
     <tr><td class="paramname">containerConfig</td><td>The configurations of the container, including the ExecutorInfo (if applied), as well as the absolute path to the sandbox directory of the container. The sandbox path is provided in case the container logger needs to store files in the container's sandbox, such as persistent state between agent failovers. NOTE: All files in the sandbox are exposed via the <code>/files</code> endpoint. </td></tr>
   </table>
   </dd>
