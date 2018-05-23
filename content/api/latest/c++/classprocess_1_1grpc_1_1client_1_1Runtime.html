@@ -68,10 +68,10 @@
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a5f7e56d9ebb540a9dbc52c5fb816a024"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprocess_1_1grpc_1_1client_1_1Runtime.html#a5f7e56d9ebb540a9dbc52c5fb816a024">Runtime</a> ()</td></tr>
 <tr class="separator:a5f7e56d9ebb540a9dbc52c5fb816a024"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad7b51c9cbfcfef8692eeaa66b2b63007"><td class="memTemplParams" colspan="2">template&lt;typename Stub , typename Request , typename Response &gt; </td></tr>
-<tr class="memitem:ad7b51c9cbfcfef8692eeaa66b2b63007"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classprocess_1_1Future.html">Future</a>&lt; <a class="el" href="structprocess_1_1grpc_1_1RpcResult.html">RpcResult</a>&lt; Response &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classprocess_1_1grpc_1_1client_1_1Runtime.html#ad7b51c9cbfcfef8692eeaa66b2b63007">call</a> (const <a class="el" href="classprocess_1_1grpc_1_1Channel.html">Channel</a> &amp;channel, std::unique_ptr&lt;::grpc::ClientAsyncResponseReader&lt; Response &gt;&gt;(Stub::*rpc)(::grpc::ClientContext *, const Request &amp;,::grpc::CompletionQueue *), const Request &amp;request)</td></tr>
-<tr class="memdesc:ad7b51c9cbfcfef8692eeaa66b2b63007"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends an asynchronous gRPC call.  <a href="#ad7b51c9cbfcfef8692eeaa66b2b63007">More...</a><br /></td></tr>
-<tr class="separator:ad7b51c9cbfcfef8692eeaa66b2b63007"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc50467a027c41b69d3df6e24864f034"><td class="memTemplParams" colspan="2">template&lt;typename Method , typename Request  = typename internal::MethodTraits&lt;Method&gt;::request_type, typename Response  = typename internal::MethodTraits&lt;Method&gt;::response_type&gt; </td></tr>
+<tr class="memitem:acc50467a027c41b69d3df6e24864f034"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classprocess_1_1Future.html">Future</a>&lt; <a class="el" href="classTry.html">Try</a>&lt; Response, <a class="el" href="classprocess_1_1grpc_1_1StatusError.html">StatusError</a> &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classprocess_1_1grpc_1_1client_1_1Runtime.html#acc50467a027c41b69d3df6e24864f034">call</a> (const <a class="el" href="classprocess_1_1grpc_1_1client_1_1Connection.html">Connection</a> &amp;connection, Method &amp;&amp;method, const Request &amp;request)</td></tr>
+<tr class="memdesc:acc50467a027c41b69d3df6e24864f034"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends an asynchronous gRPC call.  <a href="#acc50467a027c41b69d3df6e24864f034">More...</a><br /></td></tr>
+<tr class="separator:acc50467a027c41b69d3df6e24864f034"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae9cb9b61f055d4ecec094aeef206e7d4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprocess_1_1grpc_1_1client_1_1Runtime.html#ae9cb9b61f055d4ecec094aeef206e7d4">terminate</a> ()</td></tr>
 <tr class="memdesc:ae9cb9b61f055d4ecec094aeef206e7d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Asks the internal gRPC runtime instance to shut down the <code>CompletionQueue</code>, which would stop its looper thread, drain and fail all pending gRPC calls in the <code>CompletionQueue</code>, then asynchronously join the looper thread.  <a href="#ae9cb9b61f055d4ecec094aeef206e7d4">More...</a><br /></td></tr>
 <tr class="separator:ae9cb9b61f055d4ecec094aeef206e7d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -106,26 +106,26 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="ad7b51c9cbfcfef8692eeaa66b2b63007"></a>
+<a class="anchor" id="acc50467a027c41b69d3df6e24864f034"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Stub , typename Request , typename Response &gt; </div>
+template&lt;typename Method , typename Request  = typename internal::MethodTraits&lt;Method&gt;::request_type, typename Response  = typename internal::MethodTraits&lt;Method&gt;::response_type&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classprocess_1_1Future.html">Future</a>&lt;<a class="el" href="structprocess_1_1grpc_1_1RpcResult.html">RpcResult</a>&lt;Response&gt; &gt; process::grpc::client::Runtime::call </td>
+          <td class="memname"><a class="el" href="classprocess_1_1Future.html">Future</a>&lt;<a class="el" href="classTry.html">Try</a>&lt;Response, <a class="el" href="classprocess_1_1grpc_1_1StatusError.html">StatusError</a>&gt; &gt; process::grpc::client::Runtime::call </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classprocess_1_1grpc_1_1Channel.html">Channel</a> &amp;&#160;</td>
-          <td class="paramname"><em>channel</em>, </td>
+          <td class="paramtype">const <a class="el" href="classprocess_1_1grpc_1_1client_1_1Connection.html">Connection</a> &amp;&#160;</td>
+          <td class="paramname"><em>connection</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::unique_ptr&lt;::grpc::ClientAsyncResponseReader&lt; Response &gt;&gt;(Stub::*)(::grpc::ClientContext *, const Request &amp;,::grpc::CompletionQueue *)&#160;</td>
-          <td class="paramname"><em>rpc</em>, </td>
+          <td class="paramtype">Method &amp;&amp;&#160;</td>
+          <td class="paramname"><em>method</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -147,15 +147,16 @@ template&lt;typename Stub , typename Request , typename Response &gt; </div>
 </div><div class="memdoc">
 
 <p>Sends an asynchronous gRPC call. </p>
+<p>This function returns a <code><a class="el" href="classprocess_1_1Future.html">Future</a></code> of a <code><a class="el" href="classTry.html">Try</a></code> such that the response protobuf is returned only if the gRPC call returns an OK status to ensure type safety (see <a href="https://github.com/grpc/grpc/issues/12824">https://github.com/grpc/grpc/issues/12824</a>). Note that the future never fails; it will return a <code><a class="el" href="classprocess_1_1grpc_1_1StatusError.html" title="Represents errors caused by non-OK gRPC statuses. ">StatusError</a></code> if a non-OK status is returned for the call, so the caller can handle the error programmatically.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">channel</td><td>A connection to a gRPC server. </td></tr>
-    <tr><td class="paramname">rpc</td><td>The asynchronous gRPC call to make. This can be obtained by the <code><a class="el" href="grpc_8hpp.html#af7c02a396d36035ea181b30f1d040f54">GRPC_RPC(Service, RPC)</a></code> macro. </td></tr>
+    <tr><td class="paramname">connection</td><td>A connection to a gRPC server. </td></tr>
+    <tr><td class="paramname">rpc</td><td>The asynchronous gRPC call to make. This can be obtained by the <code><a class="el" href="grpc_8hpp.html#af26d5c763831ad955bb9742db25c5f75">GRPC_CLIENT_METHOD(service, rpc)</a></code> macro. </td></tr>
     <tr><td class="paramname">request</td><td>The request protobuf for the gRPC call. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>a <code><a class="el" href="classprocess_1_1Future.html">Future</a></code> waiting for a response protobuf. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>a <code><a class="el" href="classprocess_1_1Future.html">Future</a></code> of <code><a class="el" href="classTry.html">Try</a></code> waiting for a response protobuf or an error. </dd></dl>
 
 </div>
 </div>

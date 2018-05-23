@@ -61,6 +61,7 @@
 <code>#include &lt;memory&gt;</code><br />
 <code>#include &lt;thread&gt;</code><br />
 <code>#include &lt;type_traits&gt;</code><br />
+<code>#include &lt;utility&gt;</code><br />
 <code>#include &lt;google/protobuf/message.h&gt;</code><br />
 <code>#include &lt;grpcpp/grpcpp.h&gt;</code><br />
 <code>#include &lt;<a class="el" href="future_8hpp_source.html">process/future.hpp</a>&gt;</code><br />
@@ -75,11 +76,15 @@
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprocess_1_1grpc_1_1Channel.html">process::grpc::Channel</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A copyable interface to manage a connection to a gRPC server.  <a href="classprocess_1_1grpc_1_1Channel.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprocess_1_1grpc_1_1StatusError.html">process::grpc::StatusError</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents errors caused by non-OK gRPC statuses.  <a href="classprocess_1_1grpc_1_1StatusError.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structprocess_1_1grpc_1_1RpcResult.html">process::grpc::RpcResult&lt; T &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The response of a RPC call.  <a href="structprocess_1_1grpc_1_1RpcResult.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structprocess_1_1grpc_1_1client_1_1internal_1_1MethodTraits.html">process::grpc::client::internal::MethodTraits&lt; T &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structprocess_1_1grpc_1_1client_1_1internal_1_1MethodTraits_3_01std_1_1unique__ptr_3_1_1grpc_1_1b922a69900827d65b241714130bc07ca.html">process::grpc::client::internal::MethodTraits&lt; std::unique_ptr&lt;::grpc::ClientAsyncResponseReader&lt; Response &gt; &gt;(Stub::*)(::grpc::ClientContext *, const Request &amp;,::grpc::CompletionQueue *)&gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprocess_1_1grpc_1_1client_1_1Connection.html">process::grpc::client::Connection</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A copyable interface to manage a connection to a gRPC server.  <a href="classprocess_1_1grpc_1_1client_1_1Connection.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprocess_1_1grpc_1_1client_1_1Runtime.html">process::grpc::client::Runtime</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A copyable interface to manage an internal gRPC runtime instance for asynchronous gRPC calls.  <a href="classprocess_1_1grpc_1_1client_1_1Runtime.html#details">More...</a><br /></td></tr>
@@ -93,19 +98,21 @@ Namespaces</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespaceprocess_1_1grpc_1_1client"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceprocess_1_1grpc_1_1client.html">process::grpc::client</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespaceprocess_1_1grpc_1_1client_1_1internal"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceprocess_1_1grpc_1_1client_1_1internal.html">process::grpc::client::internal</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:af7c02a396d36035ea181b30f1d040f54"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="grpc_8hpp.html#af7c02a396d36035ea181b30f1d040f54">GRPC_RPC</a>(service,  rpc)&#160;&#160;&#160;(&amp;service::Stub::Async##rpc)</td></tr>
-<tr class="separator:af7c02a396d36035ea181b30f1d040f54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af26d5c763831ad955bb9742db25c5f75"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="grpc_8hpp.html#af26d5c763831ad955bb9742db25c5f75">GRPC_CLIENT_METHOD</a>(service,  rpc)&#160;&#160;&#160;(&amp;service::Stub::PrepareAsync##rpc)</td></tr>
+<tr class="separator:af26d5c763831ad955bb9742db25c5f75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
-<a class="anchor" id="af7c02a396d36035ea181b30f1d040f54"></a>
+<a class="anchor" id="af26d5c763831ad955bb9742db25c5f75"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define GRPC_RPC</td>
+          <td class="memname">#define GRPC_CLIENT_METHOD</td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname">service, </td>
@@ -119,7 +126,7 @@ Macros</h2></td></tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td>&#160;&#160;&#160;(&amp;service::Stub::Async##rpc)</td>
+          <td></td><td>&#160;&#160;&#160;(&amp;service::Stub::PrepareAsync##rpc)</td>
         </tr>
       </table>
 </div><div class="memdoc">
