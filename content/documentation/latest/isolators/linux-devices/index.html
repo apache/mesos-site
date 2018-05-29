@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Apache Mesos - Mesos Containerizer</title>
+    <title>Apache Mesos - Linux Devices Isolator in Mesos Containerizer</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <meta property="og:locale" content="en_US"/>
@@ -27,7 +27,7 @@
 
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
-    <link href="../../assets/css/main.css" rel="stylesheet" />
+    <link href="../../../../assets/css/main.css" rel="stylesheet" />
 
 
     <!-- Google Analytics Magic -->
@@ -107,69 +107,33 @@
     <p>See our <a href="/community/">community</a> page for more details.</p>
   </div>
   <div class="col-md-8">
-    <h1>Mesos Containerizer</h1>
+    <h1>Linux Devices in Mesos Containerizer</h1>
 
-<p>The Mesos Containerizer provides lightweight containerization and
-resource isolation of executors using Linux-specific functionality
-such as control cgroups and namespaces. It is composable so operators
-can selectively enable different <a href="#isolators">isolators</a>.</p>
+<p>While the <code>cgroups/devices</code> isolator allows operators to control
+container access to host devices, the container might still need
+additional privileges to create a device node to actually use the
+device. The <code>linux/devices</code> isolator ensures that containers that
+are granted access to host devices are populated with the the correct
+set of device nodes. Access to host devices is granted by using the
+<a href="/documentation/latest/isolators/../configuration/agent/#allowed_devices"><code>--allowed_devices</code></a> flag
+on the agent.</p>
 
-<p>It also provides basic support for POSIX systems (e.g., OSX) but
-without any actual isolation, only resource usage reporting.</p>
+<p>To enable the <code>linux/devices</code> isolator, append <code>linux/devices</code> to the
+<a href="/documentation/latest/isolators/../configuration/agent/#isolation"><code>--isolation</code></a> flag when starting
+the Mesos agent.</p>
 
-<h2>Isolators</h2>
+<h2>Security Considerations</h2>
 
-<p>Isolators are components that each define an aspect of how a tasks
-execution environment (or container) is constructed. Isolators can
-control how containers are isolated from each other, how task resource
-limits are enforced, how networking is configured, how security
-policies are applied.</p>
+<p>Device access is configured at container
+granularity. For example, this means that if the
+<a href="/documentation/latest/isolators/../configuration/agent/#allowed_devices"><code>--allowed_devices</code></a> flag
+specifies read access for a device, then every process in the container
+will be able to read from the specified device.</p>
 
-<p>Since the isolator interface is <a href="/documentation/latest/./modules/">modularized</a>, operators
-can write modules that implement custom isolators.</p>
-
-<p>Mesos supports the following built-in isolators.</p>
-
-<ul>
-<li>appc/runtime</li>
-<li><a href="/documentation/latest/./isolators/cgroups-blkio/">cgroups/blkio</a></li>
-<li><a href="/documentation/latest/./isolators/cgroups-cpu/">cgroups/cpu</a></li>
-<li>cgroups/cpuset</li>
-<li><a href="/documentation/latest/./isolators/cgroups-devices/">cgroups/devices</a></li>
-<li>cgroups/hugetlb</li>
-<li>cgroups/mem</li>
-<li><a href="/documentation/latest/./isolators/cgroups-net-cls/">cgroups/net_cls</a></li>
-<li>cgroups/net_prio</li>
-<li>cgroups/perf_event</li>
-<li>cgroups/pids</li>
-<li><a href="/documentation/latest/./isolators/disk-du/">disk/du</a></li>
-<li><a href="/documentation/latest/./isolators/disk-xfs/">disk/xfs</a></li>
-<li><a href="/documentation/latest/./isolators/docker-runtime/">docker/runtime</a></li>
-<li><a href="/documentation/latest/./isolators/docker-volume/">docker/volume</a></li>
-<li><a href="/documentation/latest/./secrets/#environment-based-secrets">environment_secret</a></li>
-<li><a href="/documentation/latest/./isolators/filesystems/">filesystem/linux</a></li>
-<li><a href="/documentation/latest/./isolators/filesystems/">filesystem/posix</a></li>
-<li><a href="/documentation/latest/./isolators/filesystem-shared/">filesystem/shared</a></li>
-<li>filesystem/windows</li>
-<li><a href="/documentation/latest/./gpu-support/">gpu/nvidia</a></li>
-<li><a href="/documentation/latest/./isolators/linux-capabilities/">linux/capabilities</a></li>
-<li><a href="/documentation/latest/./isolators/linux-devices/">linux/devices</a></li>
-<li><a href="/documentation/latest/./isolators/namespaces-ipc/">namespaces/ipc</a></li>
-<li><a href="/documentation/latest/./isolators/namespaces-pid/">namespaces/pid</a></li>
-<li><a href="/documentation/latest/./cni/">network/cni</a></li>
-<li><a href="/documentation/latest/./isolators/network-port-mapping/">network/port_mapping</a></li>
-<li><a href="/documentation/latest/./isolators/network-ports/">network/ports</a></li>
-<li>posix/cpu</li>
-<li>posix/mem</li>
-<li><a href="/documentation/latest/./isolators/posix-rlimits/">posix/rlimits</a></li>
-<li><a href="/documentation/latest/./container-volume/#host_path-volume-source">volume/host_path</a></li>
-<li>volume/image</li>
-<li><a href="/documentation/latest/./container-volume/#sandbox_path-volume-source">volume/sandbox_path</a></li>
-<li><a href="/documentation/latest/./secrets/#file-based-secrets">volume/secret</a></li>
-<li><a href="/documentation/latest/./isolators/windows/#cpu-limits">windows/cpu</a></li>
-<li><a href="/documentation/latest/./isolators/windows/#memory-limits">windows/mem</a></li>
-</ul>
-
+<p>The <code>linux/devices</code> isolator does not require the
+<a href="/documentation/latest/isolators/../configuration/agent/#allowed_devices"><code>--allowed_devices</code></a> entry
+to grant <code>mknod</code> access, since it creates device nodes from outside
+the container.</p>
 
   </div>
 </div>
