@@ -1256,9 +1256,9 @@ and resource allocations in the allocator.</p>
 </tr>
 <tr>
   <td>
-  <code>allocator/mesos/roles/&lt;role&gt;/shares/dominant</code>
+  <code>allocator/mesos/roles/<i>&lt;role&gt;</i>/shares/dominant</code>
   </td>
-  <td>Dominant resource share for the role, exposed as a percentage (0.0-1.0)</td>
+  <td>Dominant <i>resource</i> share for the <i>role</i>, exposed as a percentage (0.0-1.0)</td>
   <td>Gauge</td>
 </tr>
 <tr>
@@ -1270,24 +1270,24 @@ and resource allocations in the allocator.</p>
 </tr>
 <tr>
   <td>
-  <code>allocator/mesos/offer_filters/roles/&lt;role&gt;/active</code>
+  <code>allocator/mesos/offer_filters/roles/<i>&lt;role&gt;</i>/active</code>
   </td>
-  <td>Number of active offer filters for all frameworks within the role</td>
+  <td>Number of active offer filters for all frameworks within the <i>role</i></td>
   <td>Gauge</td>
 </tr>
 <tr>
   <td>
-  <code>allocator/mesos/quota/roles/&lt;role&gt;/resources/&lt;resource&gt;/offered_or_allocated</code>
+  <code>allocator/mesos/quota/roles/<i>&lt;role&gt;</i>/resources/<i>&lt;resource&gt;</i>/offered_or_allocated</code>
   </td>
-  <td>Amount of resources considered offered or allocated towards
-      a role's quota guarantee</td>
+  <td>Amount of <i>resource</i>s considered offered or allocated towards
+      a <i>role</i>'s quota guarantee</td>
   <td>Gauge</td>
 </tr>
 <tr>
   <td>
-  <code>allocator/mesos/quota/roles/&lt;role&gt;/resources/&lt;resource&gt;/guarantee</code>
+  <code>allocator/mesos/quota/roles/<i>&lt;role&gt;</i>/resources/<i>&lt;resource&gt;</i>/guarantee</code>
   </td>
-  <td>Amount of resources guaranteed for a role via quota</td>
+  <td>Amount of <i>resource</i>s guaranteed for a <i>role</i> via quota</td>
   <td>Gauge</td>
 </tr>
 <tr>
@@ -1878,6 +1878,196 @@ the master it is registered with.</p>
 </tr>
 </table>
 
+
+<h4>Resource Providers</h4>
+
+<p>The following metrics provide information about ongoing and completed
+<a href="/documentation/latest/./operations/">operations</a> that apply to resources provided by a
+<a href="/documentation/latest/./resource-provider/">resource provider</a> with the given <em>type</em> and <em>name</em>. In
+the following metrics, the <em>operation</em> placeholder refers to the name of a
+particular operation type, which is described in the list of
+<a href="#supported-operation-types">supported operation types</a>.</p>
+
+<table class="table table-striped">
+<thead>
+<tr><th>Metric</th><th>Description</th><th>Type</th>
+</thead>
+<tr>
+  <td>
+  <code>resource_providers/<i>&lt;type&gt;</i>.<i>&lt;name&gt;</i>/operations/<i>&lt;operation&gt;</i>/pending</code>
+  </td>
+  <td>Number of ongoing <i>operation</i>s</td>
+  <td>Gauge</td>
+</tr>
+<tr>
+  <td>
+  <code>resource_providers/<i>&lt;type&gt;</i>.<i>&lt;name&gt;</i>/operations/<i>&lt;operation&gt;</i>/finished</code>
+  </td>
+  <td>Number of finished <i>operation</i>s</td>
+  <td>Counter</td>
+</tr>
+<tr>
+  <td>
+  <code>resource_providers/<i>&lt;type&gt;</i>.<i>&lt;name&gt;</i>/operations/<i>&lt;operation&gt;</i>/failed</code>
+  </td>
+  <td>Number of failed <i>operation</i>s</td>
+  <td>Counter</td>
+</tr>
+<tr>
+  <td>
+  <code>resource_providers/<i>&lt;type&gt;</i>.<i>&lt;name&gt;</i>/operations/<i>&lt;operation&gt;</i>/dropped</code>
+  </td>
+  <td>Number of dropped <i>operation</i>s</td>
+  <td>Counter</td>
+</tr>
+</table>
+
+
+<h5>Supported Operation Types</h5>
+
+<p>Since the supported operation types may vary among different resource providers,
+the following is a comprehensive list of operation types and the corresponding
+resource providers that support them. Note that the name column is for the
+<em>operation</em> placeholder in the above metrics.</p>
+
+<table class="table table-striped">
+<thead>
+<tr><th>Type</th><th>Name</th><th>Supported Resource Provider Types</th>
+</thead>
+<tr>
+  <td><code><a href="/documentation/latest/./reservation/">RESERVE</a></code></td>
+  <td><code>reserve</code></td>
+  <td>All</td>
+</tr>
+<tr>
+  <td><code><a href="/documentation/latest/./reservation/">UNRESERVE</a></code></td>
+  <td><code>unreserve</code></td>
+  <td>All</td>
+</tr>
+<tr>
+  <td><code><a href="persistent-volume.md#-offer-operation-create-">CREATE</a></code></td>
+  <td><code>create</code></td>
+  <td><code>org.apache.mesos.rp.local.storage</code></td>
+</tr>
+<tr>
+  <td><code><a href="persistent-volume.md#-offer-operation-destroy-">DESTROY</a></code></td>
+  <td><code>destroy</code></td>
+  <td><code>org.apache.mesos.rp.local.storage</code></td>
+</tr>
+<tr>
+  <td><code><a href="csi.md#-create_volume-operation">CREATE_VOLUME</a></code></td>
+  <td><code>create_volume</code></td>
+  <td><code>org.apache.mesos.rp.local.storage</code></td>
+</tr>
+<tr>
+  <td><code><a href="csi.md#-destroy_volume-operation">DESTROY_VOLUME</a></code></td>
+  <td><code>destroy_volume</code></td>
+  <td><code>org.apache.mesos.rp.local.storage</code></td>
+</tr>
+<tr>
+  <td><code><a href="csi.md#-create_block-operation">CREATE_BLOCK</a></code></td>
+  <td><code>create_block</code></td>
+  <td><code>org.apache.mesos.rp.local.storage</code></td>
+</tr>
+<tr>
+  <td><code><a href="csi.md#-destroy_block-operation">DESTROY_BLOCK</a></code></td>
+  <td><code>destroy_block</code></td>
+  <td><code>org.apache.mesos.rp.local.storage</code></td>
+</tr>
+</table>
+
+
+<p>For example, cluster operators can monitor the number of successful
+<code>CREATE_VOLUME</code> operations that are applied to the resource provider with type
+<code>org.apache.mesos.rp.local.storage</code> and name <code>lvm</code> through the
+<code>resource_providers/org.apache.mesos.rp.local.storage.lvm/operations/create_volume/finished</code>
+metric.</p>
+
+<h4>CSI Plugins</h4>
+
+<p>Storage resource providers in Mesos are backed by
+<a href="/documentation/latest/./csi/#standalone-containers-for-csi-plugins">CSI plugins</a> running in
+<a href="/documentation/latest/./standalone-container/">standalone containers</a>. To monitor the health of these
+CSI plugins for a storage resource provider with <em>type</em> and <em>name</em>, the
+following metrics provide information about plugin terminations and ongoing and
+completed CSI calls made to the plugin. In the following metrics, the <em>rpc</em>
+placeholder refers to the name of a particular CSI call, which is described in
+the list of <a href="#supported-csi-calls">supported CSI calls</a>.</p>
+
+<table class="table table-striped">
+<thead>
+<tr><th>Metric</th><th>Description</th><th>Type</th>
+</thead>
+<tr>
+  <td>
+  <code>resource_providers/<i>&lt;type&gt;</i>.<i>&lt;name&gt;</i>/csi_plugin/container_terminations</code>
+  </td>
+  <td>Number of terminated CSI plugin containers</td>
+  <td>Counter</td>
+</tr>
+<tr>
+  <td>
+  <code>resource_providers/<i>&lt;type&gt;</i>.<i>&lt;name&gt;</i>/csi_plugin/rpcs/<i>&lt;rpc&gt;</i>/pending</code>
+  </td>
+  <td>Number of ongoing <i>rpc</i> calls</td>
+  <td>Gauge</td>
+</tr>
+<tr>
+  <td>
+  <code>resource_providers/<i>&lt;type&gt;</i>.<i>&lt;name&gt;</i>/csi_plugin/rpcs/<i>&lt;rpc&gt;</i>/successes</code>
+  </td>
+  <td>Number of successful <i>rpc</i> calls</td>
+  <td>Counter</td>
+</tr>
+<tr>
+  <td>
+  <code>resource_providers/<i>&lt;type&gt;</i>.<i>&lt;name&gt;</i>/csi_plugin/rpcs/<i>&lt;rpc&gt;</i>/errors</code>
+  </td>
+  <td>Number of erroneous <i>rpc</i> calls</td>
+  <td>Counter</td>
+</tr>
+<tr>
+  <td>
+  <code>resource_providers/<i>&lt;type&gt;</i>.<i>&lt;name&gt;</i>/csi_plugin/rpcs/<i>&lt;rpc&gt;</i>/cancelled</code>
+  </td>
+  <td>Number of cancelled <i>rpc</i> calls</td>
+  <td>Counter</td>
+</tr>
+</table>
+
+
+<h5>Supported CSI Calls</h5>
+
+<p>The following is a comprehensive list of CSI calls that are used in storage
+resource providers. These names are used to replace the <em>rpc</em> placeholder in the
+above metrics.</p>
+
+<ul>
+<li><a href="https://github.com/container-storage-interface/spec/blob/v0.2.0/spec.md#getplugininfo"><code>csi.v0.Identity.GetPluginInfo</code></a></li>
+<li><a href="https://github.com/container-storage-interface/spec/blob/v0.2.0/spec.md#getplugincapabilities"><code>csi.v0.Identity.GetPluginCapabilities</code></a></li>
+<li><a href="https://github.com/container-storage-interface/spec/blob/v0.2.0/spec.md#probe"><code>csi.v0.Identity.Probe</code></a></li>
+<li><a href="https://github.com/container-storage-interface/spec/blob/v0.2.0/spec.md#createvolume"><code>csi.v0.Controller.CreateVolume</code></a></li>
+<li><a href="https://github.com/container-storage-interface/spec/blob/v0.2.0/spec.md#deletevolume"><code>csi.v0.Controller.DeleteVolume</code></a></li>
+<li><a href="https://github.com/container-storage-interface/spec/blob/v0.2.0/spec.md#controllerpublishvolume"><code>csi.v0.Controller.ControllerPublishVolume</code></a></li>
+<li><a href="https://github.com/container-storage-interface/spec/blob/v0.2.0/spec.md#controllerunpublishvolume"><code>csi.v0.Controller.ControllerUnpublishVolume</code></a></li>
+<li><a href="https://github.com/container-storage-interface/spec/blob/v0.2.0/spec.md#validatevolumecapabilities"><code>csi.v0.Controller.ValidateVolumeCapabilities</code></a></li>
+<li><a href="https://github.com/container-storage-interface/spec/blob/v0.2.0/spec.md#listvolumes"><code>csi.v0.Controller.ListVolumes</code></a></li>
+<li><a href="https://github.com/container-storage-interface/spec/blob/v0.2.0/spec.md#getcapacity"><code>csi.v0.Controller.GetCapacity</code></a></li>
+<li><a href="https://github.com/container-storage-interface/spec/blob/v0.2.0/spec.md#controllergetcapabilities"><code>csi.v0.Controller.ControllerGetCapabilities</code></a></li>
+<li><a href="https://github.com/container-storage-interface/spec/blob/v0.2.0/spec.md#node-service-rpc"><code>csi.v0.Node.NodeStageVolume</code></a></li>
+<li><a href="https://github.com/container-storage-interface/spec/blob/v0.2.0/spec.md#nodeunstagevolume"><code>csi.v0.Node.NodeUnstageVolume</code></a></li>
+<li><a href="https://github.com/container-storage-interface/spec/blob/v0.2.0/spec.md#nodepublishvolume"><code>csi.v0.Node.NodePublishVolume</code></a></li>
+<li><a href="https://github.com/container-storage-interface/spec/blob/v0.2.0/spec.md#nodeunpublishvolume"><code>csi.v0.Node.NodeUnpublishVolume</code></a></li>
+<li><a href="https://github.com/container-storage-interface/spec/blob/v0.2.0/spec.md#nodegetid"><code>csi.v0.Node.NodeGetId</code></a></li>
+<li><a href="https://github.com/container-storage-interface/spec/blob/v0.2.0/spec.md#nodegetcapabilities"><code>csi.v0.Node.NodeGetCapabilities</code></a></li>
+</ul>
+
+
+<p>For example, cluster operators can monitor the number of successful
+<code>csi.v0.Controller.CreateVolume</code> calls that are made by the resource provider
+with type <code>org.apache.mesos.rp.local.storage</code> and name <code>lvm</code> through the
+<code>resource_providers/org.apache.mesos.rp.local.storage.lvm/csi_plugin/rpcs/csi.v0.Controller.CreateVolume/successes</code>
+metric.</p>
 
   </div>
 </div>
