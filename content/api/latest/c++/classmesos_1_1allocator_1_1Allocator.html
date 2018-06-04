@@ -161,9 +161,9 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:ae12461b03c88e6fce8528488b50a47f5"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classTry.html">Try</a>&lt; <a class="el" href="classmesos_1_1allocator_1_1Allocator.html">Allocator</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1allocator_1_1Allocator.html#ae12461b03c88e6fce8528488b50a47f5">create</a> (const std::string &amp;name)</td></tr>
-<tr class="memdesc:ae12461b03c88e6fce8528488b50a47f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attempts either to create a built-in DRF allocator or to load an allocator instance from a module using the given name.  <a href="#ae12461b03c88e6fce8528488b50a47f5">More...</a><br /></td></tr>
-<tr class="separator:ae12461b03c88e6fce8528488b50a47f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5b969c74d1dc42b98b35a81d571b3fa"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classTry.html">Try</a>&lt; <a class="el" href="classmesos_1_1allocator_1_1Allocator.html">Allocator</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1allocator_1_1Allocator.html#ae5b969c74d1dc42b98b35a81d571b3fa">create</a> (const std::string &amp;name, const std::string &amp;roleSorter, const std::string &amp;frameworkSorter)</td></tr>
+<tr class="memdesc:ae5b969c74d1dc42b98b35a81d571b3fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attempts either to create a built-in DRF allocator or to load an allocator instance from a module using the given name.  <a href="#ae5b969c74d1dc42b98b35a81d571b3fa">More...</a><br /></td></tr>
+<tr class="separator:ae5b969c74d1dc42b98b35a81d571b3fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Basic model of an allocator: resources are allocated to a framework in the form of offers. </p>
@@ -465,7 +465,7 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ae12461b03c88e6fce8528488b50a47f5"></a>
+<a class="anchor" id="ae5b969c74d1dc42b98b35a81d571b3fa"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -476,8 +476,24 @@ Static Public Member Functions</h2></td></tr>
           <td class="memname">static <a class="el" href="classTry.html">Try</a>&lt;<a class="el" href="classmesos_1_1allocator_1_1Allocator.html">Allocator</a>*&gt; mesos::allocator::Allocator::create </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>name</em></td><td>)</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>roleSorter</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>frameworkSorter</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -489,6 +505,7 @@ Static Public Member Functions</h2></td></tr>
 
 <p>Attempts either to create a built-in DRF allocator or to load an allocator instance from a module using the given name. </p>
 <p>If <code><a class="el" href="classTry.html">Try</a></code> does not report an error, the wrapped <code>Allocator*</code> is not null.</p>
+<p>TODO(bmahler): Figure out how to pass parameters without burning in the built-in module arguments.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>Name of the allocator. </td></tr>
