@@ -59,7 +59,7 @@
 </div><!--header-->
 <div class="contents">
 
-<p>A copyable interface to manage an internal gRPC runtime instance for asynchronous gRPC calls.  
+<p>A copyable interface to manage an internal runtime process for asynchronous gRPC calls.  
  <a href="classprocess_1_1grpc_1_1client_1_1Runtime.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="grpc_8hpp_source.html">grpc.hpp</a>&gt;</code></p>
@@ -68,19 +68,20 @@
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a5f7e56d9ebb540a9dbc52c5fb816a024"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprocess_1_1grpc_1_1client_1_1Runtime.html#a5f7e56d9ebb540a9dbc52c5fb816a024">Runtime</a> ()</td></tr>
 <tr class="separator:a5f7e56d9ebb540a9dbc52c5fb816a024"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acc50467a027c41b69d3df6e24864f034"><td class="memTemplParams" colspan="2">template&lt;typename Method , typename Request  = typename internal::MethodTraits&lt;Method&gt;::request_type, typename Response  = typename internal::MethodTraits&lt;Method&gt;::response_type&gt; </td></tr>
-<tr class="memitem:acc50467a027c41b69d3df6e24864f034"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classprocess_1_1Future.html">Future</a>&lt; <a class="el" href="classTry.html">Try</a>&lt; Response, <a class="el" href="classprocess_1_1grpc_1_1StatusError.html">StatusError</a> &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classprocess_1_1grpc_1_1client_1_1Runtime.html#acc50467a027c41b69d3df6e24864f034">call</a> (const <a class="el" href="classprocess_1_1grpc_1_1client_1_1Connection.html">Connection</a> &amp;connection, Method &amp;&amp;method, const Request &amp;request)</td></tr>
-<tr class="memdesc:acc50467a027c41b69d3df6e24864f034"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends an asynchronous gRPC call.  <a href="#acc50467a027c41b69d3df6e24864f034">More...</a><br /></td></tr>
-<tr class="separator:acc50467a027c41b69d3df6e24864f034"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09983451181cdf4c19dd5231e8dfaa86"><td class="memTemplParams" colspan="2">template&lt;typename Method , typename Request  = typename internal::MethodTraits&lt;Method&gt;::request_type, typename Response  = typename internal::MethodTraits&lt;Method&gt;::response_type, typename std::enable_if&lt; std::is_convertible&lt; typename std::decay&lt; Request &gt;::type *, google::protobuf::Message * &gt;::value, int &gt;::type  = 0&gt; </td></tr>
+<tr class="memitem:a09983451181cdf4c19dd5231e8dfaa86"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classprocess_1_1Future.html">Future</a>&lt; <a class="el" href="classTry.html">Try</a>&lt; Response, <a class="el" href="classprocess_1_1grpc_1_1StatusError.html">StatusError</a> &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classprocess_1_1grpc_1_1client_1_1Runtime.html#a09983451181cdf4c19dd5231e8dfaa86">call</a> (const <a class="el" href="classprocess_1_1grpc_1_1client_1_1Connection.html">Connection</a> &amp;connection, Method &amp;&amp;method, Request &amp;&amp;request)</td></tr>
+<tr class="memdesc:a09983451181cdf4c19dd5231e8dfaa86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends an asynchronous gRPC call.  <a href="#a09983451181cdf4c19dd5231e8dfaa86">More...</a><br /></td></tr>
+<tr class="separator:a09983451181cdf4c19dd5231e8dfaa86"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae9cb9b61f055d4ecec094aeef206e7d4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprocess_1_1grpc_1_1client_1_1Runtime.html#ae9cb9b61f055d4ecec094aeef206e7d4">terminate</a> ()</td></tr>
-<tr class="memdesc:ae9cb9b61f055d4ecec094aeef206e7d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Asks the internal gRPC runtime instance to shut down the <code>CompletionQueue</code>, which would stop its looper thread, drain and fail all pending gRPC calls in the <code>CompletionQueue</code>, then asynchronously join the looper thread.  <a href="#ae9cb9b61f055d4ecec094aeef206e7d4">More...</a><br /></td></tr>
+<tr class="memdesc:ae9cb9b61f055d4ecec094aeef206e7d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Asks the internal runtime process to shut down the <code>CompletionQueue</code>, which would asynchronously drain and fail all pending gRPC calls in the <code>CompletionQueue</code>, then join the looper thread.  <a href="#ae9cb9b61f055d4ecec094aeef206e7d4">More...</a><br /></td></tr>
 <tr class="separator:ae9cb9b61f055d4ecec094aeef206e7d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a96c1724b37429b930c2214f3acc90393"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classprocess_1_1Future.html">Future</a>&lt; <a class="el" href="structNothing.html">Nothing</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprocess_1_1grpc_1_1client_1_1Runtime.html#a96c1724b37429b930c2214f3acc90393">wait</a> ()</td></tr>
 <tr class="separator:a96c1724b37429b930c2214f3acc90393"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>A copyable interface to manage an internal gRPC runtime instance for asynchronous gRPC calls. </p>
-<p>A gRPC runtime instance includes a gRPC <code>CompletionQueue</code> to manage outstanding requests, a looper thread to wait for any incoming responses from the <code>CompletionQueue</code>, and a process to handle the responses. All <code><a class="el" href="classprocess_1_1grpc_1_1client_1_1Runtime.html" title="A copyable interface to manage an internal gRPC runtime instance for asynchronous gRPC calls...">Runtime</a></code> copies share the same gRPC runtime instance. Usually we only need a single gRPC runtime instance to handle all gRPC calls, but multiple instances can be instantiated for more parallelism or isolation. NOTE: The destruction of the internal gRPC runtime instance is a blocking operation: it waits for the managed process to terminate. The user should ensure that this only happens at shutdown. </p>
+<div class="textblock"><p>A copyable interface to manage an internal runtime process for asynchronous gRPC calls. </p>
+<p>A runtime process keeps a gRPC <code>CompletionQueue</code> to manage outstanding requests, a looper thread to wait for any incoming responses from the <code>CompletionQueue</code>, and handles the requests and responses. All <code><a class="el" href="classprocess_1_1grpc_1_1client_1_1Runtime.html" title="A copyable interface to manage an internal runtime process for asynchronous gRPC calls. ">Runtime</a></code> copies share the same runtime process. Usually we only need a single runtime process to handle all gRPC calls, but multiple runtime processes can be instantiated for better parallelism and isolation.</p>
+<p>NOTE: The caller must call <code>terminate</code> to drain the <code>CompletionQueue</code> before finalizing libprocess to gracefully terminate the gRPC runtime. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a5f7e56d9ebb540a9dbc52c5fb816a024"></a>
 <div class="memitem">
@@ -106,11 +107,11 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="acc50467a027c41b69d3df6e24864f034"></a>
+<a class="anchor" id="a09983451181cdf4c19dd5231e8dfaa86"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Method , typename Request  = typename internal::MethodTraits&lt;Method&gt;::request_type, typename Response  = typename internal::MethodTraits&lt;Method&gt;::response_type&gt; </div>
+template&lt;typename Method , typename Request  = typename internal::MethodTraits&lt;Method&gt;::request_type, typename Response  = typename internal::MethodTraits&lt;Method&gt;::response_type, typename std::enable_if&lt; std::is_convertible&lt; typename std::decay&lt; Request &gt;::type *, google::protobuf::Message * &gt;::value, int &gt;::type  = 0&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -130,7 +131,7 @@ template&lt;typename Method , typename Request  = typename internal::MethodTrait
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const Request &amp;&#160;</td>
+          <td class="paramtype">Request &amp;&amp;&#160;</td>
           <td class="paramname"><em>request</em>&#160;</td>
         </tr>
         <tr>
@@ -151,7 +152,7 @@ template&lt;typename Method , typename Request  = typename internal::MethodTrait
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">connection</td><td>A connection to a gRPC server. </td></tr>
-    <tr><td class="paramname">rpc</td><td>The asynchronous gRPC call to make. This can be obtained by the <code><a class="el" href="grpc_8hpp.html#af26d5c763831ad955bb9742db25c5f75">GRPC_CLIENT_METHOD(service, rpc)</a></code> macro. </td></tr>
+    <tr><td class="paramname">method</td><td>The asynchronous gRPC call to make. This should be obtained by the <code><a class="el" href="grpc_8hpp.html#af26d5c763831ad955bb9742db25c5f75">GRPC_CLIENT_METHOD(service, rpc)</a></code> macro. </td></tr>
     <tr><td class="paramname">request</td><td>The request protobuf for the gRPC call. </td></tr>
   </table>
   </dd>
@@ -173,7 +174,7 @@ template&lt;typename Method , typename Request  = typename internal::MethodTrait
       </table>
 </div><div class="memdoc">
 
-<p>Asks the internal gRPC runtime instance to shut down the <code>CompletionQueue</code>, which would stop its looper thread, drain and fail all pending gRPC calls in the <code>CompletionQueue</code>, then asynchronously join the looper thread. </p>
+<p>Asks the internal runtime process to shut down the <code>CompletionQueue</code>, which would asynchronously drain and fail all pending gRPC calls in the <code>CompletionQueue</code>, then join the looper thread. </p>
 
 </div>
 </div>
@@ -189,7 +190,7 @@ template&lt;typename Method , typename Request  = typename internal::MethodTrait
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>A <code><a class="el" href="classprocess_1_1Future.html">Future</a></code> waiting for all pending gRPC calls in the <code>CompletionQueue</code> of the internal gRPC runtime instance to be drained and the looper thread to be joined. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>A <code><a class="el" href="classprocess_1_1Future.html">Future</a></code> waiting for all pending gRPC calls in the <code>CompletionQueue</code> of the internal runtime process to be drained and the looper thread to be joined. </dd></dl>
 
 </div>
 </div>
