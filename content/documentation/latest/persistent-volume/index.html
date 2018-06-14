@@ -434,7 +434,7 @@ disk resources with the same reservation and disk information:</p>
 
 <p>We can grow the persistent volume by sending an <code>Offer::Operation</code> message.
 <code>Offer::Operation::GrowVolume</code> has a <code>volume</code> field which specifies the
-persistent volume to grow, and an <code>addition</code> field which specifies he
+persistent volume to grow, and an <code>addition</code> field which specifies the
 additional disk space resource.</p>
 
 <pre><code>{
@@ -619,13 +619,17 @@ disk resources with the same reservation information:</p>
 
 <p>Some restrictions about resizing a volume (applicable to both
 <a href="#offer-operation-grow-volume">Offer::Operation::GrowVolume</a> and
-<a href="#offer-operation-shrink-volume">Offer::Operation::ShrinkVolume</a>):
-* Only persistent volumes created on an agent&rsquo;s local disk space with <code>ROOT</code> or
-  <code>PATH</code> type can be resized;
-* A persistent volume cannot be actively used by a task when being resized;
-* A persistent volume cannot be shared when being resized;
-* Volume resize operations cannot be included in an ACCEPT call with other
-  operations which make use of the resized volume.</p>
+<a href="#offer-operation-shrink-volume">Offer::Operation::ShrinkVolume</a>):</p>
+
+<ul>
+<li>Only persistent volumes created on an agent&rsquo;s local disk space with <code>ROOT</code> or
+<code>PATH</code> type can be resized;</li>
+<li>A persistent volume cannot be actively used by a task when being resized;</li>
+<li>A persistent volume cannot be shared when being resized;</li>
+<li>Volume resize operations cannot be included in an ACCEPT call with other
+operations which make use of the resized volume.</li>
+</ul>
+
 
 <h2>Versioned HTTP Operator API</h2>
 
