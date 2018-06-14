@@ -153,42 +153,7 @@ considered stable and is the recommended way to develop new Mesos schedulers.</p
 
 <h3>RecordIO response format</h3>
 
-<p>The response returned from the <code>SUBSCRIBE</code> call (see <a href="#subscribe">below</a>) is encoded in RecordIO format, which essentially prepends to a single record (either JSON or serialized Protobuf) its length in bytes, followed by a newline and then the data:</p>
-
-<p>The <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec2.html#sec2.1">BNF grammar</a> for a RecordIO-encoded streaming response is:</p>
-
-<pre><code>    records         = *record
-
-    record          = record-size LF record-data
-
-    record-size     = 1*DIGIT
-    record-data     = record-size(OCTET)
-</code></pre>
-
-<p><code>record-size</code> should be interpreted as an unsigned 64-bit integer (<code>uint64</code>).</p>
-
-<p>For example, a stream may look like:</p>
-
-<pre><code>128\n
-{"type": "SUBSCRIBED","subscribed": {"framework_id": {"value":"12220-3440-12532-2345"},"heartbeat_interval_seconds":15.0}20\n
-{"type":"HEARTBEAT"}675\n
-...
-</code></pre>
-
-<p>In pseudo-code, this could be parsed with something like the following:</p>
-
-<pre><code>  while (true) {
-    do {
-      lengthBytes = readline()
-    } while (lengthBytes.length &lt; 1)
-
-    messageLength = parseInt(lengthBytes);
-    messageBytes = read(messageLength);
-    process(messageBytes);
-  }
-</code></pre>
-
-<p>Network intermediaries (e.g., proxies) are free to change the chunk boundaries; this should not have any effect on the recipient application (scheduler). We wanted a way to delimit/encode two events for JSON/Protobuf responses consistently and RecordIO format allowed us to do that.</p>
+<p>The response returned from the <code>SUBSCRIBE</code> call (see <a href="#subscribe">below</a>) is encoded in RecordIO format, which essentially prepends to a single record (either JSON or serialized Protobuf) its length in bytes, followed by a newline and then the data. See <a href="/documentation/latest/./recordio/">RecordIO Format</a> for details.</p>
 
 <p><a id="subscribe"></a></p>
 
