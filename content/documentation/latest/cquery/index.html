@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Apache Mesos - Using cquery for Code Navigation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta property="og:locale" content="en_US"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:title" content="Apache Mesos"/>
+    <meta property="og:site_name" content="Apache Mesos"/>
+    <meta property="og:url" content="http://mesos.apache.org/"/>
+    <meta property="og:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta property="og:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
+
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:site" content="@ApacheMesos"/>
+    <meta name="twitter:title" content="Apache Mesos"/>
+    <meta name="twitter:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta name="twitter:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
+
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
+    <link href="../../../assets/css/main.css" rel="stylesheet" />
+
+
+    <!-- Google Analytics Magic -->
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-20226872-1']);
+    _gaq.push(['_setDomainName', 'apache.org']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+  </head>
+  <body>
+    <!-- magical breadcrumbs -->
+    <div class="topnav">
+      <div class="container">
+        <ul class="breadcrumb">
+          <li>
+            <div class="dropdown">
+              <a data-toggle="dropdown" href="#">Apache Software Foundation <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                <li><a href="http://www.apache.org">Apache Homepage</a></li>
+                <li><a href="http://www.apache.org/licenses/">License</a></li>
+                <li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>
+                <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                <li><a href="http://www.apache.org/security/">Security</a></li>
+              </ul>
+            </div>
+          </li>
+
+          <li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+          <li><a href="/documentation
+/">Documentation
+</a></li>
+        </ul><!-- /.breadcrumb -->
+      </div><!-- /.container -->
+    </div><!-- /.topnav -->
+
+    <!-- navbar excitement -->
+<div class="navbar navbar-default navbar-static-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#mesos-menu" aria-expanded="false">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo"/></a>
+    </div><!-- /.navbar-header -->
+
+    <div class="navbar-collapse collapse" id="mesos-menu">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/getting-started/">Getting Started</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/documentation/latest/">Documentation</a></li>
+        <li><a href="/downloads/">Downloads</a></li>
+        <li><a href="/community/">Community</a></li>
+      </ul>
+    </div><!-- /#mesos-menu -->
+  </div><!-- /.container -->
+</div><!-- /.navbar -->
+
+<div class="content">
+  <div class="container">
+    <div class="row-fluid">
+  <div class="col-md-4">
+    <h4>If you're new to Mesos</h4>
+    <p>See the <a href="/getting-started/">getting started</a> page for more
+       information about downloading, building, and deploying Mesos.</p>
+
+    <h4>If you'd like to get involved or you're looking for support</h4>
+    <p>See our <a href="/community/">community</a> page for more details.</p>
+  </div>
+  <div class="col-md-8">
+    <h1>Using cquery for Code Navigation</h1>
+
+<p>Instead of using <code>grep</code> and other tools to find your way through the
+Mesos codebase, you can use <a href="https://github.com/cquery-project/cquery">cquery</a>
+on Windows, Linux, and macOS!</p>
+
+<p>Tested and designed for large code bases like Chromium, cquery
+provides accurate and fast semantic analysis for any editor that
+supports the <a href="https://microsoft.github.io/language-server-protocol/">Language Server Protocol</a>.</p>
+
+<p>Using cquery provides IDE features like these (and more):</p>
+
+<ul>
+<li>Find definitions and references</li>
+<li>Contextual completion candidates</li>
+<li>On-the-fly syntax checking</li>
+<li>Preprocessor skipped regions</li>
+<li>Symbol documentation</li>
+<li>Hover information</li>
+</ul>
+
+
+<p>Although the cquery wiki provides a
+<a href="https://github.com/cquery-project/cquery/wiki/Getting-started">getting started guide</a>
+for building from source, generating the compilation information for
+your project, and setting up your editor, this guide covers setup
+specifically for Mesos using CMake. Feel free to refer to the wiki for
+further information, but what follows is the recommended setup.</p>
+
+<p>NOTE: <em>Do not</em> use the released binaries as the latest, v20180302, is
+still built Clang 5 instead of Clang 6, which is buggy with Mesos.</p>
+
+<h2>Building cquery from source</h2>
+
+<p>The cquery project is currently switching to CMake, but the guide
+still uses the <code>waf</code> build tool. Since we need to use CMake for Mesos
+too, it easier to use it for both. More information can be found
+<a href="https://github.com/cquery-project/cquery/wiki/Build-%28CMake%29">on the wiki</a>:</p>
+
+<ol>
+<li>Install CMake following the instructions <a href="/documentation/latest/./cmake/">here</a>.</li>
+<li>Install <a href="https://ninja-build.org/">Ninja</a> by downloading the latest
+release for your platform and placing it in your path (optional for
+non-Windows platforms, but highly recommended).</li>
+<li>If you&rsquo;re on Windows, make sure build in an &ldquo;x64 Native Tools
+Command Prompt for VS 2017&rdquo;.</li>
+</ol>
+
+
+<pre><code class="sh">git clone --recursive https://github.com/cquery-project/cquery
+cd cquery &amp;&amp; mkdir build &amp;&amp; cd build
+cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release
+ninja
+</code></pre>
+
+<p>There should now exist a binary <code>cquery</code> (or <code>cquery.exe</code> on Windows)
+in the build folder of the cquery repo. When configuring your editor,
+you need to make sure this can either be found automatically via your
+<code>PATH</code>, or point the editor&rsquo;s plugin toward it.</p>
+
+<h2>Generating compilation information for Mesos</h2>
+
+<p>The next step is to generate a <code>compile_commands.json</code> file for Mesos.
+Fortunately, this can be done automatically using CMake. In fact, the
+instructions are (almost) identical to the instructions above. Once
+generated, either symlink or copy it to the root of the Mesos
+repository.</p>
+
+<pre><code class="sh">git clone https://git-wip-us.apache.org/repos/asf/mesos.git
+cd mesos &amp;&amp; mkdir build &amp;&amp; cd build
+cmake .. -GNinja -DCMAKE_EXPORT_COMPILE_COMMANDS=YES
+ninja
+cd ..
+ln -s build/compile_commands.json .
+</code></pre>
+
+<p>The CMake option
+<a href="https://cmake.org/cmake/help/latest/variable/CMAKE_EXPORT_COMPILE_COMMANDS.html"><code>CMAKE_EXPORT_COMPILE_COMMANDS</code></a>
+also supports the Makefile generator on Linux, if you wish to use it
+instead of Ninja, but the author has not tested this scenario, and
+recommends Ninja anyway as it builds faster. On Windows, Ninja is the
+only generator which supports exporting the compilation commands.</p>
+
+<p>Note that for cquery to work properly, an initial build must be
+completed because of our third-party dependencies, otherwise many of
+the project&rsquo;s required headers will be missing.</p>
+
+<h2>Setting up your editor</h2>
+
+<p>Finally, your editor&rsquo;s cquery / LSP plugin needs to be set up.
+Information for other editors can be found at
+<a href="https://langserver.org/">Langserver.org</a>. Once you have LSP setup, it
+can be used for other languages too by switching out the cquery
+backend with one specific for the language.</p>
+
+<h3>Emacs</h3>
+
+<p>For Emacs, the packages <a href="https://github.com/emacs-lsp/lsp-mode">lsp-mode</a> and
+<a href="https://github.com/emacs-lsp/lsp-ui">lsp-ui</a> are recommended.</p>
+
+<p>A sample (but complete) Emacs configuration which sets up syntax
+checking and auto-completions with LSP and cquery looks like this:</p>
+
+<pre><code class="elisp">;; Generic Emacs package repo setup
+(require 'package)
+(customize-set-variable
+ 'package-archives
+ '(("melpa" . "https://melpa.org/packages/")
+   ("gnu" . "https://elpa.gnu.org/packages/")))
+(package-initialize)
+
+;; Used to install and configure Emacs packages.
+;; I forgot the old way since using this.
+;; https://github.com/jwiegley/use-package
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
+(eval-when-compile
+  (require 'use-package))
+
+;; Syntax checking.
+;; Should be automatic.nn
+;; http://www.flycheck.org/en/latest/
+(use-package flycheck
+  :ensure t
+  :config
+  (global-flycheck-mode))
+
+;; Auto-completions.
+;; There's also `C-M-i`, but this is async.
+;; Also look at `company-flx` for better sorting.
+;; https://company-mode.github.io/
+(use-package company
+  :ensure t
+  :config
+  (global-company-mode))
+
+;; Language Server Protocol Plugin.
+;; The actual plugin used to communicate with cquery.
+;; https://github.com/emacs-lsp/lsp-mode
+(use-package lsp-mode
+  :ensure t)
+
+;; Flycheck and other IDE-feature support for LSP.
+;; This has the "fancy features" and should be customized.
+;; Personally, I turned the symbol highlighting off.
+;; https://github.com/emacs-lsp/lsp-ui
+(use-package lsp-ui
+  :ensure t
+  :config
+  (add-hook 'lsp-mode-hook #'lsp-ui-mode))
+
+;; LSP backend for Company.
+;; https://github.com/tigersoldier/company-lsp
+(use-package company-lsp
+n  :ensure t
+  :config
+  (setq company-lsp-enable-recompletion t)
+  (add-to-list 'company-backends 'company-lsp))
+
+;; Client to configure and auto-start cquery.
+;; https://github.com/cquery-project/emacs-cquery
+(use-package cquery
+  :ensure t
+  :config
+  (add-hook 'c-mode-common-hook #'lsp-cquery-enable)
+  (setq cquery-executable "/path/to/cquery/build/cquery")
+  (setq cquery-extra-init-params '(:completion (:detailedLabel t))))
+</code></pre>
+
+<p>Being Emacs, feel free to customize to your liking. The author&rsquo;s
+configurations can be found <a href="https://github.com/andschwa/.emacs.d">here</a>.
+While auto completion, syntax checking, and other UI improvements are
+automatic, you should also be aware of <code>M-.</code> for
+<code>xref-find-definitions</code>; <code>M-?</code> for <code>xref-find-references</code>; <code>M-,</code> to
+pop back before using <code>xref</code>; <code>imenu</code> to list an index of functions,
+namespaces, etc.; and the customization options of
+<a href="https://github.com/emacs-lsp/lsp-ui">lsp-ui</a>, as it will
+automatically turn on a sideline and symbol highlighting, which can be
+noisy.</p>
+
+<h3>Vim</h3>
+
+<p>An <a href="https://github.com/prabirshrestha/vim-lsp">LSP plugin</a> exists; if
+you set it up, please add the steps here.</p>
+
+<h3>Visual Studio Code</h3>
+
+<p>A <a href="https://marketplace.visualstudio.com/items?itemName=cquery-project.cquery">cquery specific extension</a>
+exists; if you set it up, please add the steps here.</p>
+
+<h3>Sublime Text</h3>
+
+<p>An <a href="https://github.com/tomv564/LSP">LSP package</a> exists; if you set it
+up, please add the steps here.</p>
+
+  </div>
+</div>
+
+  </div><!-- /.container -->
+</div><!-- /.content -->
+
+<hr>
+
+
+
+    <!-- footer -->
+    <div class="footer">
+      <div class="container">
+
+        <div class="col-md-3">
+            <a  href="https://www.apache.org/events/current-event.html">
+              <img src="https://www.apache.org/events/current-event-234x60.png"/>
+            </a>
+        </div>
+
+        <div class="col-md-3 social-blk">
+          <span class="social">
+            <a href="https://twitter.com/ApacheMesos"
+              class="twitter-follow-button"
+              data-show-count="false" data-size="large">Follow @ApacheMesos</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+            <a href="https://twitter.com/intent/tweet?button_hashtag=mesos"
+              class="twitter-hashtag-button"
+              data-size="large"
+              data-related="ApacheMesos">Tweet #mesos</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+          </span>
+        </div>
+
+        <div class="col-md-6 trademark">
+          <p>&copy; 2012-2018 <a href="http://apache.org">The Apache Software Foundation</a>.
+            Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.
+          <p>
+        </div>
+
+      </div><!-- /.container -->
+    </div><!-- /.footer -->
+
+    <!-- JS -->
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js"></script>
+
+    <!-- Inject anchors for all headings on the page, see https://www.bryanbraun.com/anchorjs. -->
+    <script type="text/javascript">
+    anchors.options = {
+      placement: 'right',
+      ariaLabel: 'Permalink',
+    };
+
+    // The default is to not add anchors to h1, but we have pages with multiple h1 headers,
+    // and we do want to put anchors on those.
+    anchors.add('h1, h2, h3, h4, h5, h6');
+    </script>
+  </body>
+</html>
