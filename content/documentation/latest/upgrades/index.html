@@ -154,6 +154,7 @@ R Removed feature/behavior
   <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Mesos Core-->
     <ul style="padding-left:10px;">
       <li>A <a href="#1-7-x-linux-devices-isolator">Linux devices isolator</a></li>
+      <li>A <a href="#1-7-x-auto-load-subsystems">Automatically load local enabled cgroups subsystems</a></li>
     </ul>
   </td>
 
@@ -554,6 +555,13 @@ that have been whitelisted with the <code>--allowed_devices</code> agent flag.</
 <li>A new <a href="/documentation/latest/./configuration/agent/#enforce_container_ports"><code>--enforce_container_ports</code></a>
 has been added to toggle whether the <a href="/documentation/latest/./isolators/network-ports/"><code>network/ports</code></a>
 isolator should enforce TCP ports usage limits.</li>
+</ul>
+
+
+<p><a name="1-7-x-auto-load-subsystems"></a></p>
+
+<ul>
+<li>A new option <code>cgroups/all</code> has been added to the agent flag <code>--isolation</code>. This allows cgroups isolator to automatically load all the local enabled cgroups subsystems. If this option is specified in the agent flag <code>--isolation</code> along with other cgroups related options (e.g., <code>cgroups/cpu</code>), those options will be just ignored.</li>
 </ul>
 
 
