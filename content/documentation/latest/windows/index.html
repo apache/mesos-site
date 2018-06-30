@@ -131,9 +131,9 @@ last part is <em>very</em> important, because GNU patch will crash with
 on Windows are Unix-style (LF) instead of Windows-style (CRLF).</p></li>
 <li><p>Make sure there are no spaces in your build directory.
 For example, <code>C:/Program Files (x86)/mesos</code> is an invalid build directory.</p></li>
-<li><p>If developing Mesos, install <a href="https://www.python.org/downloads/">Python 2</a>
-(not Python 3), in order to use our support scripts (e.g. to post and apply
-patches, or lint source code).</p></li>
+<li><p>If developing Mesos, install <a href="https://www.python.org/downloads/">Python 3</a>
+(not Python 2), in order to use our <code>support/python3</code> scripts (e.g.
+to post and apply patches, or lint source code).</p></li>
 </ol>
 
 
@@ -148,7 +148,7 @@ cd mesos
 # Configure using CMake for an out-of-tree build.
 mkdir build
 cd build
-cmake .. -G "Visual Studio 15 2017 Win64" -T "host=x64" -DENABLE_LIBEVENT=1
+cmake .. -G "Visual Studio 15 2017 Win64" -T "host=x64" -DENABLE_LIBWINIO=ON
 
 # Build Mesos.
 # To build just the Mesos agent, add `--target mesos-agent`.
@@ -201,7 +201,7 @@ ensure <code>ninja.exe</code> is in your <code>PATH</code>.</p>
 environment.</li>
 <li>In that command prompt, type <code>powershell</code> to use a better shell.</li>
 <li>Similar to above, configure CMake with
-<code>cmake .. -G Ninja -DENABLE_LIBEVENT=1</code>.</li>
+<code>cmake .. -G Ninja -DENABLE_LIBWINIO=ON</code>.</li>
 <li>Now you can use <code>ninja</code> to build the various targets.</li>
 <li>You may want to use <code>ninja -v</code> to make it verbose, as it&rsquo;s otherwise
 very quiet.</li>
@@ -265,6 +265,11 @@ of OpenSSL for Windows. A commonly chosen distribution is
 tested.</p>
 
 <p>Use <code>-DENABLE_SSL=ON</code> when running CMake to build with OpenSSL.</p>
+
+<blockquote><p>Warning: This currently requires the use of <code>-DENABLE_LIBEVENT=ON</code>
+instead of <code>-DENABLE_LIBWINIO=ON</code>; however, the use of libevent on
+Windows is not recommended, as it is buggy and will be unsupported
+in the future.</p></blockquote>
 
 <p>Note that it will link to OpenSSL dynamically, so if the built executables are
 deployed elsewhere, that machine also needs OpenSSL installed.</p>
