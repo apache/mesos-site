@@ -174,6 +174,7 @@ R Removed feature/behavior
     <ul style="padding-left:10px;">
       <li>C <a href="#1-7-x-container-logger">ContainerLogger module interface changes</a></li>
       <li>C <a href="#1-7-x-isolator-recover">Isolator::recover module interface change</a></li>
+      <li>C <a href="#1-7-x-sorter-update">Changed semantics of Sorter::update</a></li>
     </ul>
   </td>
 
@@ -584,6 +585,13 @@ isolator should enforce TCP ports usage limits.</li>
 
 <ul>
 <li><code>Isolator::recover()</code> has been updated to take an <code>std::vector</code> instead of <code>std::list</code> of container states.</li>
+</ul>
+
+
+<p><a name="1-7-x-sorter-update"></a></p>
+
+<ul>
+<li>The semantics of <code>Sorter::update</code> has been changed so that resources can be removed from a client&rsquo;s allocation without removing the full agent in which they reside. Callers are expected to update the total resources of the agent as well by, e.g., removing the agent and adding it back with the new total resources.</li>
 </ul>
 
 
