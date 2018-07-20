@@ -839,8 +839,21 @@ auto lambda = [
 <p>  C++11 does not provide <code>constexpr string</code> or <code>constexpr</code> containers in the STL and hence <code>constexpr</code> cannot be used for any class using stout&rsquo;s Error() class.</p>
 
 <ul>
-<li><code>enum class</code>.</li>
+<li><p><code>enum class</code>.</p></li>
+<li><p><code>override</code>.</p></li>
 </ul>
+
+
+<p>When overriding a virtual member function, the <code>override</code> keyword should always be used.  The <a href="https://google.github.io/styleguide/cppguide.html#Inheritance">Google C++ Style Guide</a> supplies the rationale for this:</p>
+
+<blockquote>
+A function or destructor marked override or final that is not an
+override of a base class virtual function will not compile, and
+this helps catch common errors. The specifiers serve as documentation;
+if no specifier is present, the reader has to check all ancestors
+of the class in question to determine if the function or destructor
+is virtual or not.
+</blockquote>
 
 
   </div>
