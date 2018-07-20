@@ -333,7 +333,15 @@ HTTP/1.1 202 Accepted
 
 <h3>REVIVE</h3>
 
-<p>Sent by the scheduler to remove any/all filters that it has previously set via <code>ACCEPT</code> or <code>DECLINE</code> calls.</p>
+<p>Sent by the scheduler to perform two actions:</p>
+
+<ol>
+<li>Place the scheduler&rsquo;s role(s) in a non-<code>SUPPRESS</code>ed state in order to once again receive offers. No-op if the role is not suppressed.</li>
+<li>Clears all filters for its role(s) that were previously set via <code>ACCEPT</code> and <code>DECLINE</code>.</li>
+</ol>
+
+
+<p>If no role is specified, the operation will apply to all of the scheduler&rsquo;s subscribed roles.</p>
 
 <pre><code>REVIVE Request (JSON):
 POST /api/v1/scheduler  HTTP/1.1
