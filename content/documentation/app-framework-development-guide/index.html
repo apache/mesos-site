@@ -144,6 +144,58 @@ communication between your scheduler and the Mesos master) and then call <code>S
 <p>How to build Mesos frameworks that are highly available in the face of failures is
 discussed in a <a href="/documentation/latest/./high-availability-framework-guide/">separate document</a>.</p>
 
+<h3>Multi-Scheduler Scalability</h3>
+
+<p>When implementing a scheduler, it&rsquo;s important to adhere to the following guidelines
+in order to ensure that the scheduler can run in a scalable manner alongside other
+schedulers in the same Mesos cluster:</p>
+
+<ol>
+<li><strong>Use <code>Suppress</code></strong>: The scheduler must stay in a suppressed state whenever it has
+no additional tasks to launch or offer operations to perform. This ensures
+that Mesos can more efficiently offer resources to those frameworks that do
+have work to perform.</li>
+<li><strong>Do not hold onto offers</strong>: If an offer cannot be used, decline it immediately.
+Otherwise the resources cannot be offered to other schedulers and the scheduler
+itself will receive fewer additional offers.</li>
+<li><strong><code>Decline</code> resources using a large timeout</strong>: when declining an offer, use a
+large <code>Filters.refuse_seconds</code> timeout (e.g. 1 hour). This ensures that Mesos
+will have time to try offering the resources to other scheduler before trying
+the same scheduler again. However, if the scheduler is unable to eventually
+enter a <code>SUPPRESS</code>ed state, and it has new workloads to run after having declined,
+it should consider <code>REVIVE</code>ing if it is not receiving sufficient resources for
+some time.</li>
+<li><strong>Do not <code>REVIVE</code> frequently</strong>: <code>REVIVE</code>ing clears all filters, and therefore
+if <code>REVIVE</code> occurs frequently it is similar to always declining with a very
+short timeout (violation of guideline (3)).</li>
+</ol>
+
+
+<p>Operationally, the following can be done to ensure that schedulers get the resources
+they need when co-existing with other schedulers:</p>
+
+<ol>
+<li><strong>Do not share a role between schedulers</strong>: Roles are the level at which controls
+are available (e.g. quota, weight, reservation) that affect resource allocation.
+Within a role, there are no controls to alter the behavior should one scheduler
+not receive enough resources.</li>
+<li><strong>Set quota if roles need a guarantee</strong>: If a role (either an entire scheduler or
+a &ldquo;job&rdquo;/&ldquo;service&rdquo;/etc within a multi-tenant scheduler) needs a certain amount of
+resources guaranteed to it, setting a quota ensures that Mesos will try its best
+to allocate to satisfy the guarantee.</li>
+<li><strong>Consider enabling the random sorter</strong>: Depending on the use case, DRF can prove
+problematic in that it will try to allocate to frameworks with a low share of the
+cluster and penalize frameworks with a high share of the cluster. This can lead
+to offer starvation for higher share frameworks. To allocate using a weighted
+random uniform distribution instead of fair sharing, set <code>--role-sorter=random</code>
+and <code>--framework_sorter=random</code>.</li>
+</ol>
+
+
+<p>See the <a href="https://docs.google.com/document/d/1uvTmBo_21Ul9U_mijgWyh7hE0E_yZXrFr43JIB9OCl8">Offer Starvation Design Document</a>
+in <a href="https://issues.apache.org/jira/browse/MESOS-3202">MESOS-3202</a> for more
+information about the pitfalls and future plans for running multiple schedulers.</p>
+
 <h2>Working with Executors</h2>
 
 <h3>Using the Mesos Command Executor</h3>
