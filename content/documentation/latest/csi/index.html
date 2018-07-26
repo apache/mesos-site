@@ -110,7 +110,7 @@
 <p>This document describes the <a href="https://github.com/container-storage-interface/spec">Container Storage Interface</a>
 (CSI) support in Mesos.</p>
 
-<p>Currently, only CSI spec version 0.2 is supported in Mesos 1.6 due to
+<p>Currently, only CSI spec version 0.2 is supported in Mesos 1.6+ due to
 incompatible changes between CSI version 0.1 and version 0.2. CSI version 0.1 is
 supported in Mesos 1.5.</p>
 
@@ -286,8 +286,7 @@ a <a href="#pre-existing-disks">pre-existing disk</a>.  Pre-existing disks are t
 <a href="https://github.com/container-storage-interface/spec/blob/v0.1.0/spec.md#terminology">CSI Volumes</a>
 that are detected by the corresponding CSI plugin using the
 <a href="https://github.com/container-storage-interface/spec/blob/v0.1.0/spec.md#listvolumes"><code>ListVolumes</code> interface</a>,
-but have not gone through the dynamic provisioning process (i.e., via
-<code>CREATE_VOLUME</code> or <code>CREATE_BLOCK</code>).</p>
+but have not gone through the dynamic provisioning process (i.e., via <code>CREATE_DISK</code>).</p>
 
 <p>For example, operators might pre-create some LVM logical volumes before
 launching Mesos. Those pre-created LVM logical volumes will be reported by the
@@ -299,9 +298,9 @@ in the near future. See more details in the <a href="#profiles">profiles</a> sec
 
 <h3>New Offer Operations for Disk Resources</h3>
 
-<p>To allow dynamic provisioning of disk resources, 4 new offer operations have
+<p>To allow dynamic provisioning of disk resources, two new offer operations have
 been added to the <a href="/documentation/latest/./scheduler-http-api/#accept">scheduler API</a>:
-<code>CREATE_VOLUME</code>, <code>DESTROY_VOLUME</code>, <code>CREATE_BLOCK</code> and <code>DESTROY_BLOCK</code>.</p>
+<code>CREATE_DISK</code> and <code>DESTROY_DISK</code>.</p>
 
 <p>To learn how to use the offer operations, please refer to the
 <a href="/documentation/latest/./scheduler-http-api/#accept"><code>ACCEPT</code></a> Call in the v1 scheduler API, or
@@ -318,69 +317,70 @@ scheduler API for more details.</p>
       UNRESERVE = 3;
       CREATE = 4;
       DESTROY = 5;
-      CREATE_VOLUME = 7;   // New in 1.5.
-      DESTROY_VOLUME = 8;  // New in 1.5.
-      CREATE_BLOCK = 9;    // New in 1.5.
-      DESTROY_BLOCK = 10;  // New in 1.5.
+      GROW_VOLUME = 11;
+      SHRINK_VOLUME = 12;
+      CREATE_DISK = 13;   // New in 1.7.
+      DESTROY_DISK = 14;  // New in 1.7.
     }
     optional Type type = 1;
   }
 }
 </code></pre>
 
-<h4><code>CREATE_VOLUME</code> operation</h4>
+<h4><code>CREATE_DISK</code> operation</h4>
 
-<p>The offer operation <code>CREATE_VOLUME</code> takes a <code>RAW</code> disk resource
-(<code>create_volume.source</code>), and converts it into either a <code>PATH</code> or a <code>MOUNT</code> disk
-resource (<code>create_volume.target_type</code>). The source <code>RAW</code> disk resource can
+<p>The offer operation <code>CREATE_DISK</code> takes a <code>RAW</code> disk resource
+(<code>create_disk.source</code>), and create a <code>MOUNT</code> or a <code>BLOCK</code> disk resource
+(<code>create_disk.target_type</code>) from the source. The source <code>RAW</code> disk resource can
 either be a storage pool (i.e., a <code>RAW</code> disk resource without an ID) or a
 pre-existing disk (i.e., a <code>RAW</code> disk resource with an ID). The quantity of the
-converted resource (either <code>PATH</code> or <code>MOUNT</code> disk resource) will be the same as
+converted resource (either <code>MOUNT</code> or <code>BLOCK</code> disk resource) will be the same as
 the source <code>RAW</code> resource.</p>
 
 <pre><code class="protobuf">message Offer {
   message Operation {
-    message CreateVolume {
+    message CreateDisk {
       required Resource source = 1;
       required Resource.DiskInfo.Source.Type target_type = 2;
     }
-    optional CreateVolume create_volume = 8;
+    optional CreateDisk create_disk = 15;
   }
 }
 </code></pre>
 
-<p>The converted disk resource will have the disk <a href="#disk-id-and-metadata"><code>id</code> and <code>metadata</code></a>
+<p>The created disk resource will have the disk <a href="#disk-id-and-metadata"><code>id</code> and <code>metadata</code></a>
 set accordingly to uniquely identify the volume reported by the CSI plugin.</p>
 
-<p>Note that <code>CREATE_VOLUME</code> is different than <a href="/documentation/latest/./persistent-volume/"><code>CREATE</code></a>.
+<p>Note that <code>CREATE_DISK</code> is different than <a href="/documentation/latest/./persistent-volume/"><code>CREATE</code></a>.
 <code>CREATE</code> creates a <a href="/documentation/latest/./persistent-volume/">persistent volume</a> which indicates
 that the data stored in the volume will be persisted until the framework
 explicitly destroys it. It must operate on a non-<code>RAW</code> disk resource (i.e.,
 <code>PATH</code>, <code>MOUNT</code> or <code>BLOCK</code>).</p>
 
-<h4><code>DESTROY_VOLUME</code> operation</h4>
+<h4><code>DESTROY_DISK</code> operation</h4>
 
-<p>The offer operation <code>DESTROY_VOLUME</code> takes a volume, either a <code>PATH</code> or a
-<code>MOUNT</code> disk resource, to destroy, and converts it into a <code>RAW</code> disk resource.
-The quantity of the converted resource (<code>RAW</code> disk resource) will be the same as
-the specified <code>volume</code>.</p>
+<p>The offer operation <code>DESTROY_DISK</code> destroys a <code>MOUNT</code> or a <code>BLOCK</code> disk resource
+(<code>destroy_disk.source</code>), which will result in a <code>RAW</code> disk resource. The
+quantity of the <code>RAW</code> disk resource will be the same as the specified <code>source</code>,
+unless it has an invalid profile (described later), in which case the
+<code>DESTROY_DISK</code> operation will completely remove the disk resource.</p>
 
 <pre><code class="protobuf">message Offer {
   message Operation {
-    message DestroyVolume {
-      required Resource volume = 1;
+    message DestroyDisk {
+      required Resource source = 1;
     }
-    optional DestroyVolume destroy_volume = 9;
+    optional DestroyDisk destroy_disk = 16;
   }
 }
 </code></pre>
 
-<p>This operation is intended to be a reverse operation of <code>CREATE_VOLUME</code>. In
+<p>This operation is intended to be a reverse operation of <code>CREATE_DISK</code>. In
 other words, if the volume is created from a storage pool (i.e., a <code>RAW</code> disk
-resource without an ID), the result of the corresponding <code>DESTROY_VOLUME</code> should
+resource without an ID), the result of the corresponding <code>DESTROY_DISK</code> should
 be a storage pool. And if the volume is created from a <a href="#pre-existing-disks">pre-existing disk</a>
 (i.e., a <code>RAW</code> disk resource with an ID), the result of the corresponding
-<code>DESTROY_VOLUME</code> should be a pre-existing disk.</p>
+<code>DESTROY_DISK</code> should be a pre-existing disk.</p>
 
 <p>Currently, Mesos infers the result based on the presence of an assigned
 <a href="#profiles">profile</a> in the disk resource. In other words, if the volume to be
@@ -389,36 +389,6 @@ pool (i.e., <code>RAW</code> disk resource without an ID). Otherwise, the conver
 disk resource will be a pre-existing disk (i.e., <code>RAW</code> disk resource with an
 ID). This leverages the fact that currently, each storage pool must have a
 profile, and pre-existing disks do not have profiles.</p>
-
-<h4><code>CREATE_BLOCK</code> operation</h4>
-
-<p>The offer operation <code>CREATE_BLOCK</code> is similar to <code>CREATE_VOLUME</code>, except that
-the converted disk resource will be in <code>BLOCK</code> type.</p>
-
-<pre><code class="protobuf">message Offer {
-  message Operation {
-    message CreateBlock {
-      required Resource source = 1;
-    }
-    optional CreateBlock create_block = 10;
-  }
-}
-</code></pre>
-
-<h4><code>DESTROY_BLOCK</code> operation</h4>
-
-<p>The offer operation <code>DESTROY_BLOCK</code> is similar to <code>DESTROY_VOLUME</code>, except that
-the source disk resource will be in <code>BLOCK</code> type.</p>
-
-<pre><code class="protobuf">message Offer {
-  message Operation {
-    message DestroyBlock {
-      required Resource block = 1;
-    }
-    optional DestroyBlock destroy_block = 11;
-  }
-}
-</code></pre>
 
 <h4>Getting Operation Results</h4>
 
@@ -493,7 +463,7 @@ the corresponding <a href="https://github.com/container-storage-interface/spec/b
 (i.e., the <code>capability</code> field) and <a href="https://github.com/container-storage-interface/spec/blob/v0.1.0/spec.md#createvolume">CSI volume creation parameters</a>
 (i.e., the <code>parameters</code> field) for that profile. These two fields will be used to
 call the CSI <code>CreateVolume</code> interface during dynamic provisioning (i.e.,
-<code>CREATE_VOLUME</code> and <code>CREATE_BLOCK</code>), or CSI <code>ControllerPublishVolume</code> and
+<code>CREATE_DISK</code>), or CSI <code>ControllerPublishVolume</code> and
 <code>NodePublishVolume</code> when publishing (i.e., when a task using the disk resources
 is being launched on a Mesos agent).</p>
 
@@ -866,7 +836,7 @@ still running, and will no longer launch the SLRP during startup. The master and
 the agent will think the SLRP has disconnected, similar to agent disconnection.
 If there exists a task that is using the disk resources provided by the SLRP,
 its execution will not be affected. However, offer operations (e.g.,
-<code>CREATE_VOLUME</code>) for the SLRP will not be successful. In fact, if a SLRP is
+<code>CREATE_DISK</code>) for the SLRP will not be successful. In fact, if a SLRP is
 disconnected, the master will rescind the offers related to that SLRP,
 effectively disallowing frameworks to perform operations on the disconnected
 SLRP.</p>
