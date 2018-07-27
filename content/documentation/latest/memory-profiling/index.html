@@ -136,7 +136,10 @@ course also possible to use a <em>suitable</em> custom version of jemalloc with 
 <code>--with-jemalloc=&lt;/path-to-jemalloc&gt;</code> flag.</p>
 
 <p><strong>NOTE:</strong> Suitable here means that jemalloc should have been built with the
-<code>--enable-stats</code> and <code>--enable-prof</code> flags.</p>
+<code>--enable-stats</code> and <code>--enable-prof</code> flags, and that the string
+<code>prof:true;prof_active:false</code> is part of the malloc configuration. The latter
+condition can be satisfied either at configuration or at run-time, see the
+section on <code>MALLOC_CONF</code> below.</p>
 
 <p>The third way is to use the <code>LD_PRELOAD</code> mechanism to preload a <code>libjemalloc.so</code>
 shared library that is present on the system at runtime. The <code>MemoryProfiler</code>
