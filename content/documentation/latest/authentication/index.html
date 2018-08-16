@@ -210,6 +210,36 @@ The default is <code>basic</code>, but additional modules can be added using the
 <li><p><code>--http_credentials</code> - The path to a text file which contains a list (in JSON
 format) of accepted credentials.  This may be optional depending on the
 authenticator being used.</p></li>
+<li><p><code>--authentication_backoff_factor</code> - The agent will time out its authentication
+with the master based on exponential backoff. The timeout will be randomly
+chosen within the range <code>[min, min + factor*2^n]</code> where <code>n</code> is the number of
+failed attempts. To tune these parameters, set the
+<code>--authentication_timeout_[min|max|factor]</code> flags. (default: 1secs)</p></li>
+<li><p><code>--authentication_timeout_min</code> - The minimum amount of time the agent waits
+before retrying authenticating with the master. See
+<code>--authentication_backoff_factor</code> for more details. (default: 5secs)</p></li>
+<li><p><code>--authentication_timeout_max</code> - The maximum amount of time the agent waits
+before retrying authenticating with the master. See
+<code>--authentication_backoff_factor</code> for more details. (default: 1mins)</p></li>
+</ul>
+
+
+<h3>Scheduler Driver</h3>
+
+<ul>
+<li><p><code>--authenticatee</code> - Analog to the master&rsquo;s <code>--authenticators</code> option to
+specify what module to use.  Defaults to <code>crammd5</code>.</p></li>
+<li><p><code>--authentication_backoff_factor</code> - The scheduler will time out its
+authentication with the master based on exponential backoff. The timeout will
+be randomly chosen within the range <code>[min, min + factor*2^n]</code> where <code>n</code> is
+the number of failed attempts. To tune these parameters, set the
+<code>--authentication_timeout_[min|max|factor]</code> flags. (default: 1secs)</p></li>
+<li><p><code>--authentication_timeout_min</code> - The minimum amount of time the scheduler
+waits before retrying authenticating with the master. See
+<code>--authentication_backoff_factor</code> for more details. (default: 5secs)</p></li>
+<li><p><code>--authentication_timeout_max</code> - The maximum amount of time the scheduler
+waits before retrying authenticating with the master. See
+<code>--authentication_backoff_factor</code> for more details. (default: 1mins)</p></li>
 </ul>
 
 
