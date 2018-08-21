@@ -155,6 +155,7 @@ R Removed feature/behavior
       <li>A <a href="#1-7-x-auto-load-subsystems">Automatically load local enabled cgroups subsystems</a></li>
       <li>A <a href="#1-7-x-container-specific-cgroups-mounts">Container-specific cgroups mounts</a></li>
       <li>A <a href="#1-7-x-volume-mode-support">Volume mode support</a></li>
+      <li>C <a href="#1-7-x-create-disk">`CREATE_DISK` and `DESTROY_DISK` operations</a></li>
     </ul>
   </td>
 
@@ -172,13 +173,13 @@ R Removed feature/behavior
   <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Module API-->
     <ul style="padding-left:10px;">
       <li>C <a href="#1-7-x-container-logger">ContainerLogger module interface changes</a></li>
-      <li>C <a href="#1-7-x-isolator-recover">Isolator::recover module interface change</a></li>
-      <li>C <a href="#1-7-x-sorter-update">Changed semantics of Sorter::update</a></li>
+      <li>C <a href="#1-7-x-isolator-recover">Isolator::recover module interface changes</a></li>
     </ul>
   </td>
 
   <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Endpoints-->
     <ul style="padding-left:10px;">
+      <li>C <a href="#1-7-x-json-serialization">JSON serialization changes</a></li>
     </ul>
   </td>
 </tr>
@@ -587,17 +588,30 @@ isolator should enforce TCP ports usage limits.</li>
 </ul>
 
 
-<p><a name="1-7-x-sorter-update"></a></p>
-
-<ul>
-<li>The semantics of <code>Sorter::update</code> has been changed so that resources can be removed from a client&rsquo;s allocation without removing the full agent in which they reside. Callers are expected to update the total resources of the agent as well by, e.g., removing the agent and adding it back with the new total resources.</li>
-</ul>
-
-
 <p><a name="1-7-x-volume-mode-support"></a></p>
 
 <ul>
 <li>Previously the HOST_PATH/SANDBOX_PATH/IMAGE/SECRET/DOCKER_VOLUME volumes were always mounted for container in read-write mode, i.e., the <code>Volume.mode</code> field was not honored. Now we will mount these volumes based on the <code>Volume.mode</code> field so framework can choose to mount the volume for the container in either read-write mode or read-only mode.</li>
+</ul>
+
+
+<p><a name="1-7-x-create-disk"></a></p>
+
+<ul>
+<li>To simplify the API for CSI-backed disk resources, the following operations are introduced to replace the experimental <code>CREATE_VOLUME</code>, <code>CREATE_BLOCK</code>, <code>DESTROY_VOLUME</code> and <code>DESTROY_BLOCK</code> operations:
+
+<ul>
+<li><code>CREATE_DISK</code> to create a <code>MOUNT</code> or <code>BLOCK</code> disk resource from a <code>RAW</code> disk resource.</li>
+<li><code>DESTROY_DISK</code> to reclaim a <code>MOUNT</code> or <code>BLOCK</code> disk resource back to a <code>RAW</code> disk resource.</li>
+</ul>
+</li>
+</ul>
+
+
+<p><a name="1-7-x-json-serialization"></a></p>
+
+<ul>
+<li>As a result of adapting rapidjson for performance improvement, all JSON endpoints now conform to the ECMA-404 spec for JSON. This means that if a client has a JSON de-serializer that does not conform to ECMA-404, they may break. As an example, Mesos would previously serialize &lsquo;/&rsquo; as &lsquo;\/&rsquo;, but the spec does not require the escaping and rapidjson does not escape &lsquo;/&rsquo;.</li>
 </ul>
 
 
