@@ -155,7 +155,8 @@ R Removed feature/behavior
       <li>A <a href="#1-7-x-auto-load-subsystems">Automatically load local enabled cgroups subsystems</a></li>
       <li>A <a href="#1-7-x-container-specific-cgroups-mounts">Container-specific cgroups mounts</a></li>
       <li>A <a href="#1-7-x-volume-mode-support">Volume mode support</a></li>
-      <li>C <a href="#1-7-x-create-disk">`CREATE_DISK` and `DESTROY_DISK` operations</a></li>
+      <li>C <a href="#1-7-x-create-disk">`CREATE_DISK` and `DESTROY_DISK` operations and ACLs</a></li>
+      <li>A <a href="#1-7-x-resource-provider-acls">Resource Provider ACLs</a></li>
     </ul>
   </td>
 
@@ -551,15 +552,6 @@ that have been whitelisted with the <code>--allowed_devices</code> agent flag.</
 </ul>
 
 
-<p><a name="1-7-x-enforce-container-ports"></a></p>
-
-<ul>
-<li>A new <a href="/documentation/latest/./configuration/agent/#enforce_container_ports"><code>--enforce_container_ports</code></a>
-has been added to toggle whether the <a href="/documentation/latest/./isolators/network-ports/"><code>network/ports</code></a>
-isolator should enforce TCP ports usage limits.</li>
-</ul>
-
-
 <p><a name="1-7-x-auto-load-subsystems"></a></p>
 
 <ul>
@@ -574,6 +566,40 @@ isolator should enforce TCP ports usage limits.</li>
 </ul>
 
 
+<p><a name="1-7-x-volume-mode-support"></a></p>
+
+<ul>
+<li>Previously the <code>HOST_PATH</code>, <code>SANDBOX_PATH</code>, <code>IMAGE</code>, <code>SECRET</code>, and <code>DOCKER_VOLUME</code> volumes were always mounted for container in read-write mode, i.e., the <code>Volume.mode</code> field was not honored. Now we will mount these volumes based on the <code>Volume.mode</code> field so framework can choose to mount the volume for the container in either read-write mode or read-only mode.</li>
+</ul>
+
+
+<p><a name="1-7-x-create-disk"></a></p>
+
+<ul>
+<li>To simplify the API for CSI-backed disk resources, the following operations and corresponding ACLs have been introduced to replace the experimental <code>CREATE_VOLUME</code>, <code>CREATE_BLOCK</code>, <code>DESTROY_VOLUME</code> and <code>DESTROY_BLOCK</code> operations:
+
+<ul>
+<li><code>CREATE_DISK</code> to create a <code>MOUNT</code> or <code>BLOCK</code> disk resource from a <code>RAW</code> disk resource. The <code>CreateMountDisk</code> and <code>CreateBlockDisk</code> ACLs control which principals are allowed to create <code>MOUNT</code> or <code>BLOCK</code> disks for which roles.</li>
+<li><code>DESTROY_DISK</code> to reclaim a <code>MOUNT</code> or <code>BLOCK</code> disk resource back to a <code>RAW</code> disk resource. The <code>DestroyMountDisk</code> and <code>DestroyBlockDisk</code> ACLs control which principals are allowed to reclaim <code>MOUNT</code> or <code>BLOCK</code> disks for which roles.</li>
+</ul>
+</li>
+</ul>
+
+
+<p><a name="1-7-x-resource-provider-acls"></a></p>
+
+<ul>
+<li>A new <code>ViewResourceProvider</code> ACL has been introduced to control which principals are allowed to call the <code>GET_RESOURCE_PROVIDERS</code> agent API.</li>
+</ul>
+
+
+<p><a name="1-7-x-enforce-container-ports"></a></p>
+
+<ul>
+<li>A new <a href="/documentation/latest/./configuration/agent/#enforce_container_ports"><code>--enforce_container_ports</code></a> flag has been added to toggle whether the <a href="/documentation/latest/./isolators/network-ports/"><code>network/ports</code></a> isolator should enforce TCP ports usage limits.</li>
+</ul>
+
+
 <p><a name="1-7-x-container-logger"></a></p>
 
 <ul>
@@ -585,26 +611,6 @@ isolator should enforce TCP ports usage limits.</li>
 
 <ul>
 <li><code>Isolator::recover()</code> has been updated to take an <code>std::vector</code> instead of <code>std::list</code> of container states.</li>
-</ul>
-
-
-<p><a name="1-7-x-volume-mode-support"></a></p>
-
-<ul>
-<li>Previously the HOST_PATH/SANDBOX_PATH/IMAGE/SECRET/DOCKER_VOLUME volumes were always mounted for container in read-write mode, i.e., the <code>Volume.mode</code> field was not honored. Now we will mount these volumes based on the <code>Volume.mode</code> field so framework can choose to mount the volume for the container in either read-write mode or read-only mode.</li>
-</ul>
-
-
-<p><a name="1-7-x-create-disk"></a></p>
-
-<ul>
-<li>To simplify the API for CSI-backed disk resources, the following operations are introduced to replace the experimental <code>CREATE_VOLUME</code>, <code>CREATE_BLOCK</code>, <code>DESTROY_VOLUME</code> and <code>DESTROY_BLOCK</code> operations:
-
-<ul>
-<li><code>CREATE_DISK</code> to create a <code>MOUNT</code> or <code>BLOCK</code> disk resource from a <code>RAW</code> disk resource.</li>
-<li><code>DESTROY_DISK</code> to reclaim a <code>MOUNT</code> or <code>BLOCK</code> disk resource back to a <code>RAW</code> disk resource.</li>
-</ul>
-</li>
 </ul>
 
 
