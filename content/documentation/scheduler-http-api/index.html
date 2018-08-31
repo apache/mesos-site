@@ -159,7 +159,7 @@ considered stable and is the recommended way to develop new Mesos schedulers.</p
 
 <p>This is the first step in the communication process between the scheduler and the master. This is also to be considered as subscription to the &ldquo;/scheduler&rdquo; event stream.</p>
 
-<p>To subscribe with the master, the scheduler sends an HTTP POST with a <code>SUBSCRIBE</code> message including the required FrameworkInfo. Note that if &ldquo;subscribe.framework_info.id&rdquo; is not set, master considers the scheduler as a new one and subscribes it by assigning it a FrameworkID. The HTTP response is a stream in RecordIO format; the event stream begins with a <code>SUBSCRIBED</code> event (see details in <strong>Events</strong> section). The response also includes the <code>Mesos-Stream-Id</code> header, which is used by the master to uniquely identify the subscribed scheduler instance. This stream ID header should be included in all subsequent non-<code>SUBSCRIBE</code> calls sent over this subscription connection to the master. The value of <code>Mesos-Stream-Id</code> is guaranteed to be at most 128 bytes in length.</p>
+<p>To subscribe with the master, the scheduler sends an HTTP POST with a <code>SUBSCRIBE</code> message including the required FrameworkInfo. Note that if &ldquo;subscribe.framework_info.id&rdquo; and &ldquo;FrameworkID&rdquo; are not set, the master considers the scheduler as a new one and subscribes it by assigning it a FrameworkID. The HTTP response is a stream in RecordIO format; the event stream begins with a <code>SUBSCRIBED</code> event (see details in <strong>Events</strong> section). The response also includes the <code>Mesos-Stream-Id</code> header, which is used by the master to uniquely identify the subscribed scheduler instance. This stream ID header should be included in all subsequent non-<code>SUBSCRIBE</code> calls sent over this subscription connection to the master. The value of <code>Mesos-Stream-Id</code> is guaranteed to be at most 128 bytes in length.</p>
 
 <pre><code>SUBSCRIBE Request (JSON):
 
@@ -200,7 +200,7 @@ Mesos-Stream-Id: 130ae4e3-6b13-4ef4-baa9-9f2e85c3e9af
 &lt;more events&gt;
 </code></pre>
 
-<p>Alternatively, if &ldquo;subscribe.framework_info.id&rdquo; is set, master considers this a request from an already subscribed scheduler reconnecting after a disconnection (e.g., due to master/scheduler failover or network disconnection) and responds
+<p>Alternatively, if &ldquo;subscribe.framework_info.id&rdquo; and &ldquo;FrameworkID&rdquo; are set, the master considers this a request from an already subscribed scheduler reconnecting after a disconnection (e.g., due to master/scheduler failover or network disconnection) and responds
 with a <code>SUBSCRIBED</code> event. For further details, see the <strong>Disconnections</strong> section below.</p>
 
 <p>NOTE: In the old version of the API, (re-)registered callbacks also included MasterInfo, which contained information about the master the driver currently connected to. With the new API, since schedulers explicitly subscribe with the leading master (see details below in <strong>Master Detection</strong> section), it&rsquo;s not relevant anymore.</p>
