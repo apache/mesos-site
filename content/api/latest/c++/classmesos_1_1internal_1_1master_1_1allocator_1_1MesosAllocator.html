@@ -151,6 +151,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0baf8ec9a04e41b00f0518dad25c356c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1master_1_1allocator_1_1MesosAllocator.html#a0baf8ec9a04e41b00f0518dad25c356c">updateWeights</a> (const std::vector&lt; WeightInfo &gt; &amp;weightInfos) override</td></tr>
 <tr class="memdesc:a0baf8ec9a04e41b00f0518dad25c356c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the weight associated with one or more roles.  <a href="#a0baf8ec9a04e41b00f0518dad25c356c">More...</a><br /></td></tr>
 <tr class="separator:a0baf8ec9a04e41b00f0518dad25c356c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e00178d8b7e2f91a78f42a22da29a8e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1master_1_1allocator_1_1MesosAllocator.html#a0e00178d8b7e2f91a78f42a22da29a8e">pause</a> () override</td></tr>
+<tr class="memdesc:a0e00178d8b7e2f91a78f42a22da29a8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Idempotent helper to pause allocations.  <a href="#a0e00178d8b7e2f91a78f42a22da29a8e">More...</a><br /></td></tr>
+<tr class="separator:a0e00178d8b7e2f91a78f42a22da29a8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34b7538c9e9d79971c65786555eb5300"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1master_1_1allocator_1_1MesosAllocator.html#a34b7538c9e9d79971c65786555eb5300">resume</a> () override</td></tr>
+<tr class="memdesc:a34b7538c9e9d79971c65786555eb5300"><td class="mdescLeft">&#160;</td><td class="mdescRight">Idempotent helper to resume allocations.  <a href="#a34b7538c9e9d79971c65786555eb5300">More...</a><br /></td></tr>
+<tr class="separator:a34b7538c9e9d79971c65786555eb5300"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classmesos_1_1allocator_1_1Allocator"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classmesos_1_1allocator_1_1Allocator')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classmesos_1_1allocator_1_1Allocator.html">mesos::allocator::Allocator</a></td></tr>
 <tr class="memitem:aafc715605c23a31dcb511a6b5c2ac883 inherit pub_methods_classmesos_1_1allocator_1_1Allocator"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1allocator_1_1Allocator.html#aafc715605c23a31dcb511a6b5c2ac883">Allocator</a> ()</td></tr>
 <tr class="separator:aafc715605c23a31dcb511a6b5c2ac883 inherit pub_methods_classmesos_1_1allocator_1_1Allocator"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -609,6 +615,35 @@ template&lt;typename AllocatorProcess &gt; </div>
 
 </div>
 </div>
+<a class="anchor" id="a0e00178d8b7e2f91a78f42a22da29a8e"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename AllocatorProcess &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classmesos_1_1internal_1_1master_1_1allocator_1_1MesosAllocator.html">mesos::internal::master::allocator::MesosAllocator</a>&lt; AllocatorProcess &gt;::pause </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Idempotent helper to pause allocations. </p>
+
+<p>Implements <a class="el" href="classmesos_1_1allocator_1_1Allocator.html#a2ffbb044104e29918e3f4950997dda3f">mesos::allocator::Allocator</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="ae654358719056c7e418b3f334174f1d6"></a>
 <div class="memitem">
 <div class="memproto">
@@ -843,6 +878,35 @@ template&lt;typename AllocatorProcess &gt; </div>
 <p>A framework may request resources via this call. It is up to the allocator how to react to this request. For example, a request may be ignored, or may influence internal priorities the allocator may keep for frameworks. </p>
 
 <p>Implements <a class="el" href="classmesos_1_1allocator_1_1Allocator.html#a6d1124aace866719ed1e9ed45a068412">mesos::allocator::Allocator</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a34b7538c9e9d79971c65786555eb5300"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename AllocatorProcess &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classmesos_1_1internal_1_1master_1_1allocator_1_1MesosAllocator.html">mesos::internal::master::allocator::MesosAllocator</a>&lt; AllocatorProcess &gt;::resume </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Idempotent helper to resume allocations. </p>
+
+<p>Implements <a class="el" href="classmesos_1_1allocator_1_1Allocator.html#a70d7cd83eac605e2a2770f7897393783">mesos::allocator::Allocator</a>.</p>
 
 </div>
 </div>
