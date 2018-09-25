@@ -4,7 +4,84 @@
   <id>http://mesos.apache.org/blog</id>
   <link href="http://mesos.apache.org/blog" />
   <link href="http://mesos.apache.org/blog/feed.xml" rel="self"/>
-  <updated>2018-09-05T00:00:00+00:00</updated>
+  <updated>2018-09-24T00:00:00+00:00</updated>
+  <entry>
+    <id>http://mesos.apache.org/blog/mesos-1-7-0-released/</id>
+    <link href="/blog/mesos-1-7-0-released/" />
+    <title>
+      Mesos 1.7: Improvements to Performance, Containerization and Running Multiple Frameworks
+    </title>
+    <updated>2018-09-24T00:00:00+00:00</updated>
+    <author>
+      <name>Chun-Hung Hsiao & Gastón Kleiman</name>
+    </author>
+    <content type="html">
+      &lt;p&gt;We are excited to announce that Apache Mesos 1.7.0 is now available for &lt;a href=&quot;/downloads&quot;&gt;download&lt;/a&gt;. Please take a look at what&amp;rsquo;s new in this release!&lt;/p&gt;
+
+&lt;h1&gt;New Features and Improvements&lt;/h1&gt;
+
+&lt;h2&gt;Performance&lt;/h2&gt;
+
+&lt;p&gt;In Mesos 1.7, we put a lot of emphasis on performance. Thanks to the community’s hard work, several performance issues that have been affecting users are significantly improved:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/blog/mesos-1-7-0-performance.png&quot; alt=&quot;Mesos 1.7 performance improvements&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The master &lt;code&gt;/state&lt;/code&gt; endpoint is now more than twice as fast as before, and its processing is parallelized to provide higher throughput. As a result, Mesos UI and all tooling that consumes the &lt;code&gt;/state&lt;/code&gt; endpoint are more responsive.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://mesos.apache.org/documentation/latest/mesos-containerizer/&quot;&gt;Mesos containerizer&lt;/a&gt; has been a high-performance alternative to the Docker runtime, and now it’s even faster: launch and destroy throughput has increased by 2x in this release.&lt;/li&gt;
+&lt;li&gt;The agent &lt;code&gt;/containers&lt;/code&gt; endpoint no longer leads to high CPU consumption and thus is much more responsive. It now scales well to hundreds of containers running on the agent.&lt;/li&gt;
+&lt;li&gt;We made several optimizations to the resource allocator so the allocation cycle is now 20% faster on a 1,000-node cluster, and more significant improvements in this area are in progress for the 1.8 release.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;In addition, there are also a variety of other minor performance improvements across the system. A separate blog post that describes the 1.7.0 performance improvements in-depth will soon be published, so stay tuned!&lt;/p&gt;
+
+&lt;h2&gt;Containerization&lt;/h2&gt;
+
+&lt;p&gt;As usual, the 1.7.0 release includes several bug fixes to improve stability and reliability for users, as well as several new features and improvements:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;New &lt;code&gt;cgroups/all&lt;/code&gt; agent isolation option: This option enables the cgroups isolator to detect supported cgroup subsystems automatically, so users no longer need to manually choose which cgroup subsystems to enable.&lt;/li&gt;
+&lt;li&gt;Better cgroupfs isolation: Containers launched by &lt;a href=&quot;http://mesos.apache.org/documentation/latest/mesos-containerizer/&quot;&gt;Mesos Containerizer&lt;/a&gt; can now only see their own cgroups within &lt;code&gt;/sys/fs/cgroup&lt;/code&gt;, and thus no container is allowed to see the cgroup information of other containers.&lt;/li&gt;
+&lt;li&gt;New &lt;code&gt;linux/devices&lt;/code&gt; isolator: This isolator automatically populates containers with devices that have been whitelisted in the &lt;code&gt;--allowed_devices&lt;/code&gt; agent flag.&lt;/li&gt;
+&lt;li&gt;Fetching Docker image tarballs from HDFS: Now users can specify an &lt;code&gt;hdfs://&lt;/code&gt; URI in the &lt;code&gt;--docker_registry&lt;/code&gt; agent flag to use HDFS in lieu of a Docker registry.&lt;/li&gt;
+&lt;li&gt;Better container network statistics: The built-in Container Network Interface (CNI) isolator now exposes more statistics to make users easier to monitor the network usage of each container.&lt;/li&gt;
+&lt;li&gt;Better image pulling metrics: The new &lt;a href=&quot;http://mesos.apache.org/documentation/latest/monitoring/#containerizers&quot;&gt;containerizer metrics&lt;/a&gt; enable users to monitor the latency distribution for image pulling.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h2&gt;Framework Metrics&lt;/h2&gt;
+
+&lt;p&gt;To improve the user experience of operators when monitoring and diagnosing a cluster, we have added a variety of new metrics in Mesos 1.7 to provide greater visibility into the behavior of individual frameworks in the cluster.&lt;/p&gt;
+
+&lt;p&gt;These metrics are added on a per-framework basis, so that new metric keys appear as new frameworks register with the master. Example metrics include: the numbers of calls received, number of events sent, offer-related counters (how many were sent/accepted/declined), counts of the various offer operations performed, and current task state totals for the framework. Please see the &lt;a href=&quot;http://mesos.apache.org/documentation/latest/monitoring/#frameworks&quot;&gt;metrics documentation&lt;/a&gt; for more details.&lt;/p&gt;
+
+&lt;h2&gt;Multi-Framework Workloads&lt;/h2&gt;
+
+&lt;p&gt;The following improvements, combined with the allocator and metrics improvements mentioned above, make the experience of running multiple frameworks significantly better in Mesos 1.7:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;We have improved the &lt;a href=&quot;http://mesos.apache.org/documentation/latest/app-framework-development-guide/&quot;&gt;framework development guide&lt;/a&gt; with guidelines on how to implement frameworks that are well-behaved in a multi-framework cluster.&lt;/li&gt;
+&lt;li&gt;A new weighted random sorter was also added as an alternative to the existing DRF sorter, allowing users that don&amp;rsquo;t need DRF behavior to opt-out in favor of allocating to roles using a weighted uniform distribution.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h1&gt;Upgrade&lt;/h1&gt;
+
+&lt;p&gt;In most cases, upgrades from Mesos 1.6.0 to Mesos 1.7.0 are straightforward. Please refer to the &lt;a href=&quot;http://mesos.apache.org/documentation/latest/upgrades/&quot;&gt;upgrade guide&lt;/a&gt; for detailed information on upgrading to Mesos 1.7.0.&lt;/p&gt;
+
+&lt;h1&gt;Community&lt;/h1&gt;
+
+&lt;p&gt;Inspired by the work that went into this release? Want to get involved? Have feedback? We&amp;rsquo;d love to hear from you! Join a &lt;a href=&quot;http://mesos.apache.org/community/#working-groups&quot;&gt;working group&lt;/a&gt; or start a conversation in the &lt;a href=&quot;http://mesos.apache.org/community/&quot;&gt;community&lt;/a&gt;!&lt;/p&gt;
+
+&lt;h1&gt;Thank you!&lt;/h1&gt;
+
+&lt;p&gt;Thanks to the 50 contributors who made Mesos 1.7.0 possible:&lt;/p&gt;
+
+&lt;p&gt;Akash Gupta, Alexander Rojas, Alexander Rukletsov, Andrei Budnik, Andrew Schwartzmeyer, Armand Grillet, Benjamin Bannier, Benjamin Mahler, Benno Evers, Chen Runcong, Chun-Hung Hsiao, Clement Michaud, Dario Rexin, Eric Chung, Gary Yao, Gastón Kleiman, Gilbert Song, Greg Mann, Harold Dost, Ilya Pronin, James Peach, Jan Schlicht, Jiang Yan Xu, Jie Yu, John Kordich, Joseph Wu, Judith Malnick, Kapil Arya, Kevin Klues, Kjetil Joergensen, Meng Zhu, Pavi Sandhu, Qian Zhang, Radhika Jandhyala, Sergey Urbanovich, Tarun Gupta Akirala, Thodoris Zois, Till Toenshoff, Vinod Kone, Xudong Ni, Zhitao Li, Bin Zheng, Cai Shuhua, Cui Dt, He Yi Hua, janisz, LongFei Niu, Wei Xiao, Xiang Chaosheng, Zois&lt;/p&gt;
+
+	</content>
+  </entry>
   <entry>
     <id>http://mesos.apache.org/blog/mesoscon-2018-cfp-is-now-closed/</id>
     <link href="/blog/mesoscon-2018-cfp-is-now-closed/" />

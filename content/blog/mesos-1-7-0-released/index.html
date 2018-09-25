@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Mesos 1.7: Improvements to Performance, Containerization and Running Multiple Frameworks</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta property="og:locale" content="en_US"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:title" content="Apache Mesos"/>
+    <meta property="og:site_name" content="Apache Mesos"/>
+    <meta property="og:url" content="http://mesos.apache.org/"/>
+    <meta property="og:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta property="og:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
+
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:site" content="@ApacheMesos"/>
+    <meta name="twitter:title" content="Apache Mesos"/>
+    <meta name="twitter:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta name="twitter:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
+
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
+    <link href="../../assets/css/main.css" rel="stylesheet" />
+
+
+    <!-- Google Analytics Magic -->
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-20226872-1']);
+    _gaq.push(['_setDomainName', 'apache.org']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+  </head>
+  <body>
+    <!-- magical breadcrumbs -->
+    <div class="topnav">
+      <div class="container">
+        <ul class="breadcrumb">
+          <li>
+            <div class="dropdown">
+              <a data-toggle="dropdown" href="#">Apache Software Foundation <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                <li><a href="http://www.apache.org">Apache Homepage</a></li>
+                <li><a href="http://www.apache.org/licenses/">License</a></li>
+                <li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>
+                <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                <li><a href="http://www.apache.org/security/">Security</a></li>
+              </ul>
+            </div>
+          </li>
+
+          <li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+          <li><a href="/blog/">Blog</a></li>
+        </ul><!-- /.breadcrumb -->
+      </div><!-- /.container -->
+    </div><!-- /.topnav -->
+
+    <!-- navbar excitement -->
+<div class="navbar navbar-default navbar-static-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#mesos-menu" aria-expanded="false">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo"/></a>
+    </div><!-- /.navbar-header -->
+
+    <div class="navbar-collapse collapse" id="mesos-menu">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/getting-started/">Getting Started</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/documentation/latest/">Documentation</a></li>
+        <li><a href="/downloads/">Downloads</a></li>
+        <li><a href="/community/">Community</a></li>
+      </ul>
+    </div><!-- /#mesos-menu -->
+  </div><!-- /.container -->
+</div><!-- /.navbar -->
+
+<div class="content">
+  <div class="container">
+    <div class="row">
+
+  <div class="col-md-3">
+    <div class="meta">
+      <span class="author">
+          <img src="http://www.gravatar.com/avatar/9447267537939b034faa02cbe08fef20?s=80"
+               class="author_gravatar">
+        <span class="author_contact">
+          <p><strong>Chun-Hung Hsiao & Gastón Kleiman</strong></p>
+            <p><a href="http://twitter.com/chhsia0">@chhsia0</a></p>
+        </span>
+      </span>
+      <p><em>Posted September 24, 2018</em></p>
+    </div>
+
+    <div class="share">
+      <span class="social-share-button"><a href="https://twitter.com/share" class="twitter-share-button" data-via="apachemesos">Tweet</a></span>
+
+      <span><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></span>
+
+      <span><div class="g-plusone" data-size="medium"></div></span>
+
+      <!-- Place this tag after the last +1 button tag. -->
+      <script type="text/javascript">
+        (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'https://apis.google.com/js/plusone.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+        })();
+      </script>
+
+      <script src="//platform.linkedin.com/in.js" type="text/javascript">
+       lang: en_US
+      </script>
+      <script type="IN/Share" data-counter="right"></script>
+    </div>
+  </div>
+
+  <div class="post col-md-9">
+    <h1>Mesos 1.7: Improvements to Performance, Containerization and Running Multiple Frameworks</h1>
+
+    <p>We are excited to announce that Apache Mesos 1.7.0 is now available for <a href="/downloads">download</a>. Please take a look at what&rsquo;s new in this release!</p>
+
+<h1>New Features and Improvements</h1>
+
+<h2>Performance</h2>
+
+<p>In Mesos 1.7, we put a lot of emphasis on performance. Thanks to the community’s hard work, several performance issues that have been affecting users are significantly improved:</p>
+
+<p><img src="/assets/img/blog/mesos-1-7-0-performance.png" alt="Mesos 1.7 performance improvements" /></p>
+
+<ul>
+<li>The master <code>/state</code> endpoint is now more than twice as fast as before, and its processing is parallelized to provide higher throughput. As a result, Mesos UI and all tooling that consumes the <code>/state</code> endpoint are more responsive.</li>
+<li><a href="http://mesos.apache.org/documentation/latest/mesos-containerizer/">Mesos containerizer</a> has been a high-performance alternative to the Docker runtime, and now it’s even faster: launch and destroy throughput has increased by 2x in this release.</li>
+<li>The agent <code>/containers</code> endpoint no longer leads to high CPU consumption and thus is much more responsive. It now scales well to hundreds of containers running on the agent.</li>
+<li>We made several optimizations to the resource allocator so the allocation cycle is now 20% faster on a 1,000-node cluster, and more significant improvements in this area are in progress for the 1.8 release.</li>
+</ul>
+
+
+<p>In addition, there are also a variety of other minor performance improvements across the system. A separate blog post that describes the 1.7.0 performance improvements in-depth will soon be published, so stay tuned!</p>
+
+<h2>Containerization</h2>
+
+<p>As usual, the 1.7.0 release includes several bug fixes to improve stability and reliability for users, as well as several new features and improvements:</p>
+
+<ul>
+<li>New <code>cgroups/all</code> agent isolation option: This option enables the cgroups isolator to detect supported cgroup subsystems automatically, so users no longer need to manually choose which cgroup subsystems to enable.</li>
+<li>Better cgroupfs isolation: Containers launched by <a href="http://mesos.apache.org/documentation/latest/mesos-containerizer/">Mesos Containerizer</a> can now only see their own cgroups within <code>/sys/fs/cgroup</code>, and thus no container is allowed to see the cgroup information of other containers.</li>
+<li>New <code>linux/devices</code> isolator: This isolator automatically populates containers with devices that have been whitelisted in the <code>--allowed_devices</code> agent flag.</li>
+<li>Fetching Docker image tarballs from HDFS: Now users can specify an <code>hdfs://</code> URI in the <code>--docker_registry</code> agent flag to use HDFS in lieu of a Docker registry.</li>
+<li>Better container network statistics: The built-in Container Network Interface (CNI) isolator now exposes more statistics to make users easier to monitor the network usage of each container.</li>
+<li>Better image pulling metrics: The new <a href="http://mesos.apache.org/documentation/latest/monitoring/#containerizers">containerizer metrics</a> enable users to monitor the latency distribution for image pulling.</li>
+</ul>
+
+
+<h2>Framework Metrics</h2>
+
+<p>To improve the user experience of operators when monitoring and diagnosing a cluster, we have added a variety of new metrics in Mesos 1.7 to provide greater visibility into the behavior of individual frameworks in the cluster.</p>
+
+<p>These metrics are added on a per-framework basis, so that new metric keys appear as new frameworks register with the master. Example metrics include: the numbers of calls received, number of events sent, offer-related counters (how many were sent/accepted/declined), counts of the various offer operations performed, and current task state totals for the framework. Please see the <a href="http://mesos.apache.org/documentation/latest/monitoring/#frameworks">metrics documentation</a> for more details.</p>
+
+<h2>Multi-Framework Workloads</h2>
+
+<p>The following improvements, combined with the allocator and metrics improvements mentioned above, make the experience of running multiple frameworks significantly better in Mesos 1.7:</p>
+
+<ul>
+<li>We have improved the <a href="http://mesos.apache.org/documentation/latest/app-framework-development-guide/">framework development guide</a> with guidelines on how to implement frameworks that are well-behaved in a multi-framework cluster.</li>
+<li>A new weighted random sorter was also added as an alternative to the existing DRF sorter, allowing users that don&rsquo;t need DRF behavior to opt-out in favor of allocating to roles using a weighted uniform distribution.</li>
+</ul>
+
+
+<h1>Upgrade</h1>
+
+<p>In most cases, upgrades from Mesos 1.6.0 to Mesos 1.7.0 are straightforward. Please refer to the <a href="http://mesos.apache.org/documentation/latest/upgrades/">upgrade guide</a> for detailed information on upgrading to Mesos 1.7.0.</p>
+
+<h1>Community</h1>
+
+<p>Inspired by the work that went into this release? Want to get involved? Have feedback? We&rsquo;d love to hear from you! Join a <a href="http://mesos.apache.org/community/#working-groups">working group</a> or start a conversation in the <a href="http://mesos.apache.org/community/">community</a>!</p>
+
+<h1>Thank you!</h1>
+
+<p>Thanks to the 50 contributors who made Mesos 1.7.0 possible:</p>
+
+<p>Akash Gupta, Alexander Rojas, Alexander Rukletsov, Andrei Budnik, Andrew Schwartzmeyer, Armand Grillet, Benjamin Bannier, Benjamin Mahler, Benno Evers, Chen Runcong, Chun-Hung Hsiao, Clement Michaud, Dario Rexin, Eric Chung, Gary Yao, Gastón Kleiman, Gilbert Song, Greg Mann, Harold Dost, Ilya Pronin, James Peach, Jan Schlicht, Jiang Yan Xu, Jie Yu, John Kordich, Joseph Wu, Judith Malnick, Kapil Arya, Kevin Klues, Kjetil Joergensen, Meng Zhu, Pavi Sandhu, Qian Zhang, Radhika Jandhyala, Sergey Urbanovich, Tarun Gupta Akirala, Thodoris Zois, Till Toenshoff, Vinod Kone, Xudong Ni, Zhitao Li, Bin Zheng, Cai Shuhua, Cui Dt, He Yi Hua, janisz, LongFei Niu, Wei Xiao, Xiang Chaosheng, Zois</p>
+
+  </div>
+</div>
+
+  </div><!-- /.container -->
+</div><!-- /.content -->
+
+<hr>
+
+
+
+    <!-- footer -->
+    <div class="footer">
+      <div class="container">
+
+        <div class="col-md-3">
+            <a  href="https://www.apache.org/events/current-event.html">
+              <img src="https://www.apache.org/events/current-event-234x60.png"/>
+            </a>
+        </div>
+
+        <div class="col-md-3 social-blk">
+          <span class="social">
+            <a href="https://twitter.com/ApacheMesos"
+              class="twitter-follow-button"
+              data-show-count="false" data-size="large">Follow @ApacheMesos</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+            <a href="https://twitter.com/intent/tweet?button_hashtag=mesos"
+              class="twitter-hashtag-button"
+              data-size="large"
+              data-related="ApacheMesos">Tweet #mesos</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+          </span>
+        </div>
+
+        <div class="col-md-6 trademark">
+          <p>&copy; 2012-2018 <a href="http://apache.org">The Apache Software Foundation</a>.
+            Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.
+          <p>
+        </div>
+
+      </div><!-- /.container -->
+    </div><!-- /.footer -->
+
+    <!-- JS -->
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js"></script>
+
+    <!-- Inject anchors for all headings on the page, see https://www.bryanbraun.com/anchorjs. -->
+    <script type="text/javascript">
+    anchors.options = {
+      placement: 'right',
+      ariaLabel: 'Permalink',
+    };
+
+    // The default is to not add anchors to h1, but we have pages with multiple h1 headers,
+    // and we do want to put anchors on those.
+    anchors.add('h1, h2, h3, h4, h5, h6');
+    </script>
+  </body>
+</html>
