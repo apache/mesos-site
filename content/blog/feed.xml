@@ -4,7 +4,127 @@
   <id>http://mesos.apache.org/blog</id>
   <link href="http://mesos.apache.org/blog" />
   <link href="http://mesos.apache.org/blog/feed.xml" rel="self"/>
-  <updated>2018-09-24T00:00:00+00:00</updated>
+  <updated>2018-10-08T00:00:00+00:00</updated>
+  <entry>
+    <id>http://mesos.apache.org/blog/mesos-1-7-0-performance-improvements/</id>
+    <link href="/blog/mesos-1-7-0-performance-improvements/" />
+    <title>
+      Performance Improvements in Mesos 1.7.0
+    </title>
+    <updated>2018-10-08T00:00:00+00:00</updated>
+    <author>
+      <name>Benjamin Mahler</name>
+    </author>
+    <content type="html">
+      &lt;p&gt;&lt;strong&gt;Scalability and performance are key features for Mesos. Some users of Mesos already run production clusters that consist of many tens of thousands of nodes.&lt;/strong&gt; However, there remains a lot of room for improvement across a variety of areas of the system.&lt;/p&gt;
+
+&lt;p&gt;The Mesos community has been working hard over the past few months to address several performance issues that have been affecting users. The following are some of the key performance improvements included in Mesos 1.7.0:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Master &lt;code&gt;/state&lt;/code&gt; endpoint:&lt;/strong&gt; Adopted &lt;a href=&quot;http://rapidjson.org/&quot;&gt;RapidJSON&lt;/a&gt; and reduced copying for a 2.3x throughput improvement due to a ~55% decrease in latency (&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9092&quot;&gt;MESOS-9092&lt;/a&gt;). Also, added parallel processing of &lt;code&gt;/state&lt;/code&gt; requests to reduce master backlogging / interference under high request load (&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9122&quot;&gt;MESOS-9122&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Allocator:&lt;/strong&gt; in 1.7.1 (these patches did not make 1.7.0 and were backported to 1.7.x), allocation cycle time was reduced. Some benchmarks show an 80% reduction. This, together with the reduced master backlogging from &lt;code&gt;/state&lt;/code&gt; improvements, substantially reduces the end-to-end offer cycling time between Mesos and schedulers.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Agent &lt;code&gt;/containers&lt;/code&gt; endpoint:&lt;/strong&gt; Fixed a performance issue that caused high latency / cpu consumption when there are many containers on the agent (&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8418&quot;&gt;MESOS-8418&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Agent container launching performance improvements&lt;/strong&gt;: Some initial benchmarking shows a ~2x throughput improvement for both launch and destroy operations.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;Before we dive into the details of these performance improvements, I would like to recognize and thank the following contributors:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Alex Rukletsov&lt;/strong&gt; and &lt;strong&gt;Benno Evers&lt;/strong&gt;: for working on the parallel serving of master &lt;code&gt;/state&lt;/code&gt; and providing benchmarking data.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Meng Zhu&lt;/strong&gt;: for authoring patches to help improve the allocator performance.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Stéphane Cottin&lt;/strong&gt; and &lt;strong&gt;Stephan Erb&lt;/strong&gt;: for reporting the &lt;code&gt;/containers&lt;/code&gt; endpoint performance issue and providing performance data.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Jie Yu&lt;/strong&gt;: for working on the container launching benchmarks and performance improvements.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h2&gt;Master &lt;code&gt;/state&lt;/code&gt; Endpoint&lt;/h2&gt;
+
+&lt;p&gt;The &lt;code&gt;/state&lt;/code&gt; endpoint of the master returns the full cluster state and is frequently polled by tooling (e.g. DNS / service discovery systems, backup systems, etc). We focused on improving performance of this endpoint as it is rather expensive and is common performance pain point for users.&lt;/p&gt;
+
+&lt;h3&gt;RapidJSON&lt;/h3&gt;
+
+&lt;p&gt;In Mesos we perform JSON serialization by directly going from C++ objects to serialized JSON via an internal library called &lt;a href=&quot;https://github.com/apache/mesos/blob/1.6.0/3rdparty/stout/include/stout/jsonify.hpp&quot;&gt;jsonify&lt;/a&gt;. This library had some performance bottlenecks, primarily in the use of &lt;code&gt;std::ostream&lt;/code&gt; for serialization:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;See &lt;a href=&quot;https://groups.google.com/a/isocpp.org/forum/#!msg/std-proposals/bMzBAHgb5_o/C80lZHUwp5QJ&quot;&gt;here&lt;/a&gt; for a discussion of its performance issues with strings.&lt;/li&gt;
+&lt;li&gt;See &lt;a href=&quot;https://github.com/miloyip/itoa-benchmark/tree/1f2b870c097d9444eec8e5c057b603a490e3d7ec#results&quot;&gt;here&lt;/a&gt; and &lt;a href=&quot;https://github.com/miloyip/dtoa-benchmark/tree/c4020c62754950d38a1aaaed2975b05b441d1e7d#results&quot;&gt;here&lt;/a&gt; for integer-to-string and double-to-string performance comparisons against &lt;code&gt;std::ostream&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;We found that RapidJSON has a performance focused approach that addresses these issues:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Like &lt;code&gt;jsonify&lt;/code&gt;, it also supports directly serializing from C++ without converting through intermediate JSON objects (via a &lt;code&gt;Writer&lt;/code&gt; interface).&lt;/li&gt;
+&lt;li&gt;It eschews &lt;code&gt;std::ostream&lt;/code&gt; (although it introduced support for it along with a &lt;a href=&quot;http://rapidjson.org/md_doc_stream.html#iostreamWrapper&quot;&gt;significant performance caveat&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;It performs fast integer-to-string and double-to-string conversions (see performance comparison linked above).&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;After adapting &lt;code&gt;jsonify&lt;/code&gt; to use RapidJSON and eliminating some additional &lt;code&gt;mesos::Resource&lt;/code&gt; copying, we ran the master state query benchmark. This benchmark builds up a large simulated cluster in the master and times the end-to-end response time from a client&amp;rsquo;s perspective:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/blog/1.7-performance-improvements-rapidjson.png&quot; alt=&quot;1.7 RapidJSON&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This is a box plot, where the box indicates the range of the 1st and 3rd quartiles, and the lines extend to the minimum and maximum values. The results above showed a reduction in the client&amp;rsquo;s end-to-end time to receive the response from approximately 7 seconds down to just over 3 seconds when both rapidjson and the &lt;code&gt;mesos::Resource&lt;/code&gt; copy elimination are applied. An 55% decrease in latency, which yields a 2.3x throughput improvement of state serving.&lt;/p&gt;
+
+&lt;h3&gt;Parallel Serving&lt;/h3&gt;
+
+&lt;p&gt;In Mesos, we use an asynchronous programming model based on actors and futures (see &lt;a href=&quot;https://github.com/apache/mesos/tree/master/3rdparty/libprocess&quot;&gt;libprocess&lt;/a&gt;). Each actor in the system operates as an HTTP server in the sense that it can set up HTTP routes and respond to requests. The master actor hosts the majority of the v0 master endpoints, including &lt;code&gt;/state&lt;/code&gt;. In an actor-based model, each actor has a queue of events and processes those events in serial (without parallelism). As a result, actors can be overwhelmed if there are too many expensive events in their queue. HTTP requests to the &lt;code&gt;/state&lt;/code&gt; endpoint are an example of an expensive event, especially for larger clusters. If multiple clients are polling the &lt;code&gt;/state&lt;/code&gt; endpoint, responsiveness of the master can degrade significantly.&lt;/p&gt;
+
+&lt;p&gt;In order to improve the ability to serve multiple clients of &lt;code&gt;/state&lt;/code&gt;, we introduced parallel serving of the &lt;code&gt;/state&lt;/code&gt; endpoint via a batching technique (see &lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9122&quot;&gt;MESOS-9122&lt;/a&gt;). This was possible since &lt;code&gt;/state&lt;/code&gt; is read-only against the master actor, and we accomplish this by spawning other worker actors and blocking the master until they complete (see &lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8587&quot;&gt;MESOS-8587&lt;/a&gt; for potential library generalizations of this technique).&lt;/p&gt;
+
+&lt;p&gt;A benchmark was implemented that polls the master’s &lt;code&gt;/state&lt;/code&gt; endpoint concurrently from multiple clients and measures the observed response times across 1.6.0 and 1.7.0:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/blog/1.7-performance-improvements-parallel-state.png&quot; alt=&quot;1.7 Parallel state serving benchmark&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The benchmark demonstrates a marked improvement in the response times as the number of clients polling the /state endpoint grows. These numbers were obtained using an optimized build on a machine with 4 x 2.9Ghz CPUs, and LIBPROCESS_NUM_WORKER_THREADS was set to 24. A virtual cluster was created with 100 agents, 10 running and 10 completed frameworks with 10 tasks each, on each agent. Every client polls the &lt;code&gt;/state&lt;/code&gt; endpoint 50 times. Small dots denote raw measured response times, big dots denote the arithmetic mean. The top and bottom 2% of raw times were removed to filter outliers.&lt;/p&gt;
+
+&lt;h2&gt;Allocation Cycle Time&lt;/h2&gt;
+
+&lt;p&gt;Several users reported that the master’s resource allocator was taking a long time to perform allocation cycles on larger clusters (e.g. high agent / framework counts). We investigated this issue and found that the main scalability limitation was due to excessive re-computation of the DRF ordering of roles / frameworks (see &lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9249&quot;&gt;MESOS-9249&lt;/a&gt; and &lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9239&quot;&gt;MESOS-9239&lt;/a&gt; for details.&lt;/p&gt;
+
+&lt;p&gt;We ran an existing micro-benchmark of the allocator that creates clusters with a configurable number of agents and frameworks:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/blog/1.7-performance-improvements-allocation-cycle.png&quot; alt=&quot;1.7 Allocation Cycle Benchmark&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The results show an ~80% reduction in allocation cycle time in 1.7.1 for this particular setup (all frameworks in a single role, no filtering). Since this is a substantial improvement to a long-standing pain point for large scale users, we backported the changes to 1.7.1 since they are not included in 1.7.0.&lt;/p&gt;
+
+&lt;p&gt;Future work is underway to improve the allocation cycle performance when quota is enabled (see: &lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9087&quot;&gt;MESOS-9087&lt;/a&gt;).&lt;/p&gt;
+
+&lt;h2&gt;Agent &lt;code&gt;/containers&lt;/code&gt; Endpoint&lt;/h2&gt;
+
+&lt;p&gt;Reported in &lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8418&quot;&gt;MESOS-8418&lt;/a&gt;, during the collection of container resource consumption metrics, there are many reads of &lt;code&gt;/proc/mounts&lt;/code&gt; being performed. The system mount table will be large and expensive to read if there are a lot of containers running on the agent using their own root filesystems. This was only incidentally being done as a result of some cgroup related verification code performed before reading a cgroup file. Since this code was only in place to provide better error messages, it was removed.&lt;/p&gt;
+
+&lt;p&gt;Stephen Erb provided the following graphs that show the impact of deploying the change. First, we can see the tasks (i.e. containers) per agent:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/blog/1.7-performance-improvements-containers-endpoint-tasks.png&quot; alt=&quot;1.7 containers endpoint task counts&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The agent with the most tasks has ~150 containers, the median and average are both around 50 containers. The following graph provided by Stephan Erb shows the latency of the &lt;code&gt;/containers&lt;/code&gt; endpoint before and after deploying the fix on the same cluster:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/blog/1.7-performance-improvements-containers-endpoint-latency.png&quot; alt=&quot;1.7 containers endpoint latency&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Prior to the change, the agent with the worst &lt;code&gt;/containers&lt;/code&gt; latency took between 5-10 seconds to respond, and the median latency across agents was around 1 second. After the change, all of the agents have sub-second &lt;code&gt;/containers&lt;/code&gt; latency.&lt;/p&gt;
+
+&lt;h1&gt;Agent Container Launching&lt;/h1&gt;
+
+&lt;p&gt;From the user reports originally in &lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8418&quot;&gt;MESOS-8418&lt;/a&gt;, we identified that the container launching throughput would suffer from the same issue of expensive &lt;code&gt;/proc/mounts&lt;/code&gt; reads shown above in the &lt;code&gt;/containers&lt;/code&gt; endpoint improvements. See &lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9081&quot;&gt;MESOS-9081&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;To remedy this, we moved the cgroups verification code to the call-sites. Since the cgroup just needs to be verified once during the bootstrapping agent bootstrap, this optimization significantly reduces the overhead of launching and destroying containers.&lt;/p&gt;
+
+&lt;p&gt;A preliminary benchmark shows that the container launch / destroy throughput gained a 2x throughput improvement thanks to a 50% reduction in latency. This test uses an docker image based on the host OS image of the machine it’s running on:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/blog/1.7-performance-improvements-container-launch.png&quot; alt=&quot;1.7 container launch&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In this particular benchmark (see &lt;a href=&quot;https://reviews.apache.org/r/68266/&quot;&gt;reviews.apache.org/r/68266/&lt;/a&gt;), a single agent is able to launch 1000 containers in about 30 seconds, destroying those 1000 containers in just over 20 seconds. This numbers were obtained on a server with 2 x Intel&amp;reg; Xeon&amp;reg; CPU E5-2658 v3.&lt;/p&gt;
+
+&lt;h2&gt;Performance Working Group Roadmap&lt;/h2&gt;
+
+&lt;p&gt;The backlog of performance worked in tracked in JIRA, see &lt;a href=&quot;https://issues.apache.org/jira/secure/RapidBoard.jspa?rapidView=238&amp;amp;useStoredSettings=true&quot;&gt;here&lt;/a&gt;. Any ticket with the &lt;code&gt;performance&lt;/code&gt; label is picked up by this JIRA board.&lt;/p&gt;
+
+&lt;p&gt;If you are a user and would like to suggest some areas for performance improvement, please let us know by emailing &lt;code&gt;dev@apache.mesos.org&lt;/code&gt; and we would be happy to help!&lt;/p&gt;
+
+	</content>
+  </entry>
   <entry>
     <id>http://mesos.apache.org/blog/mesos-1-7-0-released/</id>
     <link href="/blog/mesos-1-7-0-released/" />

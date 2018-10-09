@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Performance Improvements in Mesos 1.7.0</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta property="og:locale" content="en_US"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:title" content="Apache Mesos"/>
+    <meta property="og:site_name" content="Apache Mesos"/>
+    <meta property="og:url" content="http://mesos.apache.org/"/>
+    <meta property="og:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta property="og:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
+
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:site" content="@ApacheMesos"/>
+    <meta name="twitter:title" content="Apache Mesos"/>
+    <meta name="twitter:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta name="twitter:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
+
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
+    <link href="../../assets/css/main.css" rel="stylesheet" />
+
+
+    <!-- Google Analytics Magic -->
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-20226872-1']);
+    _gaq.push(['_setDomainName', 'apache.org']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+  </head>
+  <body>
+    <!-- magical breadcrumbs -->
+    <div class="topnav">
+      <div class="container">
+        <ul class="breadcrumb">
+          <li>
+            <div class="dropdown">
+              <a data-toggle="dropdown" href="#">Apache Software Foundation <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                <li><a href="http://www.apache.org">Apache Homepage</a></li>
+                <li><a href="http://www.apache.org/licenses/">License</a></li>
+                <li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>
+                <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                <li><a href="http://www.apache.org/security/">Security</a></li>
+              </ul>
+            </div>
+          </li>
+
+          <li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+          <li><a href="/blog/">Blog</a></li>
+        </ul><!-- /.breadcrumb -->
+      </div><!-- /.container -->
+    </div><!-- /.topnav -->
+
+    <!-- navbar excitement -->
+<div class="navbar navbar-default navbar-static-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#mesos-menu" aria-expanded="false">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo"/></a>
+    </div><!-- /.navbar-header -->
+
+    <div class="navbar-collapse collapse" id="mesos-menu">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/getting-started/">Getting Started</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/documentation/latest/">Documentation</a></li>
+        <li><a href="/downloads/">Downloads</a></li>
+        <li><a href="/community/">Community</a></li>
+      </ul>
+    </div><!-- /#mesos-menu -->
+  </div><!-- /.container -->
+</div><!-- /.navbar -->
+
+<div class="content">
+  <div class="container">
+    <div class="row">
+
+  <div class="col-md-3">
+    <div class="meta">
+      <span class="author">
+          <img src="http://www.gravatar.com/avatar/fb43656d4d45f940160c3226c53309f5?s=80"
+               class="author_gravatar">
+        <span class="author_contact">
+          <p><strong>Benjamin Mahler</strong></p>
+            <p><a href="http://twitter.com/bmahler">@bmahler</a></p>
+        </span>
+      </span>
+      <p><em>Posted October  8, 2018</em></p>
+    </div>
+
+    <div class="share">
+      <span class="social-share-button"><a href="https://twitter.com/share" class="twitter-share-button" data-via="apachemesos">Tweet</a></span>
+
+      <span><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></span>
+
+      <span><div class="g-plusone" data-size="medium"></div></span>
+
+      <!-- Place this tag after the last +1 button tag. -->
+      <script type="text/javascript">
+        (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'https://apis.google.com/js/plusone.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+        })();
+      </script>
+
+      <script src="//platform.linkedin.com/in.js" type="text/javascript">
+       lang: en_US
+      </script>
+      <script type="IN/Share" data-counter="right"></script>
+    </div>
+  </div>
+
+  <div class="post col-md-9">
+    <h1>Performance Improvements in Mesos 1.7.0</h1>
+
+    <p><strong>Scalability and performance are key features for Mesos. Some users of Mesos already run production clusters that consist of many tens of thousands of nodes.</strong> However, there remains a lot of room for improvement across a variety of areas of the system.</p>
+
+<p>The Mesos community has been working hard over the past few months to address several performance issues that have been affecting users. The following are some of the key performance improvements included in Mesos 1.7.0:</p>
+
+<ul>
+<li><strong>Master <code>/state</code> endpoint:</strong> Adopted <a href="http://rapidjson.org/">RapidJSON</a> and reduced copying for a 2.3x throughput improvement due to a ~55% decrease in latency (<a href="https://issues.apache.org/jira/browse/MESOS-9092">MESOS-9092</a>). Also, added parallel processing of <code>/state</code> requests to reduce master backlogging / interference under high request load (<a href="https://issues.apache.org/jira/browse/MESOS-9122">MESOS-9122</a>).</li>
+<li><strong>Allocator:</strong> in 1.7.1 (these patches did not make 1.7.0 and were backported to 1.7.x), allocation cycle time was reduced. Some benchmarks show an 80% reduction. This, together with the reduced master backlogging from <code>/state</code> improvements, substantially reduces the end-to-end offer cycling time between Mesos and schedulers.</li>
+<li><strong>Agent <code>/containers</code> endpoint:</strong> Fixed a performance issue that caused high latency / cpu consumption when there are many containers on the agent (<a href="https://issues.apache.org/jira/browse/MESOS-8418">MESOS-8418</a>).</li>
+<li><strong>Agent container launching performance improvements</strong>: Some initial benchmarking shows a ~2x throughput improvement for both launch and destroy operations.</li>
+</ul>
+
+
+<p>Before we dive into the details of these performance improvements, I would like to recognize and thank the following contributors:</p>
+
+<ul>
+<li><strong>Alex Rukletsov</strong> and <strong>Benno Evers</strong>: for working on the parallel serving of master <code>/state</code> and providing benchmarking data.</li>
+<li><strong>Meng Zhu</strong>: for authoring patches to help improve the allocator performance.</li>
+<li><strong>Stéphane Cottin</strong> and <strong>Stephan Erb</strong>: for reporting the <code>/containers</code> endpoint performance issue and providing performance data.</li>
+<li><strong>Jie Yu</strong>: for working on the container launching benchmarks and performance improvements.</li>
+</ul>
+
+
+<h2>Master <code>/state</code> Endpoint</h2>
+
+<p>The <code>/state</code> endpoint of the master returns the full cluster state and is frequently polled by tooling (e.g. DNS / service discovery systems, backup systems, etc). We focused on improving performance of this endpoint as it is rather expensive and is common performance pain point for users.</p>
+
+<h3>RapidJSON</h3>
+
+<p>In Mesos we perform JSON serialization by directly going from C++ objects to serialized JSON via an internal library called <a href="https://github.com/apache/mesos/blob/1.6.0/3rdparty/stout/include/stout/jsonify.hpp">jsonify</a>. This library had some performance bottlenecks, primarily in the use of <code>std::ostream</code> for serialization:</p>
+
+<ul>
+<li>See <a href="https://groups.google.com/a/isocpp.org/forum/#!msg/std-proposals/bMzBAHgb5_o/C80lZHUwp5QJ">here</a> for a discussion of its performance issues with strings.</li>
+<li>See <a href="https://github.com/miloyip/itoa-benchmark/tree/1f2b870c097d9444eec8e5c057b603a490e3d7ec#results">here</a> and <a href="https://github.com/miloyip/dtoa-benchmark/tree/c4020c62754950d38a1aaaed2975b05b441d1e7d#results">here</a> for integer-to-string and double-to-string performance comparisons against <code>std::ostream</code>.</li>
+</ul>
+
+
+<p>We found that RapidJSON has a performance focused approach that addresses these issues:</p>
+
+<ul>
+<li>Like <code>jsonify</code>, it also supports directly serializing from C++ without converting through intermediate JSON objects (via a <code>Writer</code> interface).</li>
+<li>It eschews <code>std::ostream</code> (although it introduced support for it along with a <a href="http://rapidjson.org/md_doc_stream.html#iostreamWrapper">significant performance caveat</a>).</li>
+<li>It performs fast integer-to-string and double-to-string conversions (see performance comparison linked above).</li>
+</ul>
+
+
+<p>After adapting <code>jsonify</code> to use RapidJSON and eliminating some additional <code>mesos::Resource</code> copying, we ran the master state query benchmark. This benchmark builds up a large simulated cluster in the master and times the end-to-end response time from a client&rsquo;s perspective:</p>
+
+<p><img src="/assets/img/blog/1.7-performance-improvements-rapidjson.png" alt="1.7 RapidJSON" /></p>
+
+<p>This is a box plot, where the box indicates the range of the 1st and 3rd quartiles, and the lines extend to the minimum and maximum values. The results above showed a reduction in the client&rsquo;s end-to-end time to receive the response from approximately 7 seconds down to just over 3 seconds when both rapidjson and the <code>mesos::Resource</code> copy elimination are applied. An 55% decrease in latency, which yields a 2.3x throughput improvement of state serving.</p>
+
+<h3>Parallel Serving</h3>
+
+<p>In Mesos, we use an asynchronous programming model based on actors and futures (see <a href="https://github.com/apache/mesos/tree/master/3rdparty/libprocess">libprocess</a>). Each actor in the system operates as an HTTP server in the sense that it can set up HTTP routes and respond to requests. The master actor hosts the majority of the v0 master endpoints, including <code>/state</code>. In an actor-based model, each actor has a queue of events and processes those events in serial (without parallelism). As a result, actors can be overwhelmed if there are too many expensive events in their queue. HTTP requests to the <code>/state</code> endpoint are an example of an expensive event, especially for larger clusters. If multiple clients are polling the <code>/state</code> endpoint, responsiveness of the master can degrade significantly.</p>
+
+<p>In order to improve the ability to serve multiple clients of <code>/state</code>, we introduced parallel serving of the <code>/state</code> endpoint via a batching technique (see <a href="https://issues.apache.org/jira/browse/MESOS-9122">MESOS-9122</a>). This was possible since <code>/state</code> is read-only against the master actor, and we accomplish this by spawning other worker actors and blocking the master until they complete (see <a href="https://issues.apache.org/jira/browse/MESOS-8587">MESOS-8587</a> for potential library generalizations of this technique).</p>
+
+<p>A benchmark was implemented that polls the master’s <code>/state</code> endpoint concurrently from multiple clients and measures the observed response times across 1.6.0 and 1.7.0:</p>
+
+<p><img src="/assets/img/blog/1.7-performance-improvements-parallel-state.png" alt="1.7 Parallel state serving benchmark" /></p>
+
+<p>The benchmark demonstrates a marked improvement in the response times as the number of clients polling the /state endpoint grows. These numbers were obtained using an optimized build on a machine with 4 x 2.9Ghz CPUs, and LIBPROCESS_NUM_WORKER_THREADS was set to 24. A virtual cluster was created with 100 agents, 10 running and 10 completed frameworks with 10 tasks each, on each agent. Every client polls the <code>/state</code> endpoint 50 times. Small dots denote raw measured response times, big dots denote the arithmetic mean. The top and bottom 2% of raw times were removed to filter outliers.</p>
+
+<h2>Allocation Cycle Time</h2>
+
+<p>Several users reported that the master’s resource allocator was taking a long time to perform allocation cycles on larger clusters (e.g. high agent / framework counts). We investigated this issue and found that the main scalability limitation was due to excessive re-computation of the DRF ordering of roles / frameworks (see <a href="https://issues.apache.org/jira/browse/MESOS-9249">MESOS-9249</a> and <a href="https://issues.apache.org/jira/browse/MESOS-9239">MESOS-9239</a> for details.</p>
+
+<p>We ran an existing micro-benchmark of the allocator that creates clusters with a configurable number of agents and frameworks:</p>
+
+<p><img src="/assets/img/blog/1.7-performance-improvements-allocation-cycle.png" alt="1.7 Allocation Cycle Benchmark" /></p>
+
+<p>The results show an ~80% reduction in allocation cycle time in 1.7.1 for this particular setup (all frameworks in a single role, no filtering). Since this is a substantial improvement to a long-standing pain point for large scale users, we backported the changes to 1.7.1 since they are not included in 1.7.0.</p>
+
+<p>Future work is underway to improve the allocation cycle performance when quota is enabled (see: <a href="https://issues.apache.org/jira/browse/MESOS-9087">MESOS-9087</a>).</p>
+
+<h2>Agent <code>/containers</code> Endpoint</h2>
+
+<p>Reported in <a href="https://issues.apache.org/jira/browse/MESOS-8418">MESOS-8418</a>, during the collection of container resource consumption metrics, there are many reads of <code>/proc/mounts</code> being performed. The system mount table will be large and expensive to read if there are a lot of containers running on the agent using their own root filesystems. This was only incidentally being done as a result of some cgroup related verification code performed before reading a cgroup file. Since this code was only in place to provide better error messages, it was removed.</p>
+
+<p>Stephen Erb provided the following graphs that show the impact of deploying the change. First, we can see the tasks (i.e. containers) per agent:</p>
+
+<p><img src="/assets/img/blog/1.7-performance-improvements-containers-endpoint-tasks.png" alt="1.7 containers endpoint task counts" /></p>
+
+<p>The agent with the most tasks has ~150 containers, the median and average are both around 50 containers. The following graph provided by Stephan Erb shows the latency of the <code>/containers</code> endpoint before and after deploying the fix on the same cluster:</p>
+
+<p><img src="/assets/img/blog/1.7-performance-improvements-containers-endpoint-latency.png" alt="1.7 containers endpoint latency" /></p>
+
+<p>Prior to the change, the agent with the worst <code>/containers</code> latency took between 5-10 seconds to respond, and the median latency across agents was around 1 second. After the change, all of the agents have sub-second <code>/containers</code> latency.</p>
+
+<h1>Agent Container Launching</h1>
+
+<p>From the user reports originally in <a href="https://issues.apache.org/jira/browse/MESOS-8418">MESOS-8418</a>, we identified that the container launching throughput would suffer from the same issue of expensive <code>/proc/mounts</code> reads shown above in the <code>/containers</code> endpoint improvements. See <a href="https://issues.apache.org/jira/browse/MESOS-9081">MESOS-9081</a>.</p>
+
+<p>To remedy this, we moved the cgroups verification code to the call-sites. Since the cgroup just needs to be verified once during the bootstrapping agent bootstrap, this optimization significantly reduces the overhead of launching and destroying containers.</p>
+
+<p>A preliminary benchmark shows that the container launch / destroy throughput gained a 2x throughput improvement thanks to a 50% reduction in latency. This test uses an docker image based on the host OS image of the machine it’s running on:</p>
+
+<p><img src="/assets/img/blog/1.7-performance-improvements-container-launch.png" alt="1.7 container launch" /></p>
+
+<p>In this particular benchmark (see <a href="https://reviews.apache.org/r/68266/">reviews.apache.org/r/68266/</a>), a single agent is able to launch 1000 containers in about 30 seconds, destroying those 1000 containers in just over 20 seconds. This numbers were obtained on a server with 2 x Intel&reg; Xeon&reg; CPU E5-2658 v3.</p>
+
+<h2>Performance Working Group Roadmap</h2>
+
+<p>The backlog of performance worked in tracked in JIRA, see <a href="https://issues.apache.org/jira/secure/RapidBoard.jspa?rapidView=238&amp;useStoredSettings=true">here</a>. Any ticket with the <code>performance</code> label is picked up by this JIRA board.</p>
+
+<p>If you are a user and would like to suggest some areas for performance improvement, please let us know by emailing <code>dev@apache.mesos.org</code> and we would be happy to help!</p>
+
+  </div>
+</div>
+
+  </div><!-- /.container -->
+</div><!-- /.content -->
+
+<hr>
+
+
+
+    <!-- footer -->
+    <div class="footer">
+      <div class="container">
+
+        <div class="col-md-3">
+            <a  href="https://www.apache.org/events/current-event.html">
+              <img src="https://www.apache.org/events/current-event-234x60.png"/>
+            </a>
+        </div>
+
+        <div class="col-md-3 social-blk">
+          <span class="social">
+            <a href="https://twitter.com/ApacheMesos"
+              class="twitter-follow-button"
+              data-show-count="false" data-size="large">Follow @ApacheMesos</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+            <a href="https://twitter.com/intent/tweet?button_hashtag=mesos"
+              class="twitter-hashtag-button"
+              data-size="large"
+              data-related="ApacheMesos">Tweet #mesos</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+          </span>
+        </div>
+
+        <div class="col-md-6 trademark">
+          <p>&copy; 2012-2018 <a href="http://apache.org">The Apache Software Foundation</a>.
+            Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.
+          <p>
+        </div>
+
+      </div><!-- /.container -->
+    </div><!-- /.footer -->
+
+    <!-- JS -->
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js"></script>
+
+    <!-- Inject anchors for all headings on the page, see https://www.bryanbraun.com/anchorjs. -->
+    <script type="text/javascript">
+    anchors.options = {
+      placement: 'right',
+      ariaLabel: 'Permalink',
+    };
+
+    // The default is to not add anchors to h1, but we have pages with multiple h1 headers,
+    // and we do want to put anchors on those.
+    anchors.add('h1, h2, h3, h4, h5, h6');
+    </script>
+  </body>
+</html>
