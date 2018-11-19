@@ -177,12 +177,18 @@ not receive enough resources.</li>
 a &ldquo;job&rdquo;/&ldquo;service&rdquo;/etc within a multi-tenant scheduler) needs a certain amount of
 resources guaranteed to it, setting a quota ensures that Mesos will try its best
 to allocate to satisfy the guarantee.</li>
+<li><strong>Set the minimum allocatable resources</strong>: Once quota is used, the
+<code>--min_allocatable_resources</code> flag should be set
+(e.g. <code>--min_allocatable_resources=cpus:1,mem:32:disk:32</code>) to prevent offers
+that are missing cpu, memory, or disk
+(see <a href="https://issues.apache.org/jira/browse/MESOS-8935">MESOS-8935</a>).</li>
 <li><strong>Consider enabling the random sorter</strong>: Depending on the use case, DRF can prove
 problematic in that it will try to allocate to frameworks with a low share of the
 cluster and penalize frameworks with a high share of the cluster. This can lead
 to offer starvation for higher share frameworks. To allocate using a weighted
-random uniform distribution instead of fair sharing, set <code>--role-sorter=random</code>
-and <code>--framework_sorter=random</code>.</li>
+random uniform distribution instead of fair sharing, set <code>--role_sorter=random</code>
+and <code>--framework_sorter=random</code> (see
+<a href="https://issues.apache.org/jira/browse/MESOS-8936">MESOS-8936</a>).</li>
 </ol>
 
 
