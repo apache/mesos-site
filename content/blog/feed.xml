@@ -4,7 +4,171 @@
   <id>http://mesos.apache.org/blog</id>
   <link href="http://mesos.apache.org/blog" />
   <link href="http://mesos.apache.org/blog/feed.xml" rel="self"/>
-  <updated>2018-10-08T00:00:00+00:00</updated>
+  <updated>2018-11-19T00:00:00+00:00</updated>
+  <entry>
+    <id>http://mesos.apache.org/blog/mesos-mini/</id>
+    <link href="/blog/mesos-mini/" />
+    <title>
+      Run Mesos Locally with Mesos Mini Docker Container
+    </title>
+    <updated>2018-11-19T00:00:00+00:00</updated>
+    <author>
+      <name>Jie Yu</name>
+    </author>
+    <content type="html">
+      &lt;p&gt;&lt;a href=&quot;https://hub.docker.com/r/mesos/mesos-mini/&quot;&gt;Mesos Mini&lt;/a&gt; is a Docker image maintained by the Apache Mesos community.
+It allows you to test Mesos locally with a simple &lt;code&gt;docker run&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h1&gt;Why Mesos Mini&lt;/h1&gt;
+
+&lt;p&gt;Being able to spin up a local Mesos cluster in Docker can greatly simplify the work in the following scenarios:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;Demo&lt;/em&gt;: Imagine doing a live demo with Mesos in a conference with unstable Wifi.&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Framework development&lt;/em&gt;: Write end-to-end integration tests for your framework with a local Mesos cluster in a Docker container.
+This can be easily automated in your test suite.&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Test new Mesos features&lt;/em&gt;: Test new features from Mesos that haven&amp;rsquo;t been released yet.
+You might be able to do that by building Mesos from the source code, but most framework developers do not know how to do it, and it is slow.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;The idea is similar to &lt;a href=&quot;https://github.com/kubernetes/minikube&quot;&gt;minikube&lt;/a&gt; or &lt;a href=&quot;https://github.com/ContainerSolutions/minimesos&quot;&gt;minimesos&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;However, &lt;a href=&quot;https://github.com/ContainerSolutions/minimesos&quot;&gt;minimesos&lt;/a&gt; is no longer maintained.
+As a result, Apache Mesos community decides to maintain a solution in Mesos repository to simplify CI integrations.&lt;/p&gt;
+
+&lt;h1&gt;Get started&lt;/h1&gt;
+
+&lt;p&gt;Make sure &lt;a href=&quot;https://docs.docker.com/install/&quot;&gt;Docker&lt;/a&gt; is installed.
+We have tested on both Linux and MacOS.&lt;/p&gt;
+
+&lt;p&gt;To create a local Mesos cluster, simply do a &lt;code&gt;docker run&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;$ docker run --rm --privileged -p 5050:5050 -p 5051:5051 -p 8080:8080 mesos/mesos-mini
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;It will launch one Mesos master, one Mesos agent, and one example framework (Marathon) in the Docker container.&lt;/p&gt;
+
+&lt;p&gt;You should be able to access Mesos master UI at &lt;code&gt;http://localhost:5050&lt;/code&gt;.
+Similarly, you can access Mesos agent at &lt;code&gt;http://localhost:5051&lt;/code&gt;.
+Marathon UI can be accessed at &lt;code&gt;http://localhost:8080&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;You should be able to launch containers in the local Mesos cluster using Marathon like the following:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;$ cat app.json
+{
+  &quot;id&quot;: &quot;test&quot;,
+  &quot;cmd&quot;: &quot;sleep 1000&quot;,
+  &quot;cpus&quot;: 1,
+  &quot;mem&quot;: 128,
+  &quot;disk&quot;: 0,
+  &quot;instances&quot;: 1,
+  &quot;container&quot;: {
+    &quot;docker&quot;: {
+      &quot;image&quot;: &quot;alpine&quot;
+    },
+    &quot;type&quot;: &quot;DOCKER&quot;
+  },
+  &quot;networks&quot;: [
+    {
+      &quot;mode&quot;: &quot;host&quot;
+    }
+  ]
+}
+$ curl -X POST -d @app.json -H &quot;Content-type: application/json&quot; http://localhost:8080/v2/apps
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;To stop the local Mesos cluster, please use &lt;code&gt;docker stop&lt;/code&gt;.
+All artifacts associated with the local Mesos cluster will be cleaned up when the Docker container stops.&lt;/p&gt;
+
+&lt;p&gt;The following Docker image tags are maintained:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;master&lt;/code&gt;: The latest master branch HEAD.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;&amp;lt;RELEASE_BRANCH&amp;gt;&lt;/code&gt;: The latest release branch HEAD (e.g., &lt;code&gt;1.7.x&lt;/code&gt;).&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;master-&amp;lt;DATE&amp;gt;&lt;/code&gt;: The snapshot builds for master branch (e.g., &lt;code&gt;master-2018-11-19&lt;/code&gt;).&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;&amp;lt;RELEASE_BRANCH&amp;gt;-&amp;lt;DATE&amp;gt;&lt;/code&gt;: The snapshot builds for release branch (e.g., &lt;code&gt;1.7.x-2018-11-19&lt;/code&gt;).&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;Note that there is no support for release branches earlier than &lt;code&gt;1.7.x&lt;/code&gt;.
+All future release branches will be supported.&lt;/p&gt;
+
+&lt;h1&gt;How is it done?&lt;/h1&gt;
+
+&lt;h2&gt;Manage multiple services&lt;/h2&gt;
+
+&lt;p&gt;We use &lt;code&gt;systemd&lt;/code&gt; to manage multiple daemons in the Mesos Mini Docker container.
+As a result, you can use the following command to restart the Mesos master in the Mesos Mini Docker container:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;$ docker exec &amp;lt;CONTAINER_ID&amp;gt; systemctl restart mesos-master
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Similarly, you can use that to restart other services (e.g., Mesos agent or Marathon).
+This is very useful for those end-to-end integration tests that want to simulate Mesos master failover.&lt;/p&gt;
+
+&lt;h2&gt;Docker Containerizer&lt;/h2&gt;
+
+&lt;p&gt;One of the goals of Mesos Mini is to mimic production settings as much as possible.&lt;/p&gt;
+
+&lt;p&gt;To allow frameworks to launch Docker containers, we embed a Docker Daemon (i.e., Docker in Docker) in the Mesos Mini Docker container.
+For instance, to view all Docker containers in the Mesos cluster, use the following command on your host:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;$ docker exec &amp;lt;CONTAINER_ID&amp;gt; docker ps
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The cgroup root for the embedded Docker Daemon has been configured so that the cgroups for the nested Docker containers are properly nested within the Mesos Mini Docker container.
+This ensures that no cgroups traces will be left in the system when the Mesos Mini Docker container finishes.&lt;/p&gt;
+
+&lt;h2&gt;Mesos Containerizer (UCR)&lt;/h2&gt;
+
+&lt;p&gt;For Mesos Containerizer (UCR), we turn on most of the &lt;a href=&quot;https://github.com/apache/mesos/docs/mesos-containerizer.md&quot;&gt;isolators&lt;/a&gt; that are typically turned on in production environments.
+Similar to Docker daemon, we need to do a few tweaking on cgroups in Mesos Mini Docker container to make sure it does not leave any traces when Mesos Mini Docker container terminates.&lt;/p&gt;
+
+&lt;p&gt;For each cgroup subsystem, Docker does a bind mount from the current cgroup to the root of the cgroup subsystem.
+For instance:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;/sys/fs/cgroup/memory/docker/&amp;lt;cid&amp;gt; -&amp;gt; /sys/fs/cgroup/memory
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This will confuse Mesos agent and UCR because it relies on proc file &lt;code&gt;/proc/&amp;lt;pid&amp;gt;/cgroup&lt;/code&gt; to determine the cgroups of a given process, and this proc file is not affected by the bind mount of the cgroups.&lt;/p&gt;
+
+&lt;p&gt;To workaround that, we perform the following steps for each cgroup subsystems when bootstrapping the Mesos Mini Docker container to recreates the cgroups layout as if it were on the host.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;$ mkdir -p /sys/fs/cgroup/memory/docker/&amp;lt;cid&amp;gt;
+$ mount --bind /sys/fs/cgroup/memory /sys/fs/cgroup/memory/docker/&amp;lt;cid&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And then set Mesos agent &lt;code&gt;--cgroups_root&lt;/code&gt; flag to &lt;code&gt;docker/&amp;lt;cid&amp;gt;&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h1&gt;Maintenance&lt;/h1&gt;
+
+&lt;p&gt;The &lt;a href=&quot;https://github.com/apache/mesos/tree/master/support/mesos-mini&quot;&gt;build scripts&lt;/a&gt; for Mesos Mini is hosted in Mesos repository.
+The &lt;a href=&quot;https://builds.apache.org/view/M-R/view/Mesos/job/Docker/job/Mini/&quot;&gt;Mesos Docker Mini Jenkins CI&lt;/a&gt; has been setup to automatically push daily snapshot builds to Docker hub for supported release branches as well as the master branch.&lt;/p&gt;
+
+&lt;p&gt;For any bug fix or new features, please follow the &lt;a href=&quot;http://mesos.apache.org/community/#contribute-a-patch&quot;&gt;Apache Mesos contribution guide&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2&gt;Mesos CentOS Docker Image&lt;/h2&gt;
+
+&lt;p&gt;In some scenarios, some users might prefer having a Docker image that only has Mesos installed.
+To enable that, we also built a &lt;code&gt;mesos/mesos-centos&lt;/code&gt; Docker image.
+The tags are similar to those of Mesos Mini.
+In fact, &lt;code&gt;mesos/mesos-mini&lt;/code&gt; uses &lt;code&gt;mesos/mesos-centos&lt;/code&gt; as its base image.&lt;/p&gt;
+
+&lt;p&gt;The &lt;a href=&quot;https://github.com/apache/mesos/tree/master/support/packaging/centos/build-docker-centos.sh&quot;&gt;build scripts&lt;/a&gt; for Mesos CentOS Docker image is also hosted in Mesos repository.
+The &lt;a href=&quot;https://builds.apache.org/view/M-R/view/Mesos/job/Docker/job/CentOS/&quot;&gt;Mesos Docker CentOS Jenkins CI&lt;/a&gt; has been setup to automatically push daily snapshot builds to Docker hub for supported release branches as well as the master branch.&lt;/p&gt;
+
+&lt;h1&gt;Current limitations&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Only one Mesos agent can be launched in the Mesos Mini Docker container.&lt;/li&gt;
+&lt;li&gt;Marathon uses in-memory storage instead of ZK.&lt;/li&gt;
+&lt;li&gt;SSL is not enabled.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+	</content>
+  </entry>
   <entry>
     <id>http://mesos.apache.org/blog/mesos-1-7-0-performance-improvements/</id>
     <link href="/blog/mesos-1-7-0-performance-improvements/" />
