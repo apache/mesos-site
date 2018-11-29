@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":9,"i2":10,"i3":9,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":9,"i16":9,"i17":10,"i18":10,"i19":9,"i20":9,"i21":9,"i22":9,"i23":9,"i24":9,"i25":9,"i26":9,"i27":9,"i28":9,"i29":9,"i30":10,"i31":10};
+var methods = {"i0":10,"i1":9,"i2":10,"i3":9,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":9,"i19":9,"i20":10,"i21":10,"i22":9,"i23":9,"i24":9,"i25":9,"i26":9,"i27":9,"i28":9,"i29":9,"i30":9,"i31":9,"i32":9,"i33":10,"i34":10};
 var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -123,7 +123,21 @@ var activeTableTab = "activeTableTab";
 extends com.google.protobuf.GeneratedMessageV3
 implements <a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDiskOrBuilder.html" title="interface in org.apache.mesos">Protos.Offer.Operation.CreateDiskOrBuilder</a></pre>
 <div class="block"><pre>
- Create a `MOUNT` or `BLOCK` disk resource from a `RAW` disk resource.
+ Create a `MOUNT` or `BLOCK` disk resource backed by a CSI volume from a
+ `RAW` disk resource.
+ In the typical case where the `RAW` disk resource has a profile and no
+ source ID, a new CSI volume will be provisioned by Mesos to back the
+ returned `MOUNT` or `BLOCK` disk resource. However, the `RAW` disk
+ resource can instead have no profile but a source ID, indicating that
+ it is already backed by a CSI volume in one of the following scenarios:
+ (1) The CSI volume is preprovisioned out-of-band.
+ (2) The CSI volume is provisioned by Mesos, but Mesos has lost the
+     corresponding `MOUNT` or `BLOCK` resource metadata. This could
+     happen if there has been a change in the agent ID or resource
+     provider ID where the volume belongs.
+ In the above cases, Mesos won't provision a new CSI volume, but instead
+ will simply return a `MOUNT` or `BLOCK` disk resource backed by the same
+ CSI volume, with the profile specified in this call.
  NOTE: For the time being, this API is subject to change and the related
  feature is experimental.
  </pre>
@@ -151,7 +165,8 @@ implements <a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDiskO
 <td class="colFirst"><code>static class&nbsp;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDisk.Builder.html" title="class in org.apache.mesos">Protos.Offer.Operation.CreateDisk.Builder</a></span></code>
 <div class="block">
- Create a `MOUNT` or `BLOCK` disk resource from a `RAW` disk resource.</div>
+ Create a `MOUNT` or `BLOCK` disk resource backed by a CSI volume from a
+ `RAW` disk resource.</div>
 </td>
 </tr>
 </table>
@@ -180,6 +195,10 @@ implements <a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDiskO
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDisk.html#SOURCE_FIELD_NUMBER">SOURCE_FIELD_NUMBER</a></span></code>&nbsp;</td>
 </tr>
 <tr class="altColor">
+<td class="colFirst"><code>static int</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDisk.html#TARGET_PROFILE_FIELD_NUMBER">TARGET_PROFILE_FIELD_NUMBER</a></span></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
 <td class="colFirst"><code>static int</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDisk.html#TARGET_TYPE_FIELD_NUMBER">TARGET_TYPE_FIELD_NUMBER</a></span></code>&nbsp;</td>
 </tr>
@@ -235,112 +254,133 @@ implements <a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDiskO
 </td>
 </tr>
 <tr id="i8" class="altColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDisk.html#getTargetProfile--">getTargetProfile</a></span>()</code>
+<div class="block">
+ Apply the specified profile to the created disk.</div>
+</td>
+</tr>
+<tr id="i9" class="rowColor">
+<td class="colFirst"><code>com.google.protobuf.ByteString</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDisk.html#getTargetProfileBytes--">getTargetProfileBytes</a></span>()</code>
+<div class="block">
+ Apply the specified profile to the created disk.</div>
+</td>
+</tr>
+<tr id="i10" class="altColor">
 <td class="colFirst"><code><a href="../../../org/apache/mesos/Protos.Resource.DiskInfo.Source.Type.html" title="enum in org.apache.mesos">Protos.Resource.DiskInfo.Source.Type</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDisk.html#getTargetType--">getTargetType</a></span>()</code>
 <div class="block">
  NOTE: Only `MOUNT` or `BLOCK` is allowed in the `target_type` field.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>com.google.protobuf.UnknownFieldSet</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDisk.html#getUnknownFields--">getUnknownFields</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>int</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDisk.html#hashCode--">hashCode</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDisk.html#hasSource--">hasSource</a></span>()</code>
 <div class="block"><code>required .mesos.Resource source = 1;</code></div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i14" class="altColor">
+<td class="colFirst"><code>boolean</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDisk.html#hasTargetProfile--">hasTargetProfile</a></span>()</code>
+<div class="block">
+ Apply the specified profile to the created disk.</div>
+</td>
+</tr>
+<tr id="i15" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDisk.html#hasTargetType--">hasTargetType</a></span>()</code>
 <div class="block">
  NOTE: Only `MOUNT` or `BLOCK` is allowed in the `target_type` field.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i16" class="altColor">
 <td class="colFirst"><code>protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDisk.html#internalGetFieldAccessorTable--">internalGetFieldAccessorTable</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i17" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDisk.html#isInitialized--">isInitialized</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i15" class="rowColor">
+<tr id="i18" class="altColor">
 <td class="colFirst"><code>static <a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDisk.Builder.html" title="class in org.apache.mesos">Protos.Offer.Operation.CreateDisk.Builder</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDisk.html#newBuilder--">newBuilder</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i16" class="altColor">
+<tr id="i19" class="rowColor">
 <td class="colFirst"><code>static <a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDisk.Builder.html" title="class in org.apache.mesos">Protos.Offer.Operation.CreateDisk.Builder</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDisk.html#newBuilder-org.apache.mesos.Protos.Offer.Operation.CreateDisk-">newBuilder</a></span>(<a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDisk.html" title="class in org.apache.mesos">Protos.Offer.Operation.CreateDisk</a>&nbsp;prototype)</code>&nbsp;</td>
 </tr>
-<tr id="i17" class="rowColor">
+<tr id="i20" class="altColor">
 <td class="colFirst"><code><a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDisk.Builder.html" title="class in org.apache.mesos">Protos.Offer.Operation.CreateDisk.Builder</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDisk.html#newBuilderForType--">newBuilderForType</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i18" class="altColor">
+<tr id="i21" class="rowColor">
 <td class="colFirst"><code>protected <a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDisk.Builder.html" title="class in org.apache.mesos">Protos.Offer.Operation.CreateDisk.Builder</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDisk.html#newBuilderForType-com.google.protobuf.GeneratedMessageV3.BuilderParent-">newBuilderForType</a></span>(com.google.protobuf.GeneratedMessageV3.BuilderParent&nbsp;parent)</code>&nbsp;</td>
 </tr>
-<tr id="i19" class="rowColor">
+<tr id="i22" class="altColor">
 <td class="colFirst"><code>static <a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDisk.html" title="class in org.apache.mesos">Protos.Offer.Operation.CreateDisk</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDisk.html#parseDelimitedFrom-java.io.InputStream-">parseDelimitedFrom</a></span>(java.io.InputStream&nbsp;input)</code>&nbsp;</td>
 </tr>
-<tr id="i20" class="altColor">
+<tr id="i23" class="rowColor">
 <td class="colFirst"><code>static <a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDisk.html" title="class in org.apache.mesos">Protos.Offer.Operation.CreateDisk</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDisk.html#parseDelimitedFrom-java.io.InputStream-com.google.protobuf.ExtensionRegistryLite-">parseDelimitedFrom</a></span>(java.io.InputStream&nbsp;input,
                   com.google.protobuf.ExtensionRegistryLite&nbsp;extensionRegistry)</code>&nbsp;</td>
 </tr>
-<tr id="i21" class="rowColor">
+<tr id="i24" class="altColor">
 <td class="colFirst"><code>static <a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDisk.html" title="class in org.apache.mesos">Protos.Offer.Operation.CreateDisk</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDisk.html#parseFrom-byte:A-com.google.protobuf.ExtensionRegistryLite-">parseFrom</a></span>(byte[]&nbsp;data,
          com.google.protobuf.ExtensionRegistryLite&nbsp;extensionRegistry)</code>&nbsp;</td>
 </tr>
-<tr id="i22" class="altColor">
+<tr id="i25" class="rowColor">
 <td class="colFirst"><code>static <a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDisk.html" title="class in org.apache.mesos">Protos.Offer.Operation.CreateDisk</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDisk.html#parseFrom-java.nio.ByteBuffer-">parseFrom</a></span>(java.nio.ByteBuffer&nbsp;data)</code>&nbsp;</td>
 </tr>
-<tr id="i23" class="rowColor">
+<tr id="i26" class="altColor">
 <td class="colFirst"><code>static <a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDisk.html" title="class in org.apache.mesos">Protos.Offer.Operation.CreateDisk</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDisk.html#parseFrom-java.nio.ByteBuffer-com.google.protobuf.ExtensionRegistryLite-">parseFrom</a></span>(java.nio.ByteBuffer&nbsp;data,
          com.google.protobuf.ExtensionRegistryLite&nbsp;extensionRegistry)</code>&nbsp;</td>
 </tr>
-<tr id="i24" class="altColor">
+<tr id="i27" class="rowColor">
 <td class="colFirst"><code>static <a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDisk.html" title="class in org.apache.mesos">Protos.Offer.Operation.CreateDisk</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDisk.html#parseFrom-com.google.protobuf.ByteString-">parseFrom</a></span>(com.google.protobuf.ByteString&nbsp;data)</code>&nbsp;</td>
 </tr>
-<tr id="i25" class="rowColor">
+<tr id="i28" class="altColor">
 <td class="colFirst"><code>static <a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDisk.html" title="class in org.apache.mesos">Protos.Offer.Operation.CreateDisk</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDisk.html#parseFrom-com.google.protobuf.ByteString-com.google.protobuf.ExtensionRegistryLite-">parseFrom</a></span>(com.google.protobuf.ByteString&nbsp;data,
          com.google.protobuf.ExtensionRegistryLite&nbsp;extensionRegistry)</code>&nbsp;</td>
 </tr>
-<tr id="i26" class="altColor">
+<tr id="i29" class="rowColor">
 <td class="colFirst"><code>static <a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDisk.html" title="class in org.apache.mesos">Protos.Offer.Operation.CreateDisk</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDisk.html#parseFrom-com.google.protobuf.CodedInputStream-">parseFrom</a></span>(com.google.protobuf.CodedInputStream&nbsp;input)</code>&nbsp;</td>
 </tr>
-<tr id="i27" class="rowColor">
+<tr id="i30" class="altColor">
 <td class="colFirst"><code>static <a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDisk.html" title="class in org.apache.mesos">Protos.Offer.Operation.CreateDisk</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDisk.html#parseFrom-com.google.protobuf.CodedInputStream-com.google.protobuf.ExtensionRegistryLite-">parseFrom</a></span>(com.google.protobuf.CodedInputStream&nbsp;input,
          com.google.protobuf.ExtensionRegistryLite&nbsp;extensionRegistry)</code>&nbsp;</td>
 </tr>
-<tr id="i28" class="altColor">
+<tr id="i31" class="rowColor">
 <td class="colFirst"><code>static <a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDisk.html" title="class in org.apache.mesos">Protos.Offer.Operation.CreateDisk</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDisk.html#parseFrom-java.io.InputStream-com.google.protobuf.ExtensionRegistryLite-">parseFrom</a></span>(java.io.InputStream&nbsp;input,
          com.google.protobuf.ExtensionRegistryLite&nbsp;extensionRegistry)</code>&nbsp;</td>
 </tr>
-<tr id="i29" class="rowColor">
+<tr id="i32" class="altColor">
 <td class="colFirst"><code>static &lt;any&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDisk.html#parser--">parser</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i30" class="altColor">
+<tr id="i33" class="rowColor">
 <td class="colFirst"><code><a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDisk.Builder.html" title="class in org.apache.mesos">Protos.Offer.Operation.CreateDisk.Builder</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDisk.html#toBuilder--">toBuilder</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i31" class="rowColor">
+<tr id="i34" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDisk.html#writeTo-com.google.protobuf.CodedOutputStream-">writeTo</a></span>(com.google.protobuf.CodedOutputStream&nbsp;output)</code>&nbsp;</td>
 </tr>
@@ -389,6 +429,19 @@ implements <a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDiskO
 <dl>
 <dt><span class="seeLabel">See Also:</span></dt>
 <dd><a href="../../../constant-values.html#org.apache.mesos.Protos.Offer.Operation.CreateDisk.TARGET_TYPE_FIELD_NUMBER">Constant Field Values</a></dd>
+</dl>
+</li>
+</ul>
+<a name="TARGET_PROFILE_FIELD_NUMBER">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>TARGET_PROFILE_FIELD_NUMBER</h4>
+<pre>public static final&nbsp;int TARGET_PROFILE_FIELD_NUMBER</pre>
+<dl>
+<dt><span class="seeLabel">See Also:</span></dt>
+<dd><a href="../../../constant-values.html#org.apache.mesos.Protos.Offer.Operation.CreateDisk.TARGET_PROFILE_FIELD_NUMBER">Constant Field Values</a></dd>
 </dl>
 </li>
 </ul>
@@ -513,6 +566,69 @@ public static final&nbsp;&lt;any&gt; PARSER</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDiskOrBuilder.html#getTargetType--">getTargetType</a></code>&nbsp;in interface&nbsp;<code><a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDiskOrBuilder.html" title="interface in org.apache.mesos">Protos.Offer.Operation.CreateDiskOrBuilder</a></code></dd>
+</dl>
+</li>
+</ul>
+<a name="hasTargetProfile--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>hasTargetProfile</h4>
+<pre>public&nbsp;boolean&nbsp;hasTargetProfile()</pre>
+<div class="block"><pre>
+ Apply the specified profile to the created disk. This field must be set
+ if `source` does not have a profile, and must not be set if it has one.
+ NOTE: The operation will fail If the specified profile is unknown to
+ Mesos, i.e., not reported by the disk profile adaptor.
+ </pre>
+
+ <code>optional string target_profile = 3;</code></div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDiskOrBuilder.html#hasTargetProfile--">hasTargetProfile</a></code>&nbsp;in interface&nbsp;<code><a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDiskOrBuilder.html" title="interface in org.apache.mesos">Protos.Offer.Operation.CreateDiskOrBuilder</a></code></dd>
+</dl>
+</li>
+</ul>
+<a name="getTargetProfile--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getTargetProfile</h4>
+<pre>public&nbsp;java.lang.String&nbsp;getTargetProfile()</pre>
+<div class="block"><pre>
+ Apply the specified profile to the created disk. This field must be set
+ if `source` does not have a profile, and must not be set if it has one.
+ NOTE: The operation will fail If the specified profile is unknown to
+ Mesos, i.e., not reported by the disk profile adaptor.
+ </pre>
+
+ <code>optional string target_profile = 3;</code></div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDiskOrBuilder.html#getTargetProfile--">getTargetProfile</a></code>&nbsp;in interface&nbsp;<code><a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDiskOrBuilder.html" title="interface in org.apache.mesos">Protos.Offer.Operation.CreateDiskOrBuilder</a></code></dd>
+</dl>
+</li>
+</ul>
+<a name="getTargetProfileBytes--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getTargetProfileBytes</h4>
+<pre>public&nbsp;com.google.protobuf.ByteString&nbsp;getTargetProfileBytes()</pre>
+<div class="block"><pre>
+ Apply the specified profile to the created disk. This field must be set
+ if `source` does not have a profile, and must not be set if it has one.
+ NOTE: The operation will fail If the specified profile is unknown to
+ Mesos, i.e., not reported by the disk profile adaptor.
+ </pre>
+
+ <code>optional string target_profile = 3;</code></div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDiskOrBuilder.html#getTargetProfileBytes--">getTargetProfileBytes</a></code>&nbsp;in interface&nbsp;<code><a href="../../../org/apache/mesos/Protos.Offer.Operation.CreateDiskOrBuilder.html" title="interface in org.apache.mesos">Protos.Offer.Operation.CreateDiskOrBuilder</a></code></dd>
 </dl>
 </li>
 </ul>
