@@ -111,9 +111,9 @@
 
 <h2>Flamescope</h2>
 
-<p><a href="https://github.com/Netflix/flamescope">Flamescope</a> is a visualization tool for exploring different time ranges as <a href="https://github.com/brendangregg/FlameGraph">flamegraphs</a>. In order to use the tool, you first need to obtain stack traces, here&rsquo;s how to obtain a 60 second recording at 100 hertz using Linux perf:</p>
+<p><a href="https://github.com/Netflix/flamescope">Flamescope</a> is a visualization tool for exploring different time ranges as <a href="https://github.com/brendangregg/FlameGraph">flamegraphs</a>. In order to use the tool, you first need to obtain stack traces, here&rsquo;s how to obtain a 60 second recording of the mesos master process at 100 hertz using Linux perf:</p>
 
-<pre><code>$ sudo perf record --freq=100 --all-cpus --no-inherit --call-graph dwarf -p &lt;mesos-master-pid&gt; -- sleep 60
+<pre><code>$ sudo perf record --freq=100 --no-inherit --call-graph dwarf -p &lt;mesos-master-pid&gt; -- sleep 60
 $ sudo perf script --header | c++filt &gt; mesos-master.stacks
 $ gzip mesos-master.stacks
 </code></pre>
