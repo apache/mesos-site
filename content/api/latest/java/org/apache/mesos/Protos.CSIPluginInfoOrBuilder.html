@@ -164,42 +164,42 @@ var activeTableTab = "activeTableTab";
 <td class="colFirst"><code>java.lang.String</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.CSIPluginInfoOrBuilder.html#getName--">getName</a></span>()</code>
 <div class="block">
- The name of the CSI service.</div>
+ The name of the CSI plugin.</div>
 </td>
 </tr>
 <tr id="i6" class="altColor">
 <td class="colFirst"><code>com.google.protobuf.ByteString</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.CSIPluginInfoOrBuilder.html#getNameBytes--">getNameBytes</a></span>()</code>
 <div class="block">
- The name of the CSI service.</div>
+ The name of the CSI plugin.</div>
 </td>
 </tr>
 <tr id="i7" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.CSIPluginInfoOrBuilder.html#getType--">getType</a></span>()</code>
 <div class="block">
- The type of the CSI service.</div>
+ The type of the CSI plugin.</div>
 </td>
 </tr>
 <tr id="i8" class="altColor">
 <td class="colFirst"><code>com.google.protobuf.ByteString</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.CSIPluginInfoOrBuilder.html#getTypeBytes--">getTypeBytes</a></span>()</code>
 <div class="block">
- The type of the CSI service.</div>
+ The type of the CSI plugin.</div>
 </td>
 </tr>
 <tr id="i9" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.CSIPluginInfoOrBuilder.html#hasName--">hasName</a></span>()</code>
 <div class="block">
- The name of the CSI service.</div>
+ The name of the CSI plugin.</div>
 </td>
 </tr>
 <tr id="i10" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.CSIPluginInfoOrBuilder.html#hasType--">hasType</a></span>()</code>
 <div class="block">
- The type of the CSI service.</div>
+ The type of the CSI plugin.</div>
 </td>
 </tr>
 </table>
@@ -225,7 +225,7 @@ var activeTableTab = "activeTableTab";
 <h4>hasType</h4>
 <pre>boolean&nbsp;hasType()</pre>
 <div class="block"><pre>
- The type of the CSI service. This uniquely identifies a CSI
+ The type of the CSI plugin. This uniquely identifies a CSI
  implementation. For instance:
      org.apache.mesos.csi.test
  Please follow to Java package naming convention
@@ -244,7 +244,7 @@ var activeTableTab = "activeTableTab";
 <h4>getType</h4>
 <pre>java.lang.String&nbsp;getType()</pre>
 <div class="block"><pre>
- The type of the CSI service. This uniquely identifies a CSI
+ The type of the CSI plugin. This uniquely identifies a CSI
  implementation. For instance:
      org.apache.mesos.csi.test
  Please follow to Java package naming convention
@@ -263,7 +263,7 @@ var activeTableTab = "activeTableTab";
 <h4>getTypeBytes</h4>
 <pre>com.google.protobuf.ByteString&nbsp;getTypeBytes()</pre>
 <div class="block"><pre>
- The type of the CSI service. This uniquely identifies a CSI
+ The type of the CSI plugin. This uniquely identifies a CSI
  implementation. For instance:
      org.apache.mesos.csi.test
  Please follow to Java package naming convention
@@ -282,11 +282,16 @@ var activeTableTab = "activeTableTab";
 <h4>hasName</h4>
 <pre>boolean&nbsp;hasName()</pre>
 <div class="block"><pre>
- The name of the CSI service. There could be mutliple instances of a
- type of CSI service. The name field is used to distinguish these
- instances. It should be a legal Java identifier
+ The name of the CSI plugin. There could be multiple instances of a
+ type of CSI plugin within a Mesos cluster. The name field is used to
+ distinguish these instances. It should be a legal Java identifier
  (https://docs.oracle.com/javase/tutorial/java/nutsandbolts/variables.html)
  to avoid conflicts on concatenation of type and name.
+ The type and name together provide the means to uniquely identify a storage
+ backend and its resources in the cluster, so the operator should ensure
+ that the concatenation of type and name is unique in the cluster, and it
+ remains the same if the instance is migrated to another agent (e.g., there
+ is a change in the agent ID).
  </pre>
 
  <code>required string name = 2;</code></div>
@@ -300,11 +305,16 @@ var activeTableTab = "activeTableTab";
 <h4>getName</h4>
 <pre>java.lang.String&nbsp;getName()</pre>
 <div class="block"><pre>
- The name of the CSI service. There could be mutliple instances of a
- type of CSI service. The name field is used to distinguish these
- instances. It should be a legal Java identifier
+ The name of the CSI plugin. There could be multiple instances of a
+ type of CSI plugin within a Mesos cluster. The name field is used to
+ distinguish these instances. It should be a legal Java identifier
  (https://docs.oracle.com/javase/tutorial/java/nutsandbolts/variables.html)
  to avoid conflicts on concatenation of type and name.
+ The type and name together provide the means to uniquely identify a storage
+ backend and its resources in the cluster, so the operator should ensure
+ that the concatenation of type and name is unique in the cluster, and it
+ remains the same if the instance is migrated to another agent (e.g., there
+ is a change in the agent ID).
  </pre>
 
  <code>required string name = 2;</code></div>
@@ -318,11 +328,16 @@ var activeTableTab = "activeTableTab";
 <h4>getNameBytes</h4>
 <pre>com.google.protobuf.ByteString&nbsp;getNameBytes()</pre>
 <div class="block"><pre>
- The name of the CSI service. There could be mutliple instances of a
- type of CSI service. The name field is used to distinguish these
- instances. It should be a legal Java identifier
+ The name of the CSI plugin. There could be multiple instances of a
+ type of CSI plugin within a Mesos cluster. The name field is used to
+ distinguish these instances. It should be a legal Java identifier
  (https://docs.oracle.com/javase/tutorial/java/nutsandbolts/variables.html)
  to avoid conflicts on concatenation of type and name.
+ The type and name together provide the means to uniquely identify a storage
+ backend and its resources in the cluster, so the operator should ensure
+ that the concatenation of type and name is unique in the cluster, and it
+ remains the same if the instance is migrated to another agent (e.g., there
+ is a change in the agent ID).
  </pre>
 
  <code>required string name = 2;</code></div>
