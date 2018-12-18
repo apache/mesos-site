@@ -71,7 +71,10 @@
 <code>#include &lt;<a class="el" href="json_8hpp_source.html">stout/json.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="jsonify_8hpp_source.html">stout/jsonify.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="3rdparty_2stout_2include_2stout_2protobuf_8hpp_source.html">stout/protobuf.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="3rdparty_2stout_2include_2stout_2recordio_8hpp_source.html">stout/recordio.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="unreachable_8hpp_source.html">stout/unreachable.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="uuid_8hpp_source.html">stout/uuid.hpp</a>&gt;</code><br />
+<code>#include &quot;<a class="el" href="evolve_8hpp_source.html">internal/evolve.hpp</a>&quot;</code><br />
 </div>
 <p><a href="src_2common_2http_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -80,6 +83,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstd_1_1hash_3_01mesos_1_1authorization_1_1Action_01_4.html">std::hash&lt; mesos::authorization::Action &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmesos_1_1internal_1_1RequestMediaTypes.html">mesos::internal::RequestMediaTypes</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmesos_1_1internal_1_1StreamingHttpConnection.html">mesos::internal::StreamingHttpConnection&lt; Event &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1AcceptingObjectApprover.html">mesos::AcceptingObjectApprover</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -157,8 +162,6 @@ Functions</h2></td></tr>
 <tr class="separator:a01914c93c4cc7e2d185e241ce4c4d79d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3d897d3f99fb1494d358695546a0f323"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos.html#a3d897d3f99fb1494d358695546a0f323">mesos::json</a> (<a class="el" href="classJSON_1_1ObjectWriter.html">JSON::ObjectWriter</a> *writer, const TaskStatus &amp;status)</td></tr>
 <tr class="separator:a3d897d3f99fb1494d358695546a0f323"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4b83a9b4d6d4952f6b687add145a96d1"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceprocess_1_1http_1_1authorization.html#affe51580eadc8728411234d784808ece">process::http::authorization::AuthorizationCallbacks</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos.html#a4b83a9b4d6d4952f6b687add145a96d1">mesos::createAuthorizationCallbacks</a> (Authorizer *authorizer)</td></tr>
-<tr class="separator:a4b83a9b4d6d4952f6b687add145a96d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a32d3c2a48160df803ce466136940440e"><td class="memTemplParams" colspan="2">template&lt;&gt; </td></tr>
 <tr class="memitem:a32d3c2a48160df803ce466136940440e"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemesos.html#a32d3c2a48160df803ce466136940440e">mesos::ObjectApprovers::approved&lt; authorization::VIEW_ROLE &gt;</a> (const Resource &amp;resource)</td></tr>
 <tr class="separator:a32d3c2a48160df803ce466136940440e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -180,8 +183,6 @@ Variables</h2></td></tr>
 <tr class="separator:a28cee975f23fd806363158b32abb6d9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6584ec82e3ab6d2e24a7bd20ce975437"><td class="memItemLeft" align="right" valign="top">constexpr char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1internal.html#a6584ec82e3ab6d2e24a7bd20ce975437">mesos::internal::DEFAULT_JWT_HTTP_AUTHENTICATOR</a> [] = &quot;jwt&quot;</td></tr>
 <tr class="separator:a6584ec82e3ab6d2e24a7bd20ce975437"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1d63e6e119f6f16523ef4da6c6d3403c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classhashset.html">hashset</a>&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1internal.html#a1d63e6e119f6f16523ef4da6c6d3403c">mesos::internal::AUTHORIZABLE_ENDPOINTS</a></td></tr>
-<tr class="separator:a1d63e6e119f6f16523ef4da6c6d3403c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->
