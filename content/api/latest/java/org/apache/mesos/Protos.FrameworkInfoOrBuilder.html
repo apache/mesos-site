@@ -207,22 +207,14 @@ var activeTableTab = "activeTableTab";
 <td class="colFirst"><code><a href="../../../org/apache/mesos/Protos.FrameworkID.html" title="class in org.apache.mesos">Protos.FrameworkID</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.FrameworkInfoOrBuilder.html#getId--">getId</a></span>()</code>
 <div class="block">
- Note that 'id' is only available after a framework has
- registered, however, it is included here in order to facilitate
- scheduler failover (i.e., if it is set then the
- MesosSchedulerDriver expects the scheduler is performing
- failover).</div>
+ Used to uniquely identify the framework.</div>
 </td>
 </tr>
 <tr id="i10" class="altColor">
 <td class="colFirst"><code><a href="../../../org/apache/mesos/Protos.FrameworkIDOrBuilder.html" title="interface in org.apache.mesos">Protos.FrameworkIDOrBuilder</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.FrameworkInfoOrBuilder.html#getIdOrBuilder--">getIdOrBuilder</a></span>()</code>
 <div class="block">
- Note that 'id' is only available after a framework has
- registered, however, it is included here in order to facilitate
- scheduler failover (i.e., if it is set then the
- MesosSchedulerDriver expects the scheduler is performing
- failover).</div>
+ Used to uniquely identify the framework.</div>
 </td>
 </tr>
 <tr id="i11" class="rowColor">
@@ -370,11 +362,7 @@ var activeTableTab = "activeTableTab";
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.FrameworkInfoOrBuilder.html#hasId--">hasId</a></span>()</code>
 <div class="block">
- Note that 'id' is only available after a framework has
- registered, however, it is included here in order to facilitate
- scheduler failover (i.e., if it is set then the
- MesosSchedulerDriver expects the scheduler is performing
- failover).</div>
+ Used to uniquely identify the framework.</div>
 </td>
 </tr>
 <tr id="i31" class="rowColor">
@@ -545,11 +533,12 @@ var activeTableTab = "activeTableTab";
 <h4>hasId</h4>
 <pre>boolean&nbsp;hasId()</pre>
 <div class="block"><pre>
- Note that 'id' is only available after a framework has
- registered, however, it is included here in order to facilitate
- scheduler failover (i.e., if it is set then the
- MesosSchedulerDriver expects the scheduler is performing
- failover).
+ Used to uniquely identify the framework.
+ This field must be unset when the framework subscribes for the
+ first time upon which the master will assign a new ID. To
+ resubscribe after scheduler failover the framework should set
+ 'id' to the ID assigned by the master.  Setting 'id' to values
+ not assigned by Mesos masters is unsupported.
  </pre>
 
  <code>optional .mesos.FrameworkID id = 3;</code></div>
@@ -563,11 +552,12 @@ var activeTableTab = "activeTableTab";
 <h4>getId</h4>
 <pre><a href="../../../org/apache/mesos/Protos.FrameworkID.html" title="class in org.apache.mesos">Protos.FrameworkID</a>&nbsp;getId()</pre>
 <div class="block"><pre>
- Note that 'id' is only available after a framework has
- registered, however, it is included here in order to facilitate
- scheduler failover (i.e., if it is set then the
- MesosSchedulerDriver expects the scheduler is performing
- failover).
+ Used to uniquely identify the framework.
+ This field must be unset when the framework subscribes for the
+ first time upon which the master will assign a new ID. To
+ resubscribe after scheduler failover the framework should set
+ 'id' to the ID assigned by the master.  Setting 'id' to values
+ not assigned by Mesos masters is unsupported.
  </pre>
 
  <code>optional .mesos.FrameworkID id = 3;</code></div>
@@ -581,11 +571,12 @@ var activeTableTab = "activeTableTab";
 <h4>getIdOrBuilder</h4>
 <pre><a href="../../../org/apache/mesos/Protos.FrameworkIDOrBuilder.html" title="interface in org.apache.mesos">Protos.FrameworkIDOrBuilder</a>&nbsp;getIdOrBuilder()</pre>
 <div class="block"><pre>
- Note that 'id' is only available after a framework has
- registered, however, it is included here in order to facilitate
- scheduler failover (i.e., if it is set then the
- MesosSchedulerDriver expects the scheduler is performing
- failover).
+ Used to uniquely identify the framework.
+ This field must be unset when the framework subscribes for the
+ first time upon which the master will assign a new ID. To
+ resubscribe after scheduler failover the framework should set
+ 'id' to the ID assigned by the master.  Setting 'id' to values
+ not assigned by Mesos masters is unsupported.
  </pre>
 
  <code>optional .mesos.FrameworkID id = 3;</code></div>
