@@ -163,6 +163,7 @@ R Removed feature/behavior
   <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Flags-->
     <ul style="padding-left:10px;">
       <li>A <a href="#1-7-x-enforce-container-ports">enforce_container_ports</a></li>
+      <li>A <a href="#1-7-x-gc-non-executor-container-sandboxes">gc_non_executor_container_sandboxes</a></li>
       <li>A <a href="#1-7-x-network-cni-root-dir-persist">network_cni_root_dir_persist</a></li>
     </ul>
   </td>
@@ -599,6 +600,17 @@ that have been whitelisted with the <code>--allowed_devices</code> agent flag.</
 
 <ul>
 <li>A new <a href="/documentation/latest/./configuration/agent/#enforce_container_ports"><code>--enforce_container_ports</code></a> flag has been added to toggle whether the <a href="/documentation/latest/./isolators/network-ports/"><code>network/ports</code></a> isolator should enforce TCP ports usage limits.</li>
+</ul>
+
+
+<p><a name="1-7-x-gc-non-executor-container-sandboxes"></a></p>
+
+<ul>
+<li>A new <a href="/documentation/latest/./configuration/agent/#gc_non_executor_container_sandboxes"><code>--gc_non_executor_container_sandboxes</code></a>
+agent flag has been added to garbage collect the sandboxes of nested
+containers, which includes the tasks groups launched by the default executor.
+We recommend enabling the flag if you have frameworks that launch multiple
+task groups on the same default executor instance.</li>
 </ul>
 
 
