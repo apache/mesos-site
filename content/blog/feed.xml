@@ -4,7 +4,99 @@
   <id>http://mesos.apache.org/blog</id>
   <link href="http://mesos.apache.org/blog" />
   <link href="http://mesos.apache.org/blog/feed.xml" rel="self"/>
-  <updated>2018-11-19T00:00:00+00:00</updated>
+  <updated>2019-01-24T00:00:00+00:00</updated>
+  <entry>
+    <id>http://mesos.apache.org/blog/mesos-1-5-2-released/</id>
+    <link href="/blog/mesos-1-5-2-released/" />
+    <title>
+      Apache Mesos 1.5.2 Released
+    </title>
+    <updated>2019-01-24T00:00:00+00:00</updated>
+    <author>
+      <name>Gilbert Song</name>
+    </author>
+    <content type="html">
+      &lt;p&gt;The latest Mesos 1.5.x release, 1.5.2, is now available for &lt;a href=&quot;http://mesos.apache.org/downloads&quot;&gt;download&lt;/a&gt;. This release includes important bug fixes and improvements on top of 1.5.0. It is recommended to use this version if you are considering using Mesos 1.5. More specifically, this release includes the following:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-3790&quot;&gt;MESOS-3790&lt;/a&gt; - ZooKeeper connection should retry on &lt;code&gt;EAI_NONAME&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-7474&quot;&gt;MESOS-7474&lt;/a&gt; - Mesos fetcher cache doesn&amp;rsquo;t retry when missed.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8128&quot;&gt;MESOS-8128&lt;/a&gt; - Make os::pipe file descriptors O_CLOEXEC.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8418&quot;&gt;MESOS-8418&lt;/a&gt; - mesos-agent high cpu usage because of numerous /proc/mounts reads.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8545&quot;&gt;MESOS-8545&lt;/a&gt; - AgentAPIStreamingTest.AttachInputToNestedContainerSession is flaky.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8568&quot;&gt;MESOS-8568&lt;/a&gt; - Command checks should always call &lt;code&gt;WAIT_NESTED_CONTAINER&lt;/code&gt; before &lt;code&gt;REMOVE_NESTED_CONTAINER&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8620&quot;&gt;MESOS-8620&lt;/a&gt; - Containers stuck in FETCHING possibly due to unresponsive server.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8830&quot;&gt;MESOS-8830&lt;/a&gt; - Agent gc on old slave sandboxes could empty persistent volume data.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8871&quot;&gt;MESOS-8871&lt;/a&gt; - Agent may fail to recover if the agent dies before image store cache checkpointed.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8904&quot;&gt;MESOS-8904&lt;/a&gt; - Master crash when removing quota.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8906&quot;&gt;MESOS-8906&lt;/a&gt; - &lt;code&gt;UriDiskProfileAdaptor&lt;/code&gt; fails to update profile selectors.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8907&quot;&gt;MESOS-8907&lt;/a&gt; - Docker image fetcher fails with HTTP/2.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8917&quot;&gt;MESOS-8917&lt;/a&gt; - Agent leaking file descriptors into forked processes.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8921&quot;&gt;MESOS-8921&lt;/a&gt; - Autotools don&amp;rsquo;t work with newer OpenJDK versions.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8935&quot;&gt;MESOS-8935&lt;/a&gt; - Quota limit &amp;ldquo;chopping&amp;rdquo; can lead to cpu-only and memory-only offers.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8936&quot;&gt;MESOS-8936&lt;/a&gt; - Implement a Random Sorter for offer allocations.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8942&quot;&gt;MESOS-8942&lt;/a&gt; - Master streaming API does not send (health) check updates for tasks.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8945&quot;&gt;MESOS-8945&lt;/a&gt; - Master check failure due to CHECK_SOME(providerId).&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8947&quot;&gt;MESOS-8947&lt;/a&gt; - Improve the container preparing logging in IOSwitchboard and volume/secret isolator.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8952&quot;&gt;MESOS-8952&lt;/a&gt; - process::await/collect n&lt;sup&gt;2&lt;/sup&gt; performance issue.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8963&quot;&gt;MESOS-8963&lt;/a&gt; - Executor crash trying to print container ID.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8978&quot;&gt;MESOS-8978&lt;/a&gt; - Command executor calling setsid breaks the tty support.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8980&quot;&gt;MESOS-8980&lt;/a&gt; - mesos-slave can deadlock with docker pull.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8986&quot;&gt;MESOS-8986&lt;/a&gt; - &lt;code&gt;slave.available()&lt;/code&gt; in the allocator is expensive and drags down allocation performance.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8987&quot;&gt;MESOS-8987&lt;/a&gt; - Master asks agent to shutdown upon auth errors.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9024&quot;&gt;MESOS-9024&lt;/a&gt; - Mesos master segfaults with stack overflow under load.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9049&quot;&gt;MESOS-9049&lt;/a&gt; - Agent GC could unmount a dangling persistent volume multiple times.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9116&quot;&gt;MESOS-9116&lt;/a&gt; - Launch nested container session fails due to incorrect detection of &lt;code&gt;mnt&lt;/code&gt; namespace of command executor&amp;rsquo;s task.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9125&quot;&gt;MESOS-9125&lt;/a&gt; - Port mapper CNI plugin might fail with &amp;ldquo;Resource temporarily unavailable&amp;rdquo;.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9127&quot;&gt;MESOS-9127&lt;/a&gt; - Port mapper CNI plugin might deadlock iptables on the agent.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9131&quot;&gt;MESOS-9131&lt;/a&gt; - Health checks launching nested containers while a container is being destroyed lead to unkillable tasks.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9142&quot;&gt;MESOS-9142&lt;/a&gt; - CNI detach might fail due to missing network config file.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9144&quot;&gt;MESOS-9144&lt;/a&gt; - Master authentication handling leads to request amplification.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9145&quot;&gt;MESOS-9145&lt;/a&gt; - Master has a fragile burned-in 5s authentication timeout.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9146&quot;&gt;MESOS-9146&lt;/a&gt; - Agent has a fragile burn-in 5s authentication timeout.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9147&quot;&gt;MESOS-9147&lt;/a&gt; - Agent and scheduler driver authentication retry backoff time could overflow.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9151&quot;&gt;MESOS-9151&lt;/a&gt; - Container stuck at ISOLATING due to FD leak.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9170&quot;&gt;MESOS-9170&lt;/a&gt; - Zookeeper doesn&amp;rsquo;t compile with newer gcc due to format error.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9196&quot;&gt;MESOS-9196&lt;/a&gt; - Removing rootfs mounts may fail with EBUSY.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9231&quot;&gt;MESOS-9231&lt;/a&gt; - &lt;code&gt;docker inspect&lt;/code&gt; may return an unexpected result to Docker executor due to a race condition.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9267&quot;&gt;MESOS-9267&lt;/a&gt; - Mesos agent crashes when CNI network is not configured but used.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9279&quot;&gt;MESOS-9279&lt;/a&gt; - Docker Containerizer &amp;lsquo;usage&amp;rsquo; call might be expensive if mount table is big.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9283&quot;&gt;MESOS-9283&lt;/a&gt; - Docker containerizer actor can get backlogged with large number of containers.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9305&quot;&gt;MESOS-9305&lt;/a&gt; - Create cgoup recursively to workaround systemd deleting cgroups_root.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9308&quot;&gt;MESOS-9308&lt;/a&gt; - URI disk profile adaptor could deadlock.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9317&quot;&gt;MESOS-9317&lt;/a&gt; - Some master endpoints do not handle failed authorization properly.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9332&quot;&gt;MESOS-9332&lt;/a&gt; - Nested container should run as the same user of its parent container by default.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9334&quot;&gt;MESOS-9334&lt;/a&gt; - Container stuck at ISOLATING state due to libevent poll never returns.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9411&quot;&gt;MESOS-9411&lt;/a&gt; - Validation of JWT tokens using HS256 hashing algorithm is not thread safe.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9419&quot;&gt;MESOS-9419&lt;/a&gt; - Executor to framework message crashes master if framework has not re-registered.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9480&quot;&gt;MESOS-9480&lt;/a&gt; - Master may skip processing authorization results for &lt;code&gt;LAUNCH_GROUP&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9492&quot;&gt;MESOS-9492&lt;/a&gt; - Persist CNI working directory across reboot.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9501&quot;&gt;MESOS-9501&lt;/a&gt; - Mesos executor fails to terminate and gets stuck after agent host reboot.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9502&quot;&gt;MESOS-9502&lt;/a&gt; - IOswitchboard cleanup could get stuck due to FD leak from a race.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9510&quot;&gt;MESOS-9510&lt;/a&gt; - Disallowed nan, inf and so on in &lt;code&gt;Value::Scalar&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9516&quot;&gt;MESOS-9516&lt;/a&gt; - Extend &lt;code&gt;min_allocatable_resources&lt;/code&gt; flag to cover non-scalar resources.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9518&quot;&gt;MESOS-9518&lt;/a&gt; - CNI_NETNS should not be set for orphan containers that do not have network namespace.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;Full release notes are available in the release &lt;a href=&quot;https://gitbox.apache.org/repos/asf?p=mesos.git;a=blob_plain;f=CHANGELOG;hb=1.5.2&quot;&gt;CHANGELOG&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3&gt;Upgrades&lt;/h3&gt;
+
+&lt;p&gt;Rolling upgrades from a Mesos 1.5.0 cluster to Mesos 1.5.2 are straightforward. Please refer to the &lt;a href=&quot;http://mesos.apache.org/documentation/latest/upgrades/&quot;&gt;upgrade guide&lt;/a&gt; for detailed information on upgrading to Mesos 1.5.2 from 1.4.x, 1.3.x, or 1.2.x.&lt;/p&gt;
+
+&lt;h3&gt;Try it out&lt;/h3&gt;
+
+&lt;p&gt;Please try out this release and let us know what you think. If you run into any issues, let us know on the &lt;a href=&quot;https://mesos.apache.org/community&quot;&gt;user mailing list and/or Slack/IRC&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3&gt;Thanks!&lt;/h3&gt;
+
+&lt;p&gt;Thanks to the 29 contributors who made 1.5.2 possible:&lt;/p&gt;
+
+&lt;p&gt;Alexander Rojas, Alexander Rukletsov, Andrei Budnik, Andrew Schwartzmeyer, Armand Grillet, Benjamin Bannier, Benjamin Mahler, Benno Evers, Chun-Hung Hsiao, Deepak Goel, Gastón Kleiman, Gilbert Song, Greg Mann, James Peach, Jie Yu, Joseph Wu, Kapil Arya, Kevin Klues, Kjetil Joergensen, Meng Zhu, Michael Park, Qian Zhang, Radhika Jandhyala, Till Toenshoff, Vinod Kone, Zhitao Li, bin zheng, fei long, he yi hua&lt;/p&gt;
+
+	</content>
+  </entry>
   <entry>
     <id>http://mesos.apache.org/blog/mesos-mini/</id>
     <link href="/blog/mesos-mini/" />
@@ -546,17 +638,41 @@ The &lt;a href=&quot;https://builds.apache.org/view/M-R/view/Mesos/job/Docker/jo
       &lt;p&gt;The latest Mesos 1.5.x release, 1.5.1, is now available for &lt;a href=&quot;http://mesos.apache.org/downloads&quot;&gt;download&lt;/a&gt;. This release includes important bug fixes and improvements on top of 1.5.0. It is recommended to use this version if you are considering using Mesos 1.5. More specifically, this release includes the following:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-7873&quot;&gt;MESOS-7873&lt;/a&gt; - Expose &lt;code&gt;ExecutorInfo.ContainerInfo.NetworkInfo&lt;/code&gt; in Mesos &lt;code&gt;state&lt;/code&gt; endpoint.&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-7921&quot;&gt;MESOS-7921&lt;/a&gt; - ProcessManager::resume sometimes crashes accessing EventQueue.&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-7964&quot;&gt;MESOS-7964&lt;/a&gt; - Heavy-duty GC makes the agent unresponsive.&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-7968&quot;&gt;MESOS-7968&lt;/a&gt; - Handle &lt;code&gt;/proc/self/ns/pid_for_children&lt;/code&gt; when parsing available namespace.&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-7969&quot;&gt;MESOS-7969&lt;/a&gt; - Handle cgroups v2 hierarchy when parsing /proc/self/cgroups.&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-7980&quot;&gt;MESOS-7980&lt;/a&gt; - Stout fails to compile with libc &gt;= 2.26.&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8051&quot;&gt;MESOS-8051&lt;/a&gt; - Killing TASK_GROUP fail to kill some tasks.&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8080&quot;&gt;MESOS-8080&lt;/a&gt; - The default executor does not propagate missing task exit status correctly.&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8090&quot;&gt;MESOS-8090&lt;/a&gt; - Mesos 1.4.0 crashes with 1.3.x agent with oversubscription&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8135&quot;&gt;MESOS-8135&lt;/a&gt; - Masters can lose track of tasks&apos; executor IDs.&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8169&quot;&gt;MESOS-8169&lt;/a&gt; - Incorrect master validation forces executor IDs to be globally unique.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-1720&quot;&gt;MESOS-1720&lt;/a&gt; - Slave should send exited executor message when the executor is never launched.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-7742&quot;&gt;MESOS-7742&lt;/a&gt; - Race conditions in IOSwitchboard: listening on unix socket and premature closing of the connection.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8125&quot;&gt;MESOS-8125&lt;/a&gt; - Agent should properly handle recovering an executor when its pid is reused.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8411&quot;&gt;MESOS-8411&lt;/a&gt; - Killing a queued task can lead to the command executor never terminating.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8416&quot;&gt;MESOS-8416&lt;/a&gt; - CHECK failure if trying to recover nested containers but the framework checkpointing is not enabled.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8468&quot;&gt;MESOS-8468&lt;/a&gt; - &lt;code&gt;LAUNCH_GROUP&lt;/code&gt; failure tears down the default executor.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8488&quot;&gt;MESOS-8488&lt;/a&gt; - Docker bug can cause unkillable tasks.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8510&quot;&gt;MESOS-8510&lt;/a&gt; - URI disk profile adaptor does not consider plugin type for a profile.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8536&quot;&gt;MESOS-8536&lt;/a&gt; - Pending offer operations on resource provider resources not properly accounted for in allocator.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8550&quot;&gt;MESOS-8550&lt;/a&gt; - Bug in &lt;code&gt;Master::detected()&lt;/code&gt; leads to coredump in &lt;code&gt;MasterZooKeeperTest.MasterInfoAddress&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8552&quot;&gt;MESOS-8552&lt;/a&gt; - CGROUPS_ROOT_PidNamespaceForward and CGROUPS_ROOT_PidNamespaceBackward tests fail.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8565&quot;&gt;MESOS-8565&lt;/a&gt; - Persistent volumes are not visible in Mesos UI when launching a pod using default executor.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8569&quot;&gt;MESOS-8569&lt;/a&gt; - Allow newline characters when decoding base64 strings in stout.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8574&quot;&gt;MESOS-8574&lt;/a&gt; - Docker executor makes no progress when &amp;lsquo;docker inspect&amp;rsquo; hangs.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8575&quot;&gt;MESOS-8575&lt;/a&gt; - Improve discard handling for &amp;lsquo;Docker::stop&amp;rsquo; and &amp;lsquo;Docker::pull&amp;rsquo;.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8576&quot;&gt;MESOS-8576&lt;/a&gt; - Improve discard handling of &amp;lsquo;Docker::inspect()&amp;rsquo;.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8577&quot;&gt;MESOS-8577&lt;/a&gt; - Destroy nested container if &lt;code&gt;LAUNCH_NESTED_CONTAINER_SESSION&lt;/code&gt; fails.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8594&quot;&gt;MESOS-8594&lt;/a&gt; - Mesos master stack overflow in libprocess socket send loop.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8598&quot;&gt;MESOS-8598&lt;/a&gt; - Allow empty resource provider selector in &lt;code&gt;UriDiskProfileAdaptor&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8601&quot;&gt;MESOS-8601&lt;/a&gt; - Master crashes during slave reregistration after failover.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8604&quot;&gt;MESOS-8604&lt;/a&gt; - Quota headroom tracking may be incorrect in the presence of hierarchical reservation.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8605&quot;&gt;MESOS-8605&lt;/a&gt; - Terminal task status update will not send if &amp;lsquo;docker inspect&amp;rsquo; is hung.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8619&quot;&gt;MESOS-8619&lt;/a&gt; - Docker on Windows uses &lt;code&gt;USERPROFILE&lt;/code&gt; instead of &lt;code&gt;HOME&lt;/code&gt; for credentials.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8624&quot;&gt;MESOS-8624&lt;/a&gt; - Valid tasks may be explicitly dropped by agent due to race conditions.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8631&quot;&gt;MESOS-8631&lt;/a&gt; - Agent should be able to start a task with every CPU on a Windows machine.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8641&quot;&gt;MESOS-8641&lt;/a&gt; - Event stream could send heartbeat before subscribed.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8646&quot;&gt;MESOS-8646&lt;/a&gt; - Agent should be able to resolve file names on open files.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8651&quot;&gt;MESOS-8651&lt;/a&gt; - Potential memory leaks in the &lt;code&gt;volume/sandbox_path&lt;/code&gt; isolator.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8741&quot;&gt;MESOS-8741&lt;/a&gt; - &lt;code&gt;Add&lt;/code&gt; to sequence will not run if it races with sequence destruction.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8742&quot;&gt;MESOS-8742&lt;/a&gt; - Agent resource provider config API calls should be idempotent.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8786&quot;&gt;MESOS-8786&lt;/a&gt; - CgroupIsolatorProcess accesses subsystem processes directly.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8787&quot;&gt;MESOS-8787&lt;/a&gt; - RP-related API should be experimental.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8876&quot;&gt;MESOS-8876&lt;/a&gt; - Normal exit of Docker container using rexray volume results in TASK_FAILED.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8881&quot;&gt;MESOS-8881&lt;/a&gt; - Enable epoll backend in libevent integration.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8885&quot;&gt;MESOS-8885&lt;/a&gt; - Disable libevent debug mode.&lt;/li&gt;
 &lt;/ul&gt;
 
 

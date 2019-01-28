@@ -139,17 +139,41 @@
     <p>The latest Mesos 1.5.x release, 1.5.1, is now available for <a href="http://mesos.apache.org/downloads">download</a>. This release includes important bug fixes and improvements on top of 1.5.0. It is recommended to use this version if you are considering using Mesos 1.5. More specifically, this release includes the following:</p>
 
 <ul>
-<li><a href="https://issues.apache.org/jira/browse/MESOS-7873">MESOS-7873</a> - Expose <code>ExecutorInfo.ContainerInfo.NetworkInfo</code> in Mesos <code>state</code> endpoint.</li>
-<li><a href="https://issues.apache.org/jira/browse/MESOS-7921">MESOS-7921</a> - ProcessManager::resume sometimes crashes accessing EventQueue.</li>
-<li><a href="https://issues.apache.org/jira/browse/MESOS-7964">MESOS-7964</a> - Heavy-duty GC makes the agent unresponsive.</li>
-<li><a href="https://issues.apache.org/jira/browse/MESOS-7968">MESOS-7968</a> - Handle <code>/proc/self/ns/pid_for_children</code> when parsing available namespace.</li>
-<li><a href="https://issues.apache.org/jira/browse/MESOS-7969">MESOS-7969</a> - Handle cgroups v2 hierarchy when parsing /proc/self/cgroups.</li>
-<li><a href="https://issues.apache.org/jira/browse/MESOS-7980">MESOS-7980</a> - Stout fails to compile with libc >= 2.26.</li>
-<li><a href="https://issues.apache.org/jira/browse/MESOS-8051">MESOS-8051</a> - Killing TASK_GROUP fail to kill some tasks.</li>
-<li><a href="https://issues.apache.org/jira/browse/MESOS-8080">MESOS-8080</a> - The default executor does not propagate missing task exit status correctly.</li>
-<li><a href="https://issues.apache.org/jira/browse/MESOS-8090">MESOS-8090</a> - Mesos 1.4.0 crashes with 1.3.x agent with oversubscription</li>
-<li><a href="https://issues.apache.org/jira/browse/MESOS-8135">MESOS-8135</a> - Masters can lose track of tasks' executor IDs.</li>
-<li><a href="https://issues.apache.org/jira/browse/MESOS-8169">MESOS-8169</a> - Incorrect master validation forces executor IDs to be globally unique.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-1720">MESOS-1720</a> - Slave should send exited executor message when the executor is never launched.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-7742">MESOS-7742</a> - Race conditions in IOSwitchboard: listening on unix socket and premature closing of the connection.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-8125">MESOS-8125</a> - Agent should properly handle recovering an executor when its pid is reused.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-8411">MESOS-8411</a> - Killing a queued task can lead to the command executor never terminating.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-8416">MESOS-8416</a> - CHECK failure if trying to recover nested containers but the framework checkpointing is not enabled.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-8468">MESOS-8468</a> - <code>LAUNCH_GROUP</code> failure tears down the default executor.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-8488">MESOS-8488</a> - Docker bug can cause unkillable tasks.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-8510">MESOS-8510</a> - URI disk profile adaptor does not consider plugin type for a profile.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-8536">MESOS-8536</a> - Pending offer operations on resource provider resources not properly accounted for in allocator.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-8550">MESOS-8550</a> - Bug in <code>Master::detected()</code> leads to coredump in <code>MasterZooKeeperTest.MasterInfoAddress</code>.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-8552">MESOS-8552</a> - CGROUPS_ROOT_PidNamespaceForward and CGROUPS_ROOT_PidNamespaceBackward tests fail.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-8565">MESOS-8565</a> - Persistent volumes are not visible in Mesos UI when launching a pod using default executor.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-8569">MESOS-8569</a> - Allow newline characters when decoding base64 strings in stout.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-8574">MESOS-8574</a> - Docker executor makes no progress when &lsquo;docker inspect&rsquo; hangs.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-8575">MESOS-8575</a> - Improve discard handling for &lsquo;Docker::stop&rsquo; and &lsquo;Docker::pull&rsquo;.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-8576">MESOS-8576</a> - Improve discard handling of &lsquo;Docker::inspect()&rsquo;.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-8577">MESOS-8577</a> - Destroy nested container if <code>LAUNCH_NESTED_CONTAINER_SESSION</code> fails.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-8594">MESOS-8594</a> - Mesos master stack overflow in libprocess socket send loop.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-8598">MESOS-8598</a> - Allow empty resource provider selector in <code>UriDiskProfileAdaptor</code>.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-8601">MESOS-8601</a> - Master crashes during slave reregistration after failover.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-8604">MESOS-8604</a> - Quota headroom tracking may be incorrect in the presence of hierarchical reservation.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-8605">MESOS-8605</a> - Terminal task status update will not send if &lsquo;docker inspect&rsquo; is hung.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-8619">MESOS-8619</a> - Docker on Windows uses <code>USERPROFILE</code> instead of <code>HOME</code> for credentials.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-8624">MESOS-8624</a> - Valid tasks may be explicitly dropped by agent due to race conditions.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-8631">MESOS-8631</a> - Agent should be able to start a task with every CPU on a Windows machine.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-8641">MESOS-8641</a> - Event stream could send heartbeat before subscribed.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-8646">MESOS-8646</a> - Agent should be able to resolve file names on open files.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-8651">MESOS-8651</a> - Potential memory leaks in the <code>volume/sandbox_path</code> isolator.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-8741">MESOS-8741</a> - <code>Add</code> to sequence will not run if it races with sequence destruction.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-8742">MESOS-8742</a> - Agent resource provider config API calls should be idempotent.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-8786">MESOS-8786</a> - CgroupIsolatorProcess accesses subsystem processes directly.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-8787">MESOS-8787</a> - RP-related API should be experimental.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-8876">MESOS-8876</a> - Normal exit of Docker container using rexray volume results in TASK_FAILED.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-8881">MESOS-8881</a> - Enable epoll backend in libevent integration.</li>
+<li><a href="https://issues.apache.org/jira/browse/MESOS-8885">MESOS-8885</a> - Disable libevent debug mode.</li>
 </ul>
 
 
