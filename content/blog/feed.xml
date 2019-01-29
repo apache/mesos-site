@@ -4,7 +4,72 @@
   <id>http://mesos.apache.org/blog</id>
   <link href="http://mesos.apache.org/blog" />
   <link href="http://mesos.apache.org/blog/feed.xml" rel="self"/>
-  <updated>2019-01-24T00:00:00+00:00</updated>
+  <updated>2019-01-28T00:00:00+00:00</updated>
+  <entry>
+    <id>http://mesos.apache.org/blog/mesos-1-7-1-released/</id>
+    <link href="/blog/mesos-1-7-1-released/" />
+    <title>
+      Apache Mesos 1.7.1 Released
+    </title>
+    <updated>2019-01-28T00:00:00+00:00</updated>
+    <author>
+      <name>Chun-Hung Hsiao & Gastón Kleiman</name>
+    </author>
+    <content type="html">
+      &lt;p&gt;Apache Mesos 1.7.1 is now available for &lt;a href=&quot;http://mesos.apache.org/downloads&quot;&gt;download&lt;/a&gt;. As we continue to focus on performance, the community can get access to the latest performance improvements in this release. The &lt;a href=&quot;http://mesos.apache.org/documentation/latest/csi/&quot;&gt;experimental support for Container Storage Interface (CSI)&lt;/a&gt; has been improved in this release as well. Last but not least, this release includes 38 bug fixes to 1.7.0. If you are considering using Mesos 1.7, it is recommended to use 1.7.1.&lt;/p&gt;
+
+&lt;p&gt;Specifically, the following critical bugs are resolved in this release:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9131&quot;&gt;MESOS-9131&lt;/a&gt; - Health checks launching nested containers while a container is being destroyed lead to unkillable tasks.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9228&quot;&gt;MESOS-9228&lt;/a&gt; - SLRP does not clean up plugin containers after it is removed.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9279&quot;&gt;MESOS-9279&lt;/a&gt; - Docker Containerizer &amp;lsquo;usage&amp;rsquo; call might be expensive if mount table is big.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9281&quot;&gt;MESOS-9281&lt;/a&gt; - SLRP gets a stale checkpoint after system crash.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9283&quot;&gt;MESOS-9283&lt;/a&gt; - Docker containerizer actor can get backlogged with large number of containers.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9308&quot;&gt;MESOS-9308&lt;/a&gt; - URI disk profile adaptor could deadlock.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9317&quot;&gt;MESOS-9317&lt;/a&gt; - Some master endpoints do not handle failed authorization properly.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9334&quot;&gt;MESOS-9334&lt;/a&gt; - Container stuck at ISOLATING state due to libevent poll never returns.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9419&quot;&gt;MESOS-9419&lt;/a&gt; - Executor to framework message crashes master if framework has not re-registered.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9474&quot;&gt;MESOS-9474&lt;/a&gt; - Master does not respect authorization result for &lt;code&gt;CREATE_DISK&lt;/code&gt; and &lt;code&gt;DESTROY_DISK&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9480&quot;&gt;MESOS-9480&lt;/a&gt; - Master may skip processing authorization results for &lt;code&gt;LAUNCH_GROUP&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9501&quot;&gt;MESOS-9501&lt;/a&gt; - Mesos executor fails to terminate and gets stuck after agent host reboot.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9502&quot;&gt;MESOS-9502&lt;/a&gt; - IOswitchboard cleanup could get stuck due to FD leak from a race.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9508&quot;&gt;MESOS-9508&lt;/a&gt; - Official 1.7.0 tarball can&amp;rsquo;t be built on Ubuntu 16.04 LTS.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;And this release includes the following critical improvements:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-6765&quot;&gt;MESOS-6765&lt;/a&gt; - &amp;ldquo;Make the Resources wrapper &amp;rdquo;&amp;ldquo;copy-on-write&amp;rdquo;&amp;ldquo; to improve performance.&amp;rdquo;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9239&quot;&gt;MESOS-9239&lt;/a&gt; - Improve sorting performance in the DRF sorter.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9249&quot;&gt;MESOS-9249&lt;/a&gt; - Avoid dirtying the DRF sorter when allocating resources.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9275&quot;&gt;MESOS-9275&lt;/a&gt; - Allow optional &lt;code&gt;profile&lt;/code&gt; to be specified in &lt;code&gt;CREATE_DISK&lt;/code&gt; offer operation.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9305&quot;&gt;MESOS-9305&lt;/a&gt; - Create cgoup recursively to workaround systemd deleting cgroups_root.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9321&quot;&gt;MESOS-9321&lt;/a&gt; - Add an optional &lt;code&gt;vendor&lt;/code&gt; field in &lt;code&gt;Resource.DiskInfo.Source&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;Full release notes are available in the release &lt;a href=&quot;https://gitbox.apache.org/repos/asf?p=mesos.git;a=blob_plain;f=CHANGELOG;hb=1.7.1&quot;&gt;CHANGELOG&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3&gt;Upgrades&lt;/h3&gt;
+
+&lt;p&gt;Rolling upgrades from a Mesos 1.7.0 cluster to Mesos 1.7.1 are straightforward. However, if your framework is consuming the &lt;a href=&quot;http://mesos.apache.org/documentation/latest/csi/&quot;&gt;experimental support for CSI&lt;/a&gt;, the language binding used by the framework should be updated.&lt;/p&gt;
+
+&lt;p&gt;For detailed information on upgrading to Mesos 1.7.1 from other versions, please refer to the &lt;a href=&quot;http://mesos.apache.org/documentation/latest/upgrades/&quot;&gt;upgrade guide&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3&gt;Try it out&lt;/h3&gt;
+
+&lt;p&gt;Please try out this release and let us know what you think. If you run into any issues, let us know on the &lt;a href=&quot;https://mesos.apache.org/community&quot;&gt;user mailing list and/or Slack/IRC&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3&gt;Thanks!&lt;/h3&gt;
+
+&lt;p&gt;Thanks to the 20 contributors who made 1.7.1 possible:&lt;/p&gt;
+
+&lt;p&gt;Alexander Rojas, Alexander Rukletsov, Andrei Budnik, Benjamin Bannier, Benjamin Mahler, Benno Evers, Chun-Hung Hsiao, Deepak Goel, Gastón Kleiman, Gilbert Song, Greg Mann, James Peach, Jie Yu, Joseph Wu, Kevin Klues, Meng Zhu, Qian Zhang, Till Toenshoff, Vinod Kone, Fei Long&lt;/p&gt;
+
+	</content>
+  </entry>
   <entry>
     <id>http://mesos.apache.org/blog/mesos-1-5-2-released/</id>
     <link href="/blog/mesos-1-5-2-released/" />
