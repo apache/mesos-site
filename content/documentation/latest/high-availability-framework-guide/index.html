@@ -166,18 +166,19 @@ any pair of processes: for example, if a framework sends messages M1 and M2
 to the master, the master might receive no messages, just M1, just M2, or M1
 followed by M2 &ndash; it will <em>not</em> receive M2 followed by M1.</p></li>
 <li><p>As a convenience for framework authors, Mesos provides reliable delivery of
-task status updates. The agent persists task status updates to disk and then
-forwards them to the master. The master sends status updates to the
-appropriate framework scheduler. When a scheduler acknowledges a status
-update, the master forwards the acknowledgment back to the agent, which
-allows the stored status update to be garbage collected. If the agent does
-not receive an acknowledgment for a task status update within a certain
-amount of time, it will repeatedly resend the status update to the master,
-which will again forward the update to the scheduler. Hence, task status
-updates will be delivered &ldquo;at least once&rdquo;, assuming that the agent and the
-scheduler both remain available. To handle the fact that task status updates
-might be delivered more than once, it can be helpful to make the framework
-logic that processes them <a href="https://en.wikipedia.org/wiki/Idempotence">idempotent</a>.</p></li>
+task status updates and operation status updates. The agent persists these
+updates to disk and then forwards them to the master. The master sends
+status updates to the appropriate framework scheduler. When a scheduler
+acknowledges a status update, the master forwards the acknowledgment back to
+the agent, which allows the stored status update to be garbage collected. If
+the agent does not receive an acknowledgment for a status update within a
+certain amount of time, it will repeatedly resend the update to the master,
+which will again forward the update to the scheduler. Hence, task and
+operation status updates will be delivered &ldquo;at least once&rdquo;, assuming that
+the agent and the scheduler both remain available. To handle the fact that
+task and operation status updates might be delivered more than once, it can
+be helpful to make the framework logic that processes them
+<a href="https://en.wikipedia.org/wiki/Idempotence">idempotent</a>.</p></li>
 </ul>
 </li>
 <li><p>The Mesos master stores information about the active tasks and registered
@@ -353,6 +354,59 @@ principal is not authorized to launch tasks as a certain user, and also when the
 task description is syntactically malformed (e.g., the task ID contains an
 invalid character). The <code>reason</code> field of the <code>TaskStatus</code> message can be used
 to disambiguate between such situations.</p>
+
+<h2>Performing operations on offered resources</h2>
+
+<p>The scheduler API provides a number of operations which can be applied to
+resources included in offers sent to a framework scheduler. Schedulers which use
+the <a href="/documentation/latest/./scheduler-http-api/">v1 scheduler API</a> may set the <code>id</code> field in an offer
+operation in order to request feedback for the operation. When this is done, the
+scheduler will receive <code>UPDATE_OPERATION_STATUS</code> events on its HTTP event stream
+when the operation transitions to a new state. Additionally, the scheduler may
+use the <code>RECONCILE_OPERATIONS</code> call to perform explicit or implicit
+<a href="/documentation/latest/./reconciliation/">reconciliation</a> of its operations' states, similar to task
+state reconciliation.</p>
+
+<p>Unlike tasks, which occur as the result of <code>LAUNCH</code> or <code>LAUNCH_GROUP</code>
+operations, other operations do not currently have intermediate states that they
+transition through:</p>
+
+<ul>
+<li><p>An operation begins in the <code>OPERATION_PENDING</code> state. In the absence of any
+system failures, it remains in this state until it transitions to a terminal
+state.</p></li>
+<li><p>There exist several terminal states that an operation may transition to:</p>
+
+<ul>
+<li><code>OPERATION_FINISHED</code> is used when an operation completes successfully.</li>
+<li><code>OPERATION_FAILED</code> is used when an operation was attempted but failed to
+complete.</li>
+<li><code>OPERATION_ERROR</code> is used when an operation failed because it was not
+specified correctly and was thus never attempted.</li>
+<li><code>OPERATION_DROPPED</code> is used when an operation was not successfully delivered
+to the agent.</li>
+</ul>
+</li>
+<li><p>When performing operation reconciliation, the scheduler may encounter other
+non-terminal states due to various failures in the system:</p>
+
+<ul>
+<li><code>OPERATION_UNREACHABLE</code> is used when an operation was previously pending on
+an agent which is not currently reachable by the Mesos master.</li>
+<li><code>OPERATION_RECOVERING</code> is used when an operation was previously pending on
+an agent which has been recovered from the master&rsquo;s checkpointed state after
+a master failover, but which has not yet reregistered.</li>
+<li><code>OPERATION_UNKNOWN</code> is used when Mesos does not recognize an operation ID
+included in an explicit reconciliation request. This may be because an
+operation with that ID was never received by the master, or because the
+operation state is gone due to garbage collection or a system/network
+failure.</li>
+<li><code>OPERATION_GONE_BY_OPERATOR</code> is used when an operation was previously
+pending on an agent which was marked as &ldquo;gone&rdquo; by an operator.</li>
+</ul>
+</li>
+</ul>
+
 
 <h2>Dealing with Partitioned or Failed Agents</h2>
 

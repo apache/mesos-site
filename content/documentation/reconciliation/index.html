@@ -248,6 +248,32 @@ then the previous reconciliation algorithm should stop running.</li>
 </ul>
 
 
+<h1>Operation Reconciliation</h1>
+
+<p>When a scheduler specifies an <code>id</code> on an offer operation, the master will
+provide updates on the status of that operation. If the scheduler needs to
+reconcile its view of the current states of operations with the master&rsquo;s view,
+it can do so via the <code>RECONCILE_OPERATIONS</code> call in the v1 scheduler API.</p>
+
+<p>Operation reconciliation is similar to task reconciliation in that the scheduler
+can perform either explicit or implicit reconciliation by specifying particular
+operation IDs or by leaving the <code>operations</code> field unset, respectively.</p>
+
+<p>Operation reconciliation differs from task reconciliation in that the
+<code>RECONCILE_OPERATIONS</code> call provides a single HTTP response which contains all
+operation status updates, rather than an asynchronous stream of individual
+updates on the event stream. NOTE, however, that this API is experimental and
+we plan to change this in the near future so that operation reconciliation will
+resemble task reconciliation in this respect.</p>
+
+<p>In order to explicitly reconcile particular operations, the scheduler should
+include in the <code>RECONCILE_OPERATIONS</code> call a list of operations, specifying an
+operation ID, agent ID, and resource provider ID (if applicable) for each one.</p>
+
+<p>Similar to task reconciliation, we recommend that schedulers implement a
+periodic reconciliation loop for operations in order to defend against network
+failures and bugs in the scheduler and/or Mesos master.</p>
+
   </div>
 </div>
 

@@ -241,8 +241,6 @@ HTTP/1.1 202 Accepted
 
 <p>The master will send task status updates in response to <code>LAUNCH</code> and <code>LAUNCH_GROUP</code> operations. For other types of operations, if an operation ID is specified, the master will send operation status updates in response.</p>
 
-<p>NOTE: For the time being, an operation ID can only be set if the operation affects resources provided by a <a href="/documentation/latest/./csi/#resource-providers">resource provider</a>. See <a href="https://issues.apache.org/jira/browse/MESOS-8371">MESOS-8194</a> for more details.</p>
-
 <pre><code>ACCEPT Request (JSON):
 POST /api/v1/scheduler  HTTP/1.1
 
@@ -685,6 +683,27 @@ HTTP/1.1 202 Accepted
         "source"    : "SOURCE_EXECUTOR",
         "uuid"      : "adfadfadbhgvjayd23r2uahj",
         "bytes"     : "uhdjfhuagdj63d7hadkf"
+      }
+  }
+}
+</code></pre>
+
+<h3>UPDATE_OPERATION_STATUS</h3>
+
+<p>Sent by the master whenever there is an update to the state of an operation for which the scheduler requested feedback by setting the operation&rsquo;s <code>id</code> field. It is the responsibility of the scheduler to explicitly acknowledge the receipt of any status updates which have their <code>uuid</code> field set, as this indicates that the update will be retried until acknowledgement is received. This ensures that such updates are delivered reliably. See <code>ACKNOWLEDGE_OPERATION_STATUS</code> in the Calls section above for the relevant acknowledgement semantics. Note that the <code>uuid</code> field contains raw bytes encoded in Base64.</p>
+
+<pre><code>UPDATE_OPERATION_STATUS Event (JSON)
+
+&lt;event-length&gt;
+{
+  "type"    : "UPDATE_OPERATION_STATUS",
+  "update_operation_status" : {
+    "status"    : {
+        "operation_id" : { "value" : "operation-1234"},
+        "state"        : "OPERATION_FAILED",
+        "uuid"         : "adfadfadbhgvjayd23r2uahj",
+        "agent_id"     : { "value" : "12214-23523-S235235"},
+        "resource_provider_id" : { "value" : "83978-17885-1089645"}
       }
   }
 }
