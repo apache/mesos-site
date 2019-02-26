@@ -162,6 +162,14 @@ some time.</li>
 <li><strong>Do not <code>REVIVE</code> frequently</strong>: <code>REVIVE</code>ing clears all filters, and therefore
 if <code>REVIVE</code> occurs frequently it is similar to always declining with a very
 short timeout (violation of guideline (3)).</li>
+<li><strong>Use <code>FrameworkInfo.offer_filters</code></strong>: This allows the scheduler to specify
+global offer filters (<code>Decline</code> filters, on the other hand, are per-agent).
+Currently supported is <code>OfferFilters.min_allocatable_resources</code> which acts as
+an override of the cluster level <code>--min_allocatable_resources</code> master flag for
+each of the scheduler&rsquo;s roles. Keeping the <code>FrameworkInfo.offer_filters</code>
+up-to-date with the minimum desired offer shape for each role will ensure that
+the sccheduler gets a better chance to receive offers sized with sufficient
+resources.</li>
 </ol>
 
 
