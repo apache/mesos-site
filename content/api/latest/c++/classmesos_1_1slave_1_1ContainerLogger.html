@@ -95,6 +95,8 @@ Static Public Member Functions</h2></td></tr>
 <div class="textblock"><p>A containerizer component used to manage container logs. </p>
 <p>The <code><a class="el" href="classmesos_1_1slave_1_1ContainerLogger.html" title="A containerizer component used to manage container logs. ">ContainerLogger</a></code> is responsible for handling the stdout/stderr of containers.</p>
 <p>The container logger is also responsible for providing a public interface for retrieving the logs.</p>
+<p>Care should be taken when implementing stateful container loggers: the logger should be capable of recovering its state and its managed containers during the agent recovery process in absence of such interface methods as <code><a class="el" href="namespacemesos_1_1internal_1_1log_1_1protocol.html#afa485608d261b11b9b4c619b4b4d6e28">ContainerLogger::recover()</a></code> and <code><a class="el" href="namespacecgroups.html#a12d210f286e5fcf7993c0c90b9459606">ContainerLogger::cleanup()</a></code>.</p>
+<p>The lack of <code><a class="el" href="namespacecgroups.html#a12d210f286e5fcf7993c0c90b9459606">ContainerLogger::cleanup()</a></code> or similar prevents synchronization on container termination, i.e., delaying sending a terminal status update for the container until the logger reports completion.</p>
 <p>TODO(josephw): Provide an interface for exposing custom log-retrieval endpoints via the Mesos web UI. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a2655dbc87f01116b204bcc03a199da16"></a>
@@ -212,7 +214,7 @@ Static Public Member Functions</h2></td></tr>
 
 <p>Called before Mesos creates a container. </p>
 <p>The container logger is given some of the arguments which the containerizer will use to launch a container. The container logger should return a <code><a class="el" href="structmesos_1_1slave_1_1ContainerIO.html" title="An abstraction around the IO classes used to redirect stdin/stdout/stderr to/from a container by the ...">ContainerIO</a></code> which tells the containerizer how to handle the stdout and stderr of the container. The container logger can modify the fields within the <code><a class="el" href="structmesos_1_1slave_1_1ContainerIO.html" title="An abstraction around the IO classes used to redirect stdin/stdout/stderr to/from a container by the ...">ContainerIO</a></code> as much as necessary, with some exceptions; see the struct <code><a class="el" href="structmesos_1_1slave_1_1ContainerIO.html" title="An abstraction around the IO classes used to redirect stdin/stdout/stderr to/from a container by the ...">ContainerIO</a></code> above.</p>
-<p>NOTE: The container logger should not lose stdout/stderr if the agent fails over. Additionally, if the container logger is stateful, the logger should be capable of recovering managed containers during the agent recovery process. See <code>ContainerLogger::recover</code>.</p>
+<p>The container logger should not lose stdout/stderr if the agent fails over.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">containerId</td><td>The ID of the container. </td></tr>
