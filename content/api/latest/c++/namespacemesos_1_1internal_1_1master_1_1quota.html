@@ -79,6 +79,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a2fba766a65048b573fa1bda062a94ecd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classOption.html">Option</a>&lt; <a class="el" href="classError.html">Error</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1internal_1_1master_1_1quota.html#a2fba766a65048b573fa1bda062a94ecd">validate</a> (const mesos::quota::QuotaRequest &amp;request)</td></tr>
 <tr class="memdesc:a2fba766a65048b573fa1bda062a94ecd"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <code>QuotaRequest</code> is valid if the following conditions are met:  <a href="#a2fba766a65048b573fa1bda062a94ecd">More...</a><br /></td></tr>
 <tr class="separator:a2fba766a65048b573fa1bda062a94ecd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adfd96cbceddf5cfd7f09ad3df22ddef0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classOption.html">Option</a>&lt; <a class="el" href="classError.html">Error</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1internal_1_1master_1_1quota.html#adfd96cbceddf5cfd7f09ad3df22ddef0">validate</a> (const mesos::quota::QuotaConfig &amp;config)</td></tr>
+<tr class="memdesc:adfd96cbceddf5cfd7f09ad3df22ddef0"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <code>QuotaConfig</code> is valid if the following conditions are met:  <a href="#adfd96cbceddf5cfd7f09ad3df22ddef0">More...</a><br /></td></tr>
+<tr class="separator:adfd96cbceddf5cfd7f09ad3df22ddef0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a class="anchor" id="ae3c3381ff852f321f35f40f8a3a1dc70"></a>
@@ -118,6 +121,27 @@ Functions</h2></td></tr>
 <p>(2) The guarantee and limit contain only valid non-revocable scalar resources without reservations, disk info, and only 1 entry for each resource name.</p>
 <p>(3) If both guarantee and limit are set for a particular resource, then guarantee &lt;= limit for that resource.</p>
 <p>TODO(bmahler): Remove the old validation function in favor of this one. This requires some new logic outside of this function to prevent users from setting <code>limit</code> explicitly in the old API and setting the <code>limit</code> implicitly for users of the old API before calling into this. </p>
+
+</div>
+</div>
+<a class="anchor" id="adfd96cbceddf5cfd7f09ad3df22ddef0"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classOption.html">Option</a>&lt;<a class="el" href="classError.html">Error</a>&gt; mesos::internal::master::quota::validate </td>
+          <td>(</td>
+          <td class="paramtype">const mesos::quota::QuotaConfig &amp;&#160;</td>
+          <td class="paramname"><em>config</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A <code>QuotaConfig</code> is valid if the following conditions are met: </p>
+<p>(1) The config has a valid non-"*" role.</p>
+<p>(2) Resource scalar values are non-negative and finite.</p>
+<p>(3) If both guarantees and limits are set for a particular resource, then guarantee &lt;= limit for that resource. </p>
 
 </div>
 </div>
