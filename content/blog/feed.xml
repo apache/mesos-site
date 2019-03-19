@@ -4,7 +4,59 @@
   <id>http://mesos.apache.org/blog</id>
   <link href="http://mesos.apache.org/blog" />
   <link href="http://mesos.apache.org/blog/feed.xml" rel="self"/>
-  <updated>2019-02-26T00:00:00+00:00</updated>
+  <updated>2019-03-19T00:00:00+00:00</updated>
+  <entry>
+    <id>http://mesos.apache.org/blog/mesos-1-5-3-released/</id>
+    <link href="/blog/mesos-1-5-3-released/" />
+    <title>
+      Apache Mesos 1.5.3 Released
+    </title>
+    <updated>2019-03-19T00:00:00+00:00</updated>
+    <author>
+      <name>Gilbert Song</name>
+    </author>
+    <content type="html">
+      &lt;p&gt;The latest Mesos 1.5.x release, 1.5.3, is now available for &lt;a href=&quot;http://mesos.apache.org/downloads&quot;&gt;download&lt;/a&gt;. This release includes important bug fixes and improvements on top of 1.5.0. It is recommended to use this version if you are considering using Mesos 1.5. More specifically, this release includes the following:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-7474&quot;&gt;MESOS-7474&lt;/a&gt; - Mesos fetcher cache doesn&amp;rsquo;t retry when missed.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8887&quot;&gt;MESOS-8887&lt;/a&gt; - Unreachable tasks are not GC&apos;ed when unreachable agent is GC&apos;ed.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-8907&quot;&gt;MESOS-8907&lt;/a&gt; - Docker image fetcher fails with HTTP/2.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9210&quot;&gt;MESOS-9210&lt;/a&gt; - Mesos v1 scheduler library does not properly handle SUBSCRIBE retries.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9305&quot;&gt;MESOS-9305&lt;/a&gt; - Create cgoup recursively to workaround systemd deleting cgroups_root.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9317&quot;&gt;MESOS-9317&lt;/a&gt; - Some master endpoints do not handle failed authorization properly.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9332&quot;&gt;MESOS-9332&lt;/a&gt; - Nested container should run as the same user of its parent container by default.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9334&quot;&gt;MESOS-9334&lt;/a&gt; - Container stuck at ISOLATING state due to libevent poll never returns.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9362&quot;&gt;MESOS-9362&lt;/a&gt; - Test &lt;code&gt;CgroupsIsolatorTest.ROOT_CGROUPS_CreateRecursively&lt;/code&gt; is flaky.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9411&quot;&gt;MESOS-9411&lt;/a&gt; - Validation of JWT tokens using HS256 hashing algorithm is not thread safe.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9492&quot;&gt;MESOS-9492&lt;/a&gt; - Persist CNI working directory across reboot.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9507&quot;&gt;MESOS-9507&lt;/a&gt; - Agent could not recover due to empty docker volume checkpointed files.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9518&quot;&gt;MESOS-9518&lt;/a&gt; - CNI_NETNS should not be set for orphan containers that do not have network namespace.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9532&quot;&gt;MESOS-9532&lt;/a&gt; - ResourceOffersTest.ResourceOfferWithMultipleSlaves is flaky.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9533&quot;&gt;MESOS-9533&lt;/a&gt; - CniIsolatorTest.ROOT_CleanupAfterReboot is flaky.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9555&quot;&gt;MESOS-9555&lt;/a&gt; - Allocator CHECK failure: reservationScalarQuantities.contains(role).&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9581&quot;&gt;MESOS-9581&lt;/a&gt; - Mesos package naming appears to be undeterministic.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;Full release notes are available in the release &lt;a href=&quot;https://gitbox.apache.org/repos/asf?p=mesos.git;a=blob_plain;f=CHANGELOG;hb=1.5.3&quot;&gt;CHANGELOG&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3&gt;Upgrades&lt;/h3&gt;
+
+&lt;p&gt;Rolling upgrades from a Mesos 1.5.0 cluster to Mesos 1.5.3 are straightforward. Please refer to the &lt;a href=&quot;http://mesos.apache.org/documentation/latest/upgrades/&quot;&gt;upgrade guide&lt;/a&gt; for detailed information on upgrading to Mesos 1.5.3 from 1.4.x, 1.3.x, or 1.2.x.&lt;/p&gt;
+
+&lt;h3&gt;Try it out&lt;/h3&gt;
+
+&lt;p&gt;Please try out this release and let us know what you think. If you run into any issues, let us know on the &lt;a href=&quot;https://mesos.apache.org/community&quot;&gt;user mailing list and/or Slack/IRC&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3&gt;Thanks!&lt;/h3&gt;
+
+&lt;p&gt;Thanks to the 7 contributors who made 1.5.3 possible:&lt;/p&gt;
+
+&lt;p&gt;Andrei Budnik, Benjamin Mahler, Gilbert Song, Jie Yu, Qian Zhang, Till Toenshoff, Vinod Kone&lt;/p&gt;
+
+	</content>
+  </entry>
   <entry>
     <id>http://mesos.apache.org/blog/mesos-1-4-3-released/</id>
     <link href="/blog/mesos-1-4-3-released/" />
