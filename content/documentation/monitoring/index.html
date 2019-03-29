@@ -762,6 +762,68 @@ The task states listed here match those of the task state machine.</p>
 </table>
 
 
+<h4>Operations</h4>
+
+<p>The following metrics provide information about offer operations on the master.</p>
+
+<p>Below, <code>OPERATION_TYPE</code> refers to any one of <code>reserve</code>, <code>unreserve</code>, <code>create</code>,
+<code>destroy</code>, <code>grow_volume</code>, <code>shrink_volume</code>, <code>create_disk</code> or <code>destroy_disk</code>.</p>
+
+<p>NOTE: The counter for terminal operation states can over-count over time. In
+particular if an agent contained unacknowledged terminal status updates when
+it was marked gone or marked unreachable, these operations will be double-counted
+as both their original state and <code>OPERATION_GONE</code>/<code>OPERATION_UNREACHABLE</code>.</p>
+
+<table class="table table-striped">
+<thead>
+<tr><th>Metric</th><th>Description</th><th>Type</th>
+</thead>
+<tr>
+  <td>
+  <code>master/operations/total</code>
+  </td>
+  <td>Total number of operations known to this master</td>
+  <td>Gauge</td>
+</tr>
+<tr>
+  <td>
+  <code>master/operations/&lt;OPERATION_STATE&gt;</code>
+  </td>
+  <td>Number of operations in the given non-terminal state (`pending`, `recovering` or `unreachable`)</td>
+  <td>Gauge</td>
+</tr>
+<tr>
+  <td>
+  <code>master/operations/&lt;OPERATION_STATE&gt;</code>
+  </td>
+  <td>Number of operations in the given terminal state (`finished`, `error`, `dropped` or `gone_by_operator`)</td>
+  <td>Counter</td>
+</tr>
+
+<tr>
+  <td>
+  <code>master/operations/&lt;OPERATION_TYPE&gt;/total</code>
+  </td>
+  <td>Total number of operations with the given type known to this master</td>
+  <td>Gauge</td>
+</tr>
+<tr>
+  <td>
+  <code>master/operations/&lt;OPERATION_TYPE&gt;/&lt;OPERATION_STATE&gt;</code>
+  </td>
+  <td>Number of operations with the given type in the given non-terminal state (`pending`, `recovering` or `unreachable`)</td>
+  <td>Gauge</td>
+</tr>
+<tr>
+  <td>
+  <code>master/operations/&lt;OPERATION_TYPE&gt;/&lt;OPERATION_STATE&gt;</code>
+  </td>
+  <td>Number of operations with the given type in the given state (`finished`, `error`, `dropped` or `gone_by_operator`)</td>
+  <td>Counter</td>
+</tr>
+</table>
+
+
 <h4>Messages</h4>
 
 <p>The following metrics provide information about messages between the master and
