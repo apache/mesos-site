@@ -123,15 +123,17 @@ var activeTableTab = "activeTableTab";
 extends &lt;any&gt;
 implements <a href="../../../org/apache/mesos/Protos.Offer.Operation.DestroyDiskOrBuilder.html" title="interface in org.apache.mesos">Protos.Offer.Operation.DestroyDiskOrBuilder</a></pre>
 <div class="block"><pre>
- Destroy a `MOUNT` or `BLOCK` disk resource backed by a CSI volume.
+ Destroy a disk resource backed by a CSI volume.
  In the typical case where the CSI plugin of the volume supports volume
- deprovisioning and the profile of the disk resource is known to Mesos,
- the volume will be deprovisioned and a `RAW` disk resource with the same
- profile but no source ID will be returned. However, the following corner
- cases could lead to different outcomes:
+ deprovisioning and the disk resource is a `MOUNT` or `BLOCK` disk with a
+ profile known to Mesos, the volume will be deprovisioned and a `RAW` disk
+ resource with the same profile but no source ID will be returned.
+ However, the following scenarios could lead to different outcomes:
  (1) If the CSI plugin supports volume deprovisioning but the profile of
-     the disk resource is no longer reported by the disk profile adaptor,
-     the volume will be deprovisioned but no resource will be returned.
+     the disk resource is unknown to the disk profile adaptor, or the disk
+     resource is a `RAW` disk with no profile but a source ID (see above
+     for possible scenarios), the volume will be deprovisioned but no
+     resource will be returned.
  (2) If the CSI plugin does not support volume deprovisioning, the volume
      won't be deprovisioned and a `RAW` disk resource with no profile but
      the same source ID will be returned.
@@ -187,7 +189,7 @@ implements <a href="../../../org/apache/mesos/Protos.Offer.Operation.DestroyDisk
 <td class="colFirst"><code><a href="../../../org/apache/mesos/Protos.Offer.Operation.DestroyDisk.Builder.html" title="class in org.apache.mesos">Protos.Offer.Operation.DestroyDisk.Builder</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.Offer.Operation.DestroyDisk.Builder.html#clearSource--">clearSource</a></span>()</code>
 <div class="block">
- NOTE: Only a `MOUNT` or `BLOCK` disk is allowed in the `source` field.</div>
+ NOTE: Only a `MOUNT`, `BLOCK` or `RAW` disk is allowed in this field.</div>
 </td>
 </tr>
 <tr id="i7" class="rowColor">
@@ -210,28 +212,28 @@ implements <a href="../../../org/apache/mesos/Protos.Offer.Operation.DestroyDisk
 <td class="colFirst"><code><a href="../../../org/apache/mesos/Protos.Resource.html" title="class in org.apache.mesos">Protos.Resource</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.Offer.Operation.DestroyDisk.Builder.html#getSource--">getSource</a></span>()</code>
 <div class="block">
- NOTE: Only a `MOUNT` or `BLOCK` disk is allowed in the `source` field.</div>
+ NOTE: Only a `MOUNT`, `BLOCK` or `RAW` disk is allowed in this field.</div>
 </td>
 </tr>
 <tr id="i12" class="altColor">
 <td class="colFirst"><code><a href="../../../org/apache/mesos/Protos.Resource.Builder.html" title="class in org.apache.mesos">Protos.Resource.Builder</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.Offer.Operation.DestroyDisk.Builder.html#getSourceBuilder--">getSourceBuilder</a></span>()</code>
 <div class="block">
- NOTE: Only a `MOUNT` or `BLOCK` disk is allowed in the `source` field.</div>
+ NOTE: Only a `MOUNT`, `BLOCK` or `RAW` disk is allowed in this field.</div>
 </td>
 </tr>
 <tr id="i13" class="rowColor">
 <td class="colFirst"><code><a href="../../../org/apache/mesos/Protos.ResourceOrBuilder.html" title="interface in org.apache.mesos">Protos.ResourceOrBuilder</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.Offer.Operation.DestroyDisk.Builder.html#getSourceOrBuilder--">getSourceOrBuilder</a></span>()</code>
 <div class="block">
- NOTE: Only a `MOUNT` or `BLOCK` disk is allowed in the `source` field.</div>
+ NOTE: Only a `MOUNT`, `BLOCK` or `RAW` disk is allowed in this field.</div>
 </td>
 </tr>
 <tr id="i14" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.Offer.Operation.DestroyDisk.Builder.html#hasSource--">hasSource</a></span>()</code>
 <div class="block">
- NOTE: Only a `MOUNT` or `BLOCK` disk is allowed in the `source` field.</div>
+ NOTE: Only a `MOUNT`, `BLOCK` or `RAW` disk is allowed in this field.</div>
 </td>
 </tr>
 <tr id="i15" class="rowColor">
@@ -255,7 +257,7 @@ implements <a href="../../../org/apache/mesos/Protos.Offer.Operation.DestroyDisk
 <td class="colFirst"><code><a href="../../../org/apache/mesos/Protos.Offer.Operation.DestroyDisk.Builder.html" title="class in org.apache.mesos">Protos.Offer.Operation.DestroyDisk.Builder</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.Offer.Operation.DestroyDisk.Builder.html#mergeSource-org.apache.mesos.Protos.Resource-">mergeSource</a></span>(<a href="../../../org/apache/mesos/Protos.Resource.html" title="class in org.apache.mesos">Protos.Resource</a>&nbsp;value)</code>
 <div class="block">
- NOTE: Only a `MOUNT` or `BLOCK` disk is allowed in the `source` field.</div>
+ NOTE: Only a `MOUNT`, `BLOCK` or `RAW` disk is allowed in this field.</div>
 </td>
 </tr>
 <tr id="i20" class="altColor">
@@ -277,14 +279,14 @@ implements <a href="../../../org/apache/mesos/Protos.Offer.Operation.DestroyDisk
 <td class="colFirst"><code><a href="../../../org/apache/mesos/Protos.Offer.Operation.DestroyDisk.Builder.html" title="class in org.apache.mesos">Protos.Offer.Operation.DestroyDisk.Builder</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.Offer.Operation.DestroyDisk.Builder.html#setSource-org.apache.mesos.Protos.Resource.Builder-">setSource</a></span>(<a href="../../../org/apache/mesos/Protos.Resource.Builder.html" title="class in org.apache.mesos">Protos.Resource.Builder</a>&nbsp;builderForValue)</code>
 <div class="block">
- NOTE: Only a `MOUNT` or `BLOCK` disk is allowed in the `source` field.</div>
+ NOTE: Only a `MOUNT`, `BLOCK` or `RAW` disk is allowed in this field.</div>
 </td>
 </tr>
 <tr id="i24" class="altColor">
 <td class="colFirst"><code><a href="../../../org/apache/mesos/Protos.Offer.Operation.DestroyDisk.Builder.html" title="class in org.apache.mesos">Protos.Offer.Operation.DestroyDisk.Builder</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/Protos.Offer.Operation.DestroyDisk.Builder.html#setSource-org.apache.mesos.Protos.Resource-">setSource</a></span>(<a href="../../../org/apache/mesos/Protos.Resource.html" title="class in org.apache.mesos">Protos.Resource</a>&nbsp;value)</code>
 <div class="block">
- NOTE: Only a `MOUNT` or `BLOCK` disk is allowed in the `source` field.</div>
+ NOTE: Only a `MOUNT`, `BLOCK` or `RAW` disk is allowed in this field.</div>
 </td>
 </tr>
 <tr id="i25" class="rowColor">
@@ -475,7 +477,7 @@ implements <a href="../../../org/apache/mesos/Protos.Offer.Operation.DestroyDisk
 <h4>hasSource</h4>
 <pre>public&nbsp;boolean&nbsp;hasSource()</pre>
 <div class="block"><pre>
- NOTE: Only a `MOUNT` or `BLOCK` disk is allowed in the `source` field.
+ NOTE: Only a `MOUNT`, `BLOCK` or `RAW` disk is allowed in this field.
  </pre>
 
  <code>required .mesos.Resource source = 1;</code></div>
@@ -493,7 +495,7 @@ implements <a href="../../../org/apache/mesos/Protos.Offer.Operation.DestroyDisk
 <h4>getSource</h4>
 <pre>public&nbsp;<a href="../../../org/apache/mesos/Protos.Resource.html" title="class in org.apache.mesos">Protos.Resource</a>&nbsp;getSource()</pre>
 <div class="block"><pre>
- NOTE: Only a `MOUNT` or `BLOCK` disk is allowed in the `source` field.
+ NOTE: Only a `MOUNT`, `BLOCK` or `RAW` disk is allowed in this field.
  </pre>
 
  <code>required .mesos.Resource source = 1;</code></div>
@@ -511,7 +513,7 @@ implements <a href="../../../org/apache/mesos/Protos.Offer.Operation.DestroyDisk
 <h4>setSource</h4>
 <pre>public&nbsp;<a href="../../../org/apache/mesos/Protos.Offer.Operation.DestroyDisk.Builder.html" title="class in org.apache.mesos">Protos.Offer.Operation.DestroyDisk.Builder</a>&nbsp;setSource(<a href="../../../org/apache/mesos/Protos.Resource.html" title="class in org.apache.mesos">Protos.Resource</a>&nbsp;value)</pre>
 <div class="block"><pre>
- NOTE: Only a `MOUNT` or `BLOCK` disk is allowed in the `source` field.
+ NOTE: Only a `MOUNT`, `BLOCK` or `RAW` disk is allowed in this field.
  </pre>
 
  <code>required .mesos.Resource source = 1;</code></div>
@@ -525,7 +527,7 @@ implements <a href="../../../org/apache/mesos/Protos.Offer.Operation.DestroyDisk
 <h4>setSource</h4>
 <pre>public&nbsp;<a href="../../../org/apache/mesos/Protos.Offer.Operation.DestroyDisk.Builder.html" title="class in org.apache.mesos">Protos.Offer.Operation.DestroyDisk.Builder</a>&nbsp;setSource(<a href="../../../org/apache/mesos/Protos.Resource.Builder.html" title="class in org.apache.mesos">Protos.Resource.Builder</a>&nbsp;builderForValue)</pre>
 <div class="block"><pre>
- NOTE: Only a `MOUNT` or `BLOCK` disk is allowed in the `source` field.
+ NOTE: Only a `MOUNT`, `BLOCK` or `RAW` disk is allowed in this field.
  </pre>
 
  <code>required .mesos.Resource source = 1;</code></div>
@@ -539,7 +541,7 @@ implements <a href="../../../org/apache/mesos/Protos.Offer.Operation.DestroyDisk
 <h4>mergeSource</h4>
 <pre>public&nbsp;<a href="../../../org/apache/mesos/Protos.Offer.Operation.DestroyDisk.Builder.html" title="class in org.apache.mesos">Protos.Offer.Operation.DestroyDisk.Builder</a>&nbsp;mergeSource(<a href="../../../org/apache/mesos/Protos.Resource.html" title="class in org.apache.mesos">Protos.Resource</a>&nbsp;value)</pre>
 <div class="block"><pre>
- NOTE: Only a `MOUNT` or `BLOCK` disk is allowed in the `source` field.
+ NOTE: Only a `MOUNT`, `BLOCK` or `RAW` disk is allowed in this field.
  </pre>
 
  <code>required .mesos.Resource source = 1;</code></div>
@@ -553,7 +555,7 @@ implements <a href="../../../org/apache/mesos/Protos.Offer.Operation.DestroyDisk
 <h4>clearSource</h4>
 <pre>public&nbsp;<a href="../../../org/apache/mesos/Protos.Offer.Operation.DestroyDisk.Builder.html" title="class in org.apache.mesos">Protos.Offer.Operation.DestroyDisk.Builder</a>&nbsp;clearSource()</pre>
 <div class="block"><pre>
- NOTE: Only a `MOUNT` or `BLOCK` disk is allowed in the `source` field.
+ NOTE: Only a `MOUNT`, `BLOCK` or `RAW` disk is allowed in this field.
  </pre>
 
  <code>required .mesos.Resource source = 1;</code></div>
@@ -567,7 +569,7 @@ implements <a href="../../../org/apache/mesos/Protos.Offer.Operation.DestroyDisk
 <h4>getSourceBuilder</h4>
 <pre>public&nbsp;<a href="../../../org/apache/mesos/Protos.Resource.Builder.html" title="class in org.apache.mesos">Protos.Resource.Builder</a>&nbsp;getSourceBuilder()</pre>
 <div class="block"><pre>
- NOTE: Only a `MOUNT` or `BLOCK` disk is allowed in the `source` field.
+ NOTE: Only a `MOUNT`, `BLOCK` or `RAW` disk is allowed in this field.
  </pre>
 
  <code>required .mesos.Resource source = 1;</code></div>
@@ -581,7 +583,7 @@ implements <a href="../../../org/apache/mesos/Protos.Offer.Operation.DestroyDisk
 <h4>getSourceOrBuilder</h4>
 <pre>public&nbsp;<a href="../../../org/apache/mesos/Protos.ResourceOrBuilder.html" title="interface in org.apache.mesos">Protos.ResourceOrBuilder</a>&nbsp;getSourceOrBuilder()</pre>
 <div class="block"><pre>
- NOTE: Only a `MOUNT` or `BLOCK` disk is allowed in the `source` field.
+ NOTE: Only a `MOUNT`, `BLOCK` or `RAW` disk is allowed in this field.
  </pre>
 
  <code>required .mesos.Resource source = 1;</code></div>
