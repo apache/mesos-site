@@ -2337,9 +2337,7 @@ metric.</p>
 <a href="/documentation/latest/./standalone-container/">standalone containers</a>. To monitor the health of these
 CSI plugins for a storage resource provider with <em>type</em> and <em>name</em>, the
 following metrics provide information about plugin terminations and ongoing and
-completed CSI calls made to the plugin. In the following metrics, the <em>rpc</em>
-placeholder refers to the name of a particular CSI call, which is described in
-the list of <a href="#supported-csi-calls">supported CSI calls</a>.</p>
+completed CSI calls made to the plugin.</p>
 
 <table class="table table-striped">
 <thead>
@@ -2354,67 +2352,34 @@ the list of <a href="#supported-csi-calls">supported CSI calls</a>.</p>
 </tr>
 <tr>
   <td>
-  <code>resource_providers/<i>&lt;type&gt;</i>.<i>&lt;name&gt;</i>/csi_plugin/rpcs/<i>&lt;rpc&gt;</i>/pending</code>
+  <code>resource_providers/<i>&lt;type&gt;</i>.<i>&lt;name&gt;</i>/csi_plugin/rpcs_pending</code>
   </td>
-  <td>Number of ongoing <i>rpc</i> calls</td>
+  <td>Number of ongoing CSI calls</td>
   <td>Gauge</td>
 </tr>
 <tr>
   <td>
-  <code>resource_providers/<i>&lt;type&gt;</i>.<i>&lt;name&gt;</i>/csi_plugin/rpcs/<i>&lt;rpc&gt;</i>/successes</code>
+  <code>resource_providers/<i>&lt;type&gt;</i>.<i>&lt;name&gt;</i>/csi_plugin/rpcs_finished</code>
   </td>
-  <td>Number of successful <i>rpc</i> calls</td>
+  <td>Number of successful CSI calls</td>
   <td>Counter</td>
 </tr>
 <tr>
   <td>
-  <code>resource_providers/<i>&lt;type&gt;</i>.<i>&lt;name&gt;</i>/csi_plugin/rpcs/<i>&lt;rpc&gt;</i>/errors</code>
+  <code>resource_providers/<i>&lt;type&gt;</i>.<i>&lt;name&gt;</i>/csi_plugin/rpcs_failed</code>
   </td>
-  <td>Number of erroneous <i>rpc</i> calls</td>
+  <td>Number of failed CSI calls</td>
   <td>Counter</td>
 </tr>
 <tr>
   <td>
-  <code>resource_providers/<i>&lt;type&gt;</i>.<i>&lt;name&gt;</i>/csi_plugin/rpcs/<i>&lt;rpc&gt;</i>/cancelled</code>
+  <code>resource_providers/<i>&lt;type&gt;</i>.<i>&lt;name&gt;</i>/csi_plugin/rpcs_cancelled</code>
   </td>
-  <td>Number of cancelled <i>rpc</i> calls</td>
+  <td>Number of cancelled CSI calls</td>
   <td>Counter</td>
 </tr>
 </table>
 
-
-<h5>Supported CSI Calls</h5>
-
-<p>The following is a comprehensive list of CSI calls that are used in storage
-resource providers. These names are used to replace the <em>rpc</em> placeholder in the
-above metrics.</p>
-
-<ul>
-<li><a href="https://github.com/container-storage-interface/spec/blob/v0.2.0/spec.md#getplugininfo"><code>csi.v0.Identity.GetPluginInfo</code></a></li>
-<li><a href="https://github.com/container-storage-interface/spec/blob/v0.2.0/spec.md#getplugincapabilities"><code>csi.v0.Identity.GetPluginCapabilities</code></a></li>
-<li><a href="https://github.com/container-storage-interface/spec/blob/v0.2.0/spec.md#probe"><code>csi.v0.Identity.Probe</code></a></li>
-<li><a href="https://github.com/container-storage-interface/spec/blob/v0.2.0/spec.md#createvolume"><code>csi.v0.Controller.CreateVolume</code></a></li>
-<li><a href="https://github.com/container-storage-interface/spec/blob/v0.2.0/spec.md#deletevolume"><code>csi.v0.Controller.DeleteVolume</code></a></li>
-<li><a href="https://github.com/container-storage-interface/spec/blob/v0.2.0/spec.md#controllerpublishvolume"><code>csi.v0.Controller.ControllerPublishVolume</code></a></li>
-<li><a href="https://github.com/container-storage-interface/spec/blob/v0.2.0/spec.md#controllerunpublishvolume"><code>csi.v0.Controller.ControllerUnpublishVolume</code></a></li>
-<li><a href="https://github.com/container-storage-interface/spec/blob/v0.2.0/spec.md#validatevolumecapabilities"><code>csi.v0.Controller.ValidateVolumeCapabilities</code></a></li>
-<li><a href="https://github.com/container-storage-interface/spec/blob/v0.2.0/spec.md#listvolumes"><code>csi.v0.Controller.ListVolumes</code></a></li>
-<li><a href="https://github.com/container-storage-interface/spec/blob/v0.2.0/spec.md#getcapacity"><code>csi.v0.Controller.GetCapacity</code></a></li>
-<li><a href="https://github.com/container-storage-interface/spec/blob/v0.2.0/spec.md#controllergetcapabilities"><code>csi.v0.Controller.ControllerGetCapabilities</code></a></li>
-<li><a href="https://github.com/container-storage-interface/spec/blob/v0.2.0/spec.md#node-service-rpc"><code>csi.v0.Node.NodeStageVolume</code></a></li>
-<li><a href="https://github.com/container-storage-interface/spec/blob/v0.2.0/spec.md#nodeunstagevolume"><code>csi.v0.Node.NodeUnstageVolume</code></a></li>
-<li><a href="https://github.com/container-storage-interface/spec/blob/v0.2.0/spec.md#nodepublishvolume"><code>csi.v0.Node.NodePublishVolume</code></a></li>
-<li><a href="https://github.com/container-storage-interface/spec/blob/v0.2.0/spec.md#nodeunpublishvolume"><code>csi.v0.Node.NodeUnpublishVolume</code></a></li>
-<li><a href="https://github.com/container-storage-interface/spec/blob/v0.2.0/spec.md#nodegetid"><code>csi.v0.Node.NodeGetId</code></a></li>
-<li><a href="https://github.com/container-storage-interface/spec/blob/v0.2.0/spec.md#nodegetcapabilities"><code>csi.v0.Node.NodeGetCapabilities</code></a></li>
-</ul>
-
-
-<p>For example, cluster operators can monitor the number of successful
-<code>csi.v0.Controller.CreateVolume</code> calls that are made by the resource provider
-with type <code>org.apache.mesos.rp.local.storage</code> and name <code>lvm</code> through the
-<code>resource_providers/org.apache.mesos.rp.local.storage.lvm/csi_plugin/rpcs/csi.v0.Controller.CreateVolume/successes</code>
-metric.</p>
 
   </div>
 </div>
