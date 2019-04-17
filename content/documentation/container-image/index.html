@@ -288,10 +288,13 @@ PONG
 
 <p>Image provisioner uses <a href="https://docs.docker.com/registry/spec/api/">Docker v2 registry
 API</a> to fetch Docker
-images/layers. The fetching is based on <code>curl</code>, therefore SSL is
-automatically handled. For private registries, the operator needs to
-configure <code>curl</code> accordingly so that it knows where to find the
-additional certificate files.</p>
+images/layers. Both docker manifest
+<a href="https://docs.docker.com/registry/spec/manifest-v2-1/">v2 schema1</a>
+and <a href="https://docs.docker.com/registry/spec/manifest-v2-2/">v2 schema2</a>
+are supported (v2 schema2 is supported starting from 1.8.0). The
+fetching is based on <code>curl</code>, therefore SSL is automatically handled.
+For private registries, the operator needs to configure <code>curl</code>
+with the location of required CA certificates.</p>
 
 <p>Fetching requiring authentication is supported through the
 <code>--docker_config</code> agent flag. Starting from 1.0, operators can use
