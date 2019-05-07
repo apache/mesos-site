@@ -4,7 +4,149 @@
   <id>http://mesos.apache.org/blog</id>
   <link href="http://mesos.apache.org/blog" />
   <link href="http://mesos.apache.org/blog/feed.xml" rel="self"/>
-  <updated>2019-03-19T00:00:00+00:00</updated>
+  <updated>2019-05-02T00:00:00+00:00</updated>
+  <entry>
+    <id>http://mesos.apache.org/blog/mesos-1-8-0-released/</id>
+    <link href="/blog/mesos-1-8-0-released/" />
+    <title>
+      Apache Mesos 1.8: Allocator Performance, Seccomp Isolation and Operation Feedback
+    </title>
+    <updated>2019-05-02T00:00:00+00:00</updated>
+    <author>
+      <name>Benno Evers</name>
+    </author>
+    <content type="html">
+      &lt;p&gt;We&amp;rsquo;re pleased to announce that Mesos 1.8.0 is now available for &lt;a href=&quot;/downloads&quot;&gt;download&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;As usual, lots of work and care went into this release, with a total of 255 JIRA issues resolved,
+and 1149 commits containing a total diffstat of 656 files changed, 62213 insertions(+) and 20403 deletions(-).&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt; 4.9% 3rdparty/
+       1.5% 3rdparty/libprocess/
+       1.6% 3rdparty/stout/
+ 2.3% docs/
+ 2.5% include/
+ 2.0% site/
+77.4% src/
+       7.8% src/csi/
+       3.6% src/examples/
+      11.0% src/master/
+       4.2% src/resource_provider/
+      10.3% src/slave/
+      28.8% src/tests/
+6.7% support/
+       3.7% support/python3/
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Looking at the distribution of changes, nearly all components have seen major activity.
+Some of that is presented in more detail below.&lt;/p&gt;
+
+&lt;p&gt;One major focus for the 1.8 contributors seems to have been solid test coverage, with
+nearly one third of the total amount of lines changed being inside the test suite.&lt;/p&gt;
+
+&lt;h2&gt;Highlights&lt;/h2&gt;
+
+&lt;h3&gt;Allocator Performance Improvements&lt;/h3&gt;
+
+&lt;p&gt;In Mesos 1.8, allocator cycle time is significantly decreased when quota is
+used; around 40% for a small size cluster and up to 70% for larger clusters.
+This greatly narrows the allocator performance gap between quota and non-quota
+usage scenarios.&lt;/p&gt;
+
+&lt;p&gt;In addition, schedulers can now specify the minimum resource quantities needed
+in an offer, which acts as an override of the global &lt;code&gt;--min_allocatable_resources&lt;/code&gt;
+master flag. Updating schedulers to specify this field improves multi-scheduler
+scalability as it reduces the amount of offers declined from having insufficient
+resource quantities.&lt;/p&gt;
+
+&lt;p&gt;Note that this feature currently requires that the scheduler re-subscribes each
+time it wants to mutate the minimum resource quantity offer filter information,
+see &lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-7258&quot;&gt;MESOS-7258&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3&gt;Seccomp Isolator&lt;/h3&gt;
+
+&lt;p&gt;A new &lt;code&gt;linux/seccomp&lt;/code&gt; &lt;a href=&quot;docs/isolators/linux-seccomp&quot;&gt;isolator&lt;/a&gt; was added. This
+isolator makes use of the
+&lt;a href=&quot;https://www.kernel.org/doc/Documentation/prctl/seccomp_filter.txt&quot;&gt;seccomp&lt;/a&gt;
+facility provided by recent linux kernels.&lt;/p&gt;
+
+&lt;p&gt;Using this isolator, containers launched by Mesos containerizer can be sandboxed
+by enabling filtering of system calls using a configurable policy.&lt;/p&gt;
+
+&lt;h3&gt;Operation Feedback&lt;/h3&gt;
+
+&lt;p&gt;In Mesos 1.6, operation feedback was introduced for operations on resources
+by a resource provider.&lt;/p&gt;
+
+&lt;p&gt;In Mesos 1.8, v1 schedulers can now receive operation feedback for operations
+on agent default resources, i.e. normal cpu, memory, and disk. This means that
+the v1 scheduler API&amp;rsquo;s operation feedback feature can now be used for any offer
+operations except for &lt;code&gt;LAUNCH&lt;/code&gt; and &lt;code&gt;LAUNCH_GROUP&lt;/code&gt;, on any type of resources.&lt;/p&gt;
+
+&lt;h3&gt;Containerization&lt;/h3&gt;
+
+&lt;p&gt;A number of containerization-related improvements have landed in Mesos 1.8:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Support pulling docker images with docker manifest
+V2 Schema2 on Mesos Containerizer.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Support custom port range option to the &lt;code&gt;network/ports&lt;/code&gt;
+isolator. Added the &lt;code&gt;--container_ports_isolated_range&lt;/code&gt; flag to the
+&lt;code&gt;network/ports&lt;/code&gt; isolator. This allows the operator to specify a custom
+port range to be protected by the isolator.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Support XFS quota for persistent volumes. Added
+persistent volume support to the &lt;code&gt;disk/xfs&lt;/code&gt; isolator.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Support an option to create non-existing host
+paths for host path volume in Mesos Containerizer. Added a new
+agent flag &lt;code&gt;--host_path_volume_force_creation&lt;/code&gt; for the
+&lt;code&gt;volume/host_path&lt;/code&gt; isolator.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h3&gt;CLI Improvements&lt;/h3&gt;
+
+&lt;p&gt;The Mesos CLI now offers the task subcommand with two actions. The first
+action, &lt;code&gt;task attach&lt;/code&gt;, allows you to attach your terminal to a running
+task launched with a tty. The second action, &lt;code&gt;task exec&lt;/code&gt;, launches a
+new nested container inside a running task.&lt;/p&gt;
+
+&lt;p&gt;To build the CLI, use the flag &lt;code&gt;--enable-new-cli&lt;/code&gt; with Autotools or
+&lt;code&gt;-DENABLE_NEW_CLI=1&lt;/code&gt; with CMake on MacOS or Linux.&lt;/p&gt;
+
+&lt;h3&gt;Experimental Features&lt;/h3&gt;
+
+&lt;p&gt;Mesos 1.8 adds experimental support for the new CSI v1 API. Operators can deploy
+plugins that are compatible to either CSI v0 or v1 to create persistent
+volumes through storage local resource providers, and Mesos will
+automatically detect which CSI versions are supported by the plugins.&lt;/p&gt;
+
+&lt;h2&gt;Upgrade&lt;/h2&gt;
+
+&lt;p&gt;Upgrades from Mesos 1.7.0 to Mesos 1.8.0 should be straightforward. Please
+refer to the &lt;a href=&quot;http://mesos.apache.org/documentation/latest/upgrades/&quot;&gt;upgrade guide&lt;/a&gt;
+for detailed information on upgrading to Mesos 1.8.0.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Frameworks relying on the experimental &lt;code&gt;RECONCILE_OPERATIONS&lt;/code&gt; call can
+not be updated to Mesos 1.8, since the API of that has been reworked in
+a non-backwards compatible manner.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h2&gt;Credits&lt;/h2&gt;
+
+&lt;p&gt;Finally, a big &lt;strong&gt;THANK YOU&lt;/strong&gt; goes out to all the 49 patch authors who made the 1.8.0 release possible:&lt;/p&gt;
+
+&lt;p&gt;Aaron Wood, Alexander Rojas, Alexander Rukletsov, Andrei Budnik, Andrei Sekretenko, Andrew Schwartzmeyer,
+Armand Grillet, Benjamin Bannier, Benjamin Hindman, Benjamin Mahler, Benno Evers, Chun-Hung Hsiao,
+Clement Michaud, Deepak Goel, Dominik Dary, Dragos Schebesch, Eric Chung, Fei Long, Gastón Kleiman,
+Gilbert Song, Greg Mann, Ilya Pronin, Jacob Janco, James DeFelice, James Peach, Jan Schlicht,
+Jason Lai, Jie Yu, Joseph Wu, Kapil Arya, Kevin Klues, Liangyu Zhao, Meng Zhu, Michael Park, Michał Łowicki,
+Packt, Pavel Kirillov, Qian Zhang, Robin Gögge, Se Choi, Senthil Kumaran, Sergey Urbanovich, Tad Guo
+Till Toenshoff, Tomasz Janiszewski, Vinod Kone, Xudong Ni&lt;/p&gt;
+
+	</content>
+  </entry>
   <entry>
     <id>http://mesos.apache.org/blog/mesos-1-5-3-released/</id>
     <link href="/blog/mesos-1-5-3-released/" />
