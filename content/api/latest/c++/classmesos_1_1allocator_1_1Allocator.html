@@ -83,9 +83,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a31133be8d61db570a2821b9bd4d7b90f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1allocator_1_1Allocator.html#a31133be8d61db570a2821b9bd4d7b90f">initialize</a> (const <a class="el" href="structmesos_1_1allocator_1_1Options.html">Options</a> &amp;options, const lambda::function&lt; void(const FrameworkID &amp;, const <a class="el" href="classhashmap.html">hashmap</a>&lt; std::string, <a class="el" href="classhashmap.html">hashmap</a>&lt; SlaveID, <a class="el" href="classmesos_1_1Resources.html">Resources</a> &gt;&gt; &amp;)&gt; &amp;offerCallback, const lambda::function&lt; void(const FrameworkID &amp;, const <a class="el" href="classhashmap.html">hashmap</a>&lt; SlaveID, <a class="el" href="structmesos_1_1UnavailableResources.html">UnavailableResources</a> &gt; &amp;)&gt; &amp;inverseOfferCallback)=0</td></tr>
 <tr class="memdesc:a31133be8d61db570a2821b9bd4d7b90f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the allocator when the master starts up.  <a href="#a31133be8d61db570a2821b9bd4d7b90f">More...</a><br /></td></tr>
 <tr class="separator:a31133be8d61db570a2821b9bd4d7b90f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad5ef746d74eb1e2583e6c179a14d21a4"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1allocator_1_1Allocator.html#ad5ef746d74eb1e2583e6c179a14d21a4">recover</a> (const int expectedAgentCount, const <a class="el" href="classhashmap.html">hashmap</a>&lt; std::string, <a class="el" href="structmesos_1_1Quota2.html">Quota2</a> &gt; &amp;quotas)=0</td></tr>
-<tr class="memdesc:ad5ef746d74eb1e2583e6c179a14d21a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Informs the allocator of the recovered state from the master.  <a href="#ad5ef746d74eb1e2583e6c179a14d21a4">More...</a><br /></td></tr>
-<tr class="separator:ad5ef746d74eb1e2583e6c179a14d21a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe1f158adb9f7a6d7cc9f8afae44e859"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1allocator_1_1Allocator.html#abe1f158adb9f7a6d7cc9f8afae44e859">recover</a> (const int expectedAgentCount, const <a class="el" href="classhashmap.html">hashmap</a>&lt; std::string, <a class="el" href="structmesos_1_1Quota.html">Quota</a> &gt; &amp;quotas)=0</td></tr>
+<tr class="memdesc:abe1f158adb9f7a6d7cc9f8afae44e859"><td class="mdescLeft">&#160;</td><td class="mdescRight">Informs the allocator of the recovered state from the master.  <a href="#abe1f158adb9f7a6d7cc9f8afae44e859">More...</a><br /></td></tr>
+<tr class="separator:abe1f158adb9f7a6d7cc9f8afae44e859"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a681883278b64d1e45fc515a7899a3d99"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1allocator_1_1Allocator.html#a681883278b64d1e45fc515a7899a3d99">addFramework</a> (const FrameworkID &amp;frameworkId, const FrameworkInfo &amp;frameworkInfo, const <a class="el" href="classhashmap.html">hashmap</a>&lt; SlaveID, <a class="el" href="classmesos_1_1Resources.html">Resources</a> &gt; &amp;used, bool active, const std::set&lt; std::string &gt; &amp;suppressedRoles)=0</td></tr>
 <tr class="memdesc:a681883278b64d1e45fc515a7899a3d99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a framework to the Mesos cluster.  <a href="#a681883278b64d1e45fc515a7899a3d99">More...</a><br /></td></tr>
 <tr class="separator:a681883278b64d1e45fc515a7899a3d99"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -149,15 +149,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0bf4c3ba18d950c34ef16de989155b0e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1allocator_1_1Allocator.html#a0bf4c3ba18d950c34ef16de989155b0e">reviveOffers</a> (const FrameworkID &amp;frameworkId, const std::set&lt; std::string &gt; &amp;roles)=0</td></tr>
 <tr class="memdesc:a0bf4c3ba18d950c34ef16de989155b0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Revives offers to this framework for the specified roles.  <a href="#a0bf4c3ba18d950c34ef16de989155b0e">More...</a><br /></td></tr>
 <tr class="separator:a0bf4c3ba18d950c34ef16de989155b0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a06d46d24d46f7c9858ab58c027ecc7ca"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1allocator_1_1Allocator.html#a06d46d24d46f7c9858ab58c027ecc7ca">setQuota</a> (const std::string &amp;role, const <a class="el" href="structQuota.html">Quota</a> &amp;quota)=0</td></tr>
-<tr class="memdesc:a06d46d24d46f7c9858ab58c027ecc7ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Informs the allocator to set quota for the given role.  <a href="#a06d46d24d46f7c9858ab58c027ecc7ca">More...</a><br /></td></tr>
-<tr class="separator:a06d46d24d46f7c9858ab58c027ecc7ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7c4fb581525a58eaea748afaa87ccb40"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1allocator_1_1Allocator.html#a7c4fb581525a58eaea748afaa87ccb40">removeQuota</a> (const std::string &amp;role)=0</td></tr>
-<tr class="memdesc:a7c4fb581525a58eaea748afaa87ccb40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Informs the allocator to remove quota for the given role.  <a href="#a7c4fb581525a58eaea748afaa87ccb40">More...</a><br /></td></tr>
-<tr class="separator:a7c4fb581525a58eaea748afaa87ccb40"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1cd3ee0ba6acf7be671cf6e05e54ddc2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1allocator_1_1Allocator.html#a1cd3ee0ba6acf7be671cf6e05e54ddc2">updateQuota</a> (const std::string &amp;role, const <a class="el" href="structmesos_1_1Quota2.html">Quota2</a> &amp;quota)=0</td></tr>
-<tr class="memdesc:a1cd3ee0ba6acf7be671cf6e05e54ddc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Informs the allocator to update quota for the given role.  <a href="#a1cd3ee0ba6acf7be671cf6e05e54ddc2">More...</a><br /></td></tr>
-<tr class="separator:a1cd3ee0ba6acf7be671cf6e05e54ddc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e54fb74e5193444487cbdab9c56b2ca"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1allocator_1_1Allocator.html#a8e54fb74e5193444487cbdab9c56b2ca">updateQuota</a> (const std::string &amp;role, const <a class="el" href="structmesos_1_1Quota.html">Quota</a> &amp;quota)=0</td></tr>
+<tr class="memdesc:a8e54fb74e5193444487cbdab9c56b2ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Informs the allocator to update quota for the given role.  <a href="#a8e54fb74e5193444487cbdab9c56b2ca">More...</a><br /></td></tr>
+<tr class="separator:a8e54fb74e5193444487cbdab9c56b2ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a36ed11fe06b6565b72c57ee9a88439f5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1allocator_1_1Allocator.html#a36ed11fe06b6565b72c57ee9a88439f5">updateWeights</a> (const std::vector&lt; WeightInfo &gt; &amp;weightInfos)=0</td></tr>
 <tr class="memdesc:a36ed11fe06b6565b72c57ee9a88439f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the weight associated with one or more roles.  <a href="#a36ed11fe06b6565b72c57ee9a88439f5">More...</a><br /></td></tr>
 <tr class="separator:a36ed11fe06b6565b72c57ee9a88439f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -673,7 +667,7 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ad5ef746d74eb1e2583e6c179a14d21a4"></a>
+<a class="anchor" id="abe1f158adb9f7a6d7cc9f8afae44e859"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -689,7 +683,7 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classhashmap.html">hashmap</a>&lt; std::string, <a class="el" href="structmesos_1_1Quota2.html">Quota2</a> &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classhashmap.html">hashmap</a>&lt; std::string, <a class="el" href="structmesos_1_1Quota.html">Quota</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>quotas</em>&#160;</td>
         </tr>
         <tr>
@@ -715,7 +709,7 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="classmesos_1_1internal_1_1master_1_1allocator_1_1MesosAllocator.html#a92dbe935320534d3cc7bd7636f86709c">mesos::internal::master::allocator::MesosAllocator&lt; AllocatorProcess &gt;</a>.</p>
+<p>Implemented in <a class="el" href="classmesos_1_1internal_1_1master_1_1allocator_1_1MesosAllocator.html#ae654358719056c7e418b3f334174f1d6">mesos::internal::master::allocator::MesosAllocator&lt; AllocatorProcess &gt;</a>.</p>
 
 </div>
 </div>
@@ -797,37 +791,6 @@ Static Public Member Functions</h2></td></tr>
 <p>It is up to an allocator to decide what to do with framework's resources. For example, they may be released and added back to the shared pool of resources. </p>
 
 <p>Implemented in <a class="el" href="classmesos_1_1internal_1_1master_1_1allocator_1_1MesosAllocator.html#ae72ec1b60b2a7db94604d267c910c327">mesos::internal::master::allocator::MesosAllocator&lt; AllocatorProcess &gt;</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a7c4fb581525a58eaea748afaa87ccb40"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void mesos::allocator::Allocator::removeQuota </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>role</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Informs the allocator to remove quota for the given role. </p>
-<p>An allocator implementation may employ different strategies for roles with or without quota. Hence an empty (or zero) quota is not necessarily the same as an absence of quota. Logically, this method implies that the given role should be transitioned to the group of roles without quota set (absence of quota). An allocator implementation may assert quota for the given role is set prior to the call and react accordingly if this assumption is violated (i.e. fail).</p>
-<p>TODO(alexr): Consider returning a future which an allocator can fail in order to report failure.</p>
-<p>TODO(mzhu): Remove this call in favor of <code>updateQuota</code>. </p>
-
-<p>Implemented in <a class="el" href="classmesos_1_1internal_1_1master_1_1allocator_1_1MesosAllocator.html#a695cf43b3875362f1c76e177dd793a4c">mesos::internal::master::allocator::MesosAllocator&lt; AllocatorProcess &gt;</a>.</p>
 
 </div>
 </div>
@@ -962,48 +925,6 @@ Static Public Member Functions</h2></td></tr>
 <p>This is invoked by a framework when it wishes to receive filtered resources immediately or get itself out of a suppressed state. If <code>roles</code> is an empty set, it is treated as being set to all of the framework's subscribed roles. </p>
 
 <p>Implemented in <a class="el" href="classmesos_1_1internal_1_1master_1_1allocator_1_1MesosAllocator.html#ab949cc299466180036ffc5dbb11361d6">mesos::internal::master::allocator::MesosAllocator&lt; AllocatorProcess &gt;</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a06d46d24d46f7c9858ab58c027ecc7ca"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void mesos::allocator::Allocator::setQuota </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>role</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="structQuota.html">Quota</a> &amp;&#160;</td>
-          <td class="paramname"><em>quota</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Informs the allocator to set quota for the given role. </p>
-<p>It is up to the allocator implementation how to satisfy quota. An implementation may employ different strategies for roles with or without quota. Hence an empty (or zero) quota is not necessarily the same as an absence of quota. Logically, this method implies that the given role should be transitioned to the group of roles with quota set. An allocator implementation may assert quota for the given role is not set prior to the call and react accordingly if this assumption is violated (i.e. fail).</p>
-<p>TODO(alexr): Consider returning a future which an allocator can fail in order to report failure.</p>
-<p>TODO(alexr): Consider adding an <code><a class="el" href="classmesos_1_1allocator_1_1Allocator.html#a1cd3ee0ba6acf7be671cf6e05e54ddc2" title="Informs the allocator to update quota for the given role. ">updateQuota()</a></code> method which allows updating existing quota.</p>
-<p>TODO(mzhu): Remove this call in favor of <code>updateQuota</code>. </p>
-
-<p>Implemented in <a class="el" href="classmesos_1_1internal_1_1master_1_1allocator_1_1MesosAllocator.html#a0a5ee119562f721417f41d572683d224">mesos::internal::master::allocator::MesosAllocator&lt; AllocatorProcess &gt;</a>.</p>
 
 </div>
 </div>
@@ -1251,7 +1172,7 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a1cd3ee0ba6acf7be671cf6e05e54ddc2"></a>
+<a class="anchor" id="a8e54fb74e5193444487cbdab9c56b2ca"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -1267,7 +1188,7 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="structmesos_1_1Quota2.html">Quota2</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="structmesos_1_1Quota.html">Quota</a> &amp;&#160;</td>
           <td class="paramname"><em>quota</em>&#160;</td>
         </tr>
         <tr>
@@ -1286,7 +1207,7 @@ Static Public Member Functions</h2></td></tr>
 <p>Informs the allocator to update quota for the given role. </p>
 <p>It is up to the allocator implementation how to satisfy quota. An implementation may employ different strategies for roles with or without quota. All roles have a default quota defined as <code>DEFAULT_QUOTA</code>. Currently, it is no guarantees and no limits. Thus to "remove" a quota, one should simply update the quota to be <code>DEFAULT_QUOTA</code>. </p>
 
-<p>Implemented in <a class="el" href="classmesos_1_1internal_1_1master_1_1allocator_1_1MesosAllocator.html#a073f7e92110149191ce374300abad923">mesos::internal::master::allocator::MesosAllocator&lt; AllocatorProcess &gt;</a>.</p>
+<p>Implemented in <a class="el" href="classmesos_1_1internal_1_1master_1_1allocator_1_1MesosAllocator.html#a36a29882759d8d0e4d174cc6855bdf97">mesos::internal::master::allocator::MesosAllocator&lt; AllocatorProcess &gt;</a>.</p>
 
 </div>
 </div>
