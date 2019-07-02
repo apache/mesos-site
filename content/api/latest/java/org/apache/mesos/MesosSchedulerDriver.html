@@ -156,6 +156,27 @@ implements <a href="../../../org/apache/mesos/SchedulerDriver.html" title="inter
 <th class="colOne" scope="col">Constructor and Description</th>
 </tr>
 <tr class="altColor">
+<td class="colOne"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/MesosSchedulerDriver.html#MesosSchedulerDriver-org.apache.mesos.Scheduler-org.apache.mesos.Protos.FrameworkInfo-java.util.Collection-java.lang.String-boolean-">MesosSchedulerDriver</a></span>(<a href="../../../org/apache/mesos/Scheduler.html" title="interface in org.apache.mesos">Scheduler</a>&nbsp;scheduler,
+                    <a href="../../../org/apache/mesos/Protos.FrameworkInfo.html" title="class in org.apache.mesos">Protos.FrameworkInfo</a>&nbsp;framework,
+                    java.util.Collection&lt;java.lang.String&gt;&nbsp;suppressedRoles,
+                    java.lang.String&nbsp;master,
+                    boolean&nbsp;implicitAcknowledgements)</code>
+<div class="block">Same as the other constructors, except that it accepts the newly
+ introduced 'suppressedRoles' parameter.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/MesosSchedulerDriver.html#MesosSchedulerDriver-org.apache.mesos.Scheduler-org.apache.mesos.Protos.FrameworkInfo-java.util.Collection-java.lang.String-boolean-org.apache.mesos.Protos.Credential-">MesosSchedulerDriver</a></span>(<a href="../../../org/apache/mesos/Scheduler.html" title="interface in org.apache.mesos">Scheduler</a>&nbsp;scheduler,
+                    <a href="../../../org/apache/mesos/Protos.FrameworkInfo.html" title="class in org.apache.mesos">Protos.FrameworkInfo</a>&nbsp;framework,
+                    java.util.Collection&lt;java.lang.String&gt;&nbsp;suppressedRoles,
+                    java.lang.String&nbsp;master,
+                    boolean&nbsp;implicitAcknowledgements,
+                    <a href="../../../org/apache/mesos/Protos.Credential.html" title="class in org.apache.mesos">Protos.Credential</a>&nbsp;credential)</code>
+<div class="block">Same as the other constructors, except that it accepts the newly
+ introduced 'suppressedRoles' parameter.</div>
+</td>
+</tr>
+<tr class="altColor">
 <td class="colOne"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/MesosSchedulerDriver.html#MesosSchedulerDriver-org.apache.mesos.Scheduler-org.apache.mesos.Protos.FrameworkInfo-java.lang.String-">MesosSchedulerDriver</a></span>(<a href="../../../org/apache/mesos/Scheduler.html" title="interface in org.apache.mesos">Scheduler</a>&nbsp;scheduler,
                     <a href="../../../org/apache/mesos/Protos.FrameworkInfo.html" title="class in org.apache.mesos">Protos.FrameworkInfo</a>&nbsp;framework,
                     java.lang.String&nbsp;master)</code>
@@ -465,7 +486,7 @@ implements <a href="../../../org/apache/mesos/SchedulerDriver.html" title="inter
 <a name="MesosSchedulerDriver-org.apache.mesos.Scheduler-org.apache.mesos.Protos.FrameworkInfo-java.lang.String-boolean-org.apache.mesos.Protos.Credential-">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>MesosSchedulerDriver</h4>
 <pre>public&nbsp;MesosSchedulerDriver(<a href="../../../org/apache/mesos/Scheduler.html" title="interface in org.apache.mesos">Scheduler</a>&nbsp;scheduler,
@@ -480,6 +501,63 @@ implements <a href="../../../org/apache/mesos/SchedulerDriver.html" title="inter
 <dd><code>scheduler</code> - The scheduler implementation which callbacks are invoked
                     upon scheduler events.</dd>
 <dd><code>framework</code> - The frameworkInfo describing the current framework.</dd>
+<dd><code>master</code> - The address to the currently active Mesos master.</dd>
+<dd><code>implicitAcknowledgements</code> - Whether the driver should send
+            acknowledgements on behalf of the scheduler. Setting this to
+            false allows schedulers to perform their own acknowledgements,
+            which enables asynchronous / batch processing of status updates.</dd>
+<dd><code>credential</code> - The credentials that will be used used to authenticate
+                    calls from this scheduler.</dd>
+</dl>
+</li>
+</ul>
+<a name="MesosSchedulerDriver-org.apache.mesos.Scheduler-org.apache.mesos.Protos.FrameworkInfo-java.util.Collection-java.lang.String-boolean-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>MesosSchedulerDriver</h4>
+<pre>public&nbsp;MesosSchedulerDriver(<a href="../../../org/apache/mesos/Scheduler.html" title="interface in org.apache.mesos">Scheduler</a>&nbsp;scheduler,
+                            <a href="../../../org/apache/mesos/Protos.FrameworkInfo.html" title="class in org.apache.mesos">Protos.FrameworkInfo</a>&nbsp;framework,
+                            java.util.Collection&lt;java.lang.String&gt;&nbsp;suppressedRoles,
+                            java.lang.String&nbsp;master,
+                            boolean&nbsp;implicitAcknowledgements)</pre>
+<div class="block">Same as the other constructors, except that it accepts the newly
+ introduced 'suppressedRoles' parameter.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>scheduler</code> - The scheduler implementation which callbacks are invoked
+                    upon scheduler events.</dd>
+<dd><code>framework</code> - The frameworkInfo describing the current framework.</dd>
+<dd><code>suppressedRoles</code> - The collection of initially suppressed roles.</dd>
+<dd><code>master</code> - The address to the currently active Mesos master.</dd>
+<dd><code>implicitAcknowledgements</code> - Whether the driver should send
+            acknowledgements on behalf of the scheduler. Setting this to
+            false allows schedulers to perform their own acknowledgements,
+            which enables asynchronous / batch processing of status updates.</dd>
+</dl>
+</li>
+</ul>
+<a name="MesosSchedulerDriver-org.apache.mesos.Scheduler-org.apache.mesos.Protos.FrameworkInfo-java.util.Collection-java.lang.String-boolean-org.apache.mesos.Protos.Credential-">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>MesosSchedulerDriver</h4>
+<pre>public&nbsp;MesosSchedulerDriver(<a href="../../../org/apache/mesos/Scheduler.html" title="interface in org.apache.mesos">Scheduler</a>&nbsp;scheduler,
+                            <a href="../../../org/apache/mesos/Protos.FrameworkInfo.html" title="class in org.apache.mesos">Protos.FrameworkInfo</a>&nbsp;framework,
+                            java.util.Collection&lt;java.lang.String&gt;&nbsp;suppressedRoles,
+                            java.lang.String&nbsp;master,
+                            boolean&nbsp;implicitAcknowledgements,
+                            <a href="../../../org/apache/mesos/Protos.Credential.html" title="class in org.apache.mesos">Protos.Credential</a>&nbsp;credential)</pre>
+<div class="block">Same as the other constructors, except that it accepts the newly
+ introduced 'suppressedRoles' parameter.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>scheduler</code> - The scheduler implementation which callbacks are invoked
+                    upon scheduler events.</dd>
+<dd><code>framework</code> - The frameworkInfo describing the current framework.</dd>
+<dd><code>suppressedRoles</code> - The collection of initially suppressed roles.</dd>
 <dd><code>master</code> - The address to the currently active Mesos master.</dd>
 <dd><code>implicitAcknowledgements</code> - Whether the driver should send
             acknowledgements on behalf of the scheduler. Setting this to
