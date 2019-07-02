@@ -229,7 +229,8 @@ var activeTableTab = "activeTableTab";
 <tr id="i13" class="rowColor">
 <td class="colFirst"><code><a href="../../../org/apache/mesos/Protos.Status.html" title="enum in org.apache.mesos">Protos.Status</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/SchedulerDriver.html#reviveOffers--">reviveOffers</a></span>()</code>
-<div class="block">Removes all filters, previously set by the framework (via <a href="../../../org/apache/mesos/SchedulerDriver.html#launchTasks-java.util.Collection-java.util.Collection-org.apache.mesos.Protos.Filters-"><code>launchTasks(java.util.Collection&lt;org.apache.mesos.Protos.OfferID&gt;, java.util.Collection&lt;org.apache.mesos.Protos.TaskInfo&gt;, org.apache.mesos.Protos.Filters)</code></a>).</div>
+<div class="block">Removes all filters previously set by the framework (via launchTasks()
+ or declineOffer()) and clears the set of suppressed roles.</div>
 </td>
 </tr>
 <tr id="i14" class="altColor">
@@ -267,13 +268,15 @@ var activeTableTab = "activeTableTab";
 <tr id="i19" class="rowColor">
 <td class="colFirst"><code><a href="../../../org/apache/mesos/Protos.Status.html" title="enum in org.apache.mesos">Protos.Status</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/SchedulerDriver.html#suppressOffers--">suppressOffers</a></span>()</code>
-<div class="block">Inform Mesos master to stop sending offers to the framework.</div>
+<div class="block">Informs Mesos master to stop sending offers to the framework (i.e.</div>
 </td>
 </tr>
 <tr id="i20" class="altColor">
 <td class="colFirst"><code><a href="../../../org/apache/mesos/Protos.Status.html" title="enum in org.apache.mesos">Protos.Status</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/SchedulerDriver.html#updateFramework-org.apache.mesos.Protos.FrameworkInfo-">updateFramework</a></span>(<a href="../../../org/apache/mesos/Protos.FrameworkInfo.html" title="class in org.apache.mesos">Protos.FrameworkInfo</a>&nbsp;frameworkInfo)</code>
-<div class="block">Inform Mesos master about changes to the `FrameworkInfo`.</div>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/SchedulerDriver.html#updateFramework-org.apache.mesos.Protos.FrameworkInfo-java.util.Collection-">updateFramework</a></span>(<a href="../../../org/apache/mesos/Protos.FrameworkInfo.html" title="class in org.apache.mesos">Protos.FrameworkInfo</a>&nbsp;frameworkInfo,
+               java.util.Collection&lt;java.lang.String&gt;&nbsp;suppressedRoles)</code>
+<div class="block">Inform Mesos master about changes to the `FrameworkInfo` and the list of
+ suppressed roles.</div>
 </td>
 </tr>
 </table>
@@ -627,8 +630,13 @@ var activeTableTab = "activeTableTab";
 <li class="blockList">
 <h4>reviveOffers</h4>
 <pre><a href="../../../org/apache/mesos/Protos.Status.html" title="enum in org.apache.mesos">Protos.Status</a>&nbsp;reviveOffers()</pre>
-<div class="block">Removes all filters, previously set by the framework (via <a href="../../../org/apache/mesos/SchedulerDriver.html#launchTasks-java.util.Collection-java.util.Collection-org.apache.mesos.Protos.Filters-"><code>launchTasks(java.util.Collection&lt;org.apache.mesos.Protos.OfferID&gt;, java.util.Collection&lt;org.apache.mesos.Protos.TaskInfo&gt;, org.apache.mesos.Protos.Filters)</code></a>). This enables the framework to receive offers
- from those filtered slaves.</div>
+<div class="block">Removes all filters previously set by the framework (via launchTasks()
+ or declineOffer()) and clears the set of suppressed roles.
+
+ NOTE: If the framework is not connected to the master, the set
+ of suppressed roles stored by the driver will be cleared, and an
+ up-to-date set of suppressed roles will be sent to the master
+ during re-registration.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>The state of the driver after the call.</dd>
@@ -644,8 +652,15 @@ var activeTableTab = "activeTableTab";
 <li class="blockList">
 <h4>suppressOffers</h4>
 <pre><a href="../../../org/apache/mesos/Protos.Status.html" title="enum in org.apache.mesos">Protos.Status</a>&nbsp;suppressOffers()</pre>
-<div class="block">Inform Mesos master to stop sending offers to the framework. The
- scheduler should call reviveOffers() to resume getting offers.</div>
+<div class="block">Informs Mesos master to stop sending offers to the framework (i.e.
+ to suppress all roles of the framework). To resume getting offers,
+ the scheduler can call reviveOffers() or set the suppressed roles
+ explicitly via updateFramework().
+
+ NOTE: If the framework is not connected to the master, all the roles
+ will be added to the set of suppressed roles in the driver, and an
+ up-to-date suppressed roles set will be sent to the master during
+ re-registration.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>The state of the driver after the call.</dd>
@@ -725,16 +740,17 @@ var activeTableTab = "activeTableTab";
 </dl>
 </li>
 </ul>
-<a name="updateFramework-org.apache.mesos.Protos.FrameworkInfo-">
+<a name="updateFramework-org.apache.mesos.Protos.FrameworkInfo-java.util.Collection-">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>updateFramework</h4>
-<pre><a href="../../../org/apache/mesos/Protos.Status.html" title="enum in org.apache.mesos">Protos.Status</a>&nbsp;updateFramework(<a href="../../../org/apache/mesos/Protos.FrameworkInfo.html" title="class in org.apache.mesos">Protos.FrameworkInfo</a>&nbsp;frameworkInfo)</pre>
-<div class="block">Inform Mesos master about changes to the `FrameworkInfo`. The
- driver will store the new `FrameworkInfo` and all subsequent
- re-registrations will use it.
+<pre><a href="../../../org/apache/mesos/Protos.Status.html" title="enum in org.apache.mesos">Protos.Status</a>&nbsp;updateFramework(<a href="../../../org/apache/mesos/Protos.FrameworkInfo.html" title="class in org.apache.mesos">Protos.FrameworkInfo</a>&nbsp;frameworkInfo,
+                              java.util.Collection&lt;java.lang.String&gt;&nbsp;suppressedRoles)</pre>
+<div class="block">Inform Mesos master about changes to the `FrameworkInfo` and the list of
+ suppressed roles. The driver will store the new `FrameworkInfo` and the new
+ suppressed roles list, and all subsequent re-registrations will use it.
 
  NOTE: If the supplied info is invalid or fails authorization,
  the `error()` callback will be invoked asynchronously (after
@@ -750,6 +766,7 @@ var activeTableTab = "activeTableTab";
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>frameworkInfo</code> - The new FrameworkInfo.</dd>
+<dd><code>suppressedRoles</code> - The new list of suppressed roles.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>The state of the driver after the call.</dd>
 <dt><span class="seeLabel">See Also:</span></dt>
