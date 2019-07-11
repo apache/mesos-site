@@ -166,11 +166,25 @@ you can get from running <code>mvn --encrypt-password</code>.</p>
 <h2>Preparation</h2>
 
 <ol>
+<li><p>If this is a regular release, create a new release branch (<major>.<minor>.x)
+based off the current master</p>
+
+<pre><code> $ git checkout origin/master -b X.Y.x
+</code></pre>
+
+<p>Now, update master branch to the <em>next</em>  minor version in <code>configure.ac</code>:
+change <code>AC_INIT([mesos], [X.Y.Z]))</code>, as well as in <code>CMakeLists.txt</code>:
+change <code>set(MESOS_MAJOR_VERSION X)</code>, <code>set(MESOS_MINOR_VERSION Y)</code>,
+<code>set(MESOS_PATCH_VERSION Z)</code> and then commit.</p>
+
+<p>If this is a patch release, use the existing release branch.</p></li>
 <li><p>Go to <a href="https://issues.apache.org/jira/browse/MESOS">Apache JIRA</a> and make
 sure that the <code>CHANGELOG</code> for the release version is up to date.</p>
 
-<p><strong>NOTE:</strong> You should move all <strong>Unresolved</strong> tickets marked with <code>Fix Version</code>
-or <code>Target Version</code> as the release version to the next release version.</p>
+<p><strong>NOTE:</strong> For all <strong>Unresolved</strong> tickets marked with <code>Fix Version</code> or
+<code>Target Version</code> as the release version, try to negotiate with the
+ticket owner or shepherd if the release should wait for the ticket to
+be resolved or if the <code>Fix Version</code> should be bumped to the next version.</p>
 
 <p><strong>PROTIP:</strong> Use a JIRA dashboard
 <a href="https://issues.apache.org/jira/secure/Dashboard.jspa?selectPageId=12329720">(example)</a>
@@ -183,10 +197,8 @@ an Apache INFRA ticket.</p>
 <p><strong>PROTIP:</strong> Use <code>bulk edit</code> option in JIRA to move the tickets and make sure
 to <strong>uncheck</strong> the option that emails everyone about the move to avoid
 spamming.</p></li>
-<li><p>Checkout the correct branch for the release. For regular releases this is the
-&ldquo;master&rdquo; branch. For patch releases this would be the corresponding release
-branch (e.g., 1.0.x).</p></li>
-<li><p>Update and commit the <code>CHANGELOG</code> for the release.</p>
+<li><p>Update and commit the <code>CHANGELOG</code> for the release, on both the <strong>master</strong>
+and the release branch.</p>
 
 <p>For regular releases:</p>
 
@@ -218,16 +230,16 @@ set to that version. You should check for any Resolved tickets that have
 <code>Target Version</code> set but not <code>Fix Version</code>. Also check for any Unresolved
 or <code>Duplicate</code>/<code>Invalid</code> tickets that incorrectly set the <code>Fix Version</code>.</p>
 
-<p>For patch releases update the <code>CHANGELOG</code> on master branch and then cherry
-pick onto the release branch.</p></li>
+<p>Update the <code>CHANGELOG</code> on master branch and then cherry pick onto the release
+branch to ensure both versions stay in sync.</p></li>
 <li><p>Ensure version in <code>configure.ac</code> and <code>CMakeLists.txt</code> is correctly set for
 the release. Do not forget to remove &ldquo;(WIP)&rdquo; suffix from the release notes'
 title.</p></li>
 <li><p>Run <code>make &amp;&amp; support/generate-endpoint-help.py</code> and commit any resulting
 changes.</p></li>
 <li><p>Update and commit <code>docs/configuration.md</code> to reflect the current state of
-the master, agent, and configure flags. If this is a patch release, update
-it on master branch and then cherry pick onto the release branch.</p></li>
+the master, agent, and configure flags. Update it on master branch and then
+cherry pick onto the release branch.</p></li>
 <li><p>If this is a regular release, update and commit <code>docs/upgrades.md</code> with
 instructions about how to upgrade a live cluster from the previous release
 version to this release version.</p></li>
@@ -278,16 +290,6 @@ send the vote email.</p>
 Ubuntu), so you may need to fill in the vote end date manually. The vote
 should last for 3 business days instead of 3 calendar days anyway. Sometimes
 we allow a longer vote, to allow more time for integration testing.</p></li>
-<li><p>If this is a regular release, create a new release branch (<major>.<minor>.x)
-from this tag.</p>
-
-<pre><code> $ git checkout -b X.Y.x
-</code></pre>
-
-<p>Now, update master branch to the <em>next</em>  minor version in <code>configure.ac</code>:
-change <code>AC_INIT([mesos], [X.Y.Z]))</code>, as well as in <code>CMakeLists.txt</code>:
-change <code>set(MESOS_MAJOR_VERSION X)</code>, <code>set(MESOS_MINOR_VERSION Y)</code>,
-<code>set(MESOS_PATCH_VERSION Z)</code> and then commit.</p></li>
 </ol>
 
 
@@ -400,6 +402,34 @@ distribution and egg for this package.</p></li>
 and test.</p></li>
 <li><p>Submit a PR to the <a href="https://github.com/Homebrew/homebrew-core">Homebrew repo</a>.</p></li>
 <li><p>Once accepted, verify that <code>brew install mesos</code> works.</p></li>
+</ol>
+
+
+<p>Upload the binary RPM packages to Bintray:</p>
+
+<ol>
+<li><p>Create/use a Bintray account with access to the <a href="https://bintray.com/apache/mesos">Bintray repo</a>.</p></li>
+<li><p>Trigger a build of the <a href="https://builds.apache.org/view/M-R/view/Mesos/job/Mesos/job/Packaging/job/CentosRPMs/">CentOS packaging job</a>
+in the Apache Jenkins using the <code>MESOS_TAG</code> of the version being released.</p></li>
+<li><p>Create a new Mesos version on bintray.</p></li>
+<li><p>Download the generated RPM artifacts from the Jenkins job above and upload them
+to the new release on bintray.</p></li>
+<li><p>On the bintray website, navigate to the new release and click &lsquo;Publish Artifacts&rsquo;.</p></li>
+</ol>
+
+
+<p>Update Wikipedia:</p>
+
+<ol>
+<li>Update the <a href="https://en.wikipedia.org/wiki/Apache_Mesos">Wikipedia article</a> to mention the
+latest stable release in the info box.</li>
+</ol>
+
+
+<p>Update Reddit: (optional)</p>
+
+<ol>
+<li>Add a post for the Release to the <a href="https://www.reddit.com/r/mesos/">Mesos Reddit</a>.</li>
 </ol>
 
 
