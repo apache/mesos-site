@@ -114,6 +114,18 @@ Functions</h2></td></tr>
 <tr class="memitem:a88c25644f8837bfc76920f504a0e142d"><td class="memTemplItemLeft" align="right" valign="top">PyObject *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1python.html#a88c25644f8837bfc76920f504a0e142d">createPythonProtobuf</a> (const T &amp;t, const char *typeName)</td></tr>
 <tr class="memdesc:a88c25644f8837bfc76920f504a0e142d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert a C++ protocol buffer object into a Python one by serializing it to a string and deserializing the result back in Python.  <a href="#a88c25644f8837bfc76920f504a0e142d">More...</a><br /></td></tr>
 <tr class="separator:a88c25644f8837bfc76920f504a0e142d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5346b25c125aa775efbade745b3e8f7d"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a5346b25c125aa775efbade745b3e8f7d"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if&lt; std::is_base_of&lt; google::protobuf::Message, T &gt;::value, std::unique_ptr&lt; T &gt; &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1python.html#a5346b25c125aa775efbade745b3e8f7d">construct</a> (PyObject *obj)</td></tr>
+<tr class="separator:a5346b25c125aa775efbade745b3e8f7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d802a91dee653ae2c6637c661fd1459"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a1d802a91dee653ae2c6637c661fd1459"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if&lt; !std::is_base_of&lt; google::protobuf::Message, T &gt;::value, std::unique_ptr&lt; T &gt; &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1python.html#a1d802a91dee653ae2c6637c661fd1459">construct</a> (PyObject *obj)</td></tr>
+<tr class="separator:a1d802a91dee653ae2c6637c661fd1459"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a912538d08adc4006bcfc74b2a39cf841"><td class="memTemplParams" colspan="2">template&lt;&gt; </td></tr>
+<tr class="memitem:a912538d08adc4006bcfc74b2a39cf841"><td class="memTemplItemLeft" align="right" valign="top">std::unique_ptr&lt; std::string &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1python.html#a912538d08adc4006bcfc74b2a39cf841">construct&lt; std::string &gt;</a> (PyObject *obj)</td></tr>
+<tr class="separator:a912538d08adc4006bcfc74b2a39cf841"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20ef6cdf337411b6e69ab607bb1a431e"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a20ef6cdf337411b6e69ab607bb1a431e"><td class="memTemplItemLeft" align="right" valign="top">std::unique_ptr&lt; std::vector&lt; T &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1python.html#a20ef6cdf337411b6e69ab607bb1a431e">constructFromIterable</a> (PyObject *iterable)</td></tr>
+<tr class="separator:a20ef6cdf337411b6e69ab607bb1a431e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa68973b79683416fa31e819a6fd696e1"><td class="memItemLeft" align="right" valign="top">PyObject *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1python.html#aa68973b79683416fa31e819a6fd696e1">MesosSchedulerDriverImpl_new</a> (PyTypeObject *type, PyObject *args, PyObject *kwds)</td></tr>
 <tr class="memdesc:aa68973b79683416fa31e819a6fd696e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create, but don't initialize, a new <a class="el" href="structmesos_1_1python_1_1MesosSchedulerDriverImpl.html" title="Python object structure for MesosSchedulerDriverImpl objects. ">MesosSchedulerDriverImpl</a> (called by Python before init method).  <a href="#aa68973b79683416fa31e819a6fd696e1">More...</a><br /></td></tr>
 <tr class="separator:aa68973b79683416fa31e819a6fd696e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -149,16 +161,18 @@ Functions</h2></td></tr>
 <tr class="separator:aabc85191a95c48ebabeee1c8c6b00292"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae943178491e0eb61aede80b81fe1c59f"><td class="memItemLeft" align="right" valign="top">PyObject *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1python.html#ae943178491e0eb61aede80b81fe1c59f">MesosSchedulerDriverImpl_declineOffer</a> (<a class="el" href="structmesos_1_1python_1_1MesosSchedulerDriverImpl.html">MesosSchedulerDriverImpl</a> *self, PyObject *args)</td></tr>
 <tr class="separator:ae943178491e0eb61aede80b81fe1c59f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4c1c0ef4227d9aa068ed54eae59511ad"><td class="memItemLeft" align="right" valign="top">PyObject *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1python.html#a4c1c0ef4227d9aa068ed54eae59511ad">MesosSchedulerDriverImpl_reviveOffers</a> (<a class="el" href="structmesos_1_1python_1_1MesosSchedulerDriverImpl.html">MesosSchedulerDriverImpl</a> *self)</td></tr>
-<tr class="separator:a4c1c0ef4227d9aa068ed54eae59511ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a491a901abde2a0f14590699fbde9011f"><td class="memItemLeft" align="right" valign="top">PyObject *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1python.html#a491a901abde2a0f14590699fbde9011f">MesosSchedulerDriverImpl_suppressOffers</a> (<a class="el" href="structmesos_1_1python_1_1MesosSchedulerDriverImpl.html">MesosSchedulerDriverImpl</a> *self)</td></tr>
-<tr class="separator:a491a901abde2a0f14590699fbde9011f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5bd9735bab4714bee9c27ed76fceb23a"><td class="memItemLeft" align="right" valign="top">PyObject *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1python.html#a5bd9735bab4714bee9c27ed76fceb23a">MesosSchedulerDriverImpl_reviveOffers</a> (<a class="el" href="structmesos_1_1python_1_1MesosSchedulerDriverImpl.html">MesosSchedulerDriverImpl</a> *self, PyObject *pyRoles)</td></tr>
+<tr class="separator:a5bd9735bab4714bee9c27ed76fceb23a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5deab5bf1964c14db64b7d0e133d8f8"><td class="memItemLeft" align="right" valign="top">PyObject *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1python.html#aa5deab5bf1964c14db64b7d0e133d8f8">MesosSchedulerDriverImpl_suppressOffers</a> (<a class="el" href="structmesos_1_1python_1_1MesosSchedulerDriverImpl.html">MesosSchedulerDriverImpl</a> *self, PyObject *pyRoles)</td></tr>
+<tr class="separator:aa5deab5bf1964c14db64b7d0e133d8f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6323ef05de767691885a37fd0c818c59"><td class="memItemLeft" align="right" valign="top">PyObject *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1python.html#a6323ef05de767691885a37fd0c818c59">MesosSchedulerDriverImpl_acknowledgeStatusUpdate</a> (<a class="el" href="structmesos_1_1python_1_1MesosSchedulerDriverImpl.html">MesosSchedulerDriverImpl</a> *self, PyObject *args)</td></tr>
 <tr class="separator:a6323ef05de767691885a37fd0c818c59"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aed0b21d792b32e0942233010ae3be934"><td class="memItemLeft" align="right" valign="top">PyObject *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1python.html#aed0b21d792b32e0942233010ae3be934">MesosSchedulerDriverImpl_sendFrameworkMessage</a> (<a class="el" href="structmesos_1_1python_1_1MesosSchedulerDriverImpl.html">MesosSchedulerDriverImpl</a> *self, PyObject *args)</td></tr>
 <tr class="separator:aed0b21d792b32e0942233010ae3be934"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b554562e4365a978576d7a31d20a191"><td class="memItemLeft" align="right" valign="top">PyObject *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1python.html#a1b554562e4365a978576d7a31d20a191">MesosSchedulerDriverImpl_reconcileTasks</a> (<a class="el" href="structmesos_1_1python_1_1MesosSchedulerDriverImpl.html">MesosSchedulerDriverImpl</a> *self, PyObject *args)</td></tr>
 <tr class="separator:a1b554562e4365a978576d7a31d20a191"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ecc60a16ec46dc105dccd3c91444f2e"><td class="memItemLeft" align="right" valign="top">PyObject *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1python.html#a0ecc60a16ec46dc105dccd3c91444f2e">MesosSchedulerDriverImpl_updateFramework</a> (<a class="el" href="structmesos_1_1python_1_1MesosSchedulerDriverImpl.html">MesosSchedulerDriverImpl</a> *self, PyObject *args)</td></tr>
+<tr class="separator:a0ecc60a16ec46dc105dccd3c91444f2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -179,6 +193,86 @@ Variables</h2></td></tr>
 <tr class="separator:aa44792060fd45c1744002ac89541c940"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
+<a class="anchor" id="a5346b25c125aa775efbade745b3e8f7d"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::enable_if&lt; std::is_base_of&lt;google::protobuf::Message, T&gt;::value, std::unique_ptr&lt;T&gt; &gt;::type mesos::python::construct </td>
+          <td>(</td>
+          <td class="paramtype">PyObject *&#160;</td>
+          <td class="paramname"><em>obj</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a1d802a91dee653ae2c6637c661fd1459"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::enable_if&lt; !std::is_base_of&lt;google::protobuf::Message, T&gt;::value, std::unique_ptr&lt;T&gt; &gt;::type mesos::python::construct </td>
+          <td>(</td>
+          <td class="paramtype">PyObject *&#160;</td>
+          <td class="paramname"><em>obj</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a912538d08adc4006bcfc74b2a39cf841"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unique_ptr&lt;std::string&gt; <a class="el" href="namespacemesos_1_1python.html#a5346b25c125aa775efbade745b3e8f7d">mesos::python::construct</a>&lt; std::string &gt; </td>
+          <td>(</td>
+          <td class="paramtype">PyObject *&#160;</td>
+          <td class="paramname"><em>obj</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a20ef6cdf337411b6e69ab607bb1a431e"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unique_ptr&lt;std::vector&lt;T&gt; &gt; mesos::python::constructFromIterable </td>
+          <td>(</td>
+          <td class="paramtype">PyObject *&#160;</td>
+          <td class="paramname"><em>iterable</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a88c25644f8837bfc76920f504a0e142d"></a>
 <div class="memitem">
 <div class="memproto">
@@ -801,7 +895,7 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="a4c1c0ef4227d9aa068ed54eae59511ad"></a>
+<a class="anchor" id="a5bd9735bab4714bee9c27ed76fceb23a"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -809,8 +903,18 @@ template&lt;typename T &gt; </div>
           <td class="memname">PyObject* mesos::python::MesosSchedulerDriverImpl_reviveOffers </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structmesos_1_1python_1_1MesosSchedulerDriverImpl.html">MesosSchedulerDriverImpl</a> *&#160;</td>
-          <td class="paramname"><em>self</em></td><td>)</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">PyObject *&#160;</td>
+          <td class="paramname"><em>pyRoles</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -901,7 +1005,7 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="a491a901abde2a0f14590699fbde9011f"></a>
+<a class="anchor" id="aa5deab5bf1964c14db64b7d0e133d8f8"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -909,8 +1013,18 @@ template&lt;typename T &gt; </div>
           <td class="memname">PyObject* mesos::python::MesosSchedulerDriverImpl_suppressOffers </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structmesos_1_1python_1_1MesosSchedulerDriverImpl.html">MesosSchedulerDriverImpl</a> *&#160;</td>
-          <td class="paramname"><em>self</em></td><td>)</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">PyObject *&#160;</td>
+          <td class="paramname"><em>pyRoles</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -949,6 +1063,32 @@ template&lt;typename T &gt; </div>
 
 <p>Traverse fields of a <a class="el" href="structmesos_1_1python_1_1MesosSchedulerDriverImpl.html" title="Python object structure for MesosSchedulerDriverImpl objects. ">MesosSchedulerDriverImpl</a> on a cyclic GC search. </p>
 <p>See <a href="http://docs.python.org/extending/newtypes.html">http://docs.python.org/extending/newtypes.html</a>. </p>
+
+</div>
+</div>
+<a class="anchor" id="a0ecc60a16ec46dc105dccd3c91444f2e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">PyObject* mesos::python::MesosSchedulerDriverImpl_updateFramework </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structmesos_1_1python_1_1MesosSchedulerDriverImpl.html">MesosSchedulerDriverImpl</a> *&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">PyObject *&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>

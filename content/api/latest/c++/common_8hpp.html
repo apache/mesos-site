@@ -59,7 +59,11 @@
 <div class="contents">
 <div class="textblock"><code>#include &lt;Python.h&gt;</code><br />
 <code>#include &lt;iostream&gt;</code><br />
+<code>#include &lt;memory&gt;</code><br />
+<code>#include &lt;string&gt;</code><br />
+<code>#include &lt;vector&gt;</code><br />
 <code>#include &lt;google/protobuf/io/zero_copy_stream_impl.h&gt;</code><br />
+<code>#include &lt;google/protobuf/message.h&gt;</code><br />
 </div>
 <p><a href="common_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -86,6 +90,18 @@ Functions</h2></td></tr>
 <tr class="memitem:a88c25644f8837bfc76920f504a0e142d"><td class="memTemplItemLeft" align="right" valign="top">PyObject *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1python.html#a88c25644f8837bfc76920f504a0e142d">mesos::python::createPythonProtobuf</a> (const T &amp;t, const char *typeName)</td></tr>
 <tr class="memdesc:a88c25644f8837bfc76920f504a0e142d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert a C++ protocol buffer object into a Python one by serializing it to a string and deserializing the result back in Python.  <a href="namespacemesos_1_1python.html#a88c25644f8837bfc76920f504a0e142d">More...</a><br /></td></tr>
 <tr class="separator:a88c25644f8837bfc76920f504a0e142d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5346b25c125aa775efbade745b3e8f7d"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a5346b25c125aa775efbade745b3e8f7d"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if&lt; std::is_base_of&lt; google::protobuf::Message, T &gt;::value, std::unique_ptr&lt; T &gt; &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1python.html#a5346b25c125aa775efbade745b3e8f7d">mesos::python::construct</a> (PyObject *obj)</td></tr>
+<tr class="separator:a5346b25c125aa775efbade745b3e8f7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d802a91dee653ae2c6637c661fd1459"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a1d802a91dee653ae2c6637c661fd1459"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if&lt; !std::is_base_of&lt; google::protobuf::Message, T &gt;::value, std::unique_ptr&lt; T &gt; &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1python.html#a1d802a91dee653ae2c6637c661fd1459">mesos::python::construct</a> (PyObject *obj)</td></tr>
+<tr class="separator:a1d802a91dee653ae2c6637c661fd1459"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a912538d08adc4006bcfc74b2a39cf841"><td class="memTemplParams" colspan="2">template&lt;&gt; </td></tr>
+<tr class="memitem:a912538d08adc4006bcfc74b2a39cf841"><td class="memTemplItemLeft" align="right" valign="top">std::unique_ptr&lt; std::string &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1python.html#a912538d08adc4006bcfc74b2a39cf841">mesos::python::construct&lt; std::string &gt;</a> (PyObject *obj)</td></tr>
+<tr class="separator:a912538d08adc4006bcfc74b2a39cf841"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20ef6cdf337411b6e69ab607bb1a431e"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a20ef6cdf337411b6e69ab607bb1a431e"><td class="memTemplItemLeft" align="right" valign="top">std::unique_ptr&lt; std::vector&lt; T &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1python.html#a20ef6cdf337411b6e69ab607bb1a431e">mesos::python::constructFromIterable</a> (PyObject *iterable)</td></tr>
+<tr class="separator:a20ef6cdf337411b6e69ab607bb1a431e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
