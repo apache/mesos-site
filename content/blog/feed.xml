@@ -4,7 +4,58 @@
   <id>http://mesos.apache.org/blog</id>
   <link href="http://mesos.apache.org/blog" />
   <link href="http://mesos.apache.org/blog/feed.xml" rel="self"/>
-  <updated>2019-05-02T00:00:00+00:00</updated>
+  <updated>2019-07-29T00:00:00+00:00</updated>
+  <entry>
+    <id>http://mesos.apache.org/blog/mesos-1-8-1-released/</id>
+    <link href="/blog/mesos-1-8-1-released/" />
+    <title>
+      Apache Mesos 1.8.1 Released
+    </title>
+    <updated>2019-07-29T00:00:00+00:00</updated>
+    <author>
+      <name>Benno Evers</name>
+    </author>
+    <content type="html">
+      &lt;p&gt;The latest Mesos 1.8.x release, 1.8.1, is now available for &lt;a href=&quot;http://mesos.apache.org/downloads&quot;&gt;download&lt;/a&gt;. This release includes important bug fixes and improvements on top of 1.8.0. It is recommended to use this version if you are considering using Mesos 1.8. More specifically, this release includes the following:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9395&quot;&gt;MESOS-9395&lt;/a&gt; - Check failure on &lt;code&gt;StorageLocalResourceProviderProcess::applyCreateDisk&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9616&quot;&gt;MESOS-9616&lt;/a&gt; - &lt;code&gt;Filters.refuse_seconds&lt;/code&gt; declines resources not in offers.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9730&quot;&gt;MESOS-9730&lt;/a&gt; - Executors cannot reconnect with agents using TLS1.3&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9750&quot;&gt;MESOS-9750&lt;/a&gt; - Agent V1 &lt;code&gt;GET_STATE&lt;/code&gt; response may report a complete executor&amp;rsquo;s tasks as non-terminal after a graceful agent shutdown.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9766&quot;&gt;MESOS-9766&lt;/a&gt; - /&lt;strong&gt;processes&lt;/strong&gt; endpoint can hang.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9779&quot;&gt;MESOS-9779&lt;/a&gt; - &lt;code&gt;UPDATE_RESOURCE_PROVIDER_CONFIG&lt;/code&gt; agent call returns 404 ambiguously.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9782&quot;&gt;MESOS-9782&lt;/a&gt; - Random sorter fails to clear removed clients.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9786&quot;&gt;MESOS-9786&lt;/a&gt; - Race between two &lt;code&gt;REMOVE_QUOTA&lt;/code&gt; calls crashes the master.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9803&quot;&gt;MESOS-9803&lt;/a&gt; - Memory leak caused by an infinite chain of futures in &lt;code&gt;UriDiskProfileAdaptor&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9831&quot;&gt;MESOS-9831&lt;/a&gt; - Master should not report disconnected resource providers.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9852&quot;&gt;MESOS-9852&lt;/a&gt; - Slow memory growth in master due to deferred deletion of offer filters and timers.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9856&quot;&gt;MESOS-9856&lt;/a&gt; - REVIVE call with specified role(s) clears filters for all roles of a framework.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9870&quot;&gt;MESOS-9870&lt;/a&gt; - Simultaneous adding/removal of a role from framework&amp;rsquo;s roles and its suppressed roles crashes the master.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9695&quot;&gt;MESOS-9695&lt;/a&gt; - Remove the duplicate pid check in Docker containerizer&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9759&quot;&gt;MESOS-9759&lt;/a&gt; - Log required quota headroom and available quota headroom in the allocator.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/MESOS-9787&quot;&gt;MESOS-9787&lt;/a&gt; - Log slow SSL (TLS) peer reverse DNS lookup.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;Full release notes are available in the release &lt;a href=&quot;https://gitbox.apache.org/repos/asf?p=mesos.git;a=blob_plain;f=CHANGELOG;hb=1.8.1&quot;&gt;CHANGELOG&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3&gt;Upgrades&lt;/h3&gt;
+
+&lt;p&gt;Rolling upgrades from a Mesos 1.8.0 cluster to Mesos 1.8.1 are straightforward. Please refer to the &lt;a href=&quot;http://mesos.apache.org/documentation/latest/upgrades/&quot;&gt;upgrade guide&lt;/a&gt; for detailed information on upgrading to Mesos 1.8.1 from 1.7.x, 1.6.x, or 1.5.x.&lt;/p&gt;
+
+&lt;h3&gt;Try it out&lt;/h3&gt;
+
+&lt;p&gt;Please try out this release and let us know what you think. If you run into any issues, let us know on the &lt;a href=&quot;https://mesos.apache.org/community&quot;&gt;user mailing list and/or Slack/IRC&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3&gt;Thanks!&lt;/h3&gt;
+
+&lt;p&gt;Thanks to the 9 contributors who made 1.8.1 possible:&lt;/p&gt;
+
+&lt;p&gt;Andrei Budnik, Andrei Sekretenko, Benjamin Mahler, Chun-Hung Hsiao, Gilbert Song, Joseph Wu, Meng Zhu, Qian Zhang, Stéphane Cottin&lt;/p&gt;
+
+	</content>
+  </entry>
   <entry>
     <id>http://mesos.apache.org/blog/mesos-1-8-0-released/</id>
     <link href="/blog/mesos-1-8-0-released/" />
