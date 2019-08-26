@@ -95,6 +95,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ae5dd18d03f40fe4e27505f912b2b6f01"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a89977a8c4cec7c54a41f20e763532b3c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1slave_1_1Executor.html#a89977a8c4cec7c54a41f20e763532b3c">recoverTask</a> (const <a class="el" href="structmesos_1_1internal_1_1slave_1_1state_1_1TaskState.html">state::TaskState</a> &amp;<a class="el" href="classmesos_1_1internal_1_1slave_1_1Executor.html#a27e0e6e088c0fd88a0c7f679c964c409">state</a>, bool recheckpointTask)</td></tr>
 <tr class="separator:a89977a8c4cec7c54a41f20e763532b3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74f42488f71080a41873ed6e9a590cff"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1slave_1_1Executor.html#a74f42488f71080a41873ed6e9a590cff">addPendingTaskStatus</a> (const TaskStatus &amp;status)</td></tr>
+<tr class="separator:a74f42488f71080a41873ed6e9a590cff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a8ea0bfc3a5e44869587224e4491c3e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1slave_1_1Executor.html#a4a8ea0bfc3a5e44869587224e4491c3e">removePendingTaskStatus</a> (const TaskStatus &amp;status)</td></tr>
+<tr class="separator:a4a8ea0bfc3a5e44869587224e4491c3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a78d4cb7ddccb6a2f7cdf31475ed7e83d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTry.html">Try</a>&lt; <a class="el" href="structNothing.html">Nothing</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1slave_1_1Executor.html#a78d4cb7ddccb6a2f7cdf31475ed7e83d">updateTaskState</a> (const TaskStatus &amp;status)</td></tr>
 <tr class="separator:a78d4cb7ddccb6a2f7cdf31475ed7e83d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a79093461e7bc35f4b4b9c7a796b88e2e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1slave_1_1Executor.html#a79093461e7bc35f4b4b9c7a796b88e2e">incompleteTasks</a> ()</td></tr>
@@ -151,6 +155,8 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a726fa325995a88be3eda7b99545f89a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:addae2cfbd131b946f10a7986aafac151"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classOption.html">Option</a>&lt; mesos::slave::ContainerTermination &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1slave_1_1Executor.html#addae2cfbd131b946f10a7986aafac151">pendingTermination</a></td></tr>
 <tr class="separator:addae2cfbd131b946f10a7986aafac151"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0026ccde1700d900b2b581e62633c8f3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classhashmap.html">hashmap</a>&lt; TaskID, <a class="el" href="classLinkedHashMap.html">LinkedHashMap</a>&lt; <a class="el" href="structid_1_1UUID.html">id::UUID</a>, TaskStatus &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1slave_1_1Executor.html#a0026ccde1700d900b2b581e62633c8f3">pendingStatusUpdates</a></td></tr>
+<tr class="separator:a0026ccde1700d900b2b581e62633c8f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Enumeration Documentation</h2>
 <a class="anchor" id="a3b2abbbd9f9e9ca5c08b75329ac426c0"></a>
@@ -257,6 +263,22 @@ Public Attributes</h2></td></tr>
           <td>(</td>
           <td class="paramtype">const TaskInfo &amp;&#160;</td>
           <td class="paramname"><em>task</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a74f42488f71080a41873ed6e9a590cff"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void mesos::internal::slave::Executor::addPendingTaskStatus </td>
+          <td>(</td>
+          <td class="paramtype">const TaskStatus &amp;&#160;</td>
+          <td class="paramname"><em>status</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -492,6 +514,22 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a4a8ea0bfc3a5e44869587224e4491c3e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void mesos::internal::slave::Executor::removePendingTaskStatus </td>
+          <td>(</td>
+          <td class="paramtype">const TaskStatus &amp;&#160;</td>
+          <td class="paramname"><em>status</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a6088e2d4d0160d0cdaf8674c46d91c43"></a>
 <div class="memitem">
 <div class="memproto">
@@ -649,6 +687,18 @@ template&lt;typename Message &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="classLinkedHashMap.html">LinkedHashMap</a>&lt;TaskID, Task*&gt; mesos::internal::slave::Executor::launchedTasks</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a0026ccde1700d900b2b581e62633c8f3"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classhashmap.html">hashmap</a>&lt;TaskID, <a class="el" href="classLinkedHashMap.html">LinkedHashMap</a>&lt;<a class="el" href="structid_1_1UUID.html">id::UUID</a>, TaskStatus&gt; &gt; mesos::internal::slave::Executor::pendingStatusUpdates</td>
         </tr>
       </table>
 </div><div class="memdoc">
