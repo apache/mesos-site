@@ -155,6 +155,7 @@ R Removed feature/behavior
       <li>A <a href="#1-9-x-hostname-validation-scheme">hostname_validation_scheme</a></li>
       <li>C <a href="#1-9-x-client-certificate-verification">TLS certificate verification behaviour</a></li>
       <li>C <a href="#1-9-x-configurable-ipc">Configurable IPC namespace and /dev/shm</a></li>
+      <li>A <a href="#1-9-x-automatic-agent-draining">Automatic Agent Draining</a></li>
     </ul>
  </td>
 
@@ -616,6 +617,12 @@ R Removed feature/behavior
 
 
 <h2>Upgrading from 1.8.x to 1.9.x</h2>
+
+<p><a name="1-9-x-automatic-agent-draining"></a>
+  * A new <code>DRAINING</code> state has been added to Mesos agents. Once an agent is draining, all tasks running on that agent are gracefully
+    killed and no offers for that agent are sent to schedulers, preventing the launching of new tasks.
+    Operators can put an agent into <code>DRAINING</code> state by using the <code>DRAIN_AGENT</code> operator API call.
+    See <a href="/documentation/latest/./maintenance/"><code>docs/maintenance</code></a> for details.</p>
 
 <p><a name="1-9-x-linux-nnp-isolator"></a>
   * A new <a href="/documentation/latest/./isolators/linux-nnp/"><code>linux/nnp</code></a> isolator has been added. The isolator supports setting of the <code>no_new_privs</code> bit in the container, preventing tasks from acquiring additional privileges.</p>
