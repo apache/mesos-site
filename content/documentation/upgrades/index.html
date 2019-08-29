@@ -151,6 +151,7 @@ R Removed feature/behavior
 
   <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Mesos Core-->
     <ul style="padding-left:10px;">
+      <li>A <a href="#1-9-x-quota-guarantees">Quota Limits</a></li>
       <li>A <a href="#1-9-x-linux-nnp-isolator">Linux NNP isolator</a></li>
       <li>A <a href="#1-9-x-hostname-validation-scheme">hostname_validation_scheme</a></li>
       <li>C <a href="#1-9-x-client-certificate-verification">TLS certificate verification behaviour</a></li>
@@ -180,6 +181,10 @@ R Removed feature/behavior
 
   <td style="word-wrap: break-word; overflow-wrap: break-word;"><!--Endpoints-->
     <ul style="padding-left:10px;">
+      <li>D <a href="#1-9-x-update-quota">SET_QUOTA and REMOVE QUOTA deprecated
+            in favor of UPDATE_QUOTA</a></li>
+      <li>D <a href="#1-9-x-quota-guarantees">Quota guarantees deprecated in favor
+            of using quota limits</a></li>
     </ul>
   </td>
 </tr>
@@ -618,37 +623,85 @@ R Removed feature/behavior
 
 <h2>Upgrading from 1.8.x to 1.9.x</h2>
 
-<p><a name="1-9-x-automatic-agent-draining"></a>
-  * A new <code>DRAINING</code> state has been added to Mesos agents. Once an agent is draining, all tasks running on that agent are gracefully
-    killed and no offers for that agent are sent to schedulers, preventing the launching of new tasks.
-    Operators can put an agent into <code>DRAINING</code> state by using the <code>DRAIN_AGENT</code> operator API call.
-    See <a href="/documentation/latest/./maintenance/"><code>docs/maintenance</code></a> for details.</p>
+<p><a name="1-9-x-automatic-agent-draining"></a></p>
 
-<p><a name="1-9-x-linux-nnp-isolator"></a>
-  * A new <a href="/documentation/latest/./isolators/linux-nnp/"><code>linux/nnp</code></a> isolator has been added. The isolator supports setting of the <code>no_new_privs</code> bit in the container, preventing tasks from acquiring additional privileges.</p>
+<ul>
+<li>A new <code>DRAINING</code> state has been added to Mesos agents. Once an agent is draining, all tasks running on that agent are gracefully
+killed and no offers for that agent are sent to schedulers, preventing the launching of new tasks.
+Operators can put an agent into <code>DRAINING</code> state by using the <code>DRAIN_AGENT</code> operator API call.
+See <a href="/documentation/latest/./maintenance/"><code>docs/maintenance</code></a> for details.</li>
+</ul>
 
-<p><a name="1-9-x-docker-ignore-runtime"></a>
-  * A new <a href="/documentation/latest/./configuration/agent/#docker_ignore_runtime"><code>--docker_ignore_runtime</code></a> flag has been added. This causes the agent to ignore any runtime configuration present in Docker images.</p>
 
-<p><a name="1-9-x-hostname-validation-scheme"></a>
-* A new libprocess TLS flag <code>--hostname_validation_scheme</code> along with the corresponding environment variable <code>LIBPROCESS_SSL_HOSTNAME_VALIDATION_SCHEME</code>
-  has been added. Using this flag, users can configure the way libprocess performs hostname validation for TLS connections.
-  See <a href="/documentation/latest/./ssl/"><code>docs/ssl</code></a> for details.</p>
+<p><a name="1-9-x-linux-nnp-isolator"></a></p>
 
-<p><a name="1-9-x-client-certificate-verification"></a>
-* The semantics of the libprocess environment variables <code>LIBPROCESS_SSL_VERIFY_CERT</code> and <code>LIBPROCESS_SSL_REQUIRE_CERT</code> have been slightly updated such that
-  the former now only applies to client-mode and the latter only to server-mode connections. As part of this re-adjustment, the following two changes have
-  been introduced that might require changes for operators running Mesos in unusual TLS configurations.
-  * Anonymous ciphers can not be used anymore when <code>LIBPROCESS_SSL_VERIFY_CERT</code> is set to true. This is because the use of anonymous ciphers enables
-    a malicious attacker to bypass certificate verification by choosing a certificate-less cipher.
-    Users that rely on anonymous ciphers being available should make sure that <code>LIBPROCESS_SSL_VERIFY_CERT</code> is set to false.
-  * For incoming connections, certificates are not verified unless <code>LIBPROCESS_SSL_REQUIRE_CERT</code> is set to true.
-    This is because verifying the certificate can lead to false negatives, where a connection is aborted even though presenting no certificate at all
-    would have been successfull. Users that rely on incoming connection requests presenting valid TLS certificates should make sure that
-    the <code>LIBPROCESS_SSL_REQUIRE_CERT</code> option is set to true.</p>
+<ul>
+<li>A new <a href="/documentation/latest/./isolators/linux-nnp/"><code>linux/nnp</code></a> isolator has been added. The isolator supports setting of the <code>no_new_privs</code> bit in the container, preventing tasks from acquiring additional privileges.</li>
+</ul>
 
-<p><a name="1-9-x-configurable-ipc"></a>
-* The Mesos containerizer now supports configurable IPC namespace and /dev/shm. Container can be configured to have a private IPC namespace and /dev/shm or share them from its parent via the field <code>LinuxInfo.ipc_mode</code>, and the size of its private /dev/shm is also configurable via the field <code>LinuxInfo.shm_size</code>. Operators can control whether it is allowed to share host&rsquo;s IPC namespace and /dev/shm with top level containers via the agent flag <code>--disallow_sharing_agent_ipc_namespace</code>, and specify the default size of the /dev/shm for the container which has a private /dev/shm via the agent flag <code>--default_container_shm_size</code>.</p>
+
+<p><a name="1-9-x-docker-ignore-runtime"></a></p>
+
+<ul>
+<li>A new <a href="/documentation/latest/./configuration/agent/#docker_ignore_runtime"><code>--docker_ignore_runtime</code></a> flag has been added. This causes the agent to ignore any runtime configuration present in Docker images.</li>
+</ul>
+
+
+<p><a name="1-9-x-hostname-validation-scheme"></a></p>
+
+<ul>
+<li>A new libprocess TLS flag <code>--hostname_validation_scheme</code> along with the corresponding environment variable <code>LIBPROCESS_SSL_HOSTNAME_VALIDATION_SCHEME</code>
+has been added. Using this flag, users can configure the way libprocess performs hostname validation for TLS connections.
+See <a href="/documentation/latest/./ssl/"><code>docs/ssl</code></a> for details.</li>
+</ul>
+
+
+<p><a name="1-9-x-client-certificate-verification"></a></p>
+
+<ul>
+<li>The semantics of the libprocess environment variables <code>LIBPROCESS_SSL_VERIFY_CERT</code> and <code>LIBPROCESS_SSL_REQUIRE_CERT</code> have been slightly updated such that
+the former now only applies to client-mode and the latter only to server-mode connections. As part of this re-adjustment, the following two changes have
+been introduced that might require changes for operators running Mesos in unusual TLS configurations.
+
+<ul>
+<li>Anonymous ciphers can not be used anymore when <code>LIBPROCESS_SSL_VERIFY_CERT</code> is set to true. This is because the use of anonymous ciphers enables
+a malicious attacker to bypass certificate verification by choosing a certificate-less cipher.
+Users that rely on anonymous ciphers being available should make sure that <code>LIBPROCESS_SSL_VERIFY_CERT</code> is set to false.</li>
+<li>For incoming connections, certificates are not verified unless <code>LIBPROCESS_SSL_REQUIRE_CERT</code> is set to true.
+This is because verifying the certificate can lead to false negatives, where a connection is aborted even though presenting no certificate at all
+would have been successfull. Users that rely on incoming connection requests presenting valid TLS certificates should make sure that
+the <code>LIBPROCESS_SSL_REQUIRE_CERT</code> option is set to true.</li>
+</ul>
+</li>
+</ul>
+
+
+<p><a name="1-9-x-configurable-ipc"></a></p>
+
+<ul>
+<li>The Mesos containerizer now supports configurable IPC namespace and /dev/shm. Container can be configured to have a private IPC namespace and /dev/shm or share them from its parent via the field <code>LinuxInfo.ipc_mode</code>, and the size of its private /dev/shm is also configurable via the field <code>LinuxInfo.shm_size</code>. Operators can control whether it is allowed to share host&rsquo;s IPC namespace and /dev/shm with top level containers via the agent flag <code>--disallow_sharing_agent_ipc_namespace</code>, and specify the default size of the /dev/shm for the container which has a private /dev/shm via the agent flag <code>--default_container_shm_size</code>.</li>
+</ul>
+
+
+<p><a name="1-9-x-update-quota"></a></p>
+
+<ul>
+<li>The <code>SET_QUOTA</code> and <code>REMOVE QUOTA</code> master calls are deprecated in favor of a new <code>UPDATE_QUOTA</code> master call.</li>
+</ul>
+
+
+<p><a name="#1-9-x-quota-guarantees"></a></p>
+
+<ul>
+<li>Prior to Mesos 1.9, the quota related APIs only exposed quota &ldquo;guarantees&rdquo; which ensured a minimum amount of resources would be available to a role. Setting guarantees also set implicit quota limits. In Mesos 1.9+, quota limits are now exposed directly.
+
+<ul>
+<li>Quota guarantees are now deprecated in favor of using only quota limits. Enforcement of quota guarantees required that Mesos holds back enough resources to meet all of the unsatisfied quota guarantees. Since Mesos is moving towards an optimistic offer model (to improve multi-role / multi- scheduler scalability, see MESOS-1607), it will become no longer possible to enforce quota guarantees by holding back resources. In such a model, quota limits are simple to enforce, but quota guarantees would require a complex &ldquo;effective limit&rdquo; propagation model to leave space for unsatisfied guarantees.</li>
+<li>For these reasons, quota guarantees, while still functional in Mesos 1.9, are now deprecated. A combination of limits and priority based preemption will be simpler in an optimistic offer model.</li>
+</ul>
+</li>
+</ul>
+
 
 <h2>Upgrading from 1.7.x to 1.8.x</h2>
 
