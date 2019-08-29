@@ -296,8 +296,14 @@ we allow a longer vote, to allow more time for integration testing.</p></li>
 <h2>Preparing a New Release Candidate</h2>
 
 <ol>
-<li><p>If the vote does not pass (any -1s or showstopper bugs), track the issues
-as new JIRAs for the release.</p></li>
+<li><p>If the vote does not pass (any -1s or showstopper bugs)</p>
+
+<ol>
+<li>Send a reply to the original VOTE email with subject &ldquo;[RESULT][VOTE] Release Apache Mesos X.Y.Z (rcN)&rdquo; and mention that the vote is canceled.</li>
+<li>Go to https://repository.apache.org/#stagingRepositories and &ldquo;Drop&rdquo; the staging repository containing the JAR (you can find the link to the staging repository in the original VOTE email).</li>
+<li>Track the issues as new JIRAs for the release.</li>
+</ol>
+</li>
 <li><p>When all known issues are resolved, update the <code>CHANGELOG</code> with the newly
 fixed JIRAs.</p></li>
 <li><p>Once all patches are committed to master, cherry-pick them on to the
