@@ -167,7 +167,7 @@ you can get from running <code>mvn --encrypt-password</code>.</p>
 
 <ol>
 <li><p>If this is a regular release, create a new release branch (<major>.<minor>.x)
-based off the current master</p>
+based off the current master.</p>
 
 <pre><code> $ git checkout origin/master -b X.Y.x
 </code></pre>
@@ -235,14 +235,13 @@ branch to ensure both versions stay in sync.</p></li>
 <li><p>Ensure version in <code>configure.ac</code> and <code>CMakeLists.txt</code> is correctly set for
 the release. Do not forget to remove &ldquo;(WIP)&rdquo; suffix from the release notes'
 title.</p></li>
-<li><p>Run <code>make &amp;&amp; support/generate-endpoint-help.py</code> and commit any resulting
-changes.</p></li>
 <li><p>Update and commit <code>docs/configuration.md</code> to reflect the current state of
 the master, agent, and configure flags. Update it on master branch and then
 cherry pick onto the release branch.</p></li>
 <li><p>If this is a regular release, update and commit <code>docs/upgrades.md</code> with
 instructions about how to upgrade a live cluster from the previous release
-version to this release version.</p></li>
+version to this release version. Update it on master branch and then cherry
+pick onto the release branch.</p></li>
 <li><p>If this is a regular release, please ensure that user documentation has been
 added for any new features.</p></li>
 <li><p>Make sure that for any updates of the API, specifically the scheduler API,
@@ -251,6 +250,9 @@ well as <code>include/mesos/v1</code>.</p>
 
 <p><strong>NOTE:</strong> This might actually demand code updates if any omissions were
 identified.</p></li>
+<li><p>Push your changes on master branch and the new release branch if this is a
+regular release, push your changes on the existing release branch if this is
+a patch release.</p></li>
 </ol>
 
 
@@ -313,7 +315,7 @@ releases (e.g., 1.0.2) as well.</p>
 <pre><code> $ git checkout X.Y.x
  $ git cherry-pick abcdefgh...
 </code></pre></li>
-<li><p>Now go back up to the &ldquo;Tagging the Release Candidate&rdquo; section and repeat.</p></li>
+<li><p>Now go back up to the &ldquo;Tagging and Voting the Release Candidate&rdquo; section and repeat.</p></li>
 </ol>
 
 
