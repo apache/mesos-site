@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Apache Mesos - Standalone Containers</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta property="og:locale" content="en_US"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:title" content="Apache Mesos"/>
+    <meta property="og:site_name" content="Apache Mesos"/>
+    <meta property="og:url" content="http://mesos.apache.org/"/>
+    <meta property="og:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta property="og:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
+
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:site" content="@ApacheMesos"/>
+    <meta name="twitter:title" content="Apache Mesos"/>
+    <meta name="twitter:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta name="twitter:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
+
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
+    <link href="../../../assets/css/main.css" rel="stylesheet" />
+
+
+    <!-- Google Analytics Magic -->
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-20226872-1']);
+    _gaq.push(['_setDomainName', 'apache.org']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+  </head>
+  <body>
+    <!-- magical breadcrumbs -->
+    <div class="topnav">
+      <div class="container">
+        <ul class="breadcrumb">
+          <li>
+            <div class="dropdown">
+              <a data-toggle="dropdown" href="#">Apache Software Foundation <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                <li><a href="http://www.apache.org">Apache Homepage</a></li>
+                <li><a href="http://www.apache.org/licenses/">License</a></li>
+                <li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>
+                <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                <li><a href="http://www.apache.org/security/">Security</a></li>
+              </ul>
+            </div>
+          </li>
+
+          <li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+          <li><a href="/documentation/">Documentation</a></li>
+        </ul><!-- /.breadcrumb -->
+      </div><!-- /.container -->
+    </div><!-- /.topnav -->
+
+    <!-- navbar excitement -->
+<div class="navbar navbar-default navbar-static-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#mesos-menu" aria-expanded="false">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo"/></a>
+    </div><!-- /.navbar-header -->
+
+    <div class="navbar-collapse collapse" id="mesos-menu">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/getting-started/">Getting Started</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/documentation/latest/">Documentation</a></li>
+        <li><a href="/downloads/">Downloads</a></li>
+        <li><a href="/community/">Community</a></li>
+      </ul>
+    </div><!-- /#mesos-menu -->
+  </div><!-- /.container -->
+</div><!-- /.navbar -->
+
+<div class="content">
+  <div class="container">
+    <div class="row-fluid">
+  <div class="col-md-4">
+    <h4>If you're new to Mesos</h4>
+    <p>See the <a href="/getting-started/">getting started</a> page for more
+       information about downloading, building, and deploying Mesos.</p>
+
+    <h4>If you'd like to get involved or you're looking for support</h4>
+    <p>See our <a href="/community/">community</a> page for more details.</p>
+  </div>
+  <div class="col-md-8">
+    <h1>Standalone Containers</h1>
+
+<p>Traditionally, launching a container in a Mesos cluster involves
+communication between multiple components:</p>
+
+<pre><code>                                                 Container(s)
+  +-----------+     +--------+     +-------+     +----------+
+  | Framework | &lt;-&gt; | Master | &lt;-&gt; | Agent | &lt;-&gt; | Executor |
+  +-----------+     +--------+     +-------+     |  `-&gt;Task |
+                         ^                       +----------+
+                         |         +-------+     +----------+
+                         +------&gt;  | Agent | &lt;-&gt; | Executor |
+                         |         +-------+     |  `-&gt;Task |
+                        ...                      +----------+
+</code></pre>
+
+<p>Mesos 1.5 introduced &ldquo;Standalone Containers&rdquo;, which provide an alternate
+path for launching containers with a reduced scope and feature set:</p>
+
+<pre><code>                   +-------+    +----------------------+
+  Operator API &lt;-&gt; | Agent | -&gt; | Standalone Container |
+                   +-------+    +----------------------+
+</code></pre>
+
+<p><strong>NOTE:</strong> Agents currently require a connection to a Mesos master in
+order to accept any Operator API calls.  This limitation is not necessary
+and may be fixed in future.</p>
+
+<p><strong>NOTE:</strong> Standalone containers only apply to the Mesos containerizer.
+For standalone docker containers, use docker directly.</p>
+
+<p>As hinted by the diagrams, standalone containers are launched on single
+Agents, rather than cluster-wide.  This document describes the major
+differences between normal containers and standalone containers; and
+provides some examples of how to use the new Operator APIs.</p>
+
+<h2>Launching a Standalone Container</h2>
+
+<p>Because standalone containers are launched directly on Mesos Agents,
+these containers do not participate in the Mesos Master&rsquo;s offer cycle.
+This means standalone containers can be launched regardless of resource
+allocation and can potentially overcommit the Mesos Agent, but cannot
+use reserved resources.</p>
+
+<p>An Operator API might look like this:</p>
+
+<pre><code>LAUNCH_CONTAINER HTTP Request (JSON):
+
+POST /api/v1  HTTP/1.1
+
+Host: agenthost:5051
+Content-Type: application/json
+
+{
+  "type": "LAUNCH_CONTAINER",
+  "launch_container": {
+    "container_id": {
+      "value": "my-standalone-container-id"
+    },
+    "command": {
+      "value": "sleep 100"
+    },
+    "resources": [
+      {
+        "name": "cpus",
+        "scalar": { "value": 2.0 },
+        "type": "SCALAR"
+      },
+      {
+        "name": "mem",
+        "scalar": { "value": 1024.0 },
+        "type": "SCALAR"
+      },
+      {
+        "name": "disk",
+        "scalar": { "value": 1024.0 },
+        "type": "SCALAR"
+      }
+    ],
+    "container": {
+      "type": "MESOS",
+      "mesos": {
+        "image": {
+          "type": "DOCKER",
+          "docker": {
+            "name": "alpine"
+          }
+        }
+      }
+    }
+  }
+}
+</code></pre>
+
+<p>The Agent will return:</p>
+
+<ul>
+<li>200 OK if the launch succeeds, including fetching any container images
+or URIs specified in the launch command.</li>
+<li>202 Accepted if the specified ContainerID is already in use by a running
+container.</li>
+<li>400 Bad Request if the launch fails for any reason.</li>
+</ul>
+
+
+<p><strong>NOTE:</strong> Nested containers share the same Operator API.  To launch a nested
+container, the ContainerID needs to have a parent; and no resources may be
+specified in the request.</p>
+
+<h2>Monitoring a Standalone Container</h2>
+
+<p>Standalone containers are not managed by a framework, do not use executors,
+and therefore do not have status updates.  They are not automatically
+relaunched upon completion/failure.</p>
+
+<p>After launching a standalone container, the operator should monitor the
+container via the <code>WAIT_CONTAINER</code> call:</p>
+
+<pre><code>WAIT_CONTAINER HTTP Request (JSON):
+
+POST /api/v1  HTTP/1.1
+
+Host: agenthost:5051
+Content-Type: application/json
+Accept: application/json
+
+{
+  "type": "WAIT_CONTAINER",
+  "wait_container": {
+    "container_id": {
+      "value": "my-standalone-container-id"
+    }
+  }
+}
+
+WAIT_CONTAINER HTTP Response (JSON):
+
+HTTP/1.1 200 OK
+
+Content-Type: application/json
+
+{
+  "type": "WAIT_CONTAINER",
+  "wait_container": {
+    "exit_status": 0
+  }
+}
+</code></pre>
+
+<p>This is a blocking HTTP call that only returns after the container has
+exited.</p>
+
+<p>If the specified ContainerID does not exist, the call returns a 404.</p>
+
+<h2>Killing a Standalone Container</h2>
+
+<p>A standalone container can be signalled (usually to kill it) via this API:</p>
+
+<pre><code>KILL_CONTAINER HTTP Request (JSON):
+
+POST /api/v1  HTTP/1.1
+
+Host: agenthost:5051
+Content-Type: application/json
+
+{
+  "type": "KILL_CONTAINER",
+  "kill_container": {
+    "container_id": {
+      "value": "my-standalone-container-id"
+    }
+  }
+}
+
+KILL_CONTAINER HTTP Response (JSON):
+
+HTTP/1.1 200 OK
+</code></pre>
+
+<p>If the specified ContainerID does not exist, the call returns a 404.</p>
+
+<h2>Cleaning up a Standalone Container</h2>
+
+<p>Unlike other containers, a standalone container&rsquo;s sandbox is not garbage
+collected by the Agent after some time (like other sandbox directories).
+The Agent is unable to garbage collect these containers because there is
+no status update mechanism to report the exit status of the container.</p>
+
+<p>Standalone container sandboxes must be manually cleaned up by the operator and
+are located in the agent&rsquo;s work directory under
+<code>/containers/&lt;my-standalone-container-id&gt;</code>.</p>
+
+  </div>
+</div>
+
+  </div><!-- /.container -->
+</div><!-- /.content -->
+
+<hr>
+
+
+
+    <!-- footer -->
+    <div class="footer">
+      <div class="container">
+
+        <div class="col-md-3">
+            <a  href="https://www.apache.org/events/current-event.html">
+              <img src="https://www.apache.org/events/current-event-234x60.png"/>
+            </a>
+        </div>
+
+        <div class="col-md-3 social-blk">
+          <span class="social">
+            <a href="https://twitter.com/ApacheMesos"
+              class="twitter-follow-button"
+              data-show-count="false" data-size="large">Follow @ApacheMesos</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+            <a href="https://twitter.com/intent/tweet?button_hashtag=mesos"
+              class="twitter-hashtag-button"
+              data-size="large"
+              data-related="ApacheMesos">Tweet #mesos</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+          </span>
+        </div>
+
+        <div class="col-md-6 trademark">
+          <p>&copy; 2012-2018 <a href="http://apache.org">The Apache Software Foundation</a>.
+            Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.
+          <p>
+        </div>
+
+      </div><!-- /.container -->
+    </div><!-- /.footer -->
+
+    <!-- JS -->
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js"></script>
+
+    <!-- Inject anchors for all headings on the page, see https://www.bryanbraun.com/anchorjs. -->
+    <script type="text/javascript">
+    anchors.options = {
+      placement: 'right',
+      ariaLabel: 'Permalink',
+    };
+
+    // The default is to not add anchors to h1, but we have pages with multiple h1 headers,
+    // and we do want to put anchors on those.
+    anchors.add('h1, h2, h3, h4, h5, h6');
+    </script>
+  </body>
+</html>
