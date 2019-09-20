@@ -132,7 +132,7 @@ providing additional security guarantees but also increasing the deployment comp
    connect to Mesos HTTP endpoints securely via TLS, verifying that the server certificate is valid
    and trusted.</p>
 
-<p>2) <code>LIBPROCESS_SSL_VERIFY_CERT=true</code>. In addition to the above, this ensures that Mesos components
+<p>2) <code>LIBPROCESS_SSL_VERIFY_SERVER_CERT=true</code>. In addition to the above, this ensures that Mesos components
    themselves are verifying the presence of valid and trusted server certificates when making
    outgoing connections. This prevents man-in-the-middle attacks on communications between Mesos
    components, and on communications between a Mesos component and an external server.</p>
@@ -141,7 +141,7 @@ providing additional security guarantees but also increasing the deployment comp
    to <code>false</code>, otherwise a malicious actor can simply bypass certificate verification by
    downgrading to a non-TLS connection.</p>
 
-<p>3) <code>LIBPROCESS_SSL_REQUIRE_CERT=true</code>. In addition to the above, this enforces the use of TLS
+<p>3) <code>LIBPROCESS_SSL_REQUIRE_CLIENT_CERT=true</code>. In addition to the above, this enforces the use of TLS
    client certificates on all connections to any Mesos component. This ensures that only trusted
    clients can connect to any Mesos component, preventing reception of forged or malformed messages.</p>
 
@@ -153,12 +153,12 @@ providing additional security guarantees but also increasing the deployment comp
    set to <code>false</code>.</p>
 
 <p>For secure usage, it is recommended to set <code>LIBPROCESS_SSL_ENABLED=true</code>,
-<code>LIBPROCESS_SSL_VERIFY_CERT=true</code>, <code>LIBPROCESS_SSL_HOSTNAME_VALIDATION_SCHEME=openssl</code>
+<code>LIBPROCESS_SSL_VERIFY_SERVER_CERT=true</code>, <code>LIBPROCESS_SSL_HOSTNAME_VALIDATION_SCHEME=openssl</code>
 and <code>LIBPROCESS_SSL_ENABLE_DOWNGRADE=false</code>. This provides a good trade-off
 between security and usability.</p>
 
 <p>It is not recommended in general to expose Mesos components to the public internet, but in cases
-where they are the use of <code>LIBPROCESS_SSL_REQUIRE_CERT</code> is strongly suggested.</p>
+where they are the use of <code>LIBPROCESS_SSL_REQUIRE_CLIENT_CERT</code> is strongly suggested.</p>
 
 <h1>Environment Variables</h1>
 
@@ -200,6 +200,10 @@ openssl req -new -x509 -passin pass:some_password -days 365 -keyout key.pem -out
 
 <h4>LIBPROCESS_SSL_VERIFY_CERT=(false|0,true|1) [default=false|0]</h4>
 
+<p>This is a legacy alias for the <code>LIBPROCESS_SSL_VERIFY_SERVER_CERT</code> setting.</p>
+
+<h4>LIBPROCESS_SSL_VERIFY_SERVER_CERT=(false|0,true|1) [default=false|0]</h4>
+
 <p>This setting only affects the behaviour of libprocess in TLS client mode.</p>
 
 <p>If this is true, a remote server is required to present a server certificate,
@@ -214,6 +218,10 @@ an anonymous cipher is used), but the presented server certificates will not be 
 set to true for backwards compatibility reasons.</p>
 
 <h4>LIBPROCESS_SSL_REQUIRE_CERT=(false|0,true|1) [default=false|0]</h4>
+
+<p>This is a legacy alias for the <code>LIBPROCESS_SSL_REQUIRE_CLIENT_CERT</code> setting.</p>
+
+<h4>LIBPROCESS_SSL_REQUIRE_CLIENT_CERT=(false|0,true|1) [default=false|0]</h4>
 
 <p>This setting only affects the behaviour of libprocess in TLS server mode.</p>
 
@@ -277,7 +285,7 @@ OpenSSL versions prior to <code>1.0.2</code> allow for the use of only one curve
 <p>This flag is used to select the scheme by which the hostname validation check works.</p>
 
 <p>Since hostname validation is part of certificate verification, this flag has no
-effect unless one of <code>LIBPROCESS_SSL_VERIFY_CERT</code> or <code>LIBPROCESS_SSL_REQUIRE_CERT</code>
+effect unless one of <code>LIBPROCESS_SSL_VERIFY_SERVER_CERT</code> or <code>LIBPROCESS_SSL_REQUIRE_CLIENT_CERT</code>
 is set to true.</p>
 
 <p>Currently, it is possible to choose between two schemes:</p>
