@@ -135,9 +135,9 @@ agent node. The value of this flag must be a file path or a JSON dictionary
 with the key <code>fault_domain</code> and subkeys <code>region</code> and <code>zone</code> mapping to
 arbitrary strings:</p>
 
-<pre><code>mesos-master --domain='{"fault_domain": {"region": "eu", "zone": "rack1"}}'
+<pre><code>mesos-master --domain='{"fault_domain": {"region": {"name":"eu"}, "zone": { "name":"rack1"}}}'
 
-mesos-agent  --domain='{"fault_domain": {"region": "eu", "zone": "rack2"}}'
+mesos-agent  --domain='{"fault_domain": {"region": {"name":"eu"}, "zone": {"name":"rack2"}}}'
 </code></pre>
 
 <p>Frameworks can learn about the domain of an agent by inspecting the <code>domain</code>
