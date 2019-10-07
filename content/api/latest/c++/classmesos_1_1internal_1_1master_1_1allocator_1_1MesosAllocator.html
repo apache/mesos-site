@@ -133,9 +133,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2b3d9878688ae72c6270d298f77a3663"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt; <a class="el" href="classhashmap.html">hashmap</a>&lt; SlaveID, <a class="el" href="classhashmap.html">hashmap</a>&lt; FrameworkID, mesos::allocator::InverseOfferStatus &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1master_1_1allocator_1_1MesosAllocator.html#a2b3d9878688ae72c6270d298f77a3663">getInverseOfferStatuses</a> () override</td></tr>
 <tr class="memdesc:a2b3d9878688ae72c6270d298f77a3663"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the status of all inverse offers maintained by the allocator.  <a href="#a2b3d9878688ae72c6270d298f77a3663">More...</a><br /></td></tr>
 <tr class="separator:a2b3d9878688ae72c6270d298f77a3663"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a04ac0b442a5e1cabe452bdb4b5b12ef5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1master_1_1allocator_1_1MesosAllocator.html#a04ac0b442a5e1cabe452bdb4b5b12ef5">recoverResources</a> (const FrameworkID &amp;frameworkId, const SlaveID &amp;slaveId, const <a class="el" href="classmesos_1_1Resources.html">Resources</a> &amp;resources, const <a class="el" href="classOption.html">Option</a>&lt; Filters &gt; &amp;filters) override</td></tr>
-<tr class="memdesc:a04ac0b442a5e1cabe452bdb4b5b12ef5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recovers resources.  <a href="#a04ac0b442a5e1cabe452bdb4b5b12ef5">More...</a><br /></td></tr>
-<tr class="separator:a04ac0b442a5e1cabe452bdb4b5b12ef5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3610b6486573b77bd316c8e37ea5b0d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1master_1_1allocator_1_1MesosAllocator.html#ad3610b6486573b77bd316c8e37ea5b0d">transitionOfferedToAllocated</a> (const SlaveID &amp;slaveId, const <a class="el" href="classmesos_1_1Resources.html">Resources</a> &amp;resources) override</td></tr>
+<tr class="memdesc:ad3610b6486573b77bd316c8e37ea5b0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method should be invoked when the offered resources has become actually allocated.  <a href="#ad3610b6486573b77bd316c8e37ea5b0d">More...</a><br /></td></tr>
+<tr class="separator:ad3610b6486573b77bd316c8e37ea5b0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1940a6eb2f35553518c61358e00dc5c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1master_1_1allocator_1_1MesosAllocator.html#aa1940a6eb2f35553518c61358e00dc5c">recoverResources</a> (const FrameworkID &amp;frameworkId, const SlaveID &amp;slaveId, const <a class="el" href="classmesos_1_1Resources.html">Resources</a> &amp;resources, const <a class="el" href="classOption.html">Option</a>&lt; Filters &gt; &amp;filters, bool isAllocated) override</td></tr>
+<tr class="memdesc:aa1940a6eb2f35553518c61358e00dc5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recovers resources.  <a href="#aa1940a6eb2f35553518c61358e00dc5c">More...</a><br /></td></tr>
+<tr class="separator:aa1940a6eb2f35553518c61358e00dc5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac2f5c2d3d39324849bac108032033c36"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1master_1_1allocator_1_1MesosAllocator.html#ac2f5c2d3d39324849bac108032033c36">suppressOffers</a> (const FrameworkID &amp;frameworkId, const std::set&lt; std::string &gt; &amp;roles) override</td></tr>
 <tr class="memdesc:ac2f5c2d3d39324849bac108032033c36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Suppresses offers.  <a href="#ac2f5c2d3d39324849bac108032033c36">More...</a><br /></td></tr>
 <tr class="separator:ac2f5c2d3d39324849bac108032033c36"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -689,7 +692,7 @@ template&lt;typename AllocatorProcess &gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="a04ac0b442a5e1cabe452bdb4b5b12ef5"></a>
+<a class="anchor" id="aa1940a6eb2f35553518c61358e00dc5c"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -720,7 +723,13 @@ template&lt;typename AllocatorProcess &gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const <a class="el" href="classOption.html">Option</a>&lt; Filters &gt; &amp;&#160;</td>
-          <td class="paramname"><em>filters</em>&#160;</td>
+          <td class="paramname"><em>filters</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>isAllocated</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -736,10 +745,10 @@ template&lt;typename AllocatorProcess &gt; </div>
 </div><div class="memdoc">
 
 <p>Recovers resources. </p>
-<p>Used to update the set of available resources for a specific agent. This method is invoked to inform the allocator about allocated resources that have been refused or are no longer in use. Allocated resources will have an <code>allocation_info.role</code> assigned and callers are expected to only call this with resources allocated to a single role.</p>
+<p>Used to update the set of available resources for a specific agent. This method is invoked to inform the allocator about offered resources that have been refused or allocated (i.e. used for launching tasks) resources that are no longer in use. The resources will have an <code>allocation_info.role</code> assigned and callers are expected to only call this with resources allocated to a single role.</p>
 <p>TODO(bmahler): We could allow resources allocated to multiple roles within a single call here, but filtering them in the same way does not seem desirable. </p>
 
-<p>Implements <a class="el" href="classmesos_1_1allocator_1_1Allocator.html#a9719d532d6e866956062a3d8ad437781">mesos::allocator::Allocator</a>.</p>
+<p>Implements <a class="el" href="classmesos_1_1allocator_1_1Allocator.html#a4fcb6383973e88484d8b939207d4003d">mesos::allocator::Allocator</a>.</p>
 
 </div>
 </div>
@@ -954,6 +963,46 @@ template&lt;typename AllocatorProcess &gt; </div>
 <p>Informs the allocator to stop sending offers to this framework for the specified roles. If <code>roles</code> is an empty set, we will stop sending offers to this framework for all of the framework's subscribed roles. </p>
 
 <p>Implements <a class="el" href="classmesos_1_1allocator_1_1Allocator.html#a491f49ba873d0b8c56d45526984cd4d9">mesos::allocator::Allocator</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad3610b6486573b77bd316c8e37ea5b0d"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename AllocatorProcess &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classmesos_1_1internal_1_1master_1_1allocator_1_1MesosAllocator.html">mesos::internal::master::allocator::MesosAllocator</a>&lt; AllocatorProcess &gt;::transitionOfferedToAllocated </td>
+          <td>(</td>
+          <td class="paramtype">const SlaveID &amp;&#160;</td>
+          <td class="paramname"><em>slaveId</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmesos_1_1Resources.html">Resources</a> &amp;&#160;</td>
+          <td class="paramname"><em>resources</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>This method should be invoked when the offered resources has become actually allocated. </p>
+
+<p>Implements <a class="el" href="classmesos_1_1allocator_1_1Allocator.html#af3cf7be4e02abadc397df874194ace03">mesos::allocator::Allocator</a>.</p>
 
 </div>
 </div>

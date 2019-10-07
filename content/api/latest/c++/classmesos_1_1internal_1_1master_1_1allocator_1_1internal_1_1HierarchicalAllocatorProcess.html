@@ -124,8 +124,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:af318c26f75e774c26dcda6b3a3d7fca2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2fab59da499452701983583ec14eb0a7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt; <a class="el" href="classhashmap.html">hashmap</a>&lt; SlaveID, <a class="el" href="classhashmap.html">hashmap</a>&lt; FrameworkID, mesos::allocator::InverseOfferStatus &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1master_1_1allocator_1_1internal_1_1HierarchicalAllocatorProcess.html#a2fab59da499452701983583ec14eb0a7">getInverseOfferStatuses</a> () override</td></tr>
 <tr class="separator:a2fab59da499452701983583ec14eb0a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a508736cf98d37e4fe95056f59ac4ef1b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1master_1_1allocator_1_1internal_1_1HierarchicalAllocatorProcess.html#a508736cf98d37e4fe95056f59ac4ef1b">recoverResources</a> (const FrameworkID &amp;frameworkId, const SlaveID &amp;slaveId, const <a class="el" href="classmesos_1_1Resources.html">Resources</a> &amp;resources, const <a class="el" href="classOption.html">Option</a>&lt; Filters &gt; &amp;filters) override</td></tr>
-<tr class="separator:a508736cf98d37e4fe95056f59ac4ef1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a142aa33d6dd0eeed33de4f15cd92da51"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1master_1_1allocator_1_1internal_1_1HierarchicalAllocatorProcess.html#a142aa33d6dd0eeed33de4f15cd92da51">transitionOfferedToAllocated</a> (const SlaveID &amp;slaveId, const <a class="el" href="classmesos_1_1Resources.html">Resources</a> &amp;resources) override</td></tr>
+<tr class="separator:a142aa33d6dd0eeed33de4f15cd92da51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a713e2cd0613c3aeb32b0d869a3af05ba"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1master_1_1allocator_1_1internal_1_1HierarchicalAllocatorProcess.html#a713e2cd0613c3aeb32b0d869a3af05ba">recoverResources</a> (const FrameworkID &amp;frameworkId, const SlaveID &amp;slaveId, const <a class="el" href="classmesos_1_1Resources.html">Resources</a> &amp;resources, const <a class="el" href="classOption.html">Option</a>&lt; Filters &gt; &amp;filters, bool isAllocated) override</td></tr>
+<tr class="separator:a713e2cd0613c3aeb32b0d869a3af05ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a76beef96029c462144d6c627160fd788"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1master_1_1allocator_1_1internal_1_1HierarchicalAllocatorProcess.html#a76beef96029c462144d6c627160fd788">suppressOffers</a> (const FrameworkID &amp;frameworkId, const std::set&lt; std::string &gt; &amp;roles) override</td></tr>
 <tr class="separator:a76beef96029c462144d6c627160fd788"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f5ef354b0e51b1f7143de72606d72dd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1master_1_1allocator_1_1internal_1_1HierarchicalAllocatorProcess.html#a4f5ef354b0e51b1f7143de72606d72dd">reviveOffers</a> (const FrameworkID &amp;frameworkId, const std::set&lt; std::string &gt; &amp;roles) override</td></tr>
@@ -1348,7 +1350,7 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a508736cf98d37e4fe95056f59ac4ef1b"></a>
+<a class="anchor" id="a713e2cd0613c3aeb32b0d869a3af05ba"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -1377,7 +1379,13 @@ Protected Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const <a class="el" href="classOption.html">Option</a>&lt; Filters &gt; &amp;&#160;</td>
-          <td class="paramname"><em>filters</em>&#160;</td>
+          <td class="paramname"><em>filters</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>isAllocated</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1392,7 +1400,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implements <a class="el" href="classmesos_1_1internal_1_1master_1_1allocator_1_1MesosAllocatorProcess.html#aa00b6606f17eede7b0ef45cfb954b546">mesos::internal::master::allocator::MesosAllocatorProcess</a>.</p>
+<p>Implements <a class="el" href="classmesos_1_1internal_1_1master_1_1allocator_1_1MesosAllocatorProcess.html#ab1bd5c1cc92d4fec35f7982f79b1a673">mesos::internal::master::allocator::MesosAllocatorProcess</a>.</p>
 
 </div>
 </div>
@@ -1601,6 +1609,42 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Implements <a class="el" href="classmesos_1_1internal_1_1master_1_1allocator_1_1MesosAllocatorProcess.html#a91615b60e1887f3f002e8f23bd385b3b">mesos::internal::master::allocator::MesosAllocatorProcess</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a142aa33d6dd0eeed33de4f15cd92da51"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void mesos::internal::master::allocator::internal::HierarchicalAllocatorProcess::transitionOfferedToAllocated </td>
+          <td>(</td>
+          <td class="paramtype">const SlaveID &amp;&#160;</td>
+          <td class="paramname"><em>slaveId</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmesos_1_1Resources.html">Resources</a> &amp;&#160;</td>
+          <td class="paramname"><em>resources</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classmesos_1_1internal_1_1master_1_1allocator_1_1MesosAllocatorProcess.html#a5c08d062826d83d79349aecac840444c">mesos::internal::master::allocator::MesosAllocatorProcess</a>.</p>
 
 </div>
 </div>
