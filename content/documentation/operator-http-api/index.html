@@ -1932,8 +1932,25 @@ Content-Type: application/json
 
 <h3>RESERVE_RESOURCES</h3>
 
-<p>This call reserve resources dynamically on a specific agent. This call takes
-<code>agent_id</code> and <code>resources</code> details like the following.</p>
+<p>This call is used to update resource reservations.</p>
+
+<p>This call reserves resources dynamically on a specific agent. This call takes
+<code>agent_id</code>, the <code>source</code> resources of the operation and the target
+<code>resources</code>, and updates the reservations of <code>source</code> to be equal to
+the reservations of <code>target</code>.</p>
+
+<p>For backwards compatibility we accept calls without the <code>sources</code> field present,
+but only allow adding a single reservation refinement in that case;
+otherwise we expect that <code>sources</code> can be transformed into <code>resources</code> by
+repeatedly removing or adding identical reservations from all given
+resources. This means that <code>source</code> and <code>resources</code> must be identical
+in all values apart from reservation.</p>
+
+<p>If authorization is enabled we expect the caller to be authorized to perform any
+<code>UNRESERVE</code> or <code>RESERVE</code> operations needed to transform <code>sources</code> to
+<code>resources</code>.</p>
+
+<p>Example of a call creating reserved resources for role <code>role</code>:</p>
 
 <pre><code>RESERVE_RESOURCES HTTP Request (JSON):
 
@@ -1949,14 +1966,10 @@ Accept: application/json
     "agent_id": {
       "value": "1557de7d-547c-48db-b5d3-6bef9c9640ef-S0"
     },
-    "resources": [
+    "source": [
       {
         "type": "SCALAR",
         "name": "cpus",
-        "reservation": {
-          "principal": "my-principal"
-        },
-        "role": "role",
         "scalar": {
           "value": 1.0
         }
@@ -1964,13 +1977,125 @@ Accept: application/json
       {
         "type": "SCALAR",
         "name": "mem",
-        "reservation": {
-          "principal": "my-principal"
-        },
-        "role": "role",
         "scalar": {
           "value": 512.0
         }
+      }
+    ],
+    "resources": [
+      {
+        "type": "SCALAR",
+        "name": "cpus",
+        "scalar": {
+          "value": 1.0
+        },
+        "reservations": [
+          {
+            "type": "DYNAMIC",
+            "role": "role",
+            "principal": "my-principal"
+          }
+        ]
+      },
+      {
+        "type": "SCALAR",
+        "name": "mem",
+        "scalar": {
+          "value": 512.0
+        },
+        "reservations": [
+          {
+            "type": "DYNAMIC",
+            "role": "role",
+            "principal": "my-principal"
+          }
+        ]
+      }
+    ]
+  }
+}
+
+
+RESERVE_RESOURCES HTTP Response:
+
+HTTP/1.1 202 Accepted
+</code></pre>
+
+<p>Example of a call changing the reservation of resources from <code>role_a</code> to
+<code>role_b</code>.</p>
+
+<pre><code>RESERVE_RESOURCES HTTP Request (JSON):
+
+POST /api/v1  HTTP/1.1
+
+Host: masterhost:5050
+Content-Type: application/json
+Accept: application/json
+
+{
+  "type": "RESERVE_RESOURCES",
+  "reserve_resources": {
+    "agent_id": {
+      "value": "1557de7d-547c-48db-b5d3-6bef9c9640ef-S0"
+    },
+    "source": [
+      {
+        "type": "SCALAR",
+        "name": "cpus",
+        "scalar": {
+          "value": 1.0
+        },
+        "reservations": [
+          {
+            "type": "DYNAMIC",
+            "role": "role_a",
+            "principal": "my-principal"
+          }
+        ]
+      },
+      {
+        "type": "SCALAR",
+        "name": "mem",
+        "scalar": {
+          "value": 512.0
+        },
+        "reservations": [
+          {
+            "type": "DYNAMIC",
+            "role": "role_a",
+            "principal": "my-principal"
+          }
+        ]
+      }
+    ],
+    "resources": [
+      {
+        "type": "SCALAR",
+        "name": "cpus",
+        "scalar": {
+          "value": 1.0
+        },
+        "reservations": [
+          {
+            "type": "DYNAMIC",
+            "role": "role_b",
+            "principal": "my-principal"
+          }
+        ]
+      },
+      {
+        "type": "SCALAR",
+        "name": "mem",
+        "scalar": {
+          "value": 512.0
+        },
+        "reservations": [
+          {
+            "type": "DYNAMIC",
+            "role": "role_b",
+            "principal": "my-principal"
+          }
+        ]
       }
     ]
   }
@@ -2005,24 +2130,30 @@ Accept: application/json
       {
         "type": "SCALAR",
         "name": "cpus",
-        "reservation": {
-          "principal": "my-principal"
-        },
-        "role": "role",
         "scalar": {
           "value": 1.0
-        }
+        },
+        "reservations": [
+          {
+            "type": "DYNAMIC",
+            "role": "role",
+            "principal": "my-principal"
+          }
+        ]
       },
       {
         "type": "SCALAR",
         "name": "mem",
-        "reservation": {
-          "principal": "my-principal"
-        },
-        "role": "role",
         "scalar": {
           "value": 512.0
-        }
+        },
+        "reservations": [
+          {
+            "type": "DYNAMIC",
+            "role": "role",
+            "principal": "my-principal"
+          }
+        ]
       }
     ]
   }
