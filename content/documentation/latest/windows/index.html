@@ -220,7 +220,7 @@ components on Windows, turn it <code>ON</code>:</p>
 <pre><code class="powershell">mkdir build; cd build
 $env:PATH += ";C:\...\apache-maven-3.3.9\bin\"
 $env:JAVA_HOME = "C:\Program Files\Java\jdk1.8.0_144"
-cmake .. -DENABLE_JAVA=ON -DENABLE_LIBEVENT=ON -G "Visual Studio 15 2017 Win64" -T "host=x64"
+cmake .. -DENABLE_JAVA=ON -G "Visual Studio 15 2017 Win64" -T "host=x64"
 cmake --build . --target mesos-java
 </code></pre>
 
@@ -252,15 +252,9 @@ not be found. On Windows, the DLL search path includes the environment variable
 of OpenSSL for Windows. A commonly chosen distribution is
 <a href="https://slproweb.com/products/Win32OpenSSL.html">Shining Light Productions' OpenSSL</a>.</p>
 
-<p>As of this writing, OpenSSL 1.1.x is not yet supported, but 1.0.2M has been
-tested.</p>
+<p>As of this writing, OpenSSL 1.1.x is supported.</p>
 
-<p>Use <code>-DENABLE_SSL=ON -DENABLE_LIBEVENT=ON</code> to build with OpenSSL.</p>
-
-<blockquote><p>Warning: This currently requires the use of libevent instead of the
-native Windows Thread Pool API. However, the use of libevent on
-Windows is NOT recommended, as it is buggy and will be unsupported
-in the future.</p></blockquote>
+<p>Use <code>-DENABLE_SSL=ON</code> to build with OpenSSL.</p>
 
 <p>Note that it will link to OpenSSL dynamically, so if the built executables are
 deployed elsewhere, that machine also needs OpenSSL installed.</p>
