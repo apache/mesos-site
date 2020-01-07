@@ -59,6 +59,8 @@
 <div class="textblock"><code>#include &lt;string&gt;</code><br />
 <code>#include &lt;utility&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
+<code>#include &lt;glog/logging.h&gt;</code><br />
+<code>#include &lt;<a class="el" href="3rdparty_2stout_2include_2stout_2attributes_8hpp_source.html">stout/attributes.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="stringify_8hpp_source.html">stout/stringify.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="strings_8hpp_source.html">stout/strings.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="3rdparty_2stout_2include_2stout_2os_2constants_8hpp_source.html">stout/os/constants.hpp</a>&gt;</code><br />
@@ -69,6 +71,8 @@
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPath.html">Path</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents a POSIX or Windows file system path and offers common path manipulations.  <a href="classPath.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPath_1_1const__iterator.html">Path::const_iterator</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
@@ -87,11 +91,13 @@ Functions</h2></td></tr>
 <tr class="memitem:a1729e1b6a293ad05545aa75e73f71de6"><td class="memTemplParams" colspan="2">template&lt;typename... Paths&gt; </td></tr>
 <tr class="memitem:a1729e1b6a293ad05545aa75e73f71de6"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepath.html#a1729e1b6a293ad05545aa75e73f71de6">path::join</a> (const std::string &amp;path1, const std::string &amp;path2, Paths &amp;&amp;...paths)</td></tr>
 <tr class="separator:a1729e1b6a293ad05545aa75e73f71de6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1d72015b1e35ab52249f56386c42d1a4"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepath.html#a1d72015b1e35ab52249f56386c42d1a4">path::join</a> (const std::vector&lt; std::string &gt; &amp;paths)</td></tr>
-<tr class="separator:a1d72015b1e35ab52249f56386c42d1a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a09c4941618b3a4ea2dbfccf5fe9d3687"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepath.html#a09c4941618b3a4ea2dbfccf5fe9d3687">path::absolute</a> (const std::string &amp;path)</td></tr>
-<tr class="memdesc:a09c4941618b3a4ea2dbfccf5fe9d3687"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether the given path is an absolute path.  <a href="namespacepath.html#a09c4941618b3a4ea2dbfccf5fe9d3687">More...</a><br /></td></tr>
-<tr class="separator:a09c4941618b3a4ea2dbfccf5fe9d3687"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73dd41a94247389b73c19ffbf68922b7"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepath.html#a73dd41a94247389b73c19ffbf68922b7">path::join</a> (const std::vector&lt; std::string &gt; &amp;paths, const char separator=<a class="el" href="namespaceos.html#a493d7d8775f0ed778ad3b52ec19bbaab">os::PATH_SEPARATOR</a>)</td></tr>
+<tr class="separator:a73dd41a94247389b73c19ffbf68922b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a275a195603aabe3f4133b541a209aa"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepath.html#a7a275a195603aabe3f4133b541a209aa">path::is_absolute</a> (const std::string &amp;path)</td></tr>
+<tr class="memdesc:a7a275a195603aabe3f4133b541a209aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether the given path is an absolute path.  <a href="namespacepath.html#a7a275a195603aabe3f4133b541a209aa">More...</a><br /></td></tr>
+<tr class="separator:a7a275a195603aabe3f4133b541a209aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af3cb902a37d2991d8e5f86b04e2ba593"><td class="memItemLeft" align="right" valign="top"><a class="el" href="3rdparty_2stout_2include_2stout_2attributes_8hpp.html#af642237399c019d098b732a2cd82ba04">STOUT_DEPRECATED</a> bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepath.html#af3cb902a37d2991d8e5f86b04e2ba593">path::absolute</a> (const std::string &amp;path)</td></tr>
+<tr class="separator:af3cb902a37d2991d8e5f86b04e2ba593"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad31aaa5ed4d55b1f295094e3fa84d769"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="path_8hpp.html#ad31aaa5ed4d55b1f295094e3fa84d769">operator==</a> (const <a class="el" href="classPath.html">Path</a> &amp;left, const <a class="el" href="classPath.html">Path</a> &amp;right)</td></tr>
 <tr class="separator:ad31aaa5ed4d55b1f295094e3fa84d769"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a79f5bd235856dc07ee5980991200e646"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="path_8hpp.html#a79f5bd235856dc07ee5980991200e646">operator!=</a> (const <a class="el" href="classPath.html">Path</a> &amp;left, const <a class="el" href="classPath.html">Path</a> &amp;right)</td></tr>
@@ -106,6 +112,8 @@ Functions</h2></td></tr>
 <tr class="separator:a0a79d7788a7f0189a4a5b69b73dce859"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2ec9a8258175592b62eb0df607badc6d"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="path_8hpp.html#a2ec9a8258175592b62eb0df607badc6d">operator&lt;&lt;</a> (std::ostream &amp;stream, const <a class="el" href="classPath.html">Path</a> &amp;path)</td></tr>
 <tr class="separator:a2ec9a8258175592b62eb0df607badc6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a7bb8dbf28bf3c7eabd502dfa44bea6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTry.html">Try</a>&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepath.html#a2a7bb8dbf28bf3c7eabd502dfa44bea6">path::relative</a> (const std::string &amp;path_, const std::string &amp;base_, char path_separator=<a class="el" href="namespaceos.html#a493d7d8775f0ed778ad3b52ec19bbaab">os::PATH_SEPARATOR</a>)</td></tr>
+<tr class="separator:a2a7bb8dbf28bf3c7eabd502dfa44bea6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a class="anchor" id="a79f5bd235856dc07ee5980991200e646"></a>
