@@ -998,7 +998,7 @@ backwards compatibility when adding new fields (see
 <p>Third, the <code>ObjectApprover</code> interface. In order to support efficient
 authorization of large objects and multiple objects a user can request an
 <code>ObjectApprover</code> via
-<code>Future&lt;Owned&lt;ObjectApprover&gt;&gt; getObjectApprover(const authorization::Subject&amp; subject, const authorization::Action&amp; action)</code>.
+<code>Future&lt;shared_ptr&lt;const ObjectApprover&gt;&gt; getApprover(const authorization::Subject&amp; subject, const authorization::Action&amp; action)</code>.
 The resulting <code>ObjectApprover</code> provides
 <code>Try&lt;bool&gt; approved(const ObjectApprover::Object&amp; object)</code> to synchronously
 check whether objects are authorized. The <code>ObjectApprover::Object</code> follows the
@@ -1017,6 +1017,14 @@ structure of the <code>Request::Object</code> above.</p>
 
 <p>As the fields take pointer to each entity the <code>ObjectApprover::Object</code> does not
 require the entity to be copied.</p>
+
+<p>Authorizer must ensure that <code>ObjectApprover</code>s returned by <code>getApprover(...)</code> method
+are valid throughout their whole lifetime. This is relied upon by parts of Mesos code
+(Scheduler API, Operator API events and so on) that have a need to frequently authorize
+a limited number of long-lived authorization subjects.
+This code on the Mesos side, on its part, must ensure that it does not store
+<code>ObjectApprover</code> for authorization subjects that it no longer uses (i.e. that it
+does not leak <code>ObjectApprover</code>s).</p>
 
 <p>NOTE: As the <code>ObjectApprover</code> is run synchronously in a different actor process
 <code>ObjectApprover.approved()</code> call must not block!</p>

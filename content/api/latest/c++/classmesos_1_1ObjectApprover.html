@@ -81,13 +81,14 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:abaeb3adf89e0cb3ed05bb3cbc9461d68"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classTry.html">Try</a>&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1ObjectApprover.html#abaeb3adf89e0cb3ed05bb3cbc9461d68">approved</a> (const <a class="el" href="classOption.html">Option</a>&lt; <a class="el" href="structmesos_1_1ObjectApprover_1_1Object.html">Object</a> &gt; &amp;object) const noexcept=0</td></tr>
-<tr class="memdesc:abaeb3adf89e0cb3ed05bb3cbc9461d68"><td class="mdescLeft">&#160;</td><td class="mdescRight">NOTE: As this function can be used synchronously by actors it is essential that it does not block!  <a href="#abaeb3adf89e0cb3ed05bb3cbc9461d68">More...</a><br /></td></tr>
+<tr class="memdesc:abaeb3adf89e0cb3ed05bb3cbc9461d68"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method returns whether access to the specified object is authorized or not, or <code><a class="el" href="classError.html">Error</a></code>.  <a href="#abaeb3adf89e0cb3ed05bb3cbc9461d68">More...</a><br /></td></tr>
 <tr class="separator:abaeb3adf89e0cb3ed05bb3cbc9461d68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9d951f9a9de639f49756a984d2b84e63"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1ObjectApprover.html#a9d951f9a9de639f49756a984d2b84e63">~ObjectApprover</a> ()=default</td></tr>
 <tr class="separator:a9d951f9a9de639f49756a984d2b84e63"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This interface represents a function object returned by the authorizer which can be used locally (and synchronously) to check whether a specific object is authorized. </p>
+<p><a class="el" href="classmesos_1_1Authorizer.html" title="This interface is used to enable an identity service or any other back end to check authorization pol...">Authorizer</a> implementations must ensure that <a class="el" href="classmesos_1_1ObjectApprover.html" title="This interface represents a function object returned by the authorizer which can be used locally (and...">ObjectApprover</a> is valid throughout its lifetime (by updating the internal state of <a class="el" href="classmesos_1_1ObjectApprover.html" title="This interface represents a function object returned by the authorizer which can be used locally (and...">ObjectApprover</a> if/when necessary). Components of Mesos side are allowed to store <code><a class="el" href="classmesos_1_1ObjectApprover.html" title="This interface represents a function object returned by the authorizer which can be used locally (and...">ObjectApprover</a></code>s for long-lived authorization subjects indefinitely (as long as they have a potential need to authorize objects for corresponding subject-action pair) and can rely on <a class="el" href="classmesos_1_1ObjectApprover.html" title="This interface represents a function object returned by the authorizer which can be used locally (and...">ObjectApprover</a> being valid at any time. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a9d951f9a9de639f49756a984d2b84e63"></a>
 <div class="memitem">
@@ -135,7 +136,15 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>NOTE: As this function can be used synchronously by actors it is essential that it does not block! </p>
+<p>This method returns whether access to the specified object is authorized or not, or <code><a class="el" href="classError.html">Error</a></code>. </p>
+<p>The <code><a class="el" href="classError.html">Error</a></code> is returned in case of:</p><ul>
+<li>transient authorization failures</li>
+<li>authorizer or underlying systems being in invalid state</li>
+<li>the <code><a class="el" href="structmesos_1_1ObjectApprover_1_1Object.html">Object</a></code> provided by Mesos is invalid</li>
+</ul>
+<p>Note that this method is not idempotent; the result might change due to modifications of internal state of <code><a class="el" href="classmesos_1_1ObjectApprover.html" title="This interface represents a function object returned by the authorizer which can be used locally (and...">ObjectApprover</a></code> performed by the authorizer to keep <code><a class="el" href="classmesos_1_1ObjectApprover.html" title="This interface represents a function object returned by the authorizer which can be used locally (and...">ObjectApprover</a></code> valid.</p>
+<p>For example, if the authorizer is backed by an external IAM, from which it fetches permissions, changing permissions for the authorization Subject in the IAM might result in the response changing from <code>false</code> to <code>true</code> for the same <a class="el" href="structmesos_1_1ObjectApprover_1_1Object.html">Object</a>. Also, in this example, failure to keep permissions up-to-date due to malfunctions of the IAM/network will be reported as an <a class="el" href="classError.html">Error</a> being returned by this method until the permissions are updated successfully.</p>
+<p>NOTE: As this method can be used synchronously by actors, it is essential that its implementation does not block. Specifically, calling blocking libprocess functions from this method can cause deadlock! </p>
 
 <p>Implemented in <a class="el" href="classmesos_1_1AcceptingObjectApprover.html#a17dde110e1bc551f83acb9162a88b603">mesos::AcceptingObjectApprover</a>.</p>
 
