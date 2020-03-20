@@ -94,8 +94,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ab957b0b3c1e7e63e8a06558b0abf30ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b3b394a0928d213a32bd02face608b7"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt; <a class="el" href="classprocess_1_1http_1_1Connection.html">process::http::Connection</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a2b3b394a0928d213a32bd02face608b7">attach</a> (const ContainerID &amp;containerId)</td></tr>
 <tr class="separator:a2b3b394a0928d213a32bd02face608b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a11ed2cb6c50a4d26c40eaf4e203ce728"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt; <a class="el" href="structNothing.html">Nothing</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a11ed2cb6c50a4d26c40eaf4e203ce728">update</a> (const ContainerID &amp;containerId, const <a class="el" href="classmesos_1_1Resources.html">Resources</a> &amp;<a class="el" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#acde902a94e389c2ef64b4fe78bb039a3">resources</a>)=0</td></tr>
-<tr class="separator:a11ed2cb6c50a4d26c40eaf4e203ce728"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a516e34f156469abe050f8cb7d145c9ea"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt; <a class="el" href="structNothing.html">Nothing</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a516e34f156469abe050f8cb7d145c9ea">update</a> (const ContainerID &amp;containerId, const <a class="el" href="classmesos_1_1Resources.html">Resources</a> &amp;resourceRequests, const google::protobuf::Map&lt; std::string, Value::Scalar &gt; &amp;resourceLimits={})=0</td></tr>
+<tr class="separator:a516e34f156469abe050f8cb7d145c9ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a16acaf5e8129bb470694c842cf5d79bd"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt; ResourceStatistics &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a16acaf5e8129bb470694c842cf5d79bd">usage</a> (const ContainerID &amp;containerId)=0</td></tr>
 <tr class="separator:a16acaf5e8129bb470694c842cf5d79bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a41ab321c7dd4a940fce865953621881f"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classprocess_1_1Future.html">process::Future</a>&lt; ContainerStatus &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmesos_1_1internal_1_1slave_1_1Containerizer.html#a41ab321c7dd4a940fce865953621881f">status</a> (const ContainerID &amp;containerId)</td></tr>
@@ -527,7 +527,7 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a11ed2cb6c50a4d26c40eaf4e203ce728"></a>
+<a class="anchor" id="a516e34f156469abe050f8cb7d145c9ea"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -544,7 +544,13 @@ Static Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const <a class="el" href="classmesos_1_1Resources.html">Resources</a> &amp;&#160;</td>
-          <td class="paramname"><em>resources</em>&#160;</td>
+          <td class="paramname"><em>resourceRequests</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const google::protobuf::Map&lt; std::string, Value::Scalar &gt; &amp;&#160;</td>
+          <td class="paramname"><em>resourceLimits</em> = <code>{}</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -559,7 +565,7 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="classmesos_1_1internal_1_1slave_1_1MesosContainerizer.html#a64e7dd89bd312a189f507b639b94b009">mesos::internal::slave::MesosContainerizer</a>, <a class="el" href="classmesos_1_1internal_1_1slave_1_1DockerContainerizer.html#aea94d443549cf56059f9d5abdd7ef345">mesos::internal::slave::DockerContainerizer</a>, and <a class="el" href="classmesos_1_1internal_1_1slave_1_1ComposingContainerizer.html#ac062630e2b31b9ef476363d592d307e1">mesos::internal::slave::ComposingContainerizer</a>.</p>
+<p>Implemented in <a class="el" href="classmesos_1_1internal_1_1slave_1_1MesosContainerizer.html#ab9a29d5b485509ae14779bae804acc14">mesos::internal::slave::MesosContainerizer</a>, <a class="el" href="classmesos_1_1internal_1_1slave_1_1DockerContainerizer.html#afba2a1bd747dc2e84a74c911181763c0">mesos::internal::slave::DockerContainerizer</a>, and <a class="el" href="classmesos_1_1internal_1_1slave_1_1ComposingContainerizer.html#a41a961fa668858891b487ff3440d02ac">mesos::internal::slave::ComposingContainerizer</a>.</p>
 
 </div>
 </div>
