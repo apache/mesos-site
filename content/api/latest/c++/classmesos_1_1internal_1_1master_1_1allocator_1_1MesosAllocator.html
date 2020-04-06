@@ -451,10 +451,11 @@ template&lt;typename AllocatorProcess &gt; </div>
     <tr><td class="paramname">slaveInfo</td><td>Detailed info of the agent. The slaveInfo resources correspond directly to the static &ndash;resources flag value on the agent. </td></tr>
     <tr><td class="paramname">capabilities</td><td>Capabilities of the agent. </td></tr>
     <tr><td class="paramname">total</td><td>The <code>total</code> resources are passed explicitly because it includes resources that are dynamically "checkpointed" on the agent (e.g. persistent volumes, dynamic reservations, etc). </td></tr>
-    <tr><td class="paramname">used</td><td><a class="el" href="classmesos_1_1Resources.html">Resources</a> that are allocated on the current agent. The allocator should avoid double accounting when yet unknown frameworks are added later in <code><a class="el" href="classmesos_1_1internal_1_1master_1_1allocator_1_1MesosAllocator.html#a3b77a7e1a4e48193b1efc2475c8eef92" title="Adds a framework to the Mesos cluster. ">addFramework()</a></code>. </td></tr>
+    <tr><td class="paramname">used</td><td><a class="el" href="classmesos_1_1Resources.html">Resources</a> that are allocated on the current agent. The allocator should avoid double accounting when yet unknown frameworks are added later in <code><a class="el" href="classmesos_1_1internal_1_1master_1_1allocator_1_1MesosAllocator.html#a3b77a7e1a4e48193b1efc2475c8eef92" title="Adds a framework to the Mesos cluster. ">addFramework()</a></code>.</td></tr>
   </table>
   </dd>
 </dl>
+<p>TODO(asekretenko): Ideally, to get rig of an intermediate allocator state when some resources are used by nonexistent frameworks, we should change the interface so that per-agent per-framework used resources and the not yet known frameworks that are using them are added atomically. </p>
 
 <p>Implements <a class="el" href="classmesos_1_1allocator_1_1Allocator.html#a12346eed9894458805e180b9d6cb6424">mesos::allocator::Allocator</a>.</p>
 
