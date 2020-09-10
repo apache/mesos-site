@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Apache Mesos - Running Workloads in Mesos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta property="og:locale" content="en_US"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:title" content="Apache Mesos"/>
+    <meta property="og:site_name" content="Apache Mesos"/>
+    <meta property="og:url" content="http://mesos.apache.org/"/>
+    <meta property="og:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta property="og:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
+
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:site" content="@ApacheMesos"/>
+    <meta name="twitter:title" content="Apache Mesos"/>
+    <meta name="twitter:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta name="twitter:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
+
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
+    <link href="../../../assets/css/main.css" rel="stylesheet" />
+
+
+    <!-- Google Analytics Magic -->
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-20226872-1']);
+    _gaq.push(['_setDomainName', 'apache.org']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+  </head>
+  <body>
+    <!-- magical breadcrumbs -->
+    <div class="topnav">
+      <div class="container">
+        <ul class="breadcrumb">
+          <li>
+            <div class="dropdown">
+              <a data-toggle="dropdown" href="#">Apache Software Foundation <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                <li><a href="http://www.apache.org">Apache Homepage</a></li>
+                <li><a href="http://www.apache.org/licenses/">License</a></li>
+                <li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>
+                <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                <li><a href="http://www.apache.org/security/">Security</a></li>
+              </ul>
+            </div>
+          </li>
+
+          <li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+          <li><a href="/documentation/">Documentation</a></li>
+        </ul><!-- /.breadcrumb -->
+      </div><!-- /.container -->
+    </div><!-- /.topnav -->
+
+    <!-- navbar excitement -->
+<div class="navbar navbar-default navbar-static-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#mesos-menu" aria-expanded="false">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo"/></a>
+    </div><!-- /.navbar-header -->
+
+    <div class="navbar-collapse collapse" id="mesos-menu">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/getting-started/">Getting Started</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/documentation/latest/">Documentation</a></li>
+        <li><a href="/downloads/">Downloads</a></li>
+        <li><a href="/community/">Community</a></li>
+      </ul>
+    </div><!-- /#mesos-menu -->
+  </div><!-- /.container -->
+</div><!-- /.navbar -->
+
+<div class="content">
+  <div class="container">
+    <div class="row-fluid">
+  <div class="col-md-4">
+    <h4>If you're new to Mesos</h4>
+    <p>See the <a href="/getting-started/">getting started</a> page for more
+       information about downloading, building, and deploying Mesos.</p>
+
+    <h4>If you'd like to get involved or you're looking for support</h4>
+    <p>See our <a href="/community/">community</a> page for more details.</p>
+  </div>
+  <div class="col-md-8">
+    <h1>Workloads in Mesos</h1>
+
+<p>The goal of most Mesos schedulers is to launch workloads on Mesos agents. Once
+a scheduler has subscribed with the Mesos master using the
+<a href="/documentation/latest/./scheduler-http-api/#subscribe"><code>SUBSCRIBE</code> call</a>, it will begin to receive
+offers. To launch a workload, the scheduler can submit an
+<a href="/documentation/latest/./scheduler-http-api/#accept"><code>ACCEPT</code> call</a> to the master, including the offer
+ID of an offer that it previously received which contains resources it can use
+to run the workload.</p>
+
+<p>The basic unit of work in a Mesos cluster is the &ldquo;task&rdquo;. A single command or
+container image and accompanying artifacts can be packaged into a task which is
+sent to a Mesos agent for execution. To launch a task, a scheduler can place it
+into a task group and pass it to the Mesos master inside a <code>LAUNCH_GROUP</code>
+operation. <code>LAUNCH_GROUP</code> is one of the offer operations that can be specified
+in the <code>ACCEPT</code> call.</p>
+
+<p>An older call in the same API, the <code>LAUNCH</code> call, allows schedulers to launch
+single tasks as well; this legacy method of launching tasks will be covered at
+the end of this document.</p>
+
+<h1>Task Groups</h1>
+
+<p>Task groups, or &ldquo;pods&rdquo;, allow a scheduler to group one or more tasks into a
+single workload. When one task is specified alongside an executor that has a
+unique executor ID, the task group is simply executed as a single isolated OS
+process; this is the simple case of a single task.</p>
+
+<p>When multiple tasks are specified for a single task group, all of the tasks will
+be launched together on the same agent, and their lifecycles are coupled such
+that if a single task fails, they are all killed. On Linux, the tasks will also
+share network and mount namespaces by default so that they can communicate over
+the network and access the same volumes (note that custom container networks may
+be used as well). The resource constraints specified may be enforced for the
+tasks collectively or individually depending on other settings; for more
+information, see below, as well as the documentation on
+<a href="/documentation/latest/./nested-container-and-task-group/">nested containers and task groups</a>.</p>
+
+<h2>The Executor</h2>
+
+<p>The Mesos &ldquo;executor&rdquo; is responsible for managing the tasks. The executor must be
+specified in the <code>LAUNCH_GROUP</code> operation, including an executor ID, the
+framework ID, and some resources for the executor to perform its work. The
+minimum resources required for an executor are shown in the example below.</p>
+
+<h2>The Workload</h2>
+
+<p>You can specify your workload using a shell command, one or more artifacts to
+be fetched before task launch, a container image, or some combination of these.
+The example below shows a simple shell command and a URI pointing to a tarball
+which presumably contains the script invoked in the command.</p>
+
+<h2>Resource Requests and Limits</h2>
+
+<p>In each task, the resources required by that task can be specified. Common
+resource types are <code>cpus</code>, <code>mem</code>, and <code>disk</code>. The resources listed in the
+<code>resources</code> field are known as resource &ldquo;requests&rdquo; and represent the minimum
+resource guarantee required by the task; these resources will always be
+available to the task if they are needed. The quantities specified in the
+<code>limits</code> field are the resource &ldquo;limits&rdquo;, which represent the maximum amount of
+<code>cpus</code> and/or <code>mem</code> that the task may use. Setting a CPU or memory limit higher
+than the corresponding request allows the task to consume more than its
+allocated amount of CPU or memory when there are unused resources available on
+the agent. For important Linux-specific settings related to resource limits, see
+the section below on Linux resource isolation.</p>
+
+<p>In addition to finite numeric values, the resource limits may be set to
+infinity, indicating that the task will be permitted to consume any available
+CPU and/or memory on the agent. This is represented in the JSON example below
+using the string &ldquo;Infinity&rdquo;, though when submitting scheduler calls in protobuf
+format the standard IEEE-defined floating point infinity value may be used.</p>
+
+<p>When a task consumes extra available memory on an agent but then other task
+processes on the machine which were guaranteed access to that memory suddenly
+need it, it&rsquo;s possible that processes will have to be killed in order to
+reclaim memory. When a task has a memory limit higher than its memory request,
+the task process&rsquo;s OOM score adjustment is set so that it is OOM-killed
+preferentially if it exceeds its memory request in such cases.</p>
+
+<h2>Linux Resource Isolation</h2>
+
+<p>When workloads are executed on Linux agents, resource isolation is likely
+provided by the Mesos agent&rsquo;s manipulation of cgroup subsystems. In the simple
+case of an executor running a single task group with a single task (like the
+example below), enforcement of resource requests and limits is straightforward,
+since there is only one task process to isolate.</p>
+
+<p>When multiple tasks or task groups run under a single executor, the enforcement
+of resource constraints is more complex. Some control over this is allowed by
+the <code>container.linux_info.share_cgroups</code> field in each task. When this boolean
+field is <code>true</code> (this is the default), each task is constrained by the cgroups
+of its executor. This means that if multiple tasks run underneath one executor,
+their resource constraints will be enforced as a sum of all the task resource
+constraints, applied collectively to those task processes. In this case, task
+resource consumption is collectively managed via one set of cgroup subsystem
+control files associated with the executor.</p>
+
+<p>When the <code>share_cgroups</code> field is set to <code>false</code>, the resource consumption of
+each task is managed via a unique set of cgroups associated with that task,
+which means that each task process is subject to its own resource requests and
+limits. Note that if you want to specify <code>limits</code> on a task, the task MUST set
+<code>share_cgroups</code> to <code>false</code>. Also note that all tasks under a single executor
+must share the same value of <code>share_cgroups</code>.</p>
+
+<h2>Example: Launching a Task Group</h2>
+
+<p>The following could be submitted by a registered scheduler in the body of a POST
+request to the Mesos master&rsquo;s <code>/api/v1/scheduler</code> endpoint:</p>
+
+<pre><code>{
+  "framework_id": { "value" : "12220-3440-12532-2345" },
+  "type": "ACCEPT",
+  "accept": {
+    "offer_ids": [ { "value" : "12220-3440-12532-O12" } ],
+    "operations": [
+      {
+        "type": "LAUNCH_GROUP",
+        "launch_group": {
+          "executor": {
+            "type": "DEFAULT",
+            "executor_id": { "value": "28649-27G5-291H9-3816-04" },
+            "framework_id": { "value" : "12220-3440-12532-2345" },
+            "resources": [
+              {
+                "name": "cpus",
+                "type": "SCALAR",
+                "scalar": { "value": 0.1 }
+              }, {
+                "name": "mem",
+                "type": "SCALAR",
+                "scalar": { "value": 32 }
+              }, {
+                "name": "disk",
+                "type": "SCALAR",
+                "scalar": { "value": 32 }
+              }
+            ]
+          },
+          "task_group": {
+            "tasks": [
+              {
+                "name": "Name of the task",
+                "task_id": {"value" : "task-000001"},
+                "agent_id": {"value" : "83J792-S8FH-W397K-2861-S01"},
+                "resources": [
+                  {
+                    "name": "cpus",
+                    "type": "SCALAR",
+                    "scalar": { "value": 1.0 }
+                  }, {
+                    "name": "mem",
+                    "type": "SCALAR",
+                    "scalar": { "value": 512 }
+                  }, {
+                    "name": "disk",
+                    "type": "SCALAR",
+                    "scalar": { "value": 1024 }
+                  }
+                ],
+                "limits": {
+                  "cpus": "Infinity",
+                  "mem": 4096
+                }
+                "command": { "value": "./my-artifact/run.sh" },
+                "container": {
+                  "type": "MESOS",
+                  "linux_info": { "share_cgroups": false }
+                },
+                "uris": [
+                  { "value": "https://my-server.com/my-artifact.tar.gz" }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "filters": { "refuse_seconds" : 5.0 }
+  }
+}
+</code></pre>
+
+<h1>Command Tasks</h1>
+
+<p>One or more simple tasks which specify a single container image and/or command
+to execute can be launched using the <code>LAUNCH</code> operation. The same <code>TaskInfo</code>
+message type is used in both the <code>LAUNCH_GROUP</code> and <code>LAUNCH</code> calls to describe
+tasks, so the operations look similar and identical fields in the task generally
+behave in the same way. Depending on the container type specified within the
+task&rsquo;s <code>container</code> field, the task will be launched using either the Mesos
+containerizer (Mesos in-tree container runtime) or the Docker containerizer
+(wrapper around Docker runtime). Note that the
+<code>container.linux_info.share_cgroups</code> field, if set, must be set to <code>true</code> for
+command tasks.</p>
+
+<p>The below example could be used as the payload of a POST request to the
+scheduler API endpoint:</p>
+
+<pre><code>{
+  "framework_id": { "value" : "12220-3440-12532-2345" },
+  "type": "ACCEPT",
+  "accept": {
+    "offer_ids": [ { "value" : "12220-3440-12532-O12" } ],
+    "operations": [
+      {
+        "type": "LAUNCH",
+        "launch": {
+          "task_infos": [
+            {
+              "name": "Name of the task",
+              "task_id": {"value" : "task-000001"},
+              "agent_id": {"value" : "83J792-S8FH-W397K-2861-S01"},
+              "resources": [
+                {
+                  "name": "cpus",
+                  "type": "SCALAR",
+                  "scalar": { "value": 1.0 }
+                }, {
+                  "name": "mem",
+                  "type": "SCALAR",
+                  "scalar": { "value": 512 }
+                }, {
+                  "name": "disk",
+                  "type": "SCALAR",
+                  "scalar": { "value": 1024 }
+                }
+              ],
+              "limits": {
+                "cpus": "Infinity",
+                "mem": 4096
+              }
+              "command": { "value": "./my-artifact/run.sh" },
+              "container": {
+                "type": "MESOS",
+                "linux_info": { "share_cgroups": false }
+              },
+              "uris": [
+                { "value": "https://my-server.com/my-artifact.tar.gz" }
+              ]
+            }
+          ]
+        }
+      }
+    ],
+    "filters": { "refuse_seconds" : 5.0 }
+  }
+}
+</code></pre>
+
+  </div>
+</div>
+
+  </div><!-- /.container -->
+</div><!-- /.content -->
+
+<hr>
+
+
+
+    <!-- footer -->
+    <div class="footer">
+      <div class="container">
+
+        <div class="col-md-3">
+            <a  href="https://www.apache.org/events/current-event.html">
+              <img src="https://www.apache.org/events/current-event-234x60.png"/>
+            </a>
+        </div>
+
+        <div class="col-md-3 social-blk">
+          <span class="social">
+            <a href="https://twitter.com/ApacheMesos"
+              class="twitter-follow-button"
+              data-show-count="false" data-size="large">Follow @ApacheMesos</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+            <a href="https://twitter.com/intent/tweet?button_hashtag=mesos"
+              class="twitter-hashtag-button"
+              data-size="large"
+              data-related="ApacheMesos">Tweet #mesos</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+          </span>
+        </div>
+
+        <div class="col-md-6 trademark">
+          <p>&copy; 2012-2020 <a href="http://apache.org">The Apache Software Foundation</a>.
+            Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.
+          <p>
+        </div>
+
+      </div><!-- /.container -->
+    </div><!-- /.footer -->
+
+    <!-- JS -->
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js"></script>
+
+    <!-- Inject anchors for all headings on the page, see https://www.bryanbraun.com/anchorjs. -->
+    <script type="text/javascript">
+    anchors.options = {
+      placement: 'right',
+      ariaLabel: 'Permalink',
+    };
+
+    // The default is to not add anchors to h1, but we have pages with multiple h1 headers,
+    // and we do want to put anchors on those.
+    anchors.add('h1, h2, h3, h4, h5, h6');
+    </script>
+  </body>
+</html>

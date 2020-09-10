@@ -146,6 +146,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Returns the events (a subset of the events specified) that can be performed on the specified file descriptor without blocking. </p>
+<p>Note that on windows, only <a class="el" href="namespaceprocess_1_1io.html#aca1f059ca9f0d7360631c621debeb879" title="A possible event while polling. ">io::READ</a> is available (under the covers this is achieved via a zero byte read).</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceprocess_1_1io.html#aca1f059ca9f0d7360631c621debeb879" title="A possible event while polling. ">process::io::READ</a> </dd>
 <dd>
 <a class="el" href="namespaceprocess_1_1io.html#ab005316d71b45c5b05de0a6234c6f8fc" title="A possible event while polling. ">process::io::WRITE</a> </dd></dl>
@@ -206,7 +207,8 @@ Variables</h2></td></tr>
 <p>Performs a single non-blocking read by polling on the specified file descriptor until any data can be be read. </p>
 <p><code><a class="el" href="namespaceprocess_1_1io.html#a9db94d84fb44b21fb669ade7c6a82114" title="Prepares a file descriptor to be ready for asynchronous IO. ">io::prepare_async</a></code> needs to be called beforehand.</p>
 <p>The future will become ready when some data is read (may be less than the specified size).</p>
-<dl class="section return"><dt>Returns</dt><dd>The number of bytes read or zero on EOF. A failure will be returned if an error is detected. </dd></dl>
+<p>To provide a consistent interface, a zero byte will immediately return a ready future with 0 bytes. For users looking to use the zero byte read trick on windows to achieve read readiness polling, just use <a class="el" href="namespaceprocess_1_1io.html#af71c45e0a85e21f6b39060f4e716cebf" title="Returns the events (a subset of the events specified) that can be performed on the specified file des...">io::poll</a> with <a class="el" href="namespaceprocess_1_1io.html#aca1f059ca9f0d7360631c621debeb879" title="A possible event while polling. ">io::READ</a>.</p>
+<dl class="section return"><dt>Returns</dt><dd>The number of bytes read or zero on EOF (or if zero bytes were requested). A failure will be returned if an error is detected. </dd></dl>
 
 </div>
 </div>

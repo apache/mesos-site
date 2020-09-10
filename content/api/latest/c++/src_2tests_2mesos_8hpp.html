@@ -61,6 +61,7 @@
 <div class="contents">
 <div class="textblock"><code>#include &lt;memory&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
+<code>#include &lt;utility&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
 <code>#include &lt;gmock/gmock.h&gt;</code><br />
 <code>#include &lt;<a class="el" href="include_2mesos_2executor_8hpp_source.html">mesos/executor.hpp</a>&gt;</code><br />
@@ -105,6 +106,7 @@
 <code>#include &quot;<a class="el" href="src_2sched_2constants_8hpp_source.html">sched/constants.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="src_2resource__provider_2detector_8hpp_source.html">resource_provider/detector.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="src_2slave_2constants_8hpp_source.html">slave/constants.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="csi__server_8hpp_source.html">slave/csi_server.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="slave_8hpp_source.html">slave/slave.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="src_2slave_2containerizer_2containerizer_8hpp_source.html">slave/containerizer/containerizer.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="src_2slave_2containerizer_2mesos_2containerizer_8hpp_source.html">slave/containerizer/mesos/containerizer.hpp</a>&quot;</code><br />
@@ -318,6 +320,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a7e990915d6fb2d55541ddcb872efe74c"><td class="memTemplParams" colspan="2">template&lt;typename TVolume , typename TImage &gt; </td></tr>
 <tr class="memitem:a7e990915d6fb2d55541ddcb872efe74c"><td class="memTemplItemLeft" align="right" valign="top">TVolume&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1internal_1_1tests_1_1common.html#a7e990915d6fb2d55541ddcb872efe74c">mesos::internal::tests::common::createVolumeFromDockerImage</a> (const std::string &amp;containerPath, const std::string &amp;imageName, const typename TVolume::Mode &amp;mode)</td></tr>
 <tr class="separator:a7e990915d6fb2d55541ddcb872efe74c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a349d38bf7eb67dde29bd7e84f69d24b3"><td class="memTemplParams" colspan="2">template&lt;typename TVolume &gt; </td></tr>
+<tr class="memitem:a349d38bf7eb67dde29bd7e84f69d24b3"><td class="memTemplItemLeft" align="right" valign="top">TVolume&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1internal_1_1tests_1_1common.html#a349d38bf7eb67dde29bd7e84f69d24b3">mesos::internal::tests::common::createVolumeCsi</a> (const std::string &amp;pluginName, const std::string volumeId, const std::string &amp;containerPath, const typename TVolume::Source::CSIVolume::VolumeCapability::AccessMode::Mode mode, bool readonly)</td></tr>
+<tr class="separator:a349d38bf7eb67dde29bd7e84f69d24b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a52c123ca66d0739e852794683d647541"><td class="memTemplParams" colspan="2">template&lt;typename TNetworkInfo &gt; </td></tr>
 <tr class="memitem:a52c123ca66d0739e852794683d647541"><td class="memTemplItemLeft" align="right" valign="top">TNetworkInfo&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1internal_1_1tests_1_1common.html#a52c123ca66d0739e852794683d647541">mesos::internal::tests::common::createNetworkInfo</a> (const std::string &amp;networkName)</td></tr>
 <tr class="separator:a52c123ca66d0739e852794683d647541"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -445,6 +450,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a7762d7729fcc9475d06a0a88d4f7d462"><td class="memTemplParams" colspan="2">template&lt;typename... Args&gt; </td></tr>
 <tr class="memitem:a7762d7729fcc9475d06a0a88d4f7d462"><td class="memTemplItemLeft" align="right" valign="top">Volume&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1internal_1_1tests_1_1internal.html#a7762d7729fcc9475d06a0a88d4f7d462">mesos::internal::tests::internal::createVolumeFromDockerImage</a> (Args &amp;&amp;...args)</td></tr>
 <tr class="separator:a7762d7729fcc9475d06a0a88d4f7d462"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3eb785c14de434349cc85af344bda7d6"><td class="memTemplParams" colspan="2">template&lt;typename... Args&gt; </td></tr>
+<tr class="memitem:a3eb785c14de434349cc85af344bda7d6"><td class="memTemplItemLeft" align="right" valign="top">Volume&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1internal_1_1tests_1_1internal.html#a3eb785c14de434349cc85af344bda7d6">mesos::internal::tests::internal::createVolumeCsi</a> (Args &amp;&amp;...args)</td></tr>
+<tr class="separator:a3eb785c14de434349cc85af344bda7d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85fedb5ed43233812f874aa4b58de100"><td class="memTemplParams" colspan="2">template&lt;typename... Args&gt; </td></tr>
 <tr class="memitem:a85fedb5ed43233812f874aa4b58de100"><td class="memTemplItemLeft" align="right" valign="top">NetworkInfo&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1internal_1_1tests_1_1internal.html#a85fedb5ed43233812f874aa4b58de100">mesos::internal::tests::internal::createNetworkInfo</a> (Args &amp;&amp;...args)</td></tr>
 <tr class="separator:a85fedb5ed43233812f874aa4b58de100"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -544,6 +552,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a8b90ede7719f7eaed5edfbcf17122a41"><td class="memTemplParams" colspan="2">template&lt;typename... Args&gt; </td></tr>
 <tr class="memitem:a8b90ede7719f7eaed5edfbcf17122a41"><td class="memTemplItemLeft" align="right" valign="top">mesos::v1::Volume&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1internal_1_1tests_1_1v1.html#a8b90ede7719f7eaed5edfbcf17122a41">mesos::internal::tests::v1::createVolumeFromDockerImage</a> (Args &amp;&amp;...args)</td></tr>
 <tr class="separator:a8b90ede7719f7eaed5edfbcf17122a41"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3aab8845e7f359de3e6b89b21eef1c03"><td class="memTemplParams" colspan="2">template&lt;typename... Args&gt; </td></tr>
+<tr class="memitem:a3aab8845e7f359de3e6b89b21eef1c03"><td class="memTemplItemLeft" align="right" valign="top">mesos::v1::Volume&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1internal_1_1tests_1_1v1.html#a3aab8845e7f359de3e6b89b21eef1c03">mesos::internal::tests::v1::createVolumeCsi</a> (Args &amp;&amp;...args)</td></tr>
+<tr class="separator:a3aab8845e7f359de3e6b89b21eef1c03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a49d4fce5037ef80c4e459f39a2bc5332"><td class="memTemplParams" colspan="2">template&lt;typename... Args&gt; </td></tr>
 <tr class="memitem:a49d4fce5037ef80c4e459f39a2bc5332"><td class="memTemplItemLeft" align="right" valign="top">mesos::v1::NetworkInfo&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemesos_1_1internal_1_1tests_1_1v1.html#a49d4fce5037ef80c4e459f39a2bc5332">mesos::internal::tests::v1::createNetworkInfo</a> (Args &amp;&amp;...args)</td></tr>
 <tr class="separator:a49d4fce5037ef80c4e459f39a2bc5332"><td class="memSeparator" colspan="2">&#160;</td></tr>

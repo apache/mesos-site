@@ -155,6 +155,43 @@ like usual. Similarly, if you configure with <code>-G Ninja</code> to use the Ni
 generator, you can then run <code>ninja tests</code> to build the <code>tests</code> target with
 Ninja.</p>
 
+<h1>Installable build</h1>
+
+<p>This example will build Mesos and install it into a custom prefix:
+<code>
+mkdir build &amp;&amp; cd build
+cmake -DCMAKE_INSTALL_PREFIX=/home/current_user/mesos
+cmake --build . --target install
+</code></p>
+
+<p>To additionally install <code>mesos-tests</code> executable and related test helpers
+(this can be used to run Mesos tests against the installed binaries),
+one can enable the <code>MESOS_INSTALL_TESTS</code> option.</p>
+
+<p>To produce a set of binaries and libraries that will work after being
+copied/moved to a different location, use <code>MESOS_FINAL_PREFIX</code>.</p>
+
+<p>The example below employs both <code>MESOS_FINAL_PREFIX</code> and <code>MESOS_INSTALL_TESTS</code>.
+On a build system:
+<code>
+mkdir build &amp;&amp; cd build
+cmake -DMESOS_FINAL_PREFIX=/opt/mesos -DCMAKE_INSTALL_PREFIX=/home/current_user/mesos -DMESOS_INSTALL_TESTS=ON
+cmake --build . --target install
+tar -czf mesos.tar.gz mesos -C /home/current_user
+</code>
+On a target system:
+```
+sudo tar -xf mesos.tar.gz -C /opt</p>
+
+<h1>Run tests against Mesos installation</h1>
+
+<p>sudo /opt/mesos/bin/mesos-tests</p>
+
+<h1>Start Mesos agent</h1>
+
+<p>sudo /opt/mesos/bin/mesos-agent &ndash;work-dir=/var/lib/mesos &hellip;
+```</p>
+
 <h1>Supported options</h1>
 
 <p>See <a href="/documentation/latest/./configuration/cmake/">configuration options</a>.</p>

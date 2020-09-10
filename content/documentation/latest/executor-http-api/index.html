@@ -110,49 +110,88 @@
 <p>A Mesos executor can be built in two different ways:</p>
 
 <ol>
-<li><p>By using the <code>ExecutorDriver</code> C++ interface. The <code>ExecutorDriver</code> handles the
-details of communicating with the Mesos agent. Executor developers implement
-custom executor logic by registering callbacks with the <code>ExecutorDriver</code> for
-significant events, such as when a new task launch request is received. Because
-the <code>ExecutorDriver</code> interface is written in C++, this typically requires that
-executor developers either use C++ or use a C++ binding to their language of
-choice (e.g., JNI when using JVM-based languages).</p></li>
-<li><p>By using the new HTTP API. This allows Mesos executors to be developed
-without using C++ or a native client library; instead, a custom executor
-interacts with the Mesos agent via HTTP requests, as described below. Although
-it is theoretically possible to use the HTTP executor API &ldquo;directly&rdquo; (e.g., by
-using a generic HTTP library), most executor developers should use a library for
-their language of choice that manages the details of the HTTP API; see the
-document on <a href="/documentation/latest/./api-client-libraries/">HTTP API client libraries</a> for a list.</p></li>
+<li><p>By using the HTTP API. This allows Mesos executors to be developed without
+using C++ or a native client library; instead, a custom executor interacts with
+the Mesos agent via HTTP requests, as described below. Although it is
+theoretically possible to use the HTTP executor API &ldquo;directly&rdquo; (e.g., by using a
+generic HTTP library), most executor developers should use a library for their
+language of choice that manages the details of the HTTP API; see the document on
+<a href="/documentation/latest/./api-client-libraries/">HTTP API client libraries</a> for a list. This is the
+recommended way to develop new Mesos executors.</p></li>
+<li><p>By using the deprecated <code>ExecutorDriver</code> C++ interface. While this interface
+is still supported, note that new features are usually not added to it. The
+<code>ExecutorDriver</code> handles the details of communicating with the Mesos agent.
+Executor developers implement custom executor logic by registering callbacks
+with the <code>ExecutorDriver</code> for significant events, such as when a new task launch
+request is received. Because the <code>ExecutorDriver</code> interface is written in C++,
+this typically requires that executor developers either use C++ or use a C++
+binding to their language of choice (e.g., JNI when using JVM-based languages).</p></li>
 </ol>
 
 
-<p>The v1 Executor HTTP API was introduced in Mesos 0.28.0. As of Mesos 1.0, it is
-considered stable and is the recommended way to develop new Mesos executors.</p>
-
 <h2>Overview</h2>
 
-<p>The executor interacts with Mesos via the <a href="/documentation/latest/./endpoints/slave/api/v1/executor/">/api/v1/executor</a> agent endpoint. We refer to this endpoint with its suffix &ldquo;/executor&rdquo; in the rest of this document. This endpoint accepts HTTP POST requests with data encoded as JSON (Content-Type: application/json) or binary Protobuf (Content-Type: application/x-protobuf). The first request that the executor sends to &ldquo;/executor&rdquo; endpoint is called SUBSCRIBE and results in a streaming response (&ldquo;200 OK&rdquo; status code with Transfer-Encoding: chunked).</p>
+<p>The executor interacts with Mesos via the [/api/v1/executor]
+(/documentation/latest/./endpoints/slave/api/v1/executor/) agent endpoint. We refer to this endpoint
+with its suffix &ldquo;/executor&rdquo; in the rest of this document. The endpoint accepts
+HTTP POST requests with data encoded as JSON (Content-Type: application/json) or
+binary Protobuf (Content-Type: application/x-protobuf). The first request that
+the executor sends to the &ldquo;/executor&rdquo; endpoint is called <code>SUBSCRIBE</code> and results
+in a streaming response (&ldquo;200 OK&rdquo; status code with Transfer-Encoding: chunked).</p>
 
-<p><strong>Executors are expected to keep the subscription connection open as long as possible (barring network errors, agent process restarts, software bugs, etc.) and incrementally process the response.</strong> HTTP client libraries that can only parse the response after the connection is closed cannot be used. For the encoding used, please refer to <strong>Events</strong> section below.</p>
+<p><strong>Executors are expected to keep the subscription connection open as long as
+possible (barring network errors, agent process restarts, software bugs, etc.)
+and incrementally process the response.</strong> HTTP client libraries that can only
+parse the response after the connection is closed cannot be used. For the
+encoding used, please refer to <strong>Events</strong> section below.</p>
 
-<p>All subsequent (non-<code>SUBSCRIBE</code>) requests to the &ldquo;/executor&rdquo; endpoint (see details below in <strong>Calls</strong> section) must be sent using a different connection than the one used for subscription. The agent responds to these HTTP POST requests with &ldquo;202 Accepted&rdquo; status codes (or, for unsuccessful requests, with 4xx or 5xx status codes; details in later sections). The &ldquo;202 Accepted&rdquo; response means that a request has been accepted for processing, not that the processing of the request has been completed. The request might or might not be acted upon by Mesos (e.g., agent fails during the processing of the request). Any asynchronous responses from these requests will be streamed on the long-lived subscription connection. Executors can submit requests using more than one different HTTP connection.</p>
+<p>All subsequent (non-<code>SUBSCRIBE</code>) requests to the &ldquo;/executor&rdquo; endpoint (see
+details below in <strong>Calls</strong> section) must be sent using a different connection
+than the one used for subscription. The agent responds to these HTTP POST
+requests with &ldquo;202 Accepted&rdquo; status codes (or, for unsuccessful requests, with
+4xx or 5xx status codes; details in later sections). The &ldquo;202 Accepted&rdquo; response
+means that a request has been accepted for processing, not that the processing
+of the request has been completed. The request might or might not be acted upon
+by Mesos (e.g., agent fails during the processing of the request). Any
+asynchronous responses from these requests will be streamed on the long-lived
+subscription connection. Executors can submit requests using more than one
+different HTTP connection.</p>
+
+<p>The &ldquo;/executor&rdquo; endpoint is served at the Mesos agent&rsquo;s IP:port and in addition,
+when the agent has the <code>http_executor_domain_sockets</code> flag set to <code>true</code>, the
+executor endpoint is also served on a Unix domain socket, the location of which
+can be found by the executor in the <code>MESOS_DOMAIN_SOCKET</code> environment variable.
+Connecting to the domain socket is similar to connecting using a TCP socket, and
+once the connection is established, data is sent and received in the same way.</p>
 
 <h2>Calls</h2>
 
-<p>The following calls are currently accepted by the agent. The canonical source of this information is <a href="https://github.com/apache/mesos/blob/master/include/mesos/v1/executor/executor.proto">executor.proto</a>. When sending JSON-encoded Calls, executors should encode raw bytes in Base64 and strings in UTF-8.</p>
+<p>The following calls are currently accepted by the agent. The canonical source of
+this information is <a href="https://github.com/apache/mesos/blob/master/include/mesos/v1/executor/executor.proto">executor.proto</a>.
+When sending JSON-encoded Calls, executors should encode raw bytes in Base64 and
+strings in UTF-8.</p>
 
 <h3>SUBSCRIBE</h3>
 
-<p>This is the first step in the communication process between the executor and agent. This is also to be considered as subscription to the &ldquo;/executor&rdquo; events stream.</p>
+<p>This is the first step in the communication process between the executor and
+agent. This is also to be considered as subscription to the &ldquo;/executor&rdquo; events
+stream.</p>
 
-<p>To subscribe with the agent, the executor sends an HTTP POST with a <code>SUBSCRIBE</code> message. The HTTP response is a stream in <a href="/documentation/latest/./scheduler-http-api/#recordio-response-format">RecordIO</a> format; the event stream will begin with a <code>SUBSCRIBED</code> event (see details in <strong>Events</strong> section).</p>
+<p>To subscribe with the agent, the executor sends an HTTP POST with a <code>SUBSCRIBE</code>
+message. The HTTP response is a stream in [RecordIO]
+(/documentation/latest/./scheduler-http-api/#recordio-response-format) format; the event stream will
+begin with a <code>SUBSCRIBED</code> event (see details in <strong>Events</strong> section).</p>
 
-<p>Additionally, if the executor is connecting to the agent after a <a href="#disconnections">disconnection</a>, it can also send a list of:</p>
+<p>Additionally, if the executor is connecting to the agent after a
+<a href="#disconnections">disconnection</a>, it can also send a list of:</p>
 
 <ul>
-<li><strong>Unacknowledged Status Updates</strong>: The executor is expected to maintain a list of status updates not acknowledged by the agent via the <code>ACKNOWLEDGE</code> events.</li>
-<li><strong>Unacknowledged Tasks</strong>: The executor is expected to maintain a list of tasks that have not been acknowledged by the agent. A task is considered acknowledged if at least one of the status updates for this task is acknowledged by the agent.</li>
+<li><strong>Unacknowledged Status Updates</strong>: The executor is expected to maintain a list
+of status updates not acknowledged by the agent via the <code>ACKNOWLEDGE</code> events.</li>
+<li><strong>Unacknowledged Tasks</strong>: The executor is expected to maintain a list of tasks
+that have not been acknowledged by the agent. A task is considered
+acknowledged if at least one of the status updates for this task is
+acknowledged by the agent.</li>
 </ul>
 
 
