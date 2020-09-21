@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Apache Mesos - HTTP Endpoints</title>
+    <title>Apache Mesos - HTTP Endpoints - /hierarchical-allocator(id)/offer_constraints_debug</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <meta property="og:locale" content="en_US"/>
@@ -27,7 +27,7 @@
 
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
-    <link href="../../../assets/css/main.css" rel="stylesheet" />
+    <link href="../../../../../assets/css/main.css" rel="stylesheet" />
 
 
     <!-- Google Analytics Magic -->
@@ -108,185 +108,45 @@
     <!--- This is an automatically generated file. DO NOT EDIT! --->
 
 
-<h1>HTTP Endpoints</h1>
+<h3>USAGE</h3>
 
-<p>Below is a list of HTTP endpoints available for a given Mesos process.</p>
+<blockquote><pre><code>   /hierarchical-allocator(1)/offer_constraints_debug
+</code></pre></blockquote>
 
-<p>Depending on your configuration, some subset of these endpoints will be
-available on your Mesos master or agent. Additionally, a <code>/help</code>
-endpoint will be available that displays help similar to what you see
-below.</p>
+<h3>TL;DR;</h3>
 
-<p><strong> NOTE: </strong> If you are using Mesos 1.1 or later, we recommend using the
-new <a href="/documentation/latest/endpoints/../operator-http-api/">v1 Operator HTTP API</a> instead of the
-unversioned REST endpoints listed below. These endpoints will be
-deprecated in the future.</p>
+<p>Evaluates current framework offer constraints and returns results.</p>
 
-<p><strong> NOTE: </strong> The documentation for these endpoints is auto-generated from
-the Mesos source code. See <code>support/generate-endpoint-help.py</code>.</p>
+<h3>DESCRIPTION</h3>
 
-<h2>Master Endpoints</h2>
+<p>This endpoint evaluates for each role of each framework a list
+of agents excluded from allocation by offer constraints.</p>
 
-<p>Below are the endpoints that are available on a Mesos master. These
-endpoints are reachable at the address <code>http://ip:port/endpoint</code>.</p>
+<p>Example:
+<code>
+{"frameworks": {
+   "0f4c63a9-be1e-4a90-9e11-d7bf0aa6c8ad-0017": {
+     "excluded_by_attribute_constraints": {
+       "role1": [
+         "0b1e7d60-dfbc-44c9-8222-48b57eca8637-S123",
+         "654af69c-80f7-45ad-bcb3-c7c917f1811b-S045"],
+       "role2": [] }},
+   "b0377da6-090d-4338-9e2e-bf6cf0f309b7-0011": {}
+}}
+</code>
+In this example, two agents are excluded from allocation
+to the first framework (-0017) under the role &ldquo;role1&rdquo;, no agents
+are excluded from allocation to this framework under &ldquo;role2&rdquo;,
+and the second framework (-0011) has no offer constraints set.</p>
 
-<p>For example, <code>http://master.com:5050/files/browse</code>.</p>
+<h3>AUTHENTICATION</h3>
 
-<h3>files</h3>
+<p>This endpoint requires authentication iff HTTP authentication is
+enabled.</p>
 
-<ul>
-<li><a href="/documentation/latest/endpoints/files/browse/">/files/browse</a></li>
-<li><a href="/documentation/latest/endpoints/files/debug/">/files/debug</a></li>
-<li><a href="/documentation/latest/endpoints/files/download/">/files/download</a></li>
-<li><a href="/documentation/latest/endpoints/files/read/">/files/read</a></li>
-</ul>
+<h3>AUTHORIZATION</h3>
 
-
-<h3>hierarchical-allocator(id)</h3>
-
-<ul>
-<li><a href="/documentation/latest/endpoints/hierarchical-allocator/offer_constraints_debug/">/hierarchical-allocator(id)/offer_constraints_debug</a></li>
-</ul>
-
-
-<h3>logging</h3>
-
-<ul>
-<li><a href="/documentation/latest/endpoints/logging/toggle/">/logging/toggle</a></li>
-</ul>
-
-
-<h3>master</h3>
-
-<ul>
-<li><a href="/documentation/latest/endpoints/master/api/v1/">/api/v1</a></li>
-<li><a href="/documentation/latest/endpoints/master/api/v1/scheduler/">/api/v1/scheduler</a></li>
-<li><a href="/documentation/latest/endpoints/master/create-volumes/">/create-volumes</a></li>
-<li><a href="/documentation/latest/endpoints/master/destroy-volumes/">/destroy-volumes</a></li>
-<li><a href="/documentation/latest/endpoints/master/flags/">/flags</a></li>
-<li><a href="/documentation/latest/endpoints/master/frameworks/">/frameworks</a></li>
-<li><a href="/documentation/latest/endpoints/master/health/">/health</a></li>
-<li><a href="/documentation/latest/endpoints/master/machine/down/">/machine/down</a></li>
-<li><a href="/documentation/latest/endpoints/master/machine/up/">/machine/up</a></li>
-<li><a href="/documentation/latest/endpoints/master/maintenance/schedule/">/maintenance/schedule</a></li>
-<li><a href="/documentation/latest/endpoints/master/maintenance/status/">/maintenance/status</a></li>
-<li><a href="/documentation/latest/endpoints/master/quota/">/quota</a></li>
-<li><a href="/documentation/latest/endpoints/master/redirect/">/redirect</a></li>
-<li><a href="/documentation/latest/endpoints/master/reserve/">/reserve</a></li>
-<li><a href="/documentation/latest/endpoints/master/roles/">/roles</a></li>
-<li><a href="/documentation/latest/endpoints/master/slaves/">/slaves</a></li>
-<li><a href="/documentation/latest/endpoints/master/state/">/state</a></li>
-<li><a href="/documentation/latest/endpoints/master/state-summary/">/state-summary</a></li>
-<li><a href="/documentation/latest/endpoints/master/tasks/">/tasks</a></li>
-<li><a href="/documentation/latest/endpoints/master/teardown/">/teardown</a></li>
-<li><a href="/documentation/latest/endpoints/master/unreserve/">/unreserve</a></li>
-<li><a href="/documentation/latest/endpoints/master/weights/">/weights</a></li>
-</ul>
-
-
-<h3>metrics</h3>
-
-<ul>
-<li><a href="/documentation/latest/endpoints/metrics/snapshot/">/metrics/snapshot</a></li>
-</ul>
-
-
-<h3>profiler</h3>
-
-<ul>
-<li><a href="/documentation/latest/endpoints/profiler/start/">/profiler/start</a></li>
-<li><a href="/documentation/latest/endpoints/profiler/stop/">/profiler/stop</a></li>
-</ul>
-
-
-<h3>registrar(id)</h3>
-
-<ul>
-<li><a href="/documentation/latest/endpoints/registrar/registry/">/registrar(id)/registry</a></li>
-</ul>
-
-
-<h3>system</h3>
-
-<ul>
-<li><a href="/documentation/latest/endpoints/system/stats.json/">/system/stats.json</a></li>
-</ul>
-
-
-<h3>version</h3>
-
-<ul>
-<li><a href="/documentation/latest/endpoints/version/">/version</a></li>
-</ul>
-
-
-<h2>Agent Endpoints</h2>
-
-<p>Below are the endpoints that are available on a Mesos agent. These
-endpoints are reachable at the address <code>http://ip:port/endpoint</code>.</p>
-
-<p>For example, <code>http://agent.com:5051/files/browse</code>.</p>
-
-<h3>files</h3>
-
-<ul>
-<li><a href="/documentation/latest/endpoints/files/browse/">/files/browse</a></li>
-<li><a href="/documentation/latest/endpoints/files/debug/">/files/debug</a></li>
-<li><a href="/documentation/latest/endpoints/files/download/">/files/download</a></li>
-<li><a href="/documentation/latest/endpoints/files/read/">/files/read</a></li>
-</ul>
-
-
-<h3>logging</h3>
-
-<ul>
-<li><a href="/documentation/latest/endpoints/logging/toggle/">/logging/toggle</a></li>
-</ul>
-
-
-<h3>metrics</h3>
-
-<ul>
-<li><a href="/documentation/latest/endpoints/metrics/snapshot/">/metrics/snapshot</a></li>
-</ul>
-
-
-<h3>profiler</h3>
-
-<ul>
-<li><a href="/documentation/latest/endpoints/profiler/start/">/profiler/start</a></li>
-<li><a href="/documentation/latest/endpoints/profiler/stop/">/profiler/stop</a></li>
-</ul>
-
-
-<h3>slave(id)</h3>
-
-<ul>
-<li><a href="/documentation/latest/endpoints/slave/api/v1/">/api/v1</a></li>
-<li><a href="/documentation/latest/endpoints/slave/api/v1/executor/">/api/v1/executor</a></li>
-<li><a href="/documentation/latest/endpoints/slave/api/v1/resource_provider/">/api/v1/resource_provider</a></li>
-<li><a href="/documentation/latest/endpoints/slave/containerizer/debug/">/containerizer/debug</a></li>
-<li><a href="/documentation/latest/endpoints/slave/containers/">/containers</a></li>
-<li><a href="/documentation/latest/endpoints/slave/flags/">/flags</a></li>
-<li><a href="/documentation/latest/endpoints/slave/health/">/health</a></li>
-<li><a href="/documentation/latest/endpoints/slave/monitor/statistics/">/monitor/statistics</a></li>
-<li><a href="/documentation/latest/endpoints/slave/state/">/state</a></li>
-</ul>
-
-
-<h3>system</h3>
-
-<ul>
-<li><a href="/documentation/latest/endpoints/system/stats.json/">/system/stats.json</a></li>
-</ul>
-
-
-<h3>version</h3>
-
-<ul>
-<li><a href="/documentation/latest/endpoints/version/">/version</a></li>
-</ul>
-
+<p>This endpoint skips frameworks for which the user is not authorizedto perform a VIEW_FRAMEWORK action.</p>
 
   </div>
 </div>
