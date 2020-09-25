@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -385,10 +385,13 @@ implements <a href="../../../org/apache/mesos/SchedulerDriver.html" title="inter
 <tr id="i24" class="altColor">
 <td class="colFirst"><code><a href="../../../org/apache/mesos/Protos.Status.html" title="enum in org.apache.mesos">Protos.Status</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/MesosSchedulerDriver.html#updateFramework-org.apache.mesos.Protos.FrameworkInfo-java.util.Collection-">updateFramework</a></span>(<a href="../../../org/apache/mesos/Protos.FrameworkInfo.html" title="class in org.apache.mesos">Protos.FrameworkInfo</a>&nbsp;frameworkInfo,
-               java.util.Collection&lt;java.lang.String&gt;&nbsp;suppressedRoles)</code>
-<div class="block">Inform Mesos master about changes to the `FrameworkInfo` and the list of
- suppressed roles.</div>
-</td>
+               java.util.Collection&lt;java.lang.String&gt;&nbsp;suppressedRoles)</code>&nbsp;</td>
+</tr>
+<tr id="i25" class="rowColor">
+<td class="colFirst"><code><a href="../../../org/apache/mesos/Protos.Status.html" title="enum in org.apache.mesos">Protos.Status</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/MesosSchedulerDriver.html#updateFramework-org.apache.mesos.Protos.FrameworkInfo-java.util.Collection-org.apache.mesos.scheduler.Protos.OfferConstraints-">updateFramework</a></span>(<a href="../../../org/apache/mesos/Protos.FrameworkInfo.html" title="class in org.apache.mesos">Protos.FrameworkInfo</a>&nbsp;frameworkInfo,
+               java.util.Collection&lt;java.lang.String&gt;&nbsp;suppressedRoles,
+               org.apache.mesos.scheduler.Protos.OfferConstraints&nbsp;offerConstraints)</code>&nbsp;</td>
 </tr>
 </table>
 <ul class="blockList">
@@ -1137,6 +1140,21 @@ implements <a href="../../../org/apache/mesos/SchedulerDriver.html" title="inter
 </dl>
 </li>
 </ul>
+<a name="updateFramework-org.apache.mesos.Protos.FrameworkInfo-java.util.Collection-org.apache.mesos.scheduler.Protos.OfferConstraints-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>updateFramework</h4>
+<pre>public&nbsp;<a href="../../../org/apache/mesos/Protos.Status.html" title="enum in org.apache.mesos">Protos.Status</a>&nbsp;updateFramework(<a href="../../../org/apache/mesos/Protos.FrameworkInfo.html" title="class in org.apache.mesos">Protos.FrameworkInfo</a>&nbsp;frameworkInfo,
+                                     java.util.Collection&lt;java.lang.String&gt;&nbsp;suppressedRoles,
+                                     org.apache.mesos.scheduler.Protos.OfferConstraints&nbsp;offerConstraints)</pre>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="../../../org/apache/mesos/SchedulerDriver.html#updateFramework-org.apache.mesos.Protos.FrameworkInfo-java.util.Collection-org.apache.mesos.scheduler.Protos.OfferConstraints-">updateFramework</a></code>&nbsp;in interface&nbsp;<code><a href="../../../org/apache/mesos/SchedulerDriver.html" title="interface in org.apache.mesos">SchedulerDriver</a></code></dd>
+</dl>
+</li>
+</ul>
 <a name="updateFramework-org.apache.mesos.Protos.FrameworkInfo-java.util.Collection-">
 <!--   -->
 </a>
@@ -1145,32 +1163,9 @@ implements <a href="../../../org/apache/mesos/SchedulerDriver.html" title="inter
 <h4>updateFramework</h4>
 <pre>public&nbsp;<a href="../../../org/apache/mesos/Protos.Status.html" title="enum in org.apache.mesos">Protos.Status</a>&nbsp;updateFramework(<a href="../../../org/apache/mesos/Protos.FrameworkInfo.html" title="class in org.apache.mesos">Protos.FrameworkInfo</a>&nbsp;frameworkInfo,
                                      java.util.Collection&lt;java.lang.String&gt;&nbsp;suppressedRoles)</pre>
-<div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="../../../org/apache/mesos/SchedulerDriver.html#updateFramework-org.apache.mesos.Protos.FrameworkInfo-java.util.Collection-">SchedulerDriver</a></code></span></div>
-<div class="block">Inform Mesos master about changes to the `FrameworkInfo` and the list of
- suppressed roles. The driver will store the new `FrameworkInfo` and the new
- suppressed roles list, and all subsequent re-registrations will use it.
-
- NOTE: If the supplied info is invalid or fails authorization,
- the `error()` callback will be invoked asynchronously (after
- the master replies with a `FrameworkErrorMessage`).
-
- NOTE: This must be called after initial registration with the
- master completes and the `FrameworkID` is assigned. The assigned
- `FrameworkID` must be set in `frameworkInfo`.
-
- NOTE: The `FrameworkInfo.user` and `FrameworkInfo.hostname`
- fields will be auto-populated using the same approach used
- during driver initialization.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../../../org/apache/mesos/SchedulerDriver.html#updateFramework-org.apache.mesos.Protos.FrameworkInfo-java.util.Collection-">updateFramework</a></code>&nbsp;in interface&nbsp;<code><a href="../../../org/apache/mesos/SchedulerDriver.html" title="interface in org.apache.mesos">SchedulerDriver</a></code></dd>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>frameworkInfo</code> - The new FrameworkInfo.</dd>
-<dd><code>suppressedRoles</code> - The new list of suppressed roles.</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>The state of the driver after the call.</dd>
-<dt><span class="seeLabel">See Also:</span></dt>
-<dd><a href="../../../org/apache/mesos/Protos.FrameworkInfo.html" title="class in org.apache.mesos"><code>Protos.FrameworkInfo</code></a></dd>
 </dl>
 </li>
 </ul>

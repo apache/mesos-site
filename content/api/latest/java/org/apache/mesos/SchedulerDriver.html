@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":38,"i10":38,"i11":6,"i12":6,"i13":6,"i14":6,"i15":6,"i16":6,"i17":6,"i18":6,"i19":6,"i20":6,"i21":6,"i22":6};
+var methods = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":38,"i10":38,"i11":6,"i12":6,"i13":6,"i14":6,"i15":6,"i16":6,"i17":6,"i18":6,"i19":6,"i20":6,"i21":6,"i22":38,"i23":6};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"],32:["t6","Deprecated Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -288,9 +288,18 @@ var activeTableTab = "activeTableTab";
 <td class="colFirst"><code><a href="../../../org/apache/mesos/Protos.Status.html" title="enum in org.apache.mesos">Protos.Status</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/SchedulerDriver.html#updateFramework-org.apache.mesos.Protos.FrameworkInfo-java.util.Collection-">updateFramework</a></span>(<a href="../../../org/apache/mesos/Protos.FrameworkInfo.html" title="class in org.apache.mesos">Protos.FrameworkInfo</a>&nbsp;frameworkInfo,
                java.util.Collection&lt;java.lang.String&gt;&nbsp;suppressedRoles)</code>
-<div class="block">Inform Mesos master about changes to the `FrameworkInfo` and the list of
- suppressed roles.</div>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
+<div class="block"><span class="deprecationComment">To call UPDATE_FRAMEWORK without setting offer constraints,
+ use the new `updateFramework()` signature and pass empty constraints
+ (for example, the ones returned by `OfferConstraints.getDefaultInstance()`).</span></div>
+</div>
 </td>
+</tr>
+<tr id="i23" class="rowColor">
+<td class="colFirst"><code><a href="../../../org/apache/mesos/Protos.Status.html" title="enum in org.apache.mesos">Protos.Status</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/SchedulerDriver.html#updateFramework-org.apache.mesos.Protos.FrameworkInfo-java.util.Collection-org.apache.mesos.scheduler.Protos.OfferConstraints-">updateFramework</a></span>(<a href="../../../org/apache/mesos/Protos.FrameworkInfo.html" title="class in org.apache.mesos">Protos.FrameworkInfo</a>&nbsp;frameworkInfo,
+               java.util.Collection&lt;java.lang.String&gt;&nbsp;suppressedRoles,
+               org.apache.mesos.scheduler.Protos.OfferConstraints&nbsp;offerConstraints)</code>&nbsp;</td>
 </tr>
 </table>
 </li>
@@ -796,38 +805,29 @@ var activeTableTab = "activeTableTab";
 </dl>
 </li>
 </ul>
+<a name="updateFramework-org.apache.mesos.Protos.FrameworkInfo-java.util.Collection-org.apache.mesos.scheduler.Protos.OfferConstraints-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>updateFramework</h4>
+<pre><a href="../../../org/apache/mesos/Protos.Status.html" title="enum in org.apache.mesos">Protos.Status</a>&nbsp;updateFramework(<a href="../../../org/apache/mesos/Protos.FrameworkInfo.html" title="class in org.apache.mesos">Protos.FrameworkInfo</a>&nbsp;frameworkInfo,
+                              java.util.Collection&lt;java.lang.String&gt;&nbsp;suppressedRoles,
+                              org.apache.mesos.scheduler.Protos.OfferConstraints&nbsp;offerConstraints)</pre>
+</li>
+</ul>
 <a name="updateFramework-org.apache.mesos.Protos.FrameworkInfo-java.util.Collection-">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>updateFramework</h4>
-<pre><a href="../../../org/apache/mesos/Protos.Status.html" title="enum in org.apache.mesos">Protos.Status</a>&nbsp;updateFramework(<a href="../../../org/apache/mesos/Protos.FrameworkInfo.html" title="class in org.apache.mesos">Protos.FrameworkInfo</a>&nbsp;frameworkInfo,
-                              java.util.Collection&lt;java.lang.String&gt;&nbsp;suppressedRoles)</pre>
-<div class="block">Inform Mesos master about changes to the `FrameworkInfo` and the list of
- suppressed roles. The driver will store the new `FrameworkInfo` and the new
- suppressed roles list, and all subsequent re-registrations will use it.
-
- NOTE: If the supplied info is invalid or fails authorization,
- the `error()` callback will be invoked asynchronously (after
- the master replies with a `FrameworkErrorMessage`).
-
- NOTE: This must be called after initial registration with the
- master completes and the `FrameworkID` is assigned. The assigned
- `FrameworkID` must be set in `frameworkInfo`.
-
- NOTE: The `FrameworkInfo.user` and `FrameworkInfo.hostname`
- fields will be auto-populated using the same approach used
- during driver initialization.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>frameworkInfo</code> - The new FrameworkInfo.</dd>
-<dd><code>suppressedRoles</code> - The new list of suppressed roles.</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>The state of the driver after the call.</dd>
-<dt><span class="seeLabel">See Also:</span></dt>
-<dd><a href="../../../org/apache/mesos/Protos.FrameworkInfo.html" title="class in org.apache.mesos"><code>Protos.FrameworkInfo</code></a></dd>
-</dl>
+<pre>@Deprecated
+<a href="../../../org/apache/mesos/Protos.Status.html" title="enum in org.apache.mesos">Protos.Status</a>&nbsp;updateFramework(<a href="../../../org/apache/mesos/Protos.FrameworkInfo.html" title="class in org.apache.mesos">Protos.FrameworkInfo</a>&nbsp;frameworkInfo,
+                                          java.util.Collection&lt;java.lang.String&gt;&nbsp;suppressedRoles)</pre>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment">To call UPDATE_FRAMEWORK without setting offer constraints,
+ use the new `updateFramework()` signature and pass empty constraints
+ (for example, the ones returned by `OfferConstraints.getDefaultInstance()`).</span></div>
 </li>
 </ul>
 </li>
