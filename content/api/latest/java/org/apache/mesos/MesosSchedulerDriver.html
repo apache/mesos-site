@@ -17,8 +17,8 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10};
-var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":42,"i25":10};
+var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"],32:["t6","Deprecated Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
 var tableTab = "tableTab";
@@ -221,7 +221,7 @@ implements <a href="../../../org/apache/mesos/SchedulerDriver.html" title="inter
 </a>
 <h3>Method Summary</h3>
 <table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Method Summary table, listing methods, and an explanation">
-<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t2" class="tableTab"><span><a href="javascript:show(2);">Instance Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t4" class="tableTab"><span><a href="javascript:show(8);">Concrete Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
+<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t2" class="tableTab"><span><a href="javascript:show(2);">Instance Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t4" class="tableTab"><span><a href="javascript:show(8);">Concrete Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t6" class="tableTab"><span><a href="javascript:show(32);">Deprecated Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
 <tr>
 <th class="colFirst" scope="col">Modifier and Type</th>
 <th class="colLast" scope="col">Method and Description</th>
@@ -385,7 +385,15 @@ implements <a href="../../../org/apache/mesos/SchedulerDriver.html" title="inter
 <tr id="i24" class="altColor">
 <td class="colFirst"><code><a href="../../../org/apache/mesos/Protos.Status.html" title="enum in org.apache.mesos">Protos.Status</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../org/apache/mesos/MesosSchedulerDriver.html#updateFramework-org.apache.mesos.Protos.FrameworkInfo-java.util.Collection-">updateFramework</a></span>(<a href="../../../org/apache/mesos/Protos.FrameworkInfo.html" title="class in org.apache.mesos">Protos.FrameworkInfo</a>&nbsp;frameworkInfo,
-               java.util.Collection&lt;java.lang.String&gt;&nbsp;suppressedRoles)</code>&nbsp;</td>
+               java.util.Collection&lt;java.lang.String&gt;&nbsp;suppressedRoles)</code>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
+<div class="block"><span class="deprecationComment">Replaced by
+ <code>#updateFramework(FrameworkInfo, Collection<String>, OfferConstraints)</code>
+
+ NOTE: The underlying JNI method exists only to maintain compatibility
+ of newer versions of libmesos-java.so with older versions of mesos.jar</span></div>
+</div>
+</td>
 </tr>
 <tr id="i25" class="rowColor">
 <td class="colFirst"><code><a href="../../../org/apache/mesos/Protos.Status.html" title="enum in org.apache.mesos">Protos.Status</a></code></td>
@@ -1140,6 +1148,26 @@ implements <a href="../../../org/apache/mesos/SchedulerDriver.html" title="inter
 </dl>
 </li>
 </ul>
+<a name="updateFramework-org.apache.mesos.Protos.FrameworkInfo-java.util.Collection-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>updateFramework</h4>
+<pre>@Deprecated
+public&nbsp;<a href="../../../org/apache/mesos/Protos.Status.html" title="enum in org.apache.mesos">Protos.Status</a>&nbsp;updateFramework(<a href="../../../org/apache/mesos/Protos.FrameworkInfo.html" title="class in org.apache.mesos">Protos.FrameworkInfo</a>&nbsp;frameworkInfo,
+                                                 java.util.Collection&lt;java.lang.String&gt;&nbsp;suppressedRoles)</pre>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment">Replaced by
+ <code>#updateFramework(FrameworkInfo, Collection<String>, OfferConstraints)</code>
+
+ NOTE: The underlying JNI method exists only to maintain compatibility
+ of newer versions of libmesos-java.so with older versions of mesos.jar</span></div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="../../../org/apache/mesos/SchedulerDriver.html#updateFramework-org.apache.mesos.Protos.FrameworkInfo-java.util.Collection-">updateFramework</a></code>&nbsp;in interface&nbsp;<code><a href="../../../org/apache/mesos/SchedulerDriver.html" title="interface in org.apache.mesos">SchedulerDriver</a></code></dd>
+</dl>
+</li>
+</ul>
 <a name="updateFramework-org.apache.mesos.Protos.FrameworkInfo-java.util.Collection-org.apache.mesos.scheduler.Protos.OfferConstraints-">
 <!--   -->
 </a>
@@ -1152,20 +1180,6 @@ implements <a href="../../../org/apache/mesos/SchedulerDriver.html" title="inter
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../../../org/apache/mesos/SchedulerDriver.html#updateFramework-org.apache.mesos.Protos.FrameworkInfo-java.util.Collection-org.apache.mesos.scheduler.Protos.OfferConstraints-">updateFramework</a></code>&nbsp;in interface&nbsp;<code><a href="../../../org/apache/mesos/SchedulerDriver.html" title="interface in org.apache.mesos">SchedulerDriver</a></code></dd>
-</dl>
-</li>
-</ul>
-<a name="updateFramework-org.apache.mesos.Protos.FrameworkInfo-java.util.Collection-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>updateFramework</h4>
-<pre>public&nbsp;<a href="../../../org/apache/mesos/Protos.Status.html" title="enum in org.apache.mesos">Protos.Status</a>&nbsp;updateFramework(<a href="../../../org/apache/mesos/Protos.FrameworkInfo.html" title="class in org.apache.mesos">Protos.FrameworkInfo</a>&nbsp;frameworkInfo,
-                                     java.util.Collection&lt;java.lang.String&gt;&nbsp;suppressedRoles)</pre>
-<dl>
-<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../../../org/apache/mesos/SchedulerDriver.html#updateFramework-org.apache.mesos.Protos.FrameworkInfo-java.util.Collection-">updateFramework</a></code>&nbsp;in interface&nbsp;<code><a href="../../../org/apache/mesos/SchedulerDriver.html" title="interface in org.apache.mesos">SchedulerDriver</a></code></dd>
 </dl>
 </li>
 </ul>
