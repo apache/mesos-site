@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Apache Mesos - CSI Volume Support in Mesos Containerizer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta property="og:locale" content="en_US"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:title" content="Apache Mesos"/>
+    <meta property="og:site_name" content="Apache Mesos"/>
+    <meta property="og:url" content="http://mesos.apache.org/"/>
+    <meta property="og:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta property="og:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
+
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:site" content="@ApacheMesos"/>
+    <meta name="twitter:title" content="Apache Mesos"/>
+    <meta name="twitter:image" content="http://mesos.apache.org/assets/img/mesos_logo_fb_preview.png"/>
+    <meta name="twitter:description"
+          content="Apache Mesos abstracts resources away from machines,
+                   enabling fault-tolerant and elastic distributed systems
+                   to easily be built and run effectively."/>
+
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="alternate" type="application/atom+xml" title="Apache Mesos Blog" href="/blog/feed.xml">
+    <link href="../../../../assets/css/main.css" rel="stylesheet" />
+
+
+    <!-- Google Analytics Magic -->
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-20226872-1']);
+    _gaq.push(['_setDomainName', 'apache.org']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+  </head>
+  <body>
+    <!-- magical breadcrumbs -->
+    <div class="topnav">
+      <div class="container">
+        <ul class="breadcrumb">
+          <li>
+            <div class="dropdown">
+              <a data-toggle="dropdown" href="#">Apache Software Foundation <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                <li><a href="http://www.apache.org">Apache Homepage</a></li>
+                <li><a href="http://www.apache.org/licenses/">License</a></li>
+                <li><a href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a></li>
+                <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                <li><a href="http://www.apache.org/security/">Security</a></li>
+              </ul>
+            </div>
+          </li>
+
+          <li><a href="http://mesos.apache.org">Apache Mesos</a></li>
+          <li><a href="/documentation/">Documentation</a></li>
+        </ul><!-- /.breadcrumb -->
+      </div><!-- /.container -->
+    </div><!-- /.topnav -->
+
+    <!-- navbar excitement -->
+<div class="navbar navbar-default navbar-static-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#mesos-menu" aria-expanded="false">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/"><img src="/assets/img/mesos_logo.png" alt="Apache Mesos logo"/></a>
+    </div><!-- /.navbar-header -->
+
+    <div class="navbar-collapse collapse" id="mesos-menu">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/getting-started/">Getting Started</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/documentation/latest/">Documentation</a></li>
+        <li><a href="/downloads/">Downloads</a></li>
+        <li><a href="/community/">Community</a></li>
+      </ul>
+    </div><!-- /#mesos-menu -->
+  </div><!-- /.container -->
+</div><!-- /.navbar -->
+
+<div class="content">
+  <div class="container">
+    <div class="row-fluid">
+  <div class="col-md-4">
+    <h4>If you're new to Mesos</h4>
+    <p>See the <a href="/getting-started/">getting started</a> page for more
+       information about downloading, building, and deploying Mesos.</p>
+
+    <h4>If you'd like to get involved or you're looking for support</h4>
+    <p>See our <a href="/community/">community</a> page for more details.</p>
+  </div>
+  <div class="col-md-8">
+    <h1>Pre-provisioned CSI Volume Support in Mesos Containerizer</h1>
+
+<p>Mesos 1.11.0 adds pre-provisioned CSI volume support to the
+<a href="/documentation/latest/isolators/../mesos-containerizer/">MesosContainerizer</a> (a.k.a., the universal
+containerizer) by introducing the new <code>volume/csi</code> isolator.</p>
+
+<p>This document describes the motivation and the configuration steps for enabling
+the <code>volume/csi</code> isolator, and required framework changes.</p>
+
+<h2>Table of Contents</h2>
+
+<ul>
+<li><a href="#motivation">Motivation</a></li>
+<li><a href="#how-does-it-work">How does it work?</a></li>
+<li><a href="#configuration">Configuration</a>
+
+<ul>
+<li><a href="#pre-conditions">Pre-conditions</a></li>
+<li><a href="#configure-csi-volume-isolator">Configuring CSI Volume Isolator</a></li>
+<li><a href="#enable-frameworks">Enabling frameworks to use CSI volumes</a>
+
+<ul>
+<li><a href="#volume-protobuf">Volume Protobuf</a></li>
+<li><a href="#example">Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<h2><a name="motivation"></a>Motivation</h2>
+
+<p><a href="https://github.com/container-storage-interface/spec">Container Storage Interface</a>
+(CSI) is a specification that defines a common set of APIs for all interactions
+between the storage vendors and the container orchestration platforms. Building
+CSI support allows Mesos to make use of the quickly-growing CSI ecosystem.</p>
+
+<p>We already have a <a href="/documentation/latest/isolators/../csi/">solution</a> to support CSI introduced in the Mesos
+1.5.0 release, but that solution has a limitation: it requires CSI plugins to
+implement the <a href="https://github.com/container-storage-interface/spec/blob/v1.3.0/spec.md#listvolumes">ListVolumes</a>
+and <a href="https://github.com/container-storage-interface/spec/blob/v1.3.0/spec.md#getcapacity">GetCapacity</a>
+APIs so that the external storage can be modeled as Mesos raw disk resources and
+then offered to frameworks. However there are a lot of 3rd party CSI plugins the
+do not implement those two APIs.</p>
+
+<p>Mesos 1.11.0 provides a more generic way to support 3rd party CSI plugins so
+that Mesos can work with broader external storage ecosystem and we will benefit
+from continued development of the community CSI plugins.</p>
+
+<h2><a name="how-does-it-work"></a>How does it work?</h2>
+
+<p>The <code>volume/csi</code> isolator interacts with CSI plugins via the plugin&rsquo;s gRPC
+endpoint.</p>
+
+<p>When a new task with CSI volumes is launched, the <code>volume/csi</code> isolator will
+call the CSI plugin to publish the specified CSI volumes onto the agent host
+and then mount them onto the task container. When the task terminates, the
+<code>volume/csi</code> isolator will call the CSI plugin to unpublish the specified CSI
+volumes.</p>
+
+<p>Currently the <code>volume/csi</code> isolator will only call the CSI plugin&rsquo;s <a href="https://github.com/container-storage-interface/spec/blob/v1.3.0/spec.md#node-service-rpc">node service</a> but not <a href="https://github.com/container-storage-interface/spec/blob/v1.3.0/spec.md#controller-service-rpc">controller service</a>, that means:</p>
+
+<ul>
+<li><p>We only support pre-provisioned CSI volume but not dynamic CSI volumes
+provisioning, so operators need to create the CSI volumes explicitly and
+provide the volume info (e.g. volume ID, context, etc.) to frameworks so
+that frameworks can use the volumes in their tasks.</p></li>
+<li><p>We do not support the CSI volumes that require the controller service to
+publish to a node (<a href="https://github.com/container-storage-interface/spec/blob/v1.3.0/spec.md#controllerpublishvolume">ControllerPublishVolume</a>) prior to the node service publishing on the node
+(<a href="https://github.com/container-storage-interface/spec/blob/v1.3.0/spec.md#nodepublishvolume">NodePublishVolume</a>).</p></li>
+</ul>
+
+
+<h2><a name="configuration"></a>Configuration</h2>
+
+<p>To use the <code>volume/csi</code> isolator, there are certain actions required by
+operators and framework developers. In this section we list the steps
+required by the operator to configure the <code>volume/csi</code> isolator and the steps
+required by framework developers to specify CSI volumes in their tasks.</p>
+
+<h3><a name="pre-conditions"></a>Pre-conditions</h3>
+
+<ul>
+<li>Explicitly create the CSI volumes that are going to be accessed by Mesos
+tasks. For some CSI plugins (e.g. <a href="https://github.com/kubernetes-csi/csi-driver-nfs">NFS</a>),
+they do not implement the <a href="https://github.com/container-storage-interface/spec/blob/v1.3.0/spec.md#createvolume">CreateVolume</a>
+API, so operators do not need to create the volume explicitly in this case.</li>
+</ul>
+
+
+<h3><a name="configure-csi-volume-isolator"></a>Configuring the CSI Volume Isolator</h3>
+
+<p>In order to configure the <code>volume/csi</code> isolator, the operator needs to
+configure the <code>--isolation</code> and <code>--csi_plugin_config_dir</code> flags at agent
+startup as follows:</p>
+
+<pre><code class="{.console}">  sudo mesos-agent \
+    --master=&lt;master-IP:master-port&gt; \
+    --work_dir=/var/lib/mesos \
+    --isolation=filesystem/linux,volume/csi \
+    --csi_plugin_config_dir=&lt;directory that contains CSI plugin configuration files&gt;
+</code></pre>
+
+<p>The <code>volume/csi</code> isolator must be specified in the <code>--isolation</code> flag at agent
+startup; the <code>volume/csi</code> isolator has a dependency on the <code>filesystem/linux</code>
+isolator.</p>
+
+<p>The operator needs to put the CSI plugin configuration files under the directory
+specified via the agent flag <code>--csi_plugin_config_dir</code>. Each file in this
+directory should contain a JSON object representing a <code>CSIPluginInfo</code> object
+which can be either a managed CSI plugin (i.e. the plugin launched by Mesos as
+a standalone container) or an unmanaged CSI plugin (i.e. the plugin launched
+outside of Mesos).</p>
+
+<pre><code class="{.proto}">message CSIPluginInfo {
+  required string type = 1;
+  optional string name = 2 [default = "default"];
+
+  // A list of container configurations to run managed CSI plugin.
+  repeated CSIPluginContainerInfo containers = 3;
+
+  // The service endpoints of the unmanaged CSI plugin.
+  repeated CSIPluginEndpoint endpoints = 4;
+
+  optional string target_path_root = 5;
+  optional bool target_path_exists = 6;
+}
+
+message CSIPluginContainerInfo {
+  enum Service {
+    UNKNOWN = 0;
+    CONTROLLER_SERVICE = 1;
+    NODE_SERVICE = 2;
+  }
+
+  repeated Service services = 1;
+  optional CommandInfo command = 2;
+  repeated Resource resources = 3;
+  optional ContainerInfo container = 4;
+}
+
+message CSIPluginEndpoint {
+  required CSIPluginContainerInfo.Service csi_service = 1;
+  required string endpoint = 2;
+}
+</code></pre>
+
+<p>Example of managed CSI plugin:
+<code>{.json}
+{
+  "type": "org.apache.mesos.csi.managed-plugin",
+  "containers": [
+    {
+      "services": [
+        "NODE_SERVICE"
+      ],
+      "command": {
+        "value": "&lt;path-to-managed-plugin&gt; --endpoint=$CSI_ENDPOINT"
+      },
+      "resources": [
+        {"name": "cpus", "type": "SCALAR", "scalar": {"value": 0.1}},
+        {"name": "mem", "type": "SCALAR", "scalar": {"value": 1024}}
+      ]
+    }
+  ]
+}
+</code></p>
+
+<p>Example of unmanaged CSI plugin:
+<code>{.json}
+{
+  "type": "org.apache.mesos.csi.unmanaged-plugin",
+  "endpoints": [
+    {
+      "csi_service": "NODE_SERVICE",
+      "endpoint": "/var/lib/unmanaged-plugin/csi.sock"
+    }
+  ],
+  "target_path_root": "/mnt/unmanaged-plugin"
+}
+</code></p>
+
+<h3><a name="enable-frameworks"></a>Enabling frameworks to use CSI volumes</h3>
+
+<h4><a name="volume-protobuf"></a>Volume Protobuf</h4>
+
+<p>The <code>Volume</code> protobuf message has been updated to support CSI volumes.</p>
+
+<pre><code class="{.proto}">message Volume {
+  ...
+  required Mode mode = 3;
+  required string container_path = 1;
+
+  message Source {
+    enum Type {
+      UNKNOWN = 0;
+      ...
+      CSI_VOLUME = 5;
+    }
+
+    message CSIVolume {
+      required string plugin_name = 1;
+
+      message VolumeCapability {
+        message BlockVolume {
+        }
+
+        message MountVolume {
+          optional string fs_type = 1;
+          repeated string mount_flags = 2;
+        }
+
+        message AccessMode {
+          enum Mode {
+            UNKNOWN = 0;
+            SINGLE_NODE_WRITER = 1;
+            SINGLE_NODE_READER_ONLY = 2;
+            MULTI_NODE_READER_ONLY = 3;
+            MULTI_NODE_SINGLE_WRITER = 4;
+            MULTI_NODE_MULTI_WRITER = 5;
+          }
+
+          required Mode mode = 1;
+        }
+
+        oneof access_type {
+          BlockVolume block = 1;
+          MountVolume mount = 2;
+        }
+
+        required AccessMode access_mode = 3;
+      }
+
+      // Specifies the parameters used to stage/publish a pre-provisioned volume
+      // on an agent host.
+      message StaticProvisioning {
+        required string volume_id = 1;
+        required VolumeCapability volume_capability = 2;
+        optional bool readonly = 3;
+        map&lt;string, Secret&gt; node_stage_secrets = 4;
+        map&lt;string, Secret&gt; node_publish_secrets = 5;
+        map&lt;string, string&gt; volume_context = 6;
+      }
+
+      optional StaticProvisioning static_provisioning = 2;
+    }
+
+    optional Type type = 1;
+    ...
+    optional CSIVolume csi_volume = 6;
+  }
+
+  optional Source source = 5;
+}
+</code></pre>
+
+<p>When requesting a CSI volume for a container, the framework developer needs to
+set <code>Volume</code> for the container, which includes <code>mode</code>, <code>container_path</code> and
+<code>source</code> fields.</p>
+
+<p>The <code>source</code> field specifies where the volume comes from. Framework developers
+need to set the <code>type</code> field to <code>CSI_VOLUME</code> and specify the <code>csi_volume</code> field.</p>
+
+<p>The <code>csi_volume</code> field specifies the information of the CSI volume. Framework
+developers need to set the <code>plugin_name</code> field to the <code>type</code> field of one of the
+CSI plugin configuration files in the directory specified via the agent flag
+<code>--csi_plugin_config_dir</code>, and specify the <code>static_provisioning</code> field according
+to the information of the pre-provisioned volume. The fields in <code>static_provisioning</code>
+map directly onto the fields in the CSI calls <a href="https://github.com/container-storage-interface/spec/blob/v1.3.0/spec.md#nodestagevolume">NodeStageVolume</a>
+and <a href="https://github.com/container-storage-interface/spec/blob/v1.3.0/spec.md#nodepublishvolume">NodePublishVolume</a>,
+please find more detailed descriptions about those fields in the CSI spec.</p>
+
+<p>How to specify <code>container_path</code>:</p>
+
+<ol>
+<li><p>If you are launching a task without a container image and <code>container_path</code>
+is an absolute path, you need to make sure the absolute path exists on your
+host root file system as the container shares the host root file system;
+otherwise, the task will fail.</p></li>
+<li><p>For other cases like launching a task without a container image and with a
+relative <code>container_path</code>, or launching a task with a container image and an
+absolute or relative <code>container_path</code>, the <code>volume/csi</code> isolator will help
+create the <code>container_path</code> as the mount point.</p></li>
+</ol>
+
+
+<p>The following table summarizes the above rules for <code>container_path</code>:</p>
+
+<table class="table table-striped">
+  <tr>
+    <th></th>
+    <th>Task with rootfs</th>
+    <th>Task without rootfs</th>
+  </tr>
+  <tr>
+    <td>Absolute container_path</td>
+    <td>No need to exist</td>
+    <td>Must exist</td>
+  </tr>
+  <tr>
+    <td>Relative container_path</td>
+    <td>No need to exist</td>
+    <td>No need to exist</td>
+  </tr>
+</table>
+
+
+<h4><a name="example"></a>Example</h4>
+
+<p>Launch a task with a CSI volume managed by NFS CSI plugin:</p>
+
+<pre><code class="```{.json}">   TaskInfo {
+     ...
+     "command" : {
+       "value": "echo test &gt; volume/file"
+     },
+     "container" : {
+       "type": "MESOS",
+       "volumes" : [
+         {
+           "container_path" : "volume",
+           "mode" : "RW",
+           "source": {
+             "type": "CSI_VOLUME",
+             "csi_volume": {
+               "plugin_name": "nfs.csi.k8s.io",
+               "static_provisioning": {
+                 "volume_id": "foo",
+                 "volume_capability": {
+                   "mount": {},
+                   "access_mode": {
+                     "mode": "MULTI_NODE_MULTI_WRITER"
+                   }
+                 },
+                 "volume_context": {
+                   "server": "192.168.1.100",
+                   "share": "/mnt/data"
+                 }
+               }
+             }
+           }
+         }
+       ]
+     }
+   }
+</code></pre>
+
+<p><strong>NOTE</strong>: To make the above example work, an NFS server (<code>192.168.1.100</code>) needs to
+be setup to export the directory <code>/mnt/data</code>.</p>
+
+  </div>
+</div>
+
+  </div><!-- /.container -->
+</div><!-- /.content -->
+
+<hr>
+
+
+
+    <!-- footer -->
+    <div class="footer">
+      <div class="container">
+
+        <div class="col-md-3">
+            <a  href="https://www.apache.org/events/current-event.html">
+              <img src="https://www.apache.org/events/current-event-234x60.png"/>
+            </a>
+        </div>
+
+        <div class="col-md-3 social-blk">
+          <span class="social">
+            <a href="https://twitter.com/ApacheMesos"
+              class="twitter-follow-button"
+              data-show-count="false" data-size="large">Follow @ApacheMesos</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+            <a href="https://twitter.com/intent/tweet?button_hashtag=mesos"
+              class="twitter-hashtag-button"
+              data-size="large"
+              data-related="ApacheMesos">Tweet #mesos</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+          </span>
+        </div>
+
+        <div class="col-md-6 trademark">
+          <p>&copy; 2012-2020 <a href="http://apache.org">The Apache Software Foundation</a>.
+            Apache Mesos, the Apache feather logo, and the Apache Mesos project logo are trademarks of The Apache Software Foundation.
+          <p>
+        </div>
+
+      </div><!-- /.container -->
+    </div><!-- /.footer -->
+
+    <!-- JS -->
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js"></script>
+
+    <!-- Inject anchors for all headings on the page, see https://www.bryanbraun.com/anchorjs. -->
+    <script type="text/javascript">
+    anchors.options = {
+      placement: 'right',
+      ariaLabel: 'Permalink',
+    };
+
+    // The default is to not add anchors to h1, but we have pages with multiple h1 headers,
+    // and we do want to put anchors on those.
+    anchors.add('h1, h2, h3, h4, h5, h6');
+    </script>
+  </body>
+</html>
