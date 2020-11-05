@@ -170,6 +170,12 @@ each of the scheduler&rsquo;s roles. Keeping the <code>FrameworkInfo.offer_filte
 up-to-date with the minimum desired offer shape for each role will ensure that
 the sccheduler gets a better chance to receive offers sized with sufficient
 resources.</li>
+<li>Consider specifying <strong>offer constraints</strong> via <code>SUBSCRIBE</code>/<code>UPDATE_FRAMEWORK</code>
+calls so that the framework role&rsquo;s quota is not consumed by offers that the
+scheduler will have to decline anyway based on agent attributes.
+See <a href="https://issues.apache.org/jira/browse/MESOS-10161]">MESOS-10161</a>
+and <a href="https://github.com/apache/mesos/blob/master/include/mesos/v1/scheduler/scheduler.proto">scheduler.proto</a>
+for more details.</li>
 </ol>
 
 
